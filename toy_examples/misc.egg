@@ -1,0 +1,191 @@
+;; MISC (Mixed Instruction Set Computer) ISA Generation Demo
+;; Shows bidirectional optimization: both fusion AND cracking
+;; - Fusion: combine simple instructions into complex ones
+;; - Cracking: split complex instructions when beneficial (e.g., loops)
+
+;; Define basic types
+(datatype Reg 
+    (X1) (X2) (X3) (X4) (X5) (X6))
+
+(datatype Imm (ImmVal i64))
+
+;; Define instructions
+(datatype Inst
+    ;; Basic RISC-V instructions
+    (Add Reg Reg Reg)        ; rd = rs1 + rs2
+    (Load Reg Reg)            ; rd = mem[rs]
+    (Mul Reg Reg Reg)         ; rd = rs1 * rs2
+    
+    ;; Complex instructions (MISC)
+    (LoadAdd Reg Reg Reg)     ; rd = mem[rs1] + rs2
+    (MAC Reg Reg Reg Reg)     ; rd = rs1 * rs2 + rs3
+    
+    ;; Control flow
+    (Loop i64 Inst)           ; loop n times
+    (Seq Inst Inst))
+
+;; Cost function
+(function cost (Inst) i64 :merge (min old new))
+
+;; Set costs for basic instructions
+(rule ((= i (Add rd rs1 rs2)))    ((set (cost i) 1)))
+(rule ((= i (Load rd rs)))        ((set (cost i) 2)))
+(rule ((= i (Mul rd rs1 rs2)))    ((set (cost i) 3)))
+
+;; Set costs for complex instructions (better IPC)
+(rule ((= i (LoadAdd rd rs1 rs2)))  ((set (cost i) 2)))  ; Saves 1 cycle
+(rule ((= i (MAC rd rs1 rs2 rs3)))  ((set (cost i) 3)))  ; Saves 1 cycle
+
+;; Sequence cost is sum of components
+(rule ((= s (Seq i1 i2))
+       (= c1 (cost i1))
+       (= c2 (cost i2)))
+      ((set (cost s) (+ c1 c2))))
+
+;; Loop cost is iterations * body cost
+(rule ((= l (Loop n body))
+       (= c (cost body)))
+      ((set (cost l) (* n c))))
+
+;; ========== FUSION RULES ==========
+;; These are the core of MISC generation
+
+;; Associativity for Seq - allows flattening nested sequences
+(rewrite (Seq (Seq a b) c) (Seq a (Seq b c)))
+(rewrite (Seq a (Seq b c)) (Seq (Seq a b) c))
+(birewrite (Seq (Seq a b) c) (Seq a (Seq b c)))
+
+;; Rule 1: Load + Add -> LoadAdd (fusion)
+(rewrite (Seq (Load r1 rs) 
+              (Add r2 r1 rs2))
+         (LoadAdd r2 rs rs2))
+
+;; Rule 2: Mul + Add -> MAC (fusion)
+(rewrite (Seq (Mul r1 rs1 rs2)
+              (Add r2 r1 rs3))
+         (MAC r2 rs1 rs2 rs3))
+
+;; ========== CRACKING RULES ==========
+;; Split complex instructions when beneficial
+
+;; Rule 3: LoadAdd -> Load + Add (cracking for loop invariant loads)
+;; When LoadAdd is in a loop, crack it and hoist the load out
+(rewrite (Loop n (LoadAdd rd addr_reg rs))
+         (Seq (Load rd addr_reg)
+              (Loop n (Add rd rd rs))))
+
+;; Rule 4: MAC cracking for similar reasons (if multiply is loop invariant)
+(rewrite (Loop n (MAC rd rs1 rs2 rs3))
+         (Seq (Mul rd rs1 rs2)
+              (Loop n (Add rd rd rs3))))
+
+;; ================================================
+;; Create all test programs first
+;; ================================================
+
+;; EXAMPLE 1: Load-Add Fusion
+(let prog1 (Seq (Load (X1) (X2))
+                (Add (X3) (X1) (X4))))
+
+;; EXAMPLE 2: MAC Fusion
+(let prog2 (Seq (Mul (X1) (X2) (X3))
+                (Add (X4) (X1) (X5))))
+
+;; EXAMPLE 3: Nested Sequence
+(let prog3 (Seq (Load (X1) (X2))
+                (Seq (Add (X3) (X1) (X4))
+                     (Mul (X5) (X3) (X6)))))
+
+;; EXAMPLE 4: Loop with LoadAdd - demonstrating instruction cracking
+(let prog4 (Loop 1000 (LoadAdd (X1) (X2) (X3))))
+
+
+;; ================================================
+;; Show BEFORE state (what we started with)
+;; ================================================
+
+(extract "")
+(extract "========== BEFORE OPTIMIZATION ==========")
+(extract "")
+(extract "Program 1 - Load-Add pattern:")
+(extract "(Seq (Load X1 X2) (Add X3 X1 X4))")
+(extract "Cost: 3 cycles (Load=2 + Add=1)")
+(extract "")
+(extract "Program 2 - Multiply-Add pattern:")
+(extract "(Seq (Mul X1 X2 X3) (Add X4 X1 X5))")
+(extract "Cost: 4 cycles (Mul=3 + Add=1)")
+(extract "")
+(extract "Program 3 - Nested sequence:")
+(extract "(Seq (Load X1 X2) (Seq (Add X3 X1 X4) (Mul X5 X3 X6)))")
+(extract "Cost: 6 cycles (Load=2 + Add=1 + Mul=3)")
+(extract "")
+(extract "Program 4 - Loop with LoadAdd (loop-invariant load):")
+(extract "(Loop 1000 (LoadAdd X1 X2 X3))")
+(extract "Cost if not cracked: 2000 cycles (1000 * LoadAdd=2)")
+(extract "Cost if cracked: 1002 cycles (Load=2 + 1000*Add=1)")
+(extract "")
+
+;; ================================================
+;; Run optimization
+;; ================================================
+
+(run 10)
+
+;; ================================================
+;; Show AFTER state
+;; ================================================
+
+(extract "")
+(extract "========== AFTER OPTIMIZATION ==========")
+(extract "")
+(extract "Program 1 - Optimized:")
+(extract prog1)
+(extract "Optimized cost:")
+(extract (cost prog1))
+(extract "")
+(extract "Program 2 - Optimized:")
+(extract prog2)
+(extract "Optimized cost:")
+(extract (cost prog2))
+(extract "")
+(extract "Program 3 - Optimized:")
+(extract prog3)
+(extract "Optimized cost:")
+(extract (cost prog3))
+(extract "")
+(extract "Program 4 - Optimized (LoadAdd cracked for loop):")
+(extract prog4)
+(extract "Optimized cost:")
+(extract (cost prog4))
+
+;; ================================================
+;; Verify optimizations
+;; ================================================
+
+(check (= (cost prog1) 2))    ; 3 -> 2 cycles
+(check (= (cost prog2) 3))    ; 4 -> 3 cycles
+(check (= (cost prog3) 5))    ; 6 -> 5 cycles
+(check (= (cost prog4) 1002)) ; 2000 -> 1002 cycles (huge improvement!)
+
+;; ================================================
+;; Summary
+;; ================================================
+
+(extract "")
+(extract "========== SUMMARY ==========")
+(extract "")
+(extract "MISC ISA generation results:")
+(extract "1. Load-Add fusion: 3 -> 2 cycles (33% improvement)")
+(extract "2. MAC fusion: 4 -> 3 cycles (25% improvement)")
+(extract "3. Nested optimization: 6 -> 5 cycles (17% improvement)")
+(extract "4. Loop LoadAdd cracking: 2000 -> 1002 cycles (50% improvement!)")
+(extract "")
+(extract "Key insights:")
+(extract "- Fusion helps for single operations (LoadAdd, MAC)")
+(extract "- Cracking helps for loops with invariant loads")
+(extract "- MISC can dynamically choose between complex and simple")
+(extract "  instructions based on context!")
+(extract "")
+(extract "The e-graph automatically discovered when to:")
+(extract "- FUSE simple instructions into complex ones")
+(extract "- CRACK complex instructions back to simple ones")
