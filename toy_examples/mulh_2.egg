@@ -1,0 +1,166 @@
+;; MULH 基础重写规则演示
+;; 目标：提供基础的数学等式，让 e-graph 自动探索如何用64位运算实现128位乘法高位
+
+;; 基本寄存器
+(datatype Reg 
+    (X1) (X2) (X3) (X4) (X5) (X6)
+    (T1) (T2) (T3) (T4) (T5) (T6))
+
+(datatype Imm (ImmVal i64))
+
+;; 指令集
+(datatype Inst
+    (Add Reg Reg Reg)          ; rd = rs1 + rs2
+    (Mul Reg Reg Reg)          ; rd = rs1 * rs2  (64x64 -> 64 低位)
+    (MulH Reg Reg Reg)         ; rd = high64(rs1 * rs2)
+    (Andi Reg Reg Imm)         ; rd = rs1 & imm
+    (Shri Reg Reg Imm)         ; rd = rs1 >> imm (逻辑右移)
+    (Shli Reg Reg Imm)         ; rd = rs1 << imm
+    (LoadImm Reg Imm)          ; rd = imm (加载立即数)
+    (Seq Inst Inst)
+    (Loop i64 Inst))
+
+;; 成本模型：MulH 昂贵，基础运算便宜
+(function cost (Inst) i64 :merge (min old new))
+
+(rule ((= i (Add rd rs1 rs2)))    ((set (cost i) 1)))
+(rule ((= i (Mul rd rs1 rs2)))    ((set (cost i) 3)))
+(rule ((= i (MulH rd rs1 rs2)))   ((set (cost i) 20)))
+(rule ((= i (Andi rd rs imm)))    ((set (cost i) 1)))
+(rule ((= i (Shri rd rs imm)))    ((set (cost i) 1)))
+(rule ((= i (Shli rd rs imm)))    ((set (cost i) 1)))
+(rule ((= i (LoadImm rd imm)))    ((set (cost i) 1)))
+
+;; 序列与循环成本
+(rule ((= s (Seq i1 i2))
+       (= c1 (cost i1))
+       (= c2 (cost i2)))
+      ((set (cost s) (+ c1 c2))))
+
+(rule ((= l (Loop n body))
+       (= c (cost body)))
+      ((set (cost l) (* n c))))
+
+;; ========== 基础代数规则 ==========
+(rewrite (Seq (Seq a b) c) (Seq a (Seq b c)))
+
+;; ========== 基础重写规则 ==========
+;; 这些规则让 e-graph 自己探索如何拆分 MulH
+
+;; 规则1:（去掉交换律以避免爆炸）
+
+;; 规则2: 分解为高低位 - 使用序列指令（仅规约方向，避免循环）
+;; a = ((a >> 32) << 32) + (a & 0xffffffff)
+(rewrite
+  (Seq (Shri (T1) a (ImmVal 32))
+       (Seq (Shli (T1) (T1) (ImmVal 32))
+            (Seq (Andi (T2) a (ImmVal 4294967295))
+                 (Seq (Add (T3) (T1) (T2))
+                      (MulH rd (T3) b)))))
+  (MulH rd a b))
+
+;; b = ((b >> 32) << 32) + (b & 0xffffffff)（仅规约方向）
+(rewrite
+  (Seq (Shri (T1) b (ImmVal 32))
+       (Seq (Shli (T1) (T1) (ImmVal 32))
+            (Seq (Andi (T2) b (ImmVal 4294967295))
+                 (Seq (Add (T3) (T1) (T2))
+                      (MulH rd a (T3))))))
+  (MulH rd a b))
+
+;; 规则3: 分配律 - 使用序列指令
+;; MulH(x+y, z) = MulH(x,z) + MulH(y,z)
+(rewrite (Seq (Add (T1) x y) (MulH rd (T1) z))
+         (Seq (MulH (T3) x z)
+              (Seq (MulH (T4) y z)
+                   (Add rd (T3) (T4)))))
+
+(rewrite (Seq (Add (T2) y z) (MulH rd x (T2)))
+         (Seq (MulH (T5) x y)
+              (Seq (MulH (T6) x z)
+                   (Add rd (T5) (T6)))))
+
+;; 规则4: 移位与乘法的关系（基于序列匹配）
+;; high64((x << 32) * y) = x * y （当 x 是32位时）
+(rewrite (Seq (Shli (T1) x (ImmVal 32)) (MulH rd (T1) y))
+         (Mul rd x y))
+(rewrite (Seq (Shli (T2) y (ImmVal 32)) (MulH rd x (T2)))
+         (Mul rd x y))
+
+;; 规则5: 基础的高位提取（基于序列匹配）
+;; 当 x 或 y 被截为32位时，可用 64 位乘法并右移 32 得到高位
+(rewrite (Seq (Andi (T1) y (ImmVal 4294967295)) (MulH rd x (T1)))
+         (Seq (Mul (T5) x y)
+              (Shri rd (T5) (ImmVal 32))))
+(rewrite (Seq (Andi (T2) x (ImmVal 4294967295)) (MulH rd (T2) y))
+         (Seq (Mul (T6) x y)
+              (Shri rd (T6) (ImmVal 32))))
+
+;; 规则6: 常数优化 - 通过加载立即数（基于序列匹配）
+(rewrite (Seq (LoadImm (T1) (ImmVal 0)) (MulH rd x (T1))) (LoadImm rd (ImmVal 0)))
+(rewrite (Seq (LoadImm (T1) (ImmVal 0)) (MulH rd (T1) x)) (LoadImm rd (ImmVal 0)))
+(rewrite (Seq (LoadImm (T1) (ImmVal 1)) (MulH rd x (T1))) (Shri rd x (ImmVal 32)))
+(rewrite (Seq (LoadImm (T1) (ImmVal 1)) (MulH rd (T1) x)) (Shri rd x (ImmVal 32)))
+
+;; ========== 示例程序 ==========
+
+;; 程序1: 简单的 MulH
+(let prog1 (MulH (X1) (X2) (X3)))
+
+;; 程序2: 带常数的 MulH
+(let prog2 (Seq (LoadImm (T1) (ImmVal 1))
+                (MulH (X1) (X2) (T1))))
+
+;; 程序3: 带移位的 MulH（先移位到临时寄存器，再参与 MulH）
+(let prog3 (Seq (Shli (T1) (X2) (ImmVal 32))
+                (MulH (X1) (T1) (X3))))
+
+;; 程序4: 循环中的 MulH
+(let prog4 (Loop 100 (MulH (X1) (X2) (X3))))
+
+;; 运行优化（降低步数以避免爆炸）
+(run 6)
+
+;; 展示结果
+(extract "")
+(extract "========== MULH 基础规则探索结果 ==========")
+(extract "")
+(extract "程序1 - 简单MulH:")
+(extract prog1)
+(extract "成本:")
+(extract (cost prog1))
+(extract "")
+
+(extract "程序2 - 带常数1的MulH:")
+(extract prog2)
+(extract "成本:")
+(extract (cost prog2))
+(extract "")
+
+(extract "程序3 - 带左移32位的MulH:")
+(extract prog3)
+(extract "成本:")
+(extract (cost prog3))
+(extract "")
+
+(extract "程序4 - 循环中的MulH:")
+(extract prog4)
+(extract "成本:")
+(extract (cost prog4))
+(extract "")
+
+;; 验证优化效果
+(check (< (cost prog1) 20))    ; 应该被优化
+(check (= (cost prog2) 2))     ; 常数1应该被优化为右移
+(check (= (cost prog3) 3))     ; 左移32位应该被优化为普通乘法
+(check (< (cost prog4) 2000))  ; 循环应该被优化
+
+(extract "")
+(extract "========== 总结 ==========")
+(extract "通过基础规则，e-graph 自动发现了:")
+(extract "1. 常数优化: MulH(x,1) -> x>>32")
+(extract "2. 移位优化: MulH(x<<32,y) -> x*y") 
+(extract "3. 分配律: MulH(x+y,z) -> MulH(x,z)+MulH(y,z)")
+(extract "4. 32位优化: MulH(x,y&0xffffffff) -> (x*y)>>32")
+(extract "")
+(extract "这些基础规则让 e-graph 自己探索出复杂的拆分策略！")

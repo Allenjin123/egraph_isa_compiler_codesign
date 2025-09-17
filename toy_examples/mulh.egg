@@ -1,0 +1,168 @@
+(datatype Reg
+    (Num i64)             ; constants
+    (Var String)          ; variables
+    (Add Reg Reg)         ; addition
+    (Mul Reg Reg)         ; regular multiplication (low 64 bits)
+    (MulH Reg Reg :cost 1000)        ; high 64 bits - very expensive
+    (MulF Reg Reg :cost 1000)        ; full 128 bits
+    (Sll Reg i64)         ; logical left shift
+    (Srl Reg i64)         ; logical right shift
+    (And Reg Reg)         ; bitwise AND
+    (Lo32 Reg)            ; low 32 bits (constructor)
+    (Hi32 Reg)            ; high 32 bits (constructor)
+    (Hi64 Reg)            ; high 64 bits (constructor)
+)
+
+
+;; Identity laws
+(rewrite (Add x (Num 0)) x)
+(rewrite (Mul x (Num 0)) (Num 0))
+(rewrite (Mul x (Num 1)) x)
+
+;; Shift identities
+(rewrite (Sll x 0) x)
+(rewrite (Srl x 0) x)
+
+;; Function declarations
+(function cost (Reg) i64 :merge (min old new))
+
+;; Cost rules
+(rule ((= x (Num n)))          ((set (cost x) 1)))
+(rule ((= x (Var v)))          ((set (cost x) 1)))
+(rule ((= x (Add a b))
+       (= ca (cost a))
+       (= cb (cost b)))        ((set (cost x) (+ 1 (+ ca cb)))))
+(rule ((= x (Mul a b))
+       (= ca (cost a))
+       (= cb (cost b)))        ((set (cost x) (+ 3 (+ ca cb)))))
+(rule ((= x (And a b))
+       (= ca (cost a))
+       (= cb (cost b)))        ((set (cost x) (+ 1 (+ ca cb)))))
+(rule ((= x (Sll a n))
+       (= ca (cost a)))        ((set (cost x) (+ 1 ca))))
+(rule ((= x (Srl a n))
+       (= ca (cost a)))        ((set (cost x) (+ 1 ca))))
+(rule ((= x (Lo32 a))
+       (= ca (cost a)))        ((set (cost x) (+ 1 ca))))
+(rule ((= x (Hi32 a))
+       (= ca (cost a)))        ((set (cost x) (+ 1 ca))))
+(rule ((= x (Hi64 a))
+       (= ca (cost a)))        ((set (cost x) (+ 2 ca))))
+(rule ((= x (MulH a b))
+       (= ca (cost a))
+       (= cb (cost b)))        ((set (cost x) (+ 1000 (+ ca cb)))))
+(rule ((= x (MulF a b))
+       (= ca (cost a))
+       (= cb (cost b)))        ((set (cost x) (+ 1000 (+ ca cb)))))
+
+;; Commutativity
+(rewrite (Add x y) (Add y x))
+(rewrite (Mul x y) (Mul y x))
+;; Multiplication distributivity
+(rewrite (Mul (Add x y) z) (Add (Mul x z) (Mul y z)))
+(rewrite (Mul x (Add y z)) (Add (Mul x y) (Mul x z)))
+(rewrite
+  (MulF x y)
+  (Add (Add (Mul (Lo32 x) (Lo32 y))
+            (Mul (Lo32 x) (Sll (Hi32 y) 32)))
+       (Add (Mul (Sll (Hi32 x) 32) (Lo32 y))
+            (Mul (Sll (Hi32 x) 32) (Sll (Hi32 y) 32))))
+)
+
+;; Decompose blocks    
+(rewrite (Lo32 x) (And x (Num 4294967295)))
+(rewrite (Hi32 x) (Srl x 32))
+;; (rewrite x (Add (Sll (Hi32 x) 32) (Lo32 x)))  ; Comment out problematic rule
+(rewrite (Mul (Sll x 32) y) (Sll (Mul x y) 32))
+(rewrite (Mul x (Sll y 32)) (Sll (Mul x y) 32))
+(rewrite (Lo32 (Sll x 32)) (Num 0))
+(rewrite (Hi32 (Sll x 32)) (Lo32 x))
+(rewrite (Lo32 (Srl x 32)) (Hi32 x))
+
+;; ===== 128-bit "extract high 64" basic semantics for shifts/additions =====
+
+;; Basic: single term shifts
+(rewrite (Hi64 (Sll x 64)) x)             ; high half is the term itself that was <<64
+(rewrite (Hi64 (Sll x 32)) (Hi32 x))      ; <<32 term contributes to high half = its own high 32
+(rewrite (Hi64 (Sll x 0))  (Num 0))       ; unshifted 64-bit value contributes 0 to high half
+(rewrite (Hi64 (Num n))    (Num 0))
+(rewrite (Hi64 (Mul x y))  (Num 0))       ; unshifted product only in low half, contributes 0
+
+;; Extract "terms with <<64" from addition (no explicit carry needed)
+(rewrite (Hi64 (Add a (Sll b 64))) (Add (Hi64 a) b))
+(rewrite (Hi64 (Add (Sll b 64) a)) (Add (Hi64 a) b))
+
+;; Key: corresponds to "TEMP = (A0B0>>32)+A0B1+A1B0"
+;; i.e., Hi64( p0 + (p1<<32) + (p2<<32) ) = Hi32( Hi32(p0) + p1 + p2 )
+;; For robustness, give three common associative/commutative forms (AC will convert to one of these)
+(rewrite
+  (Hi64 (Add (Add p0 (Sll p1 32)) (Sll p2 32)))
+  (Hi32 (Add (Add (Hi32 p0) p1) p2)))
+
+(rewrite
+  (Hi64 (Add (Add (Sll p1 32) p0) (Sll p2 32)))
+  (Hi32 (Add (Add (Hi32 p0) p1) p2)))
+
+(rewrite
+  (Hi64 (Add (Sll p2 32) (Add p0 (Sll p1 32))))
+  (Hi32 (Add (Add (Hi32 p0) p1) p2)))
+;; High bits - try birewrite to make it bidirectional
+(rewrite (MulH x y) (Hi64(MulF x y)))
+
+;; ===== Cost Model Defined Above =====
+
+;; Cost function is uniformly defined above
+
+;; ===== Optimization Hints =====
+;; Encourage using decomposed forms (lower cost)
+;; When MulH is decomposed into basic operations, total cost should be better
+
+;; ===== Extraction Strategy =====
+;; Extract the lowest cost representation
+;; E-graph will automatically choose optimal path based on cost function
+
+;; ===== Test Cases =====
+;; Define test expressions
+(let test1 (MulH (Var "x") (Var "y")))
+;; (let test2 (MulH (Add (Var "a") (Var "b")) (Var "c")))  
+;; (let test3 (MulH (Sll (Var "x") 32) (Var "y")))
+;; (let test4 (MulH (Lo32 (Var "x")) (Lo32 (Var "y"))))
+
+;; Show initial state
+(extract "=== Initial State ===")
+(extract "test1 initial:")
+(extract test1)
+
+;; Run rewrites
+(run 50)  ; More iterations to ensure full expansion
+
+;; Show optimization results
+(extract "=== MulH Optimization Results ===")
+(extract "")
+
+(extract "Test1: MulH(x, y) - After optimization:")
+(extract test1)
+(extract "Cost:")
+(extract (cost test1))
+(extract "")
+
+;; Manual cost analysis
+(extract "=== Cost Analysis ===")
+
+;; Create a simple MulF to see its expansion
+(let simple_mulf (MulF (Var "x") (Var "y")))
+(extract "MulF(x,y) expands to:")
+(extract simple_mulf)
+(extract "MulF cost:")
+(extract (cost simple_mulf))
+
+;; Create Hi64(MulF(...)) to see the complete transformation
+(let hi64_mulf (Hi64 (MulF (Var "x") (Var "y"))))
+(extract "Hi64(MulF(x,y)) expands to:")
+(extract hi64_mulf)
+(extract "Hi64(MulF) cost:")
+(extract (cost hi64_mulf))
+
+;;(extract "=== E-graph stats ===")
+;;(print-stats)
+

@@ -1,0 +1,289 @@
+;; # MULH 基础算子化 Case Study
+;; 目标：仅用 64 位 Add/Mul/Andi/Shri/Shli/LoadImm 等基础算子，给出等价可组合的规则
+;; 基于 egglog-tutorial 的最佳实践
+
+;; ========== 数据类型定义 ==========
+(datatype Reg 
+    (X1) (X2) (X3) (X4) (X5) (X6)
+    (T1) (T2) (T3) (T4) (T5) (T6) (T7) (T8) (T9) (T10) (T11) (T12) (T13))
+
+(datatype Imm (ImmVal i64))
+
+(datatype Inst
+    (Add Reg Reg Reg)
+    (Sub Reg Reg Reg)
+    (Mul Reg Reg Reg)          ; 64x64 -> 64 低位，有符号低 64
+    (MulH Reg Reg Reg)         ; 128 乘积的高 64 位，有符号高 64
+    (Andi Reg Reg Imm)
+    (Ori  Reg Reg Imm)         ; rd = rs | imm
+    (Or   Reg Reg Reg)         ; rd = rs1 | rs2
+    (Shri Reg Reg Imm)
+    (Shli Reg Reg Imm)
+    (LShrI Reg Reg Imm)        ;logical shift right
+    (LoadImm Reg Imm)
+    (Seq Inst Inst))
+
+;; ========= 立即数命名常量（不改 datatype，靠 0-参函数 + 等式定义） =========
+(function IMM_0   () Imm)
+(function IMM_32  () Imm)
+(function IMM_63  () Imm)
+(function IMM_LOMASK () Imm)  ; 0xFFFF_FFFF
+
+(rewrite IMM_0      (ImmVal 0))
+(rewrite IMM_32     (ImmVal 32))
+(rewrite IMM_63     (ImmVal 63))
+(rewrite IMM_LOMASK (ImmVal 4294967295)) ; 0xFFFF_FFFF
+
+;; ========== 规则集定义 ==========
+(ruleset basic-optimizations)
+(ruleset width-analysis) 
+(ruleset mulh-decomposition)
+(ruleset cost-analysis)
+
+;; ========== 成本模型与分析 ==========
+(function cost (Inst) i64 :merge (min old new))
+
+;; 基础指令成本（添加到 cost-analysis 规则集）
+(with-ruleset cost-analysis
+    (rule ((= i (Add rd rs1 rs2)))    ((set (cost i) 1)))
+    (rule ((= i (Sub rd rs1 rs2)))    ((set (cost i) 1)))
+    (rule ((= i (Mul rd rs1 rs2)))    ((set (cost i) 3)))
+    (rule ((= i (MulH rd rs1 rs2)))   ((set (cost i) 30)))  ; MulH 昂贵
+    (rule ((= i (Andi rd rs imm)))    ((set (cost i) 1)))
+    (rule ((= i (Ori rd rs imm)))     ((set (cost i) 1)))
+    (rule ((= i (Or rd rs1 rs2)))     ((set (cost i) 1)))
+    (rule ((= i (Shri rd rs imm)))    ((set (cost i) 1)))
+    (rule ((= i (Shli rd rs imm)))    ((set (cost i) 1)))
+    (rule ((= i (LShrI rd rs imm)))   ((set (cost i) 1)))
+    (rule ((= i (LoadImm rd imm)))    ((set (cost i) 1)))
+    
+    ;; 序列成本
+    (rule ((= s (Seq i1 i2))
+           (= c1 (cost i1))
+           (= c2 (cost i2)))
+          ((set (cost s) (+ c1 c2))))
+)
+
+;; ========== 位宽分析 ==========
+(relation is-32bit (Reg))
+(relation is-64bit (Reg))
+
+(with-ruleset width-analysis
+    ;; 默认所有寄存器是64位
+    (rule ((= r (X1))) ((is-64bit r)))
+    (rule ((= r (X2))) ((is-64bit r)))
+    (rule ((= r (X3))) ((is-64bit r)))
+    (rule ((= r (X4))) ((is-64bit r)))
+    (rule ((= r (X5))) ((is-64bit r)))
+    (rule ((= r (X6))) ((is-64bit r)))
+    (rule ((= r (T1))) ((is-64bit r)))
+    (rule ((= r (T2))) ((is-64bit r)))
+    (rule ((= r (T3))) ((is-64bit r)))
+    (rule ((= r (T4))) ((is-64bit r)))
+    (rule ((= r (T5))) ((is-64bit r)))
+    (rule ((= r (T6))) ((is-64bit r)))
+    (rule ((= r (T7))) ((is-64bit r)))
+    (rule ((= r (T8))) ((is-64bit r)))
+    (rule ((= r (T9))) ((is-64bit r)))
+    (rule ((= r (T10))) ((is-64bit r)))
+    (rule ((= r (T11))) ((is-64bit r)))
+    (rule ((= r (T12))) ((is-64bit r)))
+    (rule ((= r (T13))) ((is-64bit r)))
+    
+    ;; Andi 0xffffffff 操作会产生32位值
+    (rule ((= i (Andi rd rs IMM_LOMASK)))
+          ((is-32bit rd)))
+    (rule ((= i (Andi rd rs (ImmVal 4294967295))))  ; 兼容原始写法
+          ((is-32bit rd)))
+)
+
+;; ========== 基础优化规则 ==========
+(with-ruleset basic-optimizations
+    ;; 结构规则：仅 Seq 结合律，避免爆炸
+    (birewrite (Seq (Seq a b) c) (Seq a (Seq b c)))
+    
+    ;; 算术恒等式 - 使用立即数常量
+    (rewrite (Add x (LoadImm (T1) IMM_0)) x)  ; x + 0 = x
+    (rewrite (Sub x x) (LoadImm (T1) IMM_0))  ; x - x = 0
+    (rewrite (Mul x (LoadImm (T1) (ImmVal 1))) x)  ; x * 1 = x
+    (rewrite (Mul x (LoadImm (T1) IMM_0)) (LoadImm (T1) IMM_0))  ; x * 0 = 0
+    
+    ;; 位运算恒等式
+    (rewrite (Andi x IMM_LOMASK) x)  ; x & 0xffffffff = x (对32位值)
+    (rewrite (Ori x IMM_0) x)        ; x | 0 = x
+    (rewrite (Or x x) x)             ; x | x = x
+    
+    ;; 移位优化
+    (rewrite (Shli x IMM_0) x)       ; x << 0 = x
+    (rewrite (Shri x IMM_0) x)       ; x >> 0 = x
+    (rewrite (LShrI x IMM_0) x)      ; x >>> 0 = x
+)
+
+;; ========== MULH 分解规则 ==========
+(with-ruleset mulh-decomposition
+    ;; 常量优化规则 - 使用立即数常量
+    (rewrite (Seq (LoadImm (T1) IMM_0) (MulH rd x (T1))) 
+             (LoadImm rd IMM_0))
+    (rewrite (Seq (LoadImm (T1) IMM_0) (MulH rd (T1) x)) 
+             (LoadImm rd IMM_0))
+    (rewrite (Seq (LoadImm (T1) (ImmVal 1)) (MulH rd x (T1))) 
+             (Shri rd x IMM_32))
+    (rewrite (Seq (LoadImm (T1) (ImmVal 1)) (MulH rd (T1) x)) 
+             (Shri rd x IMM_32))
+    
+    ;; 32x32 -> 高 64 位恒为 0（基于位宽分析）
+    (rewrite (MulH rd x y) 
+             (LoadImm rd IMM_0)
+             :when ((is-32bit x) (is-32bit y)))
+    
+    ;; 单侧 32 位 × 64 位分解（左操作数为 32 位）
+    (rewrite (MulH rd a b)
+             (Seq (Shri (B1) b IMM_32)
+                  (Seq (Andi (B0) b IMM_LOMASK)
+                       (Seq (Mul (P1) a (B1))
+                            (Seq (Mul (P0) a (B0))
+                                 (Seq (Shri (H0) (P0) IMM_32)
+                                      (Add rd (P1) (H0)))))))
+             :when ((is-32bit a)))
+    
+    ;; 单侧 32 位 × 64 位分解（右操作数为 32 位）
+    (rewrite (MulH rd a b)
+             (Seq (Shri (A1) a IMM_32)
+                  (Seq (Andi (A0) a IMM_LOMASK)
+                       (Seq (Mul (P1) (A1) b)
+                            (Seq (Mul (P0) (A0) b)
+                                 (Seq (Shri (H0) (P0) IMM_32)
+                                      (Add rd (P1) (H0)))))))
+             :when ((is-32bit b)))
+)
+
+;; ========== 测试用例与调度策略 ==========
+
+;; 定义测试程序
+(let prog1 (MulH (X1) (X2) (X3)))  ; 基础 64x64 MulH
+(let prog2 (Seq (LoadImm (T1) (ImmVal 1)) (MulH (X1) (X2) (T1))))  ; x*1 优化
+(let prog3 (Seq (Andi (T1) (X2) IMM_LOMASK) (MulH (X1) (T1) (X3))))  ; 32x64
+(let prog4 (Seq (Andi (T1) (X3) IMM_LOMASK) (MulH (X1) (X2) (T1))))  ; 64x32
+(let prog5 (Seq (Andi (T1) (X2) IMM_LOMASK) 
+                (Seq (Andi (T2) (X3) IMM_LOMASK) 
+                     (MulH (X1) (T1) (T2)))))  ; 32x32
+;; Sub指令测试
+(let prog6 (Sub (X1) (X1)))  ; x - x = 0
+(let prog7 (Seq (Sub (T1) (X1) (X1)) (MulH (X2) (X3) (T1))))  ; 使用0做MulH
+
+;; 新指令测试
+(let prog8 (Ori (X1) IMM_0))  ; x | 0 = x
+(let prog9 (Or (X1) (X1)))    ; x | x = x
+(let prog10 (LShrI (X1) IMM_32))  ; 逻辑右移32位
+(let prog11 (Seq (Shri (T1) (X1) IMM_32) (LShrI (T2) (X1) IMM_32)))  ; 算术vs逻辑右移
+
+;; 使用分层调度策略，参考教程04-scheduling
+(run-schedule 
+    ;; 第一阶段：位宽分析
+    (saturate (run width-analysis))
+    ;; 第二阶段：基础优化
+    (saturate (run basic-optimizations))
+    ;; 第三阶段：MULH分解（限制迭代避免爆炸）
+    (repeat 3 (run mulh-decomposition))
+    ;; 第四阶段：成本分析
+    (saturate (run cost-analysis)))
+
+;; ========== 结果展示 ==========
+(extract "")
+(extract "========== MULH 基础算子化 Case Study ==========")
+(extract "基于 egglog-tutorial 的最佳实践")
+(extract "")
+
+(print-function is-32bit 10)
+(print-function is-64bit 10)
+
+(extract "Program 1 (基础 64x64 MulH):")
+(extract prog1)
+(extract "成本:")
+(extract (cost prog1))
+(extract "")
+
+(extract "Program 2 (x*1 -> x>>32 优化):")
+(extract prog2)  
+(extract "成本:")
+(extract (cost prog2))
+(extract "")
+
+(extract "Program 3 (32x64 分解):")
+(extract prog3)
+(extract "成本:")
+(extract (cost prog3))
+(extract "")
+
+(extract "Program 4 (64x32 分解):")
+(extract prog4)
+(extract "成本:")
+(extract (cost prog4))
+(extract "")
+
+(extract "Program 5 (32x32 -> 0 优化):")
+(extract prog5)
+(extract "成本:")
+(extract (cost prog5))
+(extract "")
+
+(extract "Program 6 (Sub测试: x - x = 0):")
+(extract prog6)
+(extract "成本:")
+(extract (cost prog6))
+(extract "")
+
+(extract "Program 7 (Sub + MulH 组合优化):")
+(extract prog7)
+(extract "成本:")
+(extract (cost prog7))
+(extract "")
+
+(extract "Program 8 (Ori 测试: x | 0 = x):")
+(extract prog8)
+(extract "成本:")
+(extract (cost prog8))
+(extract "")
+
+(extract "Program 9 (Or 测试: x | x = x):")
+(extract prog9)
+(extract "成本:")
+(extract (cost prog9))
+(extract "")
+
+(extract "Program 10 (LShrI 测试: 逻辑右移):")
+(extract prog10)
+(extract "成本:")
+(extract (cost prog10))
+(extract "")
+
+(extract "Program 11 (算术vs逻辑右移对比):")
+(extract prog11)
+(extract "成本:")
+(extract (cost prog11))
+(extract "")
+
+;; ========== 验证与调试 ==========
+;; 成本验证
+(check (= (cost prog2) 2))     ; LoadImm(1)=1 + Shri=1
+(check (= (cost prog6) 1))     ; x - x = 0 应该优化为 LoadImm
+(check (= (cost prog8) 0))     ; x | 0 应该优化为 x
+(check (= (cost prog9) 0))     ; x | x 应该优化为 x
+
+;; 等价性验证
+(check (= prog2 (Shri (X1) (X2) IMM_32)))       ; x*1 应该变成 x>>32
+(check (= prog6 (LoadImm (T1) IMM_0)))           ; x - x 应该变成 0
+(check (= prog8 (X1)))                           ; x | 0 = x
+(check (= prog9 (X1)))                           ; x | x = x
+
+;; 立即数常量验证
+(check (= IMM_0 (ImmVal 0)))
+(check (= IMM_32 (ImmVal 32)))
+(check (= IMM_LOMASK (ImmVal 4294967295)))
+
+;; 调试信息
+(print-size cost)
+(print-size is-32bit)
+(print-size is-64bit)
+
+

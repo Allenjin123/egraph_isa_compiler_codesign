@@ -1,0 +1,115 @@
+;; MULH cracking demo (toy)
+;; 目标：展示在遇到 64x64 乘法高位（MulH）时，用 64 位基础运算“拼凑”出等价实现，
+;; 通过少量基础 rewrite 规则让 e-graph 自行探索拆分序列。
+
+;; 基本寄存器（含少量预留临时寄存器，供规则使用）
+(datatype Reg 
+    (X1) (X2) (X3) (X4) (X5) (X6)
+    (T1) (T2) (T3) (T4) (T5) (T6) (T7) (T8) (T9) (T10) (T11) (T12) (T13))
+
+(datatype Imm (ImmVal i64))
+
+;; 指令集
+(datatype Inst
+    (Add Reg Reg Reg)          ; rd = rs1 + rs2
+    (Mul Reg Reg Reg)          ; rd = rs1 * rs2  (64x64 -> 64 的低位结果)
+    (MulH Reg Reg Reg)         ; rd = high64(rs1 * rs2)
+    (Andi Reg Reg Imm)         ; rd = rs1 & imm
+    (Shri Reg Reg Imm)         ; rd = rs1 >> imm (逻辑右移)
+    (Shli Reg Reg Imm)         ; rd = rs1 << imm
+    (Seq Inst Inst)
+    (Loop i64 Inst))
+
+;; 成本模型：
+;; - 128 位乘法器对应的 MulH 更昂贵
+;; - 64 位乘法及位运算更便宜
+(function cost (Inst) i64 :merge (min old new))
+
+(rule ((= i (Add rd rs1 rs2)))    ((set (cost i) 1)))
+(rule ((= i (Mul rd rs1 rs2)))    ((set (cost i) 3)))
+(rule ((= i (MulH rd rs1 rs2)))   ((set (cost i) 30)))
+(rule ((= i (Andi rd rs imm)))    ((set (cost i) 1)))
+(rule ((= i (Shri rd rs imm)))    ((set (cost i) 1)))
+(rule ((= i (Shli rd rs imm)))    ((set (cost i) 1)))
+
+;; 序列与循环成本
+(rule ((= s (Seq i1 i2))
+       (= c1 (cost i1))
+       (= c2 (cost i2)))
+      ((set (cost s) (+ c1 c2))))
+
+(rule ((= l (Loop n body))
+       (= c (cost body)))
+      ((set (cost l) (* n c))))
+
+;; ========== 基础代数/结构规则 ==========
+;; 仅提供必要的结构化规则，避免过度手工拆分。
+(birewrite (Seq (Seq a b) c) (Seq a (Seq b c)))
+
+;; ========== MulH 拆分（基础规则） ==========
+;; 思路：将 a、b 视为 32 位高低半拼接：a = (ahi<<32) + alo, b = (bhi<<32) + blo
+;; 下面的规则并不强制展开整套进位细节，而是给出一个由 64 位 Mul 与位运算
+;; 组成的“基础骨架”，鼓励 e-graph 进一步探索/组合。
+;;
+;; 近似式：
+;;   high64(a*b) ≈ (ahi*bhi)
+;;                 + ((ahi*blo) >> 32)
+;;                 + ((alo*bhi) >> 32)
+;;   其中 alo = a & 0xffffffff, ahi = a >> 32，blo/bhi 同理。
+;; 说明：
+;; - 该骨架忽略了来自 (alo*blo) 与 (ahi*blo)+(alo*bhi) 低 32 位相加产生的进位，
+;;   在实际处理器实现中需要更精细的进位处理；
+;; - 在本 toy 例中，我们有意仅提供“基础拆分骨架”，让 e-graph 日后可在此基础上
+;;   叠加更多等式/规则逐步补全（例如将进位由其它规则补入）。
+
+(rewrite
+  (MulH rd a b)
+  (Seq (Andi (T1) a (ImmVal 4294967295))        ; T1 = alo
+       (Seq (Andi (T2) b (ImmVal 4294967295))    ; T2 = blo
+            (Seq (Shri (T3) a (ImmVal 32))       ; T3 = ahi
+                 (Seq (Shri (T4) b (ImmVal 32))  ; T4 = bhi
+                      (Seq (Mul  (T5) (T1) (T2)) ; T5 = p0 = alo*blo
+                           (Seq (Mul  (T6) (T1) (T4)) ; T6 = p1 = alo*bhi
+                                (Seq (Mul  (T7) (T3) (T2)) ; T7 = p2 = ahi*blo
+                                     (Seq (Add  (T8) (T6) (T7)) ; T8 = s = p1+p2
+                                          (Seq (Andi (T9) (T8) (ImmVal 4294967295)) ; T9 = s_low32
+                                               (Seq (Shri (T10) (T5) (ImmVal 32)) ; T10 = p0_hi32
+                                                    (Seq (Add  (T11) (T10) (T9)) ; T11 = upper32_low = p0_hi32 + s_low32
+                                                         (Seq (Shri (T11) (T11) (ImmVal 32)) ; T11 = carry_high64
+                                                              (Seq (Shri (T12) (T8) (ImmVal 32)) ; T12 = s_hi32
+                                                                   (Seq (Add  (T12) (T12) (T11)) ; T12 = s_hi32 + carry
+                                                                        (Seq (Mul  (T13) (T3) (T4)) ; T13 = p3 = ahi*bhi
+                                                                             (Add  rd  (T13) (T12))))))))))))))))))
+
+;; ========== 示例程序 ==========
+
+;; 程序 1：直接使用 MulH（昂贵）
+(let prog_h (MulH (X1) (X2) (X3)))
+
+;; 程序 2：将 MulH 应用于循环体，展示循环内拆分的收益潜力
+(let prog_loop (Loop 1000 (MulH (X1) (X2) (X3))))
+
+;; 运行若干轮，让规则生效
+(run 10)
+
+;; 展示优化前后（提取表达式与成本）
+(extract "")
+(extract "========== MULH CRACKING (TOY) ==========")
+(extract "")
+(extract "Program H - Before/After:")
+(extract prog_h)
+(extract "Cost:")
+(extract (cost prog_h))
+
+(extract "")
+(extract "Program LOOP - Before/After:")
+(extract prog_loop)
+(extract "Cost:")
+(extract (cost prog_loop))
+
+;; 成本参考（当前设定：MulH=30, Mul=3, Add/Sh*ift/Andi=1）：
+;; 拆分版包含：Andi×3, Shri×5, Mul×4, Add×4，总成本 = 3 + 5 + 12 + 4 = 24 < 30
+;; 因此在无其它约束时将倾向替换为拆分序列；在循环/共享上下文中通常收益更大。
+;; 如果你的硬件权衡不同，可调整各指令 cost 以匹配面积/时序/功耗目标。
+
+
