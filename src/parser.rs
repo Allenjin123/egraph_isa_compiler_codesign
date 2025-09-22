@@ -1,5 +1,6 @@
 use std::fs;
 use std::io::{self, BufRead, BufReader};
+/* crate:: - References the root of the current crate (compilation unit) */
 use crate::types::{Instruction, Section, Program};
 
 pub struct DumpParser;
@@ -13,12 +14,14 @@ impl DumpParser {
 
         for line in reader.lines() {
             let line = line?;
+            // Remove leading and trailing whitespace from the line
             let trimmed = line.trim();
 
             if trimmed.is_empty() {
                 continue;
             }
 
+            // Parse file format line (e.g., "a.out:     file format elf64-littleriscv")
             if let Some(file_format) = Self::parse_file_format(trimmed) {
                 program.file_format = file_format;
                 continue;

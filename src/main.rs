@@ -25,6 +25,7 @@ fn main() -> io::Result<()> {
     Ok(())
 }
 
+/* metadata for compiler: compile only when test */
 #[cfg(test)]
 mod tests {
     use riscv_dump_parser::{Instruction, Program};
