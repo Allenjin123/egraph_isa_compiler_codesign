@@ -1,0 +1,247 @@
+;; ISA Minimization Demo - Cost model favoring fewer instruction types
+;; 目标：展示通过成本模型鼓励使用更少种类的指令，适用于 ISA 设计
+;; 基于 mulh_1.egg，增加了指令类型多样性惩罚
+
+;; 基本寄存器
+(datatype Reg
+    (X1) (X2) (X3) (X4) (X5) (X6)
+    (T1) (T2) (T3) (T4) (T5) (T6) (T7) (T8) (T9) (T10) (T11) (T12) (T13))
+
+(datatype Imm (ImmVal i64))
+
+;; 指令集 - 分层设计，基础指令更便宜
+(with-dynamic-cost
+    (datatype Inst
+        ;; 基础 ALU 指令（ISA 核心，成本最低）
+        (Add Reg Reg Reg)          ; rd = rs1 + rs2
+        (And Reg Reg Reg)          ; rd = rs1 & rs2
+        (Shr Reg Reg Reg)          ; rd = rs1 >> rs2 (逻辑右移)
+        (Shl Reg Reg Reg)          ; rd = rs1 << rs2
+
+        ;; 立即数指令（稍贵，因为需要额外编码空间）
+        (Addi Reg Reg Imm)         ; rd = rs1 + imm
+        (Andi Reg Reg Imm)         ; rd = rs1 & imm
+        (Shri Reg Reg Imm)         ; rd = rs1 >> imm
+        (Shli Reg Reg Imm)         ; rd = rs1 << imm
+
+        ;; 复杂运算指令（昂贵，专用硬件）
+        (Mul Reg Reg Reg)          ; rd = rs1 * rs2
+        (MulH Reg Reg Reg)         ; rd = high64(rs1 * rs2)
+
+        ;; 控制流
+        (Seq Inst Inst)
+        (Loop i64 Inst)))
+
+;; 多层成本模型：
+;; 1. 基础成本 - 每条指令的基本执行成本
+;; 2. 类型惩罚 - 使用不同指令类型的额外成本（模拟 ISA 复杂度）
+;; 3. 序列长度惩罚 - 鼓励紧凑的指令序列
+
+(function base_cost (Inst) i64 :merge (min old new))
+(function type_penalty (Inst) i64 :merge (min old new))
+(function sequence_length (Inst) i64 :merge (min old new))
+(function total_cost (Inst) i64 :merge (min old new))
+
+;; 基础执行成本
+(rule ((= i (Add rd rs1 rs2)))    ((set (base_cost i) 1)))
+(rule ((= i (And rd rs1 rs2)))    ((set (base_cost i) 1)))
+(rule ((= i (Shr rd rs1 rs2)))    ((set (base_cost i) 1)))
+(rule ((= i (Shl rd rs1 rs2)))    ((set (base_cost i) 1)))
+
+(rule ((= i (Addi rd rs imm)))    ((set (base_cost i) 1)))
+(rule ((= i (Andi rd rs imm)))    ((set (base_cost i) 1)))
+(rule ((= i (Shri rd rs imm)))    ((set (base_cost i) 1)))
+(rule ((= i (Shli rd rs imm)))    ((set (base_cost i) 1)))
+
+(rule ((= i (Mul rd rs1 rs2)))    ((set (base_cost i) 30)))
+(rule ((= i (MulH rd rs1 rs2)))   ((set (base_cost i) 3000)))
+
+;; 指令类型多样性惩罚（模拟 ISA 复杂度）
+;; 基础 ALU: 0 惩罚
+(rule ((= i (Add rd rs1 rs2)))    ((set (type_penalty i) 0)))
+(rule ((= i (And rd rs1 rs2)))    ((set (type_penalty i) 0)))
+(rule ((= i (Shr rd rs1 rs2)))    ((set (type_penalty i) 0)))
+(rule ((= i (Shl rd rs1 rs2)))    ((set (type_penalty i) 0)))
+
+;; 立即数指令: 轻微惩罚
+(rule ((= i (Addi rd rs imm)))    ((set (type_penalty i) 1)))
+(rule ((= i (Andi rd rs imm)))    ((set (type_penalty i) 1)))
+(rule ((= i (Shri rd rs imm)))    ((set (type_penalty i) 1)))
+(rule ((= i (Shli rd rs imm)))    ((set (type_penalty i) 1)))
+
+;; 复杂指令: 高惩罚
+(rule ((= i (Mul rd rs1 rs2)))    ((set (type_penalty i) 5)))
+(rule ((= i (MulH rd rs1 rs2)))   ((set (type_penalty i) 10)))
+
+;; 序列长度计算
+(rule ((= i (Add rd rs1 rs2)))    ((set (sequence_length i) 1)))
+(rule ((= i (And rd rs1 rs2)))    ((set (sequence_length i) 1)))
+(rule ((= i (Shr rd rs1 rs2)))    ((set (sequence_length i) 1)))
+(rule ((= i (Shl rd rs1 rs2)))    ((set (sequence_length i) 1)))
+(rule ((= i (Addi rd rs imm)))    ((set (sequence_length i) 1)))
+(rule ((= i (Andi rd rs imm)))    ((set (sequence_length i) 1)))
+(rule ((= i (Shri rd rs imm)))    ((set (sequence_length i) 1)))
+(rule ((= i (Shli rd rs imm)))    ((set (sequence_length i) 1)))
+(rule ((= i (Mul rd rs1 rs2)))    ((set (sequence_length i) 1)))
+(rule ((= i (MulH rd rs1 rs2)))   ((set (sequence_length i) 1)))
+
+;; 序列与循环的长度/成本计算
+(rule ((= s (Seq i1 i2))
+       (= bc1 (base_cost i1))
+       (= bc2 (base_cost i2))
+       (= tp1 (type_penalty i1))
+       (= tp2 (type_penalty i2))
+       (= sl1 (sequence_length i1))
+       (= sl2 (sequence_length i2)))
+      ((set (base_cost s) (+ bc1 bc2))
+       (set (type_penalty s) (+ tp1 tp2))
+       (set (sequence_length s) (+ sl1 sl2))))
+
+(rule ((= l (Loop n body))
+       (= bc (base_cost body))
+       (= tp (type_penalty body))
+       (= sl (sequence_length body)))
+      ((set (base_cost l) (* n bc))
+       (set (type_penalty l) (* n tp))
+       (set (sequence_length l) (* n sl))))
+
+;; 总成本 = 基础成本 + 类型惩罚 + 序列长度惩罚
+(rule ((= i (Add rd rs1 rs2))
+       (= bc (base_cost i))
+       (= tp (type_penalty i))
+       (= sl (sequence_length i)))
+      ((set (total_cost i) (+ bc (+ tp (* sl 0))))))
+
+(rule ((= i (And rd rs1 rs2))
+       (= bc (base_cost i))
+       (= tp (type_penalty i))
+       (= sl (sequence_length i)))
+      ((set (total_cost i) (+ bc (+ tp (* sl 0))))))
+
+(rule ((= i (Shr rd rs1 rs2))
+       (= bc (base_cost i))
+       (= tp (type_penalty i))
+       (= sl (sequence_length i)))
+      ((set (total_cost i) (+ bc (+ tp (* sl 0))))))
+
+(rule ((= i (Shl rd rs1 rs2))
+       (= bc (base_cost i))
+       (= tp (type_penalty i))
+       (= sl (sequence_length i)))
+      ((set (total_cost i) (+ bc (+ tp (* sl 0))))))
+
+(rule ((= i (Addi rd rs imm))
+       (= bc (base_cost i))
+       (= tp (type_penalty i))
+       (= sl (sequence_length i)))
+      ((set (total_cost i) (+ bc (+ tp (* sl 0))))))
+
+(rule ((= i (Andi rd rs imm))
+       (= bc (base_cost i))
+       (= tp (type_penalty i))
+       (= sl (sequence_length i)))
+      ((set (total_cost i) (+ bc (+ tp (* sl 0))))))
+
+(rule ((= i (Shri rd rs imm))
+       (= bc (base_cost i))
+       (= tp (type_penalty i))
+       (= sl (sequence_length i)))
+      ((set (total_cost i) (+ bc (+ tp (* sl 0))))))
+
+(rule ((= i (Shli rd rs imm))
+       (= bc (base_cost i))
+       (= tp (type_penalty i))
+       (= sl (sequence_length i)))
+      ((set (total_cost i) (+ bc (+ tp (* sl 0))))))
+
+(rule ((= i (Mul rd rs1 rs2))
+       (= bc (base_cost i))
+       (= tp (type_penalty i))
+       (= sl (sequence_length i)))
+      ((set (total_cost i) (+ bc (+ tp (* sl 0))))))
+
+(rule ((= i (MulH rd rs1 rs2))
+       (= bc (base_cost i))
+       (= tp (type_penalty i))
+       (= sl (sequence_length i)))
+      ((set (total_cost i) (+ bc (+ tp (* sl 0))))))
+
+(rule ((= s (Seq i1 i2))
+       (= bc (base_cost s))
+       (= tp (type_penalty s))
+       (= sl (sequence_length s)))
+      ((set (total_cost s) (+ bc (+ tp (* sl 1))))))  ; 序列长度有轻微惩罚
+
+(rule ((= l (Loop n body))
+       (= bc (base_cost l))
+       (= tp (type_penalty l))
+       (= sl (sequence_length l)))
+      ((set (total_cost l) (+ bc (+ tp (* sl 1))))))
+
+;; ========== 设置提取成本 ==========
+;; 直接设置成本，避免函数冲突
+(rule ((Add rd rs1 rs2)) ((set-cost (Add rd rs1 rs2) 1)))      ; 基础 ALU: 成本 1
+(rule ((And rd rs1 rs2)) ((set-cost (And rd rs1 rs2) 1)))      ; 基础 ALU: 成本 1
+(rule ((Shr rd rs1 rs2)) ((set-cost (Shr rd rs1 rs2) 1)))      ; 基础 ALU: 成本 1
+(rule ((Shl rd rs1 rs2)) ((set-cost (Shl rd rs1 rs2) 1)))      ; 基础 ALU: 成本 1
+(rule ((Addi rd rs imm)) ((set-cost (Addi rd rs imm) 2)))       ; 立即数指令: 成本 2
+(rule ((Andi rd rs imm)) ((set-cost (Andi rd rs imm) 2)))       ; 立即数指令: 成本 2
+(rule ((Shri rd rs imm)) ((set-cost (Shri rd rs imm) 2)))       ; 立即数指令: 成本 2
+(rule ((Shli rd rs imm)) ((set-cost (Shli rd rs imm) 2)))       ; 立即数指令: 成本 2
+(rule ((Mul rd rs1 rs2)) ((set-cost (Mul rd rs1 rs2) 35)))      ; 乘法: 高成本
+(rule ((MulH rd rs1 rs2)) ((set-cost (MulH rd rs1 rs2) 3010)))  ; MulH: 极高成本
+
+;; ========== 结构规则 ==========
+(birewrite (Seq (Seq a b) c) (Seq a (Seq b c)))
+
+;; ========== MulH 拆分规则 ==========
+;; 将 MulH 拆分为基础 ALU 指令，减少指令类型多样性
+(rewrite
+  (MulH rd a b)
+  (Seq (Andi (T1) a (ImmVal 4294967295))        ; T1 = alo
+       (Seq (Andi (T2) b (ImmVal 4294967295))    ; T2 = blo
+            (Seq (Shri (T3) a (ImmVal 32))       ; T3 = ahi
+                 (Seq (Shri (T4) b (ImmVal 32))  ; T4 = bhi
+                      (Seq (Mul  (T5) (T1) (T2)) ; T5 = p0 = alo*blo
+                           (Seq (Mul  (T6) (T1) (T4)) ; T6 = p1 = alo*bhi
+                                (Seq (Mul  (T7) (T3) (T2)) ; T7 = p2 = ahi*blo
+                                     (Seq (Add  (T8) (T6) (T7)) ; T8 = s = p1+p2
+                                          (Seq (Andi (T9) (T8) (ImmVal 4294967295)) ; T9 = s_low32
+                                               (Seq (Shri (T10) (T5) (ImmVal 32)) ; T10 = p0_hi32
+                                                    (Seq (Add  (T11) (T10) (T9)) ; T11 = upper32_low
+                                                         (Seq (Shri (T11) (T11) (ImmVal 32)) ; T11 = carry
+                                                              (Seq (Shri (T12) (T8) (ImmVal 32)) ; T12 = s_hi32
+                                                                   (Seq (Add  (T12) (T12) (T11)) ; T12 = s_hi32 + carry
+                                                                        (Seq (Mul  (T13) (T3) (T4)) ; T13 = p3 = ahi*bhi
+                                                                             (Add  rd  (T13) (T12))))))))))))))))))
+
+;; 可选：将立即数指令转换为寄存器指令 + 常数加载
+;; (这展示了如何进一步简化 ISA，只保留最基础的指令)
+(rewrite (Andi rd rs (ImmVal imm))
+         (Seq (Addi (T1) (X1) (ImmVal imm))   ; 假设 X1=0，加载常数
+              (And rd rs (T1))))
+
+;; ========== 示例程序 ==========
+
+;; 程序 3：混合指令类型
+(let prog_mixed (Seq (MulH (X1) (X2) (X3))
+                     (Seq (Andi (X4) (X1) (ImmVal 255))
+                          (Shri (X5) (X4) (ImmVal 8)))))
+
+(extract prog_mixed)
+;; 运行优化
+(run 15)
+
+;; 展示结果
+(extract "========== ISA MINIMIZATION DEMO ==========")
+
+(extract "")
+(extract "Mixed Program - Before/After:")
+(extract prog_mixed)
+(extract "Total Cost:")
+(extract (total_cost prog_mixed))
+
+;; 成本分析说明：
+;; - 原始 MulH: base_cost=30, type_penalty=10, total=40
+;; - 拆分版本: 多个基础指令，type_penalty 更低但序列更长
+;; - 这种成本模型鼓励使用更少种类的指令，适合 ISA 设计目标
