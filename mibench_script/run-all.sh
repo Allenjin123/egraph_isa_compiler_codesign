@@ -53,12 +53,19 @@ fi
 # path passed to run scripts in directories
 export MIBENCH_RUN="$CURRDIR/$RUNIT"
 
+# optimization flags and binary suffix (first arg overrides default)
+OPTFLAGS="${1:--O0}"
+# derive a readable suffix from OPTFLAGS, e.g., -O3 -> _O3, "-O2 -fun" -> _O2_fun
+BIN_SUFFIX="_$(echo "$OPTFLAGS" | tr ' ' '_' | tr -d '-')"
+export OPTFLAGS
+export BIN_SUFFIX
+
 for d in ${SRCDIRS}
 do
     echo ${d}
     cd ${d}
     make clean
-    make
+    make OPTFLAGS="$OPTFLAGS" BIN_SUFFIX="$BIN_SUFFIX"
     ./runme_small.sh
     ./runme_large.sh
     cd ${CURRDIR}

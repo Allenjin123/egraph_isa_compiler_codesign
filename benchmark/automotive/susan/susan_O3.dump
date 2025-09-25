@@ -1,5 +1,5 @@
 
-./susan:     file format elf32-littleriscv
+./susan_O3:     file format elf32-littleriscv
 
 
 Disassembly of section .text:

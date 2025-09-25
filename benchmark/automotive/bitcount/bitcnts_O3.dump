@@ -1,5 +1,5 @@
 
-./bitcnts:     file format elf32-littleriscv
+./bitcnts_O3:     file format elf32-littleriscv
 
 
 Disassembly of section .text:
