@@ -1,0 +1,286 @@
+; Simplified RISC-V Assembly SSA Representation
+; For straight-line code without complex control flow
+
+; =================================
+; Basic Types
+; =================================
+
+(datatype RVType
+  (I64)   ; 64-bit integer
+  (I32)   ; 32-bit integer
+  (I8))   ; 8-bit integer (for unsigned char)
+
+; =================================
+; SSA Values
+; =================================
+
+(datatype SSAValue
+  ; SSA variable with unique ID and type
+  (SSAVar i64 RVType)
+  ; Immediate constant
+  (Imm i64))
+
+; =================================
+; RISC-V Operations with Dynamic Cost
+; =================================
+
+(with-dynamic-cost
+  (datatype RVOp
+    ; Arithmetic
+    (ADD) (SUB) (MUL) (DIV) (REM)
+    ; Bitwise
+    (AND) (OR) (XOR) (SLL) (SRL)
+    ; Immediate variants
+    (ADDI) (ANDI) (ORI) (XORI) (SLLI) (SRLI))
+
+  ; =================================
+  ; SSA Instructions with Dynamic Cost
+  ; =================================
+
+  (datatype Instruction
+    ; Binary operation: result = op(src1, src2)
+    (BinOp SSAValue RVOp SSAValue SSAValue)
+    ; Move/copy: result = src
+    (Move SSAValue SSAValue)
+    ; Type conversion: result = convert(src, target_type)
+    (Convert SSAValue SSAValue RVType))
+)
+
+; =================================
+; Helper Constructors
+; =================================
+
+(constructor MakeSSAVar (i64 RVType) SSAValue)
+(constructor MakeImm (i64) SSAValue)
+
+; =================================
+; Example Program: compiledA function
+; unsigned char compiledA(unsigned val) { return ((val/10) << 4) | val % 10; }
+; =================================
+
+(ruleset initialization)
+(rule () (
+    ; Create all SSA values and instructions using flat let statements
+    (let __tmp0 (SSAVar 0 (I32)))  ; input parameter: val
+    (let __tmp1 (Imm 10))        ; constant: 10
+    (let __tmp2 (SSAVar 1 (I32)))  ; result of val / 10
+    (let __tmp3 (BinOp __tmp2 (DIV) __tmp0 __tmp1))  ; %1 = div %0, 10
+
+    (let __tmp4 (Imm 4))         ; constant: 4
+    (let __tmp5 (SSAVar 2 (I32)))  ; result of (%1 << 4)
+    (let __tmp6 (BinOp __tmp5 (SLL) __tmp2 __tmp4))  ; %2 = shl %1, 4
+
+    (let __tmp7 (SSAVar 3 (I32)))  ; result of val % 10
+    (let __tmp8 (BinOp __tmp7 (REM) __tmp0 __tmp1))  ; %3 = rem %0, 10
+
+    (let __tmp9 (SSAVar 4 (I32)))  ; result of %2 | %3
+    (let __tmp10 (BinOp __tmp9 (OR) __tmp5 __tmp7))  ; %4 = or %2, %3
+
+    (let __tmp11 (SSAVar 5 (I8)))  ; final result as 8-bit
+    (let __tmp12 (Convert __tmp11 __tmp9 (I8)))      ; %5 = convert %4 to I8
+
+    ; Mark the final result
+    (let final_output __tmp11)
+
+    ; Program entry point
+    (let program_start __tmp0)
+))
+
+; =================================
+; Alternative: More Complex Example
+; For larger programs, each instruction gets its own tmp variable
+; =================================
+
+(ruleset complex_initialization)
+(rule () (
+    ; SSA Variables
+    (let var0 (SSAVar 0 (I32)))    ; input
+    (let var1 (SSAVar 1 (I32)))    ; div result
+    (let var2 (SSAVar 2 (I32)))    ; shift result
+    (let var3 (SSAVar 3 (I32)))    ; mod result
+    (let var4 (SSAVar 4 (I32)))    ; or result
+    (let var5 (SSAVar 5 (I8)))     ; final result
+
+    ; Constants
+    (let const10 (Imm 10))
+    (let const4 (Imm 4))
+
+    ; Instructions
+    (let inst1 (BinOp var1 (DIV) var0 const10))
+    (let inst2 (BinOp var2 (SLL) var1 const4))
+    (let inst3 (BinOp var3 (REM) var0 const10))
+    (let inst4 (BinOp var4 (OR) var2 var3))
+    (let inst5 (Convert var5 var4 (I8)))
+
+    ; Program structure markers
+    (let input_param var0)
+    (let return_value var5)
+))
+
+; =================================
+; Rewrite Rules for Optimization
+; =================================
+
+(ruleset canon)
+
+; Commutativity rules - operations where order doesn't matter
+(rewrite (BinOp result (ADD) x y) (BinOp result (ADD) y x) :ruleset canon)
+(rewrite (BinOp result (MUL) x y) (BinOp result (MUL) y x) :ruleset canon)
+(rewrite (BinOp result (AND) x y) (BinOp result (AND) y x) :ruleset canon)
+(rewrite (BinOp result (OR) x y) (BinOp result (OR) y x) :ruleset canon)
+(rewrite (BinOp result (XOR) x y) (BinOp result (XOR) y x) :ruleset canon)
+
+; Identity rules - operations with neutral elements
+(rewrite (BinOp result (ADD) x (Imm 0)) (Move result x) :ruleset canon)
+(rewrite (BinOp result (ADD) (Imm 0) x) (Move result x) :ruleset canon)
+(rewrite (BinOp result (MUL) x (Imm 1)) (Move result x) :ruleset canon)
+(rewrite (BinOp result (MUL) (Imm 1) x) (Move result x) :ruleset canon)
+(rewrite (BinOp result (OR) x (Imm 0)) (Move result x) :ruleset canon)
+(rewrite (BinOp result (OR) (Imm 0) x) (Move result x) :ruleset canon)
+(rewrite (BinOp result (AND) x (Imm -1)) (Move result x) :ruleset canon)
+(rewrite (BinOp result (XOR) x (Imm 0)) (Move result x) :ruleset canon)
+
+; Absorption rules
+(rewrite (BinOp result (MUL) x (Imm 0)) (Move result (Imm 0)) :ruleset canon)
+(rewrite (BinOp result (MUL) (Imm 0) x) (Move result (Imm 0)) :ruleset canon)
+(rewrite (BinOp result (AND) x (Imm 0)) (Move result (Imm 0)) :ruleset canon)
+(rewrite (BinOp result (AND) (Imm 0) x) (Move result (Imm 0)) :ruleset canon)
+
+; Shift optimizations
+(rewrite (BinOp result (SLL) x (Imm 0)) (Move result x) :ruleset canon)
+(rewrite (BinOp result (SRL) x (Imm 0)) (Move result x) :ruleset canon)
+
+; Double negation and self operations
+(rewrite (BinOp result (SUB) x x) (Move result (Imm 0)) :ruleset canon)
+(rewrite (BinOp result (XOR) x x) (Move result (Imm 0)) :ruleset canon)
+
+; Strength reduction - replace expensive operations with cheaper ones
+; Multiplication by powers of 2 -> left shift
+(rewrite (BinOp result (MUL) x (Imm 2)) (BinOp result (SLL) x (Imm 1)) :ruleset canon)
+(rewrite (BinOp result (MUL) x (Imm 4)) (BinOp result (SLL) x (Imm 2)) :ruleset canon)
+(rewrite (BinOp result (MUL) x (Imm 8)) (BinOp result (SLL) x (Imm 3)) :ruleset canon)
+(rewrite (BinOp result (MUL) x (Imm 16)) (BinOp result (SLL) x (Imm 4)) :ruleset canon)
+
+; Division by powers of 2 -> right shift (for unsigned)
+(rewrite (BinOp result (DIV) x (Imm 2)) (BinOp result (SRL) x (Imm 1)) :ruleset canon)
+(rewrite (BinOp result (DIV) x (Imm 4)) (BinOp result (SRL) x (Imm 2)) :ruleset canon)
+(rewrite (BinOp result (DIV) x (Imm 8)) (BinOp result (SRL) x (Imm 3)) :ruleset canon)
+(rewrite (BinOp result (DIV) x (Imm 16)) (BinOp result (SRL) x (Imm 4)) :ruleset canon)
+
+(ruleset algebraic)
+
+; Algebraic simplifications
+; x + (-y) -> x - y (if we had negation)
+; (x + a) + b -> x + (a + b) - constant folding
+; This would require constant folding which is more complex
+
+; Distributivity: x * (y + z) -> (x * y) + (x * z)
+; This creates more operations, so usually not beneficial unless other optimizations apply
+
+(ruleset peephole)
+
+; Peephole optimizations specific to our compiledA example
+; Optimize modulo 10 followed by division by 10 of the same value
+; This is a pattern we see in our example function
+
+; Remove redundant moves
+; (rewrite (Move result (Move temp x)) (Move result x) :ruleset peephole)  ; FIXME: Type error
+
+; Chain simplification: if we convert and then convert back
+; (Convert (Convert x type1) type2) where type2 == original type of x
+
+; =================================
+; Cost Model Rules
+; =================================
+
+; Set costs based on typical RISC-V instruction cycle counts
+(rule () ((set-cost (ADD) 1)) :ruleset initialization)     ; Single cycle ALU
+(rule () ((set-cost (SUB) 1)) :ruleset initialization)     ; Single cycle ALU
+(rule () ((set-cost (MUL) 5)) :ruleset initialization)     ; Multi-cycle multiply
+(rule () ((set-cost (DIV) 20)) :ruleset initialization)    ; Very expensive division
+(rule () ((set-cost (REM) 20)) :ruleset initialization)    ; Very expensive remainder
+
+; Bitwise operations - single cycle
+(rule () ((set-cost (AND) 1)) :ruleset initialization)
+(rule () ((set-cost (OR) 1)) :ruleset initialization)
+(rule () ((set-cost (XOR) 1)) :ruleset initialization)
+(rule () ((set-cost (SLL) 1)) :ruleset initialization)
+(rule () ((set-cost (SRL) 1)) :ruleset initialization)
+
+; Immediate variants - same cost as register variants
+(rule () ((set-cost (ADDI) 1)) :ruleset initialization)
+(rule () ((set-cost (ANDI) 1)) :ruleset initialization)
+(rule () ((set-cost (ORI) 1)) :ruleset initialization)
+(rule () ((set-cost (XORI) 1)) :ruleset initialization)
+(rule () ((set-cost (SLLI) 1)) :ruleset initialization)
+(rule () ((set-cost (SRLI) 1)) :ruleset initialization)
+
+; Instruction costs - operations have their base cost plus operand costs
+(rule (
+  (BinOp result op src1 src2)
+) (
+  (set-cost (BinOp result op src1 src2) 1)  ; Base instruction cost
+) :ruleset initialization)
+
+; Move operations are essentially free (register rename)
+(rule (
+  (Move result src)
+) (
+  (set-cost (Move result src) 0)
+) :ruleset initialization)
+
+; Type conversions may require masking or sign extension
+(rule (
+  (Convert result src target_type)
+) (
+  (set-cost (Convert result src target_type) 1)
+) :ruleset initialization)
+
+; =================================
+; Cost Reporting and Testing
+; =================================
+
+(ruleset cost_test)
+(rule () (
+    ; Test our compiledA function cost
+    (let test_input (SSAVar 0 (I32)))
+    (let const10 (Imm 10))
+    (let const4 (Imm 4))
+
+    ; Original sequence: val/10, shift<<4, val%10, or, convert
+    (let div_result (SSAVar 1 (I32)))
+    (let div_inst (BinOp div_result (DIV) test_input const10))
+
+    (let shift_result (SSAVar 2 (I32)))
+    (let shift_inst (BinOp shift_result (SLL) div_result const4))
+
+    (let mod_result (SSAVar 3 (I32)))
+    (let mod_inst (BinOp mod_result (REM) test_input const10))
+
+    (let or_result (SSAVar 4 (I32)))
+    (let or_inst (BinOp or_result (OR) shift_result mod_result))
+
+    (let final_result (SSAVar 5 (I8)))
+    (let convert_inst (Convert final_result or_result (I8)))
+
+    ; Mark this as our program to extract and analyze
+    (let program_result final_result)
+) :ruleset cost_test)
+
+; =================================
+; Run and Test Commands
+; =================================
+
+; Initialize the program and costs
+(run initialization 1)
+(run cost_test 1)
+
+; Apply canonicalization rules to optimize
+(run canon 5)
+
+; Extract the optimized program and show cost
+; The cost should be: DIV(20) + SLL(1) + REM(20) + OR(1) + Convert(1) = 43 base cost
+; Plus instruction overhead: 5 instructions * 1 = 5
+; Total expected cost around 48
+
+(extract (SSAVar 5 (I8)))

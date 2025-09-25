@@ -9,6 +9,7 @@ The example implements a cost model that penalizes instruction type diversity, e
 ## Files
 
 - `isa_minimization.egg` - The main egglog file demonstrating ISA minimization with cost-driven extraction
+- `riscv_ssa.egg` - RISC-V SSA form optimization example with instruction cost modeling and canonicalization
 
 ## Key Concepts
 
@@ -22,16 +23,18 @@ The example implements a cost model that penalizes instruction type diversity, e
 - **Immediate Instructions** (Addi, Andi, Shri, Shli): Cost 1, Type penalty 1
 - **Complex Instructions** (Mul: Cost 30+5, MulH: Cost 3000+10)
 
-## Running the Example
+## Running the Examples
 
-### Option 1: Standard egglog (Limited Cost Support)
+### ISA Minimization Example
+
+#### Option 1: Standard egglog (Limited Cost Support)
 ```bash
 egglog toy_examples/isa_minimization.egg
 ```
 
 **Limitations**: Standard egglog only supports constructor-based costs (`:cost` annotations in datatypes). The advanced `set-cost` and `with-dynamic-cost` features are not available.
 
-### Option 2: egglog-experimental (Full Cost Support)
+#### Option 2: egglog-experimental (Full Cost Support)
 ```bash
 # Install egglog-experimental first
 cargo install --git https://github.com/egraphs-good/egglog-experimental.git
@@ -42,7 +45,17 @@ egglog-experimental toy_examples/isa_minimization.egg
 
 **Advantages**: Supports `with-dynamic-cost` and `set-cost` for fine-grained, dynamic cost control.
 
+### RISC-V SSA Example
+
+```bash
+egglog-experimental toy_examples/riscv_ssa.egg
+```
+
+This example requires egglog-experimental as it uses advanced cost modeling features and complex type constructors.
+
 ## Expected Output
+
+### ISA Minimization Example
 
 The program starts with:
 ```
@@ -55,6 +68,20 @@ Seq(Andi(T1, X2, 4294967295), Seq(Andi(T2, X3, 4294967295), ...))
 ```
 
 This demonstrates successful ISA minimization - the expensive `MulH` instruction is replaced with a sequence of cheaper, more basic instructions.
+
+### RISC-V SSA Example
+
+The RISC-V SSA example models a program that:
+1. Takes an input value (val)
+2. Computes `(val / 10) << 4`
+3. Computes `val % 10`
+4. Combines results with OR operation
+5. Converts final result to 8-bit
+
+The optimization pipeline shows:
+- **Cost model**: Different instruction costs (DIV: 20, SLL: 1, REM: 20, OR: 1, Convert: 1)
+- **Canonicalization**: Commutativity rules (OR operations are reordered)
+- **Final extraction**: `(SSAVar 5 (I8))` with cost 3, representing the optimized program result
 
 ## Key Lessons Learned
 
@@ -109,3 +136,52 @@ The example demonstrates several advanced egglog techniques:
 - Integration between analysis (cost calculation) and synthesis (extraction)
 
 This serves as a template for implementing cost-driven optimizations in domain-specific compilers and code generators.
+
+## Troubleshooting
+
+### Common egglog-experimental Syntax Errors
+
+If you encounter parse errors when running the examples, check for these common issues:
+
+#### 1. Constructor Call Syntax
+**Error**: `Unbound symbol I32`
+**Problem**: Type constructors used as bare identifiers
+**Solution**: Wrap constructors in parentheses
+```egglog
+# Wrong
+(SSAVar 0 I32)
+
+# Correct
+(SSAVar 0 (I32))
+```
+
+#### 2. Operation Constructor Syntax
+**Error**: `Unbound symbol DIV`
+**Problem**: Operation constructors used as bare identifiers
+**Solution**: Wrap operation constructors in parentheses
+```egglog
+# Wrong
+(BinOp result DIV x y)
+
+# Correct
+(BinOp result (DIV) x y)
+```
+
+#### 3. Extraction Target Issues
+**Error**: `Unbound symbol program_result`
+**Problem**: Trying to extract variables that only exist locally in rule bodies
+**Solution**: Extract concrete constructors or globally defined values
+```egglog
+# Wrong (if program_result is only defined locally)
+(extract program_result)
+
+# Correct
+(extract (SSAVar 5 (I8)))
+```
+
+#### 4. Type Mismatches in Rewrite Rules
+**Error**: `Expect expression to have type SSAValue, but get type Instruction`
+**Problem**: Mixing instruction types and value types in patterns
+**Solution**: Ensure pattern matching respects the type system defined in your constructors
+
+These fixes were applied to `riscv_ssa.egg` to make it compatible with egglog-experimental's stricter parsing and type checking.
