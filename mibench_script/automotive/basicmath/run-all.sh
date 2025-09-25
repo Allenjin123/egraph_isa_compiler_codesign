@@ -22,8 +22,8 @@
 
 # Build the programs
 make clean
-make
+make OPTFLAGS="${OPTFLAGS}" BIN_SUFFIX="${BIN_SUFFIX}"
 
 # Run the programs
-${MIBENCH_RUN} ./basicmath_small
-${MIBENCH_RUN} ./basicmath_large
+${MIBENCH_RUN} ./basicmath_small${BIN_SUFFIX}
+${MIBENCH_RUN} ./basicmath_large${BIN_SUFFIX}

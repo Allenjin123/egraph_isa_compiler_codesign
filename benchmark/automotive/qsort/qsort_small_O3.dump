@@ -1,5 +1,5 @@
 
-./qsort_small:     file format elf32-littleriscv
+./qsort_small_O3:     file format elf32-littleriscv
 
 
 Disassembly of section .text:

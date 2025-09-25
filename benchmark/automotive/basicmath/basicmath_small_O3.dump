@@ -1,5 +1,5 @@
 
-./basicmath_small:     file format elf32-littleriscv
+./basicmath_small_O3:     file format elf32-littleriscv
 
 
 Disassembly of section .text:
