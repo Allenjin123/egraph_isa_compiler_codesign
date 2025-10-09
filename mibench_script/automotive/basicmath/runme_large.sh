@@ -6,7 +6,7 @@ mkdir -p "$BENCH_DIR"
 if [ -f ./basicmath_large$BIN_SUFFIX ]; then
 cp -f ./basicmath_large$BIN_SUFFIX "$BENCH_DIR/"
 if [ -x "$RISCV/bin/riscv32-unknown-elf-objdump" ]; then
-"$RISCV/bin/riscv32-unknown-elf-objdump" -d ./basicmath_large$BIN_SUFFIX > "$BENCH_DIR/basicmath_large$BIN_SUFFIX.dump"
+"$RISCV/bin/riscv32-unknown-elf-objdump" -d -M no-aliases ./basicmath_large$BIN_SUFFIX > "$BENCH_DIR/basicmath_large$BIN_SUFFIX.dump"
 fi
 fi
 $MIBENCH_RUN ./basicmath_large$BIN_SUFFIX > output_large.txt

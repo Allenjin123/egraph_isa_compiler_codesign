@@ -6,7 +6,7 @@ mkdir -p "$BENCH_DIR"
 if [ -f ./qsort_small$BIN_SUFFIX ]; then
 cp -f ./qsort_small$BIN_SUFFIX "$BENCH_DIR/"
 if [ -x "$RISCV/bin/riscv32-unknown-elf-objdump" ]; then
-"$RISCV/bin/riscv32-unknown-elf-objdump" -d ./qsort_small$BIN_SUFFIX > "$BENCH_DIR/qsort_small$BIN_SUFFIX.dump"
+"$RISCV/bin/riscv32-unknown-elf-objdump" -d -M no-aliases ./qsort_small$BIN_SUFFIX > "$BENCH_DIR/qsort_small$BIN_SUFFIX.dump"
 fi
 fi
 $MIBENCH_RUN ./qsort_small$BIN_SUFFIX input_small.dat > output_small.txt
