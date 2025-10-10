@@ -1,0 +1,156 @@
+;; Define all registers used
+(datatype Reg 
+  (x0)      ; zero register
+  (a4_1)
+  (a5_2) 
+  (a5_3)
+  (s3_0) 
+  (s3_1)
+  (t0)      ; temporary for transformations
+  (t1))
+
+;; Immediate values
+(datatype Imm (ImmVal i64))
+
+;; Instructions as DAG nodes - each produces a value
+(datatype Inst
+    ;; Arithmetic
+    (Add  Inst Inst)          ; rd = rs1 + rs2
+    (AddI Inst Imm)           ; rd = rs1 + imm
+    (Sub  Inst Inst)          ; rd = rs1 - rs2
+    (SubI Inst Imm)           ; rd = rs1 - imm
+    (Mul  Inst Inst)          ; rd = rs1 * rs2
+    (MulH Inst Inst)          ; rd = high64(rs1 * rs2)
+    (Divu Inst Inst)          ; rd = rs1 / rs2 (unsigned division)
+    (Remu Inst Inst)          ; rd = rs1 % rs2 (unsigned remainder)
+    
+    ;; Logical operations
+    (And  Inst Inst)          ; rd = rs1 & rs2
+    (AndI Inst Imm)           ; rd = rs1 & imm
+    (Or   Inst Inst)          ; rd = rs1 | rs2
+    (OrI  Inst Imm)           ; rd = rs1 | imm
+    (Xor  Inst Inst)          ; rd = rs1 ^ rs2
+    (XorI Inst Imm)           ; rd = rs1 ^ imm
+    
+    ;; Shift operations
+    (Srl  Inst Inst)          ; rd = rs1 >> rs2 (logical shift right by register)
+    (SrlI Inst Imm)           ; rd = rs1 >> imm (logical shift right by immediate)
+    (Sll  Inst Inst)          ; rd = rs1 << rs2 (shift left by register)
+    (SllI Inst Imm)           ; rd = rs1 << imm (shift left by immediate)
+    (Sra  Inst Inst)          ; rd = rs1 >>> rs2 (arithmetic shift right)
+    (SraI Inst Imm)           ; rd = rs1 >>> imm
+    
+    ;; Memory operations
+    (Lbu  Inst Imm)           ; rd = load byte unsigned from (rs1 + imm)
+    (Lw   Inst Imm)           ; rd = load word from (rs1 + imm)
+    (Sb   Inst Inst Imm)      ; store byte rs2 to (rs1 + imm)
+    
+    ;; Register/Immediate values
+    (RegVal Reg)              ; Value from register
+    (LoadImm Imm))            ; Load immediate value
+
+;; ============================================
+;; Define the instruction sequence as a DAG:
+;; li a4_1,32
+;; add a5_3,a5_2,s3_0
+;; sub s3_1,a4_1,a5_3
+;; ============================================
+
+;; Step 1: li a4_1, 32
+(let a4_1_val (LoadImm (ImmVal 32)))
+
+;; Step 2: add a5_3, a5_2, s3_0
+(let a5_3_val (Add (RegVal (a5_2)) (RegVal (s3_0))))
+
+;; Step 3: sub s3_1, a4_1, a5_3
+(let s3_1_val (Sub a4_1_val a5_3_val))
+
+;; Mark the final value as a root (to ensure it's computed)
+(relation root (Inst))
+(root s3_1_val)
+
+;; ============================================
+;; OPTIMIZATION RULES
+;; ============================================
+
+;; Constant folding
+(rewrite (Add (LoadImm (ImmVal a)) (LoadImm (ImmVal b))) 
+         (LoadImm (ImmVal (+ a b))))
+(rewrite (Sub (LoadImm (ImmVal a)) (LoadImm (ImmVal b))) 
+         (LoadImm (ImmVal (- a b))))
+(rewrite (Mul (LoadImm (ImmVal a)) (LoadImm (ImmVal b))) 
+         (LoadImm (ImmVal (* a b))))
+(rewrite (Srl (LoadImm (ImmVal a)) (LoadImm (ImmVal b))) 
+         (LoadImm (ImmVal (>> a b))))
+(rewrite (Sll (LoadImm (ImmVal a)) (LoadImm (ImmVal b))) 
+         (LoadImm (ImmVal (<< a b))))
+(rewrite (XorI (LoadImm (ImmVal a)) (ImmVal b))
+         (LoadImm (ImmVal (^ a b))))
+
+;; Identity operations
+(rewrite (Add v (LoadImm (ImmVal 0))) v)
+(rewrite (Add (LoadImm (ImmVal 0)) v) v)
+(rewrite (Sub v (LoadImm (ImmVal 0))) v)
+(rewrite (Mul v (LoadImm (ImmVal 1))) v)
+(rewrite (Mul (LoadImm (ImmVal 1)) v) v)
+(rewrite (Divu v (LoadImm (ImmVal 1))) v)
+(rewrite (Srl v (LoadImm (ImmVal 0))) v)
+(rewrite (Sll v (LoadImm (ImmVal 0))) v)
+
+;; Zero operations
+(rewrite (Mul v (LoadImm (ImmVal 0))) (LoadImm (ImmVal 0)))
+(rewrite (Mul (LoadImm (ImmVal 0)) v) (LoadImm (ImmVal 0)))
+(rewrite (And v (LoadImm (ImmVal 0))) (LoadImm (ImmVal 0)))
+(rewrite (And (LoadImm (ImmVal 0)) v) (LoadImm (ImmVal 0)))
+
+;; Algebraic simplifications
+(rewrite (Add v1 v2) (Add v2 v1))              ; Commutativity of addition
+(rewrite (Mul v1 v2) (Mul v2 v1))              ; Commutativity of multiplication
+(rewrite (Sub v (RegVal (x0))) v)              ; v - 0 = v
+(rewrite (Sub v v) (LoadImm (ImmVal 0)))       ; v - v = 0
+(rewrite (Xor v v) (LoadImm (ImmVal 0)))       ; v ^ v = 0
+
+;; ============================================
+;; SUBTRACTION REWRITE RULE
+;; sub xD, x1, x2 -> xori t0,x2,-1; addi t0,t0,1; add xD,x1,t0
+;; This implements: x1 - x2 = x1 + (~x2 + 1) [two's complement]
+;; ============================================
+(rewrite (Sub x1 x2)
+         (Add x1 (AddI (XorI x2 (ImmVal -1)) (ImmVal 1))))
+
+;; Alternative bidirectional rule (for exploring both forms)
+(birewrite (Sub x1 x2)
+           (Add x1 (AddI (XorI x2 (ImmVal -1)) (ImmVal 1))))
+
+;; ============================================
+;; Additional useful rules
+;; ============================================
+
+;; Add using two Subs (from previous example)
+(rewrite (Add a b) 
+         (Sub a (Sub (LoadImm (ImmVal 0)) b)))
+
+;; Srl emulation using division
+(rewrite (Srl x1 x3)
+         (Divu x1 (Sll (LoadImm (ImmVal 1)) x3)))
+
+;; Division by power of 2 can become shift
+(rewrite (Divu x (LoadImm (ImmVal 2))) (SrlI x (ImmVal 1)))
+(rewrite (Divu x (LoadImm (ImmVal 4))) (SrlI x (ImmVal 2)))
+(rewrite (Divu x (LoadImm (ImmVal 8))) (SrlI x (ImmVal 3)))
+(rewrite (Divu x (LoadImm (ImmVal 16))) (SrlI x (ImmVal 4)))
+(rewrite (Divu x (LoadImm (ImmVal 32))) (SrlI x (ImmVal 5)))
+
+;; Multiplication by power of 2 can become shift
+(rewrite (Mul v (LoadImm (ImmVal 2))) (SllI v (ImmVal 1)))
+(rewrite (Mul v (LoadImm (ImmVal 4))) (SllI v (ImmVal 2)))
+(rewrite (Mul v (LoadImm (ImmVal 8))) (SllI v (ImmVal 3)))
+(rewrite (Mul v (LoadImm (ImmVal 16))) (SllI v (ImmVal 4)))
+(rewrite (Mul v (LoadImm (ImmVal 32))) (SllI v (ImmVal 5)))
+
+;; Associativity rules
+(rewrite (Add (Add a b) c) (Add a (Add b c)))
+(rewrite (Mul (Mul a b) c) (Mul a (Mul b c)))
+
+;; Run optimization
+(run 20)
