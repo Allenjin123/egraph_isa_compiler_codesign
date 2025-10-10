@@ -28,13 +28,13 @@ class ENode:
 
 class EClass:
 
-    def __init__(self, class_id, member_enodes):
+    def __init__(self, class_id):
         self.class_id = class_id
-        self.member_enodes = list(member_enodes)
-        self.parent_enodes = list()
+        self.member_enodes = set()
+        self.parent_enodes = set()
 
     def add_parent_enode(self, parent_node):
-        self.parent_enodes.append(parent_node)
+        self.parent_enodes.add(parent_node)
 
     def __repr__(self) -> str:
         return (f'EClass(id={self.class_id}, members={self.member_enodes}, '
@@ -73,7 +73,6 @@ class EGraph:
             self.from_json_file(input_file)
         else:
             raise NotImplementedError
-        # self.export_egraph(input_file)  # for debug preprocess
 
     def __repr__(self) -> str:
         return f'EGraph: EClass {self.eclasses} ENode {self.enodes} Ops {self.ops}'
@@ -99,8 +98,8 @@ class EGraph:
 
             # ensure class exists and add member
             if ec not in self.eclasses:
-                self.eclasses[ec] = EClass(ec, [])
-            self.eclasses[ec].member_enodes.append(node_id)
+                self.eclasses[ec] = EClass(ec)
+            self.eclasses[ec].member_enodes.add(node_id)
 
             op = node.get('op', "N/A")
             cost = node.get('cost', 1)
@@ -114,7 +113,7 @@ class EGraph:
                     continue
                 child_eclasses.append(child_ec)
                 if child_ec not in self.eclasses:
-                    self.eclasses[child_ec] = EClass(child_ec, [])
+                    self.eclasses[child_ec] = EClass(child_ec)
                 self.eclasses[child_ec].add_parent_enode(node_id)
                 
             # create enode
@@ -127,20 +126,21 @@ class EGraph:
             )
 
             # op stats
-            if op not in self.ops:
-                self.ops[op] = Op(op)
-            self.ops[op].add_instance(ec, node_id, cost)
-            self.op_cost[op] += cost
+            if child_eclasses:
+                if op not in self.ops:
+                    self.ops[op] = Op(op)
+                self.ops[op].add_instance(ec, node_id, cost)
+                self.op_cost[op] += cost
 
         # Roots (optional)
-        self.root_eclasses = input_dict.get('root_eclasses', [])
+        # self.root_eclasses = input_dict.get('root_eclasses', [])
         self.add_pseudo_root()
         return self
 
     def add_pseudo_root(self):
         root_node_name = self.file_name + '_pseudo_node'
         root_class_name = self.file_name + '_pseudo_class'
-        pseudo_root_class = EClass(root_class_name, [])
+        pseudo_root_class = EClass(root_class_name)
         pseudo_root_node = ENode(
             eclass_id=root_class_name,
             enode_id=root_node_name,
@@ -148,7 +148,7 @@ class EGraph:
             children=[],
             cost=0,
         )
-        pseudo_root_class.member_enodes.append(root_node_name)
+        pseudo_root_class.member_enodes.add(root_node_name)
 
         for ec in self.eclasses.values():
             if not ec.parent_enodes:
@@ -157,6 +157,9 @@ class EGraph:
                 print(f'Added pseudo root link: {root_node_name} -> {ec.class_id}')
         self.enodes[root_node_name] = pseudo_root_node
         self.eclasses[root_class_name] = pseudo_root_class
+        if "pseudo_root" not in self.ops:
+            self.ops["pseudo_root"] = Op("pseudo_root")
+        self.ops["pseudo_root"].add_instance(root_class_name, root_node_name, 0)
 
     def merge_egraph(self, others):
         pass

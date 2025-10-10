@@ -10,7 +10,7 @@ DATA_DIR = Path(__file__).resolve().parents[1] / 'data'
 
 
 def test_load_single_file():
-    path = DATA_DIR / 'cyk.json'
+    path = DATA_DIR / 'saturation_5.json'
     assert path.exists(), f"Test data not found: {path}"
 
     g = EGraph(str(path))
@@ -18,7 +18,7 @@ def test_load_single_file():
     # basic shape
     assert isinstance(g.eclasses, dict) and isinstance(g.enodes, dict)
     assert len(g.enodes) > 0, "No enodes loaded"
-    assert all(isinstance(v.member_enodes, list) for v in g.eclasses.values())
+    assert all(isinstance(v.member_enodes, set) for v in g.eclasses.values())
 
     # cross-consistency: every enode's eclass must exist and include it
     for nid, node in g.enodes.items():
@@ -33,10 +33,12 @@ def test_load_single_file():
 
     # ops aggregated
     assert len(g.ops) > 0
+    # print all ops (name -> count) in one line for quick inspection
+    print('OPS:', {name: op.count for name, op in g.ops.items()})
 
 
 def test_parent_links():
-    path = DATA_DIR / 'cyk.json'
+    path = DATA_DIR / 'saturation.json'
     assert path.exists()
 
     g = EGraph(str(path))
