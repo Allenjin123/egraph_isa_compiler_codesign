@@ -10,12 +10,17 @@ from collections import defaultdict
 This module removes GPU/MLP dependencies and keeps only the parsing logic
 to construct ENode/EClass objects and basic cross-references.
 """
+def get_files(datadir):
+    return [os.path.join(datadir, f) for f in os.listdir(datadir) if f.endswith('.json')]
+    
+def get_file_name(path):
+    return os.path.basename(path)
 
 def merge_json(json_files):
     merged = {"nodes": {}}
     subroots = []
     for file in json_files:
-        prefix = os.path.splitext(os.path.basename(file))[0]
+        prefix = os.path.splitext(get_file_name(file))[0]
         with open(file, 'r') as f:
             nodes = json.load(f).get("nodes", {})
         for nid, node in nodes.items():
@@ -90,7 +95,7 @@ class EGraph:
         self.eclasses = {}
         self.enodes = {}
         self.ops = {}
-        self.root_classes = set()
+        self.root_ec_en = {}
         self.from_json_file(merge_json(input_files))
 
     def __repr__(self) -> str:
@@ -121,7 +126,7 @@ class EGraph:
             op = node.get('op', "N/A")
             cost = node.get('cost', 1)
             if op.endswith("_root"):
-                self.root_classes.add(ec)
+                self.root_ec_en[ec] = node_id
             # map children (node ids) -> child eclass ids
             child_eclasses = []
             if node.get('children'):
