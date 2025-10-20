@@ -924,6 +924,15 @@
       "eclass": "Unit-0",
       "cost": 1.0,
       "subsumed": false
+    },
+    "function-0-root": {
+      "op": "root",
+      "children": [
+        "function-6-Sub"
+      ],
+      "eclass": "Unit-0",
+      "cost": 1.0,
+      "subsumed": false
     }
   },
   "root_eclasses": [],
