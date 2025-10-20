@@ -10,10 +10,10 @@ DATA_DIR = Path(__file__).resolve().parents[1] / 'data'
 
 
 def test_load_single_file():
-    path = DATA_DIR / 'saturation_5.json'
-    assert path.exists(), f"Test data not found: {path}"
+    # path = DATA_DIR / '5.json'
+    # assert path.exists(), f"Test data not found: {path}"
 
-    g = EGraph(str(path))
+    g = EGraph(["5.json", "4.json"])  # relative to src/
 
     # basic shape
     assert isinstance(g.eclasses, dict) and isinstance(g.enodes, dict)
@@ -38,10 +38,10 @@ def test_load_single_file():
 
 
 def test_parent_links():
-    path = DATA_DIR / 'saturation.json'
-    assert path.exists()
+    # path = DATA_DIR / 'saturation_5.json'
+    # assert path.exists(), f"Test data not found: {path}"
 
-    g = EGraph(str(path))
+    g = EGraph(["5.json", "4.json"])  # relative to src/
 
     # any class that appears as a child should have at least one parent link
     child_classes = set()
@@ -50,9 +50,30 @@ def test_parent_links():
     for cid in child_classes:
         assert len(g.eclasses[cid].parent_enodes) >= 1
 
+    # stronger check: each parent's id should match the enode that lists it as child
+    for nid, node in g.enodes.items():
+        for cid in node.children:
+            assert nid in g.eclasses[cid].parent_enodes, (
+                f"EClass {cid} should list {nid} as a parent")
+
+
+def test_merge_multiple_files():
+    # Use small synthetic graphs in src folder
+    base = pathlib.Path(__file__).resolve().parents[1]
+    f4 = '4.json'
+    f5 = '5.json'
+    g = EGraph([str(f4), str(f5)])
+    # Multiple prefixed roots should be present via the added global root
+    assert len(g.enodes) > 0
+    # All child eclasses of any enode exist
+    for nid, node in g.enodes.items():
+        for cid in node.children:
+            assert cid in g.eclasses
+
 
 if __name__ == '__main__':
     # rudimentary runner
     test_load_single_file()
-    ##test_parent_links()
+    test_parent_links()
+    test_merge_multiple_files()
     print('All tests passed')

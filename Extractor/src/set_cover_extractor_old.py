@@ -1,10 +1,6 @@
 from collections import defaultdict
-from egraph import EGraph 
+from egraph import EGraph # 假设您之前的代码在 egraph.py
 import json
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-DATA_DIR = Path(__file__).resolve().parents[1] / 'data'
 
 class SinglePassSetCoverExtractor:
     """
@@ -43,24 +39,14 @@ class SinglePassSetCoverExtractor:
         print("--- Running Single-Pass Set Cover Extraction ---")
 
         # 1. Pre-calculation: Map operators to the e-classes they can cover.
-        # clean root classes
-        for root_eclass, val in self.egraph.root_ec_en.items():
-            if root_eclass in self.uncovered_eclasses:
-                if isinstance(val, (list, set, tuple)):
-                    root_enode = min(val, key=lambda nid: self.egraph.enodes[nid].cost)
-                else:
-                    root_enode = val
-                self.subgraph[root_eclass] = root_enode
-                self.uncovered_eclasses.remove(root_eclass)
-
-        # clean leaf classes
-        for leaf_eclass, val in self.egraph.ops["leaf"].ec_en.items():
+        # We don't need to cover the pseudo-class
+        pseudo_class_name = self.egraph.file_name + '_pseudo_class'
+        if pseudo_class_name in self.uncovered_eclasses:
+            self.subgraph[pseudo_class_name] = self.egraph.eclasses[pseudo_class_name].member_enodes.pop()
+            self.uncovered_eclasses.remove(pseudo_class_name)
+        for leaf_eclass in self.egraph.ops["leaf"].eclass_ids:
             if leaf_eclass in self.uncovered_eclasses:
-                if isinstance(val, (list, set, tuple)):
-                    leaf_enode = min(val, key=lambda nid: self.egraph.enodes[nid].cost)
-                else:
-                    leaf_enode = val
-                self.subgraph[leaf_eclass] = leaf_enode
+                self.subgraph[leaf_eclass] = self.egraph.eclasses[leaf_eclass].member_enodes.pop() 
                 self.uncovered_eclasses.remove(leaf_eclass)
 
         # 2. Greedy Loop
@@ -247,21 +233,21 @@ class SinglePassSetCoverExtractor:
 
         
 if __name__ == '__main__':
-    print("DATA_DIR:", DATA_DIR)
-    # json_filename = "saturation_5.json"
-        
-    # egraph = EGraph(input_file=json_filename)
-    # extractor = SinglePassSetCoverExtractor(egraph)
-
-    # # Run the single-pass extraction to get the subgraph
-    # subgraph = extractor.extract()
     
-    # print("\n" + "="*50)
-    # print("Generated Subgraph (EClass ID -> Chosen ENode ID):")
-    # # Pretty print the dictionary
-    # for ec_id, en_id in sorted(subgraph.items()):
-    #     enode = egraph.enodes[en_id]
-    #     print(f"  '{ec_id}': '{en_id}' --> (op: {enode.op}, cost: {enode.cost})")
-    # print("="*50)
+    json_filename = "saturation_5.json"
+        
+    egraph = EGraph(input_file=json_filename)
+    extractor = SinglePassSetCoverExtractor(egraph)
+
+    # Run the single-pass extraction to get the subgraph
+    subgraph = extractor.extract()
+    
+    print("\n" + "="*50)
+    print("Generated Subgraph (EClass ID -> Chosen ENode ID):")
+    # Pretty print the dictionary
+    for ec_id, en_id in sorted(subgraph.items()):
+        enode = egraph.enodes[en_id]
+        print(f"  '{ec_id}': '{en_id}' --> (op: {enode.op}, cost: {enode.cost})")
+    print("="*50)
 
     

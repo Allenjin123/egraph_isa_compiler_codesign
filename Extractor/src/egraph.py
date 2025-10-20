@@ -10,7 +10,41 @@ from collections import defaultdict
 This module removes GPU/MLP dependencies and keeps only the parsing logic
 to construct ENode/EClass objects and basic cross-references.
 """
+def get_files(datadir):
+    return [os.path.join(datadir, f) for f in os.listdir(datadir) if f.endswith('.json')]
+    
+def get_file_name(path):
+    return os.path.basename(path)
 
+def merge_json(json_files):
+    merged = {"nodes": {}}
+    subroots = []
+    for file in json_files:
+        prefix = os.path.splitext(get_file_name(file))[0]
+        with open(file, 'r') as f:
+            nodes = json.load(f).get("nodes", {})
+        for nid, node in nodes.items():
+            new_id = f"{prefix}_{nid}"
+            new_node = dict(node)
+            # prefix eclass
+            if "eclass" in new_node and new_node["eclass"] is not None:
+                new_node["eclass"] = f"{prefix}_{new_node['eclass']}"
+            # prefix children (enode ids)
+            if "children" in new_node and new_node["children"]:
+                new_node["children"] = [f"{prefix}_{c}" for c in new_node["children"]]
+            # rename root op
+            if new_node.get("op") == "root":
+                new_node["op"] = f"{prefix}_root"
+                subroots.append(new_id)
+            merged["nodes"][new_id] = new_node
+    merged["nodes"]["root_enode"] = {
+        "op": "root",
+        "children": subroots,
+        "eclass": "root_eclass",
+        "cost": 0,
+        "subsumed": False
+    }
+    return merged
 
 class ENode:
 
@@ -30,11 +64,9 @@ class EClass:
 
     def __init__(self, class_id):
         self.class_id = class_id
+        self.locked = False
         self.member_enodes = set()
         self.parent_enodes = set()
-
-    def add_parent_enode(self, parent_node):
-        self.parent_enodes.add(parent_node)
 
     def __repr__(self) -> str:
         return (f'EClass(id={self.class_id}, members={self.member_enodes}, '
@@ -44,45 +76,36 @@ class Op:
     def __init__(self, name):
         self.name = name
         self.count = 0
-        self.eclass_ids = set()
-        self.enode_ids = set()
+        self.ec_en = defaultdict(set)  # eclass_id -> set of enode_ids
         self.total_cost = 0
 
     def add_instance(self, eclass_id, enode_id, cost):
         self.count += 1
-        self.eclass_ids.add(eclass_id)
-        self.enode_ids.add(enode_id)
+        self.ec_en[eclass_id].add(enode_id)
         self.total_cost += cost
 
     def __repr__(self) -> str:
         return (f'Op(name={self.name}, count={self.count}, '
-                f'eclasses={self.eclass_ids}, enodes={self.enode_ids}, '
-                f'total_cost={self.total_cost})')
-    
+                f'ec_en={self.ec_en}, total_cost={self.total_cost})')
+
 
 class EGraph:
 
-    def __init__(self,
-                 input_file):
+    def __init__(self, input_files):
         self.eclasses = {}
         self.enodes = {}
         self.ops = {}
-        self.op_cost = defaultdict(int)
-        self.file_name = input_file.rstrip('.json')
-        if input_file.endswith('.json'):
-            self.from_json_file(input_file)
-        else:
-            raise NotImplementedError
+        self.root_ec_en = {}
+        self.from_json_file(merge_json(input_files))
 
     def __repr__(self) -> str:
         return f'EGraph: EClass {self.eclasses} ENode {self.enodes} Ops {self.ops}'
     
 
-    def from_json_file(self, json_file):
-        with open(json_file, 'r') as f:
-            input_dict = json.load(f)
+    def from_json_file(self, input_dict):
         node_objs = input_dict.get('nodes', {})
-
+        leaf_op = Op("leaf")
+        
         # Pass 1: node -> eclass mapping
         node_to_eclass = {}
         for nid, n in node_objs.items():
@@ -95,7 +118,6 @@ class EGraph:
             if ec is None:
                 logging.warning(f'Node {node_id} missing eclass; skipping')
                 continue
-
             # ensure class exists and add member
             if ec not in self.eclasses:
                 self.eclasses[ec] = EClass(ec)
@@ -103,19 +125,22 @@ class EGraph:
 
             op = node.get('op', "N/A")
             cost = node.get('cost', 1)
-
+            if op.endswith("_root"):
+                self.root_ec_en[ec] = node_id
             # map children (node ids) -> child eclass ids
             child_eclasses = []
-            for child_id in node.get('children', []):
-                child_ec = node_to_eclass.get(child_id)
-                if child_ec is None:
-                    logging.warning(f'Child {child_id} referenced by {node_id} not found; skipping')
-                    continue
-                child_eclasses.append(child_ec)
-                if child_ec not in self.eclasses:
-                    self.eclasses[child_ec] = EClass(child_ec)
-                self.eclasses[child_ec].add_parent_enode(node_id)
-                
+            if node.get('children'):
+                for child_id in node.get('children', []):
+                    child_ec = node_to_eclass.get(child_id)
+                    if child_ec is None:
+                        logging.warning(f'Child {child_id} referenced by {node_id} not found; skipping')
+                        continue
+                    child_eclasses.append(child_ec)
+                    if child_ec not in self.eclasses:
+                        self.eclasses[child_ec] = EClass(child_ec)
+                    self.eclasses[child_ec].parent_enodes.add(node_id)
+            else: # leaf node
+                leaf_op.add_instance(ec, node_id, cost)
             # create enode
             self.enodes[node_id] = ENode(
                 eclass_id=ec,
@@ -124,43 +149,54 @@ class EGraph:
                 children=child_eclasses,
                 cost=cost,
             )
-
+            def check_circular(ec, child_eclasses):
+                return ec in child_eclasses
             # op stats
-            if child_eclasses:
+            if child_eclasses and not check_circular(ec, child_eclasses):
                 if op not in self.ops:
                     self.ops[op] = Op(op)
                 self.ops[op].add_instance(ec, node_id, cost)
-                self.op_cost[op] += cost
-
-        # Roots (optional)
-        # self.root_eclasses = input_dict.get('root_eclasses', [])
+                # Op.total_cost already tracks cumulative cost; no separate op_cost map needed.
+                
         self.add_pseudo_root()
+        self.ops["leaf"] = leaf_op
         return self
 
     def add_pseudo_root(self):
-        root_node_name = self.file_name + '_pseudo_node'
-        root_class_name = self.file_name + '_pseudo_class'
-        pseudo_root_class = EClass(root_class_name)
-        pseudo_root_node = ENode(
-            eclass_id=root_class_name,
-            enode_id=root_node_name,
-            op="pseudo_root",
-            children=[],
-            cost=0,
-        )
-        pseudo_root_class.member_enodes.add(root_node_name)
+        """Attach any orphan eclasses (no parents) under a corresponding <prefix>_root enode.
 
-        for ec in self.eclasses.values():
-            if not ec.parent_enodes:
-                ec.add_parent_enode(root_node_name)
-                pseudo_root_node.children.append(ec.class_id)
-                print(f'Added pseudo root link: {root_node_name} -> {ec.class_id}')
-        self.enodes[root_node_name] = pseudo_root_node
-        self.eclasses[root_class_name] = pseudo_root_class
-        if "pseudo_root" not in self.ops:
-            self.ops["pseudo_root"] = Op("pseudo_root")
-        self.ops["pseudo_root"].add_instance(root_class_name, root_node_name, 0)
+        - parent_enodes should store parent ENODE IDs (strings)
+        - enode.children should store child ECLASS IDs (strings)
+        """
+        # Build a map: prefix -> one enode_id whose op is f"{prefix}_root"
+        prefix_root_enode = {}
+        for enode_id, enode in self.enodes.items():
+            if enode.op != "root" and enode.op.endswith("_root"):
+                prefix = enode.op[: -len("_root")]
+                # keep first seen for that prefix
+                if prefix not in prefix_root_enode:
+                    prefix_root_enode[prefix] = enode_id
 
-    def merge_egraph(self, others):
-        pass
-    
+        for ec_id, ec_obj in self.eclasses.items():
+            if ec_id == "root_eclass":
+                continue
+            if not ec_obj.parent_enodes:
+                prefix = ec_id.split('_', 1)[0]
+                root_enode_id = prefix_root_enode.get(prefix)
+                if root_enode_id:
+                    # Record parent enode id
+                    ec_obj.parent_enodes.add(root_enode_id)
+                    # Add this eclass as a child of the prefix_root enode if not already present
+                    if ec_id not in self.enodes[root_enode_id].children:
+                        self.enodes[root_enode_id].children.append(ec_id)
+                    print(f'Added orphan eclass {ec_id} under root enode {root_enode_id}')
+
+        
+
+# def main():
+#     result = merge_json(["4.json", "5.json"])
+#     with open("merged.json", "w") as f:
+#         json.dump(result, f, indent=2)
+# if __name__ == "__main__":
+#     main()
+
