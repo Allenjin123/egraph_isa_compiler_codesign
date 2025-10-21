@@ -132,9 +132,10 @@
 (rewrite (Mul (LoadImm (ImmVal 1)) v) v)
 (rewrite (Div v (LoadImm (ImmVal 1))) v)
 (rewrite (Divu v (LoadImm (ImmVal 1))) v)
-(rewrite (Sll v (LoadImm (ImmVal 0))) v)
-(rewrite (Srl v (LoadImm (ImmVal 0))) v)
-(rewrite (Sra v (LoadImm (ImmVal 0))) v)
+;; Shift by zero (immediate versions)
+(rewrite (Slli v (ImmVal 0)) v)
+(rewrite (Srli v (ImmVal 0)) v)
+(rewrite (Srai v (ImmVal 0)) v)
 
 ;; === Zero Operations ===
 (rewrite (Mul v (LoadImm (ImmVal 0))) (LoadImm (ImmVal 0)))
@@ -201,18 +202,17 @@
 (rewrite (Mul v (LoadImm (ImmVal -1))) (Sub (LoadImm (ImmVal 0)) v))
 (rewrite (Mul (LoadImm (ImmVal -1)) v) (Sub (LoadImm (ImmVal 0)) v))
 
-;; === Complex Rewrites ===
+;; === Instruction Decomposition ===
 
-;; Add using two subtractions: a + b = a - (0 - b)
-(rewrite (Add a b)
-         (Sub a (Sub (LoadImm (ImmVal 0)) b)))
-
-;; Shift right using division: x >> n = x / (1 << n)
-(rewrite (Srl x1 x3)
-         (Divu x1 (Sll (LoadImm (ImmVal 1)) x3)))
-
-(rewrite (Srli x1 (ImmVal n))
-         (Divu x1 (LoadImm (ImmVal (<< 1 n)))))
+;; Double shifts for larger shift amounts (example for constant propagation)
+(rewrite (Slli v (ImmVal 4))
+         (Slli (Slli v (ImmVal 2)) (ImmVal 2)))
+(rewrite (Slli v (ImmVal 6))
+         (Slli (Slli v (ImmVal 3)) (ImmVal 3)))
+(rewrite (Srli v (ImmVal 4))
+         (Srli (Srli v (ImmVal 2)) (ImmVal 2)))
+(rewrite (Srai v (ImmVal 4))
+         (Srai (Srai v (ImmVal 2)) (ImmVal 2)))
 
 ;; Subtraction using two's complement: a - b = a + (~b + 1)
 (rewrite (Sub x1 x2)
@@ -223,17 +223,8 @@
 (rewrite (Sltu v v) (LoadImm (ImmVal 0)))  ; v < v is always false (unsigned)
 
 ;; === Load/Store Optimizations ===
-;; Eliminate redundant address calculations
-(rewrite (Lw (Add base (LoadImm (ImmVal 0))) (ImmVal off))
-         (Lw base (ImmVal off)))
-(rewrite (Lb (Add base (LoadImm (ImmVal 0))) (ImmVal off))
-         (Lb base (ImmVal off)))
-(rewrite (Lh (Add base (LoadImm (ImmVal 0))) (ImmVal off))
-         (Lh base (ImmVal off)))
-(rewrite (Lbu (Add base (LoadImm (ImmVal 0))) (ImmVal off))
-         (Lbu base (ImmVal off)))
-(rewrite (Lhu (Add base (LoadImm (ImmVal 0))) (ImmVal off))
-         (Lhu base (ImmVal off)))
+;; Combine adjacent loads/stores with same base
+;; Note: These are examples - actual optimizations would need aliasing analysis
 
 ;; === Branch Simplifications ===
 ;; Branch on same values
