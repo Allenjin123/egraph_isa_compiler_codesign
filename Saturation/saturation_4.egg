@@ -6,9 +6,7 @@
   (a5_2)
   (s3_0) 
   (s4_0) 
-  (s4_1)
-  (t0)      ; temporary registers for transformations
-  (t1))
+  (s4_1))
 
 ;; Immediate values
 (datatype Imm (ImmVal i64))
@@ -65,6 +63,7 @@
 (let a5_2_val (Lbu s4_1_val (ImmVal 0)))
 
 ;; Mark the final value as a root (to ensure it's computed)
+;; Is this needed?
 (relation root (Inst))
 (root a5_2_val)
 

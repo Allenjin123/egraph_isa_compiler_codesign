@@ -1,0 +1,169 @@
+;; ============================================
+;; BASE.EGG - Shared RV32IM ISA Definitions
+;; ============================================
+;; This file contains:
+;; 1. Complete RV32IM instruction set definitions
+;; 2. Common data types (immediates)
+;; 3. Standard rewrite rules for optimization
+;; ============================================
+;; Note: Registers are declared per-block in SSA form
+
+;; ============================================
+;; DATA TYPES
+;; ============================================
+
+;; Immediate values
+(datatype Imm (ImmVal i64))
+
+;; ============================================
+;; RV32I BASE INTEGER INSTRUCTIONS
+;; ============================================
+
+(datatype Inst
+    ;; === Immediate Instructions (U-type) ===
+    (Lui   Imm)               ; rd = imm << 12
+    (Auipc Imm)               ; rd = PC + (imm << 12)
+
+    ;; === Jump Instructions ===
+    (Jal   Imm)               ; rd = PC + 4; PC = PC + offset
+    (Jalr  Inst Imm)          ; rd = PC + 4; PC = (rs1 + offset) & ~1
+
+    ;; === Branch Instructions (B-type) ===
+    (Beq   Inst Inst Imm)    ; if (rs1 == rs2) PC += offset
+    (Bne   Inst Inst Imm)    ; if (rs1 != rs2) PC += offset
+    (Blt   Inst Inst Imm)    ; if (rs1 < rs2) PC += offset (signed)
+    (Bge   Inst Inst Imm)    ; if (rs1 >= rs2) PC += offset (signed)
+    (Bltu  Inst Inst Imm)    ; if (rs1 < rs2) PC += offset (unsigned)
+    (Bgeu  Inst Inst Imm)    ; if (rs1 >= rs2) PC += offset (unsigned)
+
+    ;; === Load Instructions (I-type) ===
+    (Lb    Inst Imm)          ; rd = sign_ext(M[rs1 + offset][7:0])
+    (Lh    Inst Imm)          ; rd = sign_ext(M[rs1 + offset][15:0])
+    (Lw    Inst Imm)          ; rd = M[rs1 + offset][31:0]
+    (Lbu   Inst Imm)          ; rd = zero_ext(M[rs1 + offset][7:0])
+    (Lhu   Inst Imm)          ; rd = zero_ext(M[rs1 + offset][15:0])
+
+    ;; === Store Instructions (S-type) ===
+    (Sb    Inst Inst Imm)     ; M[rs1 + offset][7:0] = rs2[7:0]
+    (Sh    Inst Inst Imm)     ; M[rs1 + offset][15:0] = rs2[15:0]
+    (Sw    Inst Inst Imm)     ; M[rs1 + offset][31:0] = rs2[31:0]
+
+    ;; === Register-Immediate Arithmetic/Logical (I-type) ===
+    (Addi  Inst Imm)          ; rd = rs1 + imm
+    (Slti  Inst Imm)          ; rd = (rs1 < imm) ? 1 : 0 (signed)
+    (Sltiu Inst Imm)          ; rd = (rs1 < imm) ? 1 : 0 (unsigned)
+    (Xori  Inst Imm)          ; rd = rs1 ^ imm
+    (Ori   Inst Imm)          ; rd = rs1 | imm
+    (Andi  Inst Imm)          ; rd = rs1 & imm
+    (Slli  Inst Imm)          ; rd = rs1 << shamt
+    (Srli  Inst Imm)          ; rd = rs1 >> shamt (logical)
+    (Srai  Inst Imm)          ; rd = rs1 >> shamt (arithmetic)
+
+    ;; === Register-Register Arithmetic/Logical (R-type) ===
+    (Add   Inst Inst)         ; rd = rs1 + rs2
+    (Sub   Inst Inst)         ; rd = rs1 - rs2
+    (Sll   Inst Inst)         ; rd = rs1 << rs2[4:0]
+    (Slt   Inst Inst)         ; rd = (rs1 < rs2) ? 1 : 0 (signed)
+    (Sltu  Inst Inst)         ; rd = (rs1 < rs2) ? 1 : 0 (unsigned)
+    (Xor   Inst Inst)         ; rd = rs1 ^ rs2
+    (Srl   Inst Inst)         ; rd = rs1 >> rs2[4:0] (logical)
+    (Sra   Inst Inst)         ; rd = rs1 >> rs2[4:0] (arithmetic)
+    (Or    Inst Inst)         ; rd = rs1 | rs2
+    (And   Inst Inst)         ; rd = rs1 & rs2
+
+    ;; === Memory Ordering ===
+    (Fence Imm Imm)           ; Memory fence
+    (FenceI)                  ; Instruction fence
+
+    ;; === System Instructions ===
+    (Ecall)                   ; Environment call
+    (Ebreak)                  ; Environment breakpoint
+    (Pause)                   ; Pause hint
+
+    ;; ============================================
+    ;; RV32M MULTIPLICATION/DIVISION EXTENSION
+    ;; ============================================
+
+    (Mul    Inst Inst)        ; rd = (rs1 * rs2)[31:0]
+    (Mulh   Inst Inst)        ; rd = (rs1 * rs2)[63:32] (signed × signed)
+    (Mulhsu Inst Inst)        ; rd = (rs1 * rs2)[63:32] (signed × unsigned)
+    (Mulhu  Inst Inst)        ; rd = (rs1 * rs2)[63:32] (unsigned × unsigned)
+    (Div    Inst Inst)        ; rd = rs1 / rs2 (signed)
+    (Divu   Inst Inst)        ; rd = rs1 / rs2 (unsigned)
+    (Rem    Inst Inst)        ; rd = rs1 % rs2 (signed)
+    (Remu   Inst Inst)        ; rd = rs1 % rs2 (unsigned)
+
+    ;; === Special Values ===
+    (LoadImm Imm)             ; Load immediate value
+    (RegVal Reg) 
+    (Nop))                    ; No operation
+
+;; ============================================
+;; STANDARD OPTIMIZATION RULES
+;; ============================================
+
+
+;; Shift by zero (immediate versions)
+(rewrite (Slli v (ImmVal 0)) v)
+(rewrite (Srli v (ImmVal 0)) v)
+(rewrite (Srai v (ImmVal 0)) v)
+
+
+;; === Commutativity ===
+(rewrite (Add v1 v2) (Add v2 v1))
+(rewrite (Mul v1 v2) (Mul v2 v1))
+(rewrite (And v1 v2) (And v2 v1))
+(rewrite (Or v1 v2) (Or v2 v1))
+(rewrite (Xor v1 v2) (Xor v2 v1))
+
+;; === Associativity ===
+(rewrite (Add (Add a b) c) (Add a (Add b c)))
+(rewrite (Mul (Mul a b) c) (Mul a (Mul b c)))
+(rewrite (And (And a b) c) (And a (And b c)))
+(rewrite (Or (Or a b) c) (Or a (Or b c)))
+(rewrite (Xor (Xor a b) c) (Xor a (Xor b c)))
+
+;; === Instruction Decomposition ===
+
+;; Double shifts for larger shift amounts (example for constant propagation)
+(rewrite (Slli v (ImmVal 4))
+         (Slli (Slli v (ImmVal 2)) (ImmVal 2)))
+(rewrite (Slli v (ImmVal 6))
+         (Slli (Slli v (ImmVal 3)) (ImmVal 3)))
+(rewrite (Srli v (ImmVal 4))
+         (Srli (Srli v (ImmVal 2)) (ImmVal 2)))
+(rewrite (Srai v (ImmVal 4))
+         (Srai (Srai v (ImmVal 2)) (ImmVal 2)))
+
+;; Subtraction using two's complement: a - b = a + (~b + 1)
+(rewrite (Sub x1 x2)
+         (Add x1 (Addi (Xori x2 (ImmVal -1)) (ImmVal 1))))
+
+
+;; === Load/Store Optimizations ===
+;; Combine adjacent loads/stores with same base
+;; Note: These are examples - actual optimizations would need aliasing analysis
+
+;; === Branch Simplifications ===
+;; Branch on same values
+(rewrite (Beq v v target) (Jal target))    ; Always taken
+(rewrite (Bne v v target) (Nop))           ; Never taken
+(rewrite (Blt v v target) (Nop))           ; Never taken
+(rewrite (Bge v v target) (Jal target))    ; Always taken
+
+;; === De Morgan's Laws ===
+(rewrite (Xori (And a b) (ImmVal -1))
+         (Or (Xori a (ImmVal -1)) (Xori b (ImmVal -1))))
+(rewrite (Xori (Or a b) (ImmVal -1))
+         (And (Xori a (ImmVal -1)) (Xori b (ImmVal -1))))
+
+;; === Distribution (optional - increases expression size) ===
+;; Uncomment if needed for specific optimizations
+;; (rewrite (Mul a (Add b c)) (Add (Mul a b) (Mul a c)))
+;; (rewrite (Add (Mul a b) (Mul a c)) (Mul a (Add b c)))  ; factoring
+
+;; === Boolean simplifications ===
+(rewrite (And (Or a b) (Or a c))
+         (Or a (And b c)))
+(rewrite (Or (And a b) (And a c))
+         (And a (Or b c)))
