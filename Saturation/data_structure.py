@@ -1,9 +1,14 @@
 from __future__ import annotations
-from egglog import *
+#from egglog import *
+import os
+import re
+from typing import Optional, List, Dict
 
 class text_inst():
-# data structure for text format of a single riscv instruction
-    def __init__(self, op_name, rd, rs1, rs2, imm, addr):
+    """Data structure for text format of a single RISC-V instruction"""
+
+    def __init__(self, op_name: str, rd: Optional[str] = None, rs1: Optional[str] = None,
+                 rs2: Optional[str] = None, imm: Optional[int] = None, addr: Optional[str] = None):
         self.op_name = op_name
         self.rd = rd
         self.rs1 = rs1
@@ -11,52 +16,424 @@ class text_inst():
         self.imm = imm
         self.addr = addr
 
-class text_basic_block():
-# data structure for a basic block, that stores a sequence of instructions
-# one basic block should correspond to one egraph
-    def __init__(self, block_idx):
-        self.block_idx = block_idx
-        self.inst_list = []  # list of text_inst objects
-
-    def add_inst(self, inst):
-        self.inst_list.append(inst)
-
-    def from_file(self, file_path):
-        self.block_idx = int(file_path.split('_')[-1])  # assuming filename format includes block index
-        with open(file_path, 'r') as f:
-            for line in f:
-                # parse each line to create text_inst objects and add to inst_list
-                pass
-
-#### Below are egraph data structure ####
-class Reg(Expr):
-    def __init__(self, name: StringLike) -> None: ...
-
-class Inst(Expr):
-    def __init__(self, name: StringLike, rd: Reg, rs1: Reg, rs2: Reg, imm: i64Like) -> None: ...
-
-class Num(Expr):
-    def __init__(self, value: i64Like) -> None: ...
+    def __str__(self):
+        """String representation of the instruction"""
+        parts = [self.op_name]
+        if self.rd:
+            parts.append(f"rd={self.rd}")
+        if self.rs1:
+            parts.append(f"rs1={self.rs1}")
+        if self.rs2:
+            parts.append(f"rs2={self.rs2}")
+        if self.imm is not None:
+            parts.append(f"imm={self.imm}")
+        if self.addr:
+            parts.append(f"addr={self.addr}")
+        return f"    {' '.join(parts)}"
 
     @classmethod
-    def var(cls, name: StringLike) -> Num:  ...
+    def parse_instruction(cls, line: str) -> Optional['text_inst']:
+        """Parse a single instruction line from cleaned SSA format"""
+        line = line.strip()
+        if not line or line.startswith('#'):
+            return None
 
-    def __add__(self, other: Num) -> Num: ...
+        # Common instruction patterns
+        # R-type: op rd, rs1, rs2
+        # I-type: op rd, rs1, imm
+        # S-type: op rs2, offset(rs1)
+        # B-type: op rs1, rs2, label
+        # U-type: op rd, imm
+        # J-type: op rd, label
 
-    def __mul__(self, other: Num) -> Num: ...
+        # Remove comments
+        if '#' in line:
+            line = line[:line.index('#')].strip()
 
-egraph = EGraph()
+        # Split by whitespace first to get opcode
+        parts = line.split(None, 1)
+        if not parts:
+            return None
 
-expr1 = egraph.let("expr1", Num(2) * (Num.var("x") + Num(3)))
-expr2 = egraph.let("expr2", Num(6) + Num(2) * Num.var("x"))
+        op_name = parts[0]
+        operands = parts[1] if len(parts) > 1 else ""
 
-@egraph.register
-def _num_rule(a: Num, b: Num, c: Num, i: i64, j: i64):
-    yield rewrite(a + b).to(b + a)
-    yield rewrite(a * (b + c)).to((a * b) + (a * c))
-    yield rewrite(Num(i) + Num(j)).to(Num(i + j))
-    yield rewrite(Num(i) * Num(j)).to(Num(i * j))
+        # Initialize instruction components
+        rd, rs1, rs2, imm, addr = None, None, None, None, None
 
-egraph.saturate()
-egraph.check(expr1 == expr2)
-egraph.extract(expr1)
+        # Parse operands based on instruction type
+        if operands:
+            # Handle memory operations (e.g., "lw rd, offset(rs1)")
+            mem_match = re.match(r'(\w+),\s*(-?\d+)\((\w+)\)', operands)
+            if mem_match:
+                if op_name.startswith('l'):  # Load instruction
+                    rd = mem_match.group(1)
+                    imm = int(mem_match.group(2))
+                    rs1 = mem_match.group(3)
+                elif op_name.startswith('s'):  # Store instruction
+                    rs2 = mem_match.group(1)
+                    imm = int(mem_match.group(2))
+                    rs1 = mem_match.group(3)
+            else:
+                # Split operands by comma
+                ops = [op.strip() for op in operands.split(',')]
+
+                # Determine instruction format based on opcode
+                if op_name in ['lui', 'auipc']:  # U-type
+                    if len(ops) >= 1:
+                        rd = ops[0]
+                    if len(ops) >= 2:
+                        try:
+                            imm = int(ops[1], 0)  # Support hex with 0x prefix
+                        except:
+                            addr = ops[1]
+
+                elif op_name in ['jal', 'jalr']:  # J-type
+                    if op_name == 'jal':
+                        if len(ops) == 1:  # jal label
+                            addr = ops[0]
+                        elif len(ops) == 2:  # jal rd, label
+                            rd = ops[0]
+                            addr = ops[1]
+                    else:  # jalr
+                        if len(ops) >= 1:
+                            rd = ops[0]
+                        if len(ops) >= 2:
+                            rs1 = ops[1]
+                        if len(ops) >= 3:
+                            try:
+                                imm = int(ops[2], 0)
+                            except:
+                                pass
+
+                elif op_name in ['beq', 'bne', 'blt', 'bge', 'bltu', 'bgeu']:  # B-type
+                    if len(ops) >= 1:
+                        rs1 = ops[0]
+                    if len(ops) >= 2:
+                        rs2 = ops[1]
+                    if len(ops) >= 3:
+                        try:
+                            imm = int(ops[2], 0)
+                        except:
+                            addr = ops[2]
+
+                elif op_name in ['addi', 'slti', 'sltiu', 'xori', 'ori', 'andi',
+                                 'slli', 'srli', 'srai', 'lb', 'lh', 'lw', 'lbu', 'lhu']:  # I-type
+                    if len(ops) >= 1:
+                        rd = ops[0]
+                    if len(ops) >= 2:
+                        rs1 = ops[1]
+                    if len(ops) >= 3:
+                        try:
+                            imm = int(ops[2], 0)
+                        except:
+                            pass
+
+                elif op_name in ['sb', 'sh', 'sw']:  # S-type (already handled above)
+                    if len(ops) >= 1:
+                        rs2 = ops[0]
+                    if len(ops) >= 2:
+                        # Try to parse offset(base) format
+                        match = re.match(r'(-?\d+)\((\w+)\)', ops[1])
+                        if match:
+                            imm = int(match.group(1))
+                            rs1 = match.group(2)
+
+                else:  # R-type and others
+                    if len(ops) >= 1:
+                        rd = ops[0]
+                    if len(ops) >= 2:
+                        rs1 = ops[1]
+                    if len(ops) >= 3:
+                        # Could be rs2 or immediate
+                        try:
+                            imm = int(ops[2], 0)
+                        except:
+                            rs2 = ops[2]
+
+        return cls(op_name, rd, rs1, rs2, imm, addr)
+
+
+class text_basic_block():
+    """Data structure for a basic block that stores a sequence of instructions.
+    One basic block should correspond to one egraph."""
+
+    def __init__(self, block_name: str):
+        self.block_name = block_name
+        self.block_idx = None
+        self.inst_list: List[text_inst] = []
+
+    def add_inst(self, inst: text_inst):
+        """Add an instruction to the basic block"""
+        if inst:
+            self.inst_list.append(inst)
+
+    def from_file(self, file_path: str):
+        """Load instructions from a file"""
+        # Extract block index from filename (e.g., "0.txt" -> 0)
+        filename = os.path.basename(file_path)
+        if filename.endswith('.txt'):
+            try:
+                self.block_idx = int(filename[:-4])
+            except:
+                self.block_idx = -1
+
+        with open(file_path, 'r') as f:
+            for line in f:
+                inst = text_inst.parse_instruction(line)
+                if inst:
+                    self.add_inst(inst)
+
+    def __str__(self):
+        """String representation of the basic block"""
+        lines = [f"  Block {self.block_idx} ({self.block_name}): {len(self.inst_list)} instructions"]
+        for inst in self.inst_list:
+            lines.append(str(inst))
+        return '\n'.join(lines)
+
+
+class text_section():
+    """Data structure for a section that stores multiple basic blocks"""
+
+    def __init__(self, section_name: str):
+        self.section_name = section_name
+        self.basic_blocks: List[text_basic_block] = []
+
+    def add_basic_block(self, block: text_basic_block):
+        """Add a basic block to the section"""
+        self.basic_blocks.append(block)
+
+    def from_directory(self, dir_path: str):
+        """Read all basic block files in the directory and populate basic_blocks"""
+        block_files = []
+
+        for filename in os.listdir(dir_path):
+            full_path = os.path.join(dir_path, filename)
+            if os.path.isfile(full_path) and filename.endswith('.txt'):
+                # Only process numbered block files (e.g., "0.txt", "1.txt")
+                try:
+                    block_num = int(filename[:-4])
+                    block_files.append((block_num, filename, full_path))
+                except:
+                    # Skip non-numbered files like "section.txt"
+                    continue
+
+        # Sort by block number to maintain order
+        block_files.sort(key=lambda x: x[0])
+
+        for block_num, filename, full_path in block_files:
+            block = text_basic_block(filename)
+            block.from_file(full_path)
+            self.add_basic_block(block)
+
+    def __str__(self):
+        """String representation of the section"""
+        lines = [f"\nSection: {self.section_name} ({len(self.basic_blocks)} blocks)"]
+        for block in self.basic_blocks:
+            lines.append(str(block))
+        return '\n'.join(lines)
+
+
+class text_program():
+    """Data structure for a program that stores multiple sections"""
+
+    def __init__(self, program_name: str):
+        self.program_name = program_name
+        self.sections: Dict[str, text_section] = {}
+
+    def add_section(self, section: text_section):
+        """Add a section to the program"""
+        self.sections[section.section_name] = section
+
+    def from_directory(self, dir_path: str):
+        """Read all section directories in the directory and populate sections"""
+        if not os.path.exists(dir_path):
+            print(f"Error: Directory {dir_path} does not exist")
+            return
+
+        section_names = []
+        for section_name in os.listdir(dir_path):
+            section_path = os.path.join(dir_path, section_name)
+            if os.path.isdir(section_path):
+                section_names.append(section_name)
+
+        # Sort section names for consistent output
+        section_names.sort()
+
+        for section_name in section_names:
+            section_path = os.path.join(dir_path, section_name)
+            section = text_section(section_name)
+            section.from_directory(section_path)
+            if section.basic_blocks:  # Only add non-empty sections
+                self.add_section(section)
+
+    def __str__(self):
+        """String representation of the program"""
+        lines = [f"{'='*60}"]
+        lines.append(f"Program: {self.program_name}")
+        lines.append(f"Total sections: {len(self.sections)}")
+        lines.append(f"{'='*60}")
+
+        # Sort sections by name for consistent output
+        sorted_sections = sorted(self.sections.items())
+        for section_name, section in sorted_sections:
+            lines.append(str(section))
+
+        return '\n'.join(lines)
+
+    def print_summary(self):
+        """Print a summary of the program structure"""
+        print(f"\n{'='*60}")
+        print(f"PROGRAM SUMMARY: {self.program_name}")
+        print(f"{'='*60}")
+        print(f"Total sections: {len(self.sections)}")
+
+        total_blocks = 0
+        total_instructions = 0
+
+        print(f"\n{'Section':<30} {'Blocks':>10} {'Instructions':>15}")
+        print(f"{'-'*60}")
+
+        for section_name in sorted(self.sections.keys()):
+            section = self.sections[section_name]
+            num_blocks = len(section.basic_blocks)
+            num_instructions = sum(len(block.inst_list) for block in section.basic_blocks)
+            total_blocks += num_blocks
+            total_instructions += num_instructions
+            print(f"{section_name:<30} {num_blocks:>10} {num_instructions:>15}")
+
+        print(f"{'-'*60}")
+        print(f"{'TOTAL':<30} {total_blocks:>10} {total_instructions:>15}")
+        print(f"{'='*60}\n")
+
+
+def test_parsing():
+    """Test the parsing with a small example"""
+    print("Testing instruction parsing...")
+    test_instructions = [
+        "add a0, a1, a2",
+        "addi sp, sp, -16",
+        "lw a5, 0(s4)",
+        "sw a0, 4(sp)",
+        "beq a0, a1, label1",
+        "jal ra, function",
+        "lui t0, 0x10000",
+        "slli a0, a1, 5",
+        "mul a0, a1, a2",
+    ]
+
+    for line in test_instructions:
+        inst = text_inst.parse_instruction(line)
+        if inst:
+            print(f"  {line:30} -> {inst}")
+    print()
+
+
+if __name__ == "__main__":
+    # Test parsing first
+    test_parsing()
+
+    # Check if the expected directory exists
+    dhrystone_path = "../SSA/outputs/dhrystone.riscv/sections"
+
+    # Try alternative paths
+    if not os.path.exists(dhrystone_path):
+        dhrystone_path = "SSA/outputs/dhrystone.riscv/sections"
+
+    if not os.path.exists(dhrystone_path):
+        # Try to find any processed output
+        print("Looking for processed outputs...")
+        search_paths = [
+            "../SSA/outputs",
+            "SSA/outputs",
+            "../SSA",
+            "SSA"
+        ]
+
+        for search_path in search_paths:
+            if os.path.exists(search_path):
+                print(f"Found directory: {search_path}")
+                subdirs = [d for d in os.listdir(search_path) if os.path.isdir(os.path.join(search_path, d))]
+                if subdirs:
+                    print(f"Available outputs: {', '.join(subdirs)}")
+                    # Use the first available output
+                    first_output = subdirs[0]
+                    dhrystone_path = os.path.join(search_path, first_output, "sections")
+                    if os.path.exists(dhrystone_path):
+                        print(f"Using: {dhrystone_path}")
+                        break
+
+    if os.path.exists(dhrystone_path):
+        # Load and parse the program
+        program = text_program("dhrystone")
+        program.from_directory(dhrystone_path)
+
+        # Print summary
+        program.print_summary()
+
+        # Print detailed structure for first few sections/blocks as example
+        print("\n" + "="*60)
+        print("DETAILED VIEW (first 2 sections, first 2 blocks each)")
+        print("="*60)
+
+        section_count = 0
+        for section_name in sorted(program.sections.keys()):
+            if section_count >= 2:
+                break
+            section = program.sections[section_name]
+            print(f"\nSection: {section_name}")
+
+            block_count = 0
+            for block in section.basic_blocks:
+                if block_count >= 2:
+                    break
+                print(f"\n  Block {block.block_idx}:")
+                for inst in block.inst_list:
+                    print(f"    {inst}")
+                block_count += 1
+            section_count += 1
+
+        print("\n" + "="*60)
+        print("Full program structure loaded successfully!")
+        print("Use 'print(program)' to see the complete structure")
+        print("="*60)
+    else:
+        print(f"Error: Could not find processed output directory")
+        print(f"Expected path: {dhrystone_path}")
+        print("\nPlease run the SSA processing pipeline first:")
+        print("  cd SSA")
+        print("  python process_dump.py ../benchmark/im_inputs/dhrystone.riscv.dump")
+
+
+# #### Below are egraph data structure (keep as reference) ####
+# class Reg(Expr):
+#     def __init__(self, name: StringLike) -> None: ...
+
+# class Inst(Expr):
+#     def __init__(self, name: StringLike, rd: Reg, rs1: Reg, rs2: Reg, imm: i64Like) -> None: ...
+
+# class Num(Expr):
+#     def __init__(self, value: i64Like) -> None: ...
+
+#     @classmethod
+#     def var(cls, name: StringLike) -> Num:  ...
+
+#     def __add__(self, other: Num) -> Num: ...
+
+#     def __mul__(self, other: Num) -> Num: ...
+
+# egraph = EGraph()
+
+# expr1 = egraph.let("expr1", Num(2) * (Num.var("x") + Num(3)))
+# expr2 = egraph.let("expr2", Num(6) + Num(2) * Num.var("x"))
+
+# @egraph.register
+# def _num_rule(a: Num, b: Num, c: Num, i: i64, j: i64):
+#     yield rewrite(a + b).to(b + a)
+#     yield rewrite(a * (b + c)).to((a * b) + (a * c))
+#     yield rewrite(Num(i) + Num(j)).to(Num(i + j))
+#     yield rewrite(Num(i) * Num(j)).to(Num(i * j))
+
+# egraph.saturate()
+# egraph.check(expr1 == expr2)
+# egraph.extract(expr1)

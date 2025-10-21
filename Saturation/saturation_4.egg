@@ -65,6 +65,7 @@
 (let a5_2_val (Lbu s4_1_val (ImmVal 0)))
 
 ;; Mark the final value as a root (to ensure it's computed)
+;; Is this needed?
 (relation root (Inst))
 (root a5_2_val)
 
