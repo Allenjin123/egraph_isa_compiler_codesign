@@ -4,17 +4,34 @@ import json
 import pickle
 import logging
 from collections import defaultdict
+from typing import Optional, Sequence
 
-"""Lightweight e-graph reader focused on JSON structure in Extractor/test.
-
-This module removes GPU/MLP dependencies and keeps only the parsing logic
-to construct ENode/EClass objects and basic cross-references.
 """
-def get_files(datadir):
-    return [os.path.join(datadir, f) for f in os.listdir(datadir) if f.endswith('.json')]
-    
+Lightweight e-graph reader focused on JSON structure in Extractor/test.
+
+This module keeps only the parsing logic to construct ENode/EClass objects and basic cross-references.
+"""
+# Get the directory of this script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+# Go up one level to Extractor/ and then into data/
+DATA_DIR = os.path.join(os.path.dirname(script_dir), "data")
+   
 def get_file_name(path):
     return os.path.basename(path)
+
+def sanitize(s: str) -> str:
+    "convert string to valid variable name (only letters, numbers, and underscores)"
+    return re.sub(r'[^a-zA-Z0-9_]', '_', str(s))
+
+def clean_folder(folder):
+    merged_path = os.path.join(folder, "merged.json")
+    if os.path.exists(merged_path):
+        os.remove(merged_path)
+        print(f"Deleted old {merged_path}")
+
+    # Get all JSON files from the data directory
+    json_files = [os.path.join(folder, f) for f in os.listdir(folder) if f.endswith('.json')]
+    return json_files
 
 def merge_json(json_files):
     merged = {"nodes": {}}
@@ -24,18 +41,20 @@ def merge_json(json_files):
         with open(file, 'r') as f:
             nodes = json.load(f).get("nodes", {})
         for nid, node in nodes.items():
-            new_id = f"{prefix}_{nid}"
+            new_id = f"{prefix}_{sanitize(nid)}"
             new_node = dict(node)
             # prefix eclass
             if "eclass" in new_node and new_node["eclass"] is not None:
-                new_node["eclass"] = f"{prefix}_{new_node['eclass']}"
+                new_node["eclass"] = f"{prefix}_{sanitize(new_node['eclass'])}"
             # prefix children (enode ids)
             if "children" in new_node and new_node["children"]:
-                new_node["children"] = [f"{prefix}_{c}" for c in new_node["children"]]
+                new_node["children"] = [f"{prefix}_{sanitize(c)}" for c in new_node["children"]]
             # rename root op
             if new_node.get("op") == "root":
                 new_node["op"] = f"{prefix}_root"
                 subroots.append(new_id)
+            if new_node.get("op") == "()":
+                continue # skip no-op
             merged["nodes"][new_id] = new_node
     merged["nodes"]["root_enode"] = {
         "op": "root",
@@ -91,12 +110,20 @@ class Op:
 
 class EGraph:
 
-    def __init__(self, input_files):
+    def __init__(self, input_files: Optional[Sequence[str]] = None):
+        """Create an EGraph. If input_files is provided (list of JSON file paths),
+        they will be merged and loaded. Otherwise an empty graph is created.
+
+        input_files: optional sequence of paths to JSON files produced by the
+        extractor. If None or empty, no JSON is loaded.
+        """
         self.eclasses = {}
         self.enodes = {}
         self.ops = {}
         self.root_ec_en = {}
-        self.from_json_file(merge_json(input_files))
+        if input_files:
+            # merge_json expects an iterable of file paths
+            self.from_json_file(merge_json(input_files))
 
     def __repr__(self) -> str:
         return f'EGraph: EClass {self.eclasses} ENode {self.enodes} Ops {self.ops}'
@@ -125,7 +152,7 @@ class EGraph:
 
             op = node.get('op', "N/A")
             cost = node.get('cost', 1)
-            if op.endswith("_root"):
+            if op.endswith("root"):
                 self.root_ec_en[ec] = node_id
             # map children (node ids) -> child eclass ids
             child_eclasses = []
@@ -141,6 +168,7 @@ class EGraph:
                     self.eclasses[child_ec].parent_enodes.add(node_id)
             else: # leaf node
                 leaf_op.add_instance(ec, node_id, cost)
+                op = "leaf"
             # create enode
             self.enodes[node_id] = ENode(
                 eclass_id=ec,
@@ -193,10 +221,26 @@ class EGraph:
 
         
 
-# def main():
-#     result = merge_json(["4.json", "5.json"])
-#     with open("merged.json", "w") as f:
-#         json.dump(result, f, indent=2)
-# if __name__ == "__main__":
-#     main()
+def main():
+    # Delete old merged.json if it exists
+    json_files = clean_folder(DATA_DIR)
+    if not json_files:
+        print(f"No JSON files found in {DATA_DIR}")
+        return
+    merged_path = os.path.join(DATA_DIR, "merged.json")
+    print(f"Found {len(json_files)} JSON files in {DATA_DIR}:")
+    for f in json_files:
+        print(f"  - {os.path.basename(f)}")
+    
+    # Merge all JSON files
+    result = merge_json(json_files)
+    
+    # Write merged result
+    with open(merged_path, "w") as f:
+        json.dump(result, f, indent=2)
+    
+    print(f"Successfully merged {len(json_files)} files into {merged_path}")
+
+if __name__ == "__main__":
+    main()
 
