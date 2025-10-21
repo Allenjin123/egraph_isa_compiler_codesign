@@ -69,6 +69,3 @@ book/
 # Temporary files
 tmp/
 temp/mibench_script/
-
-# egglog output
-Saturation/egglog_output/
