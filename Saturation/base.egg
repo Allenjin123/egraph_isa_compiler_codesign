@@ -95,6 +95,7 @@
 
     ;; === Special Values ===
     (LoadImm Imm)             ; Load immediate value
+    (RegVal Reg) 
     (Nop))                    ; No operation
 
 ;; ============================================

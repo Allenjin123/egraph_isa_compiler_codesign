@@ -1,0 +1,49 @@
+; EGraph for vprintfmt - Block 69
+; Total instructions: 7
+; Registers used: 10
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a4)
+  (a4_0)
+  (a5)
+  (a5_0)
+  (s11_0)
+  (s3)
+  (s8)
+  (s8_0)
+  (sp_0)
+  (zero_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     snez rd=a4 rs1=s3
+; Unsupported:     snez rd=a4 rs1=s3
+
+;; Step 2:     neg rd=a5 rs1=s8
+; Unsupported:     neg rd=a5 rs1=s8
+
+;; Step 3:     neg rd=s3 rs1=s3
+; Unsupported:     neg rd=s3 rs1=s3
+
+;; Step 4:     sub rd=s11_0 rs1=a5_0 rs2=a4_0
+(let s11_0 (Sub (RegVal (a5_0)) (RegVal (a4_0))))
+
+;; Step 5:     li rd=s8_0 rs1=10
+; Unsupported:     li rd=s8_0 rs1=10
+
+;; Step 6:     sw rs1=sp_0 rs2=zero_0 imm=4
+(let inst_5 (Sw (RegVal (sp_0)) (RegVal (zero_0)) (ImmVal 4)))
+
+;; Step 7:     j rd=80001644
+; Unsupported:     j rd=80001644
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

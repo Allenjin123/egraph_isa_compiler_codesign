@@ -1,0 +1,32 @@
+; EGraph for _init - Block 2
+; Total instructions: 3
+; Registers used: 5
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0_0)
+  (a1_0)
+  (ra_0)
+  (s1_0)
+  (s2_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     mv rd=a1_0 rs1=s2_0
+(let a1_0 (Addi (RegVal (s2_0)) (ImmVal 0)))
+
+;; Step 2:     mv rd=a0_0 rs1=s1_0
+(let a0_0 (Addi (RegVal (s1_0)) (ImmVal 0)))
+
+;; Step 3:     jal rd=ra_0 addr=80001b5c
+(let ra_0 (Jal (ImmVal 2147490652)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

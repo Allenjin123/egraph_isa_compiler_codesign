@@ -1,0 +1,101 @@
+; EGraph for __moddi3 - Block 22
+; Total instructions: 20
+; Registers used: 23
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0)
+  (a1)
+  (a1_0)
+  (a3)
+  (a3_0)
+  (a5)
+  (a5_0)
+  (ra_0)
+  (s0_0)
+  (s10_0)
+  (s11_0)
+  (s1_0)
+  (s1_1)
+  (s2_0)
+  (s3_0)
+  (s4_0)
+  (s5_0)
+  (s6_0)
+  (s7_0)
+  (s8_0)
+  (s9_0)
+  (sp_0)
+  (sp_1)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     beqz rs1=s1_0 addr=80002128
+(let inst_0 (Beq (RegVal (s1_0)) (RegVal (x0)) (ImmVal 2147492136)))
+
+;; Step 2:     snez rd=a5 rs1=a0
+; Unsupported:     snez rd=a5 rs1=a0
+
+;; Step 3:     neg rd=a3 rs1=a1
+; Unsupported:     neg rd=a3 rs1=a1
+
+;; Step 4:     sub rd=a1_0 rs1=a3_0 rs2=a5_0
+(let a1_0 (Sub (RegVal (a3_0)) (RegVal (a5_0))))
+
+;; Step 5:     neg rd=a0 rs1=a0
+; Unsupported:     neg rd=a0 rs1=a0
+
+;; Step 6:     lw rd=ra_0 rs1=sp_0 imm=60
+(let ra_0 (Lw (RegVal (sp_0)) (ImmVal 60)))
+
+;; Step 7:     lw rd=s0_0 rs1=sp_0 imm=56
+(let s0_0 (Lw (RegVal (sp_0)) (ImmVal 56)))
+
+;; Step 8:     lw rd=s1_1 rs1=sp_0 imm=52
+(let s1_1 (Lw (RegVal (sp_0)) (ImmVal 52)))
+
+;; Step 9:     lw rd=s2_0 rs1=sp_0 imm=48
+(let s2_0 (Lw (RegVal (sp_0)) (ImmVal 48)))
+
+;; Step 10:     lw rd=s3_0 rs1=sp_0 imm=44
+(let s3_0 (Lw (RegVal (sp_0)) (ImmVal 44)))
+
+;; Step 11:     lw rd=s4_0 rs1=sp_0 imm=40
+(let s4_0 (Lw (RegVal (sp_0)) (ImmVal 40)))
+
+;; Step 12:     lw rd=s5_0 rs1=sp_0 imm=36
+(let s5_0 (Lw (RegVal (sp_0)) (ImmVal 36)))
+
+;; Step 13:     lw rd=s6_0 rs1=sp_0 imm=32
+(let s6_0 (Lw (RegVal (sp_0)) (ImmVal 32)))
+
+;; Step 14:     lw rd=s7_0 rs1=sp_0 imm=28
+(let s7_0 (Lw (RegVal (sp_0)) (ImmVal 28)))
+
+;; Step 15:     lw rd=s8_0 rs1=sp_0 imm=24
+(let s8_0 (Lw (RegVal (sp_0)) (ImmVal 24)))
+
+;; Step 16:     lw rd=s9_0 rs1=sp_0 imm=20
+(let s9_0 (Lw (RegVal (sp_0)) (ImmVal 20)))
+
+;; Step 17:     lw rd=s10_0 rs1=sp_0 imm=16
+(let s10_0 (Lw (RegVal (sp_0)) (ImmVal 16)))
+
+;; Step 18:     lw rd=s11_0 rs1=sp_0 imm=12
+(let s11_0 (Lw (RegVal (sp_0)) (ImmVal 12)))
+
+;; Step 19:     addi rd=sp_1 rs1=sp_0 imm=64
+(let sp_1 (Addi (RegVal (sp_0)) (ImmVal 64)))
+
+;; Step 20:     ret
+(let inst_19 (Jalr (RegVal (ra_0)) (ImmVal 0)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

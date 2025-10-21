@@ -1,0 +1,55 @@
+; EGraph for __umoddi3 - Block 49
+; Total instructions: 9
+; Registers used: 10
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0_0)
+  (a3_0)
+  (a4_0)
+  (a5_0)
+  (a5_1)
+  (a5_2)
+  (a5_3)
+  (s4_0)
+  (s5_0)
+  (s5_1)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     lui rd=a5_0 imm=524292
+(let a5_0 (Lui (ImmVal 524292)))
+
+;; Step 2:     srl rd=a4_0 rs1=a3_0 rs2=a0_0
+(let a4_0 (Srl (RegVal (a3_0)) (RegVal (a0_0))))
+
+;; Step 3:     addi rd=a5_1 rs1=a5_0 imm=104
+(let a5_1 (Addi a5_0 (ImmVal 104)))
+
+;; Step 4:     add rd=a5_2 rs1=a5_1 rs2=a4_0
+(let a5_2 (Add a5_1 a4_0))
+
+;; Step 5:     lbu rd=s5_0 rs1=a5_2 imm=0
+(let s5_0 (Lbu a5_2 (ImmVal 0)))
+
+;; Step 6:     li rd=a5_3 rs1=32
+; Unsupported:     li rd=a5_3 rs1=32
+
+;; Step 7:     add rd=s5_1 rs1=s5_0 rs2=a0_0
+(let s5_1 (Add s5_0 (RegVal (a0_0))))
+
+;; Step 8:     sub rd=s4_0 rs1=a5_3 rs2=s5_1
+(let s4_0 (Sub (RegVal (a5_3)) s5_1))
+
+;; Step 9:     bne rs1=a5_3 rs2=s5_1 addr=80002e08
+(let inst_8 (Bne (RegVal (a5_3)) s5_1 (ImmVal 2147495432)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

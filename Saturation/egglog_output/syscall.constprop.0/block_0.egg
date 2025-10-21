@@ -1,0 +1,151 @@
+; EGraph for syscall.constprop.0 - Block 0
+; Total instructions: 36
+; Registers used: 25
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0_0)
+  (a0_1)
+  (a1_0)
+  (a1_1)
+  (a2_0)
+  (a3_0)
+  (a3_1)
+  (a3_2)
+  (a3_3)
+  (a3_4)
+  (a4_0)
+  (a4_1)
+  (a4_2)
+  (a4_3)
+  (a4_4)
+  (a5_0)
+  (a5_1)
+  (a5_2)
+  (a5_3)
+  (a5_4)
+  (a6_0)
+  (a6_1)
+  (sp_0)
+  (sp_1)
+  (sp_2)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     addi rd=sp_1 rs1=sp_0 imm=-128
+(let sp_1 (Addi (RegVal (sp_0)) (ImmVal -128)))
+
+;; Step 2:     addi rd=a6_0 rs1=sp_1 imm=63
+(let a6_0 (Addi sp_1 (ImmVal 63)))
+
+;; Step 3:     andi rd=a6_1 rs1=a6_0 imm=-64
+(let a6_1 (Andi a6_0 (ImmVal -64)))
+
+;; Step 4:     li rd=a4_0 rs1=64
+; Unsupported:     li rd=a4_0 rs1=64
+
+;; Step 5:     sw rs1=a6_1 rs2=a4_0 imm=0
+(let inst_4 (Sw a6_1 (RegVal (a4_0)) (ImmVal 0)))
+
+;; Step 6:     li rd=a5_0 rs1=0
+(let a5_0 (LoadImm (ImmVal 0)))
+
+;; Step 7:     sw rs1=a6_1 rs2=a5_0 imm=4
+(let inst_6 (Sw a6_1 a5_0 (ImmVal 4)))
+
+;; Step 8:     li rd=a4_1 rs1=1
+; Unsupported:     li rd=a4_1 rs1=1
+
+;; Step 9:     sw rs1=a6_1 rs2=a4_1 imm=8
+(let inst_8 (Sw a6_1 (RegVal (a4_1)) (ImmVal 8)))
+
+;; Step 10:     li rd=a5_1 rs1=0
+(let a5_1 (LoadImm (ImmVal 0)))
+
+;; Step 11:     sw rs1=a6_1 rs2=a5_1 imm=12
+(let inst_10 (Sw a6_1 a5_1 (ImmVal 12)))
+
+;; Step 12:     sw rs1=a6_1 rs2=a0_0 imm=16
+(let inst_11 (Sw a6_1 (RegVal (a0_0)) (ImmVal 16)))
+
+;; Step 13:     sw rs1=a6_1 rs2=a1_0 imm=20
+(let inst_12 (Sw a6_1 (RegVal (a1_0)) (ImmVal 20)))
+
+;; Step 14:     sw rs1=a6_1 rs2=a2_0 imm=24
+(let inst_13 (Sw a6_1 (RegVal (a2_0)) (ImmVal 24)))
+
+;; Step 15:     sw rs1=a6_1 rs2=a3_0 imm=28
+(let inst_14 (Sw a6_1 (RegVal (a3_0)) (ImmVal 28)))
+
+;; Step 16:     fence
+; Unsupported:     fence
+
+;; Step 17:     auipc rd=a3_1 imm=1048575
+(let a3_1 (Auipc (ImmVal 1048575)))
+
+;; Step 18:     addi rd=a3_2 rs1=a3_1 imm=1624
+(let a3_2 (Addi a3_1 (ImmVal 1624)))
+
+;; Step 19:     sw rs1=a3_2 rs2=a6_1 imm=0
+(let inst_18 (Sw a3_2 a6_1 (ImmVal 0)))
+
+;; Step 20:     li rd=a5_2 rs1=0
+(let a5_2 (LoadImm (ImmVal 0)))
+
+;; Step 21:     sw rs1=a3_2 rs2=a5_2 imm=4
+(let inst_20 (Sw a3_2 a5_2 (ImmVal 4)))
+
+;; Step 22:     auipc rd=a3_3 imm=1048575
+(let a3_3 (Auipc (ImmVal 1048575)))
+
+;; Step 23:     addi rd=a3_4 rs1=a3_3 imm=1668
+(let a3_4 (Addi a3_3 (ImmVal 1668)))
+
+;; Step 24:     lw rd=a4_2 rs1=a3_4 imm=0
+(let a4_2 (Lw a3_4 (ImmVal 0)))
+
+;; Step 25:     lw rd=a5_3 rs1=a3_4 imm=4
+(let a5_3 (Lw a3_4 (ImmVal 4)))
+
+;; Step 26:     or rd=a4_3 rs1=a4_2 rs2=a5_3
+(let a4_3 (Or a4_2 a5_3))
+
+;; Step 27:     beqz rs1=a4_3 addr=800019c4
+(let inst_26 (Beq a4_3 (RegVal (x0)) (ImmVal 2147490244)))
+
+;; Step 28:     li rd=a4_4 rs1=0
+(let a4_4 (LoadImm (ImmVal 0)))
+
+;; Step 29:     sw rs1=a3_4 rs2=a4_4 imm=0
+(let inst_28 (Sw a3_4 a4_4 (ImmVal 0)))
+
+;; Step 30:     li rd=a5_4 rs1=0
+(let a5_4 (LoadImm (ImmVal 0)))
+
+;; Step 31:     sw rs1=a3_4 rs2=a5_4 imm=4
+(let inst_30 (Sw a3_4 a5_4 (ImmVal 4)))
+
+;; Step 32:     fence
+; Unsupported:     fence
+
+;; Step 33:     lw rd=a0_1 rs1=a6_1 imm=0
+(let a0_1 (Lw a6_1 (ImmVal 0)))
+
+;; Step 34:     lw rd=a1_1 rs1=a6_1 imm=4
+(let a1_1 (Lw a6_1 (ImmVal 4)))
+
+;; Step 35:     addi rd=sp_2 rs1=sp_1 imm=128
+(let sp_2 (Addi sp_1 (ImmVal 128)))
+
+;; Step 36:     ret
+(let inst_35 (Jalr (RegVal (ra_0)) (ImmVal 0)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

@@ -1,0 +1,34 @@
+; EGraph for main - Block 60
+; Total instructions: 4
+; Registers used: 4
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0_0)
+  (a0_1)
+  (a1_0)
+  (ra_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     li rd=a1_0 rs1=1
+; Unsupported:     li rd=a1_0 rs1=1
+
+;; Step 2:     auipc rd=a0_0 imm=0
+(let a0_0 (Auipc (ImmVal 0)))
+
+;; Step 3:     addi rd=a0_1 rs1=a0_0 imm=992
+(let a0_1 (Addi a0_0 (ImmVal 992)))
+
+;; Step 4:     jal rd=ra_0 addr=8000121c
+(let ra_0 (Jal (ImmVal 2147488284)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

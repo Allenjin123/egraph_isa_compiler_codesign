@@ -1,0 +1,38 @@
+; EGraph for putchar - Block 2
+; Total instructions: 5
+; Registers used: 5
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0_0)
+  (ra_0)
+  (s0_0)
+  (sp_0)
+  (sp_1)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     lw rd=ra_0 rs1=sp_0 imm=12
+(let ra_0 (Lw (RegVal (sp_0)) (ImmVal 12)))
+
+;; Step 2:     lw rd=s0_0 rs1=sp_0 imm=8
+(let s0_0 (Lw (RegVal (sp_0)) (ImmVal 8)))
+
+;; Step 3:     li rd=a0_0 rs1=0
+(let a0_0 (LoadImm (ImmVal 0)))
+
+;; Step 4:     addi rd=sp_1 rs1=sp_0 imm=16
+(let sp_1 (Addi (RegVal (sp_0)) (ImmVal 16)))
+
+;; Step 5:     ret
+(let inst_4 (Jalr (RegVal (ra_0)) (ImmVal 0)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

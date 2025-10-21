@@ -1,0 +1,36 @@
+; EGraph for __moddi3 - Block 31
+; Total instructions: 4
+; Registers used: 6
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0_0)
+  (a1_0)
+  (ra_0)
+  (s5_0)
+  (s6_0)
+  (s9_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     srli rd=s6_0 rs1=s5_0 imm=16
+(let s6_0 (Srli (RegVal (s5_0)) (ImmVal 16)))
+
+;; Step 2:     mv rd=a1_0 rs1=s6_0
+(let a1_0 (Addi s6_0 (ImmVal 0)))
+
+;; Step 3:     mv rd=a0_0 rs1=s9_0
+(let a0_0 (Addi (RegVal (s9_0)) (ImmVal 0)))
+
+;; Step 4:     jal rd=ra_0 addr=8000303c
+(let ra_0 (Jal (ImmVal 2147495996)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

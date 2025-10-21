@@ -1,0 +1,33 @@
+; EGraph for __modsi3 - Block 2
+; Total instructions: 4
+; Registers used: 3
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0)
+  (a1)
+  (ra_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     neg rd=a1 rs1=a1
+; Unsupported:     neg rd=a1 rs1=a1
+
+;; Step 2:     bgez rd=a0 rs1=8000307c
+; Unsupported:     bgez rd=a0 rs1=8000307c
+
+;; Step 3:     neg rd=a0 rs1=a0
+; Unsupported:     neg rd=a0 rs1=a0
+
+;; Step 4:     jal rd=ra_0 addr=80002ff4
+(let ra_0 (Jal (ImmVal 2147495924)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

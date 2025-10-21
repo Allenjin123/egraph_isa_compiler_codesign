@@ -1,0 +1,23 @@
+; EGraph for __umoddi3 - Block 78
+; Total instructions: 1
+; Registers used: 2
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a5_0)
+  (s1_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     bgeu rs1=s1_0 rs2=a5_0 addr=80002fa4
+(let inst_0 (Bgeu (RegVal (s1_0)) (RegVal (a5_0)) (ImmVal 2147495844)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

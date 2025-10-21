@@ -1,0 +1,44 @@
+; EGraph for handle_trap - Block 0
+; Total instructions: 7
+; Registers used: 5
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a2_0)
+  (a2_1)
+  (a3_0)
+  (a5_0)
+  (a5_1)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     lui rd=a2_0 imm=1
+(let a2_0 (Lui (ImmVal 1)))
+
+;; Step 2:     auipc rd=a5_0 imm=1048575
+(let a5_0 (Auipc (ImmVal 1048575)))
+
+;; Step 3:     addi rd=a5_1 rs1=a5_0 imm=1312
+(let a5_1 (Addi a5_0 (ImmVal 1312)))
+
+;; Step 4:     addi rd=a2_1 rs1=a2_0 imm=-1421
+(let a2_1 (Addi a2_0 (ImmVal -1421)))
+
+;; Step 5:     li rd=a3_0 rs1=0
+(let a3_0 (LoadImm (ImmVal 0)))
+
+;; Step 6:     sw rs1=a5_1 rs2=a2_1 imm=0
+(let inst_5 (Sw a5_1 a2_1 (ImmVal 0)))
+
+;; Step 7:     sw rs1=a5_1 rs2=a3_0 imm=4
+(let inst_6 (Sw a5_1 a3_0 (ImmVal 4)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

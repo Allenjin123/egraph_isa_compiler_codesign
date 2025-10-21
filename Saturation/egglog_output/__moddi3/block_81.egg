@@ -1,0 +1,57 @@
+; EGraph for __moddi3 - Block 81
+; Total instructions: 9
+; Registers used: 12
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0_0)
+  (a0_1)
+  (a0_2)
+  (a1_0)
+  (a1_1)
+  (a4_0)
+  (a4_1)
+  (a4_2)
+  (a5_0)
+  (a5_1)
+  (a5_2)
+  (s2_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     srli rd=a1_0 rs1=a4_0 imm=16
+(let a1_0 (Srli (RegVal (a4_0)) (ImmVal 16)))
+
+;; Step 2:     add rd=a1_1 rs1=a1_0 rs2=a0_0
+(let a1_1 (Add a1_0 (RegVal (a0_0))))
+
+;; Step 3:     lui rd=a0_1 imm=16
+(let a0_1 (Lui (ImmVal 16)))
+
+;; Step 4:     addi rd=a0_2 rs1=a0_1 imm=-1
+(let a0_2 (Addi a0_1 (ImmVal -1)))
+
+;; Step 5:     and rd=a4_1 rs1=a4_0 rs2=a0_2
+(let a4_1 (And (RegVal (a4_0)) a0_2))
+
+;; Step 6:     slli rd=a4_2 rs1=a4_1 imm=16
+(let a4_2 (Slli a4_1 (ImmVal 16)))
+
+;; Step 7:     and rd=a5_1 rs1=a5_0 rs2=a0_2
+(let a5_1 (And (RegVal (a5_0)) a0_2))
+
+;; Step 8:     add rd=a5_2 rs1=a4_2 rs2=a5_1
+(let a5_2 (Add a4_2 a5_1))
+
+;; Step 9:     bltu rs1=s2_0 rs2=a1_1 addr=800024c8
+(let inst_8 (Bltu (RegVal (s2_0)) a1_1 (ImmVal 2147493064)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

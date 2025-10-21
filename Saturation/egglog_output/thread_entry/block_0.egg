@@ -1,0 +1,25 @@
+; EGraph for thread_entry - Block 0
+; Total instructions: 2
+; Registers used: 1
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     bnez rs1=a0_0 addr=80001b5c
+(let inst_0 (Bne (RegVal (a0_0)) (RegVal (x0)) (ImmVal 2147490652)))
+
+;; Step 2:     ret
+(let inst_1 (Jalr (RegVal (ra_0)) (ImmVal 0)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

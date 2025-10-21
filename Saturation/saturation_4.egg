@@ -6,9 +6,7 @@
   (a5_2)
   (s3_0) 
   (s4_0) 
-  (s4_1)
-  (t0)      ; temporary registers for transformations
-  (t1))
+  (s4_1))
 
 ;; Immediate values
 (datatype Imm (ImmVal i64))

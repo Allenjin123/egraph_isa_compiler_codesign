@@ -1,0 +1,44 @@
+; EGraph for memset - Block 3
+; Total instructions: 6
+; Registers used: 8
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0_0)
+  (a1_0)
+  (a1_1)
+  (a2_0)
+  (a4_0)
+  (a4_1)
+  (a4_2)
+  (a5_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     andi rd=a1_1 rs1=a1_0 imm=255
+(let a1_1 (Andi (RegVal (a1_0)) (ImmVal 255)))
+
+;; Step 2:     slli rd=a4_0 rs1=a1_1 imm=8
+(let a4_0 (Slli a1_1 (ImmVal 8)))
+
+;; Step 3:     or rd=a4_1 rs1=a1_1 rs2=a4_0
+(let a4_1 (Or a1_1 a4_0))
+
+;; Step 4:     slli rd=a5_0 rs1=a4_1 imm=16
+(let a5_0 (Slli a4_1 (ImmVal 16)))
+
+;; Step 5:     or rd=a4_2 rs1=a4_1 rs2=a5_0
+(let a4_2 (Or a4_1 a5_0))
+
+;; Step 6:     bgeu rs1=a0_0 rs2=a2_0 addr=80001d18
+(let inst_5 (Bgeu (RegVal (a0_0)) (RegVal (a2_0)) (ImmVal 2147491096)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

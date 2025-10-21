@@ -1,0 +1,65 @@
+; EGraph for Func_2 - Block 2
+; Total instructions: 12
+; Registers used: 11
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0)
+  (a0_0)
+  (a4_0)
+  (a5_0)
+  (a5_1)
+  (a5_2)
+  (ra_0)
+  (s0_0)
+  (s1_0)
+  (sp_0)
+  (sp_1)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     li rd=a5_0 rs1=0
+(let a5_0 (LoadImm (ImmVal 0)))
+
+;; Step 2:     blez rd=a0 rs1=8000113c
+; Unsupported:     blez rd=a0 rs1=8000113c
+
+;; Step 3:     li rd=a5_1 rs1=10
+; Unsupported:     li rd=a5_1 rs1=10
+
+;; Step 4:     auipc rd=a4_0 imm=3
+(let a4_0 (Auipc (ImmVal 3)))
+
+;; Step 5:     sw rs1=a4_0 rs2=a5_1 imm=352
+(let inst_4 (Sw a4_0 (RegVal (a5_1)) (ImmVal 352)))
+
+;; Step 6:     li rd=a5_2 rs1=1
+; Unsupported:     li rd=a5_2 rs1=1
+
+;; Step 7:     lw rd=ra_0 rs1=sp_0 imm=12
+(let ra_0 (Lw (RegVal (sp_0)) (ImmVal 12)))
+
+;; Step 8:     lw rd=s0_0 rs1=sp_0 imm=8
+(let s0_0 (Lw (RegVal (sp_0)) (ImmVal 8)))
+
+;; Step 9:     lw rd=s1_0 rs1=sp_0 imm=4
+(let s1_0 (Lw (RegVal (sp_0)) (ImmVal 4)))
+
+;; Step 10:     mv rd=a0_0 rs1=a5_2
+(let a0_0 (Addi (RegVal (a5_2)) (ImmVal 0)))
+
+;; Step 11:     addi rd=sp_1 rs1=sp_0 imm=16
+(let sp_1 (Addi (RegVal (sp_0)) (ImmVal 16)))
+
+;; Step 12:     ret
+(let inst_11 (Jalr (RegVal (ra_0)) (ImmVal 0)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

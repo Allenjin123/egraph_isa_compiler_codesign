@@ -1,0 +1,71 @@
+; EGraph for __udivdi3 - Block 84
+; Total instructions: 12
+; Registers used: 17
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0_0)
+  (a0_1)
+  (a1_0)
+  (a2_0)
+  (a5_0)
+  (a5_1)
+  (a7_0)
+  (ra_0)
+  (s0_0)
+  (s0_1)
+  (s2_0)
+  (s2_1)
+  (s8_0)
+  (t1_0)
+  (t1_1)
+  (t3_0)
+  (t4_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     slli rd=a5_0 rs1=s8_0 imm=16
+(let a5_0 (Slli (RegVal (s8_0)) (ImmVal 16)))
+
+;; Step 2:     lui rd=t3_0 imm=16
+(let t3_0 (Lui (ImmVal 16)))
+
+;; Step 3:     or rd=a5_1 rs1=a5_0 rs2=a2_0
+(let a5_1 (Or a5_0 (RegVal (a2_0))))
+
+;; Step 4:     addi rd=t1_0 rs1=t3_0 imm=-1
+(let t1_0 (Addi t3_0 (ImmVal -1)))
+
+;; Step 5:     and rd=a7_0 rs1=a5_1 rs2=t1_0
+(let a7_0 (And a5_1 t1_0))
+
+;; Step 6:     and rd=t1_1 rs1=s2_0 rs2=t1_0
+(let t1_1 (And (RegVal (s2_0)) t1_0))
+
+;; Step 7:     sub rd=s0_1 rs1=s0_0 rs2=a0_0
+(let s0_1 (Sub (RegVal (s0_0)) (RegVal (a0_0))))
+
+;; Step 8:     srli rd=t4_0 rs1=a5_1 imm=16
+(let t4_0 (Srli a5_1 (ImmVal 16)))
+
+;; Step 9:     srli rd=s2_1 rs1=s2_0 imm=16
+(let s2_1 (Srli (RegVal (s2_0)) (ImmVal 16)))
+
+;; Step 10:     mv rd=a0_1 rs1=a7_0
+(let a0_1 (Addi a7_0 (ImmVal 0)))
+
+;; Step 11:     mv rd=a1_0 rs1=t1_1
+(let a1_0 (Addi t1_1 (ImmVal 0)))
+
+;; Step 12:     jal rd=ra_0 addr=80002fc8
+(let ra_0 (Jal (ImmVal 2147495880)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

@@ -1,0 +1,23 @@
+; EGraph for __moddi3 - Block 56
+; Total instructions: 1
+; Registers used: 2
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a2_0)
+  (s7_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     bltu rs1=s7_0 rs2=a2_0 imm=80002320
+; Unsupported:     bltu rs1=s7_0 rs2=a2_0 imm=80002320
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

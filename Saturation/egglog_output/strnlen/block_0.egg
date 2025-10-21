@@ -1,0 +1,42 @@
+; EGraph for strnlen - Block 0
+; Total instructions: 6
+; Registers used: 6
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0_0)
+  (a0_1)
+  (a1_0)
+  (a2_0)
+  (a3_0)
+  (a5_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     mv rd=a2_0 rs1=a0_0
+(let a2_0 (Addi (RegVal (a0_0)) (ImmVal 0)))
+
+;; Step 2:     add rd=a3_0 rs1=a2_0 rs2=a1_0
+(let a3_0 (Add a2_0 (RegVal (a1_0))))
+
+;; Step 3:     mv rd=a0_1 rs1=a1_0
+(let a0_1 (Addi (RegVal (a1_0)) (ImmVal 0)))
+
+;; Step 4:     mv rd=a5_0 rs1=a2_0
+(let a5_0 (Addi a2_0 (ImmVal 0)))
+
+;; Step 5:     bnez rs1=a1_0 addr=80001ea0
+(let inst_4 (Bne (RegVal (a1_0)) (RegVal (x0)) (ImmVal 2147491488)))
+
+;; Step 6:     j rd=80001eb0
+; Unsupported:     j rd=80001eb0
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

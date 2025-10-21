@@ -1,0 +1,164 @@
+; EGraph for trap_entry - Block 0
+; Total instructions: 36
+; Registers used: 38
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0)
+  (a0_0)
+  (a1)
+  (a1_0)
+  (a2_0)
+  (a2_1)
+  (a3_0)
+  (a4_0)
+  (a5_0)
+  (a6_0)
+  (a7_0)
+  (gp_0)
+  (mcause)
+  (mepc)
+  (ra_0)
+  (ra_1)
+  (s0_0)
+  (s10_0)
+  (s11_0)
+  (s1_0)
+  (s2_0)
+  (s3_0)
+  (s4_0)
+  (s5_0)
+  (s6_0)
+  (s7_0)
+  (s8_0)
+  (s9_0)
+  (sp_0)
+  (sp_1)
+  (t0_0)
+  (t1_0)
+  (t2_0)
+  (t3_0)
+  (t4_0)
+  (t5_0)
+  (t6_0)
+  (tp_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     addi rd=sp_1 rs1=sp_0 imm=-272
+(let sp_1 (Addi (RegVal (sp_0)) (ImmVal -272)))
+
+;; Step 2:     sw rs1=sp_1 rs2=ra_0 imm=4
+(let inst_1 (Sw sp_1 (RegVal (ra_0)) (ImmVal 4)))
+
+;; Step 3:     sw rs1=sp_1 rs2=sp_1 imm=8
+(let inst_2 (Sw sp_1 sp_1 (ImmVal 8)))
+
+;; Step 4:     sw rs1=sp_1 rs2=gp_0 imm=12
+(let inst_3 (Sw sp_1 (RegVal (gp_0)) (ImmVal 12)))
+
+;; Step 5:     sw rs1=sp_1 rs2=tp_0 imm=16
+(let inst_4 (Sw sp_1 (RegVal (tp_0)) (ImmVal 16)))
+
+;; Step 6:     sw rs1=sp_1 rs2=t0_0 imm=20
+(let inst_5 (Sw sp_1 (RegVal (t0_0)) (ImmVal 20)))
+
+;; Step 7:     sw rs1=sp_1 rs2=t1_0 imm=24
+(let inst_6 (Sw sp_1 (RegVal (t1_0)) (ImmVal 24)))
+
+;; Step 8:     sw rs1=sp_1 rs2=t2_0 imm=28
+(let inst_7 (Sw sp_1 (RegVal (t2_0)) (ImmVal 28)))
+
+;; Step 9:     sw rs1=sp_1 rs2=s0_0 imm=32
+(let inst_8 (Sw sp_1 (RegVal (s0_0)) (ImmVal 32)))
+
+;; Step 10:     sw rs1=sp_1 rs2=s1_0 imm=36
+(let inst_9 (Sw sp_1 (RegVal (s1_0)) (ImmVal 36)))
+
+;; Step 11:     sw rs1=sp_1 rs2=a0_0 imm=40
+(let inst_10 (Sw sp_1 (RegVal (a0_0)) (ImmVal 40)))
+
+;; Step 12:     sw rs1=sp_1 rs2=a1_0 imm=44
+(let inst_11 (Sw sp_1 (RegVal (a1_0)) (ImmVal 44)))
+
+;; Step 13:     sw rs1=sp_1 rs2=a2_0 imm=48
+(let inst_12 (Sw sp_1 (RegVal (a2_0)) (ImmVal 48)))
+
+;; Step 14:     sw rs1=sp_1 rs2=a3_0 imm=52
+(let inst_13 (Sw sp_1 (RegVal (a3_0)) (ImmVal 52)))
+
+;; Step 15:     sw rs1=sp_1 rs2=a4_0 imm=56
+(let inst_14 (Sw sp_1 (RegVal (a4_0)) (ImmVal 56)))
+
+;; Step 16:     sw rs1=sp_1 rs2=a5_0 imm=60
+(let inst_15 (Sw sp_1 (RegVal (a5_0)) (ImmVal 60)))
+
+;; Step 17:     sw rs1=sp_1 rs2=a6_0 imm=64
+(let inst_16 (Sw sp_1 (RegVal (a6_0)) (ImmVal 64)))
+
+;; Step 18:     sw rs1=sp_1 rs2=a7_0 imm=68
+(let inst_17 (Sw sp_1 (RegVal (a7_0)) (ImmVal 68)))
+
+;; Step 19:     sw rs1=sp_1 rs2=s2_0 imm=72
+(let inst_18 (Sw sp_1 (RegVal (s2_0)) (ImmVal 72)))
+
+;; Step 20:     sw rs1=sp_1 rs2=s3_0 imm=76
+(let inst_19 (Sw sp_1 (RegVal (s3_0)) (ImmVal 76)))
+
+;; Step 21:     sw rs1=sp_1 rs2=s4_0 imm=80
+(let inst_20 (Sw sp_1 (RegVal (s4_0)) (ImmVal 80)))
+
+;; Step 22:     sw rs1=sp_1 rs2=s5_0 imm=84
+(let inst_21 (Sw sp_1 (RegVal (s5_0)) (ImmVal 84)))
+
+;; Step 23:     sw rs1=sp_1 rs2=s6_0 imm=88
+(let inst_22 (Sw sp_1 (RegVal (s6_0)) (ImmVal 88)))
+
+;; Step 24:     sw rs1=sp_1 rs2=s7_0 imm=92
+(let inst_23 (Sw sp_1 (RegVal (s7_0)) (ImmVal 92)))
+
+;; Step 25:     sw rs1=sp_1 rs2=s8_0 imm=96
+(let inst_24 (Sw sp_1 (RegVal (s8_0)) (ImmVal 96)))
+
+;; Step 26:     sw rs1=sp_1 rs2=s9_0 imm=100
+(let inst_25 (Sw sp_1 (RegVal (s9_0)) (ImmVal 100)))
+
+;; Step 27:     sw rs1=sp_1 rs2=s10_0 imm=104
+(let inst_26 (Sw sp_1 (RegVal (s10_0)) (ImmVal 104)))
+
+;; Step 28:     sw rs1=sp_1 rs2=s11_0 imm=108
+(let inst_27 (Sw sp_1 (RegVal (s11_0)) (ImmVal 108)))
+
+;; Step 29:     sw rs1=sp_1 rs2=t3_0 imm=112
+(let inst_28 (Sw sp_1 (RegVal (t3_0)) (ImmVal 112)))
+
+;; Step 30:     sw rs1=sp_1 rs2=t4_0 imm=116
+(let inst_29 (Sw sp_1 (RegVal (t4_0)) (ImmVal 116)))
+
+;; Step 31:     sw rs1=sp_1 rs2=t5_0 imm=120
+(let inst_30 (Sw sp_1 (RegVal (t5_0)) (ImmVal 120)))
+
+;; Step 32:     sw rs1=sp_1 rs2=t6_0 imm=124
+(let inst_31 (Sw sp_1 (RegVal (t6_0)) (ImmVal 124)))
+
+;; Step 33:     csrr rd=a0 rs1=mcause
+; Unsupported:     csrr rd=a0 rs1=mcause
+
+;; Step 34:     csrr rd=a1 rs1=mepc
+; Unsupported:     csrr rd=a1 rs1=mepc
+
+;; Step 35:     mv rd=a2_1 rs1=sp_1
+(let a2_1 (Addi sp_1 (ImmVal 0)))
+
+;; Step 36:     jal rd=ra_1 addr=80001adc
+(let ra_1 (Jal (ImmVal 2147490524)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

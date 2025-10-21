@@ -1,0 +1,24 @@
+; EGraph for __moddi3 - Block 30
+; Total instructions: 1
+; Registers used: 3
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (s5_0)
+  (s9_0)
+  (s9_1)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     sub rd=s9_1 rs1=s9_0 rs2=s5_0
+(let s9_1 (Sub (RegVal (s9_0)) (RegVal (s5_0))))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

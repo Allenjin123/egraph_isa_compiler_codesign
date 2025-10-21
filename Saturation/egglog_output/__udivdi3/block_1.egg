@@ -1,0 +1,31 @@
+; EGraph for __udivdi3 - Block 1
+; Total instructions: 3
+; Registers used: 4
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a1_0)
+  (a2_0)
+  (a5_0)
+  (s8_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     lui rd=a5_0 imm=16
+(let a5_0 (Lui (ImmVal 16)))
+
+;; Step 2:     mv rd=s8_0 rs1=a1_0
+(let s8_0 (Addi (RegVal (a1_0)) (ImmVal 0)))
+
+;; Step 3:     bgeu rs1=a2_0 rs2=a5_0 imm=80002668
+; Unsupported:     bgeu rs1=a2_0 rs2=a5_0 imm=80002668
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

@@ -1,0 +1,27 @@
+; EGraph for printhex - Block 3
+; Total instructions: 2
+; Registers used: 3
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (ra_0)
+  (sp_0)
+  (zero_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     sb rs1=sp_0 rs2=zero_0 imm=28
+(let inst_0 (Sb (RegVal (sp_0)) (RegVal (zero_0)) (ImmVal 28)))
+
+;; Step 2:     jal rd=ra_0 addr=80001b24
+(let ra_0 (Jal (ImmVal 2147490596)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

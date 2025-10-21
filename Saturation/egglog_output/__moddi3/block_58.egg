@@ -1,0 +1,31 @@
+; EGraph for __moddi3 - Block 58
+; Total instructions: 3
+; Registers used: 4
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0_0)
+  (a1_0)
+  (s0_0)
+  (s2_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     mv rd=a0_0 rs1=s0_0
+(let a0_0 (Addi (RegVal (s0_0)) (ImmVal 0)))
+
+;; Step 2:     mv rd=a1_0 rs1=s2_0
+(let a1_0 (Addi (RegVal (s2_0)) (ImmVal 0)))
+
+;; Step 3:     j rd=80002114
+; Unsupported:     j rd=80002114
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

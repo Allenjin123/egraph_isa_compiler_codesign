@@ -1,0 +1,20 @@
+; EGraph for atol - Block 6
+; Total instructions: 1
+; Registers used: 0
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     ret
+(let inst_0 (Jalr (RegVal (ra_0)) (ImmVal 0)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

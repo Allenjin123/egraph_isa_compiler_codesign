@@ -1,0 +1,32 @@
+; EGraph for __umodsi3 - Block 2
+; Total instructions: 4
+; Registers used: 2
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0)
+  (a1)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     neg rd=a0 rs1=a0
+; Unsupported:     neg rd=a0 rs1=a0
+
+;; Step 2:     bgez rd=a1 rs1=80003060
+; Unsupported:     bgez rd=a1 rs1=80003060
+
+;; Step 3:     neg rd=a1 rs1=a1
+; Unsupported:     neg rd=a1 rs1=a1
+
+;; Step 4:     j rd=80002ff4
+; Unsupported:     j rd=80002ff4
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

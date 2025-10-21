@@ -1,0 +1,59 @@
+; EGraph for __umoddi3 - Block 80
+; Total instructions: 9
+; Registers used: 14
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0_0)
+  (a1_0)
+  (a1_1)
+  (a1_2)
+  (a1_3)
+  (a5_0)
+  (a5_1)
+  (a5_2)
+  (a6_0)
+  (s0_0)
+  (s1_0)
+  (s1_1)
+  (s4_0)
+  (s5_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     sub rd=a5_1 rs1=s1_0 rs2=a5_0
+(let a5_1 (Sub (RegVal (s1_0)) (RegVal (a5_0))))
+
+;; Step 2:     sltu rd=s1_1 rs1=s1_0 rs2=a5_1
+; Unsupported:     sltu rd=s1_1 rs1=s1_0 rs2=a5_1
+
+;; Step 3:     sub rd=a1_1 rs1=a6_0 rs2=a1_0
+(let a1_1 (Sub (RegVal (a6_0)) (RegVal (a1_0))))
+
+;; Step 4:     sub rd=a1_2 rs1=a1_1 rs2=s1_1
+(let a1_2 (Sub a1_1 (RegVal (s1_1))))
+
+;; Step 5:     sll rd=s0_0 rs1=a1_2 rs2=s5_0
+(let s0_0 (Sll a1_2 (RegVal (s5_0))))
+
+;; Step 6:     srl rd=a5_2 rs1=a5_1 rs2=s4_0
+(let a5_2 (Srl a5_1 (RegVal (s4_0))))
+
+;; Step 7:     or rd=a0_0 rs1=s0_0 rs2=a5_2
+(let a0_0 (Or s0_0 a5_2))
+
+;; Step 8:     srl rd=a1_3 rs1=a1_2 rs2=s4_0
+(let a1_3 (Srl a1_2 (RegVal (s4_0))))
+
+;; Step 9:     j rd=80002c28
+; Unsupported:     j rd=80002c28
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

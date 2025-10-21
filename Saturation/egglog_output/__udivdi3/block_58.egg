@@ -1,0 +1,32 @@
+; EGraph for __udivdi3 - Block 58
+; Total instructions: 3
+; Registers used: 5
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a5_0)
+  (s0_0)
+  (s0_1)
+  (s2_0)
+  (s3_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     add rd=s0_1 rs1=s0_0 rs2=s2_0
+(let s0_1 (Add (RegVal (s0_0)) (RegVal (s2_0))))
+
+;; Step 2:     addi rd=a5_0 rs1=s3_0 imm=-1
+(let a5_0 (Addi (RegVal (s3_0)) (ImmVal -1)))
+
+;; Step 3:     bltu rs1=s0_1 rs2=s2_0 addr=800028c0
+(let inst_2 (Bltu s0_1 (RegVal (s2_0)) (ImmVal 2147494080)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)

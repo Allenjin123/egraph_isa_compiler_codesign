@@ -106,6 +106,15 @@ class text_inst():
                             except:
                                 pass
 
+                elif op_name in ['beqz', 'bnez']:  # Pseudo branch instructions
+                    # beqz rs, addr -> beq rs, x0, addr
+                    # bnez rs, addr -> bne rs, x0, addr
+                    if len(ops) >= 1:
+                        rs1 = ops[0]
+                    if len(ops) >= 2:
+                        addr = ops[1]
+                    # For pseudo-instructions, rs2 is implicitly x0
+
                 elif op_name in ['beq', 'bne', 'blt', 'bge', 'bltu', 'bgeu']:  # B-type
                     if len(ops) >= 1:
                         rs1 = ops[0]
@@ -183,6 +192,44 @@ class text_basic_block():
                 inst = text_inst.parse_instruction(line)
                 if inst:
                     self.add_inst(inst)
+
+    def get_used_registers(self) -> set:
+        """Get all register names used in this basic block.
+
+        Returns:
+            A set of all register names (rd, rs1, rs2) used in this block.
+            For SSA form, this includes versioned names like 'sp_1', 'a0_2', etc.
+            Filters out immediates and constants.
+        """
+        registers = set()
+
+        def is_register(val):
+            """Check if a value is a register name (not an immediate/constant)"""
+            if not val:
+                return False
+            # Check if it's a pure number (immediate value)
+            if val.isdigit() or (val.startswith('-') and val[1:].isdigit()):
+                return False
+            # Check if it's a hex address
+            if val.startswith('0x') or (len(val) > 4 and all(c in '0123456789abcdef' for c in val)):
+                return False
+            # Otherwise, it's likely a register
+            return True
+
+        for inst in self.inst_list:
+            # Add destination register if it exists and is a register
+            if inst.rd and is_register(inst.rd):
+                registers.add(inst.rd)
+
+            # Add source register 1 if it exists and is a register
+            if inst.rs1 and is_register(inst.rs1):
+                registers.add(inst.rs1)
+
+            # Add source register 2 if it exists and is a register
+            if inst.rs2 and is_register(inst.rs2):
+                registers.add(inst.rs2)
+
+        return registers
 
     def __str__(self):
         """String representation of the basic block"""
@@ -329,12 +376,64 @@ def test_parsing():
     print()
 
 
+def test_register_extraction():
+    """Test register extraction from a basic block"""
+    print("Testing register extraction from basic block...")
+
+    # Create a test basic block with SSA-form instructions
+    test_block = text_basic_block("test_block")
+
+    # Add some instructions with SSA versioning
+    test_ssa_instructions = [
+        "addi sp_1, sp_0, -16",
+        "sw ra_0, 12(sp_1)",
+        "sw s0_0, 8(sp_1)",
+        "addi s0_1, sp_1, 16",
+        "lw a5_0, 0(a0_0)",
+        "addi a5_1, a5_0, 1",
+        "sw a5_1, 0(a0_0)",
+        "add a0_1, a1_0, a2_0",
+        "mul s1_1, s2_0, s3_0",
+    ]
+
+    for line in test_ssa_instructions:
+        inst = text_inst.parse_instruction(line)
+        if inst:
+            test_block.add_inst(inst)
+
+    # Get all used registers
+    used_registers = test_block.get_used_registers()
+
+    print(f"  Total instructions: {len(test_block.inst_list)}")
+    print(f"  Total unique registers: {len(used_registers)}")
+    print(f"  Registers used: {sorted(used_registers)}")
+
+    # Group by base register name (without version number)
+    base_registers = {}
+    for reg in used_registers:
+        if '_' in reg:
+            base_name = reg.split('_')[0]
+            version = reg.split('_')[1]
+            if base_name not in base_registers:
+                base_registers[base_name] = []
+            base_registers[base_name].append(int(version))
+
+    print("\n  Register versions by base name:")
+    for base_name in sorted(base_registers.keys()):
+        versions = sorted(base_registers[base_name])
+        print(f"    {base_name}: versions {versions}")
+    print()
+
+
 if __name__ == "__main__":
     # Test parsing first
     test_parsing()
 
+    # Test register extraction
+    test_register_extraction()
+
     # Check if the expected directory exists
-    dhrystone_path = "../SSA/outputs/dhrystone.riscv/sections"
+    dhrystone_path = "../SSA/outputs_ssa/dhrystone.riscv/sections"
 
     # Try alternative paths
     if not os.path.exists(dhrystone_path):
@@ -388,8 +487,18 @@ if __name__ == "__main__":
                 if block_count >= 2:
                     break
                 print(f"\n  Block {block.block_idx}:")
-                for inst in block.inst_list:
-                    print(f"    {inst}")
+
+                # Show used registers for this block
+                used_regs = block.get_used_registers()
+                print(f"    Used registers ({len(used_regs)}): {sorted(used_regs)}")
+
+                # Show first few instructions
+                print(f"    Instructions (showing first 5):")
+                for i, inst in enumerate(block.inst_list[:5]):
+                    print(f"      {inst}")
+                if len(block.inst_list) > 5:
+                    print(f"      ... ({len(block.inst_list) - 5} more instructions)")
+
                 block_count += 1
             section_count += 1
 

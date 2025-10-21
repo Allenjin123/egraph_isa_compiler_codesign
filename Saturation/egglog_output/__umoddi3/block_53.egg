@@ -1,0 +1,31 @@
+; EGraph for __umoddi3 - Block 53
+; Total instructions: 3
+; Registers used: 4
+
+(include "../../base.egg")
+
+; Register declarations for this basic block
+(datatype Reg
+  (a0_0)
+  (a1_0)
+  (s0_0)
+  (s1_0)
+)
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     mv rd=a0_0 rs1=s0_0
+(let a0_0 (Addi (RegVal (s0_0)) (ImmVal 0)))
+
+;; Step 2:     mv rd=a1_0 rs1=s1_0
+(let a1_0 (Addi (RegVal (s1_0)) (ImmVal 0)))
+
+;; Step 3:     j rd=80002c28
+; Unsupported:     j rd=80002c28
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)
