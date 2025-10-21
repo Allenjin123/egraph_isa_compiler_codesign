@@ -134,6 +134,58 @@ python analyze_blocks.py outputs/dhrystone.riscv --export block_list.txt
 
 ---
 
+#### `convert_to_ssa.py`
+**Purpose**: Convert RISC-V basic blocks to SSA (Static Single Assignment) form by versioning registers.
+
+**How it works**:
+- Each register assignment gets a unique version number (e.g., `sp_0`, `sp_1`, `sp_2`)
+- Version counters are maintained locally for each basic block
+- Handles complex cases like self-modifying instructions (e.g., `addi sp, sp, -16` → `addi sp_1, sp_0, -16`)
+
+**Usage**:
+```bash
+# Convert a single block file
+python convert_to_ssa.py outputs/dhrystone.riscv/sections/main/0.txt
+
+# Convert all blocks in a section
+python convert_to_ssa.py outputs/dhrystone.riscv/sections/main/
+
+# Convert entire program
+python convert_to_ssa.py outputs/dhrystone.riscv/
+
+# Convert ALL programs in outputs folder to a new folder
+python convert_to_ssa.py outputs -o outputs_ssa
+
+# Convert with custom output directory
+python convert_to_ssa.py outputs/dhrystone.riscv/ -o ssa_output/
+
+# Verbose mode to see register versioning details
+python convert_to_ssa.py outputs/dhrystone.riscv/ -v
+
+# Run test examples
+python convert_to_ssa.py --test
+```
+
+**Output**:
+- Creates `.ssa` files alongside original `.txt` files
+- Each register reference is versioned uniquely within its block
+- Preserves instruction semantics while ensuring single assignment
+
+**Example conversion**:
+```
+# Original (0.txt):
+addi sp, sp, -16
+sw s2, 0(sp)
+lw a5, 0(s2)
+
+# SSA form (0.ssa):
+addi sp_1, sp_0, -16
+sw s2_0, 0(sp_1)
+lw a5_0, 0(s2_0)
+```
+
+---
+
 ## Output Structure
 
 After processing, the output directory structure looks like:
@@ -145,11 +197,14 @@ outputs/
         ├── main/
         │   ├── section.txt    # Original function assembly
         │   ├── 0.txt          # Basic block 0 (cleaned)
+        │   ├── 0.ssa          # Basic block 0 in SSA form
         │   ├── 1.txt          # Basic block 1 (cleaned)
+        │   ├── 1.ssa          # Basic block 1 in SSA form
         │   └── ...
         ├── exit/
         │   ├── section.txt
         │   ├── 0.txt
+        │   ├── 0.ssa
         │   └── ...
         └── ...
 ```
@@ -164,6 +219,9 @@ cd SSA/
 
 # Process dhrystone benchmark
 python process_dump.py ../benchmark/im_inputs/dhrystone.riscv.dump
+
+# Convert to SSA form
+python convert_to_ssa.py outputs/dhrystone.riscv -v
 
 # View the results
 python analyze_blocks.py outputs/dhrystone.riscv
@@ -282,7 +340,8 @@ Typical processing times on standard hardware:
 
 ## Future Enhancements
 
-- [ ] Full SSA construction in `ssa_builder.py`
+- [x] SSA conversion with register versioning (`convert_to_ssa.py`)
+- [ ] Phi functions for SSA at block merge points
 - [ ] Data flow analysis
 - [ ] Register allocation tracking
 - [ ] Control flow graph visualization
