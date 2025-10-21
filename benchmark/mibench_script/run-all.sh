@@ -35,6 +35,8 @@ SRCDIRS="automotive/basicmath
 CURRDIR=$(pwd)
 
 # compiler
+# 默认使用 RISCV 环境变量，如果未设置则使用默认路径
+export RISCV="${RISCV:-/home/yjrcs/riscv}"
 export CC="$RISCV/bin/riscv32-unknown-elf-gcc"
 # user large or small tests
 export MIBENCH_FAST=true
@@ -68,5 +70,6 @@ do
     make OPTFLAGS="$OPTFLAGS" BIN_SUFFIX="$BIN_SUFFIX"
     ./runme_small.sh
     ./runme_large.sh
+    make clean
     cd ${CURRDIR}
 done
