@@ -102,62 +102,12 @@
 ;; STANDARD OPTIMIZATION RULES
 ;; ============================================
 
-;; === Constant Folding ===
-(rewrite (Add (LoadImm (ImmVal a)) (LoadImm (ImmVal b)))
-         (LoadImm (ImmVal (+ a b))))
-(rewrite (Sub (LoadImm (ImmVal a)) (LoadImm (ImmVal b)))
-         (LoadImm (ImmVal (- a b))))
-(rewrite (Mul (LoadImm (ImmVal a)) (LoadImm (ImmVal b)))
-         (LoadImm (ImmVal (* a b))))
-(rewrite (And (LoadImm (ImmVal a)) (LoadImm (ImmVal b)))
-         (LoadImm (ImmVal (& a b))))
-(rewrite (Or  (LoadImm (ImmVal a)) (LoadImm (ImmVal b)))
-         (LoadImm (ImmVal (| a b))))
-(rewrite (Xor (LoadImm (ImmVal a)) (LoadImm (ImmVal b)))
-         (LoadImm (ImmVal (^ a b))))
-(rewrite (Sll (LoadImm (ImmVal a)) (LoadImm (ImmVal b)))
-         (LoadImm (ImmVal (<< a b))))
-(rewrite (Srl (LoadImm (ImmVal a)) (LoadImm (ImmVal b)))
-         (LoadImm (ImmVal (>> a b))))
 
-;; === Identity Operations ===
-(rewrite (Add v (LoadImm (ImmVal 0))) v)
-(rewrite (Add (LoadImm (ImmVal 0)) v) v)
-(rewrite (Sub v (LoadImm (ImmVal 0))) v)
-(rewrite (Or  v (LoadImm (ImmVal 0))) v)
-(rewrite (Or  (LoadImm (ImmVal 0)) v) v)
-(rewrite (Xor v (LoadImm (ImmVal 0))) v)
-(rewrite (Xor (LoadImm (ImmVal 0)) v) v)
-(rewrite (Mul v (LoadImm (ImmVal 1))) v)
-(rewrite (Mul (LoadImm (ImmVal 1)) v) v)
-(rewrite (Div v (LoadImm (ImmVal 1))) v)
-(rewrite (Divu v (LoadImm (ImmVal 1))) v)
 ;; Shift by zero (immediate versions)
 (rewrite (Slli v (ImmVal 0)) v)
 (rewrite (Srli v (ImmVal 0)) v)
 (rewrite (Srai v (ImmVal 0)) v)
 
-;; === Zero Operations ===
-(rewrite (Mul v (LoadImm (ImmVal 0))) (LoadImm (ImmVal 0)))
-(rewrite (Mul (LoadImm (ImmVal 0)) v) (LoadImm (ImmVal 0)))
-(rewrite (And v (LoadImm (ImmVal 0))) (LoadImm (ImmVal 0)))
-(rewrite (And (LoadImm (ImmVal 0)) v) (LoadImm (ImmVal 0)))
-(rewrite (Div (LoadImm (ImmVal 0)) v) (LoadImm (ImmVal 0)))
-(rewrite (Divu (LoadImm (ImmVal 0)) v) (LoadImm (ImmVal 0)))
-(rewrite (Rem (LoadImm (ImmVal 0)) v) (LoadImm (ImmVal 0)))
-(rewrite (Remu (LoadImm (ImmVal 0)) v) (LoadImm (ImmVal 0)))
-
-;; === All-Ones Operations ===
-(rewrite (And v (LoadImm (ImmVal -1))) v)
-(rewrite (And (LoadImm (ImmVal -1)) v) v)
-(rewrite (Or v (LoadImm (ImmVal -1))) (LoadImm (ImmVal -1)))
-(rewrite (Or (LoadImm (ImmVal -1)) v) (LoadImm (ImmVal -1)))
-
-;; === Self Operations ===
-(rewrite (Sub v v) (LoadImm (ImmVal 0)))
-(rewrite (Xor v v) (LoadImm (ImmVal 0)))
-(rewrite (And v v) v)
-(rewrite (Or v v) v)
 
 ;; === Commutativity ===
 (rewrite (Add v1 v2) (Add v2 v1))
@@ -172,35 +122,6 @@
 (rewrite (And (And a b) c) (And a (And b c)))
 (rewrite (Or (Or a b) c) (Or a (Or b c)))
 (rewrite (Xor (Xor a b) c) (Xor a (Xor b c)))
-
-;; === Strength Reduction ===
-;; Multiplication by powers of 2 -> shifts
-(rewrite (Mul v (LoadImm (ImmVal 2))) (Slli v (ImmVal 1)))
-(rewrite (Mul v (LoadImm (ImmVal 4))) (Slli v (ImmVal 2)))
-(rewrite (Mul v (LoadImm (ImmVal 8))) (Slli v (ImmVal 3)))
-(rewrite (Mul v (LoadImm (ImmVal 16))) (Slli v (ImmVal 4)))
-(rewrite (Mul v (LoadImm (ImmVal 32))) (Slli v (ImmVal 5)))
-(rewrite (Mul v (LoadImm (ImmVal 64))) (Slli v (ImmVal 6)))
-(rewrite (Mul v (LoadImm (ImmVal 128))) (Slli v (ImmVal 7)))
-(rewrite (Mul v (LoadImm (ImmVal 256))) (Slli v (ImmVal 8)))
-(rewrite (Mul (LoadImm (ImmVal 2)) v) (Slli v (ImmVal 1)))
-(rewrite (Mul (LoadImm (ImmVal 4)) v) (Slli v (ImmVal 2)))
-(rewrite (Mul (LoadImm (ImmVal 8)) v) (Slli v (ImmVal 3)))
-(rewrite (Mul (LoadImm (ImmVal 16)) v) (Slli v (ImmVal 4)))
-
-;; Division by powers of 2 -> shifts (unsigned)
-(rewrite (Divu v (LoadImm (ImmVal 2))) (Srli v (ImmVal 1)))
-(rewrite (Divu v (LoadImm (ImmVal 4))) (Srli v (ImmVal 2)))
-(rewrite (Divu v (LoadImm (ImmVal 8))) (Srli v (ImmVal 3)))
-(rewrite (Divu v (LoadImm (ImmVal 16))) (Srli v (ImmVal 4)))
-(rewrite (Divu v (LoadImm (ImmVal 32))) (Srli v (ImmVal 5)))
-(rewrite (Divu v (LoadImm (ImmVal 64))) (Srli v (ImmVal 6)))
-(rewrite (Divu v (LoadImm (ImmVal 128))) (Srli v (ImmVal 7)))
-(rewrite (Divu v (LoadImm (ImmVal 256))) (Srli v (ImmVal 8)))
-
-;; Multiplication by -1 is negation
-(rewrite (Mul v (LoadImm (ImmVal -1))) (Sub (LoadImm (ImmVal 0)) v))
-(rewrite (Mul (LoadImm (ImmVal -1)) v) (Sub (LoadImm (ImmVal 0)) v))
 
 ;; === Instruction Decomposition ===
 
@@ -218,9 +139,6 @@
 (rewrite (Sub x1 x2)
          (Add x1 (Addi (Xori x2 (ImmVal -1)) (ImmVal 1))))
 
-;; === Comparison Optimizations ===
-(rewrite (Slt v v) (LoadImm (ImmVal 0)))   ; v < v is always false
-(rewrite (Sltu v v) (LoadImm (ImmVal 0)))  ; v < v is always false (unsigned)
 
 ;; === Load/Store Optimizations ===
 ;; Combine adjacent loads/stores with same base
@@ -249,31 +167,3 @@
          (Or a (And b c)))
 (rewrite (Or (And a b) (And a c))
          (And a (Or b c)))
-
-;; === Double negation ===
-(rewrite (Sub (LoadImm (ImmVal 0)) (Sub (LoadImm (ImmVal 0)) v))
-         v)
-
-;; === Modulo by power of 2 -> AND with mask ===
-(rewrite (Remu v (LoadImm (ImmVal 2))) (Andi v (ImmVal 1)))
-(rewrite (Remu v (LoadImm (ImmVal 4))) (Andi v (ImmVal 3)))
-(rewrite (Remu v (LoadImm (ImmVal 8))) (Andi v (ImmVal 7)))
-(rewrite (Remu v (LoadImm (ImmVal 16))) (Andi v (ImmVal 15)))
-(rewrite (Remu v (LoadImm (ImmVal 32))) (Andi v (ImmVal 31)))
-
-;; === Bit manipulation patterns ===
-;; Set lowest bit: x | 1
-;; Clear lowest bit: x & ~1
-;; Toggle lowest bit: x ^ 1
-;; Check if even: (x & 1) == 0
-;; Check if odd: (x & 1) == 1
-
-;; === Min/Max patterns (using branches) ===
-;; max(a, b) = (a >= b) ? a : b
-;; min(a, b) = (a < b) ? a : b
-
-;; === Absolute value (for signed) ===
-;; abs(x) = (x < 0) ? -x : x
-;; Which becomes: (x < 0) ? (0 - x) : x
-
-;; End of base.egg
