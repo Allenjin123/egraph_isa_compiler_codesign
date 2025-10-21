@@ -40,6 +40,7 @@ env/
 
 # SSA Processing Outputs
 outputs/
+outputs_ssa/
 sections/
 dhrystone_sections/
 *_sections/
