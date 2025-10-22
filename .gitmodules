@@ -1,0 +1,3 @@
+[submodule "riscv_greenthumb"]
+	path = riscv_greenthumb
+	url = https://github.com/Allenjin123/riscv_greenthumb.git
