@@ -94,7 +94,7 @@
 
     ;; === Special Values ===
     (LoadImm Imm)             ; Load immediate value
-    (RegVal Reg) 
+    (RegVal String)           ; Register value reference (takes register name as string)
     (Nop))                    ; No operation
 
 ;; ============================================
