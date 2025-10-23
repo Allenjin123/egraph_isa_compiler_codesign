@@ -61,6 +61,17 @@ class text_inst():
         # Initialize instruction components
         rd, rs1, rs2, imm, addr = None, None, None, None, None
 
+        # Handle pseudo-instructions with no operands
+        if op_name == 'ret':
+            # ret -> jalr x0, ra, 0
+            # Mark that ra is used (as rs1)
+            # In SSA form, ret uses ra_0 (the input ra value)
+            rs1 = 'ra_0'
+            imm = 0
+        elif op_name == 'nop':
+            # nop is a no-op, no registers used
+            pass
+
         # Parse operands based on instruction type
         if operands:
             # Handle memory operations (e.g., "lw rd, offset(rs1)")
@@ -148,6 +159,20 @@ class text_inst():
                             imm = int(match.group(1))
                             rs1 = match.group(2)
 
+                elif op_name in ['mv', 'li']:  # Pseudo instructions
+                    # mv rd, rs -> addi rd, rs, 0
+                    # li rd, imm -> addi rd, x0, imm
+                    if len(ops) >= 1:
+                        rd = ops[0]
+                    if len(ops) >= 2:
+                        if op_name == 'mv':
+                            rs1 = ops[1]
+                        else:  # li
+                            try:
+                                imm = int(ops[1], 0)
+                            except:
+                                rs1 = ops[1]  # Could be register form
+
                 else:  # R-type and others
                     if len(ops) >= 1:
                         rd = ops[0]
@@ -193,6 +218,19 @@ class text_basic_block():
                 if inst:
                     self.add_inst(inst)
 
+    def _is_register(self, val):
+        """Check if a value is a register name (not an immediate/constant)"""
+        if not val:
+            return False
+        # Check if it's a pure number (immediate value)
+        if val.isdigit() or (val.startswith('-') and val[1:].isdigit()):
+            return False
+        # Check if it's a hex address
+        if val.startswith('0x') or (len(val) > 4 and all(c in '0123456789abcdef' for c in val)):
+            return False
+        # Otherwise, it's likely a register
+        return True
+
     def get_used_registers(self) -> set:
         """Get all register names used in this basic block.
 
@@ -203,33 +241,47 @@ class text_basic_block():
         """
         registers = set()
 
-        def is_register(val):
-            """Check if a value is a register name (not an immediate/constant)"""
-            if not val:
-                return False
-            # Check if it's a pure number (immediate value)
-            if val.isdigit() or (val.startswith('-') and val[1:].isdigit()):
-                return False
-            # Check if it's a hex address
-            if val.startswith('0x') or (len(val) > 4 and all(c in '0123456789abcdef' for c in val)):
-                return False
-            # Otherwise, it's likely a register
-            return True
-
         for inst in self.inst_list:
             # Add destination register if it exists and is a register
-            if inst.rd and is_register(inst.rd):
+            if inst.rd and self._is_register(inst.rd):
                 registers.add(inst.rd)
 
             # Add source register 1 if it exists and is a register
-            if inst.rs1 and is_register(inst.rs1):
+            if inst.rs1 and self._is_register(inst.rs1):
                 registers.add(inst.rs1)
 
             # Add source register 2 if it exists and is a register
-            if inst.rs2 and is_register(inst.rs2):
+            if inst.rs2 and self._is_register(inst.rs2):
                 registers.add(inst.rs2)
 
         return registers
+
+    def get_input_output_registers(self) -> tuple:
+        """Get input and output registers separately.
+
+        Returns:
+            (input_registers, output_registers) where:
+            - input_registers: registers used (rs1/rs2) but never defined (rd) in this block
+            - output_registers: registers defined (rd) in this block
+        """
+        output_registers = set()
+        used_registers = set()
+
+        for inst in self.inst_list:
+            # Collect output registers (defined by rd)
+            if inst.rd and self._is_register(inst.rd):
+                output_registers.add(inst.rd)
+
+            # Collect all used registers (rs1, rs2)
+            if inst.rs1 and self._is_register(inst.rs1):
+                used_registers.add(inst.rs1)
+            if inst.rs2 and self._is_register(inst.rs2):
+                used_registers.add(inst.rs2)
+
+        # Input registers are used but never defined in this block
+        input_registers = used_registers - output_registers
+
+        return input_registers, output_registers
 
     def __str__(self):
         """String representation of the basic block"""
