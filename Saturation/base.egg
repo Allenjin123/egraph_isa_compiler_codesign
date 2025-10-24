@@ -14,7 +14,6 @@
 
 ;; Immediate values
 (datatype Imm (ImmVal i64))
-
 ;; ============================================
 ;; RV32I BASE INTEGER INSTRUCTIONS
 ;; ============================================
@@ -95,8 +94,13 @@
 
     ;; === Special Values ===
     (LoadImm Imm)             ; Load immediate value
-    (RegVal Reg) 
-    (Nop))                    ; No operation
+    (RegVal String)           ; Register value reference (takes register name as string)
+    (Nop)                     ; No operation
+
+    ;; === Instruction Sequences ===
+    ;; Seq2 is a composite instruction (2-instruction macro)
+    ;; This allows rewriting single instructions as multi-instruction sequences
+    (Seq2 Inst Inst))         ; Sequence of 2 instructions
 
 ;; ============================================
 ;; STANDARD OPTIMIZATION RULES
@@ -150,6 +154,54 @@
 (rewrite (Bne v v target) (Nop))           ; Never taken
 (rewrite (Blt v v target) (Nop))           ; Never taken
 (rewrite (Bge v v target) (Jal target))    ; Always taken
+(rewrite (Bltu v v target) (Nop))          ; Never taken (unsigned)
+(rewrite (Bgeu v v target) (Jal target))   ; Always taken (unsigned)
+
+;; Commutativity of equality/inequality
+(rewrite (Beq a b target) (Beq b a target))
+(rewrite (Bne a b target) (Bne b a target))
+
+;; Expressing signed comparisons in reverse
+;; a < b is equivalent to b > a, which is bge b, a, target (with swapped operands)
+(rewrite (Blt a b target) (Bge b a target))
+;; Similarly for unsigned
+(rewrite (Bltu a b target) (Bgeu b a target))
+
+;; Branch after XOR with -1 (bitwise NOT)
+;; If a XOR b == 0, then a == b
+;; This shows rewrite can work across arithmetic and branches
+(rewrite (Beq (Xor a b) (LoadImm (ImmVal 0)) target)
+         (Beq a b target))
+
+;; === Branch Sequence Rewrites ===
+;; These show how branch instructions can be implemented as 2-instruction sequences
+;; Both sides are Inst (Seq2 is now an Inst constructor), so no type mismatch
+
+;; beq a, b, target  <==>  bne a, b, 4; jal target
+;; "If equal, jump to target" <==> "If not equal, skip next inst; jump to target"
+(birewrite (Beq a b target)
+           (Seq2 (Bne a b (ImmVal 4)) (Jal target)))
+
+;; bne a, b, target  <==>  beq a, b, 4; jal target
+;; "If not equal, jump to target" <==> "If equal, skip next inst; jump to target"
+(birewrite (Bne a b target)
+           (Seq2 (Beq a b (ImmVal 4)) (Jal target)))
+
+;; blt a, b, target  <==>  bge a, b, 4; jal target
+(birewrite (Blt a b target)
+           (Seq2 (Bge a b (ImmVal 4)) (Jal target)))
+
+;; bge a, b, target  <==>  blt a, b, 4; jal target
+(birewrite (Bge a b target)
+           (Seq2 (Blt a b (ImmVal 4)) (Jal target)))
+
+;; bltu a, b, target  <==>  bgeu a, b, 4; jal target
+(birewrite (Bltu a b target)
+           (Seq2 (Bgeu a b (ImmVal 4)) (Jal target)))
+
+;; bgeu a, b, target  <==>  bltu a, b, 4; jal target
+(birewrite (Bgeu a b target)
+           (Seq2 (Bltu a b (ImmVal 4)) (Jal target)))
 
 ;; === De Morgan's Laws ===
 (rewrite (Xori (And a b) (ImmVal -1))
