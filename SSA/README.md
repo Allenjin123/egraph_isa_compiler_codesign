@@ -20,7 +20,7 @@
 ### 最简单的使用方式（推荐）
 
 ```bash
-cd /home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/SSA
+cd /path/to/SSA
 
 # 处理单个 dump 文件（一键完成解析、分割、清理）
 python process_dump.py ../benchmark/i_inputs/multiply.riscv.dump
