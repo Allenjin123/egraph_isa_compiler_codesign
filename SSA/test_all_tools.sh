@@ -24,7 +24,7 @@ echo ""
 echo "=========================================="
 echo "Step 1: Process dump file"
 echo "=========================================="
-python process_dump.py /home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/benchmark/benchmark/automotive/bitcount/bitcnts_small_O3.dump -v
+python process_dump.py ../benchmark/automotive/bitcount/bitcnts_small_O3.dump -v -s main __adddf3
 echo ""
 
 # ========================================

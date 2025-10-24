@@ -17,7 +17,7 @@ CURRENT_DIR = Path(__file__).resolve().parent
 if str(CURRENT_DIR) not in sys.path:
     sys.path.insert(0, str(CURRENT_DIR))
 
-from util import BRANCH_INSTRUCTIONS, is_branch_mnemonic
+from util import BRANCH_INSTRUCTIONS, is_branch_mnemonic, is_pseudo_mnemonic
 
 
 class CFGBuilder:
