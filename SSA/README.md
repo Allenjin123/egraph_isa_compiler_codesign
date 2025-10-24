@@ -1,356 +1,900 @@
-# SSA Processing Pipeline for RISC-V Assembly
+# RISC-V 汇编 SSA 处理工具链
 
-This directory contains tools for processing RISC-V assembly dumps into SSA (Static Single Assignment) form, organized as basic blocks for compiler optimization and analysis.
+这个目录包含一套完整的工具，用于将 RISC-V 汇编 dump 文件处理成 SSA（静态单赋值）形式，并进行各种编译器级别的分析。
 
-## Overview
+---
 
-The SSA pipeline processes RISC-V assembly dumps through three stages:
-1. **Parse sections** - Extract functions from dump files
-2. **Split basic blocks** - Divide functions into basic blocks at control flow boundaries
-3. **Strip prefixes** - Clean instructions for easier processing
+## 📋 目录
 
-## Files Description
+1. [快速开始](#快速开始)
+2. [工具列表](#工具列表)
+3. [完整工作流程](#完整工作流程)
+4. [详细使用说明](#详细使用说明)
+5. [输出目录结构](#输出目录结构)
+6. [故障排除](#故障排除)
 
-### Core Pipeline Files
+---
 
-#### `process_dump.py`
-**Purpose**: Main entry point for processing RISC-V assembly dumps through the complete pipeline.
+## 🚀 快速开始
 
-**Usage**:
+### 最简单的使用方式（推荐）
+
 ```bash
-# Process a single dump file
-python process_dump.py <dump_file> [options]
+cd /home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/SSA
 
-# Examples:
-python process_dump.py ../benchmark/im_inputs/dhrystone.riscv.dump
-python process_dump.py input.dump --output my_output --verbose
+# 处理单个 dump 文件（一键完成解析、分割、清理）
+python process_dump.py ../benchmark/i_inputs/multiply.riscv.dump
 
-# Process all dumps in a directory
-python process_dump.py --batch ../benchmark/im_inputs/
+# 查看处理结果
+python analyze_blocks.py outputs/multiply.riscv
 
-# List basic blocks from processed output
-python process_dump.py --list outputs/dhrystone.riscv --max-display 20
+# 转换为 SSA 形式
+python convert_to_ssa.py outputs/multiply.riscv -v
 ```
 
-**Options**:
-- `-o, --output`: Specify output directory (default: `outputs/<filename>`)
-- `-b, --batch`: Process all dump files in a directory
-- `-l, --list`: List basic blocks from a processed output
-- `-v, --verbose`: Print detailed progress
-- `--max-display`: Maximum blocks to display (default: 10)
+### 完整分析流程（推荐）
 
----
-
-#### `parse_sections.py`
-**Purpose**: Extracts individual functions/sections from assembly dump files.
-
-**How it works**:
-- Identifies section headers (e.g., `000100b4 <exit>:`)
-- Creates a directory for each function
-- Saves assembly code to `section.txt` in each directory
-
-**Standalone usage**:
-```python
-from parse_sections import parse_dump_file, create_folders_and_files
-
-sections = parse_dump_file("input.dump")
-create_folders_and_files(sections, "output_dir")
-```
-
----
-
-#### `split_basic_blocks.py`
-**Purpose**: Divides functions into basic blocks for control flow analysis.
-
-**How it works**:
-- Identifies control flow instructions (branches, jumps, calls)
-- Creates new blocks at jump targets and after branches
-- Numbers blocks sequentially (0.txt, 1.txt, etc.)
-
-**Standalone usage**:
-```python
-from split_basic_blocks import BasicBlockSplitter
-
-splitter = BasicBlockSplitter()
-splitter.process_section_file("sections/main")
-# or process all sections:
-splitter.process_all_sections("sections/")
-```
-
----
-
-#### `strip_prefixes.py`
-**Purpose**: Cleans assembly instructions by removing addresses and machine code.
-
-**What it removes**:
-- Address prefixes (e.g., `100b4:`)
-- Machine code hex values
-- Comments after `#`
-- Symbol annotations in `<>`
-
-**Standalone usage**:
 ```bash
-# Strip prefixes from all basic blocks in-place
-python strip_prefixes.py --sections-dir outputs/dhrystone.riscv/sections
+# 1. 处理 dump 文件
+python process_dump.py ../benchmark/i_inputs/multiply.riscv.dump
 
-# Dry run (preview without modifying)
-python strip_prefixes.py --sections-dir outputs/dhrystone.riscv/sections --dry-run
+# 2. ⭐ 一键完成所有分析（CFG + DEF/USE + Liveness）
+python analyze_all.py outputs/multiply.riscv/sections/ -v
+
+# 3. 查看某个函数的分析结果
+python view_liveness.py outputs/multiply.riscv/sections/main/ --all
+
+# 4. 转换为 SSA
+python convert_to_ssa.py outputs/multiply.riscv/ -v
+```
+
+### 完整分析流程（分步执行）
+
+如果需要分步控制，可以单独运行各个工具：
+
+```bash
+# 1. 处理 dump 文件
+python process_dump.py ../benchmark/i_inputs/multiply.riscv.dump
+
+# 2. 构建控制流图
+python build_cfg.py outputs/multiply.riscv/sections/ -v
+
+# 3. 分析 DEF/USE 关系
+python analyze_defuse.py outputs/multiply.riscv/sections/ -v
+
+# 4. 活跃性分析
+python analyze_liveness.py outputs/multiply.riscv/sections/ -v
+
+# 5. 查看某个函数的分析结果
+python view_liveness.py outputs/multiply.riscv/sections/main/ --all
+
+# 6. 转换为 SSA
+python convert_to_ssa.py outputs/multiply.riscv/ -v
 ```
 
 ---
 
-#### `analyze_blocks.py`
-**Purpose**: Analyze and generate statistics about processed basic blocks.
+## 📚 工具列表
 
-**Usage**:
-```bash
-# Analyze basic blocks
-python analyze_blocks.py outputs/dhrystone.riscv
+### 🔧 基础处理工具
 
-# Export block list to file
-python analyze_blocks.py outputs/dhrystone.riscv --export block_list.txt
+| 文件 | 功能 | 使用场景 |
+|------|------|----------|
+| `process_dump.py` | **主处理工具**，一键完成解析、分割、清理 | ⭐ 推荐首选，最常用 |
+| `parse_sections.py` | 从 dump 文件提取函数（section） | 单独使用场景少见 |
+| `split_basic_blocks.py` | 将函数分割成基本块 | 单独使用场景少见 |
+| `strip_prefixes.py` | 清理汇编指令（去地址、机器码等） | 单独使用场景少见 |
+| `analyze_blocks.py` | 统计基本块信息（大小、数量等） | 查看处理结果统计 |
+
+### 📊 高级分析工具
+
+| 文件 | 功能 | 依赖 | 输出文件 |
+|------|------|------|----------|
+| `analyze_all.py` | **⭐ 一键分析工具**（自动运行 CFG + DEF/USE + Liveness） | 基本块 | 三个 .json 文件 |
+| `build_cfg.py` | 构建控制流图（CFG） | 基本块 | `cfg.json` |
+| `analyze_defuse.py` | 分析寄存器 DEF/USE 关系 | 基本块 | `defuse.json` |
+| `analyze_liveness.py` | 活跃性分析（寄存器生命期） | CFG + DEF/USE | `liveness.json` |
+| `view_liveness.py` | 查看活跃性分析结果 | `liveness.json` | - |
+| `visualize_cfg.py` | 可视化控制流图 | `cfg.json` | - |
+
+### 🔄 SSA 转换工具
+
+| 文件 | 功能 | 说明 |
+|------|------|------|
+| `convert_to_ssa.py` | 转换为 SSA 形式 | 为每个寄存器赋值添加版本号 |
+
+### 📦 工具库
+
+| 文件 | 功能 |
+|------|------|
+| `util.py` | 共享的工具函数和常量（分支指令集等） |
+
+---
+
+## 🔄 完整工作流程
+
+### 流程图
+
+```
+RISC-V 可执行文件
+     |
+     | objdump -d
+     ↓
+.dump 文件 (汇编 dump)
+     |
+     | process_dump.py (一键处理)
+     ↓
+基本块文件 (.txt)
+     |
+     ├─→ build_cfg.py ────→ cfg.json
+     |
+     ├─→ analyze_defuse.py ─→ defuse.json
+     |                              |
+     |                              ↓
+     └─→ (cfg.json + defuse.json) ─→ analyze_liveness.py ─→ liveness.json
+                                                |
+                                                ↓
+                                          view_liveness.py
+                                          visualize_cfg.py
+     
+基本块文件 (.txt)
+     |
+     | convert_to_ssa.py
+     ↓
+SSA 文件 (.ssa)
 ```
 
-**Output includes**:
-- Block size distribution
-- Instruction counts per section
-- Largest/smallest blocks
-- Detailed statistics
-
 ---
 
-#### `util.py`
-**Purpose**: Shared utilities and constants for RISC-V instruction processing.
+## 📖 详细使用说明
 
-**Contents**:
-- `BRANCH_INSTRUCTIONS`: Set of control flow instructions
-- `is_branch_mnemonic()`: Check if instruction is a branch
-- Common helper functions
+### 1️⃣ 主处理工具：`process_dump.py`
 
----
+这是**最常用的工具**，自动完成：解析 dump → 分割基本块 → 清理指令。
 
-#### `ssa_builder.py`
-**Purpose**: Placeholder for future SSA construction logic (currently empty).
+#### 基本用法
 
----
-
-#### `convert_to_ssa.py`
-**Purpose**: Convert RISC-V basic blocks to SSA (Static Single Assignment) form by versioning registers.
-
-**How it works**:
-- Each register assignment gets a unique version number (e.g., `sp_0`, `sp_1`, `sp_2`)
-- Version counters are maintained locally for each basic block
-- Handles complex cases like self-modifying instructions (e.g., `addi sp, sp, -16` → `addi sp_1, sp_0, -16`)
-
-**Usage**:
 ```bash
-# Convert a single block file
-python convert_to_ssa.py outputs/dhrystone.riscv/sections/main/0.txt
+# 处理单个文件
+python process_dump.py ../benchmark/i_inputs/multiply.riscv.dump
 
-# Convert all blocks in a section
-python convert_to_ssa.py outputs/dhrystone.riscv/sections/main/
+# 指定输出目录
+python process_dump.py ../benchmark/i_inputs/multiply.riscv.dump -o my_output
 
-# Convert entire program
-python convert_to_ssa.py outputs/dhrystone.riscv/
+# 详细输出模式
+python process_dump.py ../benchmark/i_inputs/multiply.riscv.dump -v
 
-# Convert ALL programs in outputs folder to a new folder
-python convert_to_ssa.py outputs -o outputs_ssa
+# 批量处理整个目录的所有 dump 文件
+python process_dump.py --batch ../benchmark/i_inputs/
 
-# Convert with custom output directory
-python convert_to_ssa.py outputs/dhrystone.riscv/ -o ssa_output/
+# 查看已处理的基本块列表
+python process_dump.py --list outputs/multiply.riscv --max-display 20
+```
 
-# Verbose mode to see register versioning details
-python convert_to_ssa.py outputs/dhrystone.riscv/ -v
+#### 输出
 
-# Run test examples
+```
+============================================================
+Processing: multiply.riscv.dump
+Output directory: outputs/multiply.riscv
+============================================================
+✓ Created 15 section folders
+✓ Created 42 basic blocks total
+✓ Cleaned 42 basic block files
+
+============================================================
+Processing Complete!
+  Sections: 15
+  Basic Blocks: 42
+  Output: outputs/multiply.riscv
+============================================================
+```
+
+---
+
+### 2️⃣ 统计工具：`analyze_blocks.py`
+
+查看基本块的统计信息。
+
+```bash
+# 分析基本块统计
+python analyze_blocks.py outputs/multiply.riscv
+
+# 导出基本块列表到文件
+python analyze_blocks.py outputs/multiply.riscv --export block_list.txt
+```
+
+**输出示例：**
+```
+======================================================================
+BASIC BLOCKS ANALYSIS REPORT
+======================================================================
+
+OVERALL STATISTICS:
+  Total sections: 15
+  Total basic blocks: 42
+  Total instructions: 328
+  Average block size: 7.81 instructions
+
+======================================================================
+SECTION BREAKDOWN (Top 10 by instruction count):
+======================================================================
+Section                        Blocks    Instructions      Avg Size
+----------------------------------------------------------------------
+multiply                           12              89         7.42
+main                                8              56         7.00
+...
+```
+
+---
+
+### 3️⃣ ⭐ 一键分析工具：`analyze_all.py`（推荐）
+
+**这是最方便的分析工具**，自动完成 CFG、DEF/USE、Liveness 三步分析。
+
+```bash
+# 分析单个 section
+python analyze_all.py outputs/multiply.riscv/sections/main/ -v
+
+# 批量分析所有 sections（自动跳过已分析的）
+python analyze_all.py outputs/multiply.riscv/sections/
+
+# 强制重新分析（即使已存在分析文件）
+python analyze_all.py outputs/multiply.riscv/sections/ --force
+
+# 详细输出模式
+python analyze_all.py outputs/multiply.riscv/sections/ -v
+```
+
+**输出示例（批量分析）：**
+```
+============================================================
+批量分析: outputs/multiply.riscv/sections
+============================================================
+
+找到 37 个 sections
+
+分析: __divsi3... ✓
+分析: __moddi3... ✓
+分析: main... ✓
+...
+
+============================================================
+分析完成
+============================================================
+✓ 成功: 37
+```
+
+**生成文件：** 每个 section 目录下会生成 `cfg.json`、`defuse.json`、`liveness.json`
+
+**优点：**
+- ✅ 一个命令完成三步分析
+- ✅ 自动管理依赖关系
+- ✅ 智能跳过已分析的 sections（节省时间）
+- ✅ 批量处理所有 sections
+
+---
+
+### 4️⃣ 控制流图：`build_cfg.py`
+
+构建控制流图，分析基本块之间的跳转关系。
+
+```bash
+# 为单个 section 构建 CFG
+python build_cfg.py outputs/multiply.riscv/sections/main/ -v
+
+# 为所有 sections 构建 CFG
+python build_cfg.py outputs/multiply.riscv/sections/ -v
+
+# 可视化 CFG
+python visualize_cfg.py outputs/multiply.riscv/sections/main/cfg.json --graph
+
+# 查看所有基本块详情
+python visualize_cfg.py outputs/multiply.riscv/sections/main/cfg.json --blocks
+
+# 查找两个块之间的路径
+python visualize_cfg.py outputs/multiply.riscv/sections/main/cfg.json --path 0 5
+```
+
+**生成文件：** 每个 section 目录下会生成 `cfg.json`
+
+---
+
+### 5️⃣ DEF/USE 分析：`analyze_defuse.py`
+
+分析每个基本块中寄存器的定义（写入）和使用（读取）关系。
+
+```bash
+# 分析单个 section
+python analyze_defuse.py outputs/multiply.riscv/sections/main/ -v
+
+# 分析所有 sections
+python analyze_defuse.py outputs/multiply.riscv/sections/ -v
+```
+
+**生成文件：** 每个 section 目录下会生成 `defuse.json`
+
+**输出格式：**
+```json
+{
+  "0": {
+    "GEN": ["a0", "a1"],
+    "KILL": ["sp", "ra"],
+    "USE_all": ["a0", "a1", "sp"],
+    "DEF_all": ["sp", "ra", "s0"]
+  }
+}
+```
+
+---
+
+### 6️⃣ 活跃性分析：`analyze_liveness.py`
+
+基于 CFG 和 DEF/USE 信息，计算每个基本块入口和出口处的活跃寄存器。
+
+```bash
+# 分析单个 section（需要先运行 build_cfg.py 和 analyze_defuse.py）
+python analyze_liveness.py outputs/multiply.riscv/sections/main/ -v
+
+# 分析所有 sections
+python analyze_liveness.py outputs/multiply.riscv/sections/ -v
+
+# 查看分析结果（摘要）
+python view_liveness.py outputs/multiply.riscv/sections/main/
+
+# 查看特定块的详细信息
+python view_liveness.py outputs/multiply.riscv/sections/main/ --block 0
+
+# 查看所有块
+python view_liveness.py outputs/multiply.riscv/sections/main/ --all --max 10
+
+# 查找高寄存器压力的块（LIVE_OUT >= 12）
+python view_liveness.py outputs/multiply.riscv/sections/main/ --pressure 12
+```
+
+**生成文件：** 每个 section 目录下会生成 `liveness.json`
+
+**输出示例：**
+```
+======================================================================
+活跃性分析摘要
+======================================================================
+
+基本块数量: 12
+入口块: ['0']
+出口块: ['11']
+
+寄存器压力统计:
+  平均 LIVE_IN:    4.2 个寄存器
+  平均 LIVE_OUT:   3.8 个寄存器
+  平均空闲:       25.5 个寄存器
+
+  最大 LIVE_IN:  8 个寄存器
+  最大 LIVE_OUT: 7 个寄存器
+  最小空闲:      22 个寄存器
+```
+
+---
+
+### 7️⃣ SSA 转换：`convert_to_ssa.py`
+
+将基本块转换为 SSA 形式，为每个寄存器赋值添加唯一的版本号。
+
+```bash
+# 转换单个基本块文件
+python convert_to_ssa.py outputs/multiply.riscv/sections/main/basic_blocks/0.txt
+
+# 转换整个 section
+python convert_to_ssa.py outputs/multiply.riscv/sections/main/ -v
+
+# 转换整个程序
+python convert_to_ssa.py outputs/multiply.riscv/ -v
+
+# 转换所有程序到新目录
+python convert_to_ssa.py outputs/ -o outputs_ssa
+
+# 运行测试示例
 python convert_to_ssa.py --test
 ```
 
-**Output**:
-- Creates `.ssa` files alongside original `.txt` files
-- Each register reference is versioned uniquely within its block
-- Preserves instruction semantics while ensuring single assignment
+**转换示例：**
 
-**Example conversion**:
 ```
-# Original (0.txt):
+原始 (basic_blocks/0.txt):
 addi sp, sp, -16
-sw s2, 0(sp)
-lw a5, 0(s2)
+sw ra, 12(sp)
+lw a5, 0(a0)
+addi a5, a5, 1
+sw a5, 0(a0)
 
-# SSA form (0.ssa):
+SSA 形式 (basic_blocks_ssa/0.txt):
 addi sp_1, sp_0, -16
-sw s2_0, 0(sp_1)
-lw a5_0, 0(s2_0)
+sw ra_0, 12(sp_1)
+lw a5_0, 0(a0_0)
+addi a5_1, a5_0, 1
+sw a5_1, 0(a0_0)
 ```
 
 ---
 
-## Output Structure
+## 📁 输出目录结构
 
-After processing, the output directory structure looks like:
+处理后的输出目录结构如下：
 
 ```
 outputs/
-└── dhrystone.riscv/
+└── multiply.riscv/
     └── sections/
         ├── main/
-        │   ├── section.txt    # Original function assembly
-        │   ├── 0.txt          # Basic block 0 (cleaned)
-        │   ├── 0.ssa          # Basic block 0 in SSA form
-        │   ├── 1.txt          # Basic block 1 (cleaned)
-        │   ├── 1.ssa          # Basic block 1 in SSA form
-        │   └── ...
-        ├── exit/
+        │   ├── section.txt          # 原始函数汇编
+        │   ├── cfg.json            # 控制流图
+        │   ├── defuse.json         # DEF/USE 信息
+        │   ├── liveness.json       # 活跃性信息
+        │   ├── basic_blocks/       # 原始基本块目录
+        │   │   ├── 0.txt           # 基本块 0（清理后）
+        │   │   ├── 1.txt           # 基本块 1
+        │   │   └── ...
+        │   └── basic_blocks_ssa/   # SSA 基本块目录
+        │       ├── 0.txt           # 基本块 0（SSA 形式）
+        │       ├── 1.txt           # 基本块 1（SSA 形式）
+        │       └── ...
+        ├── multiply/
         │   ├── section.txt
-        │   ├── 0.txt
-        │   ├── 0.ssa
-        │   └── ...
+        │   ├── cfg.json
+        │   ├── defuse.json
+        │   ├── liveness.json
+        │   ├── basic_blocks/
+        │   │   └── ...
+        │   └── basic_blocks_ssa/
+        │       └── ...
         └── ...
 ```
 
-## Complete Workflow Examples
+**重要说明：**
+- `basic_blocks/` 包含原始的、清理过的汇编代码
+- `basic_blocks_ssa/` 包含转换后的 SSA 形式代码
+- SSA 文件保持 `.txt` 扩展名（不是 `.ssa`）
+- 两个目录的文件名一一对应（如 `0.txt` 对应 `0.txt`）
 
-### 1. Process a Single Benchmark
+---
 
-```bash
-# Navigate to SSA directory
-cd SSA/
+## 🎯 常见使用场景
 
-# Process dhrystone benchmark
-python process_dump.py ../benchmark/im_inputs/dhrystone.riscv.dump
-
-# Convert to SSA form
-python convert_to_ssa.py outputs/dhrystone.riscv -v
-
-# View the results
-python analyze_blocks.py outputs/dhrystone.riscv
-
-# List specific blocks
-python process_dump.py --list outputs/dhrystone.riscv
-```
-
-### 2. Batch Process Multiple Benchmarks
+### 场景 1：快速处理并查看统计信息
 
 ```bash
-# Process all dumps in benchmark directory
-python process_dump.py --batch ../benchmark/im_inputs/
+# 1. 处理 dump 文件
+python process_dump.py ../benchmark/i_inputs/multiply.riscv.dump
 
-# Process automotive benchmarks
-python process_dump.py --batch ../benchmark/automotive/basicmath/
+# 2. 查看统计
+python analyze_blocks.py outputs/multiply.riscv
 ```
 
-### 3. Custom Processing Pipeline
+---
 
-```python
-# Python script for custom processing
-import sys
-sys.path.append('.')
-
-from process_dump import process_single_dump
-
-# Process with custom settings
-stats = process_single_dump(
-    "input.dump",
-    output_base_dir="custom_output",
-    verbose=True
-)
-
-print(f"Processed {stats['sections']} sections")
-print(f"Created {stats['basic_blocks']} basic blocks")
-```
-
-### 4. Generate Current Outputs
-
-To generate the current outputs folder with dhrystone example:
+### 场景 2：完整的编译器分析流程（推荐）
 
 ```bash
-# From the SSA directory
-cd /home/allenjin/Codes/egraph_isa_compiler_codesign/SSA
+# 1. 基础处理
+python process_dump.py ../benchmark/i_inputs/multiply.riscv.dump -v
 
-# Process dhrystone benchmark
-python process_dump.py ../benchmark/im_inputs/dhrystone.riscv.dump
+# 2. ⭐ 一键完成所有分析
+python analyze_all.py outputs/multiply.riscv/sections/ -v
 
-# The output will be in:
-# outputs/dhrystone.riscv/sections/
-
-# To verify the output
-python analyze_blocks.py outputs/dhrystone.riscv
+# 3. 查看 main 函数的分析结果
+python view_liveness.py outputs/multiply.riscv/sections/main/ --all
+python visualize_cfg.py outputs/multiply.riscv/sections/main/cfg.json --graph
 ```
 
-## Input Requirements
-
-The pipeline expects RISC-V assembly dump files generated by `objdump`:
+### 场景 2b：完整的编译器分析流程（分步执行）
 
 ```bash
-# Generate a dump file from an executable
+# 1. 基础处理
+python process_dump.py ../benchmark/i_inputs/multiply.riscv.dump -v
+
+# 2. 构建控制流图
+python build_cfg.py outputs/multiply.riscv/sections/ -v
+
+# 3. DEF/USE 分析
+python analyze_defuse.py outputs/multiply.riscv/sections/ -v
+
+# 4. 活跃性分析
+python analyze_liveness.py outputs/multiply.riscv/sections/ -v
+
+# 5. 查看 main 函数的分析结果
+python view_liveness.py outputs/multiply.riscv/sections/main/ --all
+python visualize_cfg.py outputs/multiply.riscv/sections/main/cfg.json --graph
+```
+
+---
+
+### 场景 3：SSA 转换用于后续优化
+
+```bash
+# 1. 处理 dump 文件
+python process_dump.py ../benchmark/i_inputs/multiply.riscv.dump
+
+# 2. 转换为 SSA 形式
+python convert_to_ssa.py outputs/multiply.riscv/ -v
+
+# 现在可以对 .ssa 文件进行进一步的优化和分析
+```
+
+---
+
+### 场景 4：批量处理多个程序（推荐）
+
+```bash
+# 1. 批量处理所有 dump 文件
+python process_dump.py --batch ../benchmark/i_inputs/ -v
+
+# 2. ⭐ 批量分析（一键完成 CFG + DEF/USE + Liveness）
+for dir in outputs/*/sections/; do
+    python analyze_all.py "$dir"
+done
+
+# 3. 批量 SSA 转换
+python convert_to_ssa.py outputs/ -o outputs_ssa
+```
+
+### 场景 4b：批量处理多个程序（分步执行）
+
+```bash
+# 1. 批量处理所有 dump 文件
+python process_dump.py --batch ../benchmark/i_inputs/ -v
+
+# 2. 批量构建 CFG（对每个程序）
+for dir in outputs/*/sections/; do
+    python build_cfg.py "$dir" -v
+done
+
+# 3. 批量 DEF/USE 分析
+for dir in outputs/*/sections/; do
+    python analyze_defuse.py "$dir" -v
+done
+
+# 4. 批量活跃性分析
+for dir in outputs/*/sections/; do
+    python analyze_liveness.py "$dir" -v
+done
+
+# 5. 批量 SSA 转换
+python convert_to_ssa.py outputs/ -o outputs_ssa
+```
+
+---
+
+## 🛠 生成测试用的 dump 文件
+
+如果您有 RISC-V 可执行文件，可以这样生成 dump 文件：
+
+```bash
+# 使用 RISC-V objdump 工具
 riscv32-unknown-elf-objdump -d program.riscv > program.riscv.dump
+
+# 或者使用 riscv64
+riscv64-unknown-elf-objdump -d program.riscv > program.riscv.dump
 ```
 
-Input format example:
+**Dump 文件格式示例：**
 ```
 000100b4 <exit>:
    100b4:	1141                	c.addi	sp,-16
    100b6:	4581                	c.li	a1,0
    100b8:	c422                	c.swsp	s0,8(sp)
+   100ba:	c606                	c.swsp	ra,12(sp)
 ```
 
-## Integration with Other Tools
+---
 
-The processed output can be used with:
-- **Saturation**: Convert basic blocks to e-graphs for optimization
-- **Compiler Analysis**: Study control flow and instruction patterns
-- **SSA Generation**: Build SSA form for dataflow analysis
+## ❓ 故障排除
 
-## Configuration Files
+### 问题 1：找不到模块
 
-### `.gitignore`
-Excludes generated outputs and Python cache files from version control:
-- `outputs/`
-- `__pycache__/`
-- `*_sections/`
-- `*_blocks.txt`
+**错误：** `ModuleNotFoundError: No module named 'util'`
 
-## Example Dump Files
-
-- `basicmath_small_O0.dump`: Sample MiBench automotive benchmark
-- Located in: `benchmark/im_inputs/` for more examples
-
-## Troubleshooting
-
-### Common Issues
-
-1. **No output generated**: Ensure the dump file exists and has the correct format
-2. **Empty sections**: Check if the dump file contains valid disassembly
-3. **Missing blocks**: Verify that branch instructions are correctly identified in `util.py`
-
-### Debug Mode
-
-Use verbose flag for detailed processing information:
+**解决：**
 ```bash
-python process_dump.py input.dump --verbose
+# 确保在 SSA 目录下运行
+cd /home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/SSA
+
+# 或者设置 PYTHONPATH
+export PYTHONPATH=/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/SSA:$PYTHONPATH
 ```
 
-## Performance
+---
 
-Typical processing times on standard hardware:
-- Small program (<1000 instructions): <1 second
-- Medium program (1000-10000 instructions): 1-5 seconds
-- Large program (>10000 instructions): 5-20 seconds
+### 问题 2：CFG 或 DEF/USE 文件不存在
 
-## Future Enhancements
+**错误：** `FileNotFoundError: CFG 文件不存在`
 
-- [x] SSA conversion with register versioning (`convert_to_ssa.py`)
-- [ ] Phi functions for SSA at block merge points
-- [ ] Data flow analysis
-- [ ] Register allocation tracking
-- [ ] Control flow graph visualization
-- [ ] Integration with LLVM/GCC backends
+**解决：** 按顺序运行依赖的工具
 
-## License
+```bash
+# 活跃性分析依赖 CFG 和 DEF/USE，必须先运行：
+python build_cfg.py outputs/multiply.riscv/sections/ -v
+python analyze_defuse.py outputs/multiply.riscv/sections/ -v
+# 然后才能运行：
+python analyze_liveness.py outputs/multiply.riscv/sections/ -v
+```
 
-Part of the egraph_isa_compiler_codesign project.
+---
 
-## Contact
+### 问题 3：没有生成基本块
 
-For questions or issues, please open an issue in the project repository.
+**错误：** `basic_blocks directory not found`
+
+**原因：** 旧版本可能直接将基本块放在 section 目录下
+
+**解决：**
+```bash
+# 重新运行 process_dump.py
+python process_dump.py ../benchmark/i_inputs/multiply.riscv.dump -v
+```
+
+---
+
+### 问题 4：指令格式不识别
+
+**原因：** 某些特殊的 RISC-V 指令可能未被识别
+
+**解决：**
+1. 检查 `util.py` 中的 `BRANCH_INSTRUCTIONS` 集合
+2. 如需添加新指令，在 `util.py` 中添加：
+```python
+BRANCH_INSTRUCTIONS = {
+    'jal', 'jalr', 'beq', 'bne', ...,
+    'your_new_instruction',  # 添加这里
+}
+```
+
+---
+
+### 问题 5：查看详细错误信息
+
+所有工具都支持 `-v` 或 `--verbose` 参数：
+
+```bash
+python process_dump.py ../benchmark/i_inputs/multiply.riscv.dump -v
+python build_cfg.py outputs/multiply.riscv/sections/ -v
+python analyze_defuse.py outputs/multiply.riscv/sections/ -v
+python analyze_liveness.py outputs/multiply.riscv/sections/ -v
+python convert_to_ssa.py outputs/multiply.riscv/ -v
+```
+
+---
+
+## 📊 性能参考
+
+在标准硬件上的典型处理时间：
+
+| 程序规模 | 指令数 | process_dump | CFG + DEF/USE | 活跃性分析 | SSA 转换 |
+|---------|--------|--------------|---------------|-----------|---------|
+| 小型    | <1000  | <1 秒        | <1 秒         | <1 秒     | <1 秒   |
+| 中型    | 1K-10K | 1-5 秒       | 1-3 秒        | 1-5 秒    | 1-3 秒  |
+| 大型    | >10K   | 5-20 秒      | 3-10 秒       | 5-15 秒   | 3-10 秒 |
+
+---
+
+## 📝 工具依赖关系图
+
+```
+process_dump.py (独立)
+    ↓
+基本块文件
+    ↓
+    ├─→ analyze_blocks.py (独立，仅统计)
+    |
+    ├─→ build_cfg.py (独立)
+    |       ↓
+    |   cfg.json
+    |       ↓
+    |   visualize_cfg.py
+    |
+    ├─→ analyze_defuse.py (独立)
+    |       ↓
+    |   defuse.json
+    |
+    └─→ (cfg.json + defuse.json) ──→ analyze_liveness.py
+                                          ↓
+                                      liveness.json
+                                          ↓
+                                      view_liveness.py
+```
+
+**SSA 转换独立于上述所有分析工具：**
+```
+基本块文件 → convert_to_ssa.py → .ssa 文件
+```
+
+---
+
+## 🔧 高级技巧
+
+### 技巧 1：查看特定函数的 CFG
+
+```bash
+# 1. 处理 dump 文件
+python process_dump.py ../benchmark/i_inputs/multiply.riscv.dump
+
+# 2. 查看有哪些函数（section）
+ls outputs/multiply.riscv/sections/
+
+# 3. 为特定函数构建 CFG
+python build_cfg.py outputs/multiply.riscv/sections/multiply/ -v
+
+# 4. 可视化
+python visualize_cfg.py outputs/multiply.riscv/sections/multiply/cfg.json --graph --blocks
+```
+
+---
+
+### 技巧 2：只分析大的基本块
+
+```bash
+# 1. 先统计
+python analyze_blocks.py outputs/multiply.riscv --export blocks.txt
+
+# 2. 查看最大的块
+grep "instructions" blocks.txt | sort -t: -k2 -n | tail -10
+
+# 3. 手动分析特定的大块
+# 根据输出找到路径，例如 outputs/multiply.riscv/sections/main/basic_blocks/5.txt
+cat outputs/multiply.riscv/sections/main/basic_blocks/5.txt
+```
+
+---
+
+### 技巧 3：比较 SSA 前后的差异
+
+```bash
+# 原始基本块
+cat outputs/multiply.riscv/sections/main/basic_blocks/0.txt
+
+# SSA 形式
+cat outputs/multiply.riscv/sections/main/basic_blocks_ssa/0.txt
+
+# 使用 diff 比较
+diff -y outputs/multiply.riscv/sections/main/basic_blocks/0.txt \
+        outputs/multiply.riscv/sections/main/basic_blocks_ssa/0.txt
+```
+
+---
+
+## 📚 相关文档
+
+- [RISC-V 指令集手册](https://riscv.org/technical/specifications/)
+- [SSA 形式介绍](https://en.wikipedia.org/wiki/Static_single_assignment_form)
+- [控制流图（CFG）](https://en.wikipedia.org/wiki/Control-flow_graph)
+- [活跃变量分析](https://en.wikipedia.org/wiki/Live_variable_analysis)
+
+---
+
+## 🧪 快速测试
+
+我们提供了一个测试脚本，一键运行所有工具：
+
+```bash
+cd /home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/SSA
+
+# 运行完整测试
+./test_all_tools.sh
+```
+
+**测试脚本会自动：**
+1. 处理 `multiply.riscv.dump`
+2. 进行基本块统计分析
+3. 使用 `analyze_all.py` 一键完成所有分析
+4. 查看活跃性分析结果
+5. 可视化 CFG
+6. 进行 SSA 转换
+7. 对比转换前后的差异
+
+---
+
+## 🎓 完整示例：从头到尾
+
+下面是一个完整的示例，展示如何从 dump 文件开始，完成所有分析：
+
+```bash
+# ========================================
+# 步骤 0：进入工作目录
+# ========================================
+cd /home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/SSA
+
+# ========================================
+# 步骤 1：基础处理（一键完成）
+# ========================================
+echo "=== 步骤 1：处理 dump 文件 ==="
+python process_dump.py ../benchmark/i_inputs/multiply.riscv.dump -v
+
+# ========================================
+# 步骤 2：查看基本统计
+# ========================================
+echo ""
+echo "=== 步骤 2：查看统计信息 ==="
+python analyze_blocks.py outputs/multiply.riscv
+
+# ========================================
+# 步骤 3：⭐ 一键分析（推荐）
+# ========================================
+echo ""
+echo "=== 步骤 3：一键分析 (CFG + DEF/USE + Liveness) ==="
+python analyze_all.py outputs/multiply.riscv/sections/ -v
+
+# ========================================
+# 步骤 4：查看分析结果
+# ========================================
+echo ""
+echo "=== 步骤 4：查看 main 函数的分析结果 ==="
+python view_liveness.py outputs/multiply.riscv/sections/main/ --all --max 5
+
+echo ""
+echo "=== 查看 multiply 函数的 CFG ==="
+python visualize_cfg.py outputs/multiply.riscv/sections/multiply/cfg.json --graph
+
+# ========================================
+# 步骤 5：SSA 转换
+# ========================================
+echo ""
+echo "=== 步骤 5：转换为 SSA 形式 ==="
+python convert_to_ssa.py outputs/multiply.riscv/ -v
+
+# ========================================
+# 步骤 6：比较 SSA 前后的差异
+# ========================================
+echo ""
+echo "=== 步骤 6：比较 SSA 转换前后 ==="
+echo "原始基本块："
+cat outputs/multiply.riscv/sections/main/basic_blocks/0.txt | head -5
+echo ""
+echo "SSA 形式："
+cat outputs/multiply.riscv/sections/main/basic_blocks_ssa/0.txt | head -5
+
+echo ""
+echo "=== 完成！所有分析结果保存在 outputs/multiply.riscv/ ==="
+```
+
+**将上述内容保存为 `run_full_analysis.sh`，然后运行：**
+
+```bash
+chmod +x run_full_analysis.sh
+./run_full_analysis.sh
+```
+
+**或者直接使用我们提供的测试脚本：**
+
+```bash
+./test_all_tools.sh
+```
+
+---
+
+## 💡 提示和最佳实践
+
+1. **总是先运行 `process_dump.py`**  
+   这是最基础的步骤，后续所有工具都依赖它的输出。
+
+2. **按顺序运行分析工具**  
+   - CFG 和 DEF/USE 可以并行
+   - 活跃性分析必须在 CFG 和 DEF/USE 之后
+
+3. **使用 `-v` 查看详细输出**  
+   遇到问题时，详细输出能帮助快速定位。
+
+4. **批量处理时注意磁盘空间**  
+   大型程序的处理结果可能占用较多空间。
+
+5. **SSA 转换是独立的**  
+   可以单独运行，不依赖 CFG 等分析工具。
+
+---
+
+## 📞 联系与贡献
+
+如有问题或建议，请在项目仓库提 Issue。
+
+---
+
+**最后更新：** 2025-10-22  
+**维护者：** egraph_isa_compiler_codesign 项目组
