@@ -130,8 +130,14 @@ def list_basic_blocks(output_dir, max_display=10):
         if not section_path.is_dir():
             continue
 
+        # Look for basic_blocks subdirectory
+        bb_dir = section_path / 'basic_blocks'
+        if not bb_dir.exists():
+            # Fallback to old structure
+            bb_dir = section_path
+
         blocks = []
-        for file in sorted(section_path.iterdir()):
+        for file in sorted(bb_dir.iterdir()):
             if file.suffix == '.txt' and file.stem.isdigit():
                 blocks.append(int(file.stem))
 
@@ -141,7 +147,7 @@ def list_basic_blocks(output_dir, max_display=10):
             print(f"  Basic blocks: {len(blocks)} ({', '.join(map(str, blocks))})")
 
             for block_num in blocks:
-                block_path = section_path / f"{block_num}.txt"
+                block_path = bb_dir / f"{block_num}.txt"
                 block_list.append((section_name, block_num, block_path))
                 total_blocks += 1
             print()
