@@ -17,6 +17,12 @@ CURRENT_DIR = Path(__file__).resolve().parent
 if str(CURRENT_DIR) not in sys.path:
     sys.path.insert(0, str(CURRENT_DIR))
 
+from util import (
+    is_register, is_standard_instruction, 
+    is_r_type_instruction, is_i_type_instruction,
+    is_load_instruction, is_store_instruction, is_csr_instruction, is_branch_instruction
+)
+
 
 class DefUseAnalyzer:
     """Analyze DEF/USE relationships"""
@@ -24,21 +30,24 @@ class DefUseAnalyzer:
     def __init__(self, verbose=False):
         self.verbose = verbose
     
-    def is_register(self, s: str) -> bool:
-        """Check if string is a register"""
-        if not s:
-            return False
-        # RISC-V registers
-        return (s in ['zero', 'ra', 'sp', 'gp', 'tp', 'fp'] or
-                s.startswith('x') or s.startswith('a') or
-                s.startswith('s') or s.startswith('t'))
-    
     def parse_instruction(self, line: str) -> Tuple[str, List[str]]:
-        """Parse instruction, returns (mnemonic, operands_list)"""
-        # Clean comments and symbols
+        """Parse instruction, returns (mnemonic, operands_list)
+        
+        Example transformations:
+            "lw a0, 8(sp)  # comment" → ("lw", ["a0", "8", "sp"])
+            "jal ra, 10400 <main>"    → ("jal", ["ra", "10400"])
+            "add a0, a1, a2"          → ("add", ["a0", "a1", "a2"])
+        """
+        # Remove comments (everything after #)
+        # "lw a0, 0(sp)  # comment" → "lw a0, 0(sp)"
         clean = re.sub(r'#.*$', '', line).strip()
+        
+        # Remove symbol references (<...>)
+        # "jal ra, 10400 <main>" → "jal ra, 10400"
         clean = re.sub(r'<[^>]+>', '', clean).strip()
         
+        # Split mnemonic and operands (split only once)
+        # "add a0, a1, a2".split(None, 1) → ["add", "a0, a1, a2"]
         parts = clean.split(None, 1)
         if not parts:
             return "", []
@@ -46,11 +55,15 @@ class DefUseAnalyzer:
         mnemonic = parts[0]
         operands_str = parts[1] if len(parts) > 1 else ""
         
-        # Parse operands (handle memory operations)
+        # Parse operands (handle memory operations with offset(base) format)
         operands = []
         if operands_str:
-            # Handle offset(base) format
+            # Convert offset(base) to offset,base
+            # "a0, 8(sp)".replace('(', ',').replace(')', '') → "a0, 8,sp"
             operands_str = operands_str.replace('(', ',').replace(')', '')
+            
+            # Split by comma and strip whitespace
+            # "a0, 8,sp".split(',') → ["a0", "8", "sp"]
             operands = [op.strip() for op in operands_str.split(',') if op.strip()]
         
         return mnemonic, operands
@@ -64,112 +77,89 @@ class DefUseAnalyzer:
         
         if not operands:
             return use_regs, def_regs
-        
+        if not is_standard_instruction(mnemonic):
+            return use_regs, def_regs
         # R-type: rd, rs1, rs2 (add, sub, and, or, xor, sll, srl, sra, slt, sltu)
-        if mnemonic in ['add', 'sub', 'and', 'or', 'xor', 'sll', 'srl', 'sra', 
-                        'slt', 'sltu', 'mul', 'mulh', 'mulhu', 'mulhsu',
-                        'div', 'divu', 'rem', 'remu']:
+        if is_r_type_instruction(mnemonic):
             if len(operands) >= 3:
-                if self.is_register(operands[0]):
+                if is_register(operands[0]):
                     def_regs.add(operands[0])
-                if self.is_register(operands[1]):
+                if is_register(operands[1]):
                     use_regs.add(operands[1])
-                if self.is_register(operands[2]):
+                if is_register(operands[2]):
                     use_regs.add(operands[2])
         
         # I-type: rd, rs1, imm (addi, andi, ori, xori, slti, sltiu, slli, srli, srai)
-        elif mnemonic in ['addi', 'andi', 'ori', 'xori', 'slti', 'sltiu', 
-                          'slli', 'srli', 'srai']:
+        elif is_i_type_instruction(mnemonic):
             if len(operands) >= 2:
-                if self.is_register(operands[0]):
+                if is_register(operands[0]):
                     def_regs.add(operands[0])
-                if self.is_register(operands[1]):
+                if is_register(operands[1]):
                     use_regs.add(operands[1])
         
         # Load: rd, offset(rs1)
-        elif mnemonic in ['lb', 'lh', 'lw', 'ld', 'lbu', 'lhu', 'lwu']:
+        elif is_load_instruction(mnemonic):
             if len(operands) >= 2:
-                if self.is_register(operands[0]):
+                if is_register(operands[0]):
                     def_regs.add(operands[0])
                 # offset(rs1) parsed as [rd, offset, rs1]
-                if self.is_register(operands[-1]):
+                if is_register(operands[-1]):
                     use_regs.add(operands[-1])
         
         # Store: rs2, offset(rs1)
-        elif mnemonic in ['sb', 'sh', 'sw', 'sd']:
+        elif is_store_instruction(mnemonic):
             if len(operands) >= 2:
-                if self.is_register(operands[0]):
+                if is_register(operands[0]):
                     use_regs.add(operands[0])
                 # offset(rs1)
-                if self.is_register(operands[-1]):
+                if is_register(operands[-1]):
                     use_regs.add(operands[-1])
         
         # Branch: rs1, rs2, target
-        elif mnemonic in ['beq', 'bne', 'blt', 'bge', 'bltu', 'bgeu']:
+        elif is_branch_instruction(mnemonic):
             if len(operands) >= 2:
-                if self.is_register(operands[0]):
+                if is_register(operands[0]):
                     use_regs.add(operands[0])
-                if self.is_register(operands[1]):
+                if is_register(operands[1]):
                     use_regs.add(operands[1])
         
-        # Branch zero: rs, target
-        elif mnemonic in ['beqz', 'bnez', 'blez', 'bgez', 'bltz', 'bgtz']:
-            if operands and self.is_register(operands[0]):
-                use_regs.add(operands[0])
-        
         # JAL: rd, target
-        elif mnemonic in ['jal']:
-            if operands and self.is_register(operands[0]):
+        elif mnemonic == 'jal':
+            if operands and is_register(operands[0]):
                 def_regs.add(operands[0])
         
         # JALR: rd, rs1, offset
         elif mnemonic == 'jalr':
             if len(operands) >= 2:
-                if self.is_register(operands[0]):
+                if is_register(operands[0]):
                     def_regs.add(operands[0])
-                if self.is_register(operands[1]):
+                if is_register(operands[1]):
                     use_regs.add(operands[1])
         
         # LUI/AUIPC: rd, imm
         elif mnemonic in ['lui', 'auipc']:
-            if operands and self.is_register(operands[0]):
+            if operands and is_register(operands[0]):
                 def_regs.add(operands[0])
         
-        # MV (pseudo): rd, rs
-        elif mnemonic == 'mv':
+        # CSR instructions: rd, csr, rs1/imm
+        elif is_csr_instruction(mnemonic):
             if len(operands) >= 2:
-                if self.is_register(operands[0]):
+                # rd is always defined (reads old CSR value)
+                if is_register(operands[0]):
                     def_regs.add(operands[0])
-                if self.is_register(operands[1]):
-                    use_regs.add(operands[1])
+                # For csrrw/csrrs/csrrc: rs1 is used
+                # For csrrwi/csrrsi/csrrci: immediate is used (no register)
+                if mnemonic in ['csrrw', 'csrrs', 'csrrc']:
+                    if len(operands) >= 3 and is_register(operands[2]):
+                        use_regs.add(operands[2])
         
-        # LI (pseudo): rd, imm
-        elif mnemonic == 'li':
-            if operands and self.is_register(operands[0]):
-                def_regs.add(operands[0])
+        # Fence: none
+        elif mnemonic in ['fence', 'fence.i', 'ecall', 'ebreak']:
+            pass
         
-        # NOT (pseudo): rd, rs
-        elif mnemonic in ['not', 'neg', 'negw', 'sext.w']:
-            if len(operands) >= 2:
-                if self.is_register(operands[0]):
-                    def_regs.add(operands[0])
-                if self.is_register(operands[1]):
-                    use_regs.add(operands[1])
-        
-        # RET (pseudo): no operands
-        elif mnemonic in ['ret']:
-            use_regs.add('ra')
-        
-        # CALL (pseudo): target
-        elif mnemonic in ['call']:
-            def_regs.add('ra')
-        
-        # Compressed instructions
-        elif mnemonic.startswith('c.'):
-            # Simplified handling
-            base_mnemonic = mnemonic[2:]  # Remove 'c.'
-            return self.analyze_instruction(base_mnemonic, operands)
-        
+        else:
+            raise ValueError(f"Unknown instruction: {mnemonic}")
+            
         return use_regs, def_regs
     
     def analyze_block(self, block_file: Path) -> Dict:

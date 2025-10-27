@@ -22,7 +22,9 @@ class LivenessAnalyzer:
     
     def __init__(self, verbose=False):
         self.verbose = verbose
-        
+        # zero: hardwired to 0, cannot be modified, no need to save
+        # gp: set at program startup, points to global data area, usually remains unchanged throughout program execution
+        # tp: used for Thread Local Storage (TLS), managed by the system, not used in regular function calls
         # RISC-V ABI conventions
         self.caller_saved = {
             'ra', 'a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7',
@@ -148,7 +150,7 @@ class LivenessAnalyzer:
             # Free registers = all registers - live registers
             free_regs[block_id] = all_registers - info['LIVE_OUT']
             # Remove zero (always 0) and gp/tp (global pointers)
-            free_regs[block_id] -= {'zero', 'gp', 'tp'}
+            free_regs[block_id] -= {'zero', 'ra', 'sp', 'gp', 'tp', 'fp', 's0'}
         
         return free_regs
     

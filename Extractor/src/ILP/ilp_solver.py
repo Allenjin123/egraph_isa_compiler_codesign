@@ -30,7 +30,7 @@ from typing import Dict, Set, Optional
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.egraph import EGraph, DATA_DIR, clean_folder, sanitize
-from src.ILP.ilp_gen_min_ops import generate_ilp_file
+from src.ILP.ilp_gen import generate_ilp_file
 
 # Cache for original JSON data to avoid repeated file reads
 _original_json_cache = {}
@@ -342,8 +342,8 @@ def main():
     )
     parser.add_argument(
         "--output",
-        default="./output_min_ops",
-        help="Output directory (default: ./output_min_ops)"
+        default="./output",
+        help="Output directory (default: ./output)"
     )
     
     args = parser.parse_args()
@@ -363,7 +363,7 @@ def main():
     log_dir.mkdir(exist_ok=True)
 
     print("="*60)
-    print("ILP-based E-graph Extraction: Minimize Operator Types")
+    print("ILP-based E-graph Extraction")
     print("="*60)
     print(f"Solver: gurobi")
     print(f"Timeout: {args.timeout} seconds")
@@ -390,7 +390,7 @@ def main():
         print(f"  {op_name}: {op_obj.count} times")
     
     # Generate ILP file
-    lp_file = lp_dir / f"min_ops.lp"
+    lp_file = lp_dir / f"extraction.lp"
     
     print(f"\nGenerating ILP file: {lp_file}")
     start_time = time.time()
@@ -399,8 +399,8 @@ def main():
     print(f"ILP generation completed (time: {ilp_time:.2f}s)")
     
     # Run solver
-    sol_file = sol_dir / f"min_ops_gurobi.sol"
-    log_file = log_dir / f"min_ops_gurobi.log"
+    sol_file = sol_dir / f"solution.sol"
+    log_file = log_dir / f"extraction_gurobi.log"
     print(f"\nSolving ILP...")
     start_time = time.time()
     
@@ -439,7 +439,7 @@ def main():
         print(f"  {sexpr}")
     
     # Save results
-    result_file = result_dir / f"min_ops_gurobi.json"
+    result_file = result_dir / f"result.json"
     result_data = {
         'input_files': input_files,
         'solver': "gurobi",
