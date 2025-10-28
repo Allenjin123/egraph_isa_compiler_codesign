@@ -53,8 +53,16 @@ def analyze_basic_blocks(output_dir):
             'block_sizes': []
         }
 
+        # Check for basic_blocks subdirectory (new structure)
+        bb_dir = section_path / 'basic_blocks'
+        if bb_dir.exists() and bb_dir.is_dir():
+            search_dir = bb_dir
+        else:
+            # Fallback to old structure (blocks directly in section dir)
+            search_dir = section_path
+
         # Analyze each basic block
-        for file in sorted(section_path.iterdir()):
+        for file in sorted(search_dir.iterdir()):
             if file.suffix == '.txt' and file.stem.isdigit():
                 block_num = int(file.stem)
                 instr_count = count_instructions(file)

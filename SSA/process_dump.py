@@ -20,7 +20,7 @@ from split_basic_blocks import BasicBlockSplitter
 from strip_prefixes import process_block_file, iter_block_files
 
 
-def process_single_dump(dump_file, output_base_dir=None, verbose=False):
+def process_single_dump(dump_file, output_base_dir=None, verbose=False, target_sections=None):
     """
     Process a single dump file through the complete SSA pipeline.
 
@@ -28,6 +28,7 @@ def process_single_dump(dump_file, output_base_dir=None, verbose=False):
         dump_file: Path to the .dump file
         output_base_dir: Base directory for output (default: SSA/outputs/<filename>)
         verbose: Print detailed progress
+        target_sections: List of section names to process (None = process all)
 
     Returns:
         Dictionary with processing statistics
@@ -63,9 +64,24 @@ def process_single_dump(dump_file, output_base_dir=None, verbose=False):
     if verbose:
         print("\n[1/3] Parsing sections...")
     sections = parse_dump_file(str(dump_path))
-    create_folders_and_files(sections, str(sections_dir))
-    stats['sections'] = len(sections)
-    print(f"✓ Created {len(sections)} section folders")
+    
+    # Filter sections if target_sections is specified
+    if target_sections:
+        print(f"Target sections: {', '.join(target_sections)}")
+        # Check if all target sections exist
+        missing = set(target_sections) - set(sections.keys())
+        if missing:
+            print(f"Warning: Sections not found: {', '.join(missing)}")
+        available = set(target_sections) & set(sections.keys())
+        if not available:
+            print(f"Error: None of the specified sections found in dump file")
+            return None
+        print(f"Processing {len(available)} section(s)")
+    
+    create_folders_and_files(sections, str(sections_dir), target_sections)
+    processed_sections = len(target_sections) if target_sections else len(sections)
+    stats['sections'] = processed_sections
+    print(f"✓ Created {processed_sections} section folders")
 
     # Step 2: Split into basic blocks
     if verbose:
@@ -130,8 +146,14 @@ def list_basic_blocks(output_dir, max_display=10):
         if not section_path.is_dir():
             continue
 
+        # Look for basic_blocks subdirectory
+        bb_dir = section_path / 'basic_blocks'
+        if not bb_dir.exists():
+            # Fallback to old structure
+            bb_dir = section_path
+
         blocks = []
-        for file in sorted(section_path.iterdir()):
+        for file in sorted(bb_dir.iterdir()):
             if file.suffix == '.txt' and file.stem.isdigit():
                 blocks.append(int(file.stem))
 
@@ -141,7 +163,7 @@ def list_basic_blocks(output_dir, max_display=10):
             print(f"  Basic blocks: {len(blocks)} ({', '.join(map(str, blocks))})")
 
             for block_num in blocks:
-                block_path = section_path / f"{block_num}.txt"
+                block_path = bb_dir / f"{block_num}.txt"
                 block_list.append((section_name, block_num, block_path))
                 total_blocks += 1
             print()
@@ -169,7 +191,7 @@ def list_basic_blocks(output_dir, max_display=10):
             print()
 
 
-def process_all_dumps(input_dir, output_base=None, pattern="*.dump", verbose=False):
+def process_all_dumps(input_dir, output_base=None, pattern="*.dump", verbose=False, target_sections=None):
     """
     Process all dump files in a directory.
 
@@ -178,6 +200,7 @@ def process_all_dumps(input_dir, output_base=None, pattern="*.dump", verbose=Fal
         output_base: Base output directory
         pattern: Glob pattern for dump files
         verbose: Print detailed progress
+        target_sections: List of section names to process (None = process all)
     """
     input_path = Path(input_dir)
     dump_files = list(input_path.glob(pattern))
@@ -190,7 +213,7 @@ def process_all_dumps(input_dir, output_base=None, pattern="*.dump", verbose=Fal
 
     results = []
     for dump_file in dump_files:
-        stats = process_single_dump(dump_file, output_base, verbose)
+        stats = process_single_dump(dump_file, output_base, verbose, target_sections)
         if stats:
             results.append(stats)
 
@@ -215,6 +238,9 @@ Examples:
   # Process single file
   python process_dump.py sample_inputs/dhrystone.riscv.dump
 
+  # Process specific sections only
+  python process_dump.py input.dump --sections main printf exit
+
   # Process with custom output directory
   python process_dump.py input.dump --output my_output
 
@@ -236,6 +262,8 @@ Examples:
                        help='Print detailed progress')
     parser.add_argument('--max-display', type=int, default=10,
                        help='Maximum number of blocks to display (default: 10)')
+    parser.add_argument('-s', '--sections', metavar='SECTION', nargs='+',
+                       help='Specific section names to process (default: process all sections)')
 
     args = parser.parse_args()
 
@@ -249,7 +277,7 @@ Examples:
         if not args.input:
             print("Error: Input directory required for batch mode")
             return 1
-        process_all_dumps(args.input, args.output, verbose=args.verbose)
+        process_all_dumps(args.input, args.output, verbose=args.verbose, target_sections=args.sections)
         return 0
 
     # Single file mode
@@ -257,7 +285,7 @@ Examples:
         parser.print_help()
         return 1
 
-    stats = process_single_dump(args.input, args.output, args.verbose)
+    stats = process_single_dump(args.input, args.output, args.verbose, args.sections)
     if stats and not args.output:
         # List the basic blocks for convenience
         list_basic_blocks(stats['output_dir'], args.max_display)

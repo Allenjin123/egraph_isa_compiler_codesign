@@ -27,12 +27,13 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
     """
     op = inst.op_name.lower()
 
-    # Helper to get register reference - use existing value or create RegVal
+    # Helper to get register reference - use existing value or create RegVal with string
     def get_reg_ref(reg_name):
         if reg_name in reg_values:
             return reg_values[reg_name]
         else:
-            return f"(RegVal ({reg_name}))"
+            # For registers not yet defined (shouldn't happen in correct SSA)
+            return f"(RegVal \"{reg_name}\")"
 
     # Helper to convert address to immediate
     def addr_to_imm(addr):
@@ -53,7 +54,8 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
         if inst.rd and inst.rs1:
             return inst.rd, f"(Addi {get_reg_ref(inst.rs1)} (ImmVal 0))"
     elif op == 'ret':  # ret -> jalr x0, ra, 0
-        return None, "(Jalr (RegVal (ra_0)) (ImmVal 0))"
+        # ret uses ra_0 which should be an input register
+        return None, f"(Jalr {get_reg_ref('ra_0')} (ImmVal 0))"
 
     # Register-Register instructions (R-type)
     elif op in ['add', 'sub', 'and', 'or', 'xor', 'sll', 'srl', 'sra']:
@@ -98,10 +100,10 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
             return None, f"({op.capitalize()} {get_reg_ref(inst.rs1)} {get_reg_ref(inst.rs2)} {addr_to_imm(inst.addr)})"
     elif op == 'bnez':  # bnez rs, addr -> bne rs, x0, addr
         if inst.rs1 and inst.addr:
-            return None, f"(Bne {get_reg_ref(inst.rs1)} (RegVal (x0)) {addr_to_imm(inst.addr)})"
+            return None, f"(Bne {get_reg_ref(inst.rs1)} (RegVal \"x0\") {addr_to_imm(inst.addr)})"
     elif op == 'beqz':  # beqz rs, addr -> beq rs, x0, addr
         if inst.rs1 and inst.addr:
-            return None, f"(Beq {get_reg_ref(inst.rs1)} (RegVal (x0)) {addr_to_imm(inst.addr)})"
+            return None, f"(Beq {get_reg_ref(inst.rs1)} (RegVal \"x0\") {addr_to_imm(inst.addr)})"
 
     # Jump instructions
     elif op == 'jal':
@@ -121,8 +123,8 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
 def process_basic_block_to_egglog(block: text_basic_block, section_name: str) -> str:
     """Process a basic block and generate egglog file"""
 
-    # Get all used registers
-    registers = block.get_used_registers()
+    # Get input and output registers separately
+    input_registers, output_registers = block.get_input_output_registers()
 
     # Create output for this block
     egglog_lines = []
@@ -130,20 +132,24 @@ def process_basic_block_to_egglog(block: text_basic_block, section_name: str) ->
     # Add header comment
     egglog_lines.append(f"; EGraph for {section_name} - Block {block.block_idx}")
     egglog_lines.append(f"; Total instructions: {len(block.inst_list)}")
-    egglog_lines.append(f"; Registers used: {len(registers)}")
+    egglog_lines.append(f"; Input registers: {len(input_registers)}, Output registers: {len(output_registers)}")
     egglog_lines.append("")
 
     # Add include for base.egg (contains Inst definitions)
-    egglog_lines.append("(include \"../../base.egg\")")
+    # Run egglog from Saturation directory: egglog egglog_output/section/block.egg
+    egglog_lines.append("(include \"base.egg\")")
     egglog_lines.append("")
 
-    # Add register datatype - this is what varies per block
-    egglog_lines.append("; Register declarations for this basic block")
-    egglog_lines.append(create_register_datatype_egglog(registers))
-    egglog_lines.append("")
+    # Declare input registers as let bindings
+    if input_registers:
+        egglog_lines.append("; Input register declarations (used but not defined in this block)")
+        for reg in sorted(input_registers):
+            egglog_lines.append(f"(let {reg} (RegVal \"{reg}\"))")
+        egglog_lines.append("")
 
     # Track register values as we build the DAG
-    reg_values = {}
+    # Pre-populate with input registers (they're already let-bound)
+    reg_values = {reg: reg for reg in input_registers}
 
     # Convert instructions to egglog expressions
     egglog_lines.append("; ============================================")
@@ -159,10 +165,11 @@ def process_basic_block_to_egglog(block: text_basic_block, section_name: str) ->
             egglog_lines.append(f";; Step {i+1}: {inst}")
 
             if result_reg:
-                # This instruction produces a result, bind it with let
-                egglog_lines.append(f"(let {result_reg} {egglog_expr})")
+                # This instruction produces a result, bind it with let and _val suffix
+                let_name = f"{result_reg}_val"
+                egglog_lines.append(f"(let {let_name} {egglog_expr})")
                 # Track this register's value for future references
-                reg_values[result_reg] = result_reg  # The let-bound name becomes the reference
+                reg_values[result_reg] = let_name  # Reference by _val name
             else:
                 # This instruction doesn't produce a result (store, branch, etc.)
                 egglog_lines.append(f"(let inst_{i} {egglog_expr})")

@@ -341,7 +341,7 @@ def process_block_file(input_path: Path, output_path: Optional[Path] = None,
 
     Args:
         input_path: Path to input block file
-        output_path: Path to output file (if None, creates .ssa file)
+        output_path: Path to output file (if None, creates file in basic_blocks_ssa directory)
         verbose: Print detailed information
 
     Returns:
@@ -358,8 +358,15 @@ def process_block_file(input_path: Path, output_path: Optional[Path] = None,
 
     # Determine output path
     if output_path is None:
-        # Create .ssa file in same directory
-        output_path = input_path.with_suffix('.ssa')
+        # Check if input is in a basic_blocks directory
+        if input_path.parent.name == 'basic_blocks':
+            # Create basic_blocks_ssa directory at the same level
+            ssa_dir = input_path.parent.parent / 'basic_blocks_ssa'
+            ssa_dir.mkdir(exist_ok=True)
+            output_path = ssa_dir / input_path.name  # Keep same filename
+        else:
+            # Fallback: create .ssa file in same directory
+            output_path = input_path.with_suffix('.ssa')
 
     # Write output
     with open(output_path, 'w') as f:
@@ -384,8 +391,16 @@ def process_section_directory(section_path: Path, output_dir: Optional[Path] = N
     total_instructions = 0
     block_files = []
 
+    # Check for basic_blocks subdirectory (new structure)
+    bb_dir = section_path / 'basic_blocks'
+    if bb_dir.exists() and bb_dir.is_dir():
+        search_dir = bb_dir
+    else:
+        # Fallback to section directory itself (old structure)
+        search_dir = section_path
+
     # Find all numbered block files
-    for file_path in section_path.iterdir():
+    for file_path in search_dir.iterdir():
         if file_path.suffix == '.txt' and file_path.stem.isdigit():
             block_files.append(file_path)
 
@@ -397,17 +412,19 @@ def process_section_directory(section_path: Path, output_dir: Optional[Path] = N
 
     # Determine output directory
     if output_dir:
-        section_output = output_dir / section_path.name
+        section_output = output_dir / section_path.name / 'basic_blocks_ssa'
         section_output.mkdir(parents=True, exist_ok=True)
     else:
-        section_output = section_path
+        # Create basic_blocks_ssa directory in the section
+        section_output = section_path / 'basic_blocks_ssa'
+        section_output.mkdir(exist_ok=True)
 
     # Process each block
     for block_file in block_files:
         if output_dir:
             output_file = section_output / block_file.name
         else:
-            output_file = None  # Will create .ssa file
+            output_file = None  # Will create in basic_blocks_ssa
 
         count = process_block_file(block_file, output_file, verbose)
         total_instructions += count
@@ -580,11 +597,17 @@ Examples:
         process_block_file(input_path, output_path, args.verbose)
         print(f"Converted {input_path} to SSA form")
     elif input_path.is_dir():
-        # Check if it's a section directory (contains numbered .txt files)
+        # Check if it's a section directory (contains section.txt)
+        is_section = (input_path / "section.txt").exists()
+        
+        # Check if it has basic_blocks subdirectory
+        has_bb_subdir = (input_path / "basic_blocks").exists()
+        
+        # Check if it contains numbered .txt files directly
         has_blocks = any(f.suffix == '.txt' and f.stem.isdigit()
                         for f in input_path.iterdir() if f.is_file())
 
-        if has_blocks:
+        if is_section or has_bb_subdir or has_blocks:
             # Process as section directory
             count = process_section_directory(input_path, output_path, args.verbose)
             print(f"Converted section {input_path.name}: {count} instructions")
