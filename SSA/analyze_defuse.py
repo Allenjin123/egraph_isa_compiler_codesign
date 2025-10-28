@@ -158,7 +158,7 @@ class DefUseAnalyzer:
             pass
         
         else:
-            raise ValueError(f"Unknown instruction: {mnemonic}")
+            raise ValueError(f"Unknown standard instruction: {mnemonic}")
             
         return use_regs, def_regs
     
