@@ -60,19 +60,27 @@ def process_block_file(path: Path, dry_run=False) -> int:
     return len(stripped)
 
 def iter_block_files(sections_dir: Path):
-    # If the path itself contains numeric block files (single section dir case)
-    contains_blocks = any(p.is_file() and p.name.endswith('.txt') and p.stem.isdigit() for p in sections_dir.iterdir())
-    if contains_blocks:
+    # Check if this is a basic_blocks directory
+    if sections_dir.name == 'basic_blocks':
         for candidate in sections_dir.iterdir():
             if candidate.is_file() and candidate.name.endswith('.txt') and candidate.stem.isdigit():
                 yield candidate
         return
+    
     # Otherwise treat each subdirectory as a section
     for section in sections_dir.iterdir():
         if section.is_dir():
-            for candidate in section.iterdir():
-                if candidate.is_file() and candidate.name.endswith('.txt') and candidate.stem.isdigit():
-                    yield candidate
+            # Look for basic_blocks subdirectory
+            bb_dir = section / 'basic_blocks'
+            if bb_dir.exists() and bb_dir.is_dir():
+                for candidate in bb_dir.iterdir():
+                    if candidate.is_file() and candidate.name.endswith('.txt') and candidate.stem.isdigit():
+                        yield candidate
+            else:
+                # Fallback: look for block files directly in section dir (old structure)
+                for candidate in section.iterdir():
+                    if candidate.is_file() and candidate.name.endswith('.txt') and candidate.stem.isdigit():
+                        yield candidate
 
 def main():
     parser = argparse.ArgumentParser(description='Strip address/machine-code prefixes, # comments, and <symbol> annotations from basic block files in-place.')
