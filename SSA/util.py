@@ -56,7 +56,7 @@ RV32I_SYSTEM = {
 }
 
 RV32I_FENCE = {
-    'fence', 'fence.i',    # 内存屏障
+    'fence',               # 内存屏障
 }
 
 # RV32I 完整指令集 (40条)
