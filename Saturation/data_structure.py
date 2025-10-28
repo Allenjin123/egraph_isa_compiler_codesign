@@ -302,12 +302,31 @@ class text_section():
         """Add a basic block to the section"""
         self.basic_blocks.append(block)
 
-    def from_directory(self, dir_path: str):
-        """Read all basic block files in the directory and populate basic_blocks"""
+    def from_directory(self, dir_path: str, use_ssa: bool = True):
+        """Read all basic block files in the directory and populate basic_blocks
+
+        Args:
+            dir_path: Path to section directory
+            use_ssa: If True, read from basic_blocks_ssa/ subdirectory,
+                    otherwise read from basic_blocks/ subdirectory
+        """
+        # Determine which subdirectory to read from
+        if use_ssa:
+            blocks_dir = os.path.join(dir_path, "basic_blocks_ssa")
+        else:
+            blocks_dir = os.path.join(dir_path, "basic_blocks")
+
+        # Fallback to old structure if new structure doesn't exist
+        if not os.path.exists(blocks_dir):
+            blocks_dir = dir_path  # Old structure: files directly in section dir
+
+        if not os.path.exists(blocks_dir):
+            return  # No blocks found
+
         block_files = []
 
-        for filename in os.listdir(dir_path):
-            full_path = os.path.join(dir_path, filename)
+        for filename in os.listdir(blocks_dir):
+            full_path = os.path.join(blocks_dir, filename)
             if os.path.isfile(full_path) and filename.endswith('.txt'):
                 # Only process numbered block files (e.g., "0.txt", "1.txt")
                 try:
@@ -344,8 +363,13 @@ class text_program():
         """Add a section to the program"""
         self.sections[section.section_name] = section
 
-    def from_directory(self, dir_path: str):
-        """Read all section directories in the directory and populate sections"""
+    def from_directory(self, dir_path: str, use_ssa: bool = True):
+        """Read all section directories in the directory and populate sections
+
+        Args:
+            dir_path: Path to sections directory
+            use_ssa: If True, read from basic_blocks_ssa/ subdirectory
+        """
         if not os.path.exists(dir_path):
             print(f"Error: Directory {dir_path} does not exist")
             return
@@ -362,7 +386,7 @@ class text_program():
         for section_name in section_names:
             section_path = os.path.join(dir_path, section_name)
             section = text_section(section_name)
-            section.from_directory(section_path)
+            section.from_directory(section_path, use_ssa)
             if section.basic_blocks:  # Only add non-empty sections
                 self.add_section(section)
 
