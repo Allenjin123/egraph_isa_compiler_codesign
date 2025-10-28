@@ -158,11 +158,15 @@ class BasicBlockSplitter:
     # Split into basic blocks
         basic_blocks = self.split_into_basic_blocks(lines)
         
+    # Create basic_blocks subdirectory
+        bb_dir = os.path.join(section_path, 'basic_blocks')
+        os.makedirs(bb_dir, exist_ok=True)
+        
     # Create basic block files
         bb_counter = 0
         for i, bb in enumerate(basic_blocks):
             if bb:  # Ensure block is not empty
-                bb_file_path = os.path.join(section_path, f'{bb_counter}.txt')
+                bb_file_path = os.path.join(bb_dir, f'{bb_counter}.txt')
                 with open(bb_file_path, 'w') as f:
                     f.write('\n'.join(bb) + '\n')
                 bb_counter += 1

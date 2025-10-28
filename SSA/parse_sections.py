@@ -25,8 +25,20 @@ def parse_dump_file(file_path):
 
     return sections
 
-def create_folders_and_files(sections, base_dir):
+def create_folders_and_files(sections, base_dir, target_sections=None):
+    """
+    Create folders and files for parsed sections.
+    
+    Args:
+        sections: Dictionary of section_name -> code
+        base_dir: Base directory for output
+        target_sections: List of section names to process (None = process all)
+    """
     for section_name, code in sections.items():
+        # If target_sections is specified, only process those sections
+        if target_sections is not None and section_name not in target_sections:
+            continue
+            
         folder_path = os.path.join(base_dir, section_name)
         os.makedirs(folder_path, exist_ok=True)
         file_path = os.path.join(folder_path, 'section.txt')
