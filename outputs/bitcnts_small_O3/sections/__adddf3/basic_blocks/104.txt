@@ -1,0 +1,6 @@
+sub a1,a0,a2
+sltu a7,a0,a1
+sub a4,a5,a6
+sub a4,a4,a7
+slli a7,a4,0x8
+bge a7,zero,1eeb8

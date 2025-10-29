@@ -1,0 +1,2 @@
+addi a4_0, zero_0, 0; Inst-2
+jal zero_1, 1edec; Inst-3

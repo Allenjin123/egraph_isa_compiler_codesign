@@ -1,0 +1,2 @@
+sub a4,a7,s0
+bne s0,zero,1eaa8

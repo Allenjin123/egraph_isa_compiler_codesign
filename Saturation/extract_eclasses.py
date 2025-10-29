@@ -82,14 +82,22 @@ def create_annotated_file(ssa_instructions, eclasses, output_file_path):
                 f.write(f"{inst}; unknown\n")
 
 
-def process_block(section_dir, block_num, egglog_binary='/home/allenjin/egglog/target/release/egglog', verbose=False):
+def process_block(section_dir, block_num, output_subdir='basic_blocks_eclass',
+                  egglog_binary='/home/allenjin/egglog/target/release/egglog', verbose=False):
     """
     Process a single basic block to extract eclass annotations.
+
+    Args:
+        section_dir: Path to section directory
+        block_num: Block number
+        output_subdir: Output subdirectory name (default: 'basic_blocks_eclass')
+        egglog_binary: Path to egglog binary
+        verbose: Verbose output
     """
     # File paths
     egg_file = section_dir / "basic_blocks_egglog" / f"{block_num}.egg"
     ssa_file = section_dir / "basic_blocks_ssa" / f"{block_num}.txt"
-    output_dir = section_dir / "basic_blocks_eclass"
+    output_dir = section_dir / output_subdir
     output_file = output_dir / f"{block_num}.txt"
 
     # Check files exist
@@ -126,9 +134,16 @@ def process_block(section_dir, block_num, egglog_binary='/home/allenjin/egglog/t
     return True
 
 
-def process_section(section_dir, egglog_binary='/home/allenjin/egglog/target/release/egglog', verbose=False):
+def process_section(section_dir, output_subdir='basic_blocks_eclass',
+                   egglog_binary='/home/allenjin/egglog/target/release/egglog', verbose=False):
     """
     Process all blocks in a section.
+
+    Args:
+        section_dir: Path to section directory
+        output_subdir: Output subdirectory name
+        egglog_binary: Path to egglog binary
+        verbose: Verbose output
     """
     section_name = section_dir.name
 
@@ -150,7 +165,7 @@ def process_section(section_dir, egglog_binary='/home/allenjin/egglog/target/rel
     success_count = 0
     for egg_file in egg_files:
         block_num = egg_file.stem
-        if process_block(section_dir, block_num, egglog_binary, verbose):
+        if process_block(section_dir, block_num, output_subdir, egglog_binary, verbose):
             success_count += 1
 
     if not verbose:
@@ -165,17 +180,21 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog='''
 Examples:
-  # Process all sections in a program
+  # Process current directory (must be in sections directory)
+  cd /path/to/SSA/outputs/bitcnts_small_O3/sections
+  python extract_eclasses.py
+
+  # Process specific directory
   python extract_eclasses.py ../SSA/outputs/bitcnts_small_O3/sections
 
   # Process with verbose output
   python extract_eclasses.py ../SSA/outputs/bitcnts_small_O3/sections -v
 
-  # Process specific section
-  python extract_eclasses.py ../SSA/outputs/bitcnts_small_O3/sections/main
+  # Custom output directory name
+  python extract_eclasses.py ../SSA/outputs/bitcnts_small_O3/sections -o my_eclass_output
 
   # Use custom egglog binary
-  python extract_eclasses.py ../SSA/outputs/bitcnts_small_O3/sections --egglog ~/egglog/target/release/egglog
+  python extract_eclasses.py . --egglog ~/egglog/target/release/egglog
 
 Prerequisites:
   1. .egg files must exist in basic_blocks_egglog/ (run local_saturation.py)
@@ -183,13 +202,15 @@ Prerequisites:
   3. egglog binary with print-eclass-id support
 
 Output:
-  Creates annotated files in basic_blocks_eclass/ with format:
+  Creates annotated files in <output_subdir>/ (default: basic_blocks_eclass/) with format:
     addi sp_1, sp_0, -96; Inst-15
         '''
     )
 
-    parser.add_argument('directory',
-                       help='Path to sections directory')
+    parser.add_argument('directory', nargs='?', default='.',
+                       help='Path to sections directory (default: current directory)')
+    parser.add_argument('-o', '--output', default='basic_blocks_eclass',
+                       help='Output subdirectory name (default: basic_blocks_eclass)')
     parser.add_argument('-v', '--verbose', action='store_true',
                        help='Verbose output')
     parser.add_argument('--egglog', default='/home/allenjin/egglog/target/release/egglog',
@@ -223,11 +244,11 @@ Output:
 
     total_blocks = 0
     for section_dir in sorted(section_dirs):
-        count = process_section(section_dir, args.egglog, args.verbose)
+        count = process_section(section_dir, args.output, args.egglog, args.verbose)
         total_blocks += count
 
     print(f"\nTotal: {total_blocks} blocks annotated with eclasses")
-    print(f"Output: <section>/basic_blocks_eclass/<block>.txt")
+    print(f"Output: <section>/{args.output}/<block>.txt")
 
     return 0
 
