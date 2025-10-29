@@ -1,0 +1,42 @@
+================================================================================
+汇编风格指令序列 (从ILP求解结果生成)
+================================================================================
+
+# 5_root
+# S-expr: (Sub (LoadImm (ImmVal 32)) (Sub (RegVal a5_2) (Sub (LoadImm (ImmVal 0)) (RegVal s3_0))))
+# 指令数: 5
+--------------------------------------------------------------------------------
+    LoadImm op1, 32
+    LoadImm op2, 0
+    Sub op3, op2, s3
+    Sub op4, a52, op3
+    Sub op5, op1, op4
+
+# 4_root
+# S-expr: (Lbu (Sub (Srl (RegVal a2_0) (RegVal s3_0)) (Sub (RegVal x0) (RegVal s4_0))) (ImmVal 0))
+# 指令数: 4
+--------------------------------------------------------------------------------
+    Srl op1, a2, s3
+    Sub op2, x0, s4
+    Sub op3, op1, op2
+    Lbu op4, op3, 0
+
+# root_0
+# S-expr: (5_root (Sub (LoadImm (ImmVal 32)) (Sub (RegVal a5_2) (Sub (LoadImm (ImmVal 0)) (RegVal s3_0)))))
+# 指令数: 5
+--------------------------------------------------------------------------------
+    LoadImm op1, 32
+    LoadImm op2, 0
+    Sub op3, op2, s3
+    Sub op4, a52, op3
+    Sub op5, op1, op4
+
+# root_1
+# S-expr: (4_root (Lbu (Sub (Srl (RegVal a2_0) (RegVal s3_0)) (Sub (RegVal x0) (RegVal s4_0))) (ImmVal 0)))
+# 指令数: 4
+--------------------------------------------------------------------------------
+    Srl op1, a2, s3
+    Sub op2, x0, s4
+    Sub op3, op1, op2
+    Lbu op4, op3, 0
+
