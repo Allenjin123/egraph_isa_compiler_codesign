@@ -1,0 +1,4 @@
+addi a4,a3,-32
+srl a4,a5,a4
+addi a1,zero,0
+beq a3,t1,1eb20

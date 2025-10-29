@@ -1,0 +1,3 @@
+or a7,a5,a0
+or a4,a6,a2
+bne s0,zero,1eecc

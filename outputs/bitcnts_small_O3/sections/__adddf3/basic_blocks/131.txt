@@ -1,0 +1,4 @@
+addi a4,a4,-31
+srl a4,a5,a4
+addi a3,zero,0
+beq a0,a1,1efdc

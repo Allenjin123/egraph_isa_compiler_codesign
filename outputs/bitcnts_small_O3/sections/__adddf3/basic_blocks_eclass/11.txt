@@ -1,0 +1,3 @@
+addi a3_0, zero_0, 31; Inst-3
+addi a7_0, zero_0, 32; Inst-5
+blt a3_0, a4_0, 1ea40; Inst-7

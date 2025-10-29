@@ -1,0 +1,6 @@
+add a2,a4,a2
+add a3,a3,a6
+sltu a4,a2,a4
+add a5,a3,a4
+addi s0,a7,0
+jal zero,1ea04

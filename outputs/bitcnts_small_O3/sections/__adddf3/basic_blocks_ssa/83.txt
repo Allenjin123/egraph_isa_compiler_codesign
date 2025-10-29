@@ -1,0 +1,2 @@
+addi a4_0, t1_0, -1
+bne a4_0, zero_0, 1ed94
