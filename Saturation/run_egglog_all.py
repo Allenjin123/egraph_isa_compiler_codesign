@@ -14,11 +14,13 @@ import argparse
 def run_egglog_on_file(egg_file: Path, verbose: bool = False) -> bool:
     """
     Run egglog with --to-svg --to-json on a single .egg file
+    Moves outputs to separate directories: basic_blocks_svg/ and basic_blocks_json/
 
     Returns:
         True if successful, False otherwise
     """
     try:
+        # Run egglog to generate .svg and .json in same directory as .egg file
         cmd = ['egglog', '--to-svg', '--to-json', str(egg_file)]
 
         if verbose:
@@ -37,8 +39,40 @@ def run_egglog_on_file(egg_file: Path, verbose: bool = False) -> bool:
                 print(f"    {result.stderr.strip()}")
             return False
 
+        # Move generated files to separate directories
+        # From: basic_blocks_egglog/0.svg -> To: basic_blocks_svg/0.svg
+        # From: basic_blocks_egglog/0.json -> To: basic_blocks_json/0.json
+
+        svg_file = egg_file.with_suffix('.svg')
+        json_file = egg_file.with_suffix('.json')
+
+        # Get the section directory (parent of basic_blocks_egglog/)
+        section_dir = egg_file.parent.parent
+
+        # Create output directories
+        svg_dir = section_dir / "basic_blocks_svg"
+        json_dir = section_dir / "basic_blocks_json"
+        svg_dir.mkdir(exist_ok=True)
+        json_dir.mkdir(exist_ok=True)
+
+        # Move files
+        svg_dest = None
+        json_dest = None
+
+        if svg_file.exists():
+            svg_dest = svg_dir / svg_file.name
+            svg_file.rename(svg_dest)
+
+        if json_file.exists():
+            json_dest = json_dir / json_file.name
+            json_file.rename(json_dest)
+
         if verbose:
             print(f"  ✓ Success: {egg_file}")
+            if svg_dest:
+                print(f"    -> SVG: {svg_dest}")
+            if json_dest:
+                print(f"    -> JSON: {json_dest}")
 
         return True
 
@@ -88,16 +122,6 @@ def process_directory(input_dir: Path, verbose: bool = False, max_files: int = N
             success_count += 1
             if not verbose:
                 print("✓")
-
-            # Check that outputs were created
-            svg_file = egg_file.with_suffix('.svg')
-            json_file = egg_file.with_suffix('.json')
-
-            if verbose:
-                if svg_file.exists():
-                    print(f"    Generated: {svg_file.name}")
-                if json_file.exists():
-                    print(f"    Generated: {json_file.name}")
         else:
             fail_count += 1
             if not verbose:
@@ -107,7 +131,9 @@ def process_directory(input_dir: Path, verbose: bool = False, max_files: int = N
     print(f"Results: {success_count} succeeded, {fail_count} failed")
 
     if success_count > 0:
-        print(f"\nOutput files (.svg and .json) created alongside .egg files")
+        print(f"\nOutput files organized in separate directories:")
+        print(f"  - SVG files: <section>/basic_blocks_svg/")
+        print(f"  - JSON files: <section>/basic_blocks_json/")
 
 
 def main():
@@ -116,23 +142,28 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog='''
 Examples:
-  # Process all files in egglog_output
-  python run_egglog_all.py egglog_output
+  # Process all .egg files in a program
+  python run_egglog_all.py ../SSA/outputs/bitcnts_small_O3/sections
 
   # Process with verbose output
-  python run_egglog_all.py egglog_output -v
+  python run_egglog_all.py ../SSA/outputs/bitcnts_small_O3/sections -v
 
   # Process only first 10 files
-  python run_egglog_all.py egglog_output --max 10
+  python run_egglog_all.py ../SSA/outputs/bitcnts_small_O3/sections --max 10
 
-  # Process from Saturation directory (recommended)
-  cd Saturation
-  python run_egglog_all.py egglog_output
+  # Process specific section
+  python run_egglog_all.py ../SSA/outputs/bitcnts_small_O3/sections/main
+
+Output structure:
+  <section>/basic_blocks_egglog/  - Input .egg files
+  <section>/basic_blocks_svg/     - Generated SVG visualizations
+  <section>/basic_blocks_json/    - Generated JSON data
         '''
     )
 
-    parser.add_argument('directory', nargs='?', default='egglog_output',
-                       help='Directory to search for .egg files (default: egglog_output)')
+    parser.add_argument('directory', nargs='?',
+                       default='../SSA/outputs/bitcnts_small_O3/sections',
+                       help='Directory to search for .egg files (default: ../SSA/outputs/bitcnts_small_O3/sections)')
     parser.add_argument('-v', '--verbose', action='store_true',
                        help='Verbose output')
     parser.add_argument('--max', type=int, default=None,

@@ -5,10 +5,31 @@ This directory contains tools for converting RISC-V basic blocks into e-graphs a
 ## Overview
 
 The saturation pipeline:
-1. **Parse SSA basic blocks** from `../SSA/outputs_ssa/`
+1. **Parse SSA basic blocks** from `../SSA/outputs/<program>/sections/<section>/basic_blocks_ssa/`
 2. **Convert to e-graph format** (.egg files) with register declarations
 3. **Apply rewrite rules** from `base.egg` for optimization
 4. **Generate visualizations** (SVG/JSON) to inspect e-graphs
+
+### Folder Structure
+
+The SSA pipeline outputs are organized as:
+```
+SSA/outputs/<program_name>/sections/<section_name>/
+  ├── basic_blocks/       - Original assembly instructions
+  ├── basic_blocks_ssa/   - SSA-converted instructions
+  ├── basic_blocks_egglog/ - E-graph files
+  │   ├── 0.egg
+  │   ├── 1.egg
+  │   └── ...
+  ├── basic_blocks_svg/    - E-graph visualizations (after egglog)
+  │   ├── 0.svg
+  │   ├── 1.svg
+  │   └── ...
+  └── basic_blocks_json/   - E-graph data (after egglog)
+      ├── 0.json
+      ├── 1.json
+      └── ...
+```
 
 ## Files
 
@@ -30,37 +51,55 @@ Python data structures for parsing RISC-V programs:
 
 #### `local_saturation.py`
 Generates `.egg` files from SSA basic blocks:
-- Extracts input/output registers
+- Reads from `basic_blocks_ssa/` subdirectories
+- Extracts input/output registers (separates registers used vs defined)
 - Creates e-graph DAG representation
-- Outputs one `.egg` file per basic block
+- Outputs to `basic_blocks_egglog/` alongside SSA files
 
 **Usage:**
 ```bash
 cd Saturation
-python local_saturation.py
-# Generates: egglog_output/<section>/block_<n>.egg
+
+# Process a program (default: bitcnts_small_O3)
+python local_saturation.py ../SSA/outputs/bitcnts_small_O3/sections
+
+# With verbose output
+python local_saturation.py ../SSA/outputs/bitcnts_small_O3/sections -v
+
+# Limit processing for testing
+python local_saturation.py ../SSA/outputs/bitcnts_small_O3/sections --max-sections 2 --max-blocks 5
+
+# Process dhrystone
+python local_saturation.py ../SSA/outputs/dhrystone.riscv/sections
 ```
+
+**Output:** Creates `.egg` files in `<section>/basic_blocks_egglog/` within the SSA output structure
 
 #### `run_egglog_all.py`
 Batch processes all `.egg` files with egglog:
+- Recursively finds all `.egg` files in a directory
 - Generates SVG visualizations of e-graphs
 - Generates JSON data for analysis
 - Shows progress and statistics
 
 **Usage:**
 ```bash
-# Process all files in egglog_output
-python run_egglog_all.py egglog_output
+# Process all .egg files in a program's output
+python run_egglog_all.py ../SSA/outputs/bitcnts_small_O3/sections
 
 # Verbose output
-python run_egglog_all.py egglog_output -v
+python run_egglog_all.py ../SSA/outputs/bitcnts_small_O3/sections -v
 
 # Process only first 10 files
-python run_egglog_all.py egglog_output --max 10
+python run_egglog_all.py ../SSA/outputs/bitcnts_small_O3/sections --max 10
 
 # Process specific section
-python run_egglog_all.py egglog_output/main
+python run_egglog_all.py ../SSA/outputs/bitcnts_small_O3/sections/main
 ```
+
+**Note:** Creates separate directories for outputs:
+- `.svg` files in `basic_blocks_svg/`
+- `.json` files in `basic_blocks_json/`
 
 ## Complete Workflow
 
@@ -69,44 +108,65 @@ python run_egglog_all.py egglog_output/main
 cd /home/allenjin/Codes/egraph_isa_compiler_codesign/Saturation
 
 # 2. Generate .egg files from SSA basic blocks
-python local_saturation.py
+python local_saturation.py ../SSA/outputs/bitcnts_small_O3/sections
 
-# 3. Run egglog on all generated files
-python run_egglog_all.py egglog_output
+# 3. Run egglog on all generated files to create visualizations
+python run_egglog_all.py ../SSA/outputs/bitcnts_small_O3/sections
 
-# 4. View SVG visualizations
-# Open egglog_output/<section>/block_<n>.svg in a browser
+# 4. View results
+# - SVG visualizations: ../SSA/outputs/bitcnts_small_O3/sections/<section>/basic_blocks_svg/*.svg
+# - JSON data: ../SSA/outputs/bitcnts_small_O3/sections/<section>/basic_blocks_json/*.json
+# - Open SVG files in a browser to view e-graph visualizations
 ```
 
-## Output Structure
+## Directory Structure After Processing
 
 ```
-egglog_output/
+SSA/outputs/bitcnts_small_O3/sections/
 ├── main/
-│   ├── block_0.egg   # E-graph definition
-│   ├── block_0.svg   # Visualization
-│   ├── block_0.json  # E-graph data
-│   └── ...
-├── Proc_1/
-│   └── ...
+│   ├── basic_blocks/       - Original assembly
+│   │   ├── 0.txt
+│   │   ├── 1.txt
+│   │   └── ...
+│   ├── basic_blocks_ssa/   - SSA-converted assembly
+│   │   ├── 0.txt
+│   │   ├── 1.txt
+│   │   └── ...
+│   ├── basic_blocks_egglog/ - E-graph files
+│   │   ├── 0.egg          (E-graph definition)
+│   │   ├── 0.svg          (Visualization - after egglog)
+│   │   ├── 0.json         (E-graph data - after egglog)
+│   │   └── ...
+│   ├── cfg.json           - Control flow graph
+│   ├── defuse.json        - Def-use analysis
+│   └── liveness.json      - Liveness analysis
+├── __adddf3/
+│   └── (same structure)
 └── ...
 ```
 
 ## Example `.egg` File Format
 
 ```egglog
-(include "base.egg")
+(include "../../../../../../Saturation/base.egg")
 
-; Input register declarations
+; Input register declarations (used but not defined in this block)
 (let sp_0 (RegVal "sp_0"))
 (let ra_0 (RegVal "ra_0"))
 
-; Instruction DAG
+; Instruction DAG (output registers have _val suffix)
 (let sp_1_val (Addi sp_0 (ImmVal -16)))
 (let inst_1 (Sw sp_1_val ra_0 (ImmVal 12)))
+(let ra_1_val (Jal (ImmVal 2000)))
 
 (run 10)
 ```
+
+**Key Design Decisions:**
+- **No Reg datatype needed**: `RegVal` takes a `String` parameter
+- **Input registers**: Declared with `let` as `(RegVal "reg_name")`
+- **Output registers**: Created by instruction results, named with `_val` suffix
+- **No shadowing**: Input and output registers are kept separate
 
 ---
 

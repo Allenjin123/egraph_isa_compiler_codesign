@@ -2,6 +2,8 @@ from __future__ import annotations
 from data_structure import *
 from egglog import *
 import os
+import argparse
+import sys
 
 
 def create_register_datatype_egglog(registers: set) -> str:
@@ -37,13 +39,17 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
 
     # Helper to convert address to immediate
     def addr_to_imm(addr):
-        # Convert hex address to decimal if needed
-        if addr and addr.startswith('0x'):
-            return f"(ImmVal {int(addr, 16)})"
-        elif addr and addr.startswith('8'):  # Likely hex without 0x
-            return f"(ImmVal {int(addr, 16)})"
-        else:
-            return f"(ImmVal 0)"  # Default for missing addresses
+        # Convert address string to (ImmVal n)
+        if not addr:
+            return f"(ImmVal 0)"
+
+        try:
+            # Try parsing as integer (handles decimal, hex with 0x, etc.)
+            value = int(addr, 0)  # 0 base auto-detects format
+            return f"(ImmVal {value})"
+        except ValueError:
+            # If it fails, it's likely a label/symbol - treat as 0 for now
+            return f"(ImmVal 0)"
 
     # Handle special cases and pseudo-instructions
     if op == 'li':  # li rd, imm -> LoadImm
@@ -136,8 +142,9 @@ def process_basic_block_to_egglog(block: text_basic_block, section_name: str) ->
     egglog_lines.append("")
 
     # Add include for base.egg (contains Inst definitions)
-    # Run egglog from Saturation directory: egglog egglog_output/section/block.egg
-    egglog_lines.append("(include \"base.egg\")")
+    # Path is relative from SSA/outputs/<prog>/sections/<section>/basic_blocks_egglog/
+    # to Saturation/base.egg (6 levels up: egglog/section/sections/prog/outputs/SSA, then Saturation/)
+    egglog_lines.append("(include \"../../../../../../Saturation/base.egg\")")
     egglog_lines.append("")
 
     # Declare input registers as let bindings
@@ -150,6 +157,9 @@ def process_basic_block_to_egglog(block: text_basic_block, section_name: str) ->
     # Track register values as we build the DAG
     # Pre-populate with input registers (they're already let-bound)
     reg_values = {reg: reg for reg in input_registers}
+
+    # Track all instruction let bindings for eclass extraction
+    instruction_let_names = []
 
     # Convert instructions to egglog expressions
     egglog_lines.append("; ============================================")
@@ -170,95 +180,168 @@ def process_basic_block_to_egglog(block: text_basic_block, section_name: str) ->
                 egglog_lines.append(f"(let {let_name} {egglog_expr})")
                 # Track this register's value for future references
                 reg_values[result_reg] = let_name  # Reference by _val name
+                # Track for eclass extraction
+                instruction_let_names.append(let_name)
             else:
                 # This instruction doesn't produce a result (store, branch, etc.)
-                egglog_lines.append(f"(let inst_{i} {egglog_expr})")
+                inst_name = f"inst_{i}"
+                egglog_lines.append(f"(let {inst_name} {egglog_expr})")
+                # Track for eclass extraction
+                instruction_let_names.append(inst_name)
 
             egglog_lines.append("")
         else:
-            # Add as comment if unsupported
+            # Add as comment if unsupported - no let binding, no eclass
             egglog_lines.append(f";; Step {i+1}: {inst}")
             egglog_lines.append(egglog_expr)
             egglog_lines.append("")
+            # Track as None for this instruction (no eclass)
+            instruction_let_names.append(None)
 
     egglog_lines.append("; ============================================")
     egglog_lines.append("; Run saturation to apply rewrite rules")
     egglog_lines.append("; ============================================")
     egglog_lines.append("(run 10)")
+    egglog_lines.append("")
+
+    # Add print-eclass-id commands for each instruction
+    egglog_lines.append("; ============================================")
+    egglog_lines.append("; Print eclass IDs for each instruction")
+    egglog_lines.append("; ============================================")
+    for let_name in instruction_let_names:
+        if let_name:  # Skip unsupported instructions
+            egglog_lines.append(f"(print-eclass-id {let_name})")
 
     return "\n".join(egglog_lines)
 
 
-if __name__ == "__main__":
+def process_program(sections_path: str, program_name: str, verbose: bool = False,
+                   max_sections: int = None, max_blocks_per_section: int = None):
+    """
+    Process a program and generate egglog files
 
-    # Check if the expected directory exists
-    dhrystone_path = "../SSA/outputs_ssa/dhrystone.riscv/sections"
+    Args:
+        sections_path: Path to the sections directory (e.g., ../SSA/outputs/prog/sections)
+        program_name: Name of the program
+        verbose: Print detailed output
+        max_sections: Limit number of sections to process (None = all)
+        max_blocks_per_section: Limit blocks per section (None = all)
+    """
+    if not os.path.exists(sections_path):
+        print(f"Error: Directory {sections_path} not found")
+        return 0
 
-    # Create output directory for egglog files
-    output_dir = "egglog_output"
-    os.makedirs(output_dir, exist_ok=True)
+    # Load and parse the program
+    program = text_program(program_name)
+    program.from_directory(sections_path, use_ssa=True)
 
-    if os.path.exists(dhrystone_path):
-        # Load and parse the program
-        program = text_program("dhrystone")
-        program.from_directory(dhrystone_path)
+    if not program.sections:
+        print(f"Error: No sections found in {sections_path}")
+        return 0
 
-        # Process first few sections as examples
-        section_count = 0
-        total_blocks_processed = 0
+    # Process sections
+    section_count = 0
+    total_blocks_processed = 0
 
-        for section_name in sorted(program.sections.keys()):
+    for section_name in sorted(program.sections.keys()):
+        if max_sections and section_count >= max_sections:
+            break
 
-            section = program.sections[section_name]
-            print(f"\nProcessing Section: {section_name}")
+        section = program.sections[section_name]
+        print(f"\nProcessing Section: {section_name}")
 
-            # Create section-specific output directory
-            section_output_dir = os.path.join(output_dir, section_name)
-            os.makedirs(section_output_dir, exist_ok=True)
+        # Create output directory: <section>/basic_blocks_egglog/
+        # This goes alongside basic_blocks/ and basic_blocks_ssa/
+        section_dir = os.path.join(sections_path, section_name)
+        egglog_output_dir = os.path.join(section_dir, "basic_blocks_egglog")
+        os.makedirs(egglog_output_dir, exist_ok=True)
 
-            block_count = 0
-            for block in section.basic_blocks:
+        block_count = 0
+        for block in section.basic_blocks:
+            if max_blocks_per_section and block_count >= max_blocks_per_section:
+                break
 
+            if verbose:
                 print(f"  Processing Block {block.block_idx}...")
 
-                # Generate egglog content
-                egglog_content = process_basic_block_to_egglog(block, section_name)
+            # Generate egglog content
+            egglog_content = process_basic_block_to_egglog(block, section_name)
 
-                # Write to file
-                output_file = os.path.join(section_output_dir, f"block_{block.block_idx}.egg")
-                with open(output_file, 'w') as f:
-                    f.write(egglog_content)
+            # Write to file: <section>/basic_blocks_egglog/<block_num>.egg
+            output_file = os.path.join(egglog_output_dir, f"{block.block_idx}.egg")
+            with open(output_file, 'w') as f:
+                f.write(egglog_content)
 
+            if verbose:
                 print(f"    -> Generated: {output_file}")
 
                 # Show registers used
-                registers = block.get_used_registers()
-                print(f"    -> Registers: {sorted(registers)[:10]}{'...' if len(registers) > 10 else ''}")
+                input_regs, output_regs = block.get_input_output_registers()
+                print(f"    -> Input registers: {len(input_regs)}, Output registers: {len(output_regs)}")
 
-                block_count += 1
-                total_blocks_processed += 1
+            block_count += 1
+            total_blocks_processed += 1
 
-            section_count += 1
+        if not verbose:
+            print(f"  Generated {block_count} egglog files in {egglog_output_dir}")
 
-        print(f"\nTotal blocks processed: {total_blocks_processed}")
-        print(f"Output directory: {output_dir}/")
-        print("\nExample egglog file content (first block):")
-        print("-" * 60)
+        section_count += 1
 
-        # Show example of first generated file
-        first_section = sorted(program.sections.keys())[0]
-        example_file = os.path.join(output_dir, first_section, "block_0.egg")
-        if os.path.exists(example_file):
-            with open(example_file, 'r') as f:
-                lines = f.readlines()
-                # Show first 50 lines as example
-                for line in lines[:50]:
-                    print(line.rstrip())
-                if len(lines) > 50:
-                    print("... (truncated)")
-    else:
-        print(f"Error: Directory {dhrystone_path} not found")
-        print("Please run SSA conversion first:")
-        print("  cd SSA")
-        print("  python convert_to_ssa.py outputs -o outputs_ssa")
+    print(f"\nTotal: {section_count} sections, {total_blocks_processed} blocks processed")
+    return total_blocks_processed
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description='Convert SSA basic blocks to egglog format',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog='''
+Examples:
+  # Process bitcnts_small_O3 program
+  python local_saturation.py ../SSA/outputs/bitcnts_small_O3/sections
+
+  # Process with verbose output
+  python local_saturation.py ../SSA/outputs/bitcnts_small_O3/sections -v
+
+  # Process only first 3 sections
+  python local_saturation.py ../SSA/outputs/bitcnts_small_O3/sections --max-sections 3
+
+  # Process first 2 blocks per section
+  python local_saturation.py ../SSA/outputs/bitcnts_small_O3/sections --max-blocks 2
+
+Output structure:
+  SSA/outputs/<program>/sections/<section>/
+    ├── basic_blocks/       (original)
+    ├── basic_blocks_ssa/   (SSA converted)
+    └── basic_blocks_egglog/ (generated .egg files)
+        '''
+    )
+
+    parser.add_argument('input', nargs='?',
+                       default='../SSA/outputs/bitcnts_small_O3/sections',
+                       help='Path to sections directory (default: ../SSA/outputs/bitcnts_small_O3/sections)')
+    parser.add_argument('-v', '--verbose', action='store_true',
+                       help='Verbose output')
+    parser.add_argument('--max-sections', type=int, default=None,
+                       help='Maximum number of sections to process')
+    parser.add_argument('--max-blocks', type=int, default=None,
+                       help='Maximum blocks per section')
+
+    args = parser.parse_args()
+
+    # Extract program name from path
+    # Path format: ../SSA/outputs/<program_name>/sections
+    sections_path = args.input
+    program_name = os.path.basename(os.path.dirname(sections_path))
+
+    total = process_program(
+        sections_path,
+        program_name,
+        args.verbose,
+        args.max_sections,
+        args.max_blocks
+    )
+
+    if total == 0:
+        sys.exit(1)
 
