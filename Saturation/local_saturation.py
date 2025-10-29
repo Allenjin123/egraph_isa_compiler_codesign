@@ -39,13 +39,17 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
 
     # Helper to convert address to immediate
     def addr_to_imm(addr):
-        # Convert hex address to decimal if needed
-        if addr and addr.startswith('0x'):
-            return f"(ImmVal {int(addr, 16)})"
-        elif addr and addr.startswith('8'):  # Likely hex without 0x
-            return f"(ImmVal {int(addr, 16)})"
-        else:
-            return f"(ImmVal 0)"  # Default for missing addresses
+        # Convert address string to (ImmVal n)
+        if not addr:
+            return f"(ImmVal 0)"
+
+        try:
+            # Try parsing as integer (handles decimal, hex with 0x, etc.)
+            value = int(addr, 0)  # 0 base auto-detects format
+            return f"(ImmVal {value})"
+        except ValueError:
+            # If it fails, it's likely a label/symbol - treat as 0 for now
+            return f"(ImmVal 0)"
 
     # Handle special cases and pseudo-instructions
     if op == 'li':  # li rd, imm -> LoadImm
@@ -140,7 +144,7 @@ def process_basic_block_to_egglog(block: text_basic_block, section_name: str) ->
     # Add include for base.egg (contains Inst definitions)
     # Path is relative from SSA/outputs/<prog>/sections/<section>/basic_blocks_egglog/
     # to Saturation/base.egg (6 levels up: egglog/section/sections/prog/outputs/SSA, then Saturation/)
-    egglog_lines.append("(include \"base.egg\")")
+    egglog_lines.append("(include \"../../../../../../Saturation/base.egg\")")
     egglog_lines.append("")
 
     # Declare input registers as let bindings
@@ -153,6 +157,9 @@ def process_basic_block_to_egglog(block: text_basic_block, section_name: str) ->
     # Track register values as we build the DAG
     # Pre-populate with input registers (they're already let-bound)
     reg_values = {reg: reg for reg in input_registers}
+
+    # Track all instruction let bindings for eclass extraction
+    instruction_let_names = []
 
     # Convert instructions to egglog expressions
     egglog_lines.append("; ============================================")
@@ -173,21 +180,37 @@ def process_basic_block_to_egglog(block: text_basic_block, section_name: str) ->
                 egglog_lines.append(f"(let {let_name} {egglog_expr})")
                 # Track this register's value for future references
                 reg_values[result_reg] = let_name  # Reference by _val name
+                # Track for eclass extraction
+                instruction_let_names.append(let_name)
             else:
                 # This instruction doesn't produce a result (store, branch, etc.)
-                egglog_lines.append(f"(let inst_{i} {egglog_expr})")
+                inst_name = f"inst_{i}"
+                egglog_lines.append(f"(let {inst_name} {egglog_expr})")
+                # Track for eclass extraction
+                instruction_let_names.append(inst_name)
 
             egglog_lines.append("")
         else:
-            # Add as comment if unsupported
+            # Add as comment if unsupported - no let binding, no eclass
             egglog_lines.append(f";; Step {i+1}: {inst}")
             egglog_lines.append(egglog_expr)
             egglog_lines.append("")
+            # Track as None for this instruction (no eclass)
+            instruction_let_names.append(None)
 
     egglog_lines.append("; ============================================")
     egglog_lines.append("; Run saturation to apply rewrite rules")
     egglog_lines.append("; ============================================")
     egglog_lines.append("(run 10)")
+    egglog_lines.append("")
+
+    # Add print-eclass-id commands for each instruction
+    egglog_lines.append("; ============================================")
+    egglog_lines.append("; Print eclass IDs for each instruction")
+    egglog_lines.append("; ============================================")
+    for let_name in instruction_let_names:
+        if let_name:  # Skip unsupported instructions
+            egglog_lines.append(f"(print-eclass-id {let_name})")
 
     return "\n".join(egglog_lines)
 
