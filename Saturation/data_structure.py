@@ -132,10 +132,8 @@ class text_inst():
                     if len(ops) >= 2:
                         rs2 = ops[1]
                     if len(ops) >= 3:
-                        try:
-                            imm = int(ops[2], 0)
-                        except:
-                            addr = ops[2]
+                        # Branch instructions always use addr field (not imm)
+                        addr = ops[2]
 
                 elif op_name in ['addi', 'slti', 'sltiu', 'xori', 'ori', 'andi',
                                  'slli', 'srli', 'srai', 'lb', 'lh', 'lw', 'lbu', 'lhu']:  # I-type
