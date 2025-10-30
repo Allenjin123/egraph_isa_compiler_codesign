@@ -20,17 +20,24 @@ def run_egglog_on_file(egg_file: Path, verbose: bool = False) -> bool:
         True if successful, False otherwise
     """
     try:
-        # Run egglog to generate .svg and .json in same directory as .egg file
-        cmd = ['egglog', '--to-svg', '--to-json', str(egg_file)]
+        # Run egglog from the directory containing the .egg file
+        # This ensures relative includes in the .egg file work correctly
+        egg_dir = egg_file.parent
+        egg_name = egg_file.name
+
+        # Use custom egglog build with print-eclass-id support
+        egglog_path = '/home/allenjin/egglog/target/release/egglog'
+        cmd = [egglog_path, '--to-svg', '--to-json', egg_name]
 
         if verbose:
-            print(f"  Running: {' '.join(cmd)}")
+            print(f"  Running: {' '.join(cmd)} (in {egg_dir})")
 
         result = subprocess.run(
             cmd,
             capture_output=True,
             text=True,
-            timeout=60  # 60 second timeout per file
+            timeout=60,  # 60 second timeout per file
+            cwd=str(egg_dir)  # Run from the .egg file's directory
         )
 
         if result.returncode != 0:
@@ -181,12 +188,17 @@ Output structure:
         print(f"Error: Not a directory: {input_dir}")
         return 1
 
-    # Check if egglog is available
+    # Check if custom egglog build is available
+    egglog_path = '/home/allenjin/egglog/target/release/egglog'
+    if not Path(egglog_path).exists():
+        print(f"Error: Custom egglog build not found at {egglog_path}")
+        print("Please build egglog with print-eclass-id support")
+        return 1
+
     try:
-        subprocess.run(['egglog', '--version'], capture_output=True, check=True)
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        print("Error: egglog command not found")
-        print("Please ensure egglog is installed and in your PATH")
+        subprocess.run([egglog_path, '--version'], capture_output=True, check=True)
+    except subprocess.CalledProcessError:
+        print(f"Error: Failed to run egglog at {egglog_path}")
         return 1
 
     process_directory(input_dir, args.verbose, args.max)

@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "egraph-isa-compiler-codesign"
+version = "0.1.0"
+description = "E-Graph ISA compiler co-design: Python packages for backend and Saturation"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+  { name = "Allen Jin" }
+]
+# If you have a specific license, add it here, e.g.:
+# license = { text = "MIT" }
+
+# Add runtime dependencies here if needed, e.g.:
+# dependencies = [
+#   "egglog>=0.1",  # if you rely on a PyPI egglog package
+# ]
+
+[project.urls]
+repository = "https://github.com/Allenjin123/egraph_isa_compiler_codesign"
+
+[tool.setuptools]
+# Explicitly enumerate top-level packages; both already contain __init__.py
+packages = ["backend", "Saturation"]
+
+# Alternatively, you can use package discovery (commented out by default):
+# [tool.setuptools.packages.find]
+# where = ["."]
+# include = ["backend", "Saturation"]
