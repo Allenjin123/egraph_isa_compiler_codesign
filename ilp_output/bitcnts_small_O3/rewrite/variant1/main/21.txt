@@ -1,0 +1,8 @@
+jal op_1, 0
+lw op_2, sp, 20
+slli op_3, op_2, 2
+lw op_4, sp, 28
+add op_5, op_3, op_4
+lw op_6, op_5, 0
+lui op_7, 35
+addi op_8, op_7, -992

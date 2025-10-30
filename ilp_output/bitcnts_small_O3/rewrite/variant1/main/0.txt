@@ -1,0 +1,18 @@
+addi op_1, zero, 1
+bge op_2, op_1, a0, 4
+jal op_3, 4
+jal op_4, 0
+addi op_5, sp, -96
+sw op_6, op_5, ra, 92
+sw op_7, op_5, s0, 88
+sw op_8, op_5, s1, 84
+sw op_9, op_5, s2, 80
+sw op_10, op_5, s3, 76
+sw op_11, op_5, s4, 72
+sw op_12, op_5, s5, 68
+sw op_13, op_5, s6, 64
+sw op_14, op_5, s7, 60
+sw op_15, op_5, s8, 56
+sw op_16, op_5, s9, 52
+sw op_17, op_5, s10, 48
+sw op_18, op_5, s11, 44

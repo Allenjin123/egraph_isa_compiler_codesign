@@ -379,8 +379,8 @@ def main():
     
     args = parser.parse_args()
     
-    # Create output directories
-    output_dir = Path(args.output)
+    # Create output directories (append program name under the base output path)
+    output_dir = Path(args.output) / args.program_name
     output_dir.mkdir(parents=True, exist_ok=True)
     
     lp_dir = output_dir / "lp"

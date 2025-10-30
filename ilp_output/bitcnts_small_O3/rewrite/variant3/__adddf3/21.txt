@@ -1,0 +1,2 @@
+jal op_1, 0
+or op_2, a6, a2

@@ -1,0 +1,8 @@
+addi op_1, zero, 2047
+bne op_2, op_1, s0, 4
+jal op_3, 4
+jal op_4, 0
+srli op_5, a5, 3
+slli op_6, a5, 29
+srli op_7, a2, 3
+or op_8, op_6, op_7
