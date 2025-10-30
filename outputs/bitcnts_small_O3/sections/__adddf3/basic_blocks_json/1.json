@@ -1,16 +1,16 @@
 {
   "nodes": {
-    "primitive-i64-0": {
-      "op": "0",
+    "primitive-i64-125564": {
+      "op": "125564",
       "children": [],
-      "eclass": "i64-0",
+      "eclass": "i64-125564",
       "cost": 1.0,
       "subsumed": false
     },
     "function-0-ImmVal": {
       "op": "ImmVal",
       "children": [
-        "primitive-i64-0"
+        "primitive-i64-125564"
       ],
       "eclass": "Imm-2",
       "cost": 1.0,
@@ -184,7 +184,7 @@
     "Imm-2": {
       "type": "Imm"
     },
-    "i64-0": {
+    "i64-125564": {
       "type": "i64"
     },
     "Imm-4": {

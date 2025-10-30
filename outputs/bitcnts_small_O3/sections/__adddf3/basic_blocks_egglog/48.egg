@@ -1,12 +1,13 @@
 ; EGraph for __adddf3 - Block 48
 ; Total instructions: 16
-; Input registers: 5, Output registers: 16
+; Input registers: 6, Output registers: 16
 
-(include "../../../../../../Saturation/base.egg")
+(include "../../../../../Saturation/base.egg")
 
 ; Input register declarations (used but not defined in this block)
 (let a4_0 (RegVal "a4_0"))
 (let a5_0 (RegVal "a5_0"))
+(let ra (RegVal "ra"))
 (let s0_0 (RegVal "s0_0"))
 (let s2_0 (RegVal "s2_0"))
 (let sp_0 (RegVal "sp_0"))
@@ -60,8 +61,8 @@
 ;; Step 15:     addi rd=sp_1 rs1=sp_0 imm=32
 (let sp_1_val (Addi sp_0 (ImmVal 32)))
 
-;; Step 16:     jalr rd=zero_0 rs1=0
-; Unsupported:     jalr rd=zero_0 rs1=0
+;; Step 16:     jalr rd=zero_0 rs1=ra imm=0
+(let zero_0_val (Jalr ra (ImmVal 0)))
 
 ; ============================================
 ; Run saturation to apply rewrite rules
@@ -86,3 +87,4 @@
 (print-eclass-id a0_0_val)
 (print-eclass-id a1_1_val)
 (print-eclass-id sp_1_val)
+(print-eclass-id zero_0_val)

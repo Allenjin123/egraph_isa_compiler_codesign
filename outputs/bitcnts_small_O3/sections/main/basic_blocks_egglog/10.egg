@@ -2,14 +2,14 @@
 ; Total instructions: 1
 ; Input registers: 0, Output registers: 1
 
-(include "../../../../../../Saturation/base.egg")
+(include "../../../../../Saturation/base.egg")
 
 ; ============================================
 ; Instruction sequence as a DAG
 ; ============================================
 
-;; Step 1:     jal rd=ra_0 addr=13ba4
-(let ra_0_val (Jal (ImmVal 0)))
+;; Step 1:     jal rd=ra_0 imm=80804
+(let ra_0_val (Jal (ImmVal 80804)))
 
 ; ============================================
 ; Run saturation to apply rewrite rules

@@ -56,7 +56,7 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
         return None, f"(Jalr {get_reg_ref('ra_0')} (ImmVal 0))"
 
     # Register-Register instructions (R-type)
-    elif op in ['add', 'sub', 'and', 'or', 'xor', 'sll', 'srl', 'sra']:
+    elif op in ['add', 'sub', 'and', 'or', 'xor', 'sll', 'srl', 'sra', 'slt', 'sltu']:
         if not inst.rd:
             raise ValueError(f"{op} instruction missing rd: {inst}")
         if not inst.rs1:
@@ -170,8 +170,8 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
             raise ValueError(f"j instruction missing imm: {inst}")
         return None, f"(Jal (ImmVal {inst.imm}))"
 
-    # For unsupported instructions, return as comment
-    return None, f"; Unsupported: {inst}"
+    # For unsupported instructions, raise an error instead of silently marking as unsupported
+    raise ValueError(f"Unsupported or improperly parsed instruction: {inst}")
 
 
 def process_basic_block_to_egglog(block: text_basic_block, section_name: str) -> str:
@@ -190,9 +190,9 @@ def process_basic_block_to_egglog(block: text_basic_block, section_name: str) ->
     egglog_lines.append("")
 
     # Add include for base.egg (contains Inst definitions)
-    # Path is relative from SSA/outputs/<prog>/sections/<section>/basic_blocks_egglog/
-    # to Saturation/base.egg (6 levels up: egglog/section/sections/prog/outputs/SSA, then Saturation/)
-    egglog_lines.append("(include \"../../../../../../Saturation/base.egg\")")
+    # Path is relative from outputs/<prog>/sections/<section>/basic_blocks_egglog/
+    # to Saturation/base.egg (5 levels up: egglog/section/sections/prog/outputs, then Saturation/)
+    egglog_lines.append("(include \"../../../../../Saturation/base.egg\")")
     egglog_lines.append("")
 
     # Declare input registers as let bindings
@@ -253,6 +253,7 @@ def process_basic_block_to_egglog(block: text_basic_block, section_name: str) ->
     egglog_lines.append("")
 
     # Add print-eclass-id commands for each instruction
+    # This uses the custom print-eclass-id implementation in the egglog build
     egglog_lines.append("; ============================================")
     egglog_lines.append("; Print eclass IDs for each instruction")
     egglog_lines.append("; ============================================")

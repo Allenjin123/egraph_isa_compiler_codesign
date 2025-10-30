@@ -1,16 +1,16 @@
-andi s0_1, s0_0, 2047; Inst-6
-slli a5_1, a5_0, 0xc; Inst-8
-srli a5_2, a5_1, 0xc; Inst-9
-slli s0_2, s0_1, 0x14; Inst-11
-slli a1_0, s2_0, 0x1f; Inst-13
-or s0_3, s0_2, a5_2; Inst-14
-lw ra_0, 28(sp_0); Inst-16
-or a5_3, s0_3, a1_0; Inst-17
-lw s0_4, 24(sp_0); Inst-19
-lw s1_0, 20(sp_0); Inst-20
-lw s2_1, 16(sp_0); Inst-22
-lw s3_0, 12(sp_0); Inst-23
-addi a0_0, a4_0, 0; Inst-25
-addi a1_1, a5_3, 0; Inst-26
-addi sp_1, sp_0, 32; Inst-28
-jalr zero_0, 0, ra; unknown
+andi s0_1, s0_0, 2047; Inst-7
+slli a5_1, a5_0, 0xc; Inst-9
+srli a5_2, a5_1, 0xc; Inst-10
+slli s0_2, s0_1, 0x14; Inst-12
+slli a1_0, s2_0, 0x1f; Inst-14
+or s0_3, s0_2, a5_2; Inst-15
+lw ra_0, 28(sp_0); Inst-17
+or a5_3, s0_3, a1_0; Inst-18
+lw s0_4, 24(sp_0); Inst-20
+lw s1_0, 20(sp_0); Inst-21
+lw s2_1, 16(sp_0); Inst-23
+lw s3_0, 12(sp_0); Inst-24
+addi a0_0, a4_0, 0; Inst-26
+addi a1_1, a5_3, 0; Inst-27
+addi sp_1, sp_0, 32; Inst-29
+jalr zero_0, 0, ra; Inst-30

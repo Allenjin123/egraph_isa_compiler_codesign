@@ -2,7 +2,7 @@
 ; Total instructions: 4
 ; Input registers: 4, Output registers: 3
 
-(include "../../../../../../Saturation/base.egg")
+(include "../../../../../Saturation/base.egg")
 
 ; Input register declarations (used but not defined in this block)
 (let a4_0 (RegVal "a4_0"))
@@ -23,8 +23,8 @@
 ;; Step 3:     addi rd=t1_0 rs1=zero_0 imm=0
 (let t1_0_val (Addi zero_0 (ImmVal 0)))
 
-;; Step 4:     beq rs1=a4_0 rs2=t3_0 addr=1ee28
-(let inst_3 (Beq a4_0 t3_0 (ImmVal 0)))
+;; Step 4:     beq rs1=a4_0 rs2=t3_0 imm=126504
+(let inst_3 (Beq a4_0 t3_0 (ImmVal 126504)))
 
 ; ============================================
 ; Run saturation to apply rewrite rules

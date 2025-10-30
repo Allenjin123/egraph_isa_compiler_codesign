@@ -2,7 +2,7 @@
 ; Total instructions: 6
 ; Input registers: 5, Output registers: 5
 
-(include "../../../../../../Saturation/base.egg")
+(include "../../../../../Saturation/base.egg")
 
 ; Input register declarations (used but not defined in this block)
 (let a0_0 (RegVal "a0_0"))
@@ -22,16 +22,16 @@
 (let a5_1_val (Add a5_0 a6_0))
 
 ;; Step 3:     sltu rd=a0_1 rs1=a2_1 rs2=a0_0
-; Unsupported:     sltu rd=a0_1 rs1=a2_1 rs2=a0_0
+(let a0_1_val (Sltu a2_1_val a0_0))
 
 ;; Step 4:     add rd=a5_2 rs1=a5_1 rs2=a0_1
-(let a5_2_val (Add a5_1_val (RegVal "a0_1")))
+(let a5_2_val (Add a5_1_val a0_1_val))
 
 ;; Step 5:     slli rd=a4_0 rs1=a5_2 imm=8
 (let a4_0_val (Slli a5_2_val (ImmVal 8)))
 
-;; Step 6:     bge rs1=a4_0 rs2=zero_0 addr=1eea8
-(let inst_5 (Bge a4_0_val zero_0 (ImmVal 0)))
+;; Step 6:     bge rs1=a4_0 rs2=zero_0 imm=126632
+(let inst_5 (Bge a4_0_val zero_0 (ImmVal 126632)))
 
 ; ============================================
 ; Run saturation to apply rewrite rules
@@ -43,6 +43,7 @@
 ; ============================================
 (print-eclass-id a2_1_val)
 (print-eclass-id a5_1_val)
+(print-eclass-id a0_1_val)
 (print-eclass-id a5_2_val)
 (print-eclass-id a4_0_val)
 (print-eclass-id inst_5)

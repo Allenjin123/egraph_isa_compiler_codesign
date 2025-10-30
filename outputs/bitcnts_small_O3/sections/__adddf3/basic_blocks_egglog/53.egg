@@ -2,7 +2,7 @@
 ; Total instructions: 9
 ; Input registers: 5, Output registers: 9
 
-(include "../../../../../../Saturation/base.egg")
+(include "../../../../../Saturation/base.egg")
 
 ; Input register declarations (used but not defined in this block)
 (let a0_0 (RegVal "a0_0"))
@@ -19,13 +19,13 @@
 (let a2_1_val (Add a0_0 a2_0))
 
 ;; Step 2:     sltu rd=a0_1 rs1=a2_1 rs2=a0_0
-; Unsupported:     sltu rd=a0_1 rs1=a2_1 rs2=a0_0
+(let a0_1_val (Sltu a2_1_val a0_0))
 
 ;; Step 3:     add rd=a5_1 rs1=a5_0 rs2=a6_0
 (let a5_1_val (Add a5_0 a6_0))
 
 ;; Step 4:     add rd=a5_2 rs1=a5_1 rs2=a0_1
-(let a5_2_val (Add a5_1_val (RegVal "a0_1")))
+(let a5_2_val (Add a5_1_val a0_1_val))
 
 ;; Step 5:     slli rd=a3_0 rs1=a5_2 imm=31
 (let a3_0_val (Slli a5_2_val (ImmVal 31)))
@@ -51,6 +51,7 @@
 ; Print eclass IDs for each instruction
 ; ============================================
 (print-eclass-id a2_1_val)
+(print-eclass-id a0_1_val)
 (print-eclass-id a5_1_val)
 (print-eclass-id a5_2_val)
 (print-eclass-id a3_0_val)

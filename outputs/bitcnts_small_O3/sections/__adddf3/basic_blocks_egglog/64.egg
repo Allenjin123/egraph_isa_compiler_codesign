@@ -2,7 +2,7 @@
 ; Total instructions: 4
 ; Input registers: 4, Output registers: 4
 
-(include "../../../../../../Saturation/base.egg")
+(include "../../../../../Saturation/base.egg")
 
 ; Input register declarations (used but not defined in this block)
 (let a0_0 (RegVal "a0_0"))
@@ -21,10 +21,10 @@
 (let a5_1_val (Sub a5_0 a6_0))
 
 ;; Step 3:     sltu rd=a0_1 rs1=a0_0 rs2=a2_1
-; Unsupported:     sltu rd=a0_1 rs1=a0_0 rs2=a2_1
+(let a0_1_val (Sltu a0_0 a2_1_val))
 
 ;; Step 4:     sub rd=a5_2 rs1=a5_1 rs2=a0_1
-(let a5_2_val (Sub a5_1_val (RegVal "a0_1")))
+(let a5_2_val (Sub a5_1_val a0_1_val))
 
 ; ============================================
 ; Run saturation to apply rewrite rules
@@ -36,4 +36,5 @@
 ; ============================================
 (print-eclass-id a2_1_val)
 (print-eclass-id a5_1_val)
+(print-eclass-id a0_1_val)
 (print-eclass-id a5_2_val)
