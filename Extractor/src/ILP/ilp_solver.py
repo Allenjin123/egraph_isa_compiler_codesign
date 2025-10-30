@@ -315,7 +315,7 @@ def analyze_solution(egraph: EGraph, choices: Dict[str, str], variables: Dict[st
     }
 
 
-def run_gurobi_solver(lp_file: str, sol_file: str, log_file: str, timeout: int, mst_file: Optional[str] = None) -> bool:
+def run_gurobi_solver(lp_file: str, sol_file: str, log_file: str, timeout: int, mst_file: Optional[str] = None, best_k: int = 1) -> bool:
     """Run Gurobi solver"""
     print(f"\nUsing Gurobi solver...")
     
@@ -331,6 +331,7 @@ def run_gurobi_solver(lp_file: str, sol_file: str, log_file: str, timeout: int, 
         "--output_file", sol_file,
         "--time_limit", str(timeout),
         "--log_file", log_file,
+        "--best_k", str(best_k),
     ]
     
     if mst_file and os.path.exists(mst_file):
@@ -368,6 +369,12 @@ def main():
         "--output",
         default=str(Path(__file__).resolve().parents[3] / "ilp_output"),
         help="Output directory (default: Extractor/ilp_output)"
+    )
+    parser.add_argument(
+        "--best_k",
+        type=int,
+        default=1,
+        help="Number of best solutions to find (default: 1)"
     )
     
     args = parser.parse_args()
@@ -451,7 +458,7 @@ def main():
     print(f"\nSolving ILP...")
     start_time = time.time()
     
-    success = run_gurobi_solver(str(lp_file), str(sol_file), str(log_file), args.timeout)
+    success = run_gurobi_solver(str(lp_file), str(sol_file), str(log_file), args.timeout, best_k=args.best_k)
     
     
     solve_time = time.time() - start_time
@@ -462,87 +469,118 @@ def main():
     
     print(f"\nSolving completed (time: {solve_time:.2f}s)")
     
-    # Parse solution file
-    print(f"\nParsing solution file: {sol_file}")
-    variables = parse_solution_file(str(sol_file))
-    print(f"Found {len(variables)} variable assignments")
+    # Parse solution files (handle multiple solutions)
+    if args.best_k == 1:
+        # Single solution case (original behavior)
+        solution_files = [str(sol_file)]
+    else:
+        # Multiple solutions case
+        solution_files = []
+        for i in range(args.best_k):
+            base_name = str(sol_file)
+            dot_pos = base_name.find('.')
+            if dot_pos != -1:
+                solution_file = base_name[:dot_pos] + f"_{i}" + base_name[dot_pos:]
+            else:
+                solution_file = base_name + f"_{i}"
+            if os.path.exists(solution_file):
+                solution_files.append(solution_file)
     
-    # Extract selected nodes
-    choices = extract_solution(egraph, variables)
-    print(f"Extracted {len(choices)} eclass choices")
+    print(f"\nFound {len(solution_files)} solution file(s)")
     
-    # Analyze solution
-    analysis = analyze_solution(egraph, choices, variables)
+    # Process each solution
+    for i, solution_file in enumerate(solution_files):
+        print(f"\nProcessing solution {i+1}: {solution_file}")
+        
+        # Parse solution file
+        variables = parse_solution_file(solution_file)
+        print(f"Found {len(variables)} variable assignments")
+        
+        # Extract selected nodes
+        choices = extract_solution(egraph, variables)
+        print(f"Extracted {len(choices)} eclass choices")
+        
+        # Analyze solution
+        analysis = analyze_solution(egraph, choices, variables)
+        
+        # Extract S-expressions
+        print(f"Extracting S-expressions...")
+        sexprs = extract_sexprs(egraph, choices)
     
-    # Extract S-expressions
-    print(f"\nExtracting S-expressions...")
-    sexprs = extract_sexprs(egraph, choices)
+        # Display S-expressions for this solution
+        print(f"\n" + "="*60)
+        print(f"S-expressions (Solution {i+1})")
+        print("="*60)
+        for root_name, data in sexprs.items():
+            print(f"\n{root_name}:")
+            print(f"  eclass: {data['eclass']}")
+            print(f"  sexpr:  {data['sexpr']}")
+        
+        # Sort sexprs by section (dict order), then block_num, then index
+        def sort_key(name):
+            if '_root' not in name:
+                return ('', 0, 0)
+            prefix = name.split('_root')[0]  # Everything before _root
+            suffix = name.split('_root', 1)[1] if '_root' in name else ''
+            # Extract block_num from prefix (last number before _root)
+            numbers_in_prefix = re.findall(r'\d+', prefix)
+            block_num = int(numbers_in_prefix[-1]) if numbers_in_prefix else 0
+            # Extract section by removing the last "_block_num" part
+            if numbers_in_prefix:
+                # Remove the last number and its preceding underscore from prefix
+                section = re.sub(r'_\d+$', '', prefix) if prefix else ''
+            else:
+                section = prefix
+            # Extract index from suffix (e.g., "_0" -> 0, "" -> -1)
+            index = int(suffix.lstrip('_')) if suffix and suffix.lstrip('_').isdigit() else -1
+            return (section, block_num, index)
+        
+        sexprs_sorted = dict(sorted(sexprs.items(), key=lambda x: sort_key(x[0])))
     
-    print(f"\n" + "="*60)
-    print("S-expressions")
-    print("="*60)
-    for root_name, data in sexprs.items():
-        print(f"\n{root_name}:")
-        print(f"  eclass: {data['eclass']}")
-        print(f"  sexpr:  {data['sexpr']}")
-    
-    # Sort sexprs by section (dict order), then block_num, then index
-    def sort_key(name):
-        if '_root' not in name:
-            return ('', 0, 0)
-        prefix = name.split('_root')[0]  # Everything before _root
-        suffix = name.split('_root', 1)[1] if '_root' in name else ''
-        # Extract block_num from prefix (last number before _root)
-        numbers_in_prefix = re.findall(r'\d+', prefix)
-        block_num = int(numbers_in_prefix[-1]) if numbers_in_prefix else 0
-        # Extract section by removing the last "_block_num" part
-        if numbers_in_prefix:
-            # Remove the last number and its preceding underscore from prefix
-            section = re.sub(r'_\d+$', '', prefix) if prefix else ''
+        # Save results for this solution
+        if len(solution_files) == 1:
+            result_file = result_dir / f"result.json"
         else:
-            section = prefix
-        # Extract index from suffix (e.g., "_0" -> 0, "" -> -1)
-        index = int(suffix.lstrip('_')) if suffix and suffix.lstrip('_').isdigit() else -1
-        return (section, block_num, index)
-    
-    sexprs_sorted = dict(sorted(sexprs.items(), key=lambda x: sort_key(x[0])))
-    
-    # Save results
-    result_file = result_dir / f"result.json"
-    # Convert json_files_with_prefixes (tuples) to a serializable format
-    input_files_serializable = [
-        {'file_path': fp, 'prefix': p} for fp, p in json_files_with_prefixes
-    ]
-    result_data = {
-        'program_name': args.program_name,
-        'input_files': input_files_serializable,
-        'solver': "gurobi",
-        'timeout': args.timeout,
-        'times': {
-            'load': load_time,
-            'ilp_gen': ilp_time,
-            'solve': solve_time,
-            'total': load_time + ilp_time + solve_time
-        },
-        'statistics': analysis,
-        'choices': choices,
-        'sexprs': sexprs_sorted
-    }
-    
-    with open(result_file, 'w') as f:
-        json.dump(result_data, f, indent=2)
-    
-    print(f"\nResults saved to: {result_file}")
+            result_file = result_dir / f"result_{i}.json"
+        
+        # Convert json_files_with_prefixes (tuples) to a serializable format
+        input_files_serializable = [
+            {'file_path': fp, 'prefix': p} for fp, p in json_files_with_prefixes
+        ]
+        result_data = {
+            'program_name': args.program_name,
+            'input_files': input_files_serializable,
+            'solver': "gurobi",
+            'timeout': args.timeout,
+            'best_k': args.best_k,
+            'solution_id': i,
+            'solution_file': solution_file,
+            'times': {
+                'load': load_time,
+                'ilp_gen': ilp_time,
+                'solve': solve_time,
+                'total': load_time + ilp_time + solve_time
+            },
+            'statistics': analysis,
+            'choices': choices,
+            'sexprs': sexprs_sorted
+        }
+        
+        with open(result_file, 'w') as f:
+            json.dump(result_data, f, indent=2)
+        
+        print(f"Results saved to: {result_file}")
     
     # Summary
     print("\n" + "="*60)
     print("Summary")
     print("="*60)
-    print(f"Total time: {result_data['times']['total']:.2f}s")
+    print(f"Total time: {load_time + ilp_time + solve_time:.2f}s")
     print(f"  - Loading: {load_time:.2f}s")
     print(f"  - ILP generation: {ilp_time:.2f}s")
     print(f"  - Solving: {solve_time:.2f}s")
-    print(f"\nObjective value: {analysis['num_op_types_ilp']} operator types (excluding root, ImmVal, RegVal, leaf)")
+    print(f"\nProcessed {len(solution_files)} solution(s)")
+    print(f"Objective value: {analysis['num_op_types_ilp']} operator types (excluding root, ImmVal, RegVal, leaf)")
     print("="*60)
     
     return 0
