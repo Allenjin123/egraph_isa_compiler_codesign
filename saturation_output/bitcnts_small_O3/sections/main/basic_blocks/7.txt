@@ -1,0 +1,4 @@
+lw a5,16(sp)
+lw s2,0(s5)
+addi s0,zero,0
+add s1,a0,a5

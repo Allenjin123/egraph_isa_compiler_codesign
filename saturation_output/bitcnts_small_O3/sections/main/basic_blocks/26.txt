@@ -1,0 +1,2 @@
+addi a0,zero,-1
+jal ra,100b4

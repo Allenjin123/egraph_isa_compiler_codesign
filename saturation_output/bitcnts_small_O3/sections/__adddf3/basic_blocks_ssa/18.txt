@@ -1,0 +1,3 @@
+addi a1_0, zero_0, 64
+sub a1_1, a1_0, a4_0
+sll a1_2, a6_0, a1_1

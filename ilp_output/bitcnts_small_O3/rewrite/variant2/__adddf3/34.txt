@@ -1,0 +1,5 @@
+bne op_1, t1, a3, 4
+jal op_2, 0
+addi op_3, zero, 0
+addi op_4, a3, -32
+srl op_5, a5, op_4

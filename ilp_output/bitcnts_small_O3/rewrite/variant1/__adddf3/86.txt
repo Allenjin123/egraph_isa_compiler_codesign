@@ -1,0 +1,4 @@
+jal op_1, 0
+addi op_2, a3, 0
+addi op_3, a6, 0
+addi op_4, t1, 0

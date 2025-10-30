@@ -158,7 +158,8 @@ int main(int argc, char* argv[]) {
         if (missingParams) {
             std::cerr << "Usage: " << argv[0] 
                       << " --lp_file <file> --output_file <file> --log_file <file> "
-                      << "[--mst_file <file>] [--time_limit <seconds>] [--solution_pool_dir <dir>]" 
+                      << "[--mst_file <file>] [--time_limit <seconds>] [--solution_pool_dir <dir>] "
+                      << "[--best_k <number>]" 
                       << std::endl;
             return 1;
         }
@@ -172,6 +173,7 @@ int main(int argc, char* argv[]) {
         std::string mst_file = "";
         double time_limit = GRB_INFINITY;
         std::string solution_pool_dir = "";
+        int best_k = 1;  // Default to 1 solution
         
         // Process optional parameters
         if (params.find("mst_file") != params.end()) {
@@ -202,6 +204,20 @@ int main(int argc, char* argv[]) {
             }
         }
         
+        if (params.find("best_k") != params.end()) {
+            try {
+                best_k = std::stoi(params["best_k"]);
+                if (best_k < 1) {
+                    std::cerr << "Error: best_k must be >= 1" << std::endl;
+                    return 1;
+                }
+                std::cout << "Requesting best " << best_k << " solutions" << std::endl;
+            } catch (const std::exception& e) {
+                std::cerr << "Invalid best_k value: " << params["best_k"] << std::endl;
+                return 1;
+            }
+        }
+        
         // Open log file with simple format
         std::ofstream logStream(log_file);
         if (!logStream.is_open()) {
@@ -223,6 +239,14 @@ int main(int argc, char* argv[]) {
         
         // Make sure we capture all incumbent solutions
         model.set(GRB_IntParam_OutputFlag, 1);
+        
+        // Set solution pool parameters for best_k solutions
+        if (best_k > 1) {
+            model.set(GRB_IntParam_PoolSearchMode, 2);  // Search for k best solutions
+            model.set(GRB_IntParam_PoolSolutions, best_k);
+            model.set(GRB_DoubleParam_PoolGap, 0.1);  // Only optimal solutions
+            std::cout << "Solution pool configured for " << best_k << " best solutions" << std::endl;
+        }
         
         // Counter for incumbent solutions
         int incumbent_count = 0;
@@ -261,22 +285,60 @@ int main(int argc, char* argv[]) {
             std::cout << "Optimization ended with status: " << status << std::endl;
         }
         
-        // Save the solution if a feasible solution was found
-        if (model.get(GRB_IntAttr_SolCount) > 0) {
-            double obj_val = model.get(GRB_DoubleAttr_ObjVal);
-            std::cout << "Objective value: " << obj_val << std::endl;
+        // Save the solution(s) if feasible solutions were found
+        int sol_count = model.get(GRB_IntAttr_SolCount);
+        if (sol_count > 0) {
+            std::cout << "Found " << sol_count << " solution(s)" << std::endl;
             
-            // Write solution to file
-            model.write(output_file);
-            std::cout << "Solution saved to: " << output_file << std::endl;
-            
-            // If we're using a solution pool directory, also save the final solution there
-            if (!solution_pool_dir.empty()) {
-                std::string final_solution_filename = generateSolutionFileName(
-                    incumbent_count, obj_val, total_runtime);
-                std::string full_path = solution_pool_dir + "/" + final_solution_filename;
-                model.write(full_path);
-                std::cout << "Final solution also saved to: " << full_path << std::endl;
+            if (best_k == 1 || sol_count == 1) {
+                // Single solution case (original behavior)
+                double obj_val = model.get(GRB_DoubleAttr_ObjVal);
+                std::cout << "Objective value: " << obj_val << std::endl;
+                
+                // Write solution to file
+                model.write(output_file);
+                std::cout << "Solution saved to: " << output_file << std::endl;
+                
+                // If we're using a solution pool directory, also save the final solution there
+                if (!solution_pool_dir.empty()) {
+                    std::string final_solution_filename = generateSolutionFileName(
+                        incumbent_count, obj_val, total_runtime);
+                    std::string full_path = solution_pool_dir + "/" + final_solution_filename;
+                    model.write(full_path);
+                    std::cout << "Final solution also saved to: " << full_path << std::endl;
+                }
+            } else {
+                // Multiple solutions case
+                std::cout << "Saving " << std::min(sol_count, best_k) << " best solutions:" << std::endl;
+                
+                for (int i = 0; i < std::min(sol_count, best_k); i++) {
+                    model.set(GRB_IntParam_SolutionNumber, i);
+                    double obj_val = model.get(GRB_DoubleAttr_PoolObjVal);
+                    
+                    // Generate filename for this solution (all solutions get numbered)
+                    std::string solution_filename;
+                    std::string base_name = output_file;
+                    size_t dot_pos = base_name.find_last_of('.');
+                    if (dot_pos != std::string::npos) {
+                        solution_filename = base_name.substr(0, dot_pos) + "_" + std::to_string(i) + base_name.substr(dot_pos);
+                    } else {
+                        solution_filename = base_name + "_" + std::to_string(i);
+                    }
+                    
+                    // Write this solution
+                    model.write(solution_filename);
+                    std::cout << "  Solution " << (i+1) << ": objective = " << obj_val 
+                              << ", saved to: " << solution_filename << std::endl;
+                    
+                    // Also save to solution pool directory if specified
+                    if (!solution_pool_dir.empty()) {
+                        std::string pool_filename = generateSolutionFileName(
+                            i, obj_val, total_runtime);
+                        std::string pool_path = solution_pool_dir + "/" + pool_filename;
+                        model.write(pool_path);
+                        std::cout << "    Also saved to: " << pool_path << std::endl;
+                    }
+                }
             }
         } else {
             std::cout << "No solution found." << std::endl;

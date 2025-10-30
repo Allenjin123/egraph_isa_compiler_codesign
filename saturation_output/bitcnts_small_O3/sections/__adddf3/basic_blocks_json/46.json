@@ -1,0 +1,282 @@
+{
+  "nodes": {
+    "primitive-i64-0": {
+      "op": "0",
+      "children": [],
+      "eclass": "i64-0",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-ImmVal": {
+      "op": "ImmVal",
+      "children": [
+        "primitive-i64-0"
+      ],
+      "eclass": "Imm-4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "primitive-i64-4": {
+      "op": "4",
+      "children": [],
+      "eclass": "i64-4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-ImmVal": {
+      "op": "ImmVal",
+      "children": [
+        "primitive-i64-4"
+      ],
+      "eclass": "Imm-7",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-Jal": {
+      "op": "Jal",
+      "children": [
+        "function-0-ImmVal"
+      ],
+      "eclass": "Inst-9",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-Jal": {
+      "op": "Jal",
+      "children": [
+        "function-1-ImmVal"
+      ],
+      "eclass": "Inst-12",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-Beq": {
+      "op": "Beq",
+      "children": [
+        "function-1-Or",
+        "function-2-RegVal",
+        "function-0-ImmVal"
+      ],
+      "eclass": "Inst-6",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-Beq": {
+      "op": "Beq",
+      "children": [
+        "function-2-RegVal",
+        "function-0-Or",
+        "function-0-ImmVal"
+      ],
+      "eclass": "Inst-6",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-2-Beq": {
+      "op": "Beq",
+      "children": [
+        "function-1-Or",
+        "function-2-RegVal",
+        "function-1-ImmVal"
+      ],
+      "eclass": "Inst-11",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-3-Beq": {
+      "op": "Beq",
+      "children": [
+        "function-2-RegVal",
+        "function-0-Or",
+        "function-1-ImmVal"
+      ],
+      "eclass": "Inst-11",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-Bne": {
+      "op": "Bne",
+      "children": [
+        "function-1-Or",
+        "function-2-RegVal",
+        "function-1-ImmVal"
+      ],
+      "eclass": "Inst-8",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-Bne": {
+      "op": "Bne",
+      "children": [
+        "function-2-RegVal",
+        "function-0-Or",
+        "function-1-ImmVal"
+      ],
+      "eclass": "Inst-8",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-2-RegVal",
+        "function-0-ImmVal"
+      ],
+      "eclass": "Inst-5",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-Or": {
+      "op": "Or",
+      "children": [
+        "function-0-RegVal",
+        "function-1-RegVal"
+      ],
+      "eclass": "Inst-3",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-Or": {
+      "op": "Or",
+      "children": [
+        "function-1-RegVal",
+        "function-0-RegVal"
+      ],
+      "eclass": "Inst-3",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "primitive-String-0": {
+      "op": "\"a4_0\"",
+      "children": [],
+      "eclass": "String-0",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-RegVal": {
+      "op": "RegVal",
+      "children": [
+        "primitive-String-0"
+      ],
+      "eclass": "Inst-0",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "primitive-String-1": {
+      "op": "\"a5_0\"",
+      "children": [],
+      "eclass": "String-1",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-RegVal": {
+      "op": "RegVal",
+      "children": [
+        "primitive-String-1"
+      ],
+      "eclass": "Inst-1",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "primitive-String-2": {
+      "op": "\"zero_0\"",
+      "children": [],
+      "eclass": "String-2",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-2-RegVal": {
+      "op": "RegVal",
+      "children": [
+        "primitive-String-2"
+      ],
+      "eclass": "Inst-2",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-Seq2": {
+      "op": "Seq2",
+      "children": [
+        "function-0-Bne",
+        "function-0-Jal"
+      ],
+      "eclass": "Inst-6",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-Seq2": {
+      "op": "Seq2",
+      "children": [
+        "function-2-Beq",
+        "function-1-Jal"
+      ],
+      "eclass": "Inst-8",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-2-Seq2": {
+      "op": "Seq2",
+      "children": [
+        "function-1-Seq2",
+        "function-1-Jal"
+      ],
+      "eclass": "Inst-11",
+      "cost": 1.0,
+      "subsumed": false
+    }
+  },
+  "root_eclasses": [],
+  "class_data": {
+    "Imm-4": {
+      "type": "Imm"
+    },
+    "i64-0": {
+      "type": "i64"
+    },
+    "Imm-7": {
+      "type": "Imm"
+    },
+    "i64-4": {
+      "type": "i64"
+    },
+    "Inst-9": {
+      "type": "Inst"
+    },
+    "Inst-12": {
+      "type": "Inst"
+    },
+    "Inst-6": {
+      "type": "Inst"
+    },
+    "Inst-3": {
+      "type": "Inst"
+    },
+    "Inst-2": {
+      "type": "Inst"
+    },
+    "Inst-11": {
+      "type": "Inst"
+    },
+    "Inst-8": {
+      "type": "Inst"
+    },
+    "Inst-5": {
+      "type": "Inst"
+    },
+    "Inst-0": {
+      "type": "Inst"
+    },
+    "Inst-1": {
+      "type": "Inst"
+    },
+    "String-0": {
+      "type": "String"
+    },
+    "String-1": {
+      "type": "String"
+    },
+    "String-2": {
+      "type": "String"
+    }
+  }
+}

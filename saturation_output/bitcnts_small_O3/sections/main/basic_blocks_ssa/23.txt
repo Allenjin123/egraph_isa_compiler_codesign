@@ -1,0 +1,16 @@
+lw ra_0, 92(sp_0)
+lw s0_0, 88(sp_0)
+lw s1_0, 84(sp_0)
+lw s2_0, 80(sp_0)
+lw s3_0, 76(sp_0)
+lw s4_0, 72(sp_0)
+lw s5_0, 68(sp_0)
+lw s6_0, 64(sp_0)
+lw s7_0, 60(sp_0)
+lw s8_0, 56(sp_0)
+lw s9_0, 52(sp_0)
+lw s10_0, 48(sp_0)
+lw s11_0, 44(sp_0)
+addi a0_0, zero_0, 0
+addi sp_1, sp_0, 96
+jalr zero_1, 0, ra

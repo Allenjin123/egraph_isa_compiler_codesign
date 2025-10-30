@@ -1,0 +1,6 @@
+sub op_1, a4, s0
+addi op_2, op_1, 1
+addi op_3, zero, 31
+blt op_4, op_2, op_3, 4
+jal op_5, 0
+addi op_6, zero, 32
