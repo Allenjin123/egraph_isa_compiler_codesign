@@ -1,0 +1,3 @@
+add op_1, a3, a0
+add op_2, a4, a3
+add op_3, a5, op_2

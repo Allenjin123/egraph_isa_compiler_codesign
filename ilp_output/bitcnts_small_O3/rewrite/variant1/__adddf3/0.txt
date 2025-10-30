@@ -1,0 +1,29 @@
+srli op_1, a1, 31
+srli op_2, a3, 31
+bne op_3, op_1, op_2, 4
+jal op_4, 4
+jal op_5, 0
+addi op_6, sp, -32
+sw op_7, op_6, s0, 24
+sw op_8, op_6, s2, 16
+sw op_9, op_6, ra, 28
+sw op_10, op_6, s1, 20
+sw op_11, op_6, s3, 12
+addi op_12, zero, 2047
+slli op_13, a0, 3
+slli op_14, a2, 3
+srli op_15, a1, 20
+andi op_16, op_15, 2047
+srli op_17, a3, 20
+andi op_18, op_17, 2047
+sub op_19, op_16, op_18
+srli op_20, a0, 29
+lui op_21, 256
+addi op_22, op_21, -1
+and op_23, a1, op_22
+slli op_24, op_23, 3
+or op_25, op_20, op_24
+srli op_26, a2, 29
+and op_27, op_22, a3
+slli op_28, op_27, 3
+or op_29, op_26, op_28

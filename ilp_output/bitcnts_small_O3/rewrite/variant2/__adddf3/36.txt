@@ -1,0 +1,2 @@
+or op_1, a1, a0
+or op_2, a4, a1

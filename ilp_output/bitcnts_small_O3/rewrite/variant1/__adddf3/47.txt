@@ -1,0 +1,2 @@
+lui op_1, 128
+addi op_2, zero, 0

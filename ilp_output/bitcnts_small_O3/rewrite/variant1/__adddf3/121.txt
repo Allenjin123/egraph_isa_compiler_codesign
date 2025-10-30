@@ -1,0 +1,6 @@
+sll op_1, s3, a4
+addi op_2, zero, 32
+sub op_3, op_2, a4
+srl op_4, s3, op_3
+sll op_5, s1, a4
+or op_6, op_4, op_5

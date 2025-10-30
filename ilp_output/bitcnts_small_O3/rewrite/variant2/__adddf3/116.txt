@@ -1,0 +1,8 @@
+sub op_1, a5, a6
+sub op_2, op_1, a1
+slli op_3, op_2, 8
+blt op_4, zero, op_3, 4
+jal op_5, 4
+jal op_6, 0
+sub op_7, a0, a2
+addi op_8, op_7, 0
