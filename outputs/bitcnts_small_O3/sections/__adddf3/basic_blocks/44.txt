@@ -1,4 +1,0 @@
-lui a4,0xff800
-addi a4,a4,-1
-and a5,a5,a4
-addi s0,zero,1

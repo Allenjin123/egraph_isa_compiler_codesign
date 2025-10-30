@@ -1,3 +1,0 @@
-addi a4,s0,1
-andi a4,a4,2046
-bne a4,zero,1eef0

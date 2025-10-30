@@ -1,2 +1,0 @@
-addi a3,zero,0
-jal zero,1eaec

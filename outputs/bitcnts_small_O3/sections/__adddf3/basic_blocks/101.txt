@@ -1,2 +1,0 @@
-addi a5,a6,0
-bne a4,zero,1eea4

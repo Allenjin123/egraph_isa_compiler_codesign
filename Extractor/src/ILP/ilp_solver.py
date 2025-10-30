@@ -20,20 +20,23 @@ Parameters:
 import argparse
 import json
 import os
+import re
 import sys
 import time
 import subprocess
 from pathlib import Path
-from typing import Dict, Set, Optional
+from typing import Dict, Set, Optional, Tuple
 
 # Add project path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from src.egraph import EGraph, DATA_DIR, clean_folder, sanitize
+from src.egraph import EGraph, DATA_DIR, collect_section_json_files, sanitize
 from src.ILP.ilp_gen import generate_ilp_file
 
 # Cache for original JSON data to avoid repeated file reads
 _original_json_cache = {}
+# Map from prefix (without _eclass suffix) to file path
+_prefix_to_file_map = {}
 
 
 def parse_solution_file(solution_path: str) -> Dict[str, float]:
@@ -106,40 +109,46 @@ def get_original_op(node_id: str) -> str:
     Get the original operator name from the JSON file for leaf nodes
     
     Parameters:
-        node_id: Node ID in format like "4_function_0_x0"
+        node_id: Node ID in format like "__adddf3_1_eclass_sanitized_original_id"
+                The format is: {section}_{block_num}_eclass_{sanitized_original_node_id}
     
     Returns:
         Original operator name from the JSON file
     """
-    global _original_json_cache
+    global _original_json_cache, _prefix_to_file_map
     
-    # Extract prefix (file identifier) from node_id
-    parts = node_id.split('_', 1)
-    if len(parts) < 2:
+    # Split by _eclass to separate prefix from rest
+    if '_eclass' not in node_id:
         return node_id  # Cannot parse, return as-is
     
-    prefix = parts[0]
-    sanitized_rest = parts[1]
+    prefix_with_eclass, sanitized_rest = node_id.split('_eclass', 1)
+    # Remove leading underscore from sanitized_rest if present
+    sanitized_rest = sanitized_rest.lstrip('_')
+    
+    # prefix_with_eclass is like "__adddf3_1_eclass", we need "__adddf3_1"
+    # Actually, prefix_with_eclass should be "{section}_{block_num}", not include "eclass"
+    prefix_key = prefix_with_eclass  # This is "{section}_{block_num}"
     
     # Load JSON file if not cached
-    if prefix not in _original_json_cache:
-        json_file = Path(DATA_DIR) / f"{prefix}.json"
-        if json_file.exists():
+    if prefix_key not in _original_json_cache:
+        # Get file path from the map
+        json_file_path = _prefix_to_file_map.get(prefix_key)
+        if json_file_path and Path(json_file_path).exists():
             try:
-                with open(json_file, 'r') as f:
+                with open(json_file_path, 'r') as f:
                     data = json.load(f)
-                    _original_json_cache[prefix] = data.get('nodes', {})
+                    _original_json_cache[prefix_key] = data.get('nodes', {})
             except Exception as e:
-                print(f"Warning: Failed to load {json_file}: {e}")
-                _original_json_cache[prefix] = {}
+                print(f"Warning: Failed to load {json_file_path}: {e}")
+                _original_json_cache[prefix_key] = {}
         else:
-            print(f"Warning: JSON file not found: {json_file}")
-            _original_json_cache[prefix] = {}
+            print(f"Warning: JSON file not found for prefix {prefix_key}")
+            _original_json_cache[prefix_key] = {}
     
     # Find the original node by matching sanitized node_id
-    # The node_id in egraph is: prefix + "_" + sanitize(original_node_id)
-    # So we need to find which original_node_id produces the matching sanitized form
-    nodes = _original_json_cache[prefix]
+    # The node_id in egraph is: {section}_{block_num}_eclass_{sanitize(original_node_id)}
+    # So sanitized_rest should match sanitize(original_node_id)
+    nodes = _original_json_cache[prefix_key]
     for original_node_id, node_data in nodes.items():
         if sanitize(original_node_id) == sanitized_rest:
             return node_data.get('op', node_id)
@@ -200,12 +209,12 @@ def build_sexpr(egraph: EGraph, choices: Dict[str, str], eclass_id: str, visited
         return op
 
 
-def extract_sexprs(egraph: EGraph, choices: Dict[str, str]) -> Dict[str, str]:
+def extract_sexprs(egraph: EGraph, choices: Dict[str, str]) -> Dict[str, Dict[str, str]]:
     """
     Extract S-expressions for all root nodes
     
     Returns:
-        Dictionary mapping root_eclass_id to S-expression
+        Dictionary mapping root_name to {"eclass": eclass_id, "sexpr": s_expression}
     """
     sexprs = {}
     
@@ -214,12 +223,14 @@ def extract_sexprs(egraph: EGraph, choices: Dict[str, str]) -> Dict[str, str]:
         if node_id in egraph.enodes:
             node = egraph.enodes[node_id]
             # Check if this is a root node
-            if node.op == "root" or node.op.endswith("_root"):
+            if eclass_id != "eclass_root" and eclass_id.endswith("_root"):
+                # Extract <section>_<block> prefix from eclass_id or node_id: {section}_{block_num}_eclass_... or {section}_{block_num}_enode_...
+                prefix = eclass_id.split('_eclass')[0]
                 # Build S-expr for each child of the root
                 for i, child_eclass in enumerate(node.children):
                     sexpr = build_sexpr(egraph, choices, child_eclass)
-                    root_name = f"{node.op}_{i}" if len(node.children) > 1 else node.op
-                    sexprs[root_name] = sexpr
+                    root_name = f"{prefix}_root_{i}" if len(node.children) > 1 else f"{prefix}_root"
+                    sexprs[root_name] = {"eclass": child_eclass, "sexpr": sexpr}
     
     return sexprs
 
@@ -228,6 +239,9 @@ def analyze_solution(egraph: EGraph, choices: Dict[str, str], variables: Dict[st
     """
     Analyze the extracted solution and count operator usage
     """
+    # Exclude special operators from analysis: root, ImmVal, RegVal, leaf
+    excluded_ops = {"root", "ImmVal", "RegVal", "leaf"}
+    
     print("\n" + "="*60)
     print("Solution Analysis")
     print("="*60)
@@ -243,9 +257,12 @@ def analyze_solution(egraph: EGraph, choices: Dict[str, str], variables: Dict[st
         selected_ops.add(op_name)
         op_counts[op_name] = op_counts.get(op_name, 0) + 1
     
+    # Filter out excluded operators for statistics
+    selected_ops_filtered = {op for op in selected_ops if op not in excluded_ops}
+    
     print(f"\nNumber of selected eclasses: {len(choices)}")
     print(f"Number of selected nodes: {len(selected_nodes)}")
-    print(f"Actual operator types used (from node statistics): {len(selected_ops)}")
+    print(f"Actual operator types used (excluding root, ImmVal, RegVal, leaf): {len(selected_ops_filtered)}")
     
     # Get activated operator variables from ILP solution
     ilp_ops = set()
@@ -257,20 +274,23 @@ def analyze_solution(egraph: EGraph, choices: Dict[str, str], variables: Dict[st
             if abs(value - 1.0) < 0.01:
                 ilp_ops.add(op_name)
     
-    print(f"Operator variables activated in ILP (Op_=1): {len(ilp_ops)}")
+    # Filter out excluded operators for ILP statistics
+    ilp_ops_filtered = {op for op in ilp_ops if op not in excluded_ops}
     
-    # Display all activated operator variables in ILP
-    print("\nOperator variables activated in ILP (Op_=1):")
-    for op_name in sorted(ilp_ops):
+    print(f"Operator variables activated in ILP (Op_=1, excluding excluded ops): {len(ilp_ops_filtered)}")
+    
+    # Display all activated operator variables in ILP (excluding special operators)
+    print("\nOperator variables activated in ILP (Op_=1, excluding root, ImmVal, RegVal, leaf):")
+    for op_name in sorted(ilp_ops_filtered):
         # Check if this operator is actually used
         actually_used = op_name in selected_ops
         status = "✓ Actually used" if actually_used else "⚠ Not actually used"
         count = op_counts.get(op_name, 0)
         print(f"  {op_name}: {status}, usage count={count}")
     
-    # Display actually used operators
-    print("\nActually used operators (from selected nodes):")
-    for op_name in sorted(selected_ops):
+    # Display actually used operators (excluding special operators)
+    print("\nActually used operators (from selected nodes, excluding root, ImmVal, RegVal, leaf):")
+    for op_name in sorted(selected_ops_filtered):
         count = op_counts.get(op_name, 0)
         in_ilp = "✓ ILP activated" if op_name in ilp_ops else "✗ ILP not activated"
         print(f"  {op_name}: {count} times [{in_ilp}]")
@@ -282,15 +302,15 @@ def analyze_solution(egraph: EGraph, choices: Dict[str, str], variables: Dict[st
             total_cost += egraph.enodes[node_id].cost
     
     print(f"\nTotal node cost (DAG cost): {total_cost}")
-    print(f"Objective value (minimize operator types): {len(ilp_ops)}")
+    print(f"Objective value (minimize operator types, excluding excluded ops): {len(ilp_ops_filtered)}")
     
     return {
         'num_eclasses': len(choices),
         'num_nodes': len(selected_nodes),
-        'num_op_types': len(selected_ops),
-        'num_op_types_ilp': len(ilp_ops),
-        'operator_counts': op_counts,
-        'ilp_activated_ops': list(ilp_ops),
+        'num_op_types': len(selected_ops_filtered),
+        'num_op_types_ilp': len(ilp_ops_filtered),
+        'operator_counts': {op: count for op, count in op_counts.items() if op not in excluded_ops},
+        'ilp_activated_ops': list(ilp_ops_filtered),
         'total_cost': total_cost
     }
 
@@ -335,6 +355,10 @@ def main():
         description="ILP-based e-graph extraction with minimal operator types"
     )
     parser.add_argument(
+        "program_name",
+        help="Name of the program subdirectory in saturation_output/ (e.g., bitcnts_small_O3)"
+    )
+    parser.add_argument(
         "--timeout",
         type=int,
         default=1800,
@@ -342,8 +366,8 @@ def main():
     )
     parser.add_argument(
         "--output",
-        default="./output",
-        help="Output directory (default: ./output)"
+        default=str(Path(__file__).resolve().parents[3] / "ilp_output"),
+        help="Output directory (default: Extractor/ilp_output)"
     )
     
     args = parser.parse_args()
@@ -365,18 +389,41 @@ def main():
     print("="*60)
     print("ILP-based E-graph Extraction")
     print("="*60)
+    print(f"Program: {args.program_name}")
     print(f"Solver: gurobi")
     print(f"Timeout: {args.timeout} seconds")
     print(f"Output directory: {output_dir}")
     print()
     
-    # Load all json files
-    input_files = clean_folder(DATA_DIR)
+    # Get program directory
+    program_dir = os.path.join(DATA_DIR, args.program_name)
+    if not os.path.exists(program_dir):
+        print(f"Error: Program directory not found: {program_dir}")
+        return 1
+    
+    # Build prefix to file path mapping (for get_original_op)
+    # We need to collect files first to build the mapping
+    print("Collecting JSON files from sections...")
+    json_files_with_prefixes = collect_section_json_files(program_dir)
+    
+    if not json_files_with_prefixes:
+        print(f"Error: No JSON files found in sections under {program_dir}")
+        return 1
+    
+    # Build prefix to file path mapping (for get_original_op)
+    global _prefix_to_file_map
+    for file_path, prefix in json_files_with_prefixes:
+        # prefix is like "__adddf3_1_eclass", we need the part before "_eclass"
+        if prefix.endswith('_eclass'):
+            prefix_key = prefix[:-len('_eclass')]  # Remove "_eclass" suffix
+            _prefix_to_file_map[prefix_key] = file_path
+    
+    print(f"Found {len(json_files_with_prefixes)} JSON files")
     
     # Load e-graph
     print("Loading e-graph...")
     start_time = time.time()
-    egraph = EGraph(input_files)
+    egraph = EGraph(args.program_name)
     load_time = time.time() - start_time
     
     print(f"Loading completed (time: {load_time:.2f}s)")
@@ -434,14 +481,41 @@ def main():
     print(f"\n" + "="*60)
     print("S-expressions")
     print("="*60)
-    for root_name, sexpr in sexprs.items():
+    for root_name, data in sexprs.items():
         print(f"\n{root_name}:")
-        print(f"  {sexpr}")
+        print(f"  eclass: {data['eclass']}")
+        print(f"  sexpr:  {data['sexpr']}")
+    
+    # Sort sexprs by section (dict order), then block_num, then index
+    def sort_key(name):
+        if '_root' not in name:
+            return ('', 0, 0)
+        prefix = name.split('_root')[0]  # Everything before _root
+        suffix = name.split('_root', 1)[1] if '_root' in name else ''
+        # Extract block_num from prefix (last number before _root)
+        numbers_in_prefix = re.findall(r'\d+', prefix)
+        block_num = int(numbers_in_prefix[-1]) if numbers_in_prefix else 0
+        # Extract section by removing the last "_block_num" part
+        if numbers_in_prefix:
+            # Remove the last number and its preceding underscore from prefix
+            section = re.sub(r'_\d+$', '', prefix) if prefix else ''
+        else:
+            section = prefix
+        # Extract index from suffix (e.g., "_0" -> 0, "" -> -1)
+        index = int(suffix.lstrip('_')) if suffix and suffix.lstrip('_').isdigit() else -1
+        return (section, block_num, index)
+    
+    sexprs_sorted = dict(sorted(sexprs.items(), key=lambda x: sort_key(x[0])))
     
     # Save results
     result_file = result_dir / f"result.json"
+    # Convert json_files_with_prefixes (tuples) to a serializable format
+    input_files_serializable = [
+        {'file_path': fp, 'prefix': p} for fp, p in json_files_with_prefixes
+    ]
     result_data = {
-        'input_files': input_files,
+        'program_name': args.program_name,
+        'input_files': input_files_serializable,
         'solver': "gurobi",
         'timeout': args.timeout,
         'times': {
@@ -452,7 +526,7 @@ def main():
         },
         'statistics': analysis,
         'choices': choices,
-        'sexprs': sexprs
+        'sexprs': sexprs_sorted
     }
     
     with open(result_file, 'w') as f:
@@ -468,7 +542,7 @@ def main():
     print(f"  - Loading: {load_time:.2f}s")
     print(f"  - ILP generation: {ilp_time:.2f}s")
     print(f"  - Solving: {solve_time:.2f}s")
-    print(f"\nObjective value: {analysis['num_op_types']} operator types")
+    print(f"\nObjective value: {analysis['num_op_types_ilp']} operator types (excluding root, ImmVal, RegVal, leaf)")
     print("="*60)
     
     return 0

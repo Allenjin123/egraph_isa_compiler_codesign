@@ -1,5 +1,0 @@
-lui s1_0, 0x800; Inst-3
-addi s1_1, s1_0, -1; Inst-5
-and s1_2, a5_0, s1_1; Inst-6
-addi s3_0, a2_0, 0; Inst-8
-jal zero_0, 1ef20; Inst-9

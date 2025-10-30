@@ -8,45 +8,23 @@ import sys
 import json
 from pathlib import Path
 from typing import List, Dict
+from sexpdata import loads, Symbol
+import re
 
+# a2_0 -> a2
+def norm_reg(s: str) -> str:
+    m = re.match(r'^([A-Za-z0-9]+)(?:_.*)?$', s)
+    return m.group(1) if m else s
 
 def parse_sexpr(s: str) -> any:
-    """简单的S-expression解析器"""
-    s = s.strip()
-    if not s.startswith('('):
-        return s  # 叶子节点
-    
-    # 移除最外层括号
-    s = s[1:-1].strip()
-    
-    # 找到操作符
-    parts = []
-    depth = 0
-    current = []
-    
-    for char in s:
-        if char == '(':
-            depth += 1
-            current.append(char)
-        elif char == ')':
-            depth -= 1
-            current.append(char)
-        elif char == ' ' and depth == 0:
-            if current:
-                parts.append(''.join(current))
-                current = []
-        else:
-            current.append(char)
-    
-    if current:
-        parts.append(''.join(current))
-    
-    if not parts:
+    """基于sexpdata的S-expression解析器"""
+    try:
+        parsed = loads(s)
+        return parsed
+    except Exception as e:
+        print(f"解析S-expression时出错: {e}")
+        print(f"输入字符串: {s}")
         return s
-    
-    op = parts[0]
-    children = [parse_sexpr(p) for p in parts[1:]]
-    return (op, children)
 
 
 def sexpr_to_asm(sexpr: str) -> List[str]:
@@ -54,50 +32,67 @@ def sexpr_to_asm(sexpr: str) -> List[str]:
     instructions = []
     counter = [0]  # 使用列表以便在闭包中修改
     
-    def simplify_operand(s: str) -> str:
-        """简化操作数名称"""
-        s = s.replace('RegVal ', '').replace('ImmVal ', '')
-        s = s.replace('_0', '').replace('_', '')
-        return s
-    
     def traverse(node):
         """后序遍历，返回该节点的操作数名称"""
         if isinstance(node, str):
             # 叶子节点，直接返回简化后的名称
-            return simplify_operand(node)
+            return norm_reg(node)
         
-        op, children = node
+        # sexpdata返回的是列表，第一个元素是操作符，其余是子节点
+        if isinstance(node, list) and len(node) > 0:
+            op = node[0]
+            children = node[1:]
+            
+            # 处理Symbol类型（sexpdata中的符号）
+            if hasattr(op, 'value'):
+                op = op.value()
+            elif isinstance(op, Symbol):
+                op = str(op)
+            
+            # 跳过某些包装操作符，直接使用其子节点
+            if op in ['RegVal', 'ImmVal'] and len(children) == 1:
+                return traverse(children[0])
+            
+            # 递归处理所有子节点
+            operands = [traverse(child) for child in children]
+            
+            # 为当前操作生成指令
+            counter[0] += 1
+            dest = f"op{counter[0]}"
+            
+            # 生成指令字符串（标准汇编格式：指令 目标, 源操作数...）
+            if len(operands) == 0:
+                instructions.append(f"{op} {dest}")
+            elif len(operands) == 1:
+                instructions.append(f"{op} {dest}, {operands[0]}")
+            elif len(operands) == 2:
+                instructions.append(f"{op} {dest}, {operands[0]}, {operands[1]}")
+            else:
+                instructions.append(f"{op} {dest}, {', '.join(operands)}")
+            
+            return dest
         
-        # 跳过某些包装操作符，直接使用其子节点
-        if op in ['RegVal', 'ImmVal'] and len(children) == 1:
-            return traverse(children[0])
-        
-        # 递归处理所有子节点
-        operands = [traverse(child) for child in children]
-        
-        # 为当前操作生成指令
-        counter[0] += 1
-        dest = f"op{counter[0]}"
-        
-        # 生成指令字符串（标准汇编格式：指令 目标, 源操作数...）
-        if len(operands) == 0:
-            instructions.append(f"{op} {dest}")
-        elif len(operands) == 1:
-            instructions.append(f"{op} {dest}, {operands[0]}")
-        elif len(operands) == 2:
-            instructions.append(f"{op} {dest}, {operands[0]}, {operands[1]}")
-        else:
-            instructions.append(f"{op} {dest}, {', '.join(operands)}")
-        
-        return dest
+        # 如果不是预期的格式，返回原值
+        return str(node)
     
     # 解析并遍历
     tree = parse_sexpr(sexpr)
     
     # 如果是root节点，特殊处理
-    if isinstance(tree, tuple) and tree[0].endswith('_root'):
-        if tree[1]:
-            traverse(tree[1][0])  # 处理root的第一个子节点
+    if isinstance(tree, list) and len(tree) > 0:
+        op = tree[0]
+        # 处理Symbol类型
+        if hasattr(op, 'value'):
+            op = op.value()
+        elif isinstance(op, Symbol):
+            op = str(op)
+        
+        if str(op).endswith('_root') and len(tree) > 1:
+            # 处理root的所有子节点
+            for child in tree[1:]:
+                traverse(child)
+        else:
+            traverse(tree)
     else:
         traverse(tree)
     
@@ -216,4 +211,3 @@ if __name__ == "__main__":
         print(f"{root_name}: {len(instructions)} 条指令")
     
     print("\n完成！")
-

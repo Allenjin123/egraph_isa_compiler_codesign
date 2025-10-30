@@ -1,4 +1,0 @@
-addi a5_0, a0_0, -8; Inst-4
-sll a5_1, s3_0, a5_0; Inst-5
-addi a2_0, zero_0, 0; Inst-7
-jal zero_1, 1ef48; Inst-8
