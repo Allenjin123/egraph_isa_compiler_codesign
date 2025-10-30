@@ -1,0 +1,8 @@
+jal op_1, 0
+sub op_2, a1, a0
+sll op_3, a2, op_2
+srl op_4, a5, a0
+sll op_5, a5, op_2
+srl op_6, a2, a0
+or op_7, op_5, op_6
+or op_8, a1, op_7

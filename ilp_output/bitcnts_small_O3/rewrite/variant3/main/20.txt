@@ -1,0 +1,7 @@
+addi op_1, s3, 1
+addi op_2, zero, 7
+bne op_3, op_1, op_2, 4
+jal op_4, 4
+jal op_5, 0
+addi op_6, s4, 4
+addi op_7, s5, 4

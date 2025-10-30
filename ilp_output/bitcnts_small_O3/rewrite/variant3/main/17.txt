@@ -1,0 +1,1 @@
+blt op_1, a0, zero, 0
