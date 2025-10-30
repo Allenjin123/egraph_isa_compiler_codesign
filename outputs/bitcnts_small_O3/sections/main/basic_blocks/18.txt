@@ -1,3 +1,0 @@
-sw s3,24(sp)
-addi s8,s2,0
-addi s7,s1,0

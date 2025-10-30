@@ -1,2 +1,0 @@
-addi s0,zero,0
-jal zero,1eb88

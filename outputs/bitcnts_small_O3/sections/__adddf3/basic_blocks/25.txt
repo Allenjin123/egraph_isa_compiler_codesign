@@ -1,2 +1,0 @@
-addi a3,a4,-1
-beq a3,zero,1e990

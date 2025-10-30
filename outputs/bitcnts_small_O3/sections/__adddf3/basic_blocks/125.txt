@@ -1,2 +1,0 @@
-or a2,a4,s1
-bne a2,zero,1ef20

@@ -1,3 +1,0 @@
-addi s11,s11,13
-add s0,s0,a0
-bne s1,s11,101c8

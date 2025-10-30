@@ -1,0 +1,6 @@
+lw a1_0, 0(s4_0); Inst-6
+lw a0_0, 12(sp_0); Inst-8
+addi a2_0, s2_0, 0; Inst-9
+addi a3_0, s1_0, 0; Inst-10
+addi a4_0, s0_0, 0; Inst-11
+jal ra_0, 12d54; Inst-12

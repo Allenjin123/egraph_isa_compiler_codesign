@@ -1,3 +1,0 @@
-lui a3,0x800
-or a5,a5,a3
-addi a3,a4,0

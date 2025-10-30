@@ -1,3 +1,0 @@
-addi a1,zero,64
-sub a1,a1,a4
-sll a1,a6,a1
