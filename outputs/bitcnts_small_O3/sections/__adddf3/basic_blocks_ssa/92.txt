@@ -1,8 +1,0 @@
-sub a1_1, a2_0, a1_0
-sltu a5_0, a2_0, a1_1
-sub a4_1, a6_0, a4_0
-addi a2_1, a1_1, 0
-sub a5_1, a4_1, a5_0
-addi s0_0, a7_0, 0
-addi s2_0, a3_0, 0
-jal zero_0, 1ecf4

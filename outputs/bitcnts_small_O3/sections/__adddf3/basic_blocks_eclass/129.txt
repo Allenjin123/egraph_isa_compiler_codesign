@@ -1,3 +1,0 @@
-addi a4_0, a0_0, 24; Inst-3
-addi a5_0, zero_0, 31; Inst-5
-bge a5_0, a4_0, 1ef30; Inst-7

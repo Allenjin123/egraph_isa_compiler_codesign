@@ -1,3 +1,0 @@
-lw a5_0, 8(sp_0); Inst-4
-addi s11_0, a0_0, 0; Inst-6
-bge zero_0, a5_0, 102e8; Inst-8

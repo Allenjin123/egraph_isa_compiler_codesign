@@ -1,3 +1,0 @@
-addi a1_0, zero_0, 64; Inst-4
-sub a1_1, a1_0, a3_0; Inst-5
-sll a1_2, a5_0, a1_1; Inst-6

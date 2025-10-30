@@ -1,2 +1,0 @@
-addi a5_0, a6_0, 0; Inst-4
-bne a4_0, zero_0, 1eea4; Inst-6

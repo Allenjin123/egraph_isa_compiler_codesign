@@ -1,2 +1,0 @@
-addi s0_0, a1_0, 0; Inst-2
-jal zero_0, 1eb88; Inst-4

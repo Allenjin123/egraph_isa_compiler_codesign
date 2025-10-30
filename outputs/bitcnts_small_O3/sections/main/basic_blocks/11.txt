@@ -1,2 +1,0 @@
-sub a0,a0,s6
-jal ra,1120c
