@@ -1,0 +1,7 @@
+lw a4,-220(gp)
+lui a0,0x23
+addi a1,a5,0
+lw a3,12(a4)
+addi a0,a0,-1096
+addi a2,zero,28
+jal ra,12c0c

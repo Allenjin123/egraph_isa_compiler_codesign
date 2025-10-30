@@ -1,0 +1,3 @@
+jal op_1, 0
+lw op_2, a1, 4
+addi op_3, zero, 0

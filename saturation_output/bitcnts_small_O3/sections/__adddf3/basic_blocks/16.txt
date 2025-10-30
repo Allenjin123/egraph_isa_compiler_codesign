@@ -1,0 +1,10 @@
+lui a4,0xff800
+addi a4,a4,-1
+and a5,a5,a4
+srli a4,a2,0x1
+andi a2,a2,1
+or a4,a4,a2
+slli a2,a5,0x1f
+or a2,a2,a4
+srli a5,a5,0x1
+jal zero,1ec34

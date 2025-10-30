@@ -1,0 +1,5 @@
+addi op_1, s0, 1
+andi op_2, op_1, 2046
+bne op_3, zero, op_2, 4
+jal op_4, 4
+jal op_5, 0

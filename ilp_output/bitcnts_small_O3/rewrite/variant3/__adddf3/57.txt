@@ -1,0 +1,4 @@
+slli op_1, a5, 8
+blt op_2, zero, op_1, 4
+jal op_3, 4
+jal op_4, 0

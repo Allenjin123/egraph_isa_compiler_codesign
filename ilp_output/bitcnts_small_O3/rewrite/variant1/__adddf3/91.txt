@@ -1,0 +1,7 @@
+sub op_1, t3, a4
+sll op_2, a0, op_1
+srl op_3, a5, a4
+sll op_4, a5, op_1
+srl op_5, a0, a4
+or op_6, op_4, op_5
+or op_7, t3, op_6

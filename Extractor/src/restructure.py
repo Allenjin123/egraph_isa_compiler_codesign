@@ -1,219 +1,231 @@
 #!/usr/bin/env python3
 """
-将S-expression重构为汇编风格的指令序列
-从ILP求解器的结果中读取S-expression并转换为汇编指令
+从 ILP 解(solution*.sol)与 EGraph 出发，
+为每个 basic block 搭建结构化数据与输出目录骨架：
+
+ilp_output/<program>/rewrite/variant{N}/<section>/<block>.txt
+
+- variant{N} 对应第 N 个解（solution.sol 或 solution_i.sol → variant{i+1}）；
+- 目前仅创建占位文件（写入元信息），后续再实现后序遍历转写为汇编；
+- 预留 RegVal/ImmVal 与 norm_reg 逻辑接口。
 """
 
 import sys
 import json
+import re
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Dict
+from typing import Dict, List, Tuple
+
+# 将当前 src 目录加入路径，便于直接按包名导入
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from egraph import EGraph  # type: ignore
+from ILP.ilp_solver import parse_solution_file, extract_solution  # type: ignore
+
+# a2_0 -> a2
+def norm_reg(s: str) -> str:
+    m = re.match(r'^([A-Za-z0-9]+)(?:_.*)?$', s)
+    return m.group(1) if m else s
 
 
-def parse_sexpr(s: str) -> any:
-    """简单的S-expression解析器"""
-    s = s.strip()
-    if not s.startswith('('):
-        return s  # 叶子节点
-    
-    # 移除最外层括号
-    s = s[1:-1].strip()
-    
-    # 找到操作符
-    parts = []
-    depth = 0
-    current = []
-    
-    for char in s:
-        if char == '(':
-            depth += 1
-            current.append(char)
-        elif char == ')':
-            depth -= 1
-            current.append(char)
-        elif char == ' ' and depth == 0:
-            if current:
-                parts.append(''.join(current))
-                current = []
-        else:
-            current.append(char)
-    
-    if current:
-        parts.append(''.join(current))
-    
-    if not parts:
-        return s
-    
-    op = parts[0]
-    children = [parse_sexpr(p) for p in parts[1:]]
-    return (op, children)
+def strip_quotes(s: str) -> str:
+    return s[1:-1] if isinstance(s, str) and len(s) >= 2 and s[0] == '"' and s[-1] == '"' else s
 
 
-def sexpr_to_asm(sexpr: str) -> List[str]:
-    """将S-expression转换为汇编指令序列"""
-    instructions = []
-    counter = [0]  # 使用列表以便在闭包中修改
-    
-    def simplify_operand(s: str) -> str:
-        """简化操作数名称"""
-        s = s.replace('RegVal ', '').replace('ImmVal ', '')
-        s = s.replace('_0', '').replace('_', '')
-        return s
-    
-    def traverse(node):
-        """后序遍历，返回该节点的操作数名称"""
-        if isinstance(node, str):
-            # 叶子节点，直接返回简化后的名称
-            return simplify_operand(node)
-        
-        op, children = node
-        
-        # 跳过某些包装操作符，直接使用其子节点
-        if op in ['RegVal', 'ImmVal'] and len(children) == 1:
-            return traverse(children[0])
-        
-        # 递归处理所有子节点
-        operands = [traverse(child) for child in children]
-        
-        # 为当前操作生成指令
+@dataclass
+class BlockGraph:
+    section: str
+    block_num: int
+    # 该 block 下的 root 子 eclass 列表（每个 root 可能有多个子 eclass）
+    root_children: List[str] = field(default_factory=list)
+    # 选择的节点映射（eclass → enode_id）
+    choices: Dict[str, str] = field(default_factory=dict)
+
+    def add_root_children(self, children: List[str]) -> None:
+        self.root_children.extend(children)
+
+
+def find_solution_files(program_output_dir: Path) -> List[Path]:
+    sol_dir = program_output_dir / 'sol'
+    files: List[Path] = []
+    if not sol_dir.exists():
+        return files
+    # 优先匹配 solution_*.sol，再匹配单个 solution.sol
+    files.extend(sorted(sol_dir.glob('solution_*.sol')))
+    single = sol_dir / 'solution.sol'
+    if single.exists() and not files:
+        files = [single]
+    return files
+
+
+def build_block_graphs(egraph: EGraph, choices: Dict[str, str]) -> Dict[Tuple[str, int], BlockGraph]:
+    """从已选 eclass→node 结果中，抽取各个 block 的 root，并记录其子 eclass。
+    命名约定：root eclass 形如 "<section>_<block>_eclass_root"。
+    """
+    blocks: Dict[Tuple[str, int], BlockGraph] = {}
+    for eclass_id, node_id in choices.items():
+        # 仅处理 root eclass
+        if not (eclass_id != 'eclass_root' and eclass_id.endswith('_root')):
+            continue
+        # 提取 section 与 block 号
+        prefix = eclass_id.split('_eclass')[0]
+        m = re.match(r'^(.*)_(\d+)$', prefix)
+        if not m:
+            continue
+        section = m.group(1)
+        block_num = int(m.group(2))
+
+        # 读取 root 节点的子 eclass
+        if node_id not in egraph.enodes:
+            continue
+        node = egraph.enodes[node_id]
+        children = list(node.children) if node.children else []
+
+        key = (section, block_num)
+        if key not in blocks:
+            blocks[key] = BlockGraph(section=section, block_num=block_num, choices=choices)
+        blocks[key].add_root_children(children)
+
+    return blocks
+
+
+def ensure_output_structure(base_output_dir: Path, program_name: str) -> Tuple[Path, Path]:
+    program_dir = base_output_dir / program_name
+    rewrite_dir = program_dir / 'rewrite'
+    program_dir.mkdir(parents=True, exist_ok=True)
+    rewrite_dir.mkdir(parents=True, exist_ok=True)
+    return program_dir, rewrite_dir
+
+
+def load_merged_node_ops(program_name: str) -> Dict[str, str]:
+    repo_root = Path(__file__).resolve().parents[2]
+    merged_path = repo_root / 'saturation_output' / program_name / 'merged.json'
+    if not merged_path.exists():
+        return {}
+    try:
+        with open(merged_path, 'r') as f:
+            data = json.load(f)
+        nodes = data.get('nodes', {})
+        return {k: v.get('op') for k, v in nodes.items() if isinstance(v, dict) and 'op' in v}
+    except Exception:
+        return {}
+
+
+def emit_block_instructions(egraph: EGraph, bg: BlockGraph, node_ops: Dict[str, str]) -> List[str]:
+    instructions: List[str] = []
+    counter = [0]
+    memo: Dict[str, str] = {}
+    def norm_op(op: str) -> str:
+        return str(op).lower()
+
+    def emit(eclass_id: str) -> str:
+        if eclass_id in memo:
+            return memo[eclass_id]
+        if eclass_id not in bg.choices:
+            memo[eclass_id] = f"<missing:{eclass_id}>"
+            return memo[eclass_id]
+        node_id = bg.choices[eclass_id]
+        if node_id not in egraph.enodes:
+            memo[eclass_id] = f"<invalid:{node_id}>"
+            return memo[eclass_id]
+        node = egraph.enodes[node_id]
+        op = node.op
+
+        # 叶子：无子节点 → 原子值
+        if not node.children:
+            val = node_ops.get(node_id, op)
+            val = norm_reg(strip_quotes(str(val)))
+            memo[eclass_id] = val
+            return val
+
+        # 包装操作符
+        if op == 'RegVal' and len(node.children) == 1:
+            inner = emit(node.children[0])
+            inner = norm_reg(strip_quotes(inner))
+            memo[eclass_id] = inner
+            return inner
+        if op == 'ImmVal' and len(node.children) == 1:
+            inner = emit(node.children[0])
+            inner = strip_quotes(inner)
+            memo[eclass_id] = inner
+            return inner
+
+        # 顺序节点：Seq2 仅用于保持先后顺序，不产生命令
+        if op == 'Seq2' and node.children:
+            last_val = ''
+            for child in node.children:
+                last_val = emit(child)
+            memo[eclass_id] = last_val
+            return last_val
+
+        # 普通指令：先生成子操作数，再生成当前指令
+        operands = [emit(child) for child in node.children]
         counter[0] += 1
-        dest = f"op{counter[0]}"
-        
-        # 生成指令字符串（标准汇编格式：指令 目标, 源操作数...）
-        if len(operands) == 0:
-            instructions.append(f"{op} {dest}")
-        elif len(operands) == 1:
-            instructions.append(f"{op} {dest}, {operands[0]}")
-        elif len(operands) == 2:
-            instructions.append(f"{op} {dest}, {operands[0]}, {operands[1]}")
+        dest = f"op_{counter[0]}"
+        op_print = norm_op(op)
+        if operands:
+            instructions.append(f"{op_print} {dest}, {', '.join(operands)}")
         else:
-            instructions.append(f"{op} {dest}, {', '.join(operands)}")
-        
+            instructions.append(f"{op_print} {dest}")
+        memo[eclass_id] = dest
         return dest
-    
-    # 解析并遍历
-    tree = parse_sexpr(sexpr)
-    
-    # 如果是root节点，特殊处理
-    if isinstance(tree, tuple) and tree[0].endswith('_root'):
-        if tree[1]:
-            traverse(tree[1][0])  # 处理root的第一个子节点
-    else:
-        traverse(tree)
-    
+
+    for child_eclass in bg.root_children:
+        emit(child_eclass)
     return instructions
 
 
-def process_result_file(result_json_path: str, output_dir: Path) -> Dict[str, List[str]]:
-    """处理结果JSON文件，生成汇编风格输出"""
-    
-    print(f"\n读取ILP求解结果: {result_json_path}")
-    with open(result_json_path, 'r') as f:
-        data = json.load(f)
-    
-    sexprs = data.get('sexprs', {})
-    if not sexprs:
-        print("警告：未找到S-expressions")
-        return {}
-    
-    print(f"找到 {len(sexprs)} 个S-expression")
-    
-    all_asm = {}
-    
-    # 生成文本输出
-    output_file = output_dir / "assembly.txt"
-    with open(output_file, 'w') as f:
-        f.write("="*80 + "\n")
-        f.write("汇编风格指令序列 (从ILP求解结果生成)\n")
-        f.write("="*80 + "\n\n")
-        
-        for root_name, sexpr in sexprs.items():
-            instructions = sexpr_to_asm(sexpr)
-            all_asm[root_name] = instructions
-            
-            f.write(f"# {root_name}\n")
-            f.write(f"# S-expr: {sexpr}\n")
-            f.write(f"# 指令数: {len(instructions)}\n")
-            f.write("-"*80 + "\n")
-            
-            for inst in instructions:
-                f.write(f"    {inst}\n")
-            
-            f.write("\n")
-    
-    print(f"输出已保存到: {output_file}")
-    
-    # 生成JSON格式输出
-    json_file = output_dir / "assembly.json"
-    with open(json_file, 'w') as f:
-        json.dump(all_asm, f, indent=2, ensure_ascii=False)
-    
-    print(f"JSON格式已保存到: {json_file}")
-    
-    return all_asm
-
-
-if __name__ == "__main__":
+def main():
     import argparse
-    
-    parser = argparse.ArgumentParser(description="将ILP求解器的S-expression结果转换为汇编指令")
-    parser.add_argument(
-        "result_file",
-        nargs='?',
-        help="ILP结果JSON文件路径（可选，默认使用最新的结果文件）"
-    )
-    parser.add_argument(
-        "--output",
-        default=None,
-        help="输出目录（默认：../output/rewrite）"
-    )
-    
-    args = parser.parse_args()
-    
-    # 确定结果文件
-    if args.result_file:
-        result_file = Path(args.result_file)
-    else:
-        # 查找最新的结果文件
-        result_dir = Path(__file__).parent.parent / "output" / "result"
-        if not result_dir.exists():
-            print(f"错误：结果目录不存在: {result_dir}")
-            print("请先运行ILP求解器生成结果")
-            sys.exit(1)
-        
-        result_files = list(result_dir.glob("*.json"))
-        if not result_files:
-            print(f"错误：在 {result_dir} 中未找到结果文件")
-            print("请先运行ILP求解器: python src/ILP/ilp_solver.py")
-            sys.exit(1)
-        
-        result_file = max(result_files, key=lambda p: p.stat().st_mtime)
-    
-    if not result_file.exists():
-        print(f"错误：文件不存在: {result_file}")
-        sys.exit(1)
-    
-    # 确定输出目录
-    if args.output:
-        output_dir = Path(args.output)
-    else:
-        output_dir = Path(__file__).parent.parent / "output" / "rewrite"
-    
-    output_dir.mkdir(parents=True, exist_ok=True)
-    
-    print("="*80)
-    print("S-expression 到汇编指令转换器")
-    print("="*80)
-    
-    # 处理文件
-    all_asm = process_result_file(str(result_file), output_dir)
-    
-    # 打印统计信息
-    print("\n" + "="*80)
-    print("统计信息")
-    print("="*80)
-    for root_name, instructions in all_asm.items():
-        print(f"{root_name}: {len(instructions)} 条指令")
-    
-    print("\n完成！")
 
+    parser = argparse.ArgumentParser(description="从 sol+EGraph 搭建每个 basic block 的数据结构与输出骨架")
+    parser.add_argument(
+        'program_name',
+        help='程序名称（例如 bitcnts_small_O3）'
+    )
+    parser.add_argument(
+        '--output',
+        default=str(Path(__file__).resolve().parents[2] / 'ilp_output'),
+        help='ilp_output 基础目录（默认：项目根下 ilp_output）'
+    )
+
+    args = parser.parse_args()
+    base_output_dir = Path(args.output)
+    program_dir, rewrite_dir = ensure_output_structure(base_output_dir, args.program_name)
+
+    # 加载 EGraph
+    egraph = EGraph(args.program_name)
+
+    # 读取解文件
+    sol_files = find_solution_files(program_dir)
+    if not sol_files:
+        print(f"错误：未在 {program_dir / 'sol'} 找到 solution*.sol")
+        sys.exit(1)
+
+    print(f"发现 {len(sol_files)} 个解文件")
+
+    for idx, sol_file in enumerate(sol_files):
+        print(f"处理解 {idx+1}: {sol_file}")
+        variables = parse_solution_file(str(sol_file))
+        choices = extract_solution(egraph, variables)
+        blocks = build_block_graphs(egraph, choices)
+
+        variant_dir = rewrite_dir / f"variant{idx + 1}"
+        variant_dir.mkdir(parents=True, exist_ok=True)
+        node_ops = load_merged_node_ops(args.program_name)
+        # 生成每个 block 的指令
+        for (section, block_num), bg in sorted(blocks.items(), key=lambda x: (x[0][0], x[0][1])):
+            section_dir = variant_dir / section
+            section_dir.mkdir(parents=True, exist_ok=True)
+            block_file = section_dir / f"{block_num}.txt"
+            asm = emit_block_instructions(egraph, bg, node_ops)
+            with open(block_file, 'w') as f:
+                for line in asm:
+                    f.write(line)
+                    f.write('\n')
+
+    print(f"输出已生成：{rewrite_dir}")
+
+
+if __name__ == '__main__':
+    main()

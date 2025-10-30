@@ -1,0 +1,4 @@
+or op_1, a4, a5
+bne op_2, zero, op_1, 4
+jal op_3, 0
+addi op_4, zero, 0

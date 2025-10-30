@@ -1,0 +1,3 @@
+addi a5,a6,0
+addi s0,a4,0
+jal zero,1eb88
