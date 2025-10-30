@@ -1,0 +1,3 @@
+jal op_1, 0
+lw op_2, sp, 0
+lw op_3, sp, 4

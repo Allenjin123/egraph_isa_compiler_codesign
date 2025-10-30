@@ -1,0 +1,2 @@
+bne op_1, a1, a4, 4
+jal op_2, 0

@@ -1,0 +1,3 @@
+addi op_1, s11, 13
+bne op_2, s1, op_1, 0
+add op_3, a0, s0

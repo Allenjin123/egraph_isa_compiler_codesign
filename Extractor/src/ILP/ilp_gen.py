@@ -102,10 +102,14 @@ def generate_ilp_file(
     # ============================================
     # 2. Objective function: Minimize operator types
     # ============================================
+    # Exclude special operators from objective: root, ImmVal, RegVal, leaf
+    excluded_ops = {"root", "ImmVal", "RegVal", "leaf"}
+    
     lp_lines.append("Minimize")
     obj_terms = []
     for op_name in sorted(op_vars.keys()):
-        obj_terms.append(op_vars[op_name])
+        if op_name not in excluded_ops:
+            obj_terms.append(op_vars[op_name])
     # TODO: Add cost for each node; but this feature is not used in this version
     if obj_terms:
         lp_lines.append(" obj: " + " + ".join(obj_terms))
@@ -318,5 +322,7 @@ def generate_ilp_file(
         f.write('\n'.join(lp_lines))
     
     print(f"ILP file generated: {file_path}")
-    print(f"Objective function: minimize {len(op_vars)} operator types")
+    excluded_ops = {"root", "ImmVal", "RegVal", "leaf"}
+    obj_op_count = len([op for op in op_vars.keys() if op not in excluded_ops])
+    print(f"Objective function: minimize {obj_op_count} operator types (excluding root, ImmVal, RegVal, leaf)")
     print(f"Number of constraints: {sum(1 for line in lp_lines if line.strip() and line.strip()[0].isupper() and ':' in line)}")

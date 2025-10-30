@@ -1,0 +1,3 @@
+bge op_1, zero, a4, 4
+jal op_2, 4
+jal op_3, 0

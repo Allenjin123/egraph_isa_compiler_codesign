@@ -1,0 +1,6 @@
+jal op_1, 0
+lw op_2, s4, 0
+lw op_3, sp, 12
+addi op_4, s2, 0
+addi op_5, s1, 0
+addi op_6, s0, 0
