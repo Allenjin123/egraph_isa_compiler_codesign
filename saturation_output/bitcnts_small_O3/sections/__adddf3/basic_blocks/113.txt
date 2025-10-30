@@ -1,4 +1,0 @@
-addi s2,zero,0
-lui a5,0x400
-addi a2,zero,0
-jal zero,1f018

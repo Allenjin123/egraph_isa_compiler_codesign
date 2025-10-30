@@ -1,5 +1,0 @@
-jal op_1, 0
-addi op_2, s10, 0
-addi op_3, s9, 0
-addi op_4, a0, 0
-addi op_5, a1, 0

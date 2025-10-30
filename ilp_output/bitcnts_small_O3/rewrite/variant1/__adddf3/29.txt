@@ -1,3 +1,0 @@
-addi op_1, a4, 0
-lui op_2, 2048
-or op_3, a5, op_2

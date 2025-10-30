@@ -1,3 +1,0 @@
-lw a2,0(sp)
-lw a3,4(sp)
-jal ra,109a4

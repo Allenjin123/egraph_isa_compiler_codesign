@@ -1,4 +1,0 @@
-slli op_1, a5, 8
-bge op_2, op_1, zero, 4
-jal op_3, 4
-jal op_4, 0

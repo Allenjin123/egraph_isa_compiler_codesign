@@ -1,3 +1,0 @@
-addi s0,s0,1
-addi a4,zero,2047
-beq s0,a4,1f024

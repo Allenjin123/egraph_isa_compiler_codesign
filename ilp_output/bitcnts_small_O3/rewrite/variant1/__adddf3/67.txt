@@ -1,4 +1,0 @@
-addi op_1, zero, 56
-bge op_2, a4, op_1, 4
-jal op_3, 4
-jal op_4, 0

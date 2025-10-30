@@ -1,2 +1,0 @@
-jal op_1, 0
-sub op_2, a0, s6

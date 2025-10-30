@@ -1,5 +1,0 @@
-addi op_1, zero, 31
-bge op_2, a3, op_1, 4
-jal op_3, 4
-jal op_4, 0
-addi op_5, zero, 32

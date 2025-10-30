@@ -1,5 +1,0 @@
-lw op_1, sp, 8
-bge op_2, zero, op_1, 4
-jal op_3, 4
-jal op_4, 0
-addi op_5, a0, 0

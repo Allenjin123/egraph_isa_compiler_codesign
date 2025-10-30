@@ -17,10 +17,12 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Tuple
 
-# 将当前 src 目录加入路径，便于直接按包名导入
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from egraph import EGraph  # type: ignore
 from ILP.ilp_solver import parse_solution_file, extract_solution  # type: ignore
+
+# 路径配置
+SATURATION_OUTPUT_DIR = Path(__file__).resolve().parent.parent.parent / "saturation_output"
 
 # a2_0 -> a2
 def norm_reg(s: str) -> str:
@@ -29,11 +31,16 @@ def norm_reg(s: str) -> str:
 
 
 def strip_quotes(s: str) -> str:
-    return s[1:-1] if isinstance(s, str) and len(s) >= 2 and s[0] == '"' and s[-1] == '"' else s
+    if not isinstance(s, str) or len(s) < 2:
+        return s
+    if s[0] in ('"', "'") and s[-1] in ('"', "'") and s[0] == s[-1]:
+        return strip_quotes(s[1:-1])  # 递归去除多层引号
+    return s
 
 
 @dataclass
 class BlockGraph:
+    program_name: str
     section: str
     block_num: int
     # 该 block 下的 root 子 eclass 列表（每个 root 可能有多个子 eclass）
@@ -43,6 +50,16 @@ class BlockGraph:
 
     def add_root_children(self, children: List[str]) -> None:
         self.root_children.extend(children)
+    
+    def load_ordered_insts(self) -> List[str]:
+        """从 eclass 目录读取对应的 txt 文件，按行顺序提取 class 标识符"""
+        with open(f"{SATURATION_OUTPUT_DIR}/{self.program_name}/sections/{self.section}/basic_blocks_eclass/{self.block_num}.txt") as f:
+            return [l.split(';')[-1].strip() for l in f if l.strip()]
+    
+    def sort_root_children(self) -> None:
+        """按 eclass 文件中的行顺序排序 root_children"""
+        order = self.load_ordered_insts()
+        self.root_children.sort(key=lambda x: order.index(x) if x in order else len(order))
 
 
 def find_solution_files(program_output_dir: Path) -> List[Path]:

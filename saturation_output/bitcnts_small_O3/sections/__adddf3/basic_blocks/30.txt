@@ -1,2 +1,0 @@
-addi a4,zero,56
-blt a4,a3,1eb34
