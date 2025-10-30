@@ -1,8 +1,0 @@
-sub a7,a7,a4
-sll a3,a6,a7
-srl a1,a2,a4
-sll a7,a2,a7
-or a3,a3,a1
-sltu a7,zero,a7
-or a3,a3,a7
-srl a4,a6,a4

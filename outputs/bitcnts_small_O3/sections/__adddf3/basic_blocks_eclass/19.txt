@@ -1,3 +1,0 @@
-or a1_1, a1_0, a2_0; Inst-4
-sltu a1_2, zero_0, a1_1; Inst-5
-or a3_1, a3_0, a1_2; Inst-6

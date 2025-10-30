@@ -1,4 +1,0 @@
-lw a0,4(a1)
-addi s3,zero,0
-addi s8,zero,0
-jal ra,112d4

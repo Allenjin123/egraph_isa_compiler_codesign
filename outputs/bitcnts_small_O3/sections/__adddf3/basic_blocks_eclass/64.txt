@@ -1,4 +1,0 @@
-sub a2_1, a0_0, a2_0; Inst-4
-sub a5_1, a5_0, a6_0; Inst-5
-sltu a0_1, a0_0, a2_1; Inst-6
-sub a5_2, a5_1, a0_1; Inst-7

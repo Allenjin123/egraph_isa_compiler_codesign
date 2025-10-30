@@ -1,4 +1,0 @@
-lui a4_0, 0xff800; Inst-2
-addi a4_1, a4_0, -1; Inst-4
-and a5_1, a5_0, a4_1; Inst-5
-jal zero_0, 1eb88; Inst-7
