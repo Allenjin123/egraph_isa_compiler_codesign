@@ -1,7 +1,7 @@
 sub a4_0, a0_0, a2_0; Inst-5
 sltu a1_0, a0_0, a4_0; Inst-6
-sub s1_0, a5_0, a6_0; Inst-8
-sub s1_1, s1_0, a1_0; Inst-10
-slli a1_1, s1_1, 0x8; Inst-12
-addi s3_0, a4_0, 0; Inst-13
-bge a1_1, zero_0, 1ef84; unknown
+sub s1_0, a5_0, a6_0; Inst-7
+sub s1_1, s1_0, a1_0; Inst-8
+slli a1_1, s1_1, 0x8; Inst-10
+addi s3_0, a4_0, 0; Inst-12
+bge a1_1, zero_0, 1ef84; Inst-14

@@ -2,7 +2,7 @@
 ; Total instructions: 1
 ; Input registers: 2, Output registers: 0
 
-(include "../../../../../../Saturation/base.egg")
+(include "../../../../../Saturation/base.egg")
 
 ; Input register declarations (used but not defined in this block)
 (let a4_0 (RegVal "a4_0"))
@@ -12,8 +12,8 @@
 ; Instruction sequence as a DAG
 ; ============================================
 
-;; Step 1:     beq rs1=a4_0 rs2=zero_0 addr=1f004
-(let inst_0 (Beq a4_0 zero_0 (ImmVal 0)))
+;; Step 1:     beq rs1=a4_0 rs2=zero_0 imm=126980
+(let inst_0 (Beq a4_0 zero_0 (ImmVal 126980)))
 
 ; ============================================
 ; Run saturation to apply rewrite rules

@@ -1,6 +1,6 @@
 add a2_1, a4_0, a2_0; Inst-5
 add a3_1, a3_0, a6_0; Inst-6
-sltu a4_1, a2_1, a4_0; Inst-8
-add a5_0, a3_1, a4_1; Inst-10
-addi s0_0, a7_0, 0; Inst-11
-jal zero_0, 1ea04; unknown
+sltu a4_1, a2_1, a4_0; Inst-7
+add a5_0, a3_1, a4_1; Inst-8
+addi s0_0, a7_0, 0; Inst-10
+jal zero_0, 1ea04; Inst-12

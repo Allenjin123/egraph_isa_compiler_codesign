@@ -1,3 +1,3 @@
 lw a2_0, 0(sp_0); Inst-2
 lw a3_0, 4(sp_0); Inst-4
-jal ra_0, 109a4; Inst-5
+jal ra_0, 109a4; Inst-6

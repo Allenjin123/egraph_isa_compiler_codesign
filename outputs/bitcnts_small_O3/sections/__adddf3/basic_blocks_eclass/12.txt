@@ -3,6 +3,6 @@ sll a3_0, a6_0, a7_1; Inst-6
 srl a1_0, a2_0, a4_0; Inst-7
 sll a7_2, a2_0, a7_1; Inst-8
 or a3_1, a3_0, a1_0; Inst-9
-sltu a7_3, zero_0, a7_2; Inst-11
-or a3_2, a3_1, a7_3; Inst-12
-srl a4_1, a6_0, a4_0; unknown
+sltu a7_3, zero_0, a7_2; Inst-10
+or a3_2, a3_1, a7_3; Inst-11
+srl a4_1, a6_0, a4_0; Inst-12

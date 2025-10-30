@@ -1,4 +1,4 @@
 add a4_0, a2_0, a3_0; Inst-3
-sltu a3_1, a4_0, a2_0; Inst-5
-add a5_1, a5_0, a3_1; Inst-7
-addi a2_1, a4_0, 0; unknown
+sltu a3_1, a4_0, a2_0; Inst-4
+add a5_1, a5_0, a3_1; Inst-5
+addi a2_1, a4_0, 0; Inst-7

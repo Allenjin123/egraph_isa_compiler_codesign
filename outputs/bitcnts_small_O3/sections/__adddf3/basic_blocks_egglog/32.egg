@@ -2,7 +2,7 @@
 ; Total instructions: 8
 ; Input registers: 5, Output registers: 8
 
-(include "../../../../../../Saturation/base.egg")
+(include "../../../../../Saturation/base.egg")
 
 ; Input register declarations (used but not defined in this block)
 (let a0_0 (RegVal "a0_0"))
@@ -31,10 +31,10 @@
 (let a4_1_val (Or a4_0_val a1_0_val))
 
 ;; Step 6:     sltu rd=t1_3 rs1=zero_0 rs2=t1_2
-; Unsupported:     sltu rd=t1_3 rs1=zero_0 rs2=t1_2
+(let t1_3_val (Sltu zero_0 t1_2_val))
 
 ;; Step 7:     or rd=a4_2 rs1=a4_1 rs2=t1_3
-(let a4_2_val (Or a4_1_val (RegVal "t1_3")))
+(let a4_2_val (Or a4_1_val t1_3_val))
 
 ;; Step 8:     srl rd=a3_1 rs1=a5_0 rs2=a3_0
 (let a3_1_val (Srl a5_0 a3_0))
@@ -52,5 +52,6 @@
 (print-eclass-id a1_0_val)
 (print-eclass-id t1_2_val)
 (print-eclass-id a4_1_val)
+(print-eclass-id t1_3_val)
 (print-eclass-id a4_2_val)
 (print-eclass-id a3_1_val)

@@ -16,6 +16,22 @@
       "cost": 1.0,
       "subsumed": false
     },
+    "primitive-i64-126628": {
+      "op": "126628",
+      "children": [],
+      "eclass": "i64-126628",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-ImmVal": {
+      "op": "ImmVal",
+      "children": [
+        "primitive-i64-126628"
+      ],
+      "eclass": "Imm-5",
+      "cost": 1.0,
+      "subsumed": false
+    },
     "primitive-i64-4": {
       "op": "4",
       "children": [],
@@ -23,30 +39,30 @@
       "cost": 1.0,
       "subsumed": false
     },
-    "function-1-ImmVal": {
+    "function-2-ImmVal": {
       "op": "ImmVal",
       "children": [
         "primitive-i64-4"
       ],
-      "eclass": "Imm-6",
+      "eclass": "Imm-7",
       "cost": 1.0,
       "subsumed": false
     },
     "function-0-Jal": {
       "op": "Jal",
       "children": [
-        "function-0-ImmVal"
+        "function-1-ImmVal"
       ],
-      "eclass": "Inst-8",
+      "eclass": "Inst-9",
       "cost": 1.0,
       "subsumed": false
     },
     "function-1-Jal": {
       "op": "Jal",
       "children": [
-        "function-1-ImmVal"
+        "function-2-ImmVal"
       ],
-      "eclass": "Inst-10",
+      "eclass": "Inst-11",
       "cost": 1.0,
       "subsumed": false
     },
@@ -55,9 +71,9 @@
       "children": [
         "function-0-RegVal",
         "function-2-RegVal",
-        "function-1-ImmVal"
+        "function-2-ImmVal"
       ],
-      "eclass": "Inst-7",
+      "eclass": "Inst-8",
       "cost": 1.0,
       "subsumed": false
     },
@@ -66,9 +82,9 @@
       "children": [
         "function-2-RegVal",
         "function-0-RegVal",
-        "function-1-ImmVal"
+        "function-2-ImmVal"
       ],
-      "eclass": "Inst-7",
+      "eclass": "Inst-8",
       "cost": 1.0,
       "subsumed": false
     },
@@ -77,9 +93,9 @@
       "children": [
         "function-0-RegVal",
         "function-2-RegVal",
-        "function-0-ImmVal"
+        "function-1-ImmVal"
       ],
-      "eclass": "Inst-5",
+      "eclass": "Inst-6",
       "cost": 1.0,
       "subsumed": false
     },
@@ -88,9 +104,9 @@
       "children": [
         "function-2-RegVal",
         "function-0-RegVal",
-        "function-0-ImmVal"
+        "function-1-ImmVal"
       ],
-      "eclass": "Inst-5",
+      "eclass": "Inst-6",
       "cost": 1.0,
       "subsumed": false
     },
@@ -99,9 +115,9 @@
       "children": [
         "function-0-RegVal",
         "function-2-RegVal",
-        "function-1-ImmVal"
+        "function-2-ImmVal"
       ],
-      "eclass": "Inst-9",
+      "eclass": "Inst-10",
       "cost": 1.0,
       "subsumed": false
     },
@@ -110,9 +126,9 @@
       "children": [
         "function-2-RegVal",
         "function-0-RegVal",
-        "function-1-ImmVal"
+        "function-2-ImmVal"
       ],
-      "eclass": "Inst-9",
+      "eclass": "Inst-10",
       "cost": 1.0,
       "subsumed": false
     },
@@ -180,7 +196,7 @@
         "function-0-Beq",
         "function-0-Jal"
       ],
-      "eclass": "Inst-5",
+      "eclass": "Inst-6",
       "cost": 1.0,
       "subsumed": false
     },
@@ -190,7 +206,7 @@
         "function-2-Bne",
         "function-1-Jal"
       ],
-      "eclass": "Inst-7",
+      "eclass": "Inst-8",
       "cost": 1.0,
       "subsumed": false
     },
@@ -200,7 +216,7 @@
         "function-1-Seq2",
         "function-1-Jal"
       ],
-      "eclass": "Inst-9",
+      "eclass": "Inst-10",
       "cost": 1.0,
       "subsumed": false
     }
@@ -213,19 +229,25 @@
     "i64-0": {
       "type": "i64"
     },
-    "Imm-6": {
+    "Imm-5": {
+      "type": "Imm"
+    },
+    "i64-126628": {
+      "type": "i64"
+    },
+    "Imm-7": {
       "type": "Imm"
     },
     "i64-4": {
       "type": "i64"
     },
+    "Inst-9": {
+      "type": "Inst"
+    },
+    "Inst-11": {
+      "type": "Inst"
+    },
     "Inst-8": {
-      "type": "Inst"
-    },
-    "Inst-10": {
-      "type": "Inst"
-    },
-    "Inst-7": {
       "type": "Inst"
     },
     "Inst-0": {
@@ -234,10 +256,10 @@
     "Inst-2": {
       "type": "Inst"
     },
-    "Inst-5": {
+    "Inst-6": {
       "type": "Inst"
     },
-    "Inst-9": {
+    "Inst-10": {
       "type": "Inst"
     },
     "Inst-4": {

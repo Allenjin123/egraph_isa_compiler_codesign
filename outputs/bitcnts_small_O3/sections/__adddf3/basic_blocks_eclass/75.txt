@@ -1,4 +1,4 @@
 addi a3_0, a4_0, -32; Inst-5
 srl a3_1, a6_0, a3_0; Inst-6
 addi a1_0, zero_0, 0; Inst-8
-beq a4_0, a7_0, 1ed3c; Inst-9
+beq a4_0, a7_0, 1ed3c; Inst-10

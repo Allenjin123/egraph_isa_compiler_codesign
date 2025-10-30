@@ -1,4 +1,4 @@
 lw a0_0, 4(a1_0); Inst-3
 addi s3_0, zero_0, 0; Inst-5
 addi s8_0, zero_0, 0; Inst-5
-jal ra_0, 112d4; Inst-6
+jal ra_0, 112d4; Inst-7

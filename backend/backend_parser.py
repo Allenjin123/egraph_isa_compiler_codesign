@@ -39,5 +39,12 @@ class program():
     def parse_subsets(self):
         for variant in self.variants:
             subset = set()
+            # count number of unique instructions in the variant
+            for section in variant.sections.values():
+                for block in section.basic_blocks:
+                    for instr in block.instructions:
+                        subset.add(instr.opcode)
+            self.subsets.append(subset)
             
-
+            self.areas.append(variant.get_area())
+            self.delays.append(variant.get_delay())

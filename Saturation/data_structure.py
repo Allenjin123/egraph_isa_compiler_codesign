@@ -162,14 +162,17 @@ class text_inst():
                         imm = cls.parse_immediate(ops[1], is_branch_or_jump=True)
 
                 # J-type: jalr
+                # Format: jalr rd, imm, rs1 (offset comes before base register)
                 case 'jalr':
                     ops = [op.strip() for op in operands.split(',')]
                     if len(ops) >= 1:
                         rd = ops[0]
                     if len(ops) >= 2:
-                        rs1 = ops[1]
+                        # ops[1] is the immediate offset
+                        imm = cls.parse_immediate(ops[1], is_branch_or_jump=True)
                     if len(ops) >= 3:
-                        imm = cls.parse_immediate(ops[2], is_branch_or_jump=True)
+                        # ops[2] is the base register
+                        rs1 = ops[2]
 
                 # Pseudo branch instructions
                 case 'beqz' | 'bnez':

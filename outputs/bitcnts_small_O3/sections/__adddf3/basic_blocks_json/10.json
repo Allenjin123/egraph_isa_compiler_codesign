@@ -16,17 +16,17 @@
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-i64-0": {
-      "op": "0",
+    "primitive-i64-125552": {
+      "op": "125552",
       "children": [],
-      "eclass": "i64-0",
+      "eclass": "i64-125552",
       "cost": 1.0,
       "subsumed": false
     },
     "function-1-ImmVal": {
       "op": "ImmVal",
       "children": [
-        "primitive-i64-0"
+        "primitive-i64-125552"
       ],
       "eclass": "Imm-4",
       "cost": 1.0,
@@ -216,7 +216,7 @@
     "Imm-4": {
       "type": "Imm"
     },
-    "i64-0": {
+    "i64-125552": {
       "type": "i64"
     },
     "Imm-6": {
