@@ -8,13 +8,12 @@ class text_inst():
     """Data structure for text format of a single RISC-V instruction"""
 
     def __init__(self, op_name: str, rd: Optional[str] = None, rs1: Optional[str] = None,
-                 rs2: Optional[str] = None, imm: Optional[int] = None, addr: Optional[str] = None):
+                 rs2: Optional[str] = None, imm: Optional[int] = None):
         self.op_name = op_name
         self.rd = rd
         self.rs1 = rs1
         self.rs2 = rs2
         self.imm = imm
-        self.addr = addr
 
     def __str__(self):
         """String representation of the instruction"""
@@ -27,9 +26,43 @@ class text_inst():
             parts.append(f"rs2={self.rs2}")
         if self.imm is not None:
             parts.append(f"imm={self.imm}")
-        if self.addr:
-            parts.append(f"addr={self.addr}")
         return f"    {' '.join(parts)}"
+
+    @staticmethod
+    def parse_immediate(value_str: str, is_branch_or_jump: bool = False) -> Optional[int]:
+        """Parse immediate value from string, handling different formats.
+
+        Args:
+            value_str: String representation of the immediate value
+            is_branch_or_jump: If True, treat bare hex values (like '102f0') as hex
+                              If False, treat as decimal unless prefixed with 0x
+
+        Returns:
+            Parsed integer value, or None if parsing fails
+        """
+        if not value_str:
+            return None
+
+        value_str = value_str.strip()
+
+        try:
+            # Handle explicit hex prefix (0x)
+            if value_str.startswith('0x') or value_str.startswith('-0x'):
+                return int(value_str, 16)
+
+            # For branch/jump instructions, try to parse as hex if it looks like hex
+            if is_branch_or_jump:
+                # Check if all characters are valid hex digits (after removing optional negative sign)
+                test_str = value_str[1:] if value_str.startswith('-') else value_str
+                if all(c in '0123456789abcdefABCDEF' for c in test_str):
+                    # It's a valid hex string, parse as hex
+                    return int(value_str, 16)
+
+            # Otherwise, parse as decimal (int with base 0 handles both decimal and 0x prefix)
+            return int(value_str, 0)
+
+        except (ValueError, AttributeError):
+            return None
 
     @classmethod
     def parse_instruction(cls, line: str) -> Optional['text_inst']:
@@ -59,7 +92,7 @@ class text_inst():
         operands = parts[1] if len(parts) > 1 else ""
 
         # Initialize instruction components
-        rd, rs1, rs2, imm, addr = None, None, None, None, None
+        rd, rs1, rs2, imm = None, None, None, None
 
         # Handle pseudo-instructions with no operands
         if op_name == 'ret':
@@ -74,116 +107,138 @@ class text_inst():
 
         # Parse operands based on instruction type
         if operands:
-            # Handle memory operations (e.g., "lw rd, offset(rs1)")
+            # Check if operands match memory operation format (e.g., "lw rd, offset(rs1)")
             mem_match = re.match(r'(\w+),\s*(-?\d+)\((\w+)\)', operands)
-            if mem_match:
-                if op_name.startswith('l'):  # Load instruction
-                    rd = mem_match.group(1)
-                    imm = int(mem_match.group(2))
-                    rs1 = mem_match.group(3)
-                elif op_name.startswith('s'):  # Store instruction
-                    rs2 = mem_match.group(1)
-                    imm = int(mem_match.group(2))
-                    rs1 = mem_match.group(3)
-            else:
-                # Split operands by comma
-                ops = [op.strip() for op in operands.split(',')]
 
-                # Determine instruction format based on opcode
-                if op_name in ['lui', 'auipc']:  # U-type
-                    if len(ops) >= 1:
-                        rd = ops[0]
-                    if len(ops) >= 2:
-                        try:
-                            imm = int(ops[1], 0)  # Support hex with 0x prefix
-                        except:
-                            addr = ops[1]
-
-                elif op_name in ['jal', 'jalr']:  # J-type
-                    if op_name == 'jal':
-                        if len(ops) == 1:  # jal label
-                            addr = ops[0]
-                        elif len(ops) == 2:  # jal rd, label
-                            rd = ops[0]
-                            addr = ops[1]
-                    else:  # jalr
+            # Determine instruction format based on opcode using pattern matching
+            match op_name:
+                # Load instructions (I-type with memory addressing)
+                case 'lb' | 'lh' | 'lw' | 'lbu' | 'lhu':
+                    if mem_match:
+                        rd = mem_match.group(1)
+                        imm = cls.parse_immediate(mem_match.group(2))
+                        rs1 = mem_match.group(3)
+                    else:
+                        ops = [op.strip() for op in operands.split(',')]
                         if len(ops) >= 1:
                             rd = ops[0]
                         if len(ops) >= 2:
                             rs1 = ops[1]
                         if len(ops) >= 3:
-                            try:
-                                imm = int(ops[2], 0)
-                            except:
-                                pass
+                            imm = cls.parse_immediate(ops[2])
 
-                elif op_name in ['beqz', 'bnez']:  # Pseudo branch instructions
-                    # beqz rs, addr -> beq rs, x0, addr
-                    # bnez rs, addr -> bne rs, x0, addr
+                # Store instructions (S-type with memory addressing)
+                case 'sb' | 'sh' | 'sw':
+                    if mem_match:
+                        rs2 = mem_match.group(1)
+                        imm = cls.parse_immediate(mem_match.group(2))
+                        rs1 = mem_match.group(3)
+                    else:
+                        ops = [op.strip() for op in operands.split(',')]
+                        if len(ops) >= 1:
+                            rs2 = ops[0]
+                        if len(ops) >= 2:
+                            # Try to parse offset(base) format
+                            store_match = re.match(r'(-?\d+)\((\w+)\)', ops[1])
+                            if store_match:
+                                imm = cls.parse_immediate(store_match.group(1))
+                                rs1 = store_match.group(2)
+
+                # U-type instructions
+                case 'lui' | 'auipc':
+                    ops = [op.strip() for op in operands.split(',')]
+                    if len(ops) >= 1:
+                        rd = ops[0]
+                    if len(ops) >= 2:
+                        imm = cls.parse_immediate(ops[1])
+
+                # J-type: jal
+                case 'jal':
+                    ops = [op.strip() for op in operands.split(',')]
+                    if len(ops) == 1:  # jal offset (treat as branch/jump)
+                        imm = cls.parse_immediate(ops[0], is_branch_or_jump=True)
+                    elif len(ops) == 2:  # jal rd, offset
+                        rd = ops[0]
+                        imm = cls.parse_immediate(ops[1], is_branch_or_jump=True)
+
+                # J-type: jalr
+                # Format: jalr rd, imm, rs1 (offset comes before base register)
+                case 'jalr':
+                    ops = [op.strip() for op in operands.split(',')]
+                    if len(ops) >= 1:
+                        rd = ops[0]
+                    if len(ops) >= 2:
+                        # ops[1] is the immediate offset
+                        imm = cls.parse_immediate(ops[1], is_branch_or_jump=True)
+                    if len(ops) >= 3:
+                        # ops[2] is the base register
+                        rs1 = ops[2]
+
+                # Pseudo branch instructions
+                case 'beqz' | 'bnez':
+                    # beqz rs, offset -> beq rs, x0, offset
+                    # bnez rs, offset -> bne rs, x0, offset
+                    ops = [op.strip() for op in operands.split(',')]
                     if len(ops) >= 1:
                         rs1 = ops[0]
                     if len(ops) >= 2:
-                        addr = ops[1]
+                        imm = cls.parse_immediate(ops[1], is_branch_or_jump=True)
                     # For pseudo-instructions, rs2 is implicitly x0
 
-                elif op_name in ['beq', 'bne', 'blt', 'bge', 'bltu', 'bgeu']:  # B-type
+                # B-type branch instructions
+                case 'beq' | 'bne' | 'blt' | 'bge' | 'bltu' | 'bgeu':
+                    ops = [op.strip() for op in operands.split(',')]
                     if len(ops) >= 1:
                         rs1 = ops[0]
                     if len(ops) >= 2:
                         rs2 = ops[1]
                     if len(ops) >= 3:
-                        # Branch instructions always use addr field (not imm)
-                        addr = ops[2]
+                        # Branch instructions use immediate as target offset (parse as hex)
+                        imm = cls.parse_immediate(ops[2], is_branch_or_jump=True)
 
-                elif op_name in ['addi', 'slti', 'sltiu', 'xori', 'ori', 'andi',
-                                 'slli', 'srli', 'srai', 'lb', 'lh', 'lw', 'lbu', 'lhu']:  # I-type
+                # I-type arithmetic/logic instructions
+                case 'addi' | 'slti' | 'sltiu' | 'xori' | 'ori' | 'andi' | \
+                     'slli' | 'srli' | 'srai':
+                    ops = [op.strip() for op in operands.split(',')]
                     if len(ops) >= 1:
                         rd = ops[0]
                     if len(ops) >= 2:
                         rs1 = ops[1]
                     if len(ops) >= 3:
-                        try:
-                            imm = int(ops[2], 0)
-                        except:
-                            pass
+                        imm = cls.parse_immediate(ops[2])
 
-                elif op_name in ['sb', 'sh', 'sw']:  # S-type (already handled above)
-                    if len(ops) >= 1:
-                        rs2 = ops[0]
-                    if len(ops) >= 2:
-                        # Try to parse offset(base) format
-                        match = re.match(r'(-?\d+)\((\w+)\)', ops[1])
-                        if match:
-                            imm = int(match.group(1))
-                            rs1 = match.group(2)
-
-                elif op_name in ['mv', 'li']:  # Pseudo instructions
-                    # mv rd, rs -> addi rd, rs, 0
-                    # li rd, imm -> addi rd, x0, imm
+                # Pseudo instruction: mv rd, rs -> addi rd, rs, 0
+                case 'mv':
+                    ops = [op.strip() for op in operands.split(',')]
                     if len(ops) >= 1:
                         rd = ops[0]
                     if len(ops) >= 2:
-                        if op_name == 'mv':
-                            rs1 = ops[1]
-                        else:  # li
-                            try:
-                                imm = int(ops[1], 0)
-                            except:
-                                rs1 = ops[1]  # Could be register form
+                        rs1 = ops[1]
 
-                else:  # R-type and others
+                # Pseudo instruction: li rd, imm -> addi rd, x0, imm
+                case 'li':
+                    ops = [op.strip() for op in operands.split(',')]
+                    if len(ops) >= 1:
+                        rd = ops[0]
+                    if len(ops) >= 2:
+                        imm = cls.parse_immediate(ops[1])
+
+                # R-type and other instructions (default case)
+                case _:
+                    ops = [op.strip() for op in operands.split(',')]
                     if len(ops) >= 1:
                         rd = ops[0]
                     if len(ops) >= 2:
                         rs1 = ops[1]
                     if len(ops) >= 3:
                         # Could be rs2 or immediate
-                        try:
-                            imm = int(ops[2], 0)
-                        except:
+                        parsed_imm = cls.parse_immediate(ops[2])
+                        if parsed_imm is not None:
+                            imm = parsed_imm
+                        else:
                             rs2 = ops[2]
 
-        return cls(op_name, rd, rs1, rs2, imm, addr)
+        return cls(op_name, rd, rs1, rs2, imm)
 
 
 class text_basic_block():
@@ -300,19 +355,17 @@ class text_section():
         """Add a basic block to the section"""
         self.basic_blocks.append(block)
 
-    def from_directory(self, dir_path: str, use_ssa: bool = True):
+    def from_directory(self, dir_path: str, suffix: str = ""):
         """Read all basic block files in the directory and populate basic_blocks
 
         Args:
             dir_path: Path to section directory
-            use_ssa: If True, read from basic_blocks_ssa/ subdirectory,
-                    otherwise read from basic_blocks/ subdirectory
+            suffix: Suffix to append to "basic_blocks" directory name (e.g., "","_ssa","_json")
         """
         # Determine which subdirectory to read from
-        if use_ssa:
-            blocks_dir = os.path.join(dir_path, "basic_blocks_ssa")
-        else:
-            blocks_dir = os.path.join(dir_path, "basic_blocks")
+
+
+        blocks_dir = os.path.join(dir_path, f"basic_blocks{suffix}")
 
         # Fallback to old structure if new structure doesn't exist
         if not os.path.exists(blocks_dir):
@@ -361,12 +414,12 @@ class text_program():
         """Add a section to the program"""
         self.sections[section.section_name] = section
 
-    def from_directory(self, dir_path: str, use_ssa: bool = True):
+    def from_directory(self, dir_path: str, suffix: str = ""):
         """Read all section directories in the directory and populate sections
 
         Args:
             dir_path: Path to sections directory
-            use_ssa: If True, read from basic_blocks_ssa/ subdirectory
+            suffix: Suffix to append to "basic_blocks" directory name (e.g., "","_ssa","_json")
         """
         if not os.path.exists(dir_path):
             print(f"Error: Directory {dir_path} does not exist")
@@ -384,7 +437,7 @@ class text_program():
         for section_name in section_names:
             section_path = os.path.join(dir_path, section_name)
             section = text_section(section_name)
-            section.from_directory(section_path, use_ssa)
+            section.from_directory(section_path, suffix=suffix)
             if section.basic_blocks:  # Only add non-empty sections
                 self.add_section(section)
 
@@ -539,7 +592,7 @@ if __name__ == "__main__":
     if os.path.exists(dhrystone_path):
         # Load and parse the program
         program = text_program("dhrystone")
-        program.from_directory(dhrystone_path)
+        program.from_directory(dhrystone_path, suffix="_ssa")
 
         # Print summary
         program.print_summary()
