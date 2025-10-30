@@ -1,4 +1,0 @@
-or op_1, a4, s1
-bne op_2, zero, op_1, 4
-jal op_3, 4
-jal op_4, 0

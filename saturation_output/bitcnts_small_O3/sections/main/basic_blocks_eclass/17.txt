@@ -1,1 +1,0 @@
-bge zero_0, a0_0, 1023c; Inst-3

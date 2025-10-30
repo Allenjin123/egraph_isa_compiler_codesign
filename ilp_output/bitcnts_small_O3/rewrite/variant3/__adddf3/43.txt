@@ -1,6 +1,0 @@
-add op_1, a6, a0
-add op_2, a5, op_1
-slli op_3, op_2, 8
-blt op_4, op_3, zero, 4
-jal op_5, 0
-add op_6, a0, a2

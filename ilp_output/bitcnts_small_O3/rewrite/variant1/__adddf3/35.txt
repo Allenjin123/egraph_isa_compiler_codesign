@@ -1,3 +1,0 @@
-addi op_1, zero, 64
-sub op_2, op_1, a3
-sll op_3, a5, op_2

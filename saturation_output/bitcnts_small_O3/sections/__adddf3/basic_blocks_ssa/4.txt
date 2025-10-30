@@ -1,2 +1,0 @@
-addi a4_0, s0_0, -1
-bne a4_0, zero_0, 1e9a8

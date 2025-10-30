@@ -1,2 +1,0 @@
-jal op_1, 0
-or op_2, a5, a0

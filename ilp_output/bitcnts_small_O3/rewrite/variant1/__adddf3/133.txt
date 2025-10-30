@@ -1,4 +1,0 @@
-jal op_1, 0
-addi op_2, zero, 0
-or op_3, a2, a3
-or op_4, a4, a3

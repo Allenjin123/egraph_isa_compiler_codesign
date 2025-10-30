@@ -1,4 +1,0 @@
-bne op_1, zero, s0, 4
-jal op_2, 4
-jal op_3, 0
-sub op_4, a7, s0

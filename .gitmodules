@@ -4,3 +4,11 @@
 [submodule "PdatScorrWrapper"]
 	path = PdatScorrWrapper
 	url = https://github.com/CrucibleComputingGroup/PdatScorrWrapper.git
+[submodule "egglog"]
+	path = egglog
+	url = https://github.com/Allenjin123/egglog.git
+	branch = feat/print-eclass
+[submodule "embench-iot"]
+	path = embench-iot
+	url = https://github.com/embench/embench-iot.git
+	branch = master

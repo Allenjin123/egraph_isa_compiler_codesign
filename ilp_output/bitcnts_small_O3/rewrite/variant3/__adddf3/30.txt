@@ -1,3 +1,0 @@
-addi op_1, zero, 56
-blt op_2, a3, op_1, 4
-jal op_3, 0

@@ -1,7 +1,0 @@
-add op_1, a6, a5
-add op_2, a0, op_1
-slli op_3, op_2, 8
-bge op_4, op_3, zero, 4
-jal op_5, 4
-jal op_6, 0
-add op_7, a0, a2

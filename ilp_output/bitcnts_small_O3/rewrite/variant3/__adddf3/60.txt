@@ -1,2 +1,0 @@
-blt op_1, zero, a4, 4
-jal op_2, 0

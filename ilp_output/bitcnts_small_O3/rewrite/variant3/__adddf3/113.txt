@@ -1,3 +1,0 @@
-lui op_1, 1024
-jal op_2, 0
-addi op_3, zero, 0

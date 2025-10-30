@@ -1,5 +1,0 @@
-addi s3_1, s3_0, 1
-addi a5_0, zero_0, 7
-addi s4_1, s4_0, 4
-addi s5_1, s5_0, 4
-bne s3_1, a5_0, 101a0

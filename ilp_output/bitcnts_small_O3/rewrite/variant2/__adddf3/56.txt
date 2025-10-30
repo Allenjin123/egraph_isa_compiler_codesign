@@ -1,3 +1,0 @@
-add op_1, a3, a2
-addi op_2, op_1, 0
-add op_3, a3, a5

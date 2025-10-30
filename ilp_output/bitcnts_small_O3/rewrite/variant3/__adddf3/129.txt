@@ -1,5 +1,0 @@
-addi op_1, a0, 24
-addi op_2, zero, 31
-blt op_3, op_1, op_2, 4
-jal op_4, 4
-jal op_5, 0

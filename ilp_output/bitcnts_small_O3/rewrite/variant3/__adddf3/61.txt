@@ -1,1 +1,0 @@
-bne op_1, zero, a7, 0

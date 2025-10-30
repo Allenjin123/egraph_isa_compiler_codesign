@@ -1,7 +1,0 @@
-sub op_1, a7, a4
-sll op_2, a2, op_1
-srl op_3, a6, a4
-srl op_4, a2, a4
-sll op_5, a6, op_1
-or op_6, a7, op_5
-or op_7, op_4, op_6

@@ -1,3 +1,0 @@
-sw op_1, sp, s3, 20
-addi op_2, s2, 0
-addi op_3, s1, 0

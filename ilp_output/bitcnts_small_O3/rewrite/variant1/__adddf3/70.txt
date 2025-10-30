@@ -1,3 +1,0 @@
-sub op_1, a0, a3
-sub op_2, a5, a4
-sub op_3, op_2, a0

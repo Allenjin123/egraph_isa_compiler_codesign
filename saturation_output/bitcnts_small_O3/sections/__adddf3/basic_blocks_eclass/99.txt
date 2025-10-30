@@ -1,3 +1,0 @@
-or a7_0, a5_0, a0_0; Inst-6
-or a4_0, a6_0, a2_0; Inst-7
-bne s0_0, zero_0, 1eecc; Inst-9

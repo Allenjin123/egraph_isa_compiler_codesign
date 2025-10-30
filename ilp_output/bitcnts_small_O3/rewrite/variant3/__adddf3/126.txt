@@ -1,1 +1,0 @@
-addi op_1, zero, 0

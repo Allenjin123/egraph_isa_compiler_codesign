@@ -1,2 +1,0 @@
-addi s2,zero,0
-addi a5,zero,0

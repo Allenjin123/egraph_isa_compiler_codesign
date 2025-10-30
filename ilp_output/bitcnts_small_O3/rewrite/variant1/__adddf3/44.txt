@@ -1,4 +1,0 @@
-addi op_1, zero, 1
-lui op_2, 1046528
-addi op_3, op_2, -1
-and op_4, op_3, a5

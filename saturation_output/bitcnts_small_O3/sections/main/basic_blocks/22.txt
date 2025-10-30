@@ -1,8 +1,0 @@
-lw a5,24(sp)
-lw a4,28(sp)
-lui a0,0x23
-slli a5,a5,0x2
-add a5,a4,a5
-lw a1,0(a5)
-addi a0,a0,-976
-jal ra,12d54

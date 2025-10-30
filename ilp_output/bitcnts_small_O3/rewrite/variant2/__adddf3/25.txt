@@ -1,3 +1,0 @@
-addi op_1, a4, -1
-bne op_2, op_1, zero, 4
-jal op_3, 0

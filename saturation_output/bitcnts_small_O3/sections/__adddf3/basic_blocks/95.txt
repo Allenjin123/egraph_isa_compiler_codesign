@@ -1,3 +1,0 @@
-or t1,t1,a0
-sltu t1,zero,t1
-or a1,a1,t1
