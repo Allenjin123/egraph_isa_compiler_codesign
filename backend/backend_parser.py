@@ -1,5 +1,8 @@
 import argparse
 import json
+import backend.global_parameter as gp
+import backend.latency_parser as lp
+import backend.area_parser as ap
 
 # parse user input arguments
 # - input_files: path to the input files
@@ -45,6 +48,6 @@ class program():
                     for instr in block.instructions:
                         subset.add(instr.opcode)
             self.subsets.append(subset)
-            
-            self.areas.append(variant.get_area())
-            self.delays.append(variant.get_delay())
+
+            self.areas.append(ap.parse_area(variant))
+            self.delays.append(lp.parse_latency(variant))
