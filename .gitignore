@@ -1,4 +1,5 @@
 # python
+egraph_isa_compiler_codesign.egg-info/
 __pycache__/
 *.pyc
 *.pyo
