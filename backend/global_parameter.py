@@ -168,11 +168,16 @@ def get_removed_instructions(subset: set, required_set: str) -> List[str]:
     if required_set not in ['RV32I', 'RV32IM']:
         raise ValueError(f"Invalid required_set: {required_set}. Must be 'RV32I' or 'RV32IM'")
 
-    # Get all instructions in RV32IM
-    all_instructions = set(RV_INSTRUCTIONS.keys())
+    # Get the base instruction set based on required_set
+    if required_set == 'RV32I':
+        # Only consider RV32I instructions (exclude M extension)
+        base_instructions = RV32I_INSTRUCTIONS
+    else:  # RV32IM
+        # Consider all RV32IM instructions
+        base_instructions = set(RV_INSTRUCTIONS.keys())
 
-    # Instructions that can be removed are those NOT in the subset
-    removable = all_instructions - subset_lower
+    # Instructions that can be removed are those in the base set but NOT used
+    removable = base_instructions - subset_lower
 
     # Return as sorted list for consistent ordering
     return sorted(removable)

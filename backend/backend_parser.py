@@ -147,7 +147,7 @@ if __name__ == "__main__":
 
     prog = program("test", "../ilp_outputs/test")
     prog.parse_variants()
-    prog.parse_subsets()
+    prog.parse_subsets("tmp")
 
     pareto_frontier = prog.get_pareto_frontier()
     print("Pareto Frontier (Variant Index, Area (µm²), Latency):")
