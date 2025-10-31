@@ -1,12 +1,13 @@
 import argparse
 from pathlib import Path
+from typing import Optional
 from backend.global_parameter import get_required_set, get_removed_instructions
 
 # call PdatScorrWrapper
 # create a DSL representation of the input instructions
 # example DSL representation: /home/allenjin/Codes/egraph_isa_compiler_codesign/PdatScorrWrapper/PdatDsl/workload/rv32im_no_add.dsl
 
-def create_dsl(isa_subset: set, output_path: str = None) -> str:
+def create_dsl(isa_subset: set, output_path: Optional[str] = None) -> str:
     """
     Create a DSL file for PdatScorrWrapper based on the instruction subset.
 
@@ -75,7 +76,7 @@ def create_dsl(isa_subset: set, output_path: str = None) -> str:
         # Return DSL content as string
         return dsl_content
 
-def parse_area(isa_subset: set, output_path: str = None) -> float:
+def parse_area(isa_subset: set, output_path: Optional[str] = None) -> float:
     """
     Generate DSL file, run synthesis, and extract chip area.
 
@@ -114,7 +115,9 @@ def parse_area(isa_subset: set, output_path: str = None) -> float:
     else:
         dsl_path = create_dsl(isa_subset, output_path)
 
-    print(f"Created DSL file: {dsl_path}")
+    # Convert to absolute path for synthesis (which runs from different cwd)
+    dsl_path_abs = str(Path(dsl_path).absolute())
+    print(f"Created DSL file: {dsl_path_abs}")
 
     # Step 2: Call synthesis script
     # Path to synthesis script
@@ -123,11 +126,11 @@ def parse_area(isa_subset: set, output_path: str = None) -> float:
     if not synth_script.exists():
         raise FileNotFoundError(f"Synthesis script not found: {synth_script}")
 
-    # Run synthesis
-    print(f"Running synthesis with {dsl_path}...")
+    # Run synthesis (use absolute path so it works from any cwd)
+    print(f"Running synthesis with {dsl_path_abs}...")
     try:
         result = subprocess.run(
-            [str(synth_script), "--gates", dsl_path],
+            [str(synth_script), "--gates", dsl_path_abs],
             capture_output=True,
             text=True,
             timeout=600,  # 10 minute timeout for synthesis
@@ -170,7 +173,7 @@ def parse_area(isa_subset: set, output_path: str = None) -> float:
     # Clean up temporary file if created
     if output_path is None:
         try:
-            Path(dsl_path).unlink()
+            Path(dsl_path_abs).unlink()
         except:
             pass
 
