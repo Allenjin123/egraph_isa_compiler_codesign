@@ -1,0 +1,3 @@
+addi a4_0, zero_0, 31
+addi t1_0, zero_0, 32
+blt a4_0, a3_0, 1eb04

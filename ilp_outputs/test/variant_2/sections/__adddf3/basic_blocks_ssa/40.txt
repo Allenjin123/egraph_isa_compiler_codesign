@@ -1,0 +1,2 @@
+or a4_0, a5_0, a0_0
+bne s0_0, zero_0, 1ebf8
