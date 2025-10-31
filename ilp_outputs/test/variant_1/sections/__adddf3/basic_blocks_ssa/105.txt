@@ -1,0 +1,5 @@
+sub a0_1, a2_0, a0_0
+sltu a4_0, a2_0, a0_1
+sub a5_1, a6_0, a5_0
+addi a2_1, a0_1, 0
+sub a5_2, a5_1, a4_0

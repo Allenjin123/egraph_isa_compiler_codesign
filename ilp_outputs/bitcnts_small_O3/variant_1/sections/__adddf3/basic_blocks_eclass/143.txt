@@ -1,0 +1,3 @@
+addi s2_0, zero_0, 0; Inst-2
+addi a5_0, zero_0, 0; Inst-2
+jal zero_1, 1eb88; Inst-3

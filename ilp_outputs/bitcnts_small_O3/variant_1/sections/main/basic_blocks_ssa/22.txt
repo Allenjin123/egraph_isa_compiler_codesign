@@ -1,0 +1,8 @@
+lw a5_0, 24(sp_0)
+lw a4_0, 28(sp_0)
+lui a0_0, 0x23
+slli a5_1, a5_0, 0x2
+add a5_2, a4_0, a5_1
+lw a1_0, 0(a5_2)
+addi a0_1, a0_0, -976
+jal ra_0, 12d54

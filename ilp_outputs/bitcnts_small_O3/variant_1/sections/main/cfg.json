@@ -1,0 +1,364 @@
+{
+  "address_to_block": {
+    "100e0": 0,
+    "10120": 1,
+    "10130": 2,
+    "10144": 3,
+    "101a0": 4,
+    "101a4": 5,
+    "101ac": 6,
+    "101b8": 7,
+    "101c8": 8,
+    "101d0": 9,
+    "101dc": 10,
+    "101e0": 11,
+    "101e8": 12,
+    "101f4": 13,
+    "10208": 14,
+    "1020c": 15,
+    "10218": 16,
+    "1022c": 17,
+    "10230": 18,
+    "1023c": 19,
+    "10254": 20,
+    "10268": 21,
+    "10288": 22,
+    "102a8": 23,
+    "102e8": 24,
+    "102f0": 25,
+    "1030c": 26
+  },
+  "block_start_addresses": {
+    "0": "100e0",
+    "1": "10120",
+    "2": "10130",
+    "3": "10144",
+    "4": "101a0",
+    "5": "101a4",
+    "6": "101ac",
+    "7": "101b8",
+    "8": "101c8",
+    "9": "101d0",
+    "10": "101dc",
+    "11": "101e0",
+    "12": "101e8",
+    "13": "101f4",
+    "14": "10208",
+    "15": "1020c",
+    "16": "10218",
+    "17": "1022c",
+    "18": "10230",
+    "19": "1023c",
+    "20": "10254",
+    "21": "10268",
+    "22": "10288",
+    "23": "102a8",
+    "24": "102e8",
+    "25": "102f0",
+    "26": "1030c"
+  },
+  "cfg": {
+    "0": {
+      "start_address": "100e0",
+      "terminator_type": "conditional",
+      "jump_target": "102f0",
+      "successors": [
+        25,
+        1
+      ],
+      "predecessors": []
+    },
+    "1": {
+      "start_address": "10120",
+      "terminator_type": "call",
+      "jump_target": "112d4",
+      "successors": [
+        2
+      ],
+      "predecessors": [
+        0
+      ]
+    },
+    "10": {
+      "start_address": "101dc",
+      "terminator_type": "call",
+      "jump_target": "13ba4",
+      "successors": [
+        11
+      ],
+      "predecessors": [
+        24,
+        9
+      ]
+    },
+    "11": {
+      "start_address": "101e0",
+      "terminator_type": "call",
+      "jump_target": "1120c",
+      "successors": [
+        12
+      ],
+      "predecessors": [
+        10
+      ]
+    },
+    "12": {
+      "start_address": "101e8",
+      "terminator_type": "call",
+      "jump_target": "109a4",
+      "successors": [
+        13
+      ],
+      "predecessors": [
+        11
+      ]
+    },
+    "13": {
+      "start_address": "101f4",
+      "terminator_type": "call",
+      "jump_target": "11134",
+      "successors": [
+        14
+      ],
+      "predecessors": [
+        12
+      ]
+    },
+    "14": {
+      "start_address": "10208",
+      "terminator_type": "conditional",
+      "jump_target": "10218",
+      "successors": [
+        16,
+        15
+      ],
+      "predecessors": [
+        13
+      ]
+    },
+    "15": {
+      "start_address": "1020c",
+      "terminator_type": "fallthrough",
+      "jump_target": null,
+      "successors": [
+        16
+      ],
+      "predecessors": [
+        14
+      ]
+    },
+    "16": {
+      "start_address": "10218",
+      "terminator_type": "call",
+      "jump_target": "1105c",
+      "successors": [
+        17
+      ],
+      "predecessors": [
+        14,
+        15
+      ]
+    },
+    "17": {
+      "start_address": "1022c",
+      "terminator_type": "conditional",
+      "jump_target": "1023c",
+      "successors": [
+        19,
+        18
+      ],
+      "predecessors": [
+        16
+      ]
+    },
+    "18": {
+      "start_address": "10230",
+      "terminator_type": "fallthrough",
+      "jump_target": null,
+      "successors": [
+        19
+      ],
+      "predecessors": [
+        17
+      ]
+    },
+    "19": {
+      "start_address": "1023c",
+      "terminator_type": "call",
+      "jump_target": "12d54",
+      "successors": [
+        20
+      ],
+      "predecessors": [
+        17,
+        18
+      ]
+    },
+    "2": {
+      "start_address": "10130",
+      "terminator_type": "call",
+      "jump_target": "13024",
+      "successors": [
+        3
+      ],
+      "predecessors": [
+        1
+      ]
+    },
+    "20": {
+      "start_address": "10254",
+      "terminator_type": "conditional",
+      "jump_target": "101a0",
+      "successors": [
+        4,
+        21
+      ],
+      "predecessors": [
+        19
+      ]
+    },
+    "21": {
+      "start_address": "10268",
+      "terminator_type": "call",
+      "jump_target": "12d54",
+      "successors": [
+        22
+      ],
+      "predecessors": [
+        20
+      ]
+    },
+    "22": {
+      "start_address": "10288",
+      "terminator_type": "call",
+      "jump_target": "12d54",
+      "successors": [
+        23
+      ],
+      "predecessors": [
+        21
+      ]
+    },
+    "23": {
+      "start_address": "102a8",
+      "terminator_type": "return",
+      "jump_target": null,
+      "successors": [],
+      "predecessors": [
+        22
+      ]
+    },
+    "24": {
+      "start_address": "102e8",
+      "terminator_type": "unconditional",
+      "jump_target": "101dc",
+      "successors": [
+        10
+      ],
+      "predecessors": [
+        6
+      ]
+    },
+    "25": {
+      "start_address": "102f0",
+      "terminator_type": "call",
+      "jump_target": "12c0c",
+      "successors": [
+        26
+      ],
+      "predecessors": [
+        0
+      ]
+    },
+    "26": {
+      "start_address": "1030c",
+      "terminator_type": "call",
+      "jump_target": "100b4",
+      "successors": [],
+      "predecessors": [
+        25
+      ]
+    },
+    "3": {
+      "start_address": "10144",
+      "terminator_type": "fallthrough",
+      "jump_target": null,
+      "successors": [
+        4
+      ],
+      "predecessors": [
+        2
+      ]
+    },
+    "4": {
+      "start_address": "101a0",
+      "terminator_type": "call",
+      "jump_target": "13ba4",
+      "successors": [
+        5
+      ],
+      "predecessors": [
+        20,
+        3
+      ]
+    },
+    "5": {
+      "start_address": "101a4",
+      "terminator_type": "call",
+      "jump_target": "11b94",
+      "successors": [
+        6
+      ],
+      "predecessors": [
+        4
+      ]
+    },
+    "6": {
+      "start_address": "101ac",
+      "terminator_type": "conditional",
+      "jump_target": "102e8",
+      "successors": [
+        24,
+        7
+      ],
+      "predecessors": [
+        5
+      ]
+    },
+    "7": {
+      "start_address": "101b8",
+      "terminator_type": "fallthrough",
+      "jump_target": null,
+      "successors": [
+        8
+      ],
+      "predecessors": [
+        6
+      ]
+    },
+    "8": {
+      "start_address": "101c8",
+      "terminator_type": "call",
+      "jump_target": null,
+      "successors": [
+        9
+      ],
+      "predecessors": [
+        7,
+        9
+      ]
+    },
+    "9": {
+      "start_address": "101d0",
+      "terminator_type": "conditional",
+      "jump_target": "101c8",
+      "successors": [
+        8,
+        10
+      ],
+      "predecessors": [
+        8
+      ]
+    }
+  }
+}

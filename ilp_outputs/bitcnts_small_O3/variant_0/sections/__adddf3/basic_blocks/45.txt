@@ -1,0 +1,6 @@
+slli a4,a5,0x1d
+srli a2,a2,0x3
+addi a3,zero,2047
+or a4,a4,a2
+srli a5,a5,0x3
+bne s0,a3,1ebb8

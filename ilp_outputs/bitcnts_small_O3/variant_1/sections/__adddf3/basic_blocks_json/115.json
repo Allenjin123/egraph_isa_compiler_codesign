@@ -1,0 +1,41 @@
+{
+  "nodes": {
+    "primitive-i64-0": {
+      "op": "0",
+      "children": [],
+      "eclass": "i64-0",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-ImmVal": {
+      "op": "ImmVal",
+      "children": [
+        "primitive-i64-0"
+      ],
+      "eclass": "Imm-0",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-Jal": {
+      "op": "Jal",
+      "children": [
+        "function-0-ImmVal"
+      ],
+      "eclass": "Inst-1",
+      "cost": 1.0,
+      "subsumed": false
+    }
+  },
+  "root_eclasses": [],
+  "class_data": {
+    "Imm-0": {
+      "type": "Imm"
+    },
+    "i64-0": {
+      "type": "i64"
+    },
+    "Inst-1": {
+      "type": "Inst"
+    }
+  }
+}

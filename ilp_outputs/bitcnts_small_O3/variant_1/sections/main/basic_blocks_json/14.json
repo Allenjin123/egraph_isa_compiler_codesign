@@ -1,0 +1,51 @@
+{
+  "nodes": {
+    "primitive-String-0": {
+      "op": "\"a0_0\"",
+      "children": [],
+      "eclass": "String-0",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-RegVal": {
+      "op": "RegVal",
+      "children": [
+        "primitive-String-0"
+      ],
+      "eclass": "Inst-0",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "primitive-String-1": {
+      "op": "\"zero_0\"",
+      "children": [],
+      "eclass": "String-1",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-RegVal": {
+      "op": "RegVal",
+      "children": [
+        "primitive-String-1"
+      ],
+      "eclass": "Inst-1",
+      "cost": 1.0,
+      "subsumed": false
+    }
+  },
+  "root_eclasses": [],
+  "class_data": {
+    "Inst-0": {
+      "type": "Inst"
+    },
+    "String-0": {
+      "type": "String"
+    },
+    "Inst-1": {
+      "type": "Inst"
+    },
+    "String-1": {
+      "type": "String"
+    }
+  }
+}

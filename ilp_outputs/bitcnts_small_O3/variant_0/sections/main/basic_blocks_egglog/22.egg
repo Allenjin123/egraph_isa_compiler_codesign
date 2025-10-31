@@ -1,0 +1,53 @@
+; EGraph for main - Block 22
+; Total instructions: 8
+; Input registers: 1, Output registers: 8
+
+(include "../../../../../../Saturation/base.egg")
+
+; Input register declarations (used but not defined in this block)
+(let sp_0 (RegVal "sp_0"))
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     lw rd=a5_0 rs1=sp_0 imm=24
+(let a5_0_val (Lw sp_0 (ImmVal 24)))
+
+;; Step 2:     lw rd=a4_0 rs1=sp_0 imm=28
+(let a4_0_val (Lw sp_0 (ImmVal 28)))
+
+;; Step 3:     lui rd=a0_0 imm=35
+(let a0_0_val (Lui (ImmVal 35)))
+
+;; Step 4:     slli rd=a5_1 rs1=a5_0 imm=2
+(let a5_1_val (Slli a5_0_val (ImmVal 2)))
+
+;; Step 5:     add rd=a5_2 rs1=a4_0 rs2=a5_1
+(let a5_2_val (Add a4_0_val a5_1_val))
+
+;; Step 6:     lw rd=a1_0 rs1=a5_2 imm=0
+(let a1_0_val (Lw a5_2_val (ImmVal 0)))
+
+;; Step 7:     addi rd=a0_1 rs1=a0_0 imm=-976
+(let a0_1_val (Addi a0_0_val (ImmVal -976)))
+
+;; Step 8:     jal rd=ra_0 addr=12d54
+(let ra_0_val (Jal (ImmVal 0)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)
+
+; ============================================
+; Print eclass IDs for each instruction
+; ============================================
+(print-eclass-id a5_0_val)
+(print-eclass-id a4_0_val)
+(print-eclass-id a0_0_val)
+(print-eclass-id a5_1_val)
+(print-eclass-id a5_2_val)
+(print-eclass-id a1_0_val)
+(print-eclass-id a0_1_val)
+(print-eclass-id ra_0_val)

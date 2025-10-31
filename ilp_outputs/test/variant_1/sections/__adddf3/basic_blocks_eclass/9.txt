@@ -1,0 +1,2 @@
+lui a3_0, 0x800; Inst-2
+or a6_1, a6_0, a3_0; Inst-3

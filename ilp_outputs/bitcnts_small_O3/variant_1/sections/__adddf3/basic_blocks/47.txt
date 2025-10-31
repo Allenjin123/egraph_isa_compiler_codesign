@@ -1,0 +1,3 @@
+lui a5,0x80
+addi a4,zero,0
+addi s2,zero,0

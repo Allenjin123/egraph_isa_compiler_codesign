@@ -1,0 +1,2 @@
+slli a4_0, a5_0, 0x8; Inst-3
+bge a4_0, zero_0, 1ec34; Inst-5

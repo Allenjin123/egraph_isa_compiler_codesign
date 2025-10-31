@@ -1,0 +1,5 @@
+addi a2,s10,0
+addi a3,s9,0
+addi s2,a0,0
+addi s1,a1,0
+jal ra,11134

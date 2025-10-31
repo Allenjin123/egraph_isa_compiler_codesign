@@ -1,0 +1,4 @@
+add a4,a2,a3
+sltu a3,a4,a2
+add a5,a5,a3
+addi a2,a4,0

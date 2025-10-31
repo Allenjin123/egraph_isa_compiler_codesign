@@ -1,0 +1,6 @@
+sub a1_0, a0_0, a2_0
+sltu a7_0, a0_0, a1_0
+sub a4_0, a5_0, a6_0
+sub a4_1, a4_0, a7_0
+slli a7_1, a4_1, 0x8
+bge a7_1, zero_0, 1eeb8

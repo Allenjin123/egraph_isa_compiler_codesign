@@ -1,0 +1,5 @@
+sub s0_1, s0_0, a4_0
+lui a4_1, 0xff800
+addi a4_2, a4_1, -1
+and a5_1, a5_0, a4_2
+jal zero_0, 1ec34

@@ -1,0 +1,10 @@
+lui a4_0, 0xff800
+addi a4_1, a4_0, -1
+and a5_1, a5_0, a4_1
+srli a4_2, a2_0, 0x1
+andi a2_1, a2_0, 1
+or a4_3, a4_2, a2_1
+slli a2_2, a5_1, 0x1f
+or a2_3, a2_2, a4_3
+srli a5_2, a5_1, 0x1
+jal zero_0, 1ec34

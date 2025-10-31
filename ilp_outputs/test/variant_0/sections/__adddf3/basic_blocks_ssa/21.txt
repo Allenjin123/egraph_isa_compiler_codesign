@@ -1,0 +1,3 @@
+or a3_0, a6_0, a2_0
+sltu a3_1, zero_0, a3_0
+jal zero_1, 1ea68

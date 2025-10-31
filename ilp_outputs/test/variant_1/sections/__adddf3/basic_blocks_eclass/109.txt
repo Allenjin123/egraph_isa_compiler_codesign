@@ -1,0 +1,2 @@
+or a2_0, a1_0, a4_0; Inst-3
+beq a2_0, zero_0, 1f040; Inst-5
