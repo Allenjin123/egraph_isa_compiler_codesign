@@ -1,0 +1,3 @@
+or a4,a4,a5
+addi a5,zero,0
+beq a4,zero,1ebb8

@@ -1,0 +1,4 @@
+addi a1_0, a4_0, -32
+srl a1_1, a5_0, a1_0
+addi t1_0, zero_0, 0
+beq a4_0, t3_0, 1ee28

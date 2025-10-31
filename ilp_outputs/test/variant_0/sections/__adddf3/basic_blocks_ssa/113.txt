@@ -1,0 +1,4 @@
+addi s2_0, zero_0, 0
+lui a5_0, 0x400
+addi a2_0, zero_0, 0
+jal zero_1, 1f018

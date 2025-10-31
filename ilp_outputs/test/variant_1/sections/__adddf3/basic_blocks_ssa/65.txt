@@ -1,0 +1,2 @@
+addi s0_0, zero_0, 1
+jal zero_1, 1ecf4

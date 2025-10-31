@@ -1,0 +1,30 @@
+; EGraph for __adddf3 - Block 71
+; Total instructions: 2
+; Input registers: 2, Output registers: 1
+
+(include "../../../../../../Saturation/base.egg")
+
+; Input register declarations (used but not defined in this block)
+(let a5_0 (RegVal "a5_0"))
+(let zero_0 (RegVal "zero_0"))
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     slli rd=a4_0 rs1=a5_0 imm=8
+(let a4_0_val (Slli a5_0 (ImmVal 8)))
+
+;; Step 2:     bge rs1=a4_0 rs2=zero_0 addr=1ec34
+(let inst_1 (Bge a4_0_val zero_0 (ImmVal 0)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)
+
+; ============================================
+; Print eclass IDs for each instruction
+; ============================================
+(print-eclass-id a4_0_val)
+(print-eclass-id inst_1)

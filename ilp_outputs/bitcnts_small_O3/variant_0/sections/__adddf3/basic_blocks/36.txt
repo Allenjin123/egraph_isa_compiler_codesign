@@ -1,0 +1,3 @@
+or a1,a1,a0
+sltu a1,zero,a1
+or a4,a4,a1

@@ -1,0 +1,35 @@
+; EGraph for __adddf3 - Block 132
+; Total instructions: 3
+; Input registers: 3, Output registers: 3
+
+(include "../../../../../../Saturation/base.egg")
+
+; Input register declarations (used but not defined in this block)
+(let a0_0 (RegVal "a0_0"))
+(let a5_0 (RegVal "a5_0"))
+(let zero_0 (RegVal "zero_0"))
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     addi rd=a3_0 rs1=zero_0 imm=64
+(let a3_0_val (Addi zero_0 (ImmVal 64)))
+
+;; Step 2:     sub rd=a3_1 rs1=a3_0 rs2=a0_0
+(let a3_1_val (Sub a3_0_val a0_0))
+
+;; Step 3:     sll rd=a3_2 rs1=a5_0 rs2=a3_1
+(let a3_2_val (Sll a5_0 a3_1_val))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)
+
+; ============================================
+; Print eclass IDs for each instruction
+; ============================================
+(print-eclass-id a3_0_val)
+(print-eclass-id a3_1_val)
+(print-eclass-id a3_2_val)

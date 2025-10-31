@@ -1,0 +1,3 @@
+addi a4,a0,24
+addi a5,zero,31
+bge a5,a4,1ef30

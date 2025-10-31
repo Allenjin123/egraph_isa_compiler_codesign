@@ -1,0 +1,4 @@
+addi s2,a3,0
+addi a5,a6,0
+addi s0,t1,0
+jal zero,1eb88

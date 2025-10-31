@@ -1,0 +1,9 @@
+add a2_1, a0_0, a2_0; Inst-5
+sltu a0_1, a2_1, a0_0; Inst-6
+add a5_1, a5_0, a6_0; Inst-8
+add a5_2, a5_1, a0_1; Inst-10
+slli a3_0, a5_2, 0x1f; Inst-12
+srli a2_2, a2_1, 0x1; Inst-13
+or a2_3, a3_0, a2_2; Inst-14
+srli a5_3, a5_2, 0x1; Inst-16
+addi s0_0, a4_0, 0; unknown

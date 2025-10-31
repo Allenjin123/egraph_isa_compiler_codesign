@@ -1,0 +1,16 @@
+addi sp_1, sp_0, -96
+sw ra_0, 92(sp_1)
+sw s0_0, 88(sp_1)
+sw s1_0, 84(sp_1)
+sw s2_0, 80(sp_1)
+sw s3_0, 76(sp_1)
+sw s4_0, 72(sp_1)
+sw s5_0, 68(sp_1)
+sw s6_0, 64(sp_1)
+sw s7_0, 60(sp_1)
+sw s8_0, 56(sp_1)
+sw s9_0, 52(sp_1)
+sw s10_0, 48(sp_1)
+sw s11_0, 44(sp_1)
+addi a5_0, zero_0, 1
+bge a5_0, a0_0, 102f0

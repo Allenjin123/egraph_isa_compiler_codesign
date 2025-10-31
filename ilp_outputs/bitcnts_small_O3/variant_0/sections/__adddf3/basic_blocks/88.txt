@@ -1,0 +1,3 @@
+lui a4,0x800
+or a5,a5,a4
+addi a4,t1,0
