@@ -1,0 +1,2 @@
+or a6_1, a6_0, a2_0; Inst-3
+bne a6_1, zero_0, 1eed8; Inst-5

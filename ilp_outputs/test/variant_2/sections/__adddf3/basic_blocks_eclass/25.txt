@@ -1,0 +1,2 @@
+addi a3_0, a4_0, -1; Inst-3
+beq a3_0, zero_0, 1e990; Inst-5
