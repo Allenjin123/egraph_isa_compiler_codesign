@@ -1,5 +1,0 @@
-lui s1,0x800
-addi s1,s1,-1
-and s1,a5,s1
-addi s3,a2,0
-jal zero,1ef20

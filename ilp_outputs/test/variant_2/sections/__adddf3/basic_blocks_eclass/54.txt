@@ -1,2 +1,0 @@
-andi a4_0, a2_0, 7; Inst-3
-beq a4_0, zero_0, 1ec58; Inst-5

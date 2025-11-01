@@ -1,2 +1,0 @@
-addi a3_0, zero_0, 56; Inst-3
-blt a3_0, a4_0, 1ea70; Inst-5

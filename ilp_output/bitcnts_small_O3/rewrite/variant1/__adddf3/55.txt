@@ -1,0 +1,3 @@
+andi op_1, a2, 15
+addi op_2, zero, 4
+beq op_1, op_2, 0

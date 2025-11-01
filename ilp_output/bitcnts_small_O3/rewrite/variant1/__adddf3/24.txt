@@ -1,0 +1,2 @@
+or op_1, a0, a5
+beq op_1, zero, 0

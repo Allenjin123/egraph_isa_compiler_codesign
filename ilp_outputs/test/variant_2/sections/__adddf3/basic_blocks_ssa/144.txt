@@ -1,3 +1,0 @@
-addi a5_0, zero_0, 0
-addi a2_0, zero_0, 0
-jal zero_1, 1ef94

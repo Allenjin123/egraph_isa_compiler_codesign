@@ -1,2 +1,0 @@
-slli a4,a5,0x8
-bge a4,zero,1ec34

@@ -18,8 +18,10 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from egraph import EGraph  # type: ignore
 from ILP.ilp_solver import parse_solution_file, extract_solution  # type: ignore
+from SSA.util import INSTRUCTIONS_WITHOUT_RD
 
 # 路径配置
 SATURATION_OUTPUT_DIR = Path(__file__).resolve().parent.parent.parent / "saturation_output"
@@ -75,7 +77,7 @@ def find_solution_files(program_output_dir: Path) -> List[Path]:
     return files
 
 
-def build_block_graphs(egraph: EGraph, choices: Dict[str, str]) -> Dict[Tuple[str, int], BlockGraph]:
+def build_block_graphs(egraph: EGraph, choices: Dict[str, str], program_name: str) -> Dict[Tuple[str, int], BlockGraph]:
     """从已选 eclass→node 结果中，抽取各个 block 的 root，并记录其子 eclass。
     命名约定：root eclass 形如 "<section>_<block>_eclass_root"。
     """
@@ -100,7 +102,7 @@ def build_block_graphs(egraph: EGraph, choices: Dict[str, str]) -> Dict[Tuple[st
 
         key = (section, block_num)
         if key not in blocks:
-            blocks[key] = BlockGraph(section=section, block_num=block_num, choices=choices)
+            blocks[key] = BlockGraph(program_name=program_name, section=section, block_num=block_num, choices=choices)
         blocks[key].add_root_children(children)
 
     return blocks
@@ -134,6 +136,8 @@ def emit_block_instructions(egraph: EGraph, bg: BlockGraph, node_ops: Dict[str, 
     memo: Dict[str, str] = {}
     def norm_op(op: str) -> str:
         return str(op).lower()
+
+    bg.sort_root_children()
 
     def emit(eclass_id: str) -> str:
         if eclass_id in memo:
@@ -180,10 +184,16 @@ def emit_block_instructions(egraph: EGraph, bg: BlockGraph, node_ops: Dict[str, 
         counter[0] += 1
         dest = f"op_{counter[0]}"
         op_print = norm_op(op)
-        if operands:
-            instructions.append(f"{op_print} {dest}, {', '.join(operands)}")
+        if op_print in INSTRUCTIONS_WITHOUT_RD:
+            if operands:
+                instructions.append(f"{op_print} {', '.join(operands)}")
+            else:
+                instructions.append(op_print)
         else:
-            instructions.append(f"{op_print} {dest}")
+            if operands:
+                instructions.append(f"{op_print} {dest}, {', '.join(operands)}")
+            else:
+                instructions.append(f"{op_print} {dest}")
         memo[eclass_id] = dest
         return dest
 
@@ -225,7 +235,7 @@ def main():
         print(f"处理解 {idx+1}: {sol_file}")
         variables = parse_solution_file(str(sol_file))
         choices = extract_solution(egraph, variables)
-        blocks = build_block_graphs(egraph, choices)
+        blocks = build_block_graphs(egraph, choices, args.program_name)
 
         variant_dir = rewrite_dir / f"variant{idx + 1}"
         variant_dir.mkdir(parents=True, exist_ok=True)

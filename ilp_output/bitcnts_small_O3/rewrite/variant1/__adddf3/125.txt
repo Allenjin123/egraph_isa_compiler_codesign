@@ -1,0 +1,2 @@
+or op_1, s1, a4
+bne zero, op_1, 0

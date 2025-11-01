@@ -10,13 +10,6 @@ if [ -x "$RISCV/bin/riscv32-unknown-elf-objdump" ]; then
 fi
 fi
 if [ -f ./bitcnts$BIN_SUFFIX.s ]; then
-cp -f ./bitcnt_1$BIN_SUFFIX.s "$BENCH_DIR/"
-cp -f ./bitcnt_2$BIN_SUFFIX.s "$BENCH_DIR/"
-cp -f ./bitcnt_3$BIN_SUFFIX.s "$BENCH_DIR/"
-cp -f ./bitcnt_4$BIN_SUFFIX.s "$BENCH_DIR/"
 cp -f ./bitcnts$BIN_SUFFIX.s "$BENCH_DIR/"
-cp -f ./bitfiles$BIN_SUFFIX.s "$BENCH_DIR/"
-cp -f ./bitstrng$BIN_SUFFIX.s "$BENCH_DIR/"
-cp -f ./bstr_i$BIN_SUFFIX.s "$BENCH_DIR/"
 fi
 $MIBENCH_RUN ./bitcnts$BIN_SUFFIX 75000 > output_small.txt

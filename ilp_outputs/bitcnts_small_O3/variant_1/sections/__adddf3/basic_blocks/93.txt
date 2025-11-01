@@ -1,4 +1,0 @@
-addi a1,a4,-32
-srl a1,a5,a1
-addi t1,zero,0
-beq a4,t3,1ee28

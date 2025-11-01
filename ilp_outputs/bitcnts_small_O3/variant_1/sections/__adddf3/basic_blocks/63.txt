@@ -1,2 +1,0 @@
-addi a4,s0,-1
-bne a4,zero,1ecac

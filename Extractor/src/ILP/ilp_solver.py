@@ -30,7 +30,34 @@ from typing import Dict, Set, Optional, Tuple
 # Add project path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from src.egraph import EGraph, DATA_DIR, collect_section_json_files, sanitize
+from src.egraph import EGraph, DATA_DIR, collect_section_json_files, sanitize, merge_json
+def ensure_merged_json(program_name: str, json_files_with_prefixes: list) -> None:
+    """Ensure saturation_output/<program>/ contains merged.json and merged_with_roots.json."""
+    target_dir = Path(DATA_DIR) / program_name
+    merged_path = target_dir / 'merged.json'
+    merged_roots_path = target_dir / 'merged_with_roots.json'
+
+    if not target_dir.exists():
+        return
+
+    need_merged = not merged_path.exists()
+    need_roots = not merged_roots_path.exists()
+
+    if not (need_merged or need_roots):
+        return
+
+    try:
+        if need_merged:
+            merged_data = merge_json(json_files_with_prefixes)
+            with open(merged_path, 'w') as f:
+                json.dump(merged_data, f, indent=2)
+        if need_roots:
+            egraph = EGraph(program_name)
+            with open(merged_roots_path, 'w') as f:
+                json.dump(egraph.to_json(), f, indent=2)
+    except Exception as exc:
+        print(f"Warning: failed to generate merged artifacts: {exc}")
+
 from src.ILP.ilp_gen import generate_ilp_file
 
 # Cache for original JSON data to avoid repeated file reads
@@ -417,6 +444,8 @@ def main():
         print(f"Error: No JSON files found in sections under {program_dir}")
         return 1
     
+    ensure_merged_json(args.program_name, json_files_with_prefixes)
+
     # Build prefix to file path mapping (for get_original_op)
     global _prefix_to_file_map
     for file_path, prefix in json_files_with_prefixes:

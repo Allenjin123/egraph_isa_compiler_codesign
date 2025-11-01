@@ -1,2 +1,0 @@
-or a4_0, a6_0, a2_0; Inst-3
-beq a4_0, zero_0, 1e9ac; Inst-5

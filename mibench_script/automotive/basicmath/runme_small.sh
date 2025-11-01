@@ -11,8 +11,5 @@ fi
 fi
 if [ -f ./basicmath_small$BIN_SUFFIX.s ]; then
 cp -f ./basicmath_small$BIN_SUFFIX.s "$BENCH_DIR/"
-cp -f ./rad2deg$BIN_SUFFIX.s "$BENCH_DIR/"
-cp -f ./cubic$BIN_SUFFIX.s "$BENCH_DIR/"
-cp -f ./isqrt$BIN_SUFFIX.s "$BENCH_DIR/"
 fi
 $MIBENCH_RUN ./basicmath_small$BIN_SUFFIX > output_small.txt

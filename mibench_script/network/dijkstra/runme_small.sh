@@ -1,2 +1,18 @@
 #!/bin/sh
-dijkstra_small input.dat > output_small.dat
+$RISCV/bin/true >/dev/null 2>&1 || true
+export BENCH_DIR="../../../benchmark/network/dijkstra"
+BIN_SUFFIX="${BIN_SUFFIX}"
+mkdir -p "$BENCH_DIR"
+
+if [ -f "./dijkstra_small$BIN_SUFFIX" ]; then
+    cp -f "./dijkstra_small$BIN_SUFFIX" "$BENCH_DIR/"
+    if [ -x "$RISCV/bin/riscv32-unknown-elf-objdump" ]; then
+        "$RISCV/bin/riscv32-unknown-elf-objdump" -d -M no-aliases "./dijkstra_small$BIN_SUFFIX" > "$BENCH_DIR/dijkstra_small$BIN_SUFFIX.dump"
+    fi
+fi
+
+if [ -f "./dijkstra_small$BIN_SUFFIX.s" ]; then
+    cp -f "./dijkstra_small$BIN_SUFFIX.s" "$BENCH_DIR/"
+fi
+
+$MIBENCH_RUN ./dijkstra_small$BIN_SUFFIX input.dat > output_small.txt

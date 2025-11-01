@@ -1,0 +1,2 @@
+addi op_1, a4, -1
+beq op_1, zero, 0

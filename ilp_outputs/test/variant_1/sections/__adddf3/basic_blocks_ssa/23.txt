@@ -1,2 +1,0 @@
-sub a4_0, a7_0, s0_0
-bne s0_0, zero_0, 1eaa8

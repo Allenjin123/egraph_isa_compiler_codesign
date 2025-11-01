@@ -88,6 +88,7 @@ RVM_DIV = {
 # M 扩展完整指令集 (8条)
 RVM_INSTRUCTIONS = RVM_MUL | RVM_DIV
 
+
 # ----------------------------------------------------------------------------
 # Zicsr 扩展：控制状态寄存器访问指令 - 6条指令
 # ----------------------------------------------------------------------------
@@ -115,6 +116,16 @@ RV32IM_STANDARD_INSTRUCTIONS = (
     RVM_INSTRUCTIONS | 
     ZICSR_INSTRUCTIONS | 
     ZIFENCEI_INSTRUCTIONS
+)
+
+# 不产生 rd 写回的指令集合
+INSTRUCTIONS_WITHOUT_RD = (
+    RV32I_STORE |
+    RV32I_BRANCH |
+    RV32I_SYSTEM |
+    RV32I_FENCE |
+    ZIFENCEI_INSTRUCTIONS | 
+    ZICSR_INSTRUCTIONS
 )
 
 # ============================================================================

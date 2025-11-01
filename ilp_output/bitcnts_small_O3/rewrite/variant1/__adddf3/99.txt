@@ -1,0 +1,3 @@
+bne zero, s0, 0
+or op_2, a5, a0
+or op_3, a2, a6

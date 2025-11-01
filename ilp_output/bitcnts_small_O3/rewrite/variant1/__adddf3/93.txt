@@ -1,0 +1,4 @@
+beq a4, t3, 0
+addi op_2, zero, 0
+addi op_3, a4, -32
+srl op_4, a5, op_3

@@ -1,0 +1,5 @@
+add op_1, a5, a0
+add op_2, a6, op_1
+slli op_3, op_2, 8
+blt zero, op_3, 0
+add op_5, a2, a0

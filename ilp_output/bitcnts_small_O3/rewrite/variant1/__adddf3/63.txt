@@ -1,0 +1,2 @@
+addi op_1, s0, -1
+bne op_1, zero, 0

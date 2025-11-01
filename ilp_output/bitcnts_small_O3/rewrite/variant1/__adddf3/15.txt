@@ -1,0 +1,3 @@
+addi op_1, zero, 2047
+addi op_2, s0, 1
+beq op_1, op_2, 0
