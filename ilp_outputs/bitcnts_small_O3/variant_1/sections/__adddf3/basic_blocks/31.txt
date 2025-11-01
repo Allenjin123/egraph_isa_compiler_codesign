@@ -1,3 +1,0 @@
-addi a4,zero,31
-addi t1,zero,32
-blt a4,a3,1eb04

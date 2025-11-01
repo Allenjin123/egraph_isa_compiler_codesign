@@ -1,0 +1,10 @@
+jal op_1, 0
+lui op_2, 1046528
+addi op_3, op_2, -1
+and op_4, a5, op_3
+srli op_5, op_4, 1
+slli op_6, op_4, 31
+srli op_7, a2, 1
+or op_8, op_6, op_7
+andi op_9, a2, 1
+or op_10, op_8, op_9

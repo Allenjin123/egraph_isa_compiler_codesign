@@ -1,2 +1,0 @@
-addi a5_0, a6_0, 0
-jal zero_0, 1eea8

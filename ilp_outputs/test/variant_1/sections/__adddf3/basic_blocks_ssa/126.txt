@@ -1,2 +1,0 @@
-addi s2_0, zero_0, 0
-addi a5_0, zero_0, 0

@@ -1,5 +1,0 @@
-addi a2_0, s10_0, 0; Inst-5
-addi a3_0, s9_0, 0; Inst-6
-addi s2_0, a0_0, 0; Inst-7
-addi s1_0, a1_0, 0; Inst-8
-jal ra_0, 11134; Inst-10

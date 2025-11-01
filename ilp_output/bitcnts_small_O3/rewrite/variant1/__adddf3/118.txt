@@ -1,0 +1,1 @@
+beq zero, s1, 0

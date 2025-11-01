@@ -1,2 +1,0 @@
-or a3,a5,a0
-beq a3,zero,1ea9c

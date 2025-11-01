@@ -1,6 +1,0 @@
-add a2_1, a0_0, a2_0; Inst-5
-add a5_1, a5_0, a6_0; Inst-6
-sltu a0_1, a2_1, a0_0; Inst-8
-add a5_2, a5_1, a0_1; Inst-10
-slli a4_0, a5_2, 0x8; Inst-12
-bge a4_0, zero_0, 1eea8; unknown

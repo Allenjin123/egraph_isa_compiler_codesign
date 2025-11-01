@@ -1,2 +1,0 @@
-addi s2,a3,0
-bne a4,zero,1f014

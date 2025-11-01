@@ -1,0 +1,1 @@
+beq zero, a4, 0

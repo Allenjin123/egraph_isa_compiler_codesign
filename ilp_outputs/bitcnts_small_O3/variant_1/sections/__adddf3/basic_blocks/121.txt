@@ -1,6 +1,0 @@
-addi a5,zero,32
-sub a5,a5,a4
-sll s1,s1,a4
-srl a5,s3,a5
-or a5,a5,s1
-sll a2,s3,a4

@@ -1,2 +1,0 @@
-or a6,a6,a2
-bne a6,zero,1eed8

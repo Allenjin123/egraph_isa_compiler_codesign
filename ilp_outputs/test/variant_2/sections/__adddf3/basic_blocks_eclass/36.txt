@@ -1,3 +1,0 @@
-or a1_1, a1_0, a0_0; Inst-4
-sltu a1_2, zero_0, a1_1; Inst-6
-or a4_1, a4_0, a1_2; unknown

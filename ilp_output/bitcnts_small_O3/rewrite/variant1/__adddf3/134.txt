@@ -1,0 +1,5 @@
+jal op_1, 0
+sub op_2, s0, a4
+lui op_3, 1046528
+addi op_4, op_3, -1
+and op_5, a5, op_4

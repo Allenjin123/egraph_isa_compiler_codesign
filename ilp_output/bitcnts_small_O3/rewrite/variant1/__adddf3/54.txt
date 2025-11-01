@@ -1,0 +1,2 @@
+andi op_1, a2, 7
+beq zero, op_1, 0
