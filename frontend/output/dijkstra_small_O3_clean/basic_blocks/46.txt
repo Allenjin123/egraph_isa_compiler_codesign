@@ -1,0 +1,8 @@
+	lw	s0,72(sp)
+	lw	ra,76(sp)
+	lw	s5,52(sp)
+	lui	a0,%hi(.LC2)
+	addi	a0,a0,%lo(.LC2)
+	addi	sp,sp,80
+	auipc	x6, %pcrel_hi(puts)
+	jalr	zero, x6, %pcrel_lo(.Lpcrel_12)

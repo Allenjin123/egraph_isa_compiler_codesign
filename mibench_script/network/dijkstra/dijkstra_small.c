@@ -1,4 +1,4 @@
-// #include <stdio.h>
+#include <stdio.h>
 
 #define NUM_NODES                          100
 #define NONE                               9999
@@ -38,14 +38,14 @@ int i, iCost, iDist;
 volatile int result_sink = 0;
 
 
-// void print_path (NODE *rgnNodes, int chNode)
-// {
-//   if (rgnNodes[chNode].iPrev != NONE)
-//     {
-//       print_path(rgnNodes, rgnNodes[chNode].iPrev);
-//     }
-//   printf (" %d", chNode);
-// }
+void print_path (NODE *rgnNodes, int chNode)
+{
+  if (rgnNodes[chNode].iPrev != NONE)
+    {
+      print_path(rgnNodes, rgnNodes[chNode].iPrev);
+    }
+  printf (" %d", chNode);
+}
 
 
 void enqueue (int iNode, int iDist, int iPrev)
@@ -89,7 +89,7 @@ int dijkstra(int chStart, int chEnd)
 
   if (chStart == chEnd) 
     {
-      // printf("Shortest path is 0 in cost. Just stay where you are.\n");
+      printf("Shortest path is 0 in cost. Just stay where you are.\n");
     }
   else
     {
@@ -116,10 +116,10 @@ int dijkstra(int chStart, int chEnd)
 	    }
 	}
       
-      // printf("Shortest path is %d in cost. ", rgnNodes[chEnd].iDist);
-      // printf("Path is: ");
-      // print_path(rgnNodes, chEnd);
-      // printf("\n");
+      printf("Shortest path is %d in cost. ", rgnNodes[chEnd].iDist);
+      printf("Path is: ");
+      print_path(rgnNodes, chEnd);
+      printf("\n");
       
       /* Write to volatile variable to prevent DCE */
       result_sink += rgnNodes[chEnd].iDist;
@@ -252,6 +252,6 @@ int main(void) {
   }
   
   /* Use volatile result to prevent DCE */
-  return (result_sink & 1);
+  return (result_sink > 1);
 
 }

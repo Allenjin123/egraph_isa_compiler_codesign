@@ -1,7 +1,7 @@
 OPTFLAGS ?= -O3
 BIN_SUFFIX ?=
 
-ASMFLAGS = -S $(OPTFLAGS) -fno-asynchronous-unwind-tables -fno-dwarf2-cfi-asm
+ASMFLAGS = -S $(OPTFLAGS) -fno-asynchronous-unwind-tables -fno-dwarf2-cfi-asm -mno-relax
 
 .PHONY: all clean
 

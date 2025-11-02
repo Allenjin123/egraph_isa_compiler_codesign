@@ -1,0 +1,28 @@
+	lui	t4,%hi(qRear)
+	lw	a4,%lo(qRear)(t4)
+	lui	a5, 429497
+	addi	a5,a5,-1107
+	addi	a3,a4,1
+	mulh	a5,a3,a5
+	srai	t5,a3,31
+	lui	t1, 2
+	addi	t1,t1,1808
+	lui	t3,%hi(g_qCount)
+	lw	a7,%lo(g_qCount)(t3)
+	slli	a6,a4,1
+	add	a6,a6,a4
+	lui	a4,%hi(queue)
+	slli	a6,a6,2
+	srai	a5,a5,12
+	sub	a5,a5,t5
+	mul	a5,a5,t1
+	addi	a4,a4,%lo(queue)
+	add	a4,a4,a6
+	addi	a7,a7,1
+	sw	a0,0(a4)
+	sw	a1,4(a4)
+	sw	a2,8(a4)
+	sw	a7,%lo(g_qCount)(t3)
+	sub	a3,a3,a5
+	sw	a3,%lo(qRear)(t4)
+	jalr	zero, x1, 0

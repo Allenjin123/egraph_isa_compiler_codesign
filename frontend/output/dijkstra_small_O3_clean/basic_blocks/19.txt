@@ -1,0 +1,3 @@
+	lui	a5,%hi(g_qCount)
+	lw	a0,%lo(g_qCount)(a5)
+	jalr	zero, x1, 0

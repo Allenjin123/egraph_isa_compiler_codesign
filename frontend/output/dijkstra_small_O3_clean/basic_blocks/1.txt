@@ -1,0 +1,4 @@
+	lui	a5,%hi(.LC1)
+	addi	a0,a5,%lo(.LC1)
+	auipc	x6, %pcrel_hi(printf)
+	jalr	zero, x6, %pcrel_lo(.Lpcrel_1)

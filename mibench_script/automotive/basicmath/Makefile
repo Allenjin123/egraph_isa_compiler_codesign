@@ -8,6 +8,6 @@ all: basicmath_small
 
 basicmath_small: ${FILE1} Makefile
 	$(CC) -static $(OPTFLAGS) ${FILE1} -o basicmath_small$(BIN_SUFFIX) -lm
-	$(CC) -S $(OPTFLAGS) -fno-asynchronous-unwind-tables -fno-dwarf2-cfi-asm basicmath_small.c -o basicmath_small$(BIN_SUFFIX).s
+	$(CC) -S $(OPTFLAGS) -fno-asynchronous-unwind-tables -fno-dwarf2-cfi-asm -mno-relax basicmath_small.c -o basicmath_small$(BIN_SUFFIX).s
 clean:
 	rm -rf basicmath_small$(BIN_SUFFIX) basicmath_small_* output* *.bc *.mir *.o *.s
