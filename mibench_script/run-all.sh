@@ -28,9 +28,12 @@
 
 #SRCDIRS="consumer/jpeg/jpeg-6a telecomm/adpcm/src security/rijndael security/sha telecomm/fft"
 
-SRCDIRS="
-         network/dijkstra
-         network/patricia"
+# SRCDIRS="automotive/basicmath
+#          automotive/bitcount
+#          automotive/qsort
+#          network/dijkstra
+#          network/patricia"
+SRCDIRS="network/dijkstra"
 CURRDIR=$(pwd)
 
 # compiler

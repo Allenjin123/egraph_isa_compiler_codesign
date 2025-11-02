@@ -12,7 +12,7 @@
  * Simplified for embedded environment - static memory allocation only.
  */
 
-#include <stdio.h>   /* Only for printf */
+// #include <stdio.h>   /* Only for printf */
 
 /* Simple type definitions */
 struct in_addr {
@@ -618,8 +618,8 @@ main(int argc, char **argv)
 		if (!p) return 0;
 	}
 
-	/* Return non-zero to prevent optimization */
-	return (found_count + insert_count) > 0 ? 1 : 0;
+	/* Return zero to prevent optimization */
+	return (found_count + insert_count) > 0 ? 0 : 1;
 }
 
 

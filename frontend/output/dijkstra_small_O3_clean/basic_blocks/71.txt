@@ -1,0 +1,2 @@
+	auipc	x1, %pcrel_hi(dijkstra)
+	jalr	x1, x1, %pcrel_lo(.Lpcrel_15)

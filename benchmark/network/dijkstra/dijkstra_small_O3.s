@@ -1,9 +1,96 @@
 	.file	"dijkstra_small.c"
 	.option nopic
+	.option norelax
 	.attribute arch, "rv32i2p1_m2p0_zicsr2p0_zifencei2p0_zmmul1p0"
 	.attribute unaligned_access, 0
 	.attribute stack_align, 16
 	.text
+	.section	.rodata.str1.4,"aMS",@progbits,1
+	.align	2
+.LC1:
+	.string	" %d"
+	.text
+	.align	2
+	.globl	print_path
+	.type	print_path, @function
+print_path:
+	slli	a5,a1,3
+	add	a5,a0,a5
+	lw	a2,4(a5)
+	li	a5,8192
+	addi	a5,a5,1807
+	mv	a3,a1
+	bne	a2,a5,.L9
+	lui	a5,%hi(.LC1)
+	addi	a0,a5,%lo(.LC1)
+	tail	printf
+.L9:
+	slli	a1,a2,3
+	add	a1,a0,a1
+	lw	a6,4(a1)
+	addi	sp,sp,-32
+	sw	ra,28(sp)
+	bne	a6,a5,.L10
+	lui	a5,%hi(.LC1)
+.L3:
+	mv	a1,a2
+	addi	a0,a5,%lo(.LC1)
+	sw	a3,4(sp)
+	sw	a5,0(sp)
+	call	printf
+	lw	a3,4(sp)
+	lw	a5,0(sp)
+	lw	ra,28(sp)
+	mv	a1,a3
+	addi	a0,a5,%lo(.LC1)
+	addi	sp,sp,32
+	tail	printf
+.L10:
+	slli	a1,a6,3
+	add	a1,a0,a1
+	lw	a7,4(a1)
+	bne	a7,a5,.L11
+	lui	a5,%hi(.LC1)
+.L4:
+	addi	a0,a5,%lo(.LC1)
+	mv	a1,a6
+	sw	a3,8(sp)
+	sw	a2,4(sp)
+	sw	a5,0(sp)
+	call	printf
+	lw	a3,8(sp)
+	lw	a2,4(sp)
+	lw	a5,0(sp)
+	j	.L3
+.L11:
+	slli	a1,a7,3
+	add	a4,a0,a1
+	lw	a1,4(a4)
+	beq	a1,a5,.L5
+	sw	a3,12(sp)
+	sw	a7,8(sp)
+	sw	a6,4(sp)
+	sw	a2,0(sp)
+	call	print_path
+	lw	a3,12(sp)
+	lw	a7,8(sp)
+	lw	a6,4(sp)
+	lw	a2,0(sp)
+.L5:
+	lui	a5,%hi(.LC1)
+	addi	a0,a5,%lo(.LC1)
+	mv	a1,a7
+	sw	a3,12(sp)
+	sw	a6,8(sp)
+	sw	a2,4(sp)
+	sw	a5,0(sp)
+	call	printf
+	lw	a3,12(sp)
+	lw	a6,8(sp)
+	lw	a2,4(sp)
+	lw	a5,0(sp)
+	j	.L4
+	.size	print_path, .-print_path
 	.align	2
 	.globl	enqueue
 	.type	enqueue, @function
@@ -43,7 +130,7 @@ enqueue:
 dequeue:
 	lui	a7,%hi(g_qCount)
 	lw	a5,%lo(g_qCount)(a7)
-	ble	a5,zero,.L3
+	ble	a5,zero,.L17
 	lui	a6,%hi(qFront)
 	lw	a3,%lo(qFront)(a6)
 	lui	a4,%hi(queue)
@@ -84,7 +171,7 @@ dequeue:
 	mul	a5,a5,a0
 	sub	a4,a4,a5
 	sw	a4,%lo(qFront)(a6)
-.L3:
+.L17:
 	ret
 	.size	dequeue, .-dequeue
 	.align	2
@@ -95,81 +182,93 @@ qcount:
 	lw	a0,%lo(g_qCount)(a5)
 	ret
 	.size	qcount, .-qcount
+	.section	.rodata.str1.4
+	.align	2
+.LC2:
+	.string	"Shortest path is 0 in cost. Just stay where you are."
+	.align	2
+.LC3:
+	.string	"Shortest path is %d in cost. "
+	.align	2
+.LC4:
+	.string	"Path is: "
+	.text
 	.align	2
 	.globl	dijkstra
 	.type	dijkstra, @function
 dijkstra:
-	addi	sp,sp,-64
-	sw	s5,40(sp)
+	addi	sp,sp,-80
+	sw	s5,52(sp)
 	lui	s5,%hi(.LANCHOR0)
 	addi	s5,s5,%lo(.LANCHOR0)
 	li	a2,8192
-	sw	s0,60(sp)
+	sw	ra,76(sp)
+	sw	s0,72(sp)
 	mv	a3,a1
 	addi	a4,s5,800
 	mv	a5,s5
 	addi	a2,a2,1807
-.L7:
+.L21:
 	sw	a2,0(a5)
 	sw	a2,4(a5)
 	addi	a5,a5,8
-	bne	a5,a4,.L7
-	lui	a4,%hi(ch)
+	bne	a5,a4,.L21
+	lui	a5,%hi(ch)
 	li	s0,100
-	sw	s0,%lo(ch)(a4)
-	beq	a0,a3,.L8
-	sw	s9,24(sp)
+	sw	s0,%lo(ch)(a5)
+	beq	a0,a3,.L45
+	sw	s9,36(sp)
 	lui	s9,%hi(qRear)
-	lw	a7,%lo(qRear)(s9)
-	sw	s2,52(sp)
+	lw	a1,%lo(qRear)(s9)
+	sw	s2,64(sp)
 	li	s2,1759219712
-	addi	a6,a7,1
+	addi	a6,a1,1
 	addi	s2,s2,-1107
 	mulh	a4,a6,s2
-	sw	s3,48(sp)
-	srai	a5,a6,31
+	sw	s3,60(sp)
+	srai	a7,a6,31
 	li	s3,8192
 	addi	s3,s3,1808
-	sw	s8,28(sp)
+	sw	s8,40(sp)
 	lui	s8,%hi(g_qCount)
 	lw	t0,%lo(g_qCount)(s8)
-	slli	a1,a7,1
-	add	a1,a1,a7
+	slli	a5,a1,1
+	add	a5,a5,a1
 	srai	a4,a4,12
-	sub	a4,a4,a5
+	sub	a4,a4,a7
 	mul	a4,a4,s3
 	lui	t2,%hi(queue)
-	slli	a1,a1,2
+	slli	a5,a5,2
 	addi	t2,t2,%lo(queue)
-	slli	a5,a0,3
-	add	a1,t2,a1
-	add	a5,s5,a5
+	slli	a1,a0,3
+	sw	s1,68(sp)
+	sw	s4,56(sp)
+	add	a5,t2,a5
+	add	a1,s5,a1
 	addi	t0,t0,1
-	sw	a0,0(a1)
-	sw	zero,4(a1)
 	sub	a4,a6,a4
-	sw	a2,8(a1)
-	sw	zero,0(a5)
+	sw	a0,0(a5)
+	sw	zero,4(a5)
+	sw	a2,8(a5)
+	sw	zero,0(a1)
 	sw	a4,%lo(qRear)(s9)
-	sw	a2,4(a5)
+	sw	a2,4(a1)
 	sw	t0,%lo(g_qCount)(s8)
-	ble	t0,zero,.L10
-	sw	s10,20(sp)
+	ble	t0,zero,.L24
+	sw	s10,32(sp)
 	lui	s10,%hi(qFront)
 	lw	t1,%lo(qFront)(s10)
-	sw	s6,36(sp)
+	sw	s6,48(sp)
 	li	t5,8192
 	lui	s6,%hi(AdjMatrix)
-	sw	s4,44(sp)
-	sw	s7,32(sp)
-	sw	s1,56(sp)
-	sw	s11,16(sp)
+	sw	s7,44(sp)
+	sw	s11,28(sp)
 	addi	s6,s6,%lo(AdjMatrix)
 	addi	t5,t5,1807
 	li	s4,0
 	li	s7,400
 	mv	t4,a3
-.L14:
+.L28:
 	addi	a6,t1,1
 	mulh	a3,a6,s2
 	slli	a5,t1,1
@@ -190,7 +289,7 @@ dijkstra:
 	mul	t1,t1,s3
 	add	a0,s6,a0
 	sub	t1,a6,t1
-.L13:
+.L27:
 	slli	a5,a4,1
 	lw	a7,0(a0)
 	add	a5,a5,a4
@@ -198,12 +297,12 @@ dijkstra:
 	slli	a5,a5,2
 	srai	s11,a1,31
 	add	a5,t2,a5
-	beq	a7,t5,.L11
+	beq	a7,t5,.L25
 	lw	t6,0(a3)
 	add	a6,a7,s1
-	beq	t6,t5,.L12
-	ble	t6,a6,.L11
-.L12:
+	beq	t6,t5,.L26
+	ble	t6,a6,.L25
+.L26:
 	mulh	a4,a1,s2
 	sw	a6,0(a3)
 	sw	t3,4(a3)
@@ -216,12 +315,12 @@ dijkstra:
 	sub	a4,a4,s11
 	mul	a4,a4,s3
 	sub	a4,a1,a4
-.L11:
+.L25:
 	addi	a2,a2,1
 	addi	a0,a0,4
 	addi	a3,a3,8
-	bne	a2,s0,.L13
-	bne	t0,zero,.L14
+	bne	a2,s0,.L27
+	bne	t0,zero,.L28
 	mv	a1,t3
 	lw	t3,12(sp)
 	lui	a5,%hi(i)
@@ -237,32 +336,89 @@ dijkstra:
 	sw	a1,%lo(iNode)(a0)
 	sw	a7,%lo(iCost)(a5)
 	mv	a3,t4
-	beq	s4,zero,.L23
+	beq	s4,zero,.L44
+	lw	s6,48(sp)
+	lw	s7,44(sp)
+	lw	s10,32(sp)
+	lw	s11,28(sp)
 	sw	a4,%lo(qRear)(s9)
-.L23:
-	lw	s1,56(sp)
-	lw	s4,44(sp)
-	lw	s6,36(sp)
-	lw	s7,32(sp)
-	lw	s10,20(sp)
-	lw	s11,16(sp)
-.L10:
-	slli	a3,a3,3
+.L24:
+	slli	s0,a3,3
+	add	s2,s5,s0
+	lw	a1,0(s2)
+	lui	a0,%hi(.LC3)
+	addi	a0,a0,%lo(.LC3)
+	mv	s1,a3
+	call	printf
+	lui	a0,%hi(.LC4)
+	addi	a0,a0,%lo(.LC4)
+	call	printf
+	lw	s2,4(s2)
+	li	a5,8192
+	addi	a5,a5,1807
+	bne	s2,a5,.L41
+	lui	s3,%hi(.LC1)
+.L30:
+	mv	a1,s1
+	addi	a0,s3,%lo(.LC1)
+	call	printf
+	li	a0,10
+	call	putchar
+	add	s5,s5,s0
 	lui	a4,%hi(result_sink)
-	add	s5,s5,a3
-	lw	a5,%lo(result_sink)(a4)
 	lw	a3,0(s5)
-	lw	s2,52(sp)
-	lw	s3,48(sp)
-	lw	s8,28(sp)
-	lw	s9,24(sp)
+	lw	a5,%lo(result_sink)(a4)
+	lw	ra,76(sp)
+	lw	s0,72(sp)
 	add	a5,a5,a3
 	sw	a5,%lo(result_sink)(a4)
-.L8:
-	lw	s0,60(sp)
-	lw	s5,40(sp)
-	addi	sp,sp,64
+	lw	s1,68(sp)
+	lw	s2,64(sp)
+	lw	s3,60(sp)
+	lw	s4,56(sp)
+	lw	s8,40(sp)
+	lw	s9,36(sp)
+	lw	s5,52(sp)
+	addi	sp,sp,80
 	jr	ra
+.L41:
+	slli	a4,s2,3
+	add	a4,s5,a4
+	lw	s4,4(a4)
+	bne	s4,a5,.L42
+	lui	s3,%hi(.LC1)
+.L31:
+	mv	a1,s2
+	addi	a0,s3,%lo(.LC1)
+	call	printf
+	j	.L30
+.L44:
+	lw	s6,48(sp)
+	lw	s7,44(sp)
+	lw	s10,32(sp)
+	lw	s11,28(sp)
+	j	.L24
+.L45:
+	lw	s0,72(sp)
+	lw	ra,76(sp)
+	lw	s5,52(sp)
+	lui	a0,%hi(.LC2)
+	addi	a0,a0,%lo(.LC2)
+	addi	sp,sp,80
+	tail	puts
+.L42:
+	slli	a4,s4,3
+	add	a4,s5,a4
+	lw	a1,4(a4)
+	beq	a1,a5,.L32
+	mv	a0,s5
+	call	print_path
+.L32:
+	lui	s3,%hi(.LC1)
+	mv	a1,s4
+	addi	a0,s3,%lo(.LC1)
+	call	printf
+	j	.L31
 	.size	dijkstra, .-dijkstra
 	.section	.text.startup,"ax",@progbits
 	.align	2
@@ -291,7 +447,7 @@ main:
 	sw	zero,%lo(qFront)(a0)
 	sw	zero,%lo(qRear)(a1)
 	sw	zero,%lo(g_qCount)(a2)
-.L25:
+.L47:
 	lw	a6,0(a5)
 	lw	a0,4(a5)
 	lw	a1,8(a5)
@@ -302,14 +458,14 @@ main:
 	sw	a2,12(a4)
 	addi	a5,a5,16
 	addi	a4,a4,16
-	bne	a5,a3,.L25
+	bne	a5,a3,.L47
 	li	a3,40960
 	addi	a3,a3,-960
 	lui	a4,%hi(AdjMatrix)
 	mv	a5,sp
 	add	a3,sp,a3
 	addi	a4,a4,%lo(AdjMatrix)
-.L26:
+.L48:
 	lw	a2,8(a5)
 	lw	a0,0(a5)
 	lw	a1,4(a5)
@@ -320,14 +476,14 @@ main:
 	addi	a5,a5,16
 	addi	a4,a4,16
 	sw	a2,-4(a4)
-	bne	a5,a3,.L26
+	bne	a5,a3,.L48
 	li	s2,1374388224
 	addi	s2,s2,1311
 	li	a5,50
 	li	s1,0
 	li	s4,100
 	li	s3,20
-.L27:
+.L49:
 	mulh	s0,a5,s2
 	srai	a4,a5,31
 	mv	a0,s1
@@ -339,7 +495,7 @@ main:
 	mv	a1,s0
 	call	dijkstra
 	addi	a5,s0,1
-	bne	s1,s3,.L27
+	bne	s1,s3,.L49
 	li	t0,36864
 	lui	a5,%hi(result_sink)
 	addi	t0,t0,1136

@@ -1,4 +1,4 @@
-#include <stdio.h>
+// #include <stdio.h>
 
 #define MAXARRAY 10000
 
@@ -10088,9 +10088,9 @@ int main(void) {
     }
   }
   qsort_checksum = checksum;
-  printf("\nSorting %d elements.\n\n", MAXARRAY);
-  for (int i = 0; i < MAXARRAY; ++i) {
-    printf("%s\n", array[i].qstring);
-  }
-  return 0;
+  // printf("\nSorting %d elements.\n\n", MAXARRAY);
+  // for (int i = 0; i < MAXARRAY; ++i) {
+  //   printf("%s\n", array[i].qstring);
+  // }
+  return (qsort_checksum == 11140394ULL) ? 0 : 1;
 }

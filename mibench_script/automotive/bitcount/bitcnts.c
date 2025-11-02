@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
       bitcnts_checksum = checksum;
       // printf("\nBest  > %s\n", text[cminix]);
       // printf("Worst > %s\n", text[cmaxix]);
-      return 0;
+      return (checksum > 0) ? 0 : 1;
 }
 
 int CDECL bit_count(long x)
