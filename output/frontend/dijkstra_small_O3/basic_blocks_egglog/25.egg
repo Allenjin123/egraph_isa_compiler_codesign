@@ -1,0 +1,110 @@
+; EGraph for dijkstra_small_O3 - Block 25
+; Total instructions: 20
+; Input registers: 10, Output registers: 19
+
+(include "../../Saturation/base.egg")
+
+; Input register declarations (used but not defined in this block)
+(let s2_0 (RegVal "s2_0"))
+(let s3_0 (RegVal "s3_0"))
+(let s5_0 (RegVal "s5_0"))
+(let s6_0 (RegVal "s6_0"))
+(let s7_0 (RegVal "s7_0"))
+(let sp_0 (RegVal "sp_0"))
+(let t0_0 (RegVal "t0_0"))
+(let t1_0 (RegVal "t1_0"))
+(let t2_0 (RegVal "t2_0"))
+(let zero_0 (RegVal "zero_0"))
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     addi rd=a6_0 rs1=t1_0 imm=1
+(let a6_0_val (Addi t1_0 (ImmVal 1)))
+
+;; Step 2:     mulh rd=a3_0 rs1=a6_0 rs2=s2_0
+(let a3_0_val (Mulh a6_0_val s2_0))
+
+;; Step 3:     slli rd=a5_0 rs1=t1_0 imm=1
+(let a5_0_val (Slli t1_0 (ImmVal 1)))
+
+;; Step 4:     add rd=a5_1 rs1=a5_0 rs2=t1_0
+(let a5_1_val (Add a5_0_val t1_0))
+
+;; Step 5:     slli rd=a5_2 rs1=a5_1 imm=2
+(let a5_2_val (Slli a5_1_val (ImmVal 2)))
+
+;; Step 6:     add rd=a5_3 rs1=t2_0 rs2=a5_2
+(let a5_3_val (Add t2_0 a5_2_val))
+
+;; Step 7:     lw rd=t3_0 rs1=a5_3 imm=0
+(let t3_0_val (Lw a5_3_val (ImmVal 0)))
+
+;; Step 8:     lw rd=s1_0 rs1=a5_3 imm=4
+(let s1_0_val (Lw a5_3_val (ImmVal 4)))
+
+;; Step 9:     lw rd=a5_4 rs1=a5_3 imm=8
+(let a5_4_val (Lw a5_3_val (ImmVal 8)))
+
+;; Step 10:     srai rd=t1_1 rs1=a6_0 imm=31
+(let t1_1_val (Srai a6_0_val (ImmVal 31)))
+
+;; Step 11:     addi rd=t0_1 rs1=t0_0 imm=-1
+(let t0_1_val (Addi t0_0 (ImmVal -1)))
+
+;; Step 12:     sw rs1=sp_0 rs2=a5_4 imm=12
+(let inst_11 (Sw sp_0 a5_4_val (ImmVal 12)))
+
+;; Step 13:     srai rd=a5_5 rs1=a3_0 imm=12
+(let a5_5_val (Srai a3_0_val (ImmVal 12)))
+
+;; Step 14:     sub rd=t1_2 rs1=a5_5 rs2=t1_1
+(let t1_2_val (Sub a5_5_val t1_1_val))
+
+;; Step 15:     mul rd=a0_0 rs1=t3_0 rs2=s7_0
+(let a0_0_val (Mul t3_0_val s7_0))
+
+;; Step 16:     addi rd=a3_1 rs1=s5_0 imm=0
+(let a3_1_val (Addi s5_0 (ImmVal 0)))
+
+;; Step 17:     addi rd=a2_0 rs1=zero_0 imm=0
+(let a2_0_val (Addi zero_0 (ImmVal 0)))
+
+;; Step 18:     mul rd=t1_3 rs1=t1_2 rs2=s3_0
+(let t1_3_val (Mul t1_2_val s3_0))
+
+;; Step 19:     add rd=a0_1 rs1=s6_0 rs2=a0_0
+(let a0_1_val (Add s6_0 a0_0_val))
+
+;; Step 20:     sub rd=t1_4 rs1=a6_0 rs2=t1_3
+(let t1_4_val (Sub a6_0_val t1_3_val))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 10)
+
+; ============================================
+; Print eclass IDs for each instruction
+; ============================================
+(print-eclass-id a6_0_val)
+(print-eclass-id a3_0_val)
+(print-eclass-id a5_0_val)
+(print-eclass-id a5_1_val)
+(print-eclass-id a5_2_val)
+(print-eclass-id a5_3_val)
+(print-eclass-id t3_0_val)
+(print-eclass-id s1_0_val)
+(print-eclass-id a5_4_val)
+(print-eclass-id t1_1_val)
+(print-eclass-id t0_1_val)
+(print-eclass-id inst_11)
+(print-eclass-id a5_5_val)
+(print-eclass-id t1_2_val)
+(print-eclass-id a0_0_val)
+(print-eclass-id a3_1_val)
+(print-eclass-id a2_0_val)
+(print-eclass-id t1_3_val)
+(print-eclass-id a0_1_val)
+(print-eclass-id t1_4_val)
