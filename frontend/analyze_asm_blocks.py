@@ -246,7 +246,7 @@ class AsmBlockAnalyzer:
         
         Args:
             asm_file: Path to .s assembly file
-            output_dir: Directory to save output (saturation_output/<program_name>/)
+            output_dir: Directory to save output (<output_base>/<program_name>/basic_blocks/)
         """
         if self.verbose:
             print(f"\nAnalyzing: {asm_file}")
@@ -278,13 +278,13 @@ def analyze_single_file(asm_file: Path, output_base: Path, verbose=False):
     
     Args:
         asm_file: Path to .s file
-        output_base: Base output directory (saturation_output/)
+        output_base: Base output directory (default: output/frontend/)
         verbose: Verbose output
     """
     # Get program name (remove .s suffix)
     program_name = asm_file.stem
     
-    # Create output directory: output/<program_name>/basic_blocks
+    # Create output directory: <output_base>/<program_name>/basic_blocks
     output_dir = output_base / program_name / 'basic_blocks'
     
     analyzer = AsmBlockAnalyzer(verbose=verbose)
@@ -295,7 +295,7 @@ def analyze_all_clean_files(output_base: Path, verbose=False):
     """Analyze all *_clean.s files in benchmark directory recursively
     
     Args:
-        output_base: Base output directory (default: output/)
+        output_base: Base output directory (default: output/frontend/)
         verbose: Verbose output
     """
     # Get benchmark directory
@@ -353,13 +353,14 @@ def main():
         epilog='''
 Examples:
   # Analyze all *_clean.s files in benchmark directory (default mode)
+  # Output to output/frontend/<program_name>/basic_blocks/*.txt
   python analyze_asm_blocks.py
   
   # Analyze a single .s file
   python analyze_asm_blocks.py benchmark/network/dijkstra/dijkstra_small_O3_clean.s
   
-  # Specify output directory
-  python analyze_asm_blocks.py -o saturation_output
+  # Specify custom output directory
+  python analyze_asm_blocks.py -o custom_output
   
   # Verbose output
   python analyze_asm_blocks.py -v
@@ -368,8 +369,8 @@ Examples:
     
     parser.add_argument('asm_file', nargs='?', default=None,
                        help='Path to .s assembly file (optional, if not provided, analyze all *_clean.s files)')
-    parser.add_argument('-o', '--output', default='output',
-                       help='Output directory (default: output)')
+    parser.add_argument('-o', '--output', default='output/frontend',
+                       help='Output directory (default: output/frontend)')
     parser.add_argument('-v', '--verbose', action='store_true',
                        help='Verbose output')
     

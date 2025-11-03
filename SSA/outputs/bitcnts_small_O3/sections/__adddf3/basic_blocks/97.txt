@@ -1,3 +1,0 @@
-or a1,a5,a0
-sltu a1,zero,a1
-jal zero,1ee34

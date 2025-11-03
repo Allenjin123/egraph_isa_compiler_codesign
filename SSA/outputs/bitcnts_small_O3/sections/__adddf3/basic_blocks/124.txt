@@ -1,9 +1,0 @@
-sub a1,a1,a0
-sll a4,a5,a1
-srl a3,a2,a0
-sll a1,a2,a1
-or a4,a4,a3
-sltu a1,zero,a1
-or a2,a4,a1
-srl a5,a5,a0
-jal zero,1eea8

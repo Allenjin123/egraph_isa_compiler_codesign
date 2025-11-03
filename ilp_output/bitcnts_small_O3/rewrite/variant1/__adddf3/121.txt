@@ -1,6 +1,0 @@
-sll op_1, s3, a4
-sll op_2, s1, a4
-addi op_3, zero, 32
-sub op_4, op_3, a4
-srl op_5, s3, op_4
-or op_6, op_2, op_5

@@ -1,3 +1,0 @@
-addi op_1, s0, 1
-andi op_2, op_1, 2046
-bne zero, op_2, 0

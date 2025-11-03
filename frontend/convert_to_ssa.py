@@ -173,6 +173,7 @@ class SSAConverter:
             else:
                 result = f"{opcode} " + ", ".join(ssa_operands)
         else:
+            
             result = opcode
 
         # # Add comment back if present
@@ -248,8 +249,8 @@ def process_block_file(input_path: Path, output_path: Optional[Path] = None,
 
 def process_program_directory(program_path: Path, verbose: bool = False) -> int:
     """
-    Process all blocks in output/program_name/basic_blocks/*.txt
-    Output to output/program_name/basic_blocks_ssa/*.txt
+    Process all blocks in <program_path>/basic_blocks/*.txt
+    Output to <program_path>/basic_blocks_ssa/*.txt
     
     Returns:
         Total number of instructions processed
@@ -293,18 +294,18 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog='''
 Examples:
-  # Convert single program: output/program_name/basic_blocks/*.txt -> output/program_name/basic_blocks_ssa/*.txt
-  python convert_to_ssa.py output/dijkstra_small_O3_clean
+  # Convert single program: output/frontend/program_name/basic_blocks/*.txt -> output/frontend/program_name/basic_blocks_ssa/*.txt
+  python convert_to_ssa.py output/frontend/dijkstra_small_O3_clean
 
   # Verbose mode
-  python convert_to_ssa.py output/dijkstra_small_O3_clean -v
+  python convert_to_ssa.py output/frontend/dijkstra_small_O3_clean -v
   
   # Run test examples
   python convert_to_ssa.py --test
         '''
     )
 
-    parser.add_argument('input', nargs='?', help='Program directory (e.g., output/program_name)')
+    parser.add_argument('input', nargs='?', help='Program directory (e.g., output/frontend/program_name)')
     parser.add_argument('-v', '--verbose', action='store_true', help='Verbose output')
     parser.add_argument('--test', action='store_true', help='Run test examples')
 
@@ -368,7 +369,7 @@ Examples:
     bb_dir = input_path / 'basic_blocks'
     if not bb_dir.exists():
         print(f"Error: basic_blocks directory not found in {input_path}")
-        print("Expected structure: output/program_name/basic_blocks/*.txt")
+        print("Expected structure: output/frontend/program_name/basic_blocks/*.txt")
         return 1
     
     # Process the program

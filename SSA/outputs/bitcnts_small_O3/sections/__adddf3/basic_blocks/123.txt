@@ -1,5 +1,0 @@
-sub a4,a4,s0
-addi a0,a4,1
-addi a3,zero,31
-addi a1,zero,32
-blt a3,a0,1efc0

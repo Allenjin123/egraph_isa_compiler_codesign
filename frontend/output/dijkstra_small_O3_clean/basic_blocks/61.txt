@@ -1,2 +1,0 @@
-	auipc	x1, %pcrel_hi(print_path)
-	jalr	x1, x1, %pcrel_lo(.Lpcrel_13)

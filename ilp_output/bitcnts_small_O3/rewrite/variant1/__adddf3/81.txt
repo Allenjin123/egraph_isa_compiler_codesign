@@ -1,2 +1,0 @@
-bne zero, s0, 0
-sub op_2, a7, s0

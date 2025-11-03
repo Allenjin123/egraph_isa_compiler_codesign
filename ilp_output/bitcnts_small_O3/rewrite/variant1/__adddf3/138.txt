@@ -1,2 +1,0 @@
-jal op_1, 0
-addi op_2, a1, 0

@@ -1,3 +1,0 @@
-andi a4,a2,15
-addi a3,zero,4
-beq a4,a3,1ec58

@@ -1,2 +1,0 @@
-or op_1, t1, a0
-or op_2, t1, a1
