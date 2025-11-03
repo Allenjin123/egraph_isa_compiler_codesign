@@ -314,3 +314,98 @@ def get_instruction_category(mnemonic: str) -> str:
         return 'pseudo'
     else:
         return 'unknown'
+
+
+def analyze_instruction(mnemonic: str, operands: List[str]) -> Tuple[Set[str], Set[str]]:
+    """Analyze USE and DEF registers for an instruction
+    Returns: (use_regs, def_regs)
+    """
+    use_regs = set()
+    def_regs = set()
+    
+    if not operands:
+        return use_regs, def_regs
+    if not is_standard_instruction(mnemonic):
+        return use_regs, def_regs
+    # R-type: rd, rs1, rs2 (add, sub, and, or, xor, sll, srl, sra, slt, sltu)
+    if is_r_type_instruction(mnemonic):
+        if len(operands) >= 3:
+            if is_register(operands[0]):
+                def_regs.add(operands[0])
+            if is_register(operands[1]):
+                use_regs.add(operands[1])
+            if is_register(operands[2]):
+                use_regs.add(operands[2])
+    
+    # I-type: rd, rs1, imm (addi, andi, ori, xori, slti, sltiu, slli, srli, srai)
+    elif is_i_type_instruction(mnemonic):
+        if len(operands) >= 2:
+            if is_register(operands[0]):
+                def_regs.add(operands[0])
+            if is_register(operands[1]):
+                use_regs.add(operands[1])
+    
+    # Load: rd, offset(rs1)
+    elif is_load_instruction(mnemonic):
+        if len(operands) >= 2:
+            if is_register(operands[0]):
+                def_regs.add(operands[0])
+            # offset(rs1) parsed as [rd, offset, rs1]
+            if is_register(operands[-1]):
+                use_regs.add(operands[-1])
+    
+    # Store: rs2, offset(rs1)
+    elif is_store_instruction(mnemonic):
+        if len(operands) >= 2:
+            if is_register(operands[0]):
+                use_regs.add(operands[0])
+            # offset(rs1)
+            if is_register(operands[-1]):
+                use_regs.add(operands[-1])
+    
+    # Branch: rs1, rs2, target
+    elif is_branch_instruction(mnemonic):
+        if len(operands) >= 2:
+            if is_register(operands[0]):
+                use_regs.add(operands[0])
+            if is_register(operands[1]):
+                use_regs.add(operands[1])
+    
+    # JAL: rd, target
+    elif mnemonic == 'jal':
+        if operands and is_register(operands[0]):
+            def_regs.add(operands[0])
+    
+    # JALR: rd, rs1, offset
+    elif mnemonic == 'jalr':
+        if len(operands) >= 2:
+            if is_register(operands[0]):
+                def_regs.add(operands[0])
+            if is_register(operands[1]):
+                use_regs.add(operands[1])
+    
+    # LUI/AUIPC: rd, imm
+    elif mnemonic in ['lui', 'auipc']:
+        if operands and is_register(operands[0]):
+            def_regs.add(operands[0])
+    
+    # CSR instructions: rd, csr, rs1/imm
+    elif is_csr_instruction(mnemonic):
+        if len(operands) >= 2:
+            # rd is always defined (reads old CSR value)
+            if is_register(operands[0]):
+                def_regs.add(operands[0])
+            # For csrrw/csrrs/csrrc: rs1 is used
+            # For csrrwi/csrrsi/csrrci: immediate is used (no register)
+            if mnemonic in ['csrrw', 'csrrs', 'csrrc']:
+                if len(operands) >= 3 and is_register(operands[2]):
+                    use_regs.add(operands[2])
+    
+    # Fence: none
+    elif mnemonic in ['fence', 'fence.i', 'ecall', 'ebreak']:
+        pass
+    
+    else:
+        raise ValueError(f"Unknown standard instruction: {mnemonic}")
+        
+    return use_regs, def_regs
