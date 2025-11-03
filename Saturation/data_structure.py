@@ -119,8 +119,10 @@ class text_inst():
 
         # Parse operands based on instruction type
         if operands:
-            # Check if operands match memory operation format (e.g., "lw rd, offset(rs1)")
-            mem_match = re.match(r'(\w+),\s*(-?\d+)\((\w+)\)', operands)
+            # Check if operands match memory operation format
+            # Examples: "lw rd, 4(sp)", "lw rd, %lo(symbol)(t4)"
+            # Pattern: rd, offset(base) where offset can be numeric or symbolic
+            mem_match = re.match(r'(\w+),\s*([^,]+)\((\w+)\)', operands)
 
             # Determine instruction format based on opcode using pattern matching
             match op_name:
@@ -235,20 +237,32 @@ class text_inst():
                     if len(ops) >= 2:
                         imm = cls.parse_immediate(ops[1])
 
-                # R-type and other instructions (default case)
-                case _:
+                # R-type instructions (RV32I base)
+                case 'add' | 'sub' | 'slt' | 'sltu' | 'and' | 'or' | 'xor' | 'sll' | 'srl' | 'sra':
                     ops = [op.strip() for op in operands.split(',')]
                     if len(ops) >= 1:
                         rd = ops[0]
                     if len(ops) >= 2:
                         rs1 = ops[1]
                     if len(ops) >= 3:
-                        # Could be rs2 or immediate
-                        parsed_imm = cls.parse_immediate(ops[2])
-                        if parsed_imm is not None:
-                            imm = parsed_imm
-                        else:
-                            rs2 = ops[2]
+                        rs2 = ops[2]
+
+                # R-type instructions (RV32M extension)
+                case 'mul' | 'mulh' | 'mulhsu' | 'mulhu' | 'div' | 'divu' | 'rem' | 'remu':
+                    ops = [op.strip() for op in operands.split(',')]
+                    if len(ops) >= 1:
+                        rd = ops[0]
+                    if len(ops) >= 2:
+                        rs1 = ops[1]
+                    if len(ops) >= 3:
+                        rs2 = ops[2]
+
+                # Unknown instruction - raise error
+                case _:
+                    raise ValueError(
+                        f"Unknown or unsupported instruction: '{op_name}'\n"
+                        f"Please add support for this instruction in data_structure.py parse_instruction()"
+                    )
 
         return cls(op_name, rd, rs1, rs2, imm)
 
