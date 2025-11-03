@@ -537,7 +537,7 @@ main:
 	lw	s2,2016(sp)
 	lw	s3,2012(sp)
 	lw	s4,2008(sp)
-	andi	a0,a0,1
+	slti	a0,a0,1
 	addi	sp,sp,2032
 	jalr	zero, ra, 0
 	.size	main, .-main

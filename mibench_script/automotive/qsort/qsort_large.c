@@ -1,5 +1,5 @@
 // #include <stdlib.h>
-// #include <stdio.h>
+#include <stdio.h>
 
 #define MAXARRAY 50000
 
@@ -50067,9 +50067,9 @@ int main(void) {
     checksum += array[i].x + array[i].y + array[i].z;
   }
   
-  // printf("\nSorting %d vectors based on distance from the origin.\n\n", MAXARRAY);
-  // for (int i = 0; i < MAXARRAY; ++i) {
-  //   printf("%d %d %d\n", array[i].x, array[i].y, array[i].z);
-  // }
+  printf("\nSorting %d vectors based on distance from the origin.\n\n", MAXARRAY);
+  for (int i = 0; i < MAXARRAY; ++i) {
+    printf("%d %d %d\n", array[i].x, array[i].y, array[i].z);
+  }
   return (checksum != 0ULL) ? 0 : 1;
 }

@@ -12,4 +12,4 @@ fi
 if [ -f ./qsort_large$BIN_SUFFIX.s ]; then
 cp -f ./qsort_large$BIN_SUFFIX.s "$BENCH_DIR/"
 fi
-$MIBENCH_RUN ./qsort_large$BIN_SUFFIX input_large.dat > output_large.txt
+$MIBENCH_RUN ./qsort_large$BIN_SUFFIX > output_large.txt

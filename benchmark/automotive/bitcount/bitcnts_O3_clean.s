@@ -9,25 +9,25 @@
 	.globl	bitcount
 	.type	bitcount, @function
 bitcount:
-	li	a5,1431654400
+	lui	a5, 349525
 	addi	a5,a5,1365
 	srli	a4,a0,1
 	and	a4,a4,a5
 	and	a0,a0,a5
 	add	a4,a4,a0
-	li	a3,858992640
+	lui	a3, 209715
 	addi	a3,a3,819
 	srli	a5,a4,2
 	and	a5,a5,a3
 	and	a4,a4,a3
 	add	a5,a5,a4
-	li	a3,252645376
+	lui	a3, 61681
 	addi	a3,a3,-241
 	srli	a4,a5,4
 	and	a4,a4,a3
 	and	a5,a5,a3
 	add	a4,a4,a5
-	li	a3,16711680
+	lui	a3, 4080
 	addi	a3,a3,255
 	srli	a5,a4,8
 	and	a5,a5,a3
@@ -37,7 +37,7 @@ bitcount:
 	srli	a0,a0,16
 	srli	a5,a5,16
 	add	a0,a5,a0
-	ret
+	jalr	zero, ra, 0
 	.size	bitcount, .-bitcount
 	.align	2
 	.globl	ntbl_bitcount
@@ -82,7 +82,7 @@ ntbl_bitcount:
 	add	a5,a5,a2
 	add	a5,a5,a3
 	add	a0,a5,a0
-	ret
+	jalr	zero, ra, 0
 	.size	ntbl_bitcount, .-ntbl_bitcount
 	.align	2
 	.globl	BW_btbl_bitcount
@@ -107,7 +107,7 @@ BW_btbl_bitcount:
 	add	a5,a4,a1
 	add	a5,a5,a3
 	add	a0,a5,a0
-	ret
+	jalr	zero, ra, 0
 	.size	BW_btbl_bitcount, .-BW_btbl_bitcount
 	.align	2
 	.globl	AR_btbl_bitcount
@@ -132,7 +132,7 @@ AR_btbl_bitcount:
 	add	a3,a3,a2
 	add	a4,a4,a3
 	add	a0,a0,a4
-	ret
+	jalr	zero, ra, 0
 	.size	AR_btbl_bitcount, .-AR_btbl_bitcount
 	.align	2
 	.globl	ntbl_bitcnt
@@ -145,7 +145,7 @@ ntbl_bitcnt:
 	add	a4,a2,a4
 	lbu	a0,0(a4)
 	beq	a5,zero,.L6
-	li	a3,0
+	addi	a3, zero, 0
 .L8:
 	andi	a4,a5,15
 	add	a4,a2,a4
@@ -155,15 +155,15 @@ ntbl_bitcnt:
 	bne	a5,zero,.L8
 	add	a0,a0,a3
 .L6:
-	ret
+	jalr	zero, ra, 0
 	.size	ntbl_bitcnt, .-ntbl_bitcnt
 	.align	2
 	.type	bit_shifter, @function
 bit_shifter:
-	mv	a5,a0
-	li	a0,0
+	addi	a5, a0, 0
+	addi	a0, zero, 0
 	beq	a5,zero,.L13
-	li	a4,0
+	addi	a4, zero, 0
 .L15:
 	andi	a3,a5,1
 	addi	a4,a4,1
@@ -172,24 +172,24 @@ bit_shifter:
 	add	a0,a0,a3
 	beq	a5,zero,.L13
 	bne	a2,zero,.L15
-	ret
+	jalr	zero, ra, 0
 .L13:
-	ret
+	jalr	zero, ra, 0
 	.size	bit_shifter, .-bit_shifter
 	.align	2
 	.globl	bit_count
 	.type	bit_count, @function
 bit_count:
 	beq	a0,zero,.L23
-	mv	a5,a0
-	li	a0,0
+	addi	a5, a0, 0
+	addi	a0, zero, 0
 .L24:
 	addi	a4,a5,-1
 	and	a5,a5,a4
 	addi	a0,a0,1
 	bne	a5,zero,.L24
 .L23:
-	ret
+	jalr	zero, ra, 0
 	.size	bit_count, .-bit_count
 	.align	2
 	.globl	srand
@@ -198,7 +198,7 @@ srand:
 	lui	a5,%hi(bitcnts_rand_state)
 	sw	a0,%lo(bitcnts_rand_state)(a5)
 	sw	zero,%lo(bitcnts_rand_state+4)(a5)
-	ret
+	jalr	zero, ra, 0
 	.size	srand, .-srand
 	.align	2
 	.globl	rand
@@ -207,8 +207,8 @@ rand:
 	lui	a6,%hi(bitcnts_rand_state)
 	lw	a3,%lo(bitcnts_rand_state)(a6)
 	lw	a4,%lo(bitcnts_rand_state+4)(a6)
-	li	a2,1284866048
-	li	a1,1481764864
+	lui	a2, 313688
+	lui	a1, 361759
 	addi	a2,a2,-211
 	addi	a1,a1,1069
 	mul	a1,a3,a1
@@ -224,24 +224,24 @@ rand:
 	slli	a0,a5,1
 	sw	a5,%lo(bitcnts_rand_state+4)(a6)
 	srli	a0,a0,1
-	ret
+	jalr	zero, ra, 0
 	.size	rand, .-rand
 	.align	2
 	.globl	atoi
 	.type	atoi, @function
 atoi:
 	lbu	a2,0(a0)
-	li	a5,45
+	addi	a5, zero, 45
 	beq	a2,a5,.L40
-	li	a5,43
-	li	a6,1
+	addi	a5, zero, 43
+	addi	a6, zero, 1
 	beq	a2,a5,.L41
 .L33:
 	addi	a3,a2,-48
 	andi	a5,a3,0xff
-	li	a1,9
-	li	a4,0
-	bgtu	a5,a1,.L42
+	addi	a1, zero, 9
+	addi	a4, zero, 0
+	bltu	a1, a5, .L42
 .L34:
 	slli	a5,a4,2
 	lbu	a2,1(a0)
@@ -251,25 +251,25 @@ atoi:
 	addi	a3,a2,-48
 	andi	a5,a3,0xff
 	addi	a0,a0,1
-	bleu	a5,a1,.L34
+	bgeu	a1, a5, .L34
 	mul	a0,a4,a6
-	ret
+	jalr	zero, ra, 0
 .L41:
 	lbu	a2,1(a0)
-	li	a1,9
+	addi	a1, zero, 9
 	add	a0,a0,a6
 	addi	a3,a2,-48
 	andi	a5,a3,0xff
-	li	a4,0
-	bleu	a5,a1,.L34
+	addi	a4, zero, 0
+	bgeu	a1, a5, .L34
 .L42:
-	li	a0,0
-	ret
+	addi	a0, zero, 0
+	jalr	zero, ra, 0
 .L40:
 	lbu	a2,1(a0)
-	li	a6,-1
+	addi	a6, zero, -1
 	addi	a0,a0,1
-	j	.L33
+	jal	zero, .L33
 	.size	atoi, .-atoi
 	.section	.rodata.str1.4,"aMS",@progbits,1
 	.align	2
@@ -302,20 +302,20 @@ main:
 	sw	s10,80(sp)
 	sw	s11,76(sp)
 	lbu	a5,0(a2)
-	li	a4,45
+	addi	a4, zero, 45
 	beq	a5,a4,.L65
 	addi	a5,a5,-43
-	seqz	a5,a5
+	sltiu	a5, a5, 1
 	add	a2,a2,a5
-	li	a5,1
+	addi	a5, zero, 1
 .L45:
 	lbu	a1,0(a2)
-	li	a6,9
-	li	a4,0
+	addi	a6, zero, 9
+	addi	a4, zero, 0
 	addi	a1,a1,-48
 	andi	a3,a1,0xff
-	bgtu	a3,a6,.L47
-	mv	a3,a4
+	bltu	a6, a3, .L47
+	addi	a3, a4, 0
 .L46:
 	slli	a4,a3,2
 	lbu	a0,1(a2)
@@ -325,8 +325,8 @@ main:
 	addi	a1,a0,-48
 	andi	a4,a1,0xff
 	addi	a2,a2,1
-	bleu	a4,a6,.L46
-	mv	a4,a3
+	bgeu	a6, a4, .L46
+	addi	a4, a3, 0
 .L47:
 	mul	a7,a5,a4
 	lui	a3,%hi(.LANCHOR0)
@@ -337,7 +337,7 @@ main:
 	lw	a2,%lo(.LC1+4)(a2)
 	lui	a4,%hi(.LC0)
 	lw	a6,%lo(.LC0)(a4)
-	li	a5,1481764864
+	lui	a5, 361759
 	slli	a3,a7,1
 	add	a3,a3,a7
 	slli	a3,a3,2
@@ -349,29 +349,31 @@ main:
 	sw	a1,32(sp)
 	sw	a2,36(sp)
 	lui	a1,%hi(.LC2)
-	li	a2,-2147483648
-	li	s8,0
-	li	s11,0
+	lui	a2, 524288
+	addi	s8, zero, 0
+	addi	s11, zero, 0
 	addi	s6,a3,256
 	addi	s7,a3,284
-	li	s5,1284866048
+	lui	s5, 313688
 	addi	a3,a1,%lo(.LC2)
 	sw	a5,28(sp)
 	addi	a5,a2,-1
-	mv	s10,s8
+	addi	s10, s8, 0
 	sw	s11,12(sp)
 	sw	a3,40(sp)
 	addi	s5,s5,-211
 	sw	a5,48(sp)
 	sw	zero,56(sp)
 	sw	zero,52(sp)
-	li	s4,0
+	addi	s4, zero, 0
 	lui	s3,%hi(bitcnts_rand_state)
 	sw	a7,24(sp)
 	sw	a6,16(sp)
 	sw	a4,20(sp)
 .L52:
-	call	clock
+.Lpcrel_1:
+	auipc	ra, %pcrel_hi(clock)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_1)
 	lw	a5,%lo(bitcnts_rand_state)(s3)
 	lw	a4,%lo(bitcnts_rand_state+4)(s3)
 	lw	a3,28(sp)
@@ -388,131 +390,171 @@ main:
 	lw	a4,24(sp)
 	sw	a5,%lo(bitcnts_rand_state+4)(s3)
 	sw	a3,%lo(bitcnts_rand_state)(s3)
-	ble	a4,zero,.L56
+	bge	zero, a4, .L56
 	lw	a4,48(sp)
 	lw	s2,0(s7)
-	li	s0,0
+	addi	s0, zero, 0
 	and	s9,a5,a4
 	lw	a5,44(sp)
 	add	s1,s9,a5
 .L49:
-	mv	a0,s9
+	addi	a0, s9, 0
 	jalr	s2
 	addi	s9,s9,13
 	add	s0,s0,a0
 	bne	s1,s9,.L49
 .L48:
-	call	clock
+.Lpcrel_2:
+	auipc	ra, %pcrel_hi(clock)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_2)
 	lw	a5,8(sp)
 	sub	a0,a0,a5
-	call	__floatunsidf
+.Lpcrel_3:
+	auipc	ra, %pcrel_hi(__floatunsidf)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_3)
 	lw	a2,32(sp)
 	lw	a3,36(sp)
-	call	__divdf3
+.Lpcrel_4:
+	auipc	ra, %pcrel_hi(__divdf3)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_4)
 	lw	a2,16(sp)
 	lw	a3,20(sp)
-	mv	s2,a0
-	mv	s1,a1
-	call	__ltdf2
+	addi	s2, a0, 0
+	addi	s1, a1, 0
+.Lpcrel_5:
+	auipc	ra, %pcrel_hi(__ltdf2)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_5)
 	bge	a0,zero,.L50
 	sw	s4,52(sp)
 	sw	s2,16(sp)
 	sw	s1,20(sp)
 .L50:
 	lw	a3,12(sp)
-	mv	a2,s10
-	mv	a0,s2
-	mv	a1,s1
-	call	__gtdf2
-	ble	a0,zero,.L51
+	addi	a2, s10, 0
+	addi	a0, s2, 0
+	addi	a1, s1, 0
+.Lpcrel_6:
+	auipc	ra, %pcrel_hi(__gtdf2)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_6)
+	bge	zero, a0, .L51
 	sw	s4,56(sp)
-	mv	s10,s2
+	addi	s10, s2, 0
 	sw	s1,12(sp)
 .L51:
-	mv	a2,s8
-	mv	a3,s11
-	mv	a0,s2
-	mv	a1,s1
-	call	__adddf3
-	mv	s8,a0
-	mv	a0,s0
-	mv	s9,a1
-	call	__floatsidf
-	mv	a2,s8
-	mv	a3,s9
-	call	__adddf3
-	mv	s8,a0
-	mv	s11,a1
+	addi	a2, s8, 0
+	addi	a3, s11, 0
+	addi	a0, s2, 0
+	addi	a1, s1, 0
+.Lpcrel_7:
+	auipc	ra, %pcrel_hi(__adddf3)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_7)
+	addi	s8, a0, 0
+	addi	a0, s0, 0
+	addi	s9, a1, 0
+.Lpcrel_8:
+	auipc	ra, %pcrel_hi(__floatsidf)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_8)
+	addi	a2, s8, 0
+	addi	a3, s9, 0
+.Lpcrel_9:
+	auipc	ra, %pcrel_hi(__adddf3)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_9)
+	addi	s8, a0, 0
+	addi	s11, a1, 0
 	lw	a0,40(sp)
 	lw	a1,0(s6)
-	mv	a2,s2
-	mv	a3,s1
-	mv	a4,s0
-	call	printf
+	addi	a2, s2, 0
+	addi	a3, s1, 0
+	addi	a4, s0, 0
+.Lpcrel_10:
+	auipc	ra, %pcrel_hi(printf)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_10)
 	addi	s4,s4,1
-	li	a5,7
+	addi	a5, zero, 7
 	addi	s6,s6,4
 	addi	s7,s7,4
 	bne	s4,a5,.L52
 	lw	a7,24(sp)
 	lw	a0,16(sp)
 	lw	a1,20(sp)
-	mv	a2,s8
-	mv	a3,s11
+	addi	a2, s8, 0
+	addi	a3, s11, 0
 	sw	a7,8(sp)
-	call	__adddf3
-	mv	a3,a1
+.Lpcrel_11:
+	auipc	ra, %pcrel_hi(__adddf3)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_11)
+	addi	a3, a1, 0
 	lw	a1,12(sp)
-	mv	a2,a0
-	mv	a0,s10
-	call	__adddf3
+	addi	a2, a0, 0
+	addi	a0, s10, 0
+.Lpcrel_12:
+	auipc	ra, %pcrel_hi(__adddf3)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_12)
 	lw	s2,52(sp)
-	mv	s0,a0
-	mv	s1,a1
-	mv	a0,s2
-	call	__floatsidf
-	mv	a2,s0
-	mv	a3,s1
-	call	__adddf3
+	addi	s0, a0, 0
+	addi	s1, a1, 0
+	addi	a0, s2, 0
+.Lpcrel_13:
+	auipc	ra, %pcrel_hi(__floatsidf)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_13)
+	addi	a2, s0, 0
+	addi	a3, s1, 0
+.Lpcrel_14:
+	auipc	ra, %pcrel_hi(__adddf3)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_14)
 	lw	s3,56(sp)
-	mv	s0,a0
-	mv	s1,a1
-	mv	a0,s3
-	call	__floatsidf
-	mv	a2,s0
-	mv	a3,s1
-	call	__adddf3
-	mv	s0,a0
+	addi	s0, a0, 0
+	addi	s1, a1, 0
+	addi	a0, s3, 0
+.Lpcrel_15:
+	auipc	ra, %pcrel_hi(__floatsidf)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_15)
+	addi	a2, s0, 0
+	addi	a3, s1, 0
+.Lpcrel_16:
+	auipc	ra, %pcrel_hi(__adddf3)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_16)
+	addi	s0, a0, 0
 	lw	a0,8(sp)
-	mv	s1,a1
-	call	__floatsidf
-	mv	a2,s0
-	mv	a3,s1
-	call	__adddf3
+	addi	s1, a1, 0
+.Lpcrel_17:
+	auipc	ra, %pcrel_hi(__floatsidf)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_17)
+	addi	a2, s0, 0
+	addi	a3, s1, 0
+.Lpcrel_18:
+	auipc	ra, %pcrel_hi(__adddf3)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_18)
 	lw	a4,60(sp)
 	slli	a5,s2,2
-	mv	s1,a1
+	addi	s1, a1, 0
 	add	a5,a4,a5
 	lw	a1,256(a5)
-	mv	s0,a0
+	addi	s0, a0, 0
 	lui	a5,%hi(bitcnts_checksum)
 	lui	a0,%hi(.LC3)
 	sw	s0,%lo(bitcnts_checksum)(a5)
 	addi	a0,a0,%lo(.LC3)
 	sw	s1,%lo(bitcnts_checksum+4)(a5)
-	call	printf
+.Lpcrel_19:
+	auipc	ra, %pcrel_hi(printf)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_19)
 	lw	a4,60(sp)
 	slli	a5,s3,2
 	lui	a0,%hi(.LC4)
 	add	a5,a4,a5
 	lw	a1,256(a5)
 	addi	a0,a0,%lo(.LC4)
-	call	printf
-	mv	a0,s0
-	mv	a1,s1
-	li	a2,0
-	li	a3,0
-	call	__gtdf2
+.Lpcrel_20:
+	auipc	ra, %pcrel_hi(printf)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_20)
+	addi	a0, s0, 0
+	addi	a1, s1, 0
+	addi	a2, zero, 0
+	addi	a3, zero, 0
+.Lpcrel_21:
+	auipc	ra, %pcrel_hi(__gtdf2)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_21)
 	lw	ra,124(sp)
 	lw	s0,120(sp)
 	lw	s1,116(sp)
@@ -528,14 +570,14 @@ main:
 	lw	s11,76(sp)
 	slti	a0,a0,1
 	addi	sp,sp,128
-	jr	ra
+	jalr	zero, ra, 0
 .L56:
-	li	s0,0
-	j	.L48
+	addi	s0, zero, 0
+	jal	zero, .L48
 .L65:
 	addi	a2,a2,1
-	li	a5,-1
-	j	.L45
+	addi	a5, zero, -1
+	jal	zero, .L45
 	.size	main, .-main
 	.section	.rodata.str1.4
 	.align	2

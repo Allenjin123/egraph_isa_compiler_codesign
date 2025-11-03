@@ -15,4 +15,4 @@ if [ -f "./dijkstra_small$BIN_SUFFIX.s" ]; then
     cp -f "./dijkstra_small$BIN_SUFFIX.s" "$BENCH_DIR/"
 fi
 
-$MIBENCH_RUN ./dijkstra_small$BIN_SUFFIX input.dat > output_small.txt
+$MIBENCH_RUN ./dijkstra_small$BIN_SUFFIX > output_small.txt

@@ -252,6 +252,6 @@ int main(void) {
   }
   
   /* Use volatile result to prevent DCE */
-  return (result_sink > 1);
+  return (result_sink > 0) ? 0 : 1;
 
 }

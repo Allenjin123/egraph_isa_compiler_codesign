@@ -24,14 +24,14 @@ quicksort_range:
 	sw	s5,84(sp)
 	sw	s6,80(sp)
 	sw	s11,60(sp)
-	mv	s10,a1
-	mv	s7,a0
+	addi	s10, a1, 0
+	addi	s7, a0, 0
 	addi	s8,a0,24
 	addi	s9,a0,-24
 .L2:
 	lw	a5,12(sp)
 	lw	s2,12(sp)
-	mv	s1,s10
+	addi	s1, s10, 0
 	add	a4,a5,s10
 	srli	a5,a4,31
 	add	a5,a5,a4
@@ -43,7 +43,7 @@ quicksort_range:
 	lw	s4,16(a5)
 	lw	s5,20(a5)
 .L8:
-	bgt	s1,s2,.L9
+	blt	s2, s1, .L9
 .L27:
 	slli	a5,s1,1
 	add	a5,a5,s1
@@ -52,42 +52,50 @@ quicksort_range:
 	lw	a2,16(s3)
 	lw	a3,20(s3)
 	slli	s0,s2,1
-	mv	a0,s4
-	mv	a1,s5
+	addi	a0, s4, 0
+	addi	a1, s5, 0
 	add	s0,s0,s2
 	slli	s0,s0,3
-	call	__gtdf2
+.Lpcrel_1:
+	auipc	ra, %pcrel_hi(__gtdf2)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_1)
 	add	s6,s7,s0
 	add	s11,s8,s11
-	ble	a0,zero,.L26
+	bge	zero, a0, .L26
 .L4:
-	mv	s3,s11
+	addi	s3, s11, 0
 	lw	a0,16(s11)
 	lw	a1,20(s11)
-	mv	a2,s4
-	mv	a3,s5
+	addi	a2, s4, 0
+	addi	a3, s5, 0
 	addi	s11,s11,24
 	addi	s1,s1,1
-	call	__ltdf2
+.Lpcrel_2:
+	auipc	ra, %pcrel_hi(__ltdf2)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_2)
 	blt	a0,zero,.L4
 	lw	a2,16(s6)
 	lw	a3,20(s6)
-	mv	a0,s4
-	mv	a1,s5
-	call	__ltdf2
+	addi	a0, s4, 0
+	addi	a1, s5, 0
+.Lpcrel_3:
+	auipc	ra, %pcrel_hi(__ltdf2)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_3)
 	bge	a0,zero,.L5
 .L14:
 	add	s0,s9,s0
 .L7:
-	mv	s6,s0
+	addi	s6, s0, 0
 	lw	a0,16(s0)
 	lw	a1,20(s0)
-	mv	a2,s4
-	mv	a3,s5
+	addi	a2, s4, 0
+	addi	a3, s5, 0
 	addi	s0,s0,-24
 	addi	s2,s2,-1
-	call	__gtdf2
-	bgt	a0,zero,.L7
+.Lpcrel_4:
+	auipc	ra, %pcrel_hi(__gtdf2)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_4)
+	blt	zero, a0, .L7
 .L5:
 	blt	s2,s1,.L8
 .L15:
@@ -123,22 +131,24 @@ quicksort_range:
 	sw	a3,12(s6)
 	sw	a4,16(s6)
 	sw	a5,20(s6)
-	ble	s1,s2,.L27
+	bge	s2, s1, .L27
 .L9:
-	bgt	s2,s10,.L28
+	blt	s10, s2, .L28
 .L12:
 	lw	a5,12(sp)
 	bge	s1,a5,.L29
-	mv	s10,s1
-	j	.L2
+	addi	s10, s1, 0
+	jal	zero, .L2
 .L26:
 	lw	a2,16(s6)
 	lw	a3,20(s6)
-	mv	a0,s4
-	mv	a1,s5
-	call	__ltdf2
+	addi	a0, s4, 0
+	addi	a1, s5, 0
+.Lpcrel_5:
+	auipc	ra, %pcrel_hi(__ltdf2)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_5)
 	blt	a0,zero,.L14
-	j	.L15
+	jal	zero, .L15
 .L29:
 	lw	s0,104(sp)
 	lw	s1,100(sp)
@@ -155,13 +165,15 @@ quicksort_range:
 .L1:
 	lw	ra,108(sp)
 	addi	sp,sp,112
-	jr	ra
+	jalr	zero, ra, 0
 .L28:
-	mv	a2,s2
-	mv	a1,s10
-	mv	a0,s7
-	call	quicksort_range
-	j	.L12
+	addi	a2, s2, 0
+	addi	a1, s10, 0
+	addi	a0, s7, 0
+.Lpcrel_6:
+	auipc	ra, %pcrel_hi(quicksort_range)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_6)
+	jal	zero, .L12
 	.size	quicksort_range, .-quicksort_range
 	.section	.rodata.str1.4,"aMS",@progbits,1
 	.align	2
@@ -175,7 +187,7 @@ quicksort_range:
 	.globl	main
 	.type	main, @function
 main:
-	li	t0,-1196032
+	lui	t0, 1048284
 	addi	sp,sp,-2032
 	addi	t0,t0,-1984
 	sw	s0,2024(sp)
@@ -190,8 +202,8 @@ main:
 	sw	s7,1996(sp)
 	lui	s8,%hi(input_data)
 	add	sp,sp,t0
-	mv	s1,sp
-	mv	s0,sp
+	addi	s1, sp, 0
+	addi	s0, sp, 0
 	addi	s8,s8,%lo(input_data)
 .L31:
 	lw	s3,4(s8)
@@ -200,47 +212,63 @@ main:
 	sw	s3,4(s0)
 	sw	s2,8(s0)
 	sw	a0,0(s0)
-	call	__floatsidf
-	mv	s4,a0
-	mv	a0,s3
-	mv	s5,a1
-	call	__floatsidf
-	mv	s6,a0
-	mv	a0,s2
-	mv	s7,a1
-	call	__floatsidf
-	mv	s2,a0
-	mv	s3,a1
-	mv	a2,s4
-	mv	a3,s5
-	mv	a0,s4
-	mv	a1,s5
-	call	__muldf3
-	mv	s4,a0
-	mv	s5,a1
-	mv	a2,s6
-	mv	a3,s7
-	mv	a0,s6
-	mv	a1,s7
-	call	__muldf3
-	mv	a2,a0
-	mv	a3,a1
-	mv	a0,s4
-	mv	a1,s5
-	call	__adddf3
-	mv	s4,a0
-	mv	s5,a1
-	mv	a2,s2
-	mv	a3,s3
-	mv	a0,s2
-	mv	a1,s3
-	call	__muldf3
-	mv	a2,a0
-	mv	a3,a1
-	mv	a0,s4
-	mv	a1,s5
-	call	__adddf3
-	li	a5,1200128
+.Lpcrel_7:
+	auipc	ra, %pcrel_hi(__floatsidf)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_7)
+	addi	s4, a0, 0
+	addi	a0, s3, 0
+	addi	s5, a1, 0
+.Lpcrel_8:
+	auipc	ra, %pcrel_hi(__floatsidf)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_8)
+	addi	s6, a0, 0
+	addi	a0, s2, 0
+	addi	s7, a1, 0
+.Lpcrel_9:
+	auipc	ra, %pcrel_hi(__floatsidf)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_9)
+	addi	s2, a0, 0
+	addi	s3, a1, 0
+	addi	a2, s4, 0
+	addi	a3, s5, 0
+	addi	a0, s4, 0
+	addi	a1, s5, 0
+.Lpcrel_10:
+	auipc	ra, %pcrel_hi(__muldf3)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_10)
+	addi	s4, a0, 0
+	addi	s5, a1, 0
+	addi	a2, s6, 0
+	addi	a3, s7, 0
+	addi	a0, s6, 0
+	addi	a1, s7, 0
+.Lpcrel_11:
+	auipc	ra, %pcrel_hi(__muldf3)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_11)
+	addi	a2, a0, 0
+	addi	a3, a1, 0
+	addi	a0, s4, 0
+	addi	a1, s5, 0
+.Lpcrel_12:
+	auipc	ra, %pcrel_hi(__adddf3)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_12)
+	addi	s4, a0, 0
+	addi	s5, a1, 0
+	addi	a2, s2, 0
+	addi	a3, s3, 0
+	addi	a0, s2, 0
+	addi	a1, s3, 0
+.Lpcrel_13:
+	auipc	ra, %pcrel_hi(__muldf3)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_13)
+	addi	a2, a0, 0
+	addi	a3, a1, 0
+	addi	a0, s4, 0
+	addi	a1, s5, 0
+.Lpcrel_14:
+	auipc	ra, %pcrel_hi(__adddf3)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_14)
+	lui	a5, 293
 	addi	a5,a5,-128
 	sw	a0,16(s0)
 	sw	a1,20(s0)
@@ -248,14 +276,16 @@ main:
 	addi	s0,s0,24
 	addi	s8,s8,12
 	bne	a5,s0,.L31
-	li	a2,49152
-	mv	a0,sp
+	lui	a2, 12
+	addi	a0, sp, 0
 	addi	a2,a2,847
-	li	a1,0
-	call	quicksort_range
-	mv	a5,s1
-	li	a4,0
-	li	a3,0
+	addi	a1, zero, 0
+.Lpcrel_15:
+	auipc	ra, %pcrel_hi(quicksort_range)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_15)
+	addi	a5, s1, 0
+	addi	a4, zero, 0
+	addi	a3, zero, 0
 .L32:
 	lw	s0,0(a5)
 	lw	a1,4(a5)
@@ -266,33 +296,37 @@ main:
 	srai	a2,s0,31
 	add	a3,a3,a2
 	add	s0,a4,s0
-	li	a2,1200128
+	lui	a2, 293
 	sltu	a4,s0,a4
 	addi	a2,a2,-128
 	add	s2,a4,a3
 	add	a2,a2,sp
-	mv	a3,s2
-	mv	a4,s0
+	addi	a3, s2, 0
+	addi	a4, s0, 0
 	bne	a2,a5,.L32
 	lui	a0,%hi(.LC0)
-	li	a1,49152
+	lui	a1, 12
 	addi	a1,a1,848
 	addi	a0,a0,%lo(.LC0)
 	lui	s3,%hi(.LC1)
-	call	printf
+.Lpcrel_16:
+	auipc	ra, %pcrel_hi(printf)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_16)
 	addi	s3,s3,%lo(.LC1)
 .L33:
 	lw	a3,8(s1)
 	lw	a2,4(s1)
 	lw	a1,0(s1)
-	mv	a0,s3
+	addi	a0, s3, 0
 	addi	s1,s1,24
-	call	printf
-	li	a5,1200128
+.Lpcrel_17:
+	auipc	ra, %pcrel_hi(printf)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_17)
+	lui	a5, 293
 	addi	a5,a5,-128
 	add	a5,a5,sp
 	bne	a5,s1,.L33
-	li	t0,1196032
+	lui	t0, 292
 	addi	t0,t0,1984
 	add	sp,sp,t0
 	lw	ra,2028(sp)
@@ -306,9 +340,9 @@ main:
 	lw	s6,2000(sp)
 	lw	s7,1996(sp)
 	lw	s8,1992(sp)
-	seqz	a0,a0
+	sltiu	a0, a0, 1
 	addi	sp,sp,2032
-	jr	ra
+	jalr	zero, ra, 0
 	.size	main, .-main
 	.section	.rodata
 	.align	2

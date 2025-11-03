@@ -12,7 +12,7 @@
  * Simplified for embedded environment - static memory allocation only.
  */
 
-// #include <stdio.h>   /* Only for printf */
+#include <stdio.h>   /* Only for printf */
 
 /* Simple type definitions */
 struct in_addr {
@@ -608,7 +608,7 @@ main(int argc, char **argv)
 
 		pfind = pat_search(addr.s_addr, phead);
 		if (pfind->p_key == addr.s_addr) {
-			// printf("%f %08x: Found.\n", time, addr.s_addr);
+			printf("%f %08x: Found.\n", time, addr.s_addr);
 			found_count++;
 		} else {
 			/* Insert the node */

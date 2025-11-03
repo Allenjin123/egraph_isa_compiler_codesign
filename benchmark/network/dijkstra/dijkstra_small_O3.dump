@@ -93,7 +93,7 @@ Disassembly of section .text:
    10200:	7e012903          	lw	s2,2016(sp)
    10204:	7dc12983          	lw	s3,2012(sp)
    10208:	7d812a03          	lw	s4,2008(sp)
-   1020c:	00157513          	andi	a0,a0,1
+   1020c:	00152513          	slti	a0,a0,1
    10210:	7f010113          	addi	sp,sp,2032
    10214:	00008067          	jalr	zero,0(ra)
 
