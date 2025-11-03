@@ -1,0 +1,4 @@
+lw a5_0, 16(sp_0); Inst-5
+lw s2_0, 0(s5_0); Inst-7
+addi s0_0, zero_0, 0; Inst-8
+add s1_0, a0_0, a5_0; Inst-9

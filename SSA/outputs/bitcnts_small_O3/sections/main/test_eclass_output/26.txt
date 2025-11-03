@@ -1,0 +1,2 @@
+addi a0_0, zero_0, -1; Inst-2
+jal ra_0, 100b4; Inst-4

@@ -1,0 +1,16 @@
+andi s0_1, s0_0, 2047
+slli a5_1, a5_0, 0xc
+srli a5_2, a5_1, 0xc
+slli s0_2, s0_1, 0x14
+slli a1_0, s2_0, 0x1f
+or s0_3, s0_2, a5_2
+lw ra_0, 28(sp_0)
+or a5_3, s0_3, a1_0
+lw s0_4, 24(sp_0)
+lw s1_0, 20(sp_0)
+lw s2_1, 16(sp_0)
+lw s3_0, 12(sp_0)
+addi a0_0, a4_0, 0
+addi a1_1, a5_3, 0
+addi sp_1, sp_0, 32
+jalr zero_0, 0, ra
