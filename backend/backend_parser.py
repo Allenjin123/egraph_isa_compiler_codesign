@@ -56,7 +56,7 @@ class program():
             if variant_path.is_dir():
                 prog = ds.text_program(f"{self.name}_variant_{variant_count}")
                 # Each variant has a 'sections' subdirectory containing section folders
-                sections_path = variant_path / "sections"
+                sections_path = variant_path #/ "sections"
                 prog.from_directory(str(sections_path), suffix="")
                 self.variants.append(prog)
                 variant_count += 1
@@ -145,7 +145,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
 
-    prog = program("test", "../ilp_outputs/test")
+    prog = program("bitcnts_small_O3", "../ilp_output/bitcnts_small_O3/rewrite")
     prog.parse_variants()
     prog.parse_subsets("tmp")
 
