@@ -87,10 +87,9 @@ class program():
         for i, variant in enumerate(self.variants):
             subset = set()
             # count number of unique instructions in the variant
-            for section in variant.sections.values():
-                for block in section.basic_blocks:
-                    for instr in block.inst_list:  # Fixed: was 'instructions'
-                        subset.add(instr.op_name)  # Fixed: was 'opcode'
+            for block in variant.basic_blocks:
+                for instr in block.inst_list:
+                    subset.add(instr.op_name)
             self.subsets.append(subset)
 
             # Generate DSL file path for this variant

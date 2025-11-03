@@ -15,27 +15,26 @@ def parse_latency(program_variant: ds.text_program) -> int:
         ValueError: If instruction is not in RV_INSTRUCTIONS or has no latency
     """
     latency = 0
-    for section_name, section in program_variant.sections.items():
-        for block in section.basic_blocks:
-            for instr in block.inst_list:
-                # Check if instruction exists in RV_INSTRUCTIONS
-                if instr.op_name not in gp.RV_INSTRUCTIONS:
-                    raise ValueError(
-                        f"Unknown instruction '{instr.op_name}' in section '{section_name}', "
-                        f"block {block.block_idx}. Not found in RV32IM instruction set."
-                    )
+    for block in program_variant.basic_blocks:
+        for instr in block.inst_list:
+            # Check if instruction exists in RV_INSTRUCTIONS
+            if instr.op_name not in gp.RV_INSTRUCTIONS:
+                raise ValueError(
+                    f"Unknown instruction '{instr.op_name}' in block {block.block_idx}. "
+                    f"Not found in RV32IM instruction set."
+                )
 
-                # Get instruction metadata
-                instr_metadata = gp.RV_INSTRUCTIONS[instr.op_name]
+            # Get instruction metadata
+            instr_metadata = gp.RV_INSTRUCTIONS[instr.op_name]
 
-                # Check if latency field exists
-                if 'latency' not in instr_metadata:
-                    raise ValueError(
-                        f"Instruction '{instr.op_name}' in section '{section_name}', "
-                        f"block {block.block_idx} has no 'latency' field in metadata."
-                    )
+            # Check if latency field exists
+            if 'latency' not in instr_metadata:
+                raise ValueError(
+                    f"Instruction '{instr.op_name}' in block {block.block_idx} "
+                    f"has no 'latency' field in metadata."
+                )
 
-                instr_latency = instr_metadata['latency']
-                latency += instr_latency
+            instr_latency = instr_metadata['latency']
+            latency += instr_latency
 
     return latency

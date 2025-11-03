@@ -13,7 +13,8 @@
 ;; ============================================
 
 ;; Immediate values
-(datatype Imm (ImmVal i64))
+;; Int or String for labels
+(datatype Imm (ImmVal i64) (ImmLabel String))
 ;; ============================================
 ;; RV32I BASE INTEGER INSTRUCTIONS
 ;; ============================================
