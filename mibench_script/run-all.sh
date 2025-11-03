@@ -28,12 +28,13 @@
 
 #SRCDIRS="consumer/jpeg/jpeg-6a telecomm/adpcm/src security/rijndael security/sha telecomm/fft"
 
-# SRCDIRS="automotive/basicmath
-#          automotive/bitcount
-#          automotive/qsort
-#          network/dijkstra
-#          network/patricia"
-SRCDIRS="network/dijkstra"
+SRCDIRS="automotive/basicmath
+         automotive/bitcount
+         automotive/qsort
+         network/dijkstra
+         network/patricia"
+         
+# SRCDIRS="automotive/qsort"
 CURRDIR=$(pwd)
 
 # compiler
@@ -72,6 +73,6 @@ do
     make OPTFLAGS="$OPTFLAGS" BIN_SUFFIX="$BIN_SUFFIX"
     ./runme_small.sh
     ./runme_large.sh
-    make clean
+    # make clean
     cd ${CURRDIR}
 done

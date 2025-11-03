@@ -20,12 +20,12 @@ quicksort_range:
 	sw	s0,312(sp)
 	sw	s1,308(sp)
 	sw	s2,304(sp)
-	mv	s6,a1
-	mv	s5,a0
-	mv	s7,a2
-	li	s8,127
-	li	s4,1
-	li	s3,-1
+	addi	s6, a1, 0
+	addi	s5, a0, 0
+	addi	s7, a2, 0
+	addi	s8, zero, 127
+	addi	s4, zero, 1
+	addi	s3, zero, -1
 .L2:
 	add	a5,s7,s6
 	srli	a2,a5,31
@@ -33,7 +33,7 @@ quicksort_range:
 	srai	a2,a2,1
 	slli	a2,a2,7
 	addi	a3,sp,16
-	li	a5,0
+	addi	a5, zero, 0
 .L3:
 	add	a4,a2,a5
 	add	a4,s5,a4
@@ -46,19 +46,19 @@ quicksort_range:
 .L4:
 	add	a5,a5,sp
 	sb	zero,16(a5)
-	mv	s1,s7
-	mv	s2,s6
+	addi	s1, s7, 0
+	addi	s2, s6, 0
 .L6:
-	bgt	s2,s1,.L19
+	blt	s1, s2, .L19
 	slli	a0,s2,7
 	add	a0,s5,a0
 	lbu	a4,0(a0)
-	mv	a1,a0
+	addi	a1, a0, 0
 	beq	a4,zero,.L8
 .L24:
-	mv	a2,a0
+	addi	a2, a0, 0
 	addi	a3,sp,16
-	j	.L7
+	jal	zero, .L7
 .L46:
 	bne	a5,a4,.L27
 	lbu	a4,0(a2)
@@ -70,22 +70,22 @@ quicksort_range:
 	bne	a5,zero,.L46
 .L27:
 	sltu	a3,a5,a4
-	sgtu	a5,a5,a4
+	sltu	a5, a4, a5
 	sub	a5,a3,a5
 	addi	a0,a0,128
 	bne	a5,s4,.L8
 	lbu	a4,0(a0)
 	addi	s2,s2,1
-	mv	a1,a0
+	addi	a1, a0, 0
 	bne	a4,zero,.L24
 .L8:
 	slli	s0,s1,7
 	add	s0,s5,s0
 	lbu	a5,0(s0)
-	mv	a3,s0
+	addi	a3, s0, 0
 	addi	a2,sp,16
 	bne	a5,zero,.L13
-	j	.L47
+	jal	zero, .L47
 .L49:
 	bne	a4,a5,.L28
 	lbu	a5,0(a3)
@@ -105,48 +105,56 @@ quicksort_range:
 	lbu	a5,-128(s0)
 	addi	s0,s0,-128
 	addi	s1,s1,-1
-	mv	a3,s0
+	addi	a3, s0, 0
 	addi	a2,sp,16
 	bne	a5,zero,.L13
 .L47:
 	lbu	a4,16(sp)
-	li	a3,0
+	addi	a3, zero, 0
 	sltu	a5,a5,a4
 	sub	a5,a3,a5
 	beq	a5,s3,.L17
 .L50:
-	ble	s2,s1,.L51
+	bge	s1, s2, .L51
 .L19:
-	bgt	s1,s6,.L52
+	blt	s6, s1, .L52
 	bge	s2,s7,.L1
 .L22:
-	mv	s6,s2
-	j	.L2
+	addi	s6, s2, 0
+	jal	zero, .L2
 .L48:
 	lbu	a4,1(a2)
-	li	a3,0
-	j	.L14
+	addi	a3, zero, 0
+	jal	zero, .L14
 .L51:
-	li	a2,128
+	addi	a2, zero, 128
 	addi	a0,sp,144
 	sw	a1,12(sp)
-	call	memcpy
+.Lpcrel_1:
+	auipc	ra, %pcrel_hi(memcpy)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_1)
 	lw	a0,12(sp)
-	mv	a1,s0
-	li	a2,128
-	call	memcpy
+	addi	a1, s0, 0
+	addi	a2, zero, 128
+.Lpcrel_2:
+	auipc	ra, %pcrel_hi(memcpy)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_2)
 	addi	a1,sp,144
-	mv	a0,s0
-	li	a2,128
-	call	memcpy
+	addi	a0, s0, 0
+	addi	a2, zero, 128
+.Lpcrel_3:
+	auipc	ra, %pcrel_hi(memcpy)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_3)
 	addi	s2,s2,1
 	addi	s1,s1,-1
-	j	.L6
+	jal	zero, .L6
 .L52:
-	mv	a2,s1
-	mv	a1,s6
-	mv	a0,s5
-	call	quicksort_range
+	addi	a2, s1, 0
+	addi	a1, s6, 0
+	addi	a0, s5, 0
+.Lpcrel_4:
+	auipc	ra, %pcrel_hi(quicksort_range)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_4)
 	blt	s2,s7,.L22
 .L1:
 	lw	ra,316(sp)
@@ -160,9 +168,9 @@ quicksort_range:
 	lw	s7,284(sp)
 	lw	s8,280(sp)
 	addi	sp,sp,320
-	jr	ra
+	jalr	zero, ra, 0
 .L42:
-	ret
+	jalr	zero, ra, 0
 	.size	quicksort_range, .-quicksort_range
 	.section	.rodata.str1.4,"aMS",@progbits,1
 	.align	2
@@ -173,7 +181,7 @@ quicksort_range:
 	.globl	main
 	.type	main, @function
 main:
-	li	t0,-1277952
+	lui	t0, 1048264
 	addi	sp,sp,-2032
 	addi	t0,t0,-32
 	sw	s0,2024(sp)
@@ -181,13 +189,13 @@ main:
 	sw	s1,2020(sp)
 	lui	a6,%hi(input_data)
 	add	sp,sp,t0
-	mv	s0,sp
-	mv	a2,sp
+	addi	s0, sp, 0
+	addi	a2, sp, 0
 	addi	a6,a6,%lo(input_data)
-	li	a0,127
+	addi	a0, zero, 127
 .L57:
 	lw	a1,0(a6)
-	li	a5,0
+	addi	a5, zero, 0
 .L54:
 	add	a4,a1,a5
 	lbu	a4,0(a4)
@@ -199,23 +207,25 @@ main:
 .L55:
 	add	a5,a2,a5
 	sb	zero,0(a5)
-	li	a5,1282048
+	lui	a5, 313
 	addi	a5,a5,-2048
 	addi	a2,a2,128
 	add	a5,a5,sp
 	addi	a6,a6,4
 	bne	a5,a2,.L57
-	li	a2,8192
-	mv	a0,sp
+	lui	a2, 2
+	addi	a0, sp, 0
 	addi	a2,a2,1807
-	li	a1,0
-	call	quicksort_range
-	mv	a6,s0
-	li	a4,0
-	li	a5,0
+	addi	a1, zero, 0
+.Lpcrel_5:
+	auipc	ra, %pcrel_hi(quicksort_range)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_5)
+	addi	a6, s0, 0
+	addi	a4, zero, 0
+	addi	a5, zero, 0
 .L60:
 	lbu	a2,0(a6)
-	mv	a1,a6
+	addi	a1, a6, 0
 	beq	a2,zero,.L58
 .L59:
 	addi	a1,a1,1
@@ -223,36 +233,40 @@ main:
 	lbu	a2,0(a1)
 	sltu	a3,a0,a4
 	add	a3,a3,a5
-	mv	a4,a0
-	mv	a5,a3
+	addi	a4, a0, 0
+	addi	a5, a3, 0
 	bne	a2,zero,.L59
 .L58:
-	li	a3,1282048
+	lui	a3, 313
 	addi	a3,a3,-2048
 	addi	a6,a6,128
 	add	a3,a3,sp
 	bne	a6,a3,.L60
 	lui	s1,%hi(qsort_checksum)
 	lui	a0,%hi(.LC0)
-	li	a1,8192
+	lui	a1, 2
 	sw	a4,%lo(qsort_checksum)(s1)
 	addi	a1,a1,1808
 	addi	a0,a0,%lo(.LC0)
 	sw	a5,%lo(qsort_checksum+4)(s1)
-	call	printf
+.Lpcrel_6:
+	auipc	ra, %pcrel_hi(printf)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_6)
 .L61:
-	mv	a0,s0
-	call	puts
-	li	a5,1282048
+	addi	a0, s0, 0
+.Lpcrel_7:
+	auipc	ra, %pcrel_hi(puts)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_7)
+	lui	a5, 313
 	addi	a5,a5,-2048
 	addi	s0,s0,128
 	add	a5,a5,sp
 	bne	a5,s0,.L61
-	li	t0,1277952
+	lui	t0, 312
 	lw	a4,%lo(qsort_checksum)(s1)
 	addi	t0,t0,32
 	lw	a5,%lo(qsort_checksum+4)(s1)
-	li	a0,8192
+	lui	a0, 2
 	add	sp,sp,t0
 	lw	ra,2028(sp)
 	addi	a0,a0,1808
@@ -260,9 +274,9 @@ main:
 	or	a0,a0,a5
 	lw	s0,2024(sp)
 	lw	s1,2020(sp)
-	seqz	a0,a0
+	sltiu	a0, a0, 1
 	addi	sp,sp,2032
-	jr	ra
+	jalr	zero, ra, 0
 	.size	main, .-main
 	.section	.rodata.str1.4
 	.align	2

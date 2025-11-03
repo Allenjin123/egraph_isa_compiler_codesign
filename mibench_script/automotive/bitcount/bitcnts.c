@@ -6,7 +6,7 @@
 **  public domain by Bob Stout & Auke Reitsma
 */
 
-// #include <stdio.h>
+#include <stdio.h>
 // #include <stdlib.h>
 #include <time.h>
 
@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
 
             checksum += ct;
             checksum += (double)n;
-            //printf("%-38s> Time: %7.3f sec.; Bits: %ld\n", text[i], ct, n);
+            printf("%-38s> Time: %7.3f sec.; Bits: %ld\n", text[i], ct, n);
       }
       checksum += cmin;
       checksum += cmax;
@@ -135,8 +135,8 @@ int main(int argc, char *argv[])
       checksum += (double)cmaxix;
       checksum += (double)iterations;
       bitcnts_checksum = checksum;
-      // printf("\nBest  > %s\n", text[cminix]);
-      // printf("Worst > %s\n", text[cmaxix]);
+      printf("\nBest  > %s\n", text[cminix]);
+      printf("Worst > %s\n", text[cmaxix]);
       return (checksum > 0) ? 0 : 1;
 }
 

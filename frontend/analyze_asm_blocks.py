@@ -291,6 +291,59 @@ def analyze_single_file(asm_file: Path, output_base: Path, verbose=False):
     return analyzer.analyze_asm_file(asm_file, output_dir)
 
 
+def analyze_all_clean_files(output_base: Path, verbose=False):
+    """Analyze all *_clean.s files in benchmark directory recursively
+    
+    Args:
+        output_base: Base output directory (default: output/)
+        verbose: Verbose output
+    """
+    # Get benchmark directory
+    script_dir = Path(__file__).resolve().parent
+    benchmark_dir = script_dir.parent / "benchmark"
+    
+    if not benchmark_dir.exists():
+        print(f"Error: benchmark directory not found at {benchmark_dir}")
+        return 0
+    
+    # Find all *_clean.s files recursively
+    clean_files = list(benchmark_dir.rglob("*_clean.s"))
+    
+    if not clean_files:
+        print(f"No *_clean.s files found in {benchmark_dir}")
+        return 0
+    
+    print(f"Found {len(clean_files)} *_clean.s files in benchmark directory")
+    print("=" * 80)
+    
+    total_blocks = 0
+    success_count = 0
+    
+    for asm_file in sorted(clean_files):
+        # Get relative path for better display
+        rel_path = asm_file.relative_to(benchmark_dir)
+        print(f"\nProcessing: {rel_path}")
+        
+        try:
+            block_count = analyze_single_file(asm_file, output_base, verbose)
+            if block_count:
+                total_blocks += block_count
+                success_count += 1
+        except Exception as e:
+            print(f"  ✗ Error processing {asm_file.name}: {e}")
+            if verbose:
+                import traceback
+                traceback.print_exc()
+            continue
+    
+    print("\n" + "=" * 80)
+    print(f"Processing complete!")
+    print(f"  Successfully processed: {success_count}/{len(clean_files)} files")
+    print(f"  Total basic blocks created: {total_blocks}")
+    
+    return total_blocks
+
+
 def main():
     import argparse
     
@@ -299,18 +352,22 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog='''
 Examples:
+  # Analyze all *_clean.s files in benchmark directory (default mode)
+  python analyze_asm_blocks.py
+  
   # Analyze a single .s file
   python analyze_asm_blocks.py benchmark/network/dijkstra/dijkstra_small_O3_clean.s
   
   # Specify output directory
-  python analyze_asm_blocks.py benchmark/network/dijkstra/dijkstra_small_O3_clean.s -o saturation_output
+  python analyze_asm_blocks.py -o saturation_output
   
   # Verbose output
-  python analyze_asm_blocks.py benchmark/network/dijkstra/dijkstra_small_O3_clean.s -v
+  python analyze_asm_blocks.py -v
         '''
     )
     
-    parser.add_argument('asm_file', help='Path to .s assembly file')
+    parser.add_argument('asm_file', nargs='?', default=None,
+                       help='Path to .s assembly file (optional, if not provided, analyze all *_clean.s files)')
     parser.add_argument('-o', '--output', default='output',
                        help='Output directory (default: output)')
     parser.add_argument('-v', '--verbose', action='store_true',
@@ -318,18 +375,35 @@ Examples:
     
     args = parser.parse_args()
     
-    asm_file = Path(args.asm_file)
-    if not asm_file.exists():
-        print(f"Error: File not found: {asm_file}")
-        return 1
-    
     output_base = Path(args.output)
     
     try:
-        block_count = analyze_single_file(asm_file, output_base, args.verbose)
-        if block_count:
-            print(f"\n✓ Analysis complete: {block_count} basic blocks created")
-        return 0
+        # Mode 1: Process all *_clean.s files in benchmark directory
+        if args.asm_file is None:
+            print("Mode: Analyze all *_clean.s files in benchmark directory")
+            print(f"Output directory: {output_base}")
+            print("")
+            total_blocks = analyze_all_clean_files(output_base, args.verbose)
+            if total_blocks > 0:
+                print(f"\n✓ Analysis complete: {total_blocks} total basic blocks created")
+            return 0
+        
+        # Mode 2: Process a single specified file
+        else:
+            asm_file = Path(args.asm_file)
+            if not asm_file.exists():
+                print(f"Error: File not found: {asm_file}")
+                return 1
+            
+            print(f"Mode: Analyze single file: {asm_file}")
+            print(f"Output directory: {output_base}")
+            print("")
+            
+            block_count = analyze_single_file(asm_file, output_base, args.verbose)
+            if block_count:
+                print(f"\n✓ Analysis complete: {block_count} basic blocks created")
+            return 0
+            
     except Exception as e:
         print(f"Error: {e}")
         import traceback

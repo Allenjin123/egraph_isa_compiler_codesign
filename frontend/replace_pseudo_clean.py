@@ -5,6 +5,7 @@ Only process dijkstra files and output with _clean suffix"""
 from pathlib import Path
 import re
 import sys
+from util import is_standard_instruction
 
 def replace_pseudo_instructions(asm_content):
     """Replace all pseudo instructions with standard instructions"""
@@ -144,63 +145,77 @@ def replace_pseudo_instructions(asm_content):
             replaced = True
         
         if not replaced:
+            # Extract mnemonic from the line to validate
+            mnemonic_match = re.match(r'^\s*(\w+(?:\.\w+)?)', line)
+            if mnemonic_match:
+                mnemonic = mnemonic_match.group(1)
+                if not is_standard_instruction(mnemonic):
+                    raise ValueError(
+                        f"Unsupported instruction '{mnemonic}' not in RV32IM_Zicsr_Zifencei instruction set.\n"
+                        f"Line: {line.strip()}\n"
+                        f"This may be a pseudo instruction that needs to be handled or an invalid instruction."
+                    )
             result.append(line)
     
     return '\n'.join(result)
 
 
-def process_dijkstra_files():
-    """Process only dijkstra .s files"""
+def process_all_benchmark_files():
+    """Process all .s files in benchmark directory recursively"""
     benchmark_dir = Path(__file__).parent.parent / "benchmark"
-    dijkstra_dir = benchmark_dir / "network" / "dijkstra"
     
-    if not dijkstra_dir.exists():
-        print(f"Error: dijkstra directory not found at {dijkstra_dir}")
+    if not benchmark_dir.exists():
+        print(f"Error: benchmark directory not found at {benchmark_dir}")
         return
     
-    # Find all .s files in dijkstra directory
-    s_files = list(dijkstra_dir.glob("*.s"))
+    # Find all .s files recursively in benchmark directory
+    s_files = list(benchmark_dir.rglob("*.s"))
+    
+    # Filter out files that are already _clean files
+    s_files = [f for f in s_files if not f.stem.endswith('_clean')]
     
     if not s_files:
-        print(f"No .s files found in {dijkstra_dir}")
+        print(f"No .s files found in {benchmark_dir}")
         return
     
-    print(f"Found {len(s_files)} .s files in dijkstra directory")
+    print(f"Found {len(s_files)} .s files in benchmark directory")
     print("=" * 80)
     
     for s_file in sorted(s_files):
-        # Skip if it's already a _clean file
-        if s_file.stem.endswith('_clean'):
-            print(f"Skipping already cleaned file: {s_file.name}")
+        # Get relative path for better display
+        rel_path = s_file.relative_to(benchmark_dir)
+        print(f"\nProcessing: {rel_path}")
+        
+        try:
+            # Read original file
+            with open(s_file, 'r', encoding='utf-8') as f:
+                original = f.read()
+            
+            # Replace pseudo instructions
+            cleaned = replace_pseudo_instructions(original)
+            
+            # Create output filename with _clean suffix
+            output_file = s_file.parent / f"{s_file.stem}_clean.s"
+            
+            # Write cleaned version
+            with open(output_file, 'w', encoding='utf-8') as f:
+                f.write(cleaned)
+            
+            print(f"  → Generated: {output_file.name}")
+            
+            # Count changes
+            orig_lines = original.split('\n')
+            clean_lines = cleaned.split('\n')
+            if len(clean_lines) != len(orig_lines):
+                print(f"  → Line count: {len(orig_lines)} → {len(clean_lines)} (expanded by {len(clean_lines) - len(orig_lines)})")
+        
+        except Exception as e:
+            print(f"  ✗ Error processing {s_file.name}: {e}")
             continue
-        
-        print(f"\nProcessing: {s_file.name}")
-        
-        # Read original file
-        with open(s_file, 'r', encoding='utf-8') as f:
-            original = f.read()
-        
-        # Replace pseudo instructions
-        cleaned = replace_pseudo_instructions(original)
-        
-        # Create output filename with _clean suffix
-        output_file = s_file.parent / f"{s_file.stem}_clean.s"
-        
-        # Write cleaned version
-        with open(output_file, 'w', encoding='utf-8') as f:
-            f.write(cleaned)
-        
-        print(f"  → Generated: {output_file.name}")
-        
-        # Count changes
-        orig_lines = original.split('\n')
-        clean_lines = cleaned.split('\n')
-        if len(clean_lines) != len(orig_lines):
-            print(f"  → Line count: {len(orig_lines)} → {len(clean_lines)} (expanded by {len(clean_lines) - len(orig_lines)})")
     
     print("\n" + "=" * 80)
     print("Processing complete!")
 
 
 if __name__ == "__main__":
-    process_dijkstra_files()
+    process_all_benchmark_files()

@@ -1,4 +1,4 @@
-// #include <stdio.h>
+#include <stdio.h>
 
 #ifndef PI
 #define PI 3.141592653589793115997963468544
@@ -184,10 +184,9 @@ static void usqrt(unsigned long x, struct int_sqrt *q) {
       a++;
     }
   }
-  unsigned part_bits = BITSPERLONG / 2;
-  unsigned long frac_mask = (1UL << part_bits) - 1UL;
-  q->sqrt = (unsigned)(a >> part_bits);
-  q->frac = (unsigned)(a & frac_mask);
+  // 旧版本行为：直接将整个 a 值（放大后的定点数）存入 sqrt 字段
+  q->sqrt = (unsigned)a;
+  q->frac = (unsigned)(a & 0xFFFF);
 }
 
 static double rad2deg(double rad) {
@@ -215,37 +214,37 @@ int main(void) {
   double checksum = 0.0;
 
   /* solve some cubic functions */
-  // printf("********* CUBIC FUNCTIONS ***********\n");
+  printf("********* CUBIC FUNCTIONS ***********\n");
   /* should get 3 solutions: 2, 6 & 2.5   */
   SolveCubic(a1, b1, c1, d1, &solutions, x);
-  // printf("Solutions:");
+  printf("Solutions:");
   for (i = 0; i < solutions; i++) {
     checksum += x[i];
-    // printf(" %f", x[i]);
+    printf(" %f", x[i]);
   }
-  // printf("\n");
+  printf("\n");
   /* should get 1 solution: 2.5           */
   SolveCubic(a2, b2, c2, d2, &solutions, x);
-  // printf("Solutions:");
+  printf("Solutions:");
   for (i = 0; i < solutions; i++) {
     checksum += x[i];
-    // printf(" %f", x[i]);
+    printf(" %f", x[i]);
   }
-  // printf("\n");
+  printf("\n");
   SolveCubic(a3, b3, c3, d3, &solutions, x);
-  // printf("Solutions:");
+  printf("Solutions:");
   for (i = 0; i < solutions; i++) {
     checksum += x[i];
-    // printf(" %f", x[i]);
+    printf(" %f", x[i]);
   }
-  // printf("\n");
+  printf("\n");
   SolveCubic(a4, b4, c4, d4, &solutions, x);
-  // printf("Solutions:");
+  printf("Solutions:");
   for (i = 0; i < solutions; i++) {
     checksum += x[i];
-    // printf(" %f", x[i]);
+    printf(" %f", x[i]);
   }
-  // printf("\n");
+  printf("\n");
 
   /* Now solve some random equations */
   for (a1 = 1; a1 < 10; a1++) {
@@ -253,39 +252,39 @@ int main(void) {
       for (c1 = 5; c1 < 15; c1 += 0.5) {
         for (d1 = -1; d1 > -11; d1--) {
           SolveCubic(a1, b1, c1, d1, &solutions, x);
-          // printf("Solutions:");
+          printf("Solutions:");
           for (i = 0; i < solutions; i++) {
             checksum += x[i];
-            // printf(" %f", x[i]);
+            printf(" %f", x[i]);
           }
-          // printf("\n");
+          printf("\n");
         }
       }
     }
   }
 
-  // printf("********* INTEGER SQR ROOTS ***********\n");
+  printf("********* INTEGER SQR ROOTS ***********\n");
   /* perform some integer square roots */
   for (i = 0; i < 1001; ++i) {
     usqrt(i, &q);
     /* remainder differs on some machines */
     checksum += q.sqrt;
-    // printf("sqrt(%3d) = %2d\n", i, q.sqrt);
+    printf("sqrt(%3d) = %2d\n", i, q.sqrt);
   }
   usqrt(l, &q);
   checksum += q.sqrt;
-  // printf("\nsqrt(%lX) = %X\n", l, q.sqrt);
+  printf("\nsqrt(%lX) = %X\n", l, q.sqrt);
 
-  // printf("********* ANGLE CONVERSION ***********\n");
+  printf("********* ANGLE CONVERSION ***********\n");
   /* convert some rads to degrees */
   for (X = 0.0; X <= 360.0; X += 1.0) {
     checksum += deg2rad(X);
-    // printf("%3.0f degrees = %.12f radians\n", X, deg2rad(X));
+    printf("%3.0f degrees = %.12f radians\n", X, deg2rad(X));
   }
-  // puts("");
+  printf("\n");
   for (X = 0.0; X <= (2 * PI + 1e-6); X += (PI / 180)) {
     checksum += rad2deg(X);
-    // printf("%.12f radians = %3.0f degrees\n", X, rad2deg(X));
+    printf("%.12f radians = %3.0f degrees\n", X, rad2deg(X));
   }
 
   return (checksum != 0.0) ? 0 : 1;
