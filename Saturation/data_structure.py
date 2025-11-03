@@ -2,18 +2,18 @@ from __future__ import annotations
 #from egglog import *
 import os
 import re
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Union
 
 class text_inst():
     """Data structure for text format of a single RISC-V instruction"""
 
     def __init__(self, op_name: str, rd: Optional[str] = None, rs1: Optional[str] = None,
-                 rs2: Optional[str] = None, imm: Optional[int] = None):
+                 rs2: Optional[str] = None, imm: Optional[Union[int, str]] = None):
         self.op_name = op_name
         self.rd = rd
         self.rs1 = rs1
         self.rs2 = rs2
-        self.imm = imm
+        self.imm = imm  # Can be int (numeric) or str (symbolic like %hi(...), %lo(...))
 
     def __str__(self):
         """String representation of the instruction"""
@@ -29,7 +29,7 @@ class text_inst():
         return f"    {' '.join(parts)}"
 
     @staticmethod
-    def parse_immediate(value_str: str, is_branch_or_jump: bool = False) -> Optional[int]:
+    def parse_immediate(value_str: str, is_branch_or_jump: bool = False) -> Optional[Union[int, str]]:
         """Parse immediate value from string, handling different formats.
 
         Args:
@@ -38,12 +38,24 @@ class text_inst():
                               If False, treat as decimal unless prefixed with 0x
 
         Returns:
-            Parsed integer value, or None if parsing fails
+            - Integer value if numeric
+            - String value if symbolic (e.g., %hi(.LC1), %lo(.LC1), %pcrel_hi(printf))
+            - None if empty/invalid
         """
         if not value_str:
             return None
 
         value_str = value_str.strip()
+
+        # Check for symbolic immediate values (assembly pseudo-ops and labels)
+        # These are preserved as strings for later resolution
+        if value_str.startswith('%'):
+            # Symbolic immediates: %hi(...), %lo(...), %pcrel_hi(...), %pcrel_lo(...)
+            return value_str
+        elif value_str.startswith('.') or (value_str and value_str[0].isalpha()):
+            # Labels: .L9, .LC1, printf, main, etc.
+            # Anything that looks like a label/symbol (starts with . or letter)
+            return value_str
 
         try:
             # Handle explicit hex prefix (0x)
@@ -404,54 +416,64 @@ class text_section():
 
 
 class text_program():
-    """Data structure for a program that stores multiple sections"""
+    """Data structure for a program that stores basic blocks directly (no sections layer)"""
 
     def __init__(self, program_name: str):
         self.program_name = program_name
-        self.sections: Dict[str, text_section] = {}
+        self.basic_blocks: List[text_basic_block] = []
 
-    def add_section(self, section: text_section):
-        """Add a section to the program"""
-        self.sections[section.section_name] = section
+    def add_basic_block(self, block: text_basic_block):
+        """Add a basic block to the program"""
+        self.basic_blocks.append(block)
 
     def from_directory(self, dir_path: str, suffix: str = ""):
-        """Read all section directories in the directory and populate sections
+        """Read all basic block files from basic_blocks{suffix} directory
 
         Args:
-            dir_path: Path to sections directory
-            suffix: Suffix to append to "basic_blocks" directory name (e.g., "","_ssa","_json")
+            dir_path: Path to program directory (contains basic_blocks/ or basic_blocks_ssa/)
+            suffix: Suffix to append to "basic_blocks" directory name (e.g., "", "_ssa")
         """
         if not os.path.exists(dir_path):
             print(f"Error: Directory {dir_path} does not exist")
             return
 
-        section_names = []
-        for section_name in os.listdir(dir_path):
-            section_path = os.path.join(dir_path, section_name)
-            if os.path.isdir(section_path):
-                section_names.append(section_name)
+        # Look for basic_blocks{suffix} directory
+        blocks_dir = os.path.join(dir_path, f"basic_blocks{suffix}")
 
-        # Sort section names for consistent output
-        section_names.sort()
+        if not os.path.exists(blocks_dir):
+            print(f"Error: Directory {blocks_dir} does not exist")
+            return
 
-        for section_name in section_names:
-            section_path = os.path.join(dir_path, section_name)
-            section = text_section(section_name)
-            section.from_directory(section_path, suffix=suffix)
-            if section.basic_blocks:  # Only add non-empty sections
-                self.add_section(section)
+        # Read all .txt files from the basic_blocks directory
+        block_files = []
+        for filename in os.listdir(blocks_dir):
+            full_path = os.path.join(blocks_dir, filename)
+            if os.path.isfile(full_path) and filename.endswith('.txt'):
+                # Only process numbered block files (e.g., "0.txt", "1.txt")
+                try:
+                    block_num = int(filename[:-4])
+                    block_files.append((block_num, filename, full_path))
+                except:
+                    # Skip non-numbered files
+                    continue
+
+        # Sort by block number to maintain order
+        block_files.sort(key=lambda x: x[0])
+
+        for block_num, filename, full_path in block_files:
+            block = text_basic_block(filename)
+            block.from_file(full_path)
+            self.add_basic_block(block)
 
     def __str__(self):
         """String representation of the program"""
         lines = [f"{'='*60}"]
         lines.append(f"Program: {self.program_name}")
-        lines.append(f"Total sections: {len(self.sections)}")
+        lines.append(f"Total blocks: {len(self.basic_blocks)}")
         lines.append(f"{'='*60}")
 
-        # Sort sections by name for consistent output
-        sorted_sections = sorted(self.sections.items())
-        for section_name, section in sorted_sections:
-            lines.append(str(section))
+        for block in self.basic_blocks:
+            lines.append(str(block))
 
         return '\n'.join(lines)
 
@@ -460,24 +482,16 @@ class text_program():
         print(f"\n{'='*60}")
         print(f"PROGRAM SUMMARY: {self.program_name}")
         print(f"{'='*60}")
-        print(f"Total sections: {len(self.sections)}")
 
-        total_blocks = 0
-        total_instructions = 0
+        total_blocks = len(self.basic_blocks)
+        total_instructions = sum(len(block.inst_list) for block in self.basic_blocks)
 
-        print(f"\n{'Section':<30} {'Blocks':>10} {'Instructions':>15}")
-        print(f"{'-'*60}")
+        print(f"Total blocks: {total_blocks}")
+        print(f"Total instructions: {total_instructions}")
 
-        for section_name in sorted(self.sections.keys()):
-            section = self.sections[section_name]
-            num_blocks = len(section.basic_blocks)
-            num_instructions = sum(len(block.inst_list) for block in section.basic_blocks)
-            total_blocks += num_blocks
-            total_instructions += num_instructions
-            print(f"{section_name:<30} {num_blocks:>10} {num_instructions:>15}")
+        if total_blocks > 0:
+            print(f"Average instructions per block: {total_instructions / total_blocks:.1f}")
 
-        print(f"{'-'*60}")
-        print(f"{'TOTAL':<30} {total_blocks:>10} {total_instructions:>15}")
         print(f"{'='*60}\n")
 
 
@@ -553,81 +567,35 @@ def test_register_extraction():
 
 
 if __name__ == "__main__":
-    # Test parsing first
-    test_parsing()
-
-    # Test register extraction
-    test_register_extraction()
-
     # Check if the expected directory exists
-    dhrystone_path = "../SSA/outputs_ssa/dhrystone.riscv/sections"
+    program_path = "../output/frontend/dijkstra_small_O3"
 
-    # Try alternative paths
-    if not os.path.exists(dhrystone_path):
-        dhrystone_path = "SSA/outputs/dhrystone.riscv/sections"
-
-    if not os.path.exists(dhrystone_path):
-        # Try to find any processed output
-        print("Looking for processed outputs...")
-        search_paths = [
-            "../SSA/outputs",
-            "SSA/outputs",
-            "../SSA",
-            "SSA"
-        ]
-
-        for search_path in search_paths:
-            if os.path.exists(search_path):
-                print(f"Found directory: {search_path}")
-                subdirs = [d for d in os.listdir(search_path) if os.path.isdir(os.path.join(search_path, d))]
-                if subdirs:
-                    print(f"Available outputs: {', '.join(subdirs)}")
-                    # Use the first available output
-                    first_output = subdirs[0]
-                    dhrystone_path = os.path.join(search_path, first_output, "sections")
-                    if os.path.exists(dhrystone_path):
-                        print(f"Using: {dhrystone_path}")
-                        break
-
-    if os.path.exists(dhrystone_path):
+    if os.path.exists(program_path):
         # Load and parse the program
-        program = text_program("dhrystone")
-        program.from_directory(dhrystone_path, suffix="_ssa")
+        program = text_program("dijkstra_small_O3")
+        program.from_directory(program_path, suffix="_ssa")
 
         # Print summary
         program.print_summary()
 
-        # Print detailed structure for first few sections/blocks as example
+        # Print detailed structure for first few blocks as example
         print("\n" + "="*60)
-        print("DETAILED VIEW (first 2 sections, first 2 blocks each)")
+        print("DETAILED VIEW (first 5 blocks)")
         print("="*60)
 
-        section_count = 0
-        for section_name in sorted(program.sections.keys()):
-            if section_count >= 2:
-                break
-            section = program.sections[section_name]
-            print(f"\nSection: {section_name}")
+        for i, block in enumerate(program.basic_blocks[:5]):
+            print(f"\nBlock {block.block_idx}:")
 
-            block_count = 0
-            for block in section.basic_blocks:
-                if block_count >= 2:
-                    break
-                print(f"\n  Block {block.block_idx}:")
+            # Show used registers for this block
+            used_regs = block.get_used_registers()
+            print(f"  Used registers ({len(used_regs)}): {sorted(used_regs)}")
 
-                # Show used registers for this block
-                used_regs = block.get_used_registers()
-                print(f"    Used registers ({len(used_regs)}): {sorted(used_regs)}")
-
-                # Show first few instructions
-                print(f"    Instructions (showing first 5):")
-                for i, inst in enumerate(block.inst_list[:5]):
-                    print(f"      {inst}")
-                if len(block.inst_list) > 5:
-                    print(f"      ... ({len(block.inst_list) - 5} more instructions)")
-
-                block_count += 1
-            section_count += 1
+            # Show first few instructions
+            print(f"  Instructions (showing first 5):")
+            for inst in block.inst_list[:5]:
+                print(f"    {inst}")
+            if len(block.inst_list) > 5:
+                print(f"    ... ({len(block.inst_list) - 5} more instructions)")
 
         print("\n" + "="*60)
         print("Full program structure loaded successfully!")
@@ -635,41 +603,6 @@ if __name__ == "__main__":
         print("="*60)
     else:
         print(f"Error: Could not find processed output directory")
-        print(f"Expected path: {dhrystone_path}")
-        print("\nPlease run the SSA processing pipeline first:")
-        print("  cd SSA")
-        print("  python process_dump.py ../benchmark/im_inputs/dhrystone.riscv.dump")
-
-
-# #### Below are egraph data structure (keep as reference) ####
-# class Reg(Expr):
-#     def __init__(self, name: StringLike) -> None: ...
-
-# class Inst(Expr):
-#     def __init__(self, name: StringLike, rd: Reg, rs1: Reg, rs2: Reg, imm: i64Like) -> None: ...
-
-# class Num(Expr):
-#     def __init__(self, value: i64Like) -> None: ...
-
-#     @classmethod
-#     def var(cls, name: StringLike) -> Num:  ...
-
-#     def __add__(self, other: Num) -> Num: ...
-
-#     def __mul__(self, other: Num) -> Num: ...
-
-# egraph = EGraph()
-
-# expr1 = egraph.let("expr1", Num(2) * (Num.var("x") + Num(3)))
-# expr2 = egraph.let("expr2", Num(6) + Num(2) * Num.var("x"))
-
-# @egraph.register
-# def _num_rule(a: Num, b: Num, c: Num, i: i64, j: i64):
-#     yield rewrite(a + b).to(b + a)
-#     yield rewrite(a * (b + c)).to((a * b) + (a * c))
-#     yield rewrite(Num(i) + Num(j)).to(Num(i + j))
-#     yield rewrite(Num(i) * Num(j)).to(Num(i * j))
-
-# egraph.saturate()
-# egraph.check(expr1 == expr2)
-# egraph.extract(expr1)
+        print(f"Expected path: {program_path}")
+        print(f"  Should contain: basic_blocks/ or basic_blocks_ssa/")
+        print("\nPlease run the frontend processing pipeline first to generate basic blocks.")

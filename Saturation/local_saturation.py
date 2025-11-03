@@ -37,6 +37,19 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
             # For registers not yet defined (shouldn't happen in correct SSA)
             return f"(RegVal \"{reg_name}\")"
 
+    # Helper to format immediate value (handles both numeric and symbolic)
+    def format_imm(imm_value):
+        if imm_value is None:
+            raise ValueError(f"Immediate value is None for instruction: {inst}")
+        if isinstance(imm_value, int):
+            # Numeric immediate
+            return f"(ImmVal {imm_value})"
+        elif isinstance(imm_value, str):
+            # Symbolic immediate (e.g., %hi(.LC1), %lo(.LC1))
+            return f"(ImmLabel \"{imm_value}\")"
+        else:
+            raise ValueError(f"Invalid immediate type {type(imm_value)} for instruction: {inst}")
+
 
     # Handle special cases and pseudo-instructions
     if op == 'li':  # li rd, imm -> LoadImm
@@ -44,7 +57,7 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
             raise ValueError(f"li instruction missing rd: {inst}")
         if inst.imm is None:
             raise ValueError(f"li instruction missing imm: {inst}")
-        return inst.rd, f"(LoadImm (ImmVal {inst.imm}))"
+        return inst.rd, f"(LoadImm {format_imm(inst.imm)})"
     elif op == 'mv':  # mv rd, rs -> addi rd, rs, 0
         if not inst.rd:
             raise ValueError(f"mv instruction missing rd: {inst}")
@@ -81,7 +94,7 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
             raise ValueError(f"{op} instruction missing rs1: {inst}")
         if inst.imm is None:
             raise ValueError(f"{op} instruction missing imm: {inst}")
-        return inst.rd, f"({op.capitalize()} {get_reg_ref(inst.rs1)} (ImmVal {inst.imm}))"
+        return inst.rd, f"({op.capitalize()} {get_reg_ref(inst.rs1)} {format_imm(inst.imm)})"
     elif op in ['slli', 'srli', 'srai']:
         if not inst.rd:
             raise ValueError(f"{op} instruction missing rd: {inst}")
@@ -89,7 +102,7 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
             raise ValueError(f"{op} instruction missing rs1: {inst}")
         if inst.imm is None:
             raise ValueError(f"{op} instruction missing imm: {inst}")
-        return inst.rd, f"({op.capitalize()} {get_reg_ref(inst.rs1)} (ImmVal {inst.imm}))"
+        return inst.rd, f"({op.capitalize()} {get_reg_ref(inst.rs1)} {format_imm(inst.imm)})"
 
     # Load instructions
     elif op in ['lw', 'lh', 'lb', 'lhu', 'lbu']:
@@ -100,7 +113,7 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
         if inst.imm is None:
             raise ValueError(f"{op} instruction missing imm: {inst}")
         op_map = {'lw': 'Lw', 'lh': 'Lh', 'lb': 'Lb', 'lhu': 'Lhu', 'lbu': 'Lbu'}
-        return inst.rd, f"({op_map[op]} {get_reg_ref(inst.rs1)} (ImmVal {inst.imm}))"
+        return inst.rd, f"({op_map[op]} {get_reg_ref(inst.rs1)} {format_imm(inst.imm)})"
 
     # Store instructions
     elif op in ['sw', 'sh', 'sb']:
@@ -112,7 +125,7 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
             raise ValueError(f"{op} instruction missing imm: {inst}")
         op_map = {'sw': 'Sw', 'sh': 'Sh', 'sb': 'Sb'}
         # Note: Store doesn't produce a result
-        return None, f"({op_map[op]} {get_reg_ref(inst.rs1)} {get_reg_ref(inst.rs2)} (ImmVal {inst.imm}))"
+        return None, f"({op_map[op]} {get_reg_ref(inst.rs1)} {get_reg_ref(inst.rs2)} {format_imm(inst.imm)})"
 
     # Upper immediate instructions
     elif op == 'lui':
@@ -120,13 +133,13 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
             raise ValueError(f"lui instruction missing rd: {inst}")
         if inst.imm is None:
             raise ValueError(f"lui instruction missing imm: {inst}")
-        return inst.rd, f"(Lui (ImmVal {inst.imm}))"
+        return inst.rd, f"(Lui {format_imm(inst.imm)})"
     elif op == 'auipc':
         if not inst.rd:
             raise ValueError(f"auipc instruction missing rd: {inst}")
         if inst.imm is None:
             raise ValueError(f"auipc instruction missing imm: {inst}")
-        return inst.rd, f"(Auipc (ImmVal {inst.imm}))"
+        return inst.rd, f"(Auipc {format_imm(inst.imm)})"
 
     # Branch instructions
     elif op in ['beq', 'bne', 'blt', 'bge', 'bltu', 'bgeu']:
@@ -136,19 +149,19 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
             raise ValueError(f"{op} instruction missing rs2: {inst}")
         if inst.imm is None:
             raise ValueError(f"{op} instruction missing imm: {inst}")
-        return None, f"({op.capitalize()} {get_reg_ref(inst.rs1)} {get_reg_ref(inst.rs2)} (ImmVal {inst.imm}))"
+        return None, f"({op.capitalize()} {get_reg_ref(inst.rs1)} {get_reg_ref(inst.rs2)} {format_imm(inst.imm)})"
     elif op == 'bnez':  # bnez rs, imm -> bne rs, x0, imm
         if not inst.rs1:
             raise ValueError(f"bnez instruction missing rs1: {inst}")
         if inst.imm is None:
             raise ValueError(f"bnez instruction missing imm: {inst}")
-        return None, f"(Bne {get_reg_ref(inst.rs1)} (RegVal \"x0\") (ImmVal {inst.imm}))"
+        return None, f"(Bne {get_reg_ref(inst.rs1)} (RegVal \"x0\") {format_imm(inst.imm)})"
     elif op == 'beqz':  # beqz rs, imm -> beq rs, x0, imm
         if not inst.rs1:
             raise ValueError(f"beqz instruction missing rs1: {inst}")
         if inst.imm is None:
             raise ValueError(f"beqz instruction missing imm: {inst}")
-        return None, f"(Beq {get_reg_ref(inst.rs1)} (RegVal \"x0\") (ImmVal {inst.imm}))"
+        return None, f"(Beq {get_reg_ref(inst.rs1)} (RegVal \"x0\") {format_imm(inst.imm)})"
 
     # Jump instructions
     elif op == 'jal':
@@ -156,7 +169,7 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
             raise ValueError(f"jal instruction missing rd: {inst}")
         if inst.imm is None:
             raise ValueError(f"jal instruction missing imm: {inst}")
-        return inst.rd, f"(Jal (ImmVal {inst.imm}))"
+        return inst.rd, f"(Jal {format_imm(inst.imm)})"
     elif op == 'jalr':
         if not inst.rd:
             raise ValueError(f"jalr instruction missing rd: {inst}")
@@ -164,11 +177,11 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
             raise ValueError(f"jalr instruction missing rs1: {inst}")
         if inst.imm is None:
             raise ValueError(f"jalr instruction missing imm: {inst}")
-        return inst.rd, f"(Jalr {get_reg_ref(inst.rs1)} (ImmVal {inst.imm}))"
+        return inst.rd, f"(Jalr {get_reg_ref(inst.rs1)} {format_imm(inst.imm)})"
     elif op == 'j':  # j imm -> jal x0, imm
         if inst.imm is None:
             raise ValueError(f"j instruction missing imm: {inst}")
-        return None, f"(Jal (ImmVal {inst.imm}))"
+        return None, f"(Jal {format_imm(inst.imm)})"
 
     # For unsupported instructions, raise an error instead of silently marking as unsupported
     raise ValueError(f"Unsupported or improperly parsed instruction: {inst}")
