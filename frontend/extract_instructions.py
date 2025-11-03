@@ -117,7 +117,7 @@ def main():
         print(f"  {i:2d}. {inst}")
 
     # Save results
-    output_file = Path(__file__).parent / "outputs" / "instruction_stats.txt"
+    output_file = Path(__file__).parent / "instruction_stats.txt"
     output_file.parent.mkdir(exist_ok=True)
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write("=" * 80 + "\n")
