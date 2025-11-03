@@ -1,3 +1,0 @@
-addi a3,zero,31
-addi a7,zero,32
-blt a3,a4,1ed20

@@ -1,6 +1,8 @@
 # Shared utilities for SSA processing
 # Provides common branch instruction predicates for RISC-V disassembly handling.
 
+from typing import List, Set, Tuple
+
 # ============================================================================
 # RV32IM 指令集定义 (RISC-V 32-bit Integer + Multiply/Divide)
 # ============================================================================

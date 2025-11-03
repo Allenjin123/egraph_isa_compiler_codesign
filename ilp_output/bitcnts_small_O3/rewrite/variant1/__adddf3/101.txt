@@ -1,2 +1,0 @@
-bne zero, a4, 0
-addi op_2, a6, 0

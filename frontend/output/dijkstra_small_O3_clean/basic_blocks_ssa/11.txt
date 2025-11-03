@@ -1,6 +1,0 @@
-sw a3_0, 12(sp_0)
-sw a7_0, 8(sp_0)
-sw a6_0, 4(sp_0)
-sw a2_0, 0(sp_0)
-auipc x1_0, %pcrel_hi(print_path)
-jalr x1_1, x1_0, %pcrel_lo(.Lpcrel_5)

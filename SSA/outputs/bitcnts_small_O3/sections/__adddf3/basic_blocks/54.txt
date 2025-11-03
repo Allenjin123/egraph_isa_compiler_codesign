@@ -1,2 +1,0 @@
-andi a4,a2,7
-beq a4,zero,1ec58

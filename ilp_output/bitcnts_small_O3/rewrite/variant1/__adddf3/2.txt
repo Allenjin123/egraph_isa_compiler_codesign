@@ -1,1 +1,0 @@
-bne a7, zero, 0

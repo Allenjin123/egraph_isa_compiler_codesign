@@ -1,1 +1,0 @@
-	jalr	zero, x1, 0

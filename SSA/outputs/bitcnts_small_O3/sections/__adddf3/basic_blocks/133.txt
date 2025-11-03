@@ -1,5 +1,0 @@
-or a3,a2,a3
-sltu a3,zero,a3
-or a2,a4,a3
-addi a5,zero,0
-jal zero,1eea8

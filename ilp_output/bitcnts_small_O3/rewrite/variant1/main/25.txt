@@ -1,7 +1,0 @@
-jal op_1, 0
-lw op_2, gp, -220
-lw op_3, op_2, 12
-addi op_4, a5, 0
-lui op_5, 35
-addi op_6, op_5, -1096
-addi op_7, zero, 28

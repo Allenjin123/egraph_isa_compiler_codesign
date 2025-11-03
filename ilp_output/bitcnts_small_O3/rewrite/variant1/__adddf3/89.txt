@@ -1,2 +1,0 @@
-addi op_1, zero, 56
-blt op_1, a4, 0

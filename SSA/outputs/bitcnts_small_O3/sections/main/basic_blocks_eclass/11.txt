@@ -1,2 +1,0 @@
-sub a0_1, a0_0, s6_0; Inst-2
-jal ra_0, 1120c; Inst-4

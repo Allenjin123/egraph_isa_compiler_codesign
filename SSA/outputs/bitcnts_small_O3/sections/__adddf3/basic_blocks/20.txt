@@ -1,2 +1,0 @@
-addi a4,zero,0
-jal zero,1e9f4

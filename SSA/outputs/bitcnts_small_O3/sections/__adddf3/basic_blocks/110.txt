@@ -1,3 +1,0 @@
-addi a5,a4,0
-addi a2,a1,0
-jal zero,1eea8

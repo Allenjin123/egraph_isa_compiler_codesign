@@ -1,2 +1,0 @@
-slli op_1, a5, 8
-blt zero, op_1, 0

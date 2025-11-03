@@ -1,2 +1,0 @@
-addi op_1, t1, -1
-bne op_1, zero, 0

@@ -1,1 +1,0 @@
-beq s1_0, zero_0, 1ef9c

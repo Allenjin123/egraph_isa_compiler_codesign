@@ -1,4 +1,0 @@
-beq a1, a0, 0
-addi op_2, zero, 0
-addi op_3, a4, -31
-srl op_4, a5, op_3

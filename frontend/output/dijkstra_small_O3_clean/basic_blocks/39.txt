@@ -1,3 +1,0 @@
-	addi	a0, zero, 10
-	auipc	x1, %pcrel_hi(putchar)
-	jalr	x1, x1, %pcrel_lo(.Lpcrel_10)

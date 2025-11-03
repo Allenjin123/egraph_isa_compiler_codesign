@@ -1,2 +1,0 @@
-or op_1, a6, a2
-beq zero, op_1, 0

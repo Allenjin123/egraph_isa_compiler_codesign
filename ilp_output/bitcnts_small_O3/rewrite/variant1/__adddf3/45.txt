@@ -1,6 +1,0 @@
-addi op_1, zero, 2047
-bne s0, op_1, 0
-srli op_3, a5, 3
-srli op_4, a2, 3
-slli op_5, a5, 29
-or op_6, op_4, op_5

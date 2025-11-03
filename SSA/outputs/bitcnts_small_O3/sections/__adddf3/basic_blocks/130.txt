@@ -1,4 +1,0 @@
-addi a5,a0,-8
-sll a5,s3,a5
-addi a2,zero,0
-jal zero,1ef48

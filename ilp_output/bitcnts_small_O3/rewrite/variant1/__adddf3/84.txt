@@ -1,6 +1,0 @@
-jal op_1, 0
-sub op_2, a2, a0
-addi op_3, op_2, 0
-addi op_4, a3, 0
-sub op_5, a6, a5
-sub op_6, op_5, a4
