@@ -1,0 +1,16 @@
+lw ra_0, 92(sp_0); Inst-3
+lw s0_0, 88(sp_0); Inst-5
+lw s1_0, 84(sp_0); Inst-7
+lw s2_0, 80(sp_0); Inst-9
+lw s3_0, 76(sp_0); Inst-11
+lw s4_0, 72(sp_0); Inst-13
+lw s5_0, 68(sp_0); Inst-15
+lw s6_0, 64(sp_0); Inst-17
+lw s7_0, 60(sp_0); Inst-19
+lw s8_0, 56(sp_0); Inst-21
+lw s9_0, 52(sp_0); Inst-23
+lw s10_0, 48(sp_0); Inst-25
+lw s11_0, 44(sp_0); Inst-27
+addi a0_0, zero_0, 0; Inst-29
+addi sp_1, sp_0, 96; Inst-31
+jalr zero_1, 0, ra; unknown

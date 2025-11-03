@@ -1,0 +1,5 @@
+addi s3,s3,1
+addi a5,zero,7
+addi s4,s4,4
+addi s5,s5,4
+bne s3,a5,101a0

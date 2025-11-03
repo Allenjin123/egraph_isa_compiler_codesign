@@ -1,0 +1,3 @@
+addi a4_0, s0_0, 1; Inst-3
+andi a3_0, a4_0, 2046; Inst-5
+bne a3_0, zero_0, 1ec0c; Inst-7

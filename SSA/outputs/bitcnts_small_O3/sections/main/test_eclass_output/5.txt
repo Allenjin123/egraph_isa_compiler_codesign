@@ -1,0 +1,2 @@
+addi s6_0, a0_0, 0; Inst-2
+jal ra_0, 11b94; Inst-3

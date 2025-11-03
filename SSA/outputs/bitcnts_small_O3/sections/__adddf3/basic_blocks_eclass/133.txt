@@ -1,0 +1,5 @@
+or a3_1, a2_0, a3_0; Inst-4
+sltu a3_2, zero_0, a3_1; Inst-6
+or a2_1, a4_0, a3_2; Inst-8
+addi a5_0, zero_0, 0; Inst-9
+jal zero_1, 1eea8; unknown
