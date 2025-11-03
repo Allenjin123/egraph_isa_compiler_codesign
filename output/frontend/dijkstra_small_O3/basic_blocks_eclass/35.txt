@@ -1,0 +1,4 @@
+lui a0_0, %hi(.LC4); Inst-1
+addi a0_1, a0_0, %lo(.LC4); Inst-3
+auipc ra_0, %pcrel_hi(printf); Inst-5
+jalr ra_1, ra_0, %pcrel_lo(.Lpcrel_8); Inst-8

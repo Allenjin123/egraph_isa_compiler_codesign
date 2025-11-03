@@ -204,8 +204,8 @@ def process_basic_block_to_egglog(block: text_basic_block, program_name: str = "
 
     # Add include for base.egg (contains Inst definitions)
     # Path is relative from output/frontend/<prog>/basic_blocks_egglog/
-    # to Saturation/base.egg (2 levels up: egglog/<prog>, then Saturation/)
-    egglog_lines.append("(include \"../../Saturation/base.egg\")")
+    # to Saturation/base.egg (4 levels up: egglog/<prog>/frontend/output, then Saturation/)
+    egglog_lines.append("(include \"../../../../Saturation/base.egg\")")
     egglog_lines.append("")
 
     # Declare input registers as let bindings

@@ -1,0 +1,2 @@
+addi a5_0, s0_0, 1; Inst-4
+bne s1_0, s3_0, .L49; Inst-6

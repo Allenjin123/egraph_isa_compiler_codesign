@@ -1,0 +1,22 @@
+lui t0_0, 1048567; Inst-12
+addi sp_1, sp_0, -2032; Inst-14
+addi t0_1, t0_0, -1136; Inst-16
+lui a5_0, %hi(.LC0); Inst-18
+lui a3_0, 10; Inst-20
+sw ra_0, 2028(sp_1); Inst-22
+sw s0_0, 2024(sp_1); Inst-24
+sw s1_0, 2020(sp_1); Inst-26
+sw s2_0, 2016(sp_1); Inst-28
+sw s3_0, 2012(sp_1); Inst-30
+sw s4_0, 2008(sp_1); Inst-32
+addi a5_1, a5_0, %lo(.LC0); Inst-34
+add sp_2, sp_1, t0_1; Inst-35
+addi a3_1, a3_0, -960; Inst-37
+lui a0_0, %hi(qFront); Inst-39
+lui a1_0, %hi(qRear); Inst-41
+lui a2_0, %hi(g_qCount); Inst-43
+addi a4_0, sp_2, 0; Inst-45
+add a3_2, a5_1, a3_1; Inst-46
+sw zero_0, %lo(qFront)(a0); Inst-48
+sw zero_0, %lo(qRear)(a1); Inst-50
+sw zero_0, %lo(g_qCount)(a2); Inst-52
