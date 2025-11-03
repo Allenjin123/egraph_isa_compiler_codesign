@@ -298,8 +298,11 @@ class text_basic_block():
                     self.add_inst(inst)
 
     def _is_register(self, val):
-        """Check if a value is a register name (not an immediate/constant)"""
+        """Check if a value is a register name (not an immediate/constant/symbolic)"""
         if not val:
+            return False
+        # Check if it's a symbolic immediate (assembly pseudo-op)
+        if val.startswith('%'):
             return False
         # Check if it's a pure number (immediate value)
         if val.isdigit() or (val.startswith('-') and val[1:].isdigit()):

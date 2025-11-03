@@ -1,0 +1,38 @@
+sw s9_0, 36(sp_0); Inst-14
+lui s9_1, %hi(qRear); Inst-16
+lw a1_0, %lo(qRear)(s9); Inst-18
+sw s2_0, 64(sp_0); Inst-20
+lui s2_1, 429497; Inst-22
+addi a6_0, a1_0, 1; Inst-24
+addi s2_2, s2_1, -1107; Inst-26
+mulh a4_0, a6_0, s2_2; Inst-27
+sw s3_0, 60(sp_0); Inst-29
+srai a7_0, a6_0, 31; Inst-31
+lui s3_1, 2; Inst-33
+addi s3_2, s3_1, 1808; Inst-35
+sw s8_0, 40(sp_0); Inst-37
+lui s8_1, %hi(g_qCount); Inst-39
+lw t0_0, %lo(g_qCount)(s8); Inst-41
+slli a5_0, a1_0, 1; Inst-42
+add a5_1, a5_0, a1_0; Inst-43
+srai a4_1, a4_0, 12; Inst-45
+sub a4_2, a4_1, a7_0; Inst-46
+mul a4_3, a4_2, s3_2; Inst-47
+lui t2_0, %hi(queue); Inst-49
+slli a5_2, a5_1, 2; Inst-50
+addi t2_1, t2_0, %lo(queue); Inst-52
+slli a1_1, a0_0, 3; Inst-54
+sw s1_0, 68(sp_0); Inst-56
+sw s4_0, 56(sp_0); Inst-58
+add a5_3, t2_1, a5_2; Inst-59
+add a1_2, s5_0, a1_1; Inst-60
+addi t0_1, t0_0, 1; Inst-61
+sub a4_4, a6_0, a4_3; Inst-62
+sw a0_0, 0(a5_3); Inst-64
+sw zero_0, 4(a5_3); Inst-66
+sw a2_0, 8(a5_3); Inst-68
+sw zero_0, 0(a1_2); Inst-69
+sw a4_4, %lo(qRear)(s9); Inst-70
+sw a2_0, 4(a1_2); Inst-71
+sw t0_1, %lo(g_qCount)(s8); Inst-72
+bge zero_0, t0_1, .L24; Inst-74

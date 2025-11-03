@@ -1,0 +1,14 @@
+lui t0_0, 9; Inst-3
+lui a5_0, %hi(result_sink); Inst-5
+addi t0_1, t0_0, 1136; Inst-7
+lw a0_0, %lo(result_sink)(a5); Inst-9
+add sp_1, sp_0, t0_1; Inst-10
+lw ra_0, 2028(sp_1); Inst-12
+lw s0_0, 2024(sp_1); Inst-14
+lw s1_0, 2020(sp_1); Inst-16
+lw s2_0, 2016(sp_1); Inst-18
+lw s3_0, 2012(sp_1); Inst-20
+lw s4_0, 2008(sp_1); Inst-22
+slti a0_1, a0_0, 1; Inst-24
+addi sp_2, sp_1, 2032; Inst-26
+jalr zero_0, ra_0, 0; Inst-29

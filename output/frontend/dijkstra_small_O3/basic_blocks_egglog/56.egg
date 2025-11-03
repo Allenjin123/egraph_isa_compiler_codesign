@@ -1,11 +1,10 @@
 ; EGraph for dijkstra_small_O3 - Block 56
 ; Total instructions: 11
-; Input registers: 5, Output registers: 11
+; Input registers: 4, Output registers: 11
 
-(include "../../Saturation/base.egg")
+(include "../../../../Saturation/base.egg")
 
 ; Input register declarations (used but not defined in this block)
-(let %pcrel_lo(.Lpcrel_15) (RegVal "%pcrel_lo(.Lpcrel_15)"))
 (let a5_0 (RegVal "a5_0"))
 (let s1_0 (RegVal "s1_0"))
 (let s2_0 (RegVal "s2_0"))
@@ -46,7 +45,7 @@
 (let ra_0_val (Auipc (ImmLabel "%pcrel_hi(dijkstra)")))
 
 ;; Step 11:     jalr rd=ra_1 rs1=%pcrel_lo(.Lpcrel_15) imm=ra_0
-(let ra_1_val (Jalr %pcrel_lo(.Lpcrel_15) (ImmLabel "ra_0")))
+(let ra_1_val (Jalr (RegVal "%pcrel_lo(.Lpcrel_15)") (ImmLabel "ra_0")))
 
 ; ============================================
 ; Run saturation to apply rewrite rules

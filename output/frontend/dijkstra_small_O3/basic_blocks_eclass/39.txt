@@ -1,0 +1,3 @@
+addi a0_0, zero_0, 10; Inst-2
+auipc ra_0, %pcrel_hi(putchar); Inst-4
+jalr ra_1, ra_0, %pcrel_lo(.Lpcrel_10); Inst-7

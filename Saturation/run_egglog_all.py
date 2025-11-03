@@ -53,12 +53,12 @@ def run_egglog_on_file(egg_file: Path, verbose: bool = False) -> bool:
         svg_file = egg_file.with_suffix('.svg')
         json_file = egg_file.with_suffix('.json')
 
-        # Get the section directory (parent of basic_blocks_egglog/)
-        section_dir = egg_file.parent.parent
+        # Get the program directory (parent of basic_blocks_egglog/)
+        program_dir = egg_file.parent.parent
 
         # Create output directories
-        svg_dir = section_dir / "basic_blocks_svg"
-        json_dir = section_dir / "basic_blocks_json"
+        svg_dir = program_dir / "basic_blocks_svg"
+        json_dir = program_dir / "basic_blocks_json"
         svg_dir.mkdir(exist_ok=True)
         json_dir.mkdir(exist_ok=True)
 
@@ -150,27 +150,24 @@ def main():
         epilog='''
 Examples:
   # Process all .egg files in a program
-  python run_egglog_all.py ../SSA/outputs/bitcnts_small_O3/sections
+  python run_egglog_all.py ../output/frontend/dijkstra_small_O3
 
   # Process with verbose output
-  python run_egglog_all.py ../SSA/outputs/bitcnts_small_O3/sections -v
+  python run_egglog_all.py ../output/frontend/dijkstra_small_O3 -v
 
   # Process only first 10 files
-  python run_egglog_all.py ../SSA/outputs/bitcnts_small_O3/sections --max 10
-
-  # Process specific section
-  python run_egglog_all.py ../SSA/outputs/bitcnts_small_O3/sections/main
+  python run_egglog_all.py ../output/frontend/dijkstra_small_O3 --max 10
 
 Output structure:
-  <section>/basic_blocks_egglog/  - Input .egg files
-  <section>/basic_blocks_svg/     - Generated SVG visualizations
-  <section>/basic_blocks_json/    - Generated JSON data
+  <program>/basic_blocks_egglog/  - Input .egg files
+  <program>/basic_blocks_svg/     - Generated SVG visualizations
+  <program>/basic_blocks_json/    - Generated JSON data
         '''
     )
 
     parser.add_argument('directory', nargs='?',
-                       default='../SSA/outputs/bitcnts_small_O3/sections',
-                       help='Directory to search for .egg files (default: ../SSA/outputs/bitcnts_small_O3/sections)')
+                       default='../output/frontend/dijkstra_small_O3',
+                       help='Directory to search for .egg files (default: ../output/frontend/dijkstra_small_O3)')
     parser.add_argument('-v', '--verbose', action='store_true',
                        help='Verbose output')
     parser.add_argument('--max', type=int, default=None,

@@ -1,0 +1,3 @@
+lw t6_0, 0(a3_0); Inst-5
+add a6_0, a7_0, s1_0; Inst-6
+beq t6_0, t5_0, .L26; Inst-8

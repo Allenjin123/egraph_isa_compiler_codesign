@@ -82,22 +82,22 @@ def create_annotated_file(ssa_instructions, eclasses, output_file_path):
                 f.write(f"{inst}; unknown\n")
 
 
-def process_block(section_dir, block_num, output_subdir='basic_blocks_eclass',
+def process_block(program_dir, block_num, output_subdir='basic_blocks_eclass',
                   egglog_binary='/home/allenjin/egglog/target/release/egglog', verbose=False):
     """
     Process a single basic block to extract eclass annotations.
 
     Args:
-        section_dir: Path to section directory
+        program_dir: Path to program directory
         block_num: Block number
         output_subdir: Output subdirectory name (default: 'basic_blocks_eclass')
         egglog_binary: Path to egglog binary
         verbose: Verbose output
     """
     # File paths
-    egg_file = section_dir / "basic_blocks_egglog" / f"{block_num}.egg"
-    ssa_file = section_dir / "basic_blocks_ssa" / f"{block_num}.txt"
-    output_dir = section_dir / output_subdir
+    egg_file = program_dir / "basic_blocks_egglog" / f"{block_num}.egg"
+    ssa_file = program_dir / "basic_blocks_ssa" / f"{block_num}.txt"
+    output_dir = program_dir / output_subdir
     output_file = output_dir / f"{block_num}.txt"
 
     # Check files exist
@@ -134,38 +134,38 @@ def process_block(section_dir, block_num, output_subdir='basic_blocks_eclass',
     return True
 
 
-def process_section(section_dir, output_subdir='basic_blocks_eclass',
+def process_program(program_dir, output_subdir='basic_blocks_eclass',
                    egglog_binary='/home/allenjin/egglog/target/release/egglog', verbose=False):
     """
-    Process all blocks in a section.
+    Process all blocks in a program.
 
     Args:
-        section_dir: Path to section directory
+        program_dir: Path to program directory
         output_subdir: Output subdirectory name
         egglog_binary: Path to egglog binary
         verbose: Verbose output
     """
-    section_name = section_dir.name
+    program_name = program_dir.name
 
     # Find all .egg files in basic_blocks_egglog
-    egglog_dir = section_dir / "basic_blocks_egglog"
+    egglog_dir = program_dir / "basic_blocks_egglog"
     if not egglog_dir.exists():
         if verbose:
-            print(f"Skipping {section_name}: no basic_blocks_egglog directory")
+            print(f"Skipping {program_name}: no basic_blocks_egglog directory")
         return 0
 
     egg_files = sorted(egglog_dir.glob("*.egg"))
     if not egg_files:
         if verbose:
-            print(f"Skipping {section_name}: no .egg files found")
+            print(f"Skipping {program_name}: no .egg files found")
         return 0
 
-    print(f"Processing section: {section_name}")
+    print(f"Processing program: {program_name}")
 
     success_count = 0
     for egg_file in egg_files:
         block_num = egg_file.stem
-        if process_block(section_dir, block_num, output_subdir, egglog_binary, verbose):
+        if process_block(program_dir, block_num, output_subdir, egglog_binary, verbose):
             success_count += 1
 
     if not verbose:
@@ -180,24 +180,20 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog='''
 Examples:
-  # Process current directory (must be in sections directory)
-  cd /path/to/SSA/outputs/bitcnts_small_O3/sections
-  python extract_eclasses.py
-
-  # Process specific directory
-  python extract_eclasses.py ../SSA/outputs/bitcnts_small_O3/sections
+  # Process program directory
+  python extract_eclasses.py ../output/frontend/dijkstra_small_O3
 
   # Process with verbose output
-  python extract_eclasses.py ../SSA/outputs/bitcnts_small_O3/sections -v
+  python extract_eclasses.py ../output/frontend/dijkstra_small_O3 -v
 
   # Custom output directory name
-  python extract_eclasses.py ../SSA/outputs/bitcnts_small_O3/sections -o my_eclass_output
+  python extract_eclasses.py ../output/frontend/dijkstra_small_O3 -o my_eclass_output
 
   # Use custom egglog binary
-  python extract_eclasses.py . --egglog ~/egglog/target/release/egglog
+  python extract_eclasses.py ../output/frontend/dijkstra_small_O3 --egglog ~/egglog/target/release/egglog
 
 Prerequisites:
-  1. .egg files must exist in basic_blocks_egglog/ (run local_saturation.py)
+  1. .egg files must exist in basic_blocks_egglog/ (run local_saturation.py first)
   2. .egg files must have (print-eclass-id ...) commands
   3. egglog binary with print-eclass-id support
 
@@ -208,7 +204,7 @@ Output:
     )
 
     parser.add_argument('directory', nargs='?', default='.',
-                       help='Path to sections directory (default: current directory)')
+                       help='Path to program directory (default: current directory)')
     parser.add_argument('-o', '--output', default='basic_blocks_eclass',
                        help='Output subdirectory name (default: basic_blocks_eclass)')
     parser.add_argument('-v', '--verbose', action='store_true',
@@ -218,10 +214,10 @@ Output:
 
     args = parser.parse_args()
 
-    sections_dir = Path(args.directory)
+    program_dir = Path(args.directory)
 
-    if not sections_dir.exists():
-        print(f"Error: Directory does not exist: {sections_dir}")
+    if not program_dir.exists():
+        print(f"Error: Directory does not exist: {program_dir}")
         return 1
 
     # Check egglog binary exists
@@ -230,25 +226,17 @@ Output:
         print("Please compile egglog or specify path with --egglog")
         return 1
 
-    # Find all section directories (exclude basic_blocks* directories)
-    section_dirs = [d for d in sections_dir.iterdir()
-                   if d.is_dir() and not d.name.startswith('basic_blocks')]
+    # Check if this is a program directory (has basic_blocks_egglog/)
+    if not (program_dir / "basic_blocks_egglog").exists():
+        print(f"Error: No basic_blocks_egglog/ directory found in {program_dir}")
+        print(f"Please run local_saturation.py first to generate .egg files")
+        return 1
 
-    if not section_dirs:
-        # Maybe it's a single section directory
-        if (sections_dir / "basic_blocks_egglog").exists():
-            section_dirs = [sections_dir]
-        else:
-            print(f"Error: No section directories found in {sections_dir}")
-            return 1
-
-    total_blocks = 0
-    for section_dir in sorted(section_dirs):
-        count = process_section(section_dir, args.output, args.egglog, args.verbose)
-        total_blocks += count
+    # Process the program
+    total_blocks = process_program(program_dir, args.output, args.egglog, args.verbose)
 
     print(f"\nTotal: {total_blocks} blocks annotated with eclasses")
-    print(f"Output: <section>/{args.output}/<block>.txt")
+    print(f"Output: {program_dir}/{args.output}/<block>.txt")
 
     return 0
 
