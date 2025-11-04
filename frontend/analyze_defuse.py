@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Analyze DEF/USE information for basic blocks
-Compute GEN, KILL, DEF_all, USE_all for each block
+分析基本块的DEF/USE信息
+计算每个块的GEN、KILL、DEF_all、USE_all
 """
 
 import os
@@ -12,42 +12,34 @@ from pathlib import Path
 from typing import Dict, List, Set, Tuple, Optional
 import sys
 
-# Add current directory to path for imports
+# 添加当前目录到路径
 CURRENT_DIR = Path(__file__).resolve().parent
 if str(CURRENT_DIR) not in sys.path:
     sys.path.insert(0, str(CURRENT_DIR))
 
-from util import (
-    is_register, is_standard_instruction, 
-    is_r_type_instruction, is_i_type_instruction,
-    is_load_instruction, is_store_instruction, is_csr_instruction, is_branch_instruction, analyze_instruction
-)
+from util import analyze_instruction, is_register
 
 
 class DefUseAnalyzer:
-    """Analyze DEF/USE relationships"""
+    """分析DEF/USE关系"""
     
     def __init__(self, verbose=False):
         self.verbose = verbose
     
     def parse_instruction(self, line: str) -> Tuple[str, List[str]]:
-        """Parse instruction, returns (mnemonic, operands_list)
+        """解析指令，返回(mnemonic, operands_list)
         
-        Example transformations:
+        示例转换:
             "lw a0, 8(sp)  # comment" → ("lw", ["a0", "8", "sp"])
-            "jal ra, 10400 <main>"    → ("jal", ["ra", "10400"])
             "add a0, a1, a2"          → ("add", ["a0", "a1", "a2"])
         """
-        # Remove comments (everything after #)
-        # "lw a0, 0(sp)  # comment" → "lw a0, 0(sp)"
+        # 移除注释（#之后的所有内容）
         clean = re.sub(r'#.*$', '', line).strip()
         
-        # Remove symbol references (<...>)
-        # "jal ra, 10400 <main>" → "jal ra, 10400"
+        # 移除符号引用 (<...>)
         clean = re.sub(r'<[^>]+>', '', clean).strip()
         
-        # Split mnemonic and operands (split only once)
-        # "add a0, a1, a2".split(None, 1) → ["add", "a0, a1, a2"]
+        # 分割mnemonic和operands（只分割一次）
         parts = clean.split(None, 1)
         if not parts:
             return "", []
@@ -55,36 +47,26 @@ class DefUseAnalyzer:
         mnemonic = parts[0]
         operands_str = parts[1] if len(parts) > 1 else ""
         
-        # Parse operands (handle memory operations with offset(base) format)
+        # 解析操作数（处理offset(base)格式的内存操作）
         operands = []
         if operands_str:
-            # Convert offset(base) to offset,base
-            # "a0, 8(sp)".replace('(', ',').replace(')', '') → "a0, 8,sp"
+            # 将offset(base)转换为offset,base
             operands_str = operands_str.replace('(', ',').replace(')', '')
             
-            # Split by comma and strip whitespace
-            # "a0, 8,sp".split(',') → ["a0", "8", "sp"]
+            # 用逗号分割并去除空格
             operands = [op.strip() for op in operands_str.split(',') if op.strip()]
         
         return mnemonic, operands
     
-    def analyze_instruction(self, mnemonic: str, operands: List[str]) -> Tuple[Set[str], Set[str]]:
-        """Analyze USE and DEF registers for an instruction
-        Returns: (use_regs, def_regs)
-        """
-        use_regs, def_regs = analyze_instruction(mnemonic, operands)
-            
-        return use_regs, def_regs
-    
     def analyze_block(self, block_file: Path) -> Dict:
-        """Analyze a basic block"""
+        """分析一个基本块"""
         GEN = set()
         KILL = set()
         USE_all = set()
         DEF_all = set()
         defined_so_far = set()
         
-        with open(block_file, 'r') as f:
+        with open(block_file, 'r', encoding='utf-8', errors='ignore') as f:
             lines = [line.strip() for line in f if line.strip()]
         
         for line in lines:
@@ -92,18 +74,23 @@ class DefUseAnalyzer:
             if not mnemonic:
                 continue
             
-            use_regs, def_regs = self.analyze_instruction(mnemonic, operands)
+            try:
+                use_regs, def_regs = analyze_instruction(mnemonic, operands)
+            except ValueError as e:
+                if self.verbose:
+                    print(f"  警告: 跳过未知指令 {mnemonic}: {e}")
+                continue
             
-            # Accumulate USE_all and DEF_all
+            # 累积USE_all和DEF_all
             USE_all.update(use_regs)
             DEF_all.update(def_regs)
             
-            # GEN: registers used before being defined
+            # GEN: 在被定义之前使用的寄存器
             for reg in use_regs:
                 if reg not in defined_so_far:
                     GEN.add(reg)
             
-            # KILL: registers that are defined
+            # KILL: 被定义的寄存器
             KILL.update(def_regs)
             defined_so_far.update(def_regs)
         
@@ -114,14 +101,14 @@ class DefUseAnalyzer:
             'DEF_all': sorted(list(DEF_all))
         }
     
-    def analyze_section(self, section_path: Path) -> Dict:
-        """Analyze all basic blocks in a section"""
-        bb_dir = section_path / 'basic_blocks'
+    def analyze_program(self, program_dir: Path) -> Dict:
+        """分析程序中的所有基本块"""
+        bb_dir = program_dir / 'basic_blocks'
         if not bb_dir.exists():
-            raise FileNotFoundError(f"basic_blocks directory not found: {bb_dir}")
+            raise FileNotFoundError(f"basic_blocks目录不存在: {bb_dir}")
         
         if self.verbose:
-            print(f"\nAnalyzing DEF/USE: {section_path.name}")
+            print(f"\n分析DEF/USE: {program_dir.name}")
         
         defuse_info = {}
         
@@ -134,86 +121,95 @@ class DefUseAnalyzer:
             defuse_info[block_id] = self.analyze_block(block_file)
         
         if self.verbose:
-            print(f"  Analyzed {len(defuse_info)} blocks")
+            print(f"  分析了{len(defuse_info)}个块")
         
         return defuse_info
     
     def save_defuse(self, defuse_data: Dict, output_file: Path):
-        """Save DEF/USE information to JSON file"""
-        with open(output_file, 'w') as f:
-            json.dump(defuse_data, f, indent=2)
+        """保存DEF/USE信息到JSON文件"""
+        with open(output_file, 'w', encoding='utf-8') as f:
+            json.dump(defuse_data, f, indent=2, ensure_ascii=False)
         
         if self.verbose:
-            print(f"✓ Saved to: {output_file}")
+            print(f"✓ 保存到: {output_file}")
 
 
-def process_section(section_path: Path, verbose=False):
-    """Process a single section"""
+def process_program(program_dir: Path, verbose=False):
+    """处理单个程序"""
     analyzer = DefUseAnalyzer(verbose=verbose)
-    defuse_data = analyzer.analyze_section(section_path)
+    defuse_data = analyzer.analyze_program(program_dir)
     
-    # Save to section directory
-    output_file = section_path / 'defuse.json'
+    # 保存到程序目录
+    output_file = program_dir / 'defuse.json'
     analyzer.save_defuse(defuse_data, output_file)
     
     return defuse_data
 
 
-def process_all_sections(sections_dir: Path, verbose=False):
-    """Process all sections"""
-    print(f"Analyzing sections: {sections_dir}")
+def process_all_programs(output_dir: Path, verbose=False):
+    """处理所有程序"""
+    print(f"分析目录中的程序: {output_dir}")
     
     processed = 0
-    for section_name in sorted(os.listdir(sections_dir)):
-        section_path = sections_dir / section_name
-        if section_path.is_dir():
+    failed = 0
+    
+    for program_name in sorted(os.listdir(output_dir)):
+        program_path = output_dir / program_name
+        if program_path.is_dir() and (program_path / 'basic_blocks').exists():
             try:
-                process_section(section_path, verbose)
+                process_program(program_path, verbose)
                 processed += 1
             except Exception as e:
-                print(f"Error {section_name}: {e}")
+                print(f"处理{program_name}时出错: {e}")
+                if verbose:
+                    import traceback
+                    traceback.print_exc()
+                failed += 1
     
-    print(f"\n✓ Processed {processed} sections")
+    print(f"\n{'='*60}")
+    print(f"✓ 成功: {processed} 个程序")
+    if failed > 0:
+        print(f"✗ 失败: {failed} 个程序")
+    print(f"{'='*60}")
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Analyze DEF/USE information for basic blocks',
+        description='分析基本块的DEF/USE信息',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog='''
-Examples:
-  # Analyze a single section
-  python analyze_defuse.py outputs/dhrystone.riscv/sections/__umoddi3/
+示例:
+  # 分析单个程序
+  python analyze_defuse.py output/frontend/dijkstra_small_O3/
   
-  # Analyze all sections
-  python analyze_defuse.py outputs/dhrystone.riscv/sections/
+  # 分析所有程序
+  python analyze_defuse.py output/frontend/
   
-  # Verbose output
-  python analyze_defuse.py outputs/dhrystone.riscv/sections/__umoddi3/ -v
+  # 详细输出
+  python analyze_defuse.py output/frontend/dijkstra_small_O3/ -v
         '''
     )
     
-    parser.add_argument('path', help='Section directory or sections root directory')
-    parser.add_argument('-v', '--verbose', action='store_true', help='Verbose output')
+    parser.add_argument('path', help='程序目录或包含多个程序的目录')
+    parser.add_argument('-v', '--verbose', action='store_true', help='详细输出')
     
     args = parser.parse_args()
     
     path = Path(args.path)
     if not path.exists():
-        print(f"Error: Path does not exist: {path}")
+        print(f"错误: 路径不存在: {path}")
         return 1
     
-    # Determine if it's a single section or sections root directory
-    if (path / 'section.txt').exists():
-        # Single section
-        process_section(path, args.verbose)
+    # 判断是单个程序还是包含多个程序的目录
+    if (path / 'basic_blocks').exists():
+        # 单个程序
+        process_program(path, args.verbose)
     else:
-        # Sections root directory
-        process_all_sections(path, args.verbose)
+        # 多个程序的目录
+        process_all_programs(path, args.verbose)
     
     return 0
 
 
 if __name__ == "__main__":
     sys.exit(main())
-

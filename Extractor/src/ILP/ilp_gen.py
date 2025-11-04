@@ -100,17 +100,41 @@ def generate_ilp_file(
     print(f"Generated {len(op_vars)} operator variables")
     
     # ============================================
-    # 2. Objective function: Minimize operator types
+    # 2. Objective function: Minimize operator types + node costs
     # ============================================
+    # Primary: Minimize operator types (weighted by 100)
+    # Secondary: Minimize total node costs
     # Exclude special operators from objective: root, ImmVal, RegVal, leaf
     excluded_ops = {"root", "ImmVal", "RegVal", "leaf"}
     
     lp_lines.append("Minimize")
     obj_terms = []
+    
+    # Part 1: Operator type cost (weight = 100)
+    OP_TYPE_WEIGHT = 100
     for op_name in sorted(op_vars.keys()):
         if op_name not in excluded_ops:
-            obj_terms.append(op_vars[op_name])
-    # TODO: Add cost for each node; but this feature is not used in this version
+            obj_terms.append(f"{OP_TYPE_WEIGHT} {op_vars[op_name]}")
+    
+    # Part 2: Node selection cost
+    for eclass_id, eclass in egraph.eclasses.items():
+        for node_id in eclass.member_enodes:
+            if node_id not in egraph.enodes:
+                continue
+            if (eclass_id, node_id) not in node_vars:
+                continue
+            
+            node = egraph.enodes[node_id]
+            cost = node.cost
+            
+            # Only add non-zero cost terms
+            if cost != 0.0:
+                node_var = node_vars[(eclass_id, node_id)]
+                if cost == 1.0:
+                    obj_terms.append(node_var)
+                else:
+                    obj_terms.append(f"{cost} {node_var}")
+    
     if obj_terms:
         lp_lines.append(" obj: " + " + ".join(obj_terms))
     else:
@@ -324,5 +348,13 @@ def generate_ilp_file(
     print(f"ILP file generated: {file_path}")
     excluded_ops = {"root", "ImmVal", "RegVal", "leaf"}
     obj_op_count = len([op for op in op_vars.keys() if op not in excluded_ops])
-    print(f"Objective function: minimize {obj_op_count} operator types (excluding root, ImmVal, RegVal, leaf)")
+    
+    # Count nodes with non-zero cost
+    nodes_with_cost = sum(1 for eclass in egraph.eclasses.values() 
+                         for node_id in eclass.member_enodes 
+                         if node_id in egraph.enodes and egraph.enodes[node_id].cost != 0.0)
+    
+    print(f"Objective function:")
+    print(f"  - Primary: minimize {obj_op_count} operator types (weight=100, excluding root/ImmVal/RegVal/leaf)")
+    print(f"  - Secondary: minimize node costs ({nodes_with_cost} nodes with non-zero cost)")
     print(f"Number of constraints: {sum(1 for line in lp_lines if line.strip() and line.strip()[0].isupper() and ':' in line)}")
