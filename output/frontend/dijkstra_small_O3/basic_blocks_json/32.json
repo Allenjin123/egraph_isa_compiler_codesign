@@ -48,209 +48,209 @@
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-15": {
+    "primitive-String-16": {
       "op": "\"%hi(i)\"",
       "children": [],
-      "eclass": "String-15",
+      "eclass": "String-16",
       "cost": 1.0,
       "subsumed": false
     },
     "function-0-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-15"
+        "primitive-String-16"
       ],
       "eclass": "Imm-19",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-16": {
+    "primitive-String-17": {
       "op": "\"%lo(qFront)\"",
       "children": [],
-      "eclass": "String-16",
+      "eclass": "String-17",
       "cost": 1.0,
       "subsumed": false
     },
     "function-1-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-16"
+        "primitive-String-17"
       ],
       "eclass": "Imm-21",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-17": {
+    "primitive-String-18": {
       "op": "\"%hi(iDist)\"",
       "children": [],
-      "eclass": "String-17",
+      "eclass": "String-18",
       "cost": 1.0,
       "subsumed": false
     },
     "function-2-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-17"
+        "primitive-String-18"
       ],
       "eclass": "Imm-23",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-18": {
+    "primitive-String-19": {
       "op": "\"%hi(iPrev)\"",
       "children": [],
-      "eclass": "String-18",
+      "eclass": "String-19",
       "cost": 1.0,
       "subsumed": false
     },
     "function-3-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-18"
+        "primitive-String-19"
       ],
       "eclass": "Imm-25",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-19": {
+    "primitive-String-20": {
       "op": "\"%hi(iNode)\"",
       "children": [],
-      "eclass": "String-19",
+      "eclass": "String-20",
       "cost": 1.0,
       "subsumed": false
     },
     "function-4-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-19"
+        "primitive-String-20"
       ],
       "eclass": "Imm-27",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-20": {
+    "primitive-String-21": {
       "op": "\"%lo(i)\"",
       "children": [],
-      "eclass": "String-20",
+      "eclass": "String-21",
       "cost": 1.0,
       "subsumed": false
     },
     "function-5-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-20"
+        "primitive-String-21"
       ],
       "eclass": "Imm-29",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-21": {
+    "primitive-String-22": {
       "op": "\"%hi(iCost)\"",
       "children": [],
-      "eclass": "String-21",
+      "eclass": "String-22",
       "cost": 1.0,
       "subsumed": false
     },
     "function-6-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-21"
+        "primitive-String-22"
       ],
       "eclass": "Imm-31",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-22": {
+    "primitive-String-23": {
       "op": "\"%lo(g_qCount)\"",
       "children": [],
-      "eclass": "String-22",
+      "eclass": "String-23",
       "cost": 1.0,
       "subsumed": false
     },
     "function-7-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-22"
+        "primitive-String-23"
       ],
       "eclass": "Imm-33",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-23": {
+    "primitive-String-24": {
       "op": "\"%lo(iPrev)\"",
       "children": [],
-      "eclass": "String-23",
+      "eclass": "String-24",
       "cost": 1.0,
       "subsumed": false
     },
     "function-8-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-23"
+        "primitive-String-24"
       ],
       "eclass": "Imm-35",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-24": {
+    "primitive-String-25": {
       "op": "\"%lo(iDist)\"",
       "children": [],
-      "eclass": "String-24",
+      "eclass": "String-25",
       "cost": 1.0,
       "subsumed": false
     },
     "function-9-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-24"
+        "primitive-String-25"
       ],
       "eclass": "Imm-37",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-25": {
+    "primitive-String-26": {
       "op": "\"%lo(iNode)\"",
       "children": [],
-      "eclass": "String-25",
+      "eclass": "String-26",
       "cost": 1.0,
       "subsumed": false
     },
     "function-10-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-25"
+        "primitive-String-26"
       ],
       "eclass": "Imm-39",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-26": {
+    "primitive-String-27": {
       "op": "\"%lo(iCost)\"",
       "children": [],
-      "eclass": "String-26",
+      "eclass": "String-27",
       "cost": 1.0,
       "subsumed": false
     },
     "function-11-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-26"
+        "primitive-String-27"
       ],
       "eclass": "Imm-41",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-27": {
+    "primitive-String-28": {
       "op": "\".L44\"",
       "children": [],
-      "eclass": "String-27",
+      "eclass": "String-28",
       "cost": 1.0,
       "subsumed": false
     },
     "function-12-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-27"
+        "primitive-String-28"
       ],
       "eclass": "Imm-44",
       "cost": 1.0,
@@ -492,241 +492,241 @@
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-0": {
+    "primitive-String-1": {
       "op": "\"a0\"",
       "children": [],
-      "eclass": "String-0",
+      "eclass": "String-1",
       "cost": 1.0,
       "subsumed": false
     },
     "function-0-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-0"
+        "primitive-String-1"
       ],
       "eclass": "Inst-0",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-1": {
+    "primitive-String-2": {
       "op": "\"a2_0\"",
       "children": [],
-      "eclass": "String-1",
+      "eclass": "String-2",
       "cost": 1.0,
       "subsumed": false
     },
     "function-1-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-1"
+        "primitive-String-2"
       ],
       "eclass": "Inst-1",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-2": {
+    "primitive-String-3": {
       "op": "\"a5\"",
       "children": [],
-      "eclass": "String-2",
+      "eclass": "String-3",
       "cost": 1.0,
       "subsumed": false
     },
     "function-2-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-2"
+        "primitive-String-3"
       ],
       "eclass": "Inst-2",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-3": {
+    "primitive-String-4": {
       "op": "\"a6\"",
       "children": [],
-      "eclass": "String-3",
+      "eclass": "String-4",
       "cost": 1.0,
       "subsumed": false
     },
     "function-3-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-3"
+        "primitive-String-4"
       ],
       "eclass": "Inst-3",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-4": {
+    "primitive-String-5": {
       "op": "\"a7_0\"",
       "children": [],
-      "eclass": "String-4",
+      "eclass": "String-5",
       "cost": 1.0,
       "subsumed": false
     },
     "function-4-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-4"
+        "primitive-String-5"
       ],
       "eclass": "Inst-4",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-5": {
+    "primitive-String-6": {
       "op": "\"s10\"",
       "children": [],
-      "eclass": "String-5",
+      "eclass": "String-6",
       "cost": 1.0,
       "subsumed": false
     },
     "function-5-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-5"
+        "primitive-String-6"
       ],
       "eclass": "Inst-5",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-6": {
+    "primitive-String-7": {
       "op": "\"s1_0\"",
       "children": [],
-      "eclass": "String-6",
+      "eclass": "String-7",
       "cost": 1.0,
       "subsumed": false
     },
     "function-6-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-6"
+        "primitive-String-7"
       ],
       "eclass": "Inst-6",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-7": {
+    "primitive-String-8": {
       "op": "\"s4_0\"",
       "children": [],
-      "eclass": "String-7",
+      "eclass": "String-8",
       "cost": 1.0,
       "subsumed": false
     },
     "function-7-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-7"
+        "primitive-String-8"
       ],
       "eclass": "Inst-7",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-8": {
+    "primitive-String-9": {
       "op": "\"s8\"",
       "children": [],
-      "eclass": "String-8",
+      "eclass": "String-9",
       "cost": 1.0,
       "subsumed": false
     },
     "function-8-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-8"
+        "primitive-String-9"
       ],
       "eclass": "Inst-8",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-9": {
+    "primitive-String-10": {
       "op": "\"sp_0\"",
       "children": [],
-      "eclass": "String-9",
+      "eclass": "String-10",
       "cost": 1.0,
       "subsumed": false
     },
     "function-9-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-9"
+        "primitive-String-10"
       ],
       "eclass": "Inst-9",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-10": {
+    "primitive-String-11": {
       "op": "\"t1\"",
       "children": [],
-      "eclass": "String-10",
+      "eclass": "String-11",
       "cost": 1.0,
       "subsumed": false
     },
     "function-10-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-10"
+        "primitive-String-11"
       ],
       "eclass": "Inst-10",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-11": {
+    "primitive-String-12": {
       "op": "\"t1_0\"",
       "children": [],
-      "eclass": "String-11",
+      "eclass": "String-12",
       "cost": 1.0,
       "subsumed": false
     },
     "function-11-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-11"
+        "primitive-String-12"
       ],
       "eclass": "Inst-11",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-12": {
+    "primitive-String-13": {
       "op": "\"t3_0\"",
       "children": [],
-      "eclass": "String-12",
+      "eclass": "String-13",
       "cost": 1.0,
       "subsumed": false
     },
     "function-12-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-12"
+        "primitive-String-13"
       ],
       "eclass": "Inst-12",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-13": {
+    "primitive-String-14": {
       "op": "\"t4_0\"",
       "children": [],
-      "eclass": "String-13",
+      "eclass": "String-14",
       "cost": 1.0,
       "subsumed": false
     },
     "function-13-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-13"
+        "primitive-String-14"
       ],
       "eclass": "Inst-13",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-14": {
+    "primitive-String-15": {
       "op": "\"zero_0\"",
       "children": [],
-      "eclass": "String-14",
+      "eclass": "String-15",
       "cost": 1.0,
       "subsumed": false
     },
     "function-14-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-14"
+        "primitive-String-15"
       ],
       "eclass": "Inst-14",
       "cost": 1.0,
@@ -786,79 +786,79 @@
     "Imm-19": {
       "type": "Imm"
     },
-    "String-15": {
+    "String-16": {
       "type": "String"
     },
     "Imm-21": {
       "type": "Imm"
     },
-    "String-16": {
+    "String-17": {
       "type": "String"
     },
     "Imm-23": {
       "type": "Imm"
     },
-    "String-17": {
+    "String-18": {
       "type": "String"
     },
     "Imm-25": {
       "type": "Imm"
     },
-    "String-18": {
+    "String-19": {
       "type": "String"
     },
     "Imm-27": {
       "type": "Imm"
     },
-    "String-19": {
+    "String-20": {
       "type": "String"
     },
     "Imm-29": {
       "type": "Imm"
     },
-    "String-20": {
+    "String-21": {
       "type": "String"
     },
     "Imm-31": {
       "type": "Imm"
     },
-    "String-21": {
+    "String-22": {
       "type": "String"
     },
     "Imm-33": {
       "type": "Imm"
     },
-    "String-22": {
+    "String-23": {
       "type": "String"
     },
     "Imm-35": {
       "type": "Imm"
     },
-    "String-23": {
+    "String-24": {
       "type": "String"
     },
     "Imm-37": {
       "type": "Imm"
     },
-    "String-24": {
+    "String-25": {
       "type": "String"
     },
     "Imm-39": {
       "type": "Imm"
     },
-    "String-25": {
+    "String-26": {
       "type": "String"
     },
     "Imm-41": {
       "type": "Imm"
     },
-    "String-26": {
+    "String-27": {
       "type": "String"
     },
     "Imm-44": {
       "type": "Imm"
     },
-    "String-27": {
+    "String-28": {
       "type": "String"
     },
     "Inst-20": {
@@ -966,9 +966,6 @@
     "Inst-13": {
       "type": "Inst"
     },
-    "String-0": {
-      "type": "String"
-    },
     "String-1": {
       "type": "String"
     },
@@ -1009,6 +1006,9 @@
       "type": "String"
     },
     "String-14": {
+      "type": "String"
+    },
+    "String-15": {
       "type": "String"
     }
   }
