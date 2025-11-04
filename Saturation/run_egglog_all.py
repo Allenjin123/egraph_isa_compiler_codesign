@@ -9,12 +9,18 @@ import sys
 import subprocess
 from pathlib import Path
 import argparse
+import shutil
 
 
-def run_egglog_on_file(egg_file: Path, verbose: bool = False) -> bool:
+def run_egglog_on_file(egg_file: Path, egglog_path: str, verbose: bool = False) -> bool:
     """
     Run egglog with --to-svg --to-json on a single .egg file
     Moves outputs to separate directories: basic_blocks_svg/ and basic_blocks_json/
+
+    Args:
+        egg_file: Path to the .egg file to process
+        egglog_path: Path to the egglog executable
+        verbose: Whether to print verbose output
 
     Returns:
         True if successful, False otherwise
@@ -25,8 +31,7 @@ def run_egglog_on_file(egg_file: Path, verbose: bool = False) -> bool:
         egg_dir = egg_file.parent
         egg_name = egg_file.name
 
-        # Use custom egglog build with print-eclass-id support
-        egglog_path = '/home/allenjin/egglog/target/release/egglog'
+        # Use the provided egglog path
         cmd = [egglog_path, '--to-json', '--max-functions', '2000', '--max-calls-per-function', '2000', egg_name]
 
         if verbose:
@@ -91,9 +96,15 @@ def run_egglog_on_file(egg_file: Path, verbose: bool = False) -> bool:
         return False
 
 
-def process_directory(input_dir: Path, verbose: bool = False, max_files: int = None):
+def process_directory(input_dir: Path, egglog_path: str, verbose: bool = False, max_files: int = None):
     """
     Process all .egg files in a directory recursively
+    
+    Args:
+        input_dir: Directory to search for .egg files
+        egglog_path: Path to the egglog executable
+        verbose: Whether to print verbose output
+        max_files: Maximum number of files to process
     """
     # Find all .egg files
     egg_files = sorted(input_dir.rglob('*.egg'))
@@ -123,7 +134,7 @@ def process_directory(input_dir: Path, verbose: bool = False, max_files: int = N
         else:
             print(f"\n[{i}/{len(egg_files)}] {rel_path}")
 
-        success = run_egglog_on_file(egg_file, verbose)
+        success = run_egglog_on_file(egg_file, egglog_path, verbose)
 
         if success:
             success_count += 1
@@ -185,20 +196,23 @@ Output structure:
         print(f"Error: Not a directory: {input_dir}")
         return 1
 
-    # Check if custom egglog build is available
-    egglog_path = '/home/allenjin/egglog/target/release/egglog'
-    if not Path(egglog_path).exists():
-        print(f"Error: Custom egglog build not found at {egglog_path}")
-        print("Please build egglog with print-eclass-id support")
+    # Check if egglog is available in PATH
+    egglog_path = shutil.which('egglog')
+    if egglog_path is None:
+        print(f"Error: egglog command not found in PATH")
+        print("Please install egglog or add it to your PATH")
+        print("You can also specify a custom path by modifying egglog_path in the script")
         return 1
 
+    print(f"Using egglog at: {egglog_path}")
+    
     try:
         subprocess.run([egglog_path, '--version'], capture_output=True, check=True)
     except subprocess.CalledProcessError:
         print(f"Error: Failed to run egglog at {egglog_path}")
         return 1
 
-    process_directory(input_dir, args.verbose, args.max)
+    process_directory(input_dir, egglog_path, args.verbose, args.max)
 
     return 0
 
