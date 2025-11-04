@@ -62,8 +62,8 @@
 ;; Step 16:     addi rd=sp_1 rs1=sp_0 imm=80
 (let sp_1_val (Addi sp_0 (ImmVal 80)))
 
-;; Step 17:     jalr rd=zero_0 rs1=0 imm=ra_0
-(let zero_0_val (Jalr (RegVal "0") (ImmLabel "ra_0")))
+;; Step 17:     jalr rd=zero_0 rs1=ra_0 imm=0
+(let zero_0_val (Jalr ra_0_val (ImmVal 0)))
 
 ; ============================================
 ; Run saturation to apply rewrite rules

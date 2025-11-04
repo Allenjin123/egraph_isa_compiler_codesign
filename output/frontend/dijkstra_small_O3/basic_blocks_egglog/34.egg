@@ -33,8 +33,8 @@
 ;; Step 7:     auipc rd=ra_0 imm=%pcrel_hi(printf)
 (let ra_0_val (Auipc (ImmLabel "%pcrel_hi(printf)")))
 
-;; Step 8:     jalr rd=ra_1 rs1=%pcrel_lo(.Lpcrel_7) imm=ra_0
-(let ra_1_val (Jalr (RegVal "%pcrel_lo(.Lpcrel_7)") (ImmLabel "ra_0")))
+;; Step 8:     jalr rd=ra_1 rs1=ra_0 imm=%pcrel_lo(.Lpcrel_7)
+(let ra_1_val (Jalr ra_0_val (ImmLabel "%pcrel_lo(.Lpcrel_7)")))
 
 ; ============================================
 ; Run saturation to apply rewrite rules

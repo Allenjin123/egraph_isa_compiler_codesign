@@ -8,4 +8,4 @@ mul s0_3, s0_2, s4_0; Inst-14
 sub s0_4, a5_0, s0_3; Inst-15
 addi a1_0, s0_4, 0; Inst-16
 auipc ra_0, %pcrel_hi(dijkstra); Inst-18
-jalr ra_1, ra_0, %pcrel_lo(.Lpcrel_15); Inst-21
+jalr ra_1, ra_0, %pcrel_lo(.Lpcrel_15); Inst-20
