@@ -1,50 +1,50 @@
 {
   "nodes": {
-    "primitive-String-1": {
+    "primitive-i64-0": {
+      "op": "0",
+      "children": [],
+      "eclass": "i64-0",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-ImmVal": {
+      "op": "ImmVal",
+      "children": [
+        "primitive-i64-0"
+      ],
+      "eclass": "Imm-6",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "primitive-String-3": {
       "op": "\"%hi(g_qCount)\"",
       "children": [],
-      "eclass": "String-1",
+      "eclass": "String-3",
       "cost": 1.0,
       "subsumed": false
     },
     "function-0-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-1"
+        "primitive-String-3"
       ],
-      "eclass": "Imm-1",
+      "eclass": "Imm-2",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-2": {
+    "primitive-String-4": {
       "op": "\"%lo(g_qCount)\"",
       "children": [],
-      "eclass": "String-2",
+      "eclass": "String-4",
       "cost": 1.0,
       "subsumed": false
     },
     "function-1-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-2"
-      ],
-      "eclass": "Imm-3",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "primitive-String-4": {
-      "op": "\"ra_0\"",
-      "children": [],
-      "eclass": "String-4",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-2-ImmLabel": {
-      "op": "ImmLabel",
-      "children": [
         "primitive-String-4"
       ],
-      "eclass": "Imm-6",
+      "eclass": "Imm-4",
       "cost": 1.0,
       "subsumed": false
     },
@@ -53,7 +53,7 @@
       "children": [
         "function-0-ImmLabel"
       ],
-      "eclass": "Inst-2",
+      "eclass": "Inst-3",
       "cost": 1.0,
       "subsumed": false
     },
@@ -61,7 +61,7 @@
       "op": "Jalr",
       "children": [
         "function-1-RegVal",
-        "function-2-ImmLabel"
+        "function-0-ImmVal"
       ],
       "eclass": "Inst-7",
       "cost": 1.0,
@@ -73,82 +73,82 @@
         "function-0-RegVal",
         "function-1-ImmLabel"
       ],
-      "eclass": "Inst-4",
+      "eclass": "Inst-5",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-0": {
+    "primitive-String-1": {
       "op": "\"a5\"",
       "children": [],
-      "eclass": "String-0",
+      "eclass": "String-1",
       "cost": 1.0,
       "subsumed": false
     },
     "function-0-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-0"
+        "primitive-String-1"
       ],
       "eclass": "Inst-0",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-3": {
-      "op": "\"0\"",
+    "primitive-String-2": {
+      "op": "\"ra_0\"",
       "children": [],
-      "eclass": "String-3",
+      "eclass": "String-2",
       "cost": 1.0,
       "subsumed": false
     },
     "function-1-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-3"
+        "primitive-String-2"
       ],
-      "eclass": "Inst-5",
+      "eclass": "Inst-1",
       "cost": 1.0,
       "subsumed": false
     }
   },
   "root_eclasses": [],
   "class_data": {
-    "Imm-1": {
-      "type": "Imm"
-    },
-    "String-1": {
-      "type": "String"
-    },
-    "Imm-3": {
-      "type": "Imm"
-    },
-    "String-2": {
-      "type": "String"
-    },
     "Imm-6": {
+      "type": "Imm"
+    },
+    "i64-0": {
+      "type": "i64"
+    },
+    "Imm-2": {
+      "type": "Imm"
+    },
+    "String-3": {
+      "type": "String"
+    },
+    "Imm-4": {
       "type": "Imm"
     },
     "String-4": {
       "type": "String"
     },
-    "Inst-2": {
+    "Inst-3": {
       "type": "Inst"
     },
     "Inst-7": {
       "type": "Inst"
     },
-    "Inst-5": {
+    "Inst-1": {
       "type": "Inst"
     },
-    "Inst-4": {
+    "Inst-5": {
       "type": "Inst"
     },
     "Inst-0": {
       "type": "Inst"
     },
-    "String-0": {
+    "String-1": {
       "type": "String"
     },
-    "String-3": {
+    "String-2": {
       "type": "String"
     }
   }

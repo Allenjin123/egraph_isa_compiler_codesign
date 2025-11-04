@@ -31,7 +31,7 @@ def run_egglog_get_eclasses(egg_file_path, egglog_binary='/home/allenjin/egglog/
             [egglog_binary, egg_file_path.name],
             capture_output=True,
             text=True,
-            timeout=60,
+            timeout=300,  # 5 minute timeout per file
             cwd=egg_file_path.parent  # Run from egg file directory for relative paths
         )
 
