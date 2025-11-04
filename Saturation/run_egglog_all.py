@@ -27,7 +27,7 @@ def run_egglog_on_file(egg_file: Path, verbose: bool = False) -> bool:
 
         # Use custom egglog build with print-eclass-id support
         egglog_path = '/home/allenjin/egglog/target/release/egglog'
-        cmd = [egglog_path, '--to-svg', '--to-json', egg_name]
+        cmd = [egglog_path, '--to-json', '--max-functions', '2000', '--max-calls-per-function', '2000', egg_name]
 
         if verbose:
             print(f"  Running: {' '.join(cmd)} (in {egg_dir})")

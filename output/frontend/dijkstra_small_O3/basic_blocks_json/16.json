@@ -107,17 +107,6 @@
       "children": [
         "function-0-Lw",
         "function-1-RegVal",
-        "function-2-ImmLabel"
-      ],
-      "eclass": "Inst-7",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-2-Blt": {
-      "op": "Blt",
-      "children": [
-        "function-0-Lw",
-        "function-1-RegVal",
         "function-0-ImmVal"
       ],
       "eclass": "Inst-11",
@@ -212,7 +201,7 @@
     "function-1-Seq2": {
       "op": "Seq2",
       "children": [
-        "function-2-Blt",
+        "function-1-Blt",
         "function-1-Jal"
       ],
       "eclass": "Inst-9",
@@ -274,10 +263,10 @@
     "Inst-5": {
       "type": "Inst"
     },
-    "Inst-7": {
+    "Inst-11": {
       "type": "Inst"
     },
-    "Inst-11": {
+    "Inst-7": {
       "type": "Inst"
     },
     "Inst-0": {
