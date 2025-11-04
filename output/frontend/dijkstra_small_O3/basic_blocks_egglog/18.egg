@@ -16,8 +16,9 @@
 
 ; ============================================
 ; Run saturation to apply rewrite rules
+; Uses natural convergence: stops early if saturated, bounded to 3 attempts
 ; ============================================
-(run 10)
+(run-schedule (repeat 3 (saturate (run))))
 
 ; ============================================
 ; Print eclass IDs for each instruction

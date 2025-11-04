@@ -16,17 +16,17 @@
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-2": {
+    "primitive-String-3": {
       "op": "\".L28\"",
       "children": [],
-      "eclass": "String-2",
+      "eclass": "String-3",
       "cost": 1.0,
       "subsumed": false
     },
     "function-0-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-2"
+        "primitive-String-3"
       ],
       "eclass": "Imm-2",
       "cost": 1.0,
@@ -116,33 +116,33 @@
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-0": {
+    "primitive-String-1": {
       "op": "\"t0_0\"",
       "children": [],
-      "eclass": "String-0",
+      "eclass": "String-1",
       "cost": 1.0,
       "subsumed": false
     },
     "function-0-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-0"
+        "primitive-String-1"
       ],
       "eclass": "Inst-0",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-1": {
+    "primitive-String-2": {
       "op": "\"zero_0\"",
       "children": [],
-      "eclass": "String-1",
+      "eclass": "String-2",
       "cost": 1.0,
       "subsumed": false
     },
     "function-1-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-1"
+        "primitive-String-2"
       ],
       "eclass": "Inst-1",
       "cost": 1.0,
@@ -190,7 +190,7 @@
     "Imm-2": {
       "type": "Imm"
     },
-    "String-2": {
+    "String-3": {
       "type": "String"
     },
     "Inst-6": {
@@ -214,10 +214,10 @@
     "Inst-7": {
       "type": "Inst"
     },
-    "String-0": {
+    "String-1": {
       "type": "String"
     },
-    "String-1": {
+    "String-2": {
       "type": "String"
     }
   }

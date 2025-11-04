@@ -36,7 +36,7 @@ def run_egglog_on_file(egg_file: Path, verbose: bool = False) -> bool:
             cmd,
             capture_output=True,
             text=True,
-            timeout=60,  # 60 second timeout per file
+            timeout=300,  # 5 minute timeout per file
             cwd=str(egg_dir)  # Run from the .egg file's directory
         )
 

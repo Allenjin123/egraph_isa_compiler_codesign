@@ -1,16 +1,16 @@
 {
   "nodes": {
-    "primitive-String-0": {
+    "primitive-String-1": {
       "op": "\".L31\"",
       "children": [],
-      "eclass": "String-0",
+      "eclass": "String-1",
       "cost": 1.0,
       "subsumed": false
     },
     "function-0-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-0"
+        "primitive-String-1"
       ],
       "eclass": "Imm-0",
       "cost": 1.0,
@@ -31,7 +31,7 @@
     "Imm-0": {
       "type": "Imm"
     },
-    "String-0": {
+    "String-1": {
       "type": "String"
     },
     "Inst-1": {

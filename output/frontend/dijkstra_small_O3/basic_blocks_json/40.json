@@ -176,51 +176,99 @@
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-4": {
+    "primitive-i64-2147483648": {
+      "op": "-1",
+      "children": [],
+      "eclass": "i64-2147483648",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-11-ImmVal": {
+      "op": "ImmVal",
+      "children": [
+        "primitive-i64-2147483648"
+      ],
+      "eclass": "Imm-39",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "primitive-i64-1": {
+      "op": "1",
+      "children": [],
+      "eclass": "i64-1",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-12-ImmVal": {
+      "op": "ImmVal",
+      "children": [
+        "primitive-i64-1"
+      ],
+      "eclass": "Imm-48",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "primitive-i64-5": {
+      "op": "5",
+      "children": [],
+      "eclass": "i64-5",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-13-ImmVal": {
+      "op": "ImmVal",
+      "children": [
+        "primitive-i64-5"
+      ],
+      "eclass": "Imm-1024",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "primitive-i64-4": {
+      "op": "4",
+      "children": [],
+      "eclass": "i64-4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-14-ImmVal": {
+      "op": "ImmVal",
+      "children": [
+        "primitive-i64-4"
+      ],
+      "eclass": "Imm-3729",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "primitive-String-5": {
       "op": "\"%hi(result_sink)\"",
       "children": [],
-      "eclass": "String-4",
+      "eclass": "String-5",
       "cost": 1.0,
       "subsumed": false
     },
     "function-0-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-4"
+        "primitive-String-5"
       ],
       "eclass": "Imm-5",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-5": {
+    "primitive-String-6": {
       "op": "\"%lo(result_sink)\"",
       "children": [],
-      "eclass": "String-5",
+      "eclass": "String-6",
       "cost": 1.0,
       "subsumed": false
     },
     "function-1-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-5"
+        "primitive-String-6"
       ],
       "eclass": "Imm-9",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "primitive-String-7": {
-      "op": "\"ra_0\"",
-      "children": [],
-      "eclass": "String-7",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-2-ImmLabel": {
-      "op": "ImmLabel",
-      "children": [
-        "primitive-String-7"
-      ],
-      "eclass": "Imm-34",
       "cost": 1.0,
       "subsumed": false
     },
@@ -236,10 +284,10 @@
     "function-0-Jalr": {
       "op": "Jalr",
       "children": [
-        "function-4-RegVal",
-        "function-2-ImmLabel"
+        "function-2-Lw",
+        "function-0-ImmVal"
       ],
-      "eclass": "Inst-35",
+      "eclass": "Inst-33",
       "cost": 1.0,
       "subsumed": false
     },
@@ -374,6 +422,890 @@
       "cost": 1.0,
       "subsumed": false
     },
+    "function-1-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-0-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-49",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-2-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-1-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-50",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-3-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-2-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-51",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-4-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-3-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-52",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-5-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-4-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-53",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-6-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-5-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-54",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-7-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-6-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-55",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-8-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-7-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-56",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-9-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-8-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-97",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-10-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-9-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-98",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-11-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-10-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-99",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-12-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-11-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-100",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-13-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-12-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-101",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-14-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-13-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-102",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-15-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-14-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-103",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-16-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-15-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-104",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-17-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-16-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-105",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-18-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-17-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-106",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-19-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-18-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-107",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-20-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-19-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-108",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-21-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-20-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-111",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-22-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-21-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-112",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-23-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-22-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-494",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-24-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-23-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-495",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-25-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-24-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-496",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-26-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-25-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-497",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-27-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-26-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-498",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-28-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-27-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-499",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-29-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-28-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-500",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-30-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-29-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-501",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-31-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-30-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-502",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-32-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-31-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-503",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-33-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-32-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-504",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-34-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-33-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-505",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-35-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-34-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-506",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-36-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-35-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-507",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-37-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-36-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-508",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-38-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-37-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-509",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-39-Addi": {
+      "op": "Addi",
+      "children": [
+        "function-38-Xori",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-510",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-2-RegVal",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-40",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-1-Lw",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-41",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-2-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-12-Add",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-42",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-3-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-13-Add",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-43",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-4-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-1-RegVal",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-44",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-5-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-0-Lw",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-45",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-6-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-16-Add",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-46",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-7-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-17-Add",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-47",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-8-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-4-RegVal",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-75",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-9-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-12-Sub",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-76",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-10-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-1-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-77",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-11-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-2-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-78",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-12-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-3-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-79",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-13-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-4-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-80",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-14-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-5-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-81",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-15-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-6-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-82",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-16-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-7-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-83",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-17-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-8-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-84",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-18-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-8-Sub",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-85",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-19-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-9-Sub",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-86",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-20-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-10-Sub",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-89",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-21-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-11-Sub",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-90",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-22-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-6-Add",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-461",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-23-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-7-Add",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-462",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-24-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-9-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-463",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-25-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-10-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-464",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-26-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-13-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-465",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-27-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-14-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-466",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-28-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-17-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-467",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-29-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-18-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-468",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-30-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-19-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-469",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-31-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-20-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-470",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-32-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-21-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-471",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-33-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-22-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-472",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-34-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-11-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-473",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-35-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-12-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-474",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-36-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-15-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-475",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-37-Xori": {
+      "op": "Xori",
+      "children": [
+        "function-16-Addi",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-476",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "dummy-Inst-172": {
+      "op": "[...]",
+      "children": [],
+      "eclass": "Inst-172",
+      "cost": null,
+      "subsumed": false
+    },
+    "function-38-Xori": {
+      "op": "Xori",
+      "children": [
+        "dummy-Inst-172",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-477",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "dummy-Inst-173": {
+      "op": "[...]",
+      "children": [],
+      "eclass": "Inst-173",
+      "cost": null,
+      "subsumed": false
+    },
+    "function-39-Xori": {
+      "op": "Xori",
+      "children": [
+        "dummy-Inst-173",
+        "function-11-ImmVal"
+      ],
+      "eclass": "Inst-478",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-Ori": {
+      "op": "Ori",
+      "children": [
+        "function-4-RegVal",
+        "function-13-ImmVal"
+      ],
+      "eclass": "Inst-1706",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-Ori": {
+      "op": "Ori",
+      "children": [
+        "function-3-Xor",
+        "function-12-ImmVal"
+      ],
+      "eclass": "Inst-3728",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-2-Ori": {
+      "op": "Ori",
+      "children": [
+        "function-1-Ori",
+        "function-14-ImmVal"
+      ],
+      "eclass": "Inst-3730",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-Andi": {
+      "op": "Andi",
+      "children": [
+        "function-4-RegVal",
+        "function-13-ImmVal"
+      ],
+      "eclass": "Inst-1990",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-Slli": {
+      "op": "Slli",
+      "children": [
+        "function-2-Slli",
+        "function-13-ImmVal"
+      ],
+      "eclass": "Inst-74",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-Slli": {
+      "op": "Slli",
+      "children": [
+        "function-4-RegVal",
+        "function-13-ImmVal"
+      ],
+      "eclass": "Inst-74",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-2-Slli": {
+      "op": "Slli",
+      "children": [
+        "function-10-Addi",
+        "function-13-ImmVal"
+      ],
+      "eclass": "Inst-74",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-3-Slli": {
+      "op": "Slli",
+      "children": [
+        "function-25-Addi",
+        "function-13-ImmVal"
+      ],
+      "eclass": "Inst-74",
+      "cost": 1.0,
+      "subsumed": false
+    },
     "function-0-Add": {
       "op": "Add",
       "children": [
@@ -414,83 +1346,1084 @@
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-0": {
+    "function-4-Add": {
+      "op": "Add",
+      "children": [
+        "function-4-RegVal",
+        "function-1-Addi"
+      ],
+      "eclass": "Inst-35",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-5-Add": {
+      "op": "Add",
+      "children": [
+        "function-4-RegVal",
+        "function-2-Addi"
+      ],
+      "eclass": "Inst-36",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-6-Add": {
+      "op": "Add",
+      "children": [
+        "function-1-RegVal",
+        "function-3-Addi"
+      ],
+      "eclass": "Inst-4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-7-Add": {
+      "op": "Add",
+      "children": [
+        "function-0-Lw",
+        "function-4-Addi"
+      ],
+      "eclass": "Inst-15",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-8-Add": {
+      "op": "Add",
+      "children": [
+        "function-4-RegVal",
+        "function-5-Addi"
+      ],
+      "eclass": "Inst-37",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-9-Add": {
+      "op": "Add",
+      "children": [
+        "function-4-RegVal",
+        "function-6-Addi"
+      ],
+      "eclass": "Inst-38",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-10-Add": {
+      "op": "Add",
+      "children": [
+        "function-2-RegVal",
+        "function-7-Addi"
+      ],
+      "eclass": "Inst-4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-11-Add": {
+      "op": "Add",
+      "children": [
+        "function-1-Lw",
+        "function-8-Addi"
+      ],
+      "eclass": "Inst-15",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-12-Add": {
+      "op": "Add",
+      "children": [
+        "function-4-RegVal",
+        "function-0-Sub"
+      ],
+      "eclass": "Inst-35",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-13-Add": {
+      "op": "Add",
+      "children": [
+        "function-4-RegVal",
+        "function-1-Sub"
+      ],
+      "eclass": "Inst-36",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-14-Add": {
+      "op": "Add",
+      "children": [
+        "function-1-RegVal",
+        "function-33-Sub"
+      ],
+      "eclass": "Inst-4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-15-Add": {
+      "op": "Add",
+      "children": [
+        "function-0-Lw",
+        "function-34-Sub"
+      ],
+      "eclass": "Inst-15",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-16-Add": {
+      "op": "Add",
+      "children": [
+        "function-4-RegVal",
+        "function-4-Sub"
+      ],
+      "eclass": "Inst-37",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-17-Add": {
+      "op": "Add",
+      "children": [
+        "function-4-RegVal",
+        "function-5-Sub"
+      ],
+      "eclass": "Inst-38",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-18-Add": {
+      "op": "Add",
+      "children": [
+        "function-2-RegVal",
+        "function-35-Sub"
+      ],
+      "eclass": "Inst-4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-19-Add": {
+      "op": "Add",
+      "children": [
+        "function-1-Lw",
+        "function-36-Sub"
+      ],
+      "eclass": "Inst-15",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-20-Add": {
+      "op": "Add",
+      "children": [
+        "function-1-Addi",
+        "function-4-RegVal"
+      ],
+      "eclass": "Inst-35",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-21-Add": {
+      "op": "Add",
+      "children": [
+        "function-2-Addi",
+        "function-4-RegVal"
+      ],
+      "eclass": "Inst-36",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-22-Add": {
+      "op": "Add",
+      "children": [
+        "function-3-Addi",
+        "function-1-RegVal"
+      ],
+      "eclass": "Inst-4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-23-Add": {
+      "op": "Add",
+      "children": [
+        "function-4-Addi",
+        "function-0-Lw"
+      ],
+      "eclass": "Inst-15",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-24-Add": {
+      "op": "Add",
+      "children": [
+        "function-5-Addi",
+        "function-4-RegVal"
+      ],
+      "eclass": "Inst-37",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-25-Add": {
+      "op": "Add",
+      "children": [
+        "function-6-Addi",
+        "function-4-RegVal"
+      ],
+      "eclass": "Inst-38",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-26-Add": {
+      "op": "Add",
+      "children": [
+        "function-7-Addi",
+        "function-2-RegVal"
+      ],
+      "eclass": "Inst-4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-27-Add": {
+      "op": "Add",
+      "children": [
+        "function-8-Addi",
+        "function-1-Lw"
+      ],
+      "eclass": "Inst-15",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-28-Add": {
+      "op": "Add",
+      "children": [
+        "function-29-Sub",
+        "function-4-RegVal"
+      ],
+      "eclass": "Inst-35",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-29-Add": {
+      "op": "Add",
+      "children": [
+        "function-30-Sub",
+        "function-4-RegVal"
+      ],
+      "eclass": "Inst-36",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-30-Add": {
+      "op": "Add",
+      "children": [
+        "function-37-Sub",
+        "function-1-RegVal"
+      ],
+      "eclass": "Inst-4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-31-Add": {
+      "op": "Add",
+      "children": [
+        "function-38-Sub",
+        "function-0-Lw"
+      ],
+      "eclass": "Inst-15",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-32-Add": {
+      "op": "Add",
+      "children": [
+        "function-31-Sub",
+        "function-4-RegVal"
+      ],
+      "eclass": "Inst-37",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-33-Add": {
+      "op": "Add",
+      "children": [
+        "function-32-Sub",
+        "function-4-RegVal"
+      ],
+      "eclass": "Inst-38",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-34-Add": {
+      "op": "Add",
+      "children": [
+        "function-39-Sub",
+        "function-2-RegVal"
+      ],
+      "eclass": "Inst-4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-35-Add": {
+      "op": "Add",
+      "children": [
+        "function-39-Add",
+        "function-1-Lw"
+      ],
+      "eclass": "Inst-15",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-36-Add": {
+      "op": "Add",
+      "children": [
+        "function-4-RegVal",
+        "function-3-Addi"
+      ],
+      "eclass": "Inst-57",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-37-Add": {
+      "op": "Add",
+      "children": [
+        "function-4-RegVal",
+        "function-4-Addi"
+      ],
+      "eclass": "Inst-58",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-38-Add": {
+      "op": "Add",
+      "children": [
+        "function-4-RegVal",
+        "function-7-Addi"
+      ],
+      "eclass": "Inst-59",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-39-Add": {
+      "op": "Add",
+      "children": [
+        "function-4-RegVal",
+        "function-8-Addi"
+      ],
+      "eclass": "Inst-60",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-4-RegVal",
+        "function-2-RegVal"
+      ],
+      "eclass": "Inst-35",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-4-RegVal",
+        "function-1-Lw"
+      ],
+      "eclass": "Inst-36",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-2-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-1-RegVal",
+        "function-12-Add"
+      ],
+      "eclass": "Inst-4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-3-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-0-Lw",
+        "function-13-Add"
+      ],
+      "eclass": "Inst-15",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-4-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-4-RegVal",
+        "function-1-RegVal"
+      ],
+      "eclass": "Inst-37",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-5-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-4-RegVal",
+        "function-0-Lw"
+      ],
+      "eclass": "Inst-38",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-6-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-2-RegVal",
+        "function-16-Add"
+      ],
+      "eclass": "Inst-4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-7-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-1-Lw",
+        "function-17-Add"
+      ],
+      "eclass": "Inst-15",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-8-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-4-RegVal",
+        "function-20-Add"
+      ],
+      "eclass": "Inst-57",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-9-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-4-RegVal",
+        "function-21-Add"
+      ],
+      "eclass": "Inst-58",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-10-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-4-RegVal",
+        "function-24-Add"
+      ],
+      "eclass": "Inst-59",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-11-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-4-RegVal",
+        "function-25-Add"
+      ],
+      "eclass": "Inst-60",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-12-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-4-RegVal",
+        "function-4-RegVal"
+      ],
+      "eclass": "Inst-61",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-13-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-1-Addi",
+        "function-12-Sub"
+      ],
+      "eclass": "Inst-35",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-14-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-2-Addi",
+        "function-12-Sub"
+      ],
+      "eclass": "Inst-36",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-15-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-3-Addi",
+        "function-32-Add"
+      ],
+      "eclass": "Inst-4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-16-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-4-Addi",
+        "function-33-Add"
+      ],
+      "eclass": "Inst-15",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-17-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-5-Addi",
+        "function-12-Sub"
+      ],
+      "eclass": "Inst-37",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-18-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-6-Addi",
+        "function-12-Sub"
+      ],
+      "eclass": "Inst-38",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-19-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-7-Addi",
+        "function-0-Sub"
+      ],
+      "eclass": "Inst-4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-20-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-8-Addi",
+        "function-1-Sub"
+      ],
+      "eclass": "Inst-15",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-21-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-21-Sub",
+        "function-12-Sub"
+      ],
+      "eclass": "Inst-35",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-22-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-22-Sub",
+        "function-12-Sub"
+      ],
+      "eclass": "Inst-36",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-23-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-33-Sub",
+        "function-17-Sub"
+      ],
+      "eclass": "Inst-4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-24-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-34-Sub",
+        "function-18-Sub"
+      ],
+      "eclass": "Inst-15",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-25-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-31-Sub",
+        "function-12-Sub"
+      ],
+      "eclass": "Inst-37",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-26-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-32-Sub",
+        "function-12-Sub"
+      ],
+      "eclass": "Inst-38",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-27-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-35-Sub",
+        "function-29-Sub"
+      ],
+      "eclass": "Inst-4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-28-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-39-Add",
+        "function-30-Sub"
+      ],
+      "eclass": "Inst-15",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-29-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-4-RegVal",
+        "function-37-Sub"
+      ],
+      "eclass": "Inst-35",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-30-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-4-RegVal",
+        "function-38-Sub"
+      ],
+      "eclass": "Inst-36",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-31-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-4-RegVal",
+        "function-39-Sub"
+      ],
+      "eclass": "Inst-37",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-32-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-4-RegVal",
+        "function-11-Sub"
+      ],
+      "eclass": "Inst-38",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-33-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-3-Addi",
+        "function-12-Sub"
+      ],
+      "eclass": "Inst-57",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-34-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-4-Addi",
+        "function-12-Sub"
+      ],
+      "eclass": "Inst-58",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-35-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-7-Addi",
+        "function-12-Sub"
+      ],
+      "eclass": "Inst-59",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-36-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-8-Addi",
+        "function-12-Sub"
+      ],
+      "eclass": "Inst-60",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-37-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-2-RegVal",
+        "function-12-Sub"
+      ],
+      "eclass": "Inst-57",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-38-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-1-Lw",
+        "function-12-Sub"
+      ],
+      "eclass": "Inst-58",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-39-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-1-RegVal",
+        "function-12-Sub"
+      ],
+      "eclass": "Inst-59",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-Sll": {
+      "op": "Sll",
+      "children": [
+        "function-0-Slli",
+        "function-5-Xor"
+      ],
+      "eclass": "Inst-74",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-Sll": {
+      "op": "Sll",
+      "children": [
+        "function-4-RegVal",
+        "function-0-Or"
+      ],
+      "eclass": "Inst-74",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-2-Sll": {
+      "op": "Sll",
+      "children": [
+        "function-10-Addi",
+        "function-1-Or"
+      ],
+      "eclass": "Inst-74",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-Xor": {
+      "op": "Xor",
+      "children": [
+        "function-4-RegVal",
+        "function-6-Xor"
+      ],
+      "eclass": "Inst-1991",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-Xor": {
+      "op": "Xor",
+      "children": [
+        "function-2-And",
+        "function-4-RegVal"
+      ],
+      "eclass": "Inst-1991",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-2-Xor": {
+      "op": "Xor",
+      "children": [
+        "function-3-Xor",
+        "function-2-Ori"
+      ],
+      "eclass": "Inst-1990",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-3-Xor": {
+      "op": "Xor",
+      "children": [
+        "function-4-RegVal",
+        "function-0-Ori"
+      ],
+      "eclass": "Inst-1989",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-4-Xor": {
+      "op": "Xor",
+      "children": [
+        "function-0-Xor",
+        "function-5-Xor"
+      ],
+      "eclass": "Inst-1706",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-5-Xor": {
+      "op": "Xor",
+      "children": [
+        "function-1-And",
+        "function-1-Or"
+      ],
+      "eclass": "Inst-1706",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-6-Xor": {
+      "op": "Xor",
+      "children": [
+        "function-3-Xor",
+        "function-0-Ori"
+      ],
+      "eclass": "Inst-1990",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-Or": {
+      "op": "Or",
+      "children": [
+        "function-3-Xor",
+        "function-4-RegVal"
+      ],
+      "eclass": "Inst-1706",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-Or": {
+      "op": "Or",
+      "children": [
+        "function-4-RegVal",
+        "function-3-Xor"
+      ],
+      "eclass": "Inst-1706",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-2-Or": {
+      "op": "Or",
+      "children": [
+        "function-3-Xor",
+        "function-0-Or"
+      ],
+      "eclass": "Inst-3725",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-3-Or": {
+      "op": "Or",
+      "children": [
+        "function-6-Xor",
+        "function-4-RegVal"
+      ],
+      "eclass": "Inst-3738",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-And": {
+      "op": "And",
+      "children": [
+        "function-4-RegVal",
+        "function-3-Xor"
+      ],
+      "eclass": "Inst-1992",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-And": {
+      "op": "And",
+      "children": [
+        "function-3-Xor",
+        "function-4-RegVal"
+      ],
+      "eclass": "Inst-1992",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "dummy-Inst-3727": {
+      "op": "[...]",
+      "children": [],
+      "eclass": "Inst-3727",
+      "cost": null,
+      "subsumed": false
+    },
+    "function-2-And": {
+      "op": "And",
+      "children": [
+        "dummy-Inst-3727",
+        "function-4-RegVal"
+      ],
+      "eclass": "Inst-1990",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "dummy-Inst-3731": {
+      "op": "[...]",
+      "children": [],
+      "eclass": "Inst-3731",
+      "cost": null,
+      "subsumed": false
+    },
+    "function-3-And": {
+      "op": "And",
+      "children": [
+        "function-4-RegVal",
+        "dummy-Inst-3731"
+      ],
+      "eclass": "Inst-3732",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-4-And": {
+      "op": "And",
+      "children": [
+        "function-8-Xori",
+        "function-3-Xor"
+      ],
+      "eclass": "Inst-3733",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-5-And": {
+      "op": "And",
+      "children": [
+        "function-4-RegVal",
+        "function-0-Andi"
+      ],
+      "eclass": "Inst-3736",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "dummy-Inst-3737": {
+      "op": "[...]",
+      "children": [],
+      "eclass": "Inst-3737",
+      "cost": null,
+      "subsumed": false
+    },
+    "function-6-And": {
+      "op": "And",
+      "children": [
+        "dummy-Inst-3737",
+        "function-3-Or"
+      ],
+      "eclass": "Inst-1991",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-7-And": {
+      "op": "And",
+      "children": [
+        "function-2-Xor",
+        "function-4-RegVal"
+      ],
+      "eclass": "Inst-3739",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "primitive-String-1": {
       "op": "\"a4\"",
       "children": [],
-      "eclass": "String-0",
+      "eclass": "String-1",
       "cost": 1.0,
       "subsumed": false
     },
     "function-0-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-0"
+        "primitive-String-1"
       ],
       "eclass": "Inst-0",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-1": {
+    "primitive-String-2": {
       "op": "\"s0_0\"",
       "children": [],
-      "eclass": "String-1",
+      "eclass": "String-2",
       "cost": 1.0,
       "subsumed": false
     },
     "function-1-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-1"
+        "primitive-String-2"
       ],
       "eclass": "Inst-1",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-2": {
+    "primitive-String-3": {
       "op": "\"s5_0\"",
       "children": [],
-      "eclass": "String-2",
+      "eclass": "String-3",
       "cost": 1.0,
       "subsumed": false
     },
     "function-2-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-2"
+        "primitive-String-3"
       ],
       "eclass": "Inst-2",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-3": {
+    "primitive-String-4": {
       "op": "\"sp_0\"",
       "children": [],
-      "eclass": "String-3",
+      "eclass": "String-4",
       "cost": 1.0,
       "subsumed": false
     },
     "function-3-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-3"
+        "primitive-String-4"
       ],
       "eclass": "Inst-3",
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-6": {
-      "op": "\"0\"",
+    "primitive-String-0": {
+      "op": "\"x0\"",
       "children": [],
-      "eclass": "String-6",
+      "eclass": "String-0",
       "cost": 1.0,
       "subsumed": false
     },
     "function-4-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-6"
+        "primitive-String-0"
       ],
-      "eclass": "Inst-33",
+      "eclass": "Inst-34",
       "cost": 1.0,
       "subsumed": false
     }
@@ -563,31 +2496,49 @@
     "i64-80": {
       "type": "i64"
     },
-    "Imm-5": {
+    "Imm-39": {
       "type": "Imm"
     },
-    "String-4": {
-      "type": "String"
+    "i64-2147483648": {
+      "type": "i64"
     },
-    "Imm-9": {
+    "Imm-48": {
+      "type": "Imm"
+    },
+    "i64-1": {
+      "type": "i64"
+    },
+    "Imm-1024": {
+      "type": "Imm"
+    },
+    "i64-5": {
+      "type": "i64"
+    },
+    "Imm-3729": {
+      "type": "Imm"
+    },
+    "i64-4": {
+      "type": "i64"
+    },
+    "Imm-5": {
       "type": "Imm"
     },
     "String-5": {
       "type": "String"
     },
-    "Imm-34": {
+    "Imm-9": {
       "type": "Imm"
     },
-    "String-7": {
+    "String-6": {
       "type": "String"
     },
     "Inst-6": {
       "type": "Inst"
     },
-    "Inst-35": {
+    "Inst-33": {
       "type": "Inst"
     },
-    "Inst-33": {
+    "Inst-12": {
       "type": "Inst"
     },
     "Inst-8": {
@@ -600,9 +2551,6 @@
       "type": "Inst"
     },
     "Inst-0": {
-      "type": "Inst"
-    },
-    "Inst-12": {
       "type": "Inst"
     },
     "Inst-3": {
@@ -641,14 +2589,335 @@
     "Inst-32": {
       "type": "Inst"
     },
+    "Inst-49": {
+      "type": "Inst"
+    },
+    "Inst-40": {
+      "type": "Inst"
+    },
+    "Inst-50": {
+      "type": "Inst"
+    },
+    "Inst-41": {
+      "type": "Inst"
+    },
+    "Inst-51": {
+      "type": "Inst"
+    },
+    "Inst-42": {
+      "type": "Inst"
+    },
+    "Inst-52": {
+      "type": "Inst"
+    },
+    "Inst-43": {
+      "type": "Inst"
+    },
+    "Inst-53": {
+      "type": "Inst"
+    },
+    "Inst-44": {
+      "type": "Inst"
+    },
+    "Inst-54": {
+      "type": "Inst"
+    },
+    "Inst-45": {
+      "type": "Inst"
+    },
+    "Inst-55": {
+      "type": "Inst"
+    },
+    "Inst-46": {
+      "type": "Inst"
+    },
+    "Inst-56": {
+      "type": "Inst"
+    },
+    "Inst-47": {
+      "type": "Inst"
+    },
+    "Inst-97": {
+      "type": "Inst"
+    },
+    "Inst-75": {
+      "type": "Inst"
+    },
+    "Inst-98": {
+      "type": "Inst"
+    },
+    "Inst-76": {
+      "type": "Inst"
+    },
+    "Inst-99": {
+      "type": "Inst"
+    },
+    "Inst-77": {
+      "type": "Inst"
+    },
+    "Inst-100": {
+      "type": "Inst"
+    },
+    "Inst-78": {
+      "type": "Inst"
+    },
+    "Inst-101": {
+      "type": "Inst"
+    },
+    "Inst-79": {
+      "type": "Inst"
+    },
+    "Inst-102": {
+      "type": "Inst"
+    },
+    "Inst-80": {
+      "type": "Inst"
+    },
+    "Inst-103": {
+      "type": "Inst"
+    },
+    "Inst-81": {
+      "type": "Inst"
+    },
+    "Inst-104": {
+      "type": "Inst"
+    },
+    "Inst-82": {
+      "type": "Inst"
+    },
+    "Inst-105": {
+      "type": "Inst"
+    },
+    "Inst-83": {
+      "type": "Inst"
+    },
+    "Inst-106": {
+      "type": "Inst"
+    },
+    "Inst-84": {
+      "type": "Inst"
+    },
+    "Inst-107": {
+      "type": "Inst"
+    },
+    "Inst-85": {
+      "type": "Inst"
+    },
+    "Inst-108": {
+      "type": "Inst"
+    },
+    "Inst-86": {
+      "type": "Inst"
+    },
+    "Inst-111": {
+      "type": "Inst"
+    },
+    "Inst-89": {
+      "type": "Inst"
+    },
+    "Inst-112": {
+      "type": "Inst"
+    },
+    "Inst-90": {
+      "type": "Inst"
+    },
+    "Inst-494": {
+      "type": "Inst"
+    },
+    "Inst-461": {
+      "type": "Inst"
+    },
+    "Inst-495": {
+      "type": "Inst"
+    },
+    "Inst-462": {
+      "type": "Inst"
+    },
+    "Inst-496": {
+      "type": "Inst"
+    },
+    "Inst-463": {
+      "type": "Inst"
+    },
+    "Inst-497": {
+      "type": "Inst"
+    },
+    "Inst-464": {
+      "type": "Inst"
+    },
+    "Inst-498": {
+      "type": "Inst"
+    },
+    "Inst-465": {
+      "type": "Inst"
+    },
+    "Inst-499": {
+      "type": "Inst"
+    },
+    "Inst-466": {
+      "type": "Inst"
+    },
+    "Inst-500": {
+      "type": "Inst"
+    },
+    "Inst-467": {
+      "type": "Inst"
+    },
+    "Inst-501": {
+      "type": "Inst"
+    },
+    "Inst-468": {
+      "type": "Inst"
+    },
+    "Inst-502": {
+      "type": "Inst"
+    },
+    "Inst-469": {
+      "type": "Inst"
+    },
+    "Inst-503": {
+      "type": "Inst"
+    },
+    "Inst-470": {
+      "type": "Inst"
+    },
+    "Inst-504": {
+      "type": "Inst"
+    },
+    "Inst-471": {
+      "type": "Inst"
+    },
+    "Inst-505": {
+      "type": "Inst"
+    },
+    "Inst-472": {
+      "type": "Inst"
+    },
+    "Inst-506": {
+      "type": "Inst"
+    },
+    "Inst-473": {
+      "type": "Inst"
+    },
+    "Inst-507": {
+      "type": "Inst"
+    },
+    "Inst-474": {
+      "type": "Inst"
+    },
+    "Inst-508": {
+      "type": "Inst"
+    },
+    "Inst-475": {
+      "type": "Inst"
+    },
+    "Inst-509": {
+      "type": "Inst"
+    },
+    "Inst-476": {
+      "type": "Inst"
+    },
+    "Inst-510": {
+      "type": "Inst"
+    },
+    "Inst-477": {
+      "type": "Inst"
+    },
     "Inst-2": {
+      "type": "Inst"
+    },
+    "Inst-35": {
+      "type": "Inst"
+    },
+    "Inst-36": {
       "type": "Inst"
     },
     "Inst-1": {
       "type": "Inst"
     },
-    "String-0": {
-      "type": "String"
+    "Inst-37": {
+      "type": "Inst"
+    },
+    "Inst-38": {
+      "type": "Inst"
+    },
+    "Inst-34": {
+      "type": "Inst"
+    },
+    "Inst-61": {
+      "type": "Inst"
+    },
+    "Inst-57": {
+      "type": "Inst"
+    },
+    "Inst-58": {
+      "type": "Inst"
+    },
+    "Inst-59": {
+      "type": "Inst"
+    },
+    "Inst-60": {
+      "type": "Inst"
+    },
+    "Inst-172": {
+      "type": "Inst"
+    },
+    "Inst-478": {
+      "type": "Inst"
+    },
+    "Inst-173": {
+      "type": "Inst"
+    },
+    "Inst-1706": {
+      "type": "Inst"
+    },
+    "Inst-3728": {
+      "type": "Inst"
+    },
+    "Inst-1989": {
+      "type": "Inst"
+    },
+    "Inst-3730": {
+      "type": "Inst"
+    },
+    "Inst-1990": {
+      "type": "Inst"
+    },
+    "Inst-74": {
+      "type": "Inst"
+    },
+    "Inst-1991": {
+      "type": "Inst"
+    },
+    "Inst-1992": {
+      "type": "Inst"
+    },
+    "Inst-3725": {
+      "type": "Inst"
+    },
+    "Inst-3738": {
+      "type": "Inst"
+    },
+    "Inst-3727": {
+      "type": "Inst"
+    },
+    "Inst-3732": {
+      "type": "Inst"
+    },
+    "Inst-3731": {
+      "type": "Inst"
+    },
+    "Inst-3733": {
+      "type": "Inst"
+    },
+    "Inst-3736": {
+      "type": "Inst"
+    },
+    "Inst-3737": {
+      "type": "Inst"
+    },
+    "Inst-3739": {
+      "type": "Inst"
     },
     "String-1": {
       "type": "String"
@@ -659,7 +2928,10 @@
     "String-3": {
       "type": "String"
     },
-    "String-6": {
+    "String-4": {
+      "type": "String"
+    },
+    "String-0": {
       "type": "String"
     }
   }
