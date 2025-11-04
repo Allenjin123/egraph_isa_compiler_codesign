@@ -1,1 +1,0 @@
-jalr zero_0, ra_0, 0

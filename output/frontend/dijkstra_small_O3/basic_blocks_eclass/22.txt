@@ -1,4 +1,0 @@
-lui a5_0, %hi(ch); Inst-5
-addi s0_0, zero_0, 100; Inst-7
-sw s0_0, %lo(ch)(a5); Inst-9
-beq a0_0, a3_0, .L45; Inst-11

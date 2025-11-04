@@ -30,9 +30,9 @@ from typing import Dict, Set, Optional, Tuple
 # Add project path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from src.egraph import EGraph, DATA_DIR, collect_section_json_files, sanitize, merge_json
+from src.egraph import EGraph, DATA_DIR, collect_program_json_files, sanitize, merge_json
 def ensure_merged_json(program_name: str, json_files_with_prefixes: list) -> None:
-    """Ensure saturation_output/<program>/ contains merged.json and merged_with_roots.json."""
+    """Ensure output/frontend/<program>/ contains merged.json and merged_with_roots.json."""
     target_dir = Path(DATA_DIR) / program_name
     merged_path = target_dir / 'merged.json'
     merged_roots_path = target_dir / 'merged_with_roots.json'
@@ -136,8 +136,8 @@ def get_original_op(node_id: str) -> str:
     Get the original operator name from the JSON file for leaf nodes
     
     Parameters:
-        node_id: Node ID in format like "__adddf3_1_eclass_sanitized_original_id"
-                The format is: {section}_{block_num}_eclass_{sanitized_original_node_id}
+        node_id: Node ID in format like "program_1_eclass_sanitized_original_id"
+                The format is: {program}_{block_num}_eclass_{sanitized_original_node_id}
     
     Returns:
         Original operator name from the JSON file
@@ -152,9 +152,8 @@ def get_original_op(node_id: str) -> str:
     # Remove leading underscore from sanitized_rest if present
     sanitized_rest = sanitized_rest.lstrip('_')
     
-    # prefix_with_eclass is like "__adddf3_1_eclass", we need "__adddf3_1"
-    # Actually, prefix_with_eclass should be "{section}_{block_num}", not include "eclass"
-    prefix_key = prefix_with_eclass  # This is "{section}_{block_num}"
+    # prefix_with_eclass is like "program_1", which is "{program}_{block_num}"
+    prefix_key = prefix_with_eclass  # This is "{program}_{block_num}"
     
     # Load JSON file if not cached
     if prefix_key not in _original_json_cache:
@@ -173,7 +172,7 @@ def get_original_op(node_id: str) -> str:
             _original_json_cache[prefix_key] = {}
     
     # Find the original node by matching sanitized node_id
-    # The node_id in egraph is: {section}_{block_num}_eclass_{sanitize(original_node_id)}
+    # The node_id in egraph is: {program}_{block_num}_eclass_{sanitize(original_node_id)}
     # So sanitized_rest should match sanitize(original_node_id)
     nodes = _original_json_cache[prefix_key]
     for original_node_id, node_data in nodes.items():
@@ -251,7 +250,7 @@ def extract_sexprs(egraph: EGraph, choices: Dict[str, str]) -> Dict[str, Dict[st
             node = egraph.enodes[node_id]
             # Check if this is a root node
             if eclass_id != "eclass_root" and eclass_id.endswith("_root"):
-                # Extract <section>_<block> prefix from eclass_id or node_id: {section}_{block_num}_eclass_... or {section}_{block_num}_enode_...
+                # Extract <program>_<block> prefix from eclass_id or node_id: {program}_{block_num}_eclass_... or {program}_{block_num}_enode_...
                 prefix = eclass_id.split('_eclass')[0]
                 # Build S-expr for each child of the root
                 for i, child_eclass in enumerate(node.children):
@@ -384,7 +383,7 @@ def main():
     )
     parser.add_argument(
         "program_name",
-        help="Name of the program subdirectory in saturation_output/ (e.g., bitcnts_small_O3)"
+        help="Name of the program subdirectory in output/frontend/ (e.g., bitcnts_small_O3)"
     )
     parser.add_argument(
         "--timeout",
@@ -394,8 +393,8 @@ def main():
     )
     parser.add_argument(
         "--output",
-        default=str(Path(__file__).resolve().parents[3] / "ilp_output"),
-        help="Output directory (default: Extractor/ilp_output)"
+        default=str(Path(__file__).resolve().parents[3] / "output" / "ilp"),
+        help="Output directory (default: output/ilp)"
     )
     parser.add_argument(
         "--best_k",
@@ -437,11 +436,11 @@ def main():
     
     # Build prefix to file path mapping (for get_original_op)
     # We need to collect files first to build the mapping
-    print("Collecting JSON files from sections...")
-    json_files_with_prefixes = collect_section_json_files(program_dir)
+    print("Collecting JSON files from program directory...")
+    json_files_with_prefixes = collect_program_json_files(program_dir)
     
     if not json_files_with_prefixes:
-        print(f"Error: No JSON files found in sections under {program_dir}")
+        print(f"Error: No JSON files found in {program_dir}")
         return 1
     
     ensure_merged_json(args.program_name, json_files_with_prefixes)
@@ -449,10 +448,8 @@ def main():
     # Build prefix to file path mapping (for get_original_op)
     global _prefix_to_file_map
     for file_path, prefix in json_files_with_prefixes:
-        # prefix is like "__adddf3_1_eclass", we need the part before "_eclass"
-        if prefix.endswith('_eclass'):
-            prefix_key = prefix[:-len('_eclass')]  # Remove "_eclass" suffix
-            _prefix_to_file_map[prefix_key] = file_path
+        # prefix is like "program_1", which is already in the correct format
+        _prefix_to_file_map[prefix] = file_path
     
     print(f"Found {len(json_files_with_prefixes)} JSON files")
     

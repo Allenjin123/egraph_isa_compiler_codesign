@@ -14,9 +14,9 @@ This module keeps only the parsing logic to construct ENode/EClass objects and b
 """
 # Get the directory of this script
 script_dir = os.path.dirname(os.path.abspath(__file__))
-# Go up to project root and then into saturation_output/
+# Go up to project root and then into output/frontend/
 project_root = os.path.dirname(os.path.dirname(script_dir))
-DATA_DIR = os.path.join(project_root, "saturation_output")
+DATA_DIR = os.path.join(project_root, "output", "frontend")
    
 def get_file_name(path):
     return os.path.basename(path)
@@ -31,35 +31,45 @@ def clean_folder(folder):
         os.remove(merged_path)
         print(f"Deleted old {merged_path}")
 
-def collect_section_json_files(program_dir):
+def collect_program_json_files(program_dir):
     """
-    Collect all JSON files from program_dir/{section}/basic_blocks_json/
-    Returns list of tuples: (file_path, prefix) where prefix = <section>_<block_num>
+    Collect all JSON files from program_dir/ (no sections subdirectory)
+    Returns list of tuples: (file_path, prefix) where prefix = <program>_<block_num>
+    
+    Files are expected to be named like <program>_<block_num>.json
     """
-    sections_dir = os.path.join(program_dir, "sections")
-    if not os.path.exists(sections_dir):
-        print(f"Sections directory not found: {sections_dir}")
+    if not os.path.exists(program_dir):
+        print(f"Program directory not found: {program_dir}")
         return []
     
     json_files = []
-    # Iterate through all sections
-    for section_name in os.listdir(sections_dir):
-        section_path = os.path.join(sections_dir, section_name)
-        if not os.path.isdir(section_path):
-            continue
-        
-        basic_blocks_dir = os.path.join(section_path, "basic_blocks_json")
-        if not os.path.exists(basic_blocks_dir):
-            print(f"Basic blocks directory not found: {basic_blocks_dir}")
-            continue
-        
-        # Get all JSON files in this section's basic_blocks_json directory
-        for filename in os.listdir(basic_blocks_dir):
-            if filename.endswith('.json'):
-                file_path = os.path.join(basic_blocks_dir, filename)
-                block_num = os.path.splitext(filename)[0]  # Remove .json extension
-                prefix = f"{section_name}_{block_num}"
-                json_files.append((file_path, prefix))
+    program_name = os.path.basename(program_dir)
+    json_files_path = os.path.join(program_dir, "basic_blocks_json")
+    if not os.path.exists(json_files_path):
+        print(f"JSON files directory not found: {json_files_path}")
+        return []
+    
+    # Get all JSON files in the program directory
+    for filename in os.listdir(json_files_path):
+        if filename.endswith('.json'):
+            # Skip merged files
+            if filename.startswith('merged'):
+                continue
+            file_path = os.path.join(json_files_path, filename)
+            # Extract block_num from filename
+            # Expected format: <program>_<block_num>.json or just <block_num>.json
+            basename = os.path.splitext(filename)[0]  # Remove .json extension
+            
+            # Try to extract block_num from the filename
+            # If filename is <program>_<block_num>, extract block_num
+            # Otherwise, use the whole basename as block_num
+            if basename.startswith(f"{program_name}_"):
+                block_num = basename[len(program_name)+1:]
+            else:
+                block_num = basename
+            
+            prefix = f"{program_name}_{block_num}"
+            json_files.append((file_path, prefix))
     
     return json_files
 
@@ -155,7 +165,7 @@ class EGraph:
         """Create an EGraph from a program directory.
         
         Args:
-            program_name: Name of the program subdirectory in saturation_output/ (e.g., 'bitcnts_small_O3')
+            program_name: Name of the program subdirectory in output/frontend/ (e.g., 'bitcnts_small_O3')
                          If None, creates an empty graph.
         """
         self.eclasses = {}
@@ -163,14 +173,14 @@ class EGraph:
         self.ops = {}
         self.root_ec_en = {}
         if program_name:
-            # Collect JSON files from sections and load
+            # Collect JSON files from program directory and load
             program_dir = os.path.join(DATA_DIR, program_name)
             if os.path.exists(program_dir):
-                json_files_with_prefixes = collect_section_json_files(program_dir)
+                json_files_with_prefixes = collect_program_json_files(program_dir)
                 if json_files_with_prefixes:
                     self.from_json_file(merge_json(json_files_with_prefixes))
                 else:
-                    print(f"Warning: No JSON files found in sections under {program_dir}")
+                    print(f"Warning: No JSON files found in {program_dir}")
             else:
                 print(f"Warning: Program directory not found: {program_dir}")
 
@@ -242,17 +252,17 @@ class EGraph:
     def add_pseudo_root(self):
         """Create virtual root nodes for each prefix and attach orphan eclasses.
         
-        For each prefix (format: {section}_{block_num}_eclass), create a virtual root node.
+        For each prefix (format: {program}_{block_num}_eclass), create a virtual root node.
         Attach orphan eclasses (no parents) to their corresponding prefix root.
         Finally, create a global root node that connects all prefix roots.
         
         - parent_enodes should store parent ENODE IDs (strings)
         - enode.children should store child ECLASS IDs (strings)
         """
-        # Extract prefix from eclass_id: format is {section}_{block_num}_eclass_{rest}
+        # Extract prefix from eclass_id: format is {program}_{block_num}_eclass_{rest}
         # We need to find the part before the first occurrence of pattern that ends with "_eclass_"
         def extract_prefix(eclass_id: str) -> Optional[str]:
-            # Pattern: {section}_{block_num}_eclass_{...}
+            # Pattern: {program}_{block_num}_eclass_{...}
             # We look for the first occurrence of "_eclass_" or ends with "_eclass"
             if "_eclass_" in eclass_id:
                 # Extract prefix up to and including "_eclass"
@@ -447,10 +457,10 @@ def analyze_differences(original: dict, with_roots: dict) -> None:
 
 def main(program_name=None):
     """
-    Main function to merge JSON files from saturation_output directory.
+    Main function to merge JSON files from output/frontend directory.
     
     Args:
-        program_name: Name of the program subdirectory in saturation_output/ (e.g., 'bitcnts_small_O3')
+        program_name: Name of the program subdirectory in output/frontend/ (e.g., 'bitcnts_small_O3')
     """
     if not program_name:
         print(f"No program name provided!")
@@ -464,14 +474,14 @@ def main(program_name=None):
     # Delete old merged.json if it exists
     clean_folder(target_dir)
     
-    # Collect all JSON files from sections/{section}/basic_blocks_json/
-    json_files_with_prefixes = collect_section_json_files(target_dir)
+    # Collect all JSON files from program directory
+    json_files_with_prefixes = collect_program_json_files(target_dir)
     if not json_files_with_prefixes:
-        print(f"No JSON files found in sections/*/basic_blocks_json/ under {target_dir}")
+        print(f"No JSON files found in {target_dir}")
         return
     
     merged_path = os.path.join(target_dir, "merged.json")
-    print(f"Found {len(json_files_with_prefixes)} JSON files across all sections:")
+    print(f"Found {len(json_files_with_prefixes)} JSON files:")
     for file_path, prefix in json_files_with_prefixes[:10]:  # Show first 10
         print(f"  - {prefix}: {os.path.basename(file_path)}")
     if len(json_files_with_prefixes) > 10:
@@ -501,8 +511,8 @@ def main(program_name=None):
     analyze_differences(original_result, result)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Merge JSON files from e-graph sections')
-    parser.add_argument('program_name', help='Name of the program subdirectory in saturation_output/ (e.g., bitcnts_small_O3)')
+    parser = argparse.ArgumentParser(description='Merge JSON files from e-graph programs')
+    parser.add_argument('program_name', help='Name of the program subdirectory in output/frontend/ (e.g., bitcnts_small_O3)')
     args = parser.parse_args()
     main(args.program_name)
 
