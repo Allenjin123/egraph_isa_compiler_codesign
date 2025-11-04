@@ -16,24 +16,24 @@
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-1": {
+    "primitive-String-2": {
       "op": "\"%pcrel_hi(print_path)\"",
       "children": [],
-      "eclass": "String-1",
+      "eclass": "String-2",
       "cost": 1.0,
       "subsumed": false
     },
     "function-0-ImmLabel": {
       "op": "ImmLabel",
       "children": [
-        "primitive-String-1"
+        "primitive-String-2"
       ],
       "eclass": "Imm-3",
       "cost": 1.0,
       "subsumed": false
     },
     "primitive-String-3": {
-      "op": "\"ra_0\"",
+      "op": "\"%pcrel_lo(.Lpcrel_13)\"",
       "children": [],
       "eclass": "String-3",
       "cost": 1.0,
@@ -44,7 +44,7 @@
       "children": [
         "primitive-String-3"
       ],
-      "eclass": "Imm-6",
+      "eclass": "Imm-5",
       "cost": 1.0,
       "subsumed": false
     },
@@ -60,10 +60,10 @@
     "function-0-Jalr": {
       "op": "Jalr",
       "children": [
-        "function-1-RegVal",
+        "function-0-Auipc",
         "function-1-ImmLabel"
       ],
-      "eclass": "Inst-7",
+      "eclass": "Inst-6",
       "cost": 1.0,
       "subsumed": false
     },
@@ -77,35 +77,19 @@
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-String-0": {
+    "primitive-String-1": {
       "op": "\"s5_0\"",
       "children": [],
-      "eclass": "String-0",
+      "eclass": "String-1",
       "cost": 1.0,
       "subsumed": false
     },
     "function-0-RegVal": {
       "op": "RegVal",
       "children": [
-        "primitive-String-0"
+        "primitive-String-1"
       ],
       "eclass": "Inst-0",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "primitive-String-2": {
-      "op": "\"%pcrel_lo(.Lpcrel_13)\"",
-      "children": [],
-      "eclass": "String-2",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-1-RegVal": {
-      "op": "RegVal",
-      "children": [
-        "primitive-String-2"
-      ],
-      "eclass": "Inst-5",
       "cost": 1.0,
       "subsumed": false
     }
@@ -121,10 +105,10 @@
     "Imm-3": {
       "type": "Imm"
     },
-    "String-1": {
+    "String-2": {
       "type": "String"
     },
-    "Imm-6": {
+    "Imm-5": {
       "type": "Imm"
     },
     "String-3": {
@@ -133,10 +117,7 @@
     "Inst-4": {
       "type": "Inst"
     },
-    "Inst-7": {
-      "type": "Inst"
-    },
-    "Inst-5": {
+    "Inst-6": {
       "type": "Inst"
     },
     "Inst-2": {
@@ -145,10 +126,7 @@
     "Inst-0": {
       "type": "Inst"
     },
-    "String-0": {
-      "type": "String"
-    },
-    "String-2": {
+    "String-1": {
       "type": "String"
     }
   }

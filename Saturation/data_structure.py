@@ -239,6 +239,14 @@ class text_inst():
                     if len(ops) >= 2:
                         imm = cls.parse_immediate(ops[1])
 
+                # Greenthumb pseudo-instructions (2-register)
+                case 'neg' | 'not' | 'seqz' | 'snez':
+                    ops = [op.strip() for op in operands.split(',')]
+                    if len(ops) >= 1:
+                        rd = ops[0]
+                    if len(ops) >= 2:
+                        rs1 = ops[1]
+
                 # R-type instructions (RV32I base)
                 case 'add' | 'sub' | 'slt' | 'sltu' | 'and' | 'or' | 'xor' | 'sll' | 'srl' | 'sra':
                     ops = [op.strip() for op in operands.split(',')]
