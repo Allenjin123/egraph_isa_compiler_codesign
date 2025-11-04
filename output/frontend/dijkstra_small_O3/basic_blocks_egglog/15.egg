@@ -1,6 +1,6 @@
 ; EGraph for dijkstra_small_O3 - Block 15
 ; Total instructions: 28
-; Input registers: 5, Output registers: 23
+; Input registers: 6, Output registers: 23
 
 (include "../../../../Saturation/base.egg")
 
@@ -8,6 +8,7 @@
 (let a0_0 (RegVal "a0_0"))
 (let a1_0 (RegVal "a1_0"))
 (let a2_0 (RegVal "a2_0"))
+(let ra_0 (RegVal "ra_0"))
 (let t3 (RegVal "t3"))
 (let t4 (RegVal "t4"))
 
@@ -96,8 +97,8 @@
 ;; Step 27:     sw rs1=t4 rs2=a3_1 imm=%lo(qRear)
 (let inst_26 (Sw t4 a3_1_val (ImmLabel "%lo(qRear)")))
 
-;; Step 28:     jalr rd=zero_0 rs1=0 imm=ra_0
-(let zero_0_val (Jalr (RegVal "0") (ImmLabel "ra_0")))
+;; Step 28:     jalr rd=zero_0 rs1=ra_0 imm=0
+(let zero_0_val (Jalr ra_0 (ImmVal 0)))
 
 ; ============================================
 ; Run saturation to apply rewrite rules

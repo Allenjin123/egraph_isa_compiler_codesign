@@ -167,26 +167,28 @@ class text_inst():
                         imm = cls.parse_immediate(ops[1])
 
                 # J-type: jal
+                # Enforces strict format: jal rd, offset
                 case 'jal':
                     ops = [op.strip() for op in operands.split(',')]
-                    if len(ops) == 1:  # jal offset (treat as branch/jump)
-                        imm = cls.parse_immediate(ops[0], is_branch_or_jump=True)
-                    elif len(ops) == 2:  # jal rd, offset
-                        rd = ops[0]
-                        imm = cls.parse_immediate(ops[1], is_branch_or_jump=True)
+                    if len(ops) != 2:
+                        raise ValueError(
+                            f"jal instruction must have format 'jal rd, offset', got: '{operands}'"
+                        )
+                    rd = ops[0]
+                    imm = cls.parse_immediate(ops[1], is_branch_or_jump=True)
 
                 # J-type: jalr
-                # Format: jalr rd, imm, rs1 (offset comes before base register)
+                # Format: jalr rd, rs1, offset (standard RISC-V format)
                 case 'jalr':
                     ops = [op.strip() for op in operands.split(',')]
                     if len(ops) >= 1:
                         rd = ops[0]
                     if len(ops) >= 2:
-                        # ops[1] is the immediate offset
-                        imm = cls.parse_immediate(ops[1], is_branch_or_jump=True)
+                        # ops[1] is the base register
+                        rs1 = ops[1]
                     if len(ops) >= 3:
-                        # ops[2] is the base register
-                        rs1 = ops[2]
+                        # ops[2] is the immediate offset
+                        imm = cls.parse_immediate(ops[2], is_branch_or_jump=True)
 
                 # Pseudo branch instructions
                 case 'beqz' | 'bnez':

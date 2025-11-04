@@ -3,4 +3,4 @@ sw a7_0, 8(sp_0); Inst-8
 sw a6_0, 4(sp_0); Inst-10
 sw a2_0, 0(sp_0); Inst-12
 auipc ra_0, %pcrel_hi(print_path); Inst-14
-jalr ra_1, ra_0, %pcrel_lo(.Lpcrel_5); Inst-17
+jalr ra_1, ra_0, %pcrel_lo(.Lpcrel_5); Inst-16

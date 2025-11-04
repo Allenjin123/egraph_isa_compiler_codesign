@@ -51,140 +51,147 @@ def convert_instruction_to_egglog(inst: text_inst, reg_values: dict) -> tuple:
             raise ValueError(f"Invalid immediate type {type(imm_value)} for instruction: {inst}")
 
 
-    # Handle special cases and pseudo-instructions
-    if op == 'li':  # li rd, imm -> LoadImm
-        if not inst.rd:
-            raise ValueError(f"li instruction missing rd: {inst}")
-        if inst.imm is None:
-            raise ValueError(f"li instruction missing imm: {inst}")
-        return inst.rd, f"(LoadImm {format_imm(inst.imm)})"
-    elif op == 'mv':  # mv rd, rs -> addi rd, rs, 0
-        if not inst.rd:
-            raise ValueError(f"mv instruction missing rd: {inst}")
-        if not inst.rs1:
-            raise ValueError(f"mv instruction missing rs1: {inst}")
-        return inst.rd, f"(Addi {get_reg_ref(inst.rs1)} (ImmVal 0))"
-    elif op == 'ret':  # ret -> jalr x0, ra, 0
-        # ret uses ra_0 which should be an input register
-        return None, f"(Jalr {get_reg_ref('ra_0')} (ImmVal 0))"
+    # Convert instruction to egglog using pattern matching
+    match op:
+        # Pseudo instruction: li rd, imm -> LoadImm
+        case 'li':
+            if not inst.rd:
+                raise ValueError(f"li instruction missing rd: {inst}")
+            if inst.imm is None:
+                raise ValueError(f"li instruction missing imm: {inst}")
+            return inst.rd, f"(LoadImm {format_imm(inst.imm)})"
 
-    # Register-Register instructions (R-type)
-    elif op in ['add', 'sub', 'and', 'or', 'xor', 'sll', 'srl', 'sra', 'slt', 'sltu']:
-        if not inst.rd:
-            raise ValueError(f"{op} instruction missing rd: {inst}")
-        if not inst.rs1:
-            raise ValueError(f"{op} instruction missing rs1: {inst}")
-        if not inst.rs2:
-            raise ValueError(f"{op} instruction missing rs2: {inst}")
-        return inst.rd, f"({op.capitalize()} {get_reg_ref(inst.rs1)} {get_reg_ref(inst.rs2)})"
-    elif op in ['mul', 'mulh', 'mulhsu', 'mulhu', 'div', 'divu', 'rem', 'remu']:
-        if not inst.rd:
-            raise ValueError(f"{op} instruction missing rd: {inst}")
-        if not inst.rs1:
-            raise ValueError(f"{op} instruction missing rs1: {inst}")
-        if not inst.rs2:
-            raise ValueError(f"{op} instruction missing rs2: {inst}")
-        return inst.rd, f"({op.capitalize()} {get_reg_ref(inst.rs1)} {get_reg_ref(inst.rs2)})"
+        # Pseudo instruction: mv rd, rs -> addi rd, rs, 0
+        case 'mv':
+            if not inst.rd:
+                raise ValueError(f"mv instruction missing rd: {inst}")
+            if not inst.rs1:
+                raise ValueError(f"mv instruction missing rs1: {inst}")
+            return inst.rd, f"(Addi {get_reg_ref(inst.rs1)} (ImmVal 0))"
 
-    # Register-Immediate instructions (I-type)
-    elif op in ['addi', 'slti', 'sltiu', 'xori', 'ori', 'andi']:
-        if not inst.rd:
-            raise ValueError(f"{op} instruction missing rd: {inst}")
-        if not inst.rs1:
-            raise ValueError(f"{op} instruction missing rs1: {inst}")
-        if inst.imm is None:
-            raise ValueError(f"{op} instruction missing imm: {inst}")
-        return inst.rd, f"({op.capitalize()} {get_reg_ref(inst.rs1)} {format_imm(inst.imm)})"
-    elif op in ['slli', 'srli', 'srai']:
-        if not inst.rd:
-            raise ValueError(f"{op} instruction missing rd: {inst}")
-        if not inst.rs1:
-            raise ValueError(f"{op} instruction missing rs1: {inst}")
-        if inst.imm is None:
-            raise ValueError(f"{op} instruction missing imm: {inst}")
-        return inst.rd, f"({op.capitalize()} {get_reg_ref(inst.rs1)} {format_imm(inst.imm)})"
+        # Pseudo instruction: ret -> jalr x0, ra, 0
+        case 'ret':
+            # ret uses ra_0 which should be an input register
+            return None, f"(Jalr {get_reg_ref('ra_0')} (ImmVal 0))"
 
-    # Load instructions
-    elif op in ['lw', 'lh', 'lb', 'lhu', 'lbu']:
-        if not inst.rd:
-            raise ValueError(f"{op} instruction missing rd: {inst}")
-        if not inst.rs1:
-            raise ValueError(f"{op} instruction missing rs1: {inst}")
-        if inst.imm is None:
-            raise ValueError(f"{op} instruction missing imm: {inst}")
-        op_map = {'lw': 'Lw', 'lh': 'Lh', 'lb': 'Lb', 'lhu': 'Lhu', 'lbu': 'Lbu'}
-        return inst.rd, f"({op_map[op]} {get_reg_ref(inst.rs1)} {format_imm(inst.imm)})"
+        # R-type instructions (RV32I base)
+        case 'add' | 'sub' | 'and' | 'or' | 'xor' | 'sll' | 'srl' | 'sra' | 'slt' | 'sltu':
+            if not inst.rd:
+                raise ValueError(f"{op} instruction missing rd: {inst}")
+            if not inst.rs1:
+                raise ValueError(f"{op} instruction missing rs1: {inst}")
+            if not inst.rs2:
+                raise ValueError(f"{op} instruction missing rs2: {inst}")
+            return inst.rd, f"({op.capitalize()} {get_reg_ref(inst.rs1)} {get_reg_ref(inst.rs2)})"
 
-    # Store instructions
-    elif op in ['sw', 'sh', 'sb']:
-        if not inst.rs2:
-            raise ValueError(f"{op} instruction missing rs2: {inst}")
-        if not inst.rs1:
-            raise ValueError(f"{op} instruction missing rs1: {inst}")
-        if inst.imm is None:
-            raise ValueError(f"{op} instruction missing imm: {inst}")
-        op_map = {'sw': 'Sw', 'sh': 'Sh', 'sb': 'Sb'}
-        # Note: Store doesn't produce a result
-        return None, f"({op_map[op]} {get_reg_ref(inst.rs1)} {get_reg_ref(inst.rs2)} {format_imm(inst.imm)})"
+        # R-type instructions (RV32M extension)
+        case 'mul' | 'mulh' | 'mulhsu' | 'mulhu' | 'div' | 'divu' | 'rem' | 'remu':
+            if not inst.rd:
+                raise ValueError(f"{op} instruction missing rd: {inst}")
+            if not inst.rs1:
+                raise ValueError(f"{op} instruction missing rs1: {inst}")
+            if not inst.rs2:
+                raise ValueError(f"{op} instruction missing rs2: {inst}")
+            return inst.rd, f"({op.capitalize()} {get_reg_ref(inst.rs1)} {get_reg_ref(inst.rs2)})"
 
-    # Upper immediate instructions
-    elif op == 'lui':
-        if not inst.rd:
-            raise ValueError(f"lui instruction missing rd: {inst}")
-        if inst.imm is None:
-            raise ValueError(f"lui instruction missing imm: {inst}")
-        return inst.rd, f"(Lui {format_imm(inst.imm)})"
-    elif op == 'auipc':
-        if not inst.rd:
-            raise ValueError(f"auipc instruction missing rd: {inst}")
-        if inst.imm is None:
-            raise ValueError(f"auipc instruction missing imm: {inst}")
-        return inst.rd, f"(Auipc {format_imm(inst.imm)})"
+        # I-type arithmetic/logic instructions
+        case 'addi' | 'slti' | 'sltiu' | 'xori' | 'ori' | 'andi' | 'slli' | 'srli' | 'srai':
+            if not inst.rd:
+                raise ValueError(f"{op} instruction missing rd: {inst}")
+            if not inst.rs1:
+                raise ValueError(f"{op} instruction missing rs1: {inst}")
+            if inst.imm is None:
+                raise ValueError(f"{op} instruction missing imm: {inst}")
+            return inst.rd, f"({op.capitalize()} {get_reg_ref(inst.rs1)} {format_imm(inst.imm)})"
 
-    # Branch instructions
-    elif op in ['beq', 'bne', 'blt', 'bge', 'bltu', 'bgeu']:
-        if not inst.rs1:
-            raise ValueError(f"{op} instruction missing rs1: {inst}")
-        if not inst.rs2:
-            raise ValueError(f"{op} instruction missing rs2: {inst}")
-        if inst.imm is None:
-            raise ValueError(f"{op} instruction missing imm: {inst}")
-        return None, f"({op.capitalize()} {get_reg_ref(inst.rs1)} {get_reg_ref(inst.rs2)} {format_imm(inst.imm)})"
-    elif op == 'bnez':  # bnez rs, imm -> bne rs, x0, imm
-        if not inst.rs1:
-            raise ValueError(f"bnez instruction missing rs1: {inst}")
-        if inst.imm is None:
-            raise ValueError(f"bnez instruction missing imm: {inst}")
-        return None, f"(Bne {get_reg_ref(inst.rs1)} (RegVal \"x0\") {format_imm(inst.imm)})"
-    elif op == 'beqz':  # beqz rs, imm -> beq rs, x0, imm
-        if not inst.rs1:
-            raise ValueError(f"beqz instruction missing rs1: {inst}")
-        if inst.imm is None:
-            raise ValueError(f"beqz instruction missing imm: {inst}")
-        return None, f"(Beq {get_reg_ref(inst.rs1)} (RegVal \"x0\") {format_imm(inst.imm)})"
+        # Load instructions
+        case 'lw' | 'lh' | 'lb' | 'lhu' | 'lbu':
+            if not inst.rd:
+                raise ValueError(f"{op} instruction missing rd: {inst}")
+            if not inst.rs1:
+                raise ValueError(f"{op} instruction missing rs1: {inst}")
+            if inst.imm is None:
+                raise ValueError(f"{op} instruction missing imm: {inst}")
+            op_map = {'lw': 'Lw', 'lh': 'Lh', 'lb': 'Lb', 'lhu': 'Lhu', 'lbu': 'Lbu'}
+            return inst.rd, f"({op_map[op]} {get_reg_ref(inst.rs1)} {format_imm(inst.imm)})"
 
-    # Jump instructions
-    elif op == 'jal':
-        if not inst.rd:
-            raise ValueError(f"jal instruction missing rd: {inst}")
-        if inst.imm is None:
-            raise ValueError(f"jal instruction missing imm: {inst}")
-        return inst.rd, f"(Jal {format_imm(inst.imm)})"
-    elif op == 'jalr':
-        if not inst.rd:
-            raise ValueError(f"jalr instruction missing rd: {inst}")
-        if not inst.rs1:
-            raise ValueError(f"jalr instruction missing rs1: {inst}")
-        if inst.imm is None:
-            raise ValueError(f"jalr instruction missing imm: {inst}")
-        return inst.rd, f"(Jalr {get_reg_ref(inst.rs1)} {format_imm(inst.imm)})"
-    elif op == 'j':  # j imm -> jal x0, imm
-        if inst.imm is None:
-            raise ValueError(f"j instruction missing imm: {inst}")
-        return None, f"(Jal {format_imm(inst.imm)})"
+        # Store instructions
+        case 'sw' | 'sh' | 'sb':
+            if not inst.rs2:
+                raise ValueError(f"{op} instruction missing rs2: {inst}")
+            if not inst.rs1:
+                raise ValueError(f"{op} instruction missing rs1: {inst}")
+            if inst.imm is None:
+                raise ValueError(f"{op} instruction missing imm: {inst}")
+            op_map = {'sw': 'Sw', 'sh': 'Sh', 'sb': 'Sb'}
+            # Note: Store doesn't produce a result
+            return None, f"({op_map[op]} {get_reg_ref(inst.rs1)} {get_reg_ref(inst.rs2)} {format_imm(inst.imm)})"
 
-    # For unsupported instructions, raise an error instead of silently marking as unsupported
-    raise ValueError(f"Unsupported or improperly parsed instruction: {inst}")
+        # Upper immediate instructions
+        case 'lui':
+            if not inst.rd:
+                raise ValueError(f"lui instruction missing rd: {inst}")
+            if inst.imm is None:
+                raise ValueError(f"lui instruction missing imm: {inst}")
+            return inst.rd, f"(Lui {format_imm(inst.imm)})"
+
+        case 'auipc':
+            if not inst.rd:
+                raise ValueError(f"auipc instruction missing rd: {inst}")
+            if inst.imm is None:
+                raise ValueError(f"auipc instruction missing imm: {inst}")
+            return inst.rd, f"(Auipc {format_imm(inst.imm)})"
+
+        # B-type branch instructions
+        case 'beq' | 'bne' | 'blt' | 'bge' | 'bltu' | 'bgeu':
+            if not inst.rs1:
+                raise ValueError(f"{op} instruction missing rs1: {inst}")
+            if not inst.rs2:
+                raise ValueError(f"{op} instruction missing rs2: {inst}")
+            if inst.imm is None:
+                raise ValueError(f"{op} instruction missing imm: {inst}")
+            return None, f"({op.capitalize()} {get_reg_ref(inst.rs1)} {get_reg_ref(inst.rs2)} {format_imm(inst.imm)})"
+
+        # Pseudo branch instructions
+        case 'bnez':  # bnez rs, imm -> bne rs, x0, imm
+            if not inst.rs1:
+                raise ValueError(f"bnez instruction missing rs1: {inst}")
+            if inst.imm is None:
+                raise ValueError(f"bnez instruction missing imm: {inst}")
+            return None, f"(Bne {get_reg_ref(inst.rs1)} (RegVal \"x0\") {format_imm(inst.imm)})"
+
+        case 'beqz':  # beqz rs, imm -> beq rs, x0, imm
+            if not inst.rs1:
+                raise ValueError(f"beqz instruction missing rs1: {inst}")
+            if inst.imm is None:
+                raise ValueError(f"beqz instruction missing imm: {inst}")
+            return None, f"(Beq {get_reg_ref(inst.rs1)} (RegVal \"x0\") {format_imm(inst.imm)})"
+
+        # Jump instructions
+        case 'jal':
+            if not inst.rd:
+                raise ValueError(f"jal instruction missing rd: {inst}")
+            if inst.imm is None:
+                raise ValueError(f"jal instruction missing imm: {inst}")
+            return inst.rd, f"(Jal {format_imm(inst.imm)})"
+
+        case 'jalr':
+            if not inst.rd:
+                raise ValueError(f"jalr instruction missing rd: {inst}")
+            if not inst.rs1:
+                raise ValueError(f"jalr instruction missing rs1: {inst}")
+            if inst.imm is None:
+                raise ValueError(f"jalr instruction missing imm: {inst}")
+            return inst.rd, f"(Jalr {get_reg_ref(inst.rs1)} {format_imm(inst.imm)})"
+
+        case 'j':  # j imm -> jal x0, imm
+            if inst.imm is None:
+                raise ValueError(f"j instruction missing imm: {inst}")
+            return None, f"(Jal {format_imm(inst.imm)})"
+
+        # Unknown instruction - raise error
+        case _:
+            raise ValueError(f"Unsupported or improperly parsed instruction: {inst}")
 
 
 def process_basic_block_to_egglog(block: text_basic_block, program_name: str = "") -> str:
