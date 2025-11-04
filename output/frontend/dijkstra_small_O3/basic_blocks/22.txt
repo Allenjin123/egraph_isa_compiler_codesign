@@ -1,4 +1,0 @@
-	lui	a5,%hi(ch)
-	addi	s0, zero, 100
-	sw	s0,%lo(ch)(a5)
-	beq	a0,a3,.L45
