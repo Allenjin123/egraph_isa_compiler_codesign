@@ -28,7 +28,7 @@ def run_egglog_get_eclasses(egg_file_path, egglog_binary='/home/allenjin/egglog/
         # Run egglog and capture stdout
         # Run from the egg file's directory and use just the filename
         result = subprocess.run(
-            [egglog_binary, egg_file_path.name],
+            [egglog_binary, '--max-functions', '1000', '--max-calls-per-function', '1000', egg_file_path.name],
             capture_output=True,
             text=True,
             timeout=300,  # 5 minute timeout per file
