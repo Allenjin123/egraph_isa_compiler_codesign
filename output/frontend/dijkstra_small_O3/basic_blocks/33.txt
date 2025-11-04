@@ -1,5 +1,0 @@
-	lw	s6,48(sp)
-	lw	s7,44(sp)
-	lw	s10,32(sp)
-	lw	s11,28(sp)
-	sw	a4,%lo(qRear)(s9)
