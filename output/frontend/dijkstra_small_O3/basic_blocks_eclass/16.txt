@@ -1,3 +1,0 @@
-lui a7_0, %hi(g_qCount); Inst-3
-lw a5_0, %lo(g_qCount)(a7); Inst-5
-bge zero_0, a5_0, .L17; Inst-7

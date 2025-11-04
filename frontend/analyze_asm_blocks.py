@@ -7,8 +7,9 @@ Traverse from beginning to end, identify basic blocks, numbered from 0
 import os
 import re
 import sys
+import json
 from pathlib import Path
-from typing import List, Set, Optional, Tuple
+from typing import List, Set, Optional, Tuple, Dict
 
 # Add current directory to path for imports
 CURRENT_DIR = Path(__file__).resolve().parent
@@ -153,9 +154,11 @@ class AsmBlockAnalyzer:
         
         return targets
     
-    def split_into_basic_blocks(self, asm_file: Path) -> List[List[str]]:
+    def split_into_basic_blocks(self, asm_file: Path) -> Tuple[List[List[str]], Dict[str, int]]:
         """Split assembly file into basic blocks
-        Returns: List of basic blocks, each block is a list of instruction lines
+        Returns: 
+            - List of basic blocks, each block is a list of instruction lines
+            - Dict mapping label names to block IDs
         """
         with open(asm_file, 'r', encoding='utf-8', errors='ignore') as f:
             lines = f.readlines()
@@ -219,6 +222,8 @@ class AsmBlockAnalyzer:
         block_starts = sorted(block_starts)
         basic_blocks = []
         
+        # Create mapping from instruction index to block ID
+        instr_idx_to_block = {}
         for i in range(len(block_starts)):
             start = block_starts[i]
             end = block_starts[i + 1] if i + 1 < len(block_starts) else len(instruction_indices)
@@ -226,6 +231,7 @@ class AsmBlockAnalyzer:
             block_lines = []
             for j in range(start, end):
                 block_lines.append(lines[instruction_indices[j]])
+                instr_idx_to_block[j] = i  # Map instruction index to block ID
             
             if not block_lines:
                 raise ValueError(
@@ -236,10 +242,17 @@ class AsmBlockAnalyzer:
             
             basic_blocks.append(block_lines)
         
+        # Step 5: Create label to block mapping
+        label_to_block = {}
+        for label, instr_idx in label_to_idx.items():
+            if instr_idx in instr_idx_to_block:
+                label_to_block[label] = instr_idx_to_block[instr_idx]
+        
         if self.verbose:
             print(f"  Split into {len(basic_blocks)} basic blocks")
+            print(f"  Found {len(label_to_block)} labels mapping to blocks")
         
-        return basic_blocks
+        return basic_blocks, label_to_block
     
     def analyze_asm_file(self, asm_file: Path, output_dir: Path):
         """Analyze one .s file and output basic blocks
@@ -252,7 +265,7 @@ class AsmBlockAnalyzer:
             print(f"\nAnalyzing: {asm_file}")
         
         # Split into basic blocks
-        basic_blocks = self.split_into_basic_blocks(asm_file)
+        basic_blocks, label_to_block = self.split_into_basic_blocks(asm_file)
         
         if not basic_blocks:
             print(f"  Warning: No basic blocks found in {asm_file}")
@@ -268,7 +281,13 @@ class AsmBlockAnalyzer:
                 for line in block:
                     f.write(line)
         
+        # Save label to block mapping
+        label_mapping_file = output_dir.parent / "label_to_block.json"
+        with open(label_mapping_file, 'w', encoding='utf-8') as f:
+            json.dump(label_to_block, f, indent=2, ensure_ascii=False)
+        
         print(f"  ✓ Created {len(basic_blocks)} basic blocks in {output_dir}")
+        print(f"  ✓ Saved label mapping ({len(label_to_block)} labels) to {label_mapping_file.name}")
         
         return len(basic_blocks)
 
