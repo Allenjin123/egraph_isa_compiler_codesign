@@ -5,13 +5,11 @@ This conversion is local to each basic block - no phi nodes needed.
 Each register assignment gets a unique version number.
 """
 
-import os
-import re
 import argparse
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Set
 
-from util import is_register, analyze_instruction
+from util import is_register, analyze_instruction, parse_instruction
 
 class SSAConverter:
     """Convert RISC-V assembly basic blocks to SSA form"""
@@ -39,75 +37,27 @@ class SSAConverter:
             self.register_versions[reg] = 0
         return f"{reg}_{self.register_versions[reg]}"
 
-    def parse_instruction_parts(self, line: str) -> Tuple[str, List[str], Optional[str]]:
+    def convert_operand_to_ssa(self, operand: str, use_regs: Set[str]) -> str:
         """
-        Parse instruction into opcode, operands, and comment.
-
-        Returns:
-            Tuple of (opcode, operands_list, comment)
-        """
-        # Remove leading/trailing whitespace
-        line = line.strip()
-        if not line:
-            return "", [], None
-
-        # Extract comment if present
-        comment = None
-        if '#' in line:
-            parts = line.split('#', 1)
-            line = parts[0].strip()
-            comment = '#' + parts[1]
-
-        # Split into opcode and operands
-        parts = line.split(None, 1)
-        if not parts:
-            return "", [], comment
-
-        opcode = parts[0]
-        operands_str = parts[1] if len(parts) > 1 else ""
-
-        # Parse operands
-        operands = []
-        if operands_str:
-            # Handle memory operations like "0(sp)" but preserve special formats like %pcrel_hi(symbol)
-            # Split by comma first to separate different operands
-            raw_operands = [op.strip() for op in operands_str.split(',')]
-            for op in raw_operands:
-                # Check if this operand contains memory access format: offset(register)
-                # But not special formats like %pcrel_hi(symbol) or %hi(symbol)
-                if '(' in op and ')' in op and not op.startswith('%'):
-                    # Memory access format: split into offset and register
-                    parts = op.replace('(', ',').replace(')', '').split(',')
-                    operands.extend([p.strip() for p in parts if p.strip()])
-                else:
-                    # Keep as-is (includes %pcrel_hi(symbol), %hi(symbol), %lo(symbol), etc.)
-                    if op:
-                        operands.append(op)
-
-        return opcode, operands, comment
-
-    def is_register(self, s: str) -> bool:
-        """Check if a string is a register name"""
-        return is_register(s)
-
-    def identify_def_use_registers(self, opcode: str, operands: List[str]) -> Tuple[Optional[str], List[str]]:
-        """
-        Identify which registers are defined (written) and used (read) by an instruction.
-        Uses util.analyze_instruction for standard RV32IM instructions.
-
-        Returns:
-            Tuple of (def_register, [use_registers])
-        """
-        # Use the util module's analyze_instruction function
-        use_regs_set, def_regs_set = analyze_instruction(opcode, operands)
+        Convert a single operand to SSA form.
         
-        # Convert sets to the expected format
-        # def_reg: single register or None
-        def_reg = list(def_regs_set)[0] if def_regs_set else None
-        # use_regs: list of registers
-        use_regs = list(use_regs_set)
-        
-        return def_reg, use_regs
+        Args:
+            operand: Original operand (register, immediate, or symbol)
+            use_regs: Set of registers being used in this instruction
+            
+        Returns:
+            SSA version of the operand
+        """
+        if is_register(operand):
+            # Simple register - convert to SSA version if it's being used
+            if operand in use_regs:
+                return self.get_current_version(operand)
+            else:
+                # Not used, keep as-is (shouldn't happen normally)
+                return operand
+        else:
+            # Not a register - keep as-is (immediate, label, %hi(symbol), etc.)
+            return operand
 
     def convert_instruction_to_ssa(self, line: str) -> str:
         """
@@ -119,68 +69,78 @@ class SSAConverter:
         Returns:
             Instruction with SSA register names
         """
-        # Parse the instruction
-        opcode, operands, comment = self.parse_instruction_parts(line)
+        # Parse the instruction using util.parse_instruction
+        opcode, operands = parse_instruction(line)
 
         if not opcode:
             return line
 
-        # Identify def and use registers
-        def_reg, use_regs = self.identify_def_use_registers(opcode, operands)
+        # Analyze def/use registers
+        use_regs_set, def_regs_set = analyze_instruction(opcode, operands)
+        
+        # Get def register (at most one)
+        def_reg = list(def_regs_set)[0] if def_regs_set else None
+
+        # Special handling for registers that are both defined and used
+        # e.g., "addi sp, sp, -16" - the def should get new version, use should get old version
+        if def_reg and def_reg in use_regs_set:
+            # Record the version to use for "use" occurrences (before incrementing)
+            use_version = self.get_current_version(def_reg)
+        else:
+            use_version = None
 
         # Convert operands to SSA form
         ssa_operands = []
         for i, operand in enumerate(operands):
-            if self.is_register(operand):
-                # Check if this is the defining occurrence
-                if operand == def_reg and i == 0:  # Definition is typically first operand
-                    # But first check if it's also used (like in addi sp, sp, -16)
-                    if operand in use_regs:
-                        # Get current version for use in the computation
-                        use_version = self.get_current_version(operand)
-                        # Now create new version for definition
-                        def_version = self.get_next_version(operand)
-                        ssa_operands.append(def_version)
+            if is_register(operand):
+                # First operand is usually the definition
+                if operand == def_reg and i == 0:
+                    # Create new version for definition
+                    # If it's also used, we already recorded the old version above
+                    ssa_operands.append(self.get_next_version(operand))
+                elif operand in use_regs_set:
+                    # Register is being used
+                    if operand == def_reg and use_version is not None:
+                        # This is the def reg being used - use the old version we recorded
+                        ssa_operands.append(use_version)
                     else:
-                        # Just a definition
-                        ssa_operands.append(self.get_next_version(operand))
-                elif operand in use_regs:
-                    # This is a use
-                    ssa_operands.append(self.get_current_version(operand))
+                        # Normal use
+                        ssa_operands.append(self.get_current_version(operand))
                 else:
-                    # Register not used or defined (shouldn't happen usually)
-                    ssa_operands.append(operand)
+                    # This shouldn't happen - every register should be in use or def sets
+                    raise ValueError(f"Register {operand} in instruction '{line}' not in use/def sets")
             else:
-                # Not a register (immediate, label, etc.)
+                # Not a register - keep as-is
                 ssa_operands.append(operand)
 
-        # Special case: for instructions like "addi sp, sp, -16", fix the second operand
-        if def_reg and def_reg in use_regs:
-            # Find uses of the defined register and use previous version
-            for i in range(1, len(operands)):  # Skip first (definition)
-                if operands[i] == def_reg and self.is_register(operands[i]):
-                    # Use the previous version (current - 1)
-                    version_num = self.register_versions[def_reg] - 1
-                    if version_num >= 0:
-                        ssa_operands[i] = f"{def_reg}_{version_num}"
-
         # Reconstruct the instruction
-        if ssa_operands:
-            # Handle memory operation format
-            if opcode in ['lw', 'lh', 'lb', 'lhu', 'lbu', 'sw', 'sh', 'sb'] and len(ssa_operands) >= 3:
-                # Reconstruct as "op rd, imm(rs)" format
-                result = f"{opcode} {ssa_operands[0]}, {ssa_operands[1]}({ssa_operands[2]})"
-            else:
-                result = f"{opcode} " + ", ".join(ssa_operands)
-        else:
+        return self.reconstruct_instruction(opcode, ssa_operands)
+
+    def reconstruct_instruction(self, opcode: str, operands: List[str]) -> str:
+        """
+        Reconstruct instruction from opcode and SSA operands.
+        
+        Args:
+            opcode: Instruction mnemonic
+            operands: List of SSA operands (already parsed by parse_instruction)
             
-            result = opcode
-
-        # # Add comment back if present
-        # if comment:
-        #     result = result + "  " + comment
-
-        return result
+        Returns:
+            Formatted instruction string
+        """
+        if not operands:
+            return opcode
+        
+        # For load/store instructions with 3 operands: rd/rs, offset, base_reg
+        # Reconstruct as "opcode rd/rs, offset(base_reg)"
+        if opcode in ['lw', 'lh', 'lb', 'lhu', 'lbu', 'sw', 'sh', 'sb']:
+            if len(operands) == 3:
+                return f"{opcode} {operands[0]}, {operands[1]}({operands[2]})"
+            elif len(operands) == 2:
+                # Just rd/rs and offset (no base register)
+                return f"{opcode} {operands[0]}, {operands[1]}"
+        
+        # For all other instructions, join with commas
+        return f"{opcode} " + ", ".join(operands)
 
     def convert_block_to_ssa(self, lines: List[str]) -> List[str]:
         """
