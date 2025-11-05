@@ -1,0 +1,470 @@
+;; ============================================
+;; BASE.EGG - Shared RV32IM ISA Definitions
+;; ============================================
+;; This file contains:
+;; 1. Complete RV32IM instruction set definitions
+;; 2. Common data types (immediates)
+;; 3. Standard rewrite rules for optimization
+;; ============================================
+;; Note: Registers are declared per-block in SSA form
+
+;; ============================================
+;; DATA TYPES
+;; ============================================
+
+;; Immediate values
+(datatype Imm (ImmVal i64) (ImmLabel String))
+;; ============================================
+;; RV32I BASE INTEGER INSTRUCTIONS
+;; ============================================
+
+(datatype Inst
+    ;; === Immediate Instructions (U-type) ===
+    (Lui   Imm)               ; rd = imm << 12
+    (Auipc Imm)               ; rd = PC + (imm << 12)
+
+    ;; === Jump Instructions ===
+    (Jal   Imm)               ; rd = PC + 4; PC = PC + offset
+    (Jalr  Inst Imm)          ; rd = PC + 4; PC = (rs1 + offset) & ~1
+
+    ;; === Branch Instructions (B-type) ===
+    (Beq   Inst Inst Imm)    ; if (rs1 == rs2) PC += offset
+    (Bne   Inst Inst Imm)    ; if (rs1 != rs2) PC += offset
+    (Blt   Inst Inst Imm)    ; if (rs1 < rs2) PC += offset (signed)
+    (Bge   Inst Inst Imm)    ; if (rs1 >= rs2) PC += offset (signed)
+    (Bltu  Inst Inst Imm)    ; if (rs1 < rs2) PC += offset (unsigned)
+    (Bgeu  Inst Inst Imm)    ; if (rs1 >= rs2) PC += offset (unsigned)
+
+    ;; === Load Instructions (I-type) ===
+    (Lb    Inst Imm)          ; rd = sign_ext(M[rs1 + offset][7:0])
+    (Lh    Inst Imm)          ; rd = sign_ext(M[rs1 + offset][15:0])
+    (Lw    Inst Imm)          ; rd = M[rs1 + offset][31:0]
+    (Lbu   Inst Imm)          ; rd = zero_ext(M[rs1 + offset][7:0])
+    (Lhu   Inst Imm)          ; rd = zero_ext(M[rs1 + offset][15:0])
+
+    ;; === Store Instructions (S-type) ===
+    (Sb    Inst Inst Imm)     ; M[rs1 + offset][7:0] = rs2[7:0]
+    (Sh    Inst Inst Imm)     ; M[rs1 + offset][15:0] = rs2[15:0]
+    (Sw    Inst Inst Imm)     ; M[rs1 + offset][31:0] = rs2[31:0]
+
+    ;; === Register-Immediate Arithmetic/Logical (I-type) ===
+    (Addi  Inst Imm)          ; rd = rs1 + imm
+    (Slti  Inst Imm)          ; rd = (rs1 < imm) ? 1 : 0 (signed)
+    (Sltiu Inst Imm)          ; rd = (rs1 < imm) ? 1 : 0 (unsigned)
+    (Xori  Inst Imm)          ; rd = rs1 ^ imm
+    (Ori   Inst Imm)          ; rd = rs1 | imm
+    (Andi  Inst Imm)          ; rd = rs1 & imm
+    (Slli  Inst Imm)          ; rd = rs1 << shamt
+    (Srli  Inst Imm)          ; rd = rs1 >> shamt (logical)
+    (Srai  Inst Imm)          ; rd = rs1 >> shamt (arithmetic)
+
+    ;; === Register-Register Arithmetic/Logical (R-type) ===
+    (Add   Inst Inst)         ; rd = rs1 + rs2
+    (Sub   Inst Inst)         ; rd = rs1 - rs2
+    (Sll   Inst Inst)         ; rd = rs1 << rs2[4:0]
+    (Slt   Inst Inst)         ; rd = (rs1 < rs2) ? 1 : 0 (signed)
+    (Sltu  Inst Inst)         ; rd = (rs1 < rs2) ? 1 : 0 (unsigned)
+    (Xor   Inst Inst)         ; rd = rs1 ^ rs2
+    (Srl   Inst Inst)         ; rd = rs1 >> rs2[4:0] (logical)
+    (Sra   Inst Inst)         ; rd = rs1 >> rs2[4:0] (arithmetic)
+    (Or    Inst Inst)         ; rd = rs1 | rs2
+    (And   Inst Inst)         ; rd = rs1 & rs2
+
+    ;; === Memory Ordering ===
+    (Fence Imm Imm)           ; Memory fence
+    (FenceI)                  ; Instruction fence
+
+    ;; === System Instructions ===
+    (Ecall)                   ; Environment call
+    (Ebreak)                  ; Environment breakpoint
+    (Pause)                   ; Pause hint
+
+    ;; ============================================
+    ;; RV32M MULTIPLICATION/DIVISION EXTENSION
+    ;; ============================================
+
+    (Mul    Inst Inst)        ; rd = (rs1 * rs2)[31:0]
+    (Mulh   Inst Inst)        ; rd = (rs1 * rs2)[63:32] (signed × signed)
+    (Mulhsu Inst Inst)        ; rd = (rs1 * rs2)[63:32] (signed × unsigned)
+    (Mulhu  Inst Inst)        ; rd = (rs1 * rs2)[63:32] (unsigned × unsigned)
+    (Div    Inst Inst)        ; rd = rs1 / rs2 (signed)
+    (Divu   Inst Inst)        ; rd = rs1 / rs2 (unsigned)
+    (Rem    Inst Inst)        ; rd = rs1 % rs2 (signed)
+    (Remu   Inst Inst)        ; rd = rs1 % rs2 (unsigned)
+
+    ;; === Special Values ===
+    (LoadImm Imm)             ; Load immediate value
+    (RegVal String)           ; Register value reference (takes register name as string)
+    (Nop)                     ; No operation
+
+    ;; === Instruction Sequences ===
+    ;; Seq2 is a composite instruction (2-instruction macro)
+    ;; This allows rewriting single instructions as multi-instruction sequences
+    (Seq2 Inst Inst))         ; Sequence of 2 instructions
+
+;; ============================================
+;; STANDARD OPTIMIZATION RULES
+;; ============================================
+
+
+;; Shift by zero (immediate versions)
+(rewrite (Slli v (ImmVal 0)) v)
+(rewrite (Srli v (ImmVal 0)) v)
+(rewrite (Srai v (ImmVal 0)) v)
+
+;; === Instruction Decomposition ===
+
+;; Double shifts for larger shift amounts (example for constant propagation)
+(rewrite (Slli v (ImmVal 4))
+         (Slli (Slli v (ImmVal 2)) (ImmVal 2)))
+(rewrite (Slli v (ImmVal 6))
+         (Slli (Slli v (ImmVal 3)) (ImmVal 3)))
+(rewrite (Srli v (ImmVal 4))
+         (Srli (Srli v (ImmVal 2)) (ImmVal 2)))
+(rewrite (Srai v (ImmVal 4))
+         (Srai (Srai v (ImmVal 2)) (ImmVal 2)))
+
+;; === Load/Store Optimizations ===
+;; Combine adjacent loads/stores with same base
+;; Note: These are examples - actual optimizations would need aliasing analysis
+
+;; === Branch Simplifications ===
+;; Branch on same values
+(rewrite (Beq v v target) (Jal target))    ; Always taken
+(rewrite (Bne v v target) (Nop))           ; Never taken
+(rewrite (Blt v v target) (Nop))           ; Never taken
+(rewrite (Bge v v target) (Jal target))    ; Always taken
+(rewrite (Bltu v v target) (Nop))          ; Never taken (unsigned)
+(rewrite (Bgeu v v target) (Jal target))   ; Always taken (unsigned)
+
+
+;; Expressing signed comparisons in reverse
+;; a < b is equivalent to b > a, which is bge b, a, target (with swapped operands)
+(rewrite (Blt a b target) (Bge b a target))
+;; Similarly for unsigned
+(rewrite (Bltu a b target) (Bgeu b a target))
+
+;; === Branch Sequence Rewrites ===
+;; These show how branch instructions can be implemented as 2-instruction sequences
+;; Both sides are Inst (Seq2 is now an Inst constructor), so no type mismatch
+
+;; beq a, b, target  <==>  bne a, b, 4; jal target
+;; "If equal, jump to target" <==> "If not equal, skip next inst; jump to target"
+(rewrite (Beq a b target)
+           (Seq2 (Bne a b (ImmVal 4)) (Jal target)))
+
+;; bne a, b, target  <==>  beq a, b, 4; jal target
+;; "If not equal, jump to target" <==> "If equal, skip next inst; jump to target"
+(rewrite (Bne a b target)
+           (Seq2 (Beq a b (ImmVal 4)) (Jal target)))
+
+;; blt a, b, target  <==>  bge a, b, 4; jal target
+(rewrite (Blt a b target)
+           (Seq2 (Bge a b (ImmVal 4)) (Jal target)))
+
+;; bge a, b, target  <==>  blt a, b, 4; jal target
+(rewrite (Bge a b target)
+           (Seq2 (Blt a b (ImmVal 4)) (Jal target)))
+
+;; bltu a, b, target  <==>  bgeu a, b, 4; jal target
+(rewrite (Bltu a b target)
+           (Seq2 (Bgeu a b (ImmVal 4)) (Jal target)))
+
+;; bgeu a, b, target  <==>  bltu a, b, 4; jal target
+(rewrite (Bgeu a b target)
+           (Seq2 (Bltu a b (ImmVal 4)) (Jal target)))
+
+;; === De Morgan's Laws ===
+(rewrite (Xori (And a b) (ImmVal -1))
+         (Or (Xori a (ImmVal -1)) (Xori b (ImmVal -1))))
+(rewrite (Xori (Or a b) (ImmVal -1))
+         (And (Xori a (ImmVal -1)) (Xori b (ImmVal -1))))
+
+;; === Distribution (optional - increases expression size) ===
+;; Uncomment if needed for specific optimizations
+;; (rewrite (Mul a (Add b c)) (Add (Mul a b) (Mul a c)))
+;; (rewrite (Add (Mul a b) (Mul a c)) (Mul a (Add b c)))  ; factoring
+
+;; === Boolean simplifications ===
+(rewrite (And (Or a b) (Or a c))
+         (Or a (And b c)))
+(rewrite (Or (And a b) (And a c))
+         (And a (Or b c)))
+
+;; ============================================================
+;; INJECTED GREENTHUMB REWRITE RULES
+;; ============================================================
+
+;; ============================================================
+;; Greenthumb-Generated Rewrite Rules
+;; Auto-generated from riscv_greenthumb synthesis results
+;; ============================================================
+
+;; ============================================================
+;; ADD Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; Length 2: best-len2.s
+;; Greenthumb sequence:
+;;   1.     sub rd=x2 rs1=x0 rs2=x2
+;;   2.     sub rd=x1 rs1=x3 rs2=x2
+(rewrite (Add rs1 rs2)
+           (Sub rs2 (Sub (RegVal "x0") rs1)))
+
+
+;; ============================================================
+;; ADDI Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; Length 2: best-len2.s
+;; Greenthumb sequence:
+;;   1.     ori rd=x1 rs1=x0 imm=5
+;;   2.     add rd=x1 rs1=x2 rs2=x1
+(rewrite (Addi rs1 (ImmVal 5))
+           (Add rs1 (Ori (RegVal "x0") (ImmVal 5))))
+
+;; ============================================================
+;; AND Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; Length 3: best-len3.s
+;; Greenthumb sequence:
+;;   1.     or rd=x1 rs1=x2 rs2=x3
+;;   2.     sub rd=x3 rs1=x1 rs2=x3
+;;   3.     sub rd=x1 rs1=x2 rs2=x3
+(rewrite (And rs1 rs2)
+           (Sub rs1 (Sub (Or rs1 rs2) rs2)))
+
+;; ============================================================
+;; ANDI Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; Length 2: best-len2.s
+;; Greenthumb sequence:
+;;   1.     addi rd=x1 rs1=x0 imm=5
+;;   2.     and rd=x1 rs1=x1 rs2=x2
+(rewrite (Andi rs1 (ImmVal 5))
+           (And (Addi (RegVal "x0") (ImmVal 5)) rs1))
+
+;; Length 3: best-len3.s
+;; Greenthumb sequence:
+;;   1.     xori rd=x1 rs1=x2 imm=5
+;;   2.     or rd=x2 rs1=x2 rs2=x1
+;;   3.     xor rd=x1 rs1=x1 rs2=x2
+(rewrite (Andi rs1 (ImmVal 5))
+           (Xor (Xori rs1 (ImmVal 5)) (Or rs1 (Xori rs1 (ImmVal 5)))))
+
+;; Length 4: best-len4.s
+;; Greenthumb sequence:
+;;   1.     xori rd=x2 rs1=x2 imm=5
+;;   2.     ori rd=x1 rs1=x2 imm=1
+;;   3.     ori rd=x1 rs1=x1 imm=4
+;;   4.     xor rd=x1 rs1=x2 rs2=x1
+(rewrite (Andi rs1 (ImmVal 5))
+           (Xor (Xori rs1 (ImmVal 5)) (Ori (Ori (Xori rs1 (ImmVal 5)) (ImmVal 1)) (ImmVal 4))))
+
+;; ============================================================
+;; DIV Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; ============================================================
+;; DIVU Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; ============================================================
+;; MUL Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; ============================================================
+;; MULH Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; ============================================================
+;; MULHSU Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; ============================================================
+;; MULHU Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; ============================================================
+;; OR Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; Length 3: best-len3.s
+;; Greenthumb sequence:
+;;   1.     xori rd=x1 rs1=x2 imm=-1
+;;   2.     and rd=x3 rs1=x3 rs2=x1
+;;   3.     add rd=x1 rs1=x3 rs2=x2
+(rewrite (Or rs1 rs2)
+           (Add (And rs2 (Xori rs1 (ImmVal -1))) rs1))
+
+;; Length 4: best-len4.s
+;; Greenthumb sequence:
+;;   1.     and rd=x1 rs1=x2 rs2=x3
+;;   2.     xori rd=x1 rs1=x3 imm=-1
+;;   3.     and rd=x1 rs1=x1 rs2=x2
+;;   4.     add rd=x1 rs1=x3 rs2=x1
+(rewrite (Or rs1 rs2)
+           (Add rs2 (And (Xori rs2 (ImmVal -1)) rs1)))
+
+;; Length 5: best-len5.s
+;; Greenthumb sequence:
+;;   1.     and rd=x1 rs1=x2 rs2=x3
+;;   2.     sub rd=x1 rs1=x1 rs2=x3
+;;   3.     xori rd=x3 rs1=x3 imm=-1
+;;   4.     xori rd=x3 rs1=x0 imm=-1
+;;   5.     sub rd=x1 rs1=x2 rs2=x1
+(rewrite (Or rs1 rs2)
+           (Sub rs1 (Sub (And rs1 rs2) rs2)))
+
+;; ============================================================
+;; ORI Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; Length 2: best-len2.s
+;; Greenthumb sequence:
+;;   1.     xori rd=x1 rs1=x0 imm=5
+;;   2.     or rd=x1 rs1=x1 rs2=x2
+(rewrite (Ori rs1 (ImmVal 5))
+           (Or (Xori (RegVal "x0") (ImmVal 5)) rs1))
+
+;; Length 3: best-len3.s
+;; Greenthumb sequence:
+;;   1.     andi rd=x1 rs1=x2 imm=5
+;;   2.     xor rd=x2 rs1=x2 rs2=x1
+;;   3.     xori rd=x1 rs1=x2 imm=5
+(rewrite (Ori rs1 (ImmVal 5))
+           (Xori (Xor rs1 (Andi rs1 (ImmVal 5))) (ImmVal 5)))
+
+;; Length 4: best-len4.s
+;; Greenthumb sequence:
+;;   1.     xori rd=x1 rs1=x2 imm=5
+;;   2.     and rd=x1 rs1=x2 rs2=x1
+;;   3.     xori rd=x1 rs1=x1 imm=5
+;;   4.     andi rd=x2 rs1=x2 imm=0
+(rewrite (Ori rs1 (ImmVal 5))
+           (Xori (And rs1 (Xori rs1 (ImmVal 5))) (ImmVal 5)))
+
+;; ============================================================
+;; REM Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; ============================================================
+;; REMU Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; ============================================================
+;; SLL Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; ============================================================
+;; SLLI Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; Length 2: best-len2.s
+;; Greenthumb sequence:
+;;   1.     ori rd=x1 rs1=x0 imm=5
+;;   2.     sll rd=x1 rs1=x2 rs2=x1
+(rewrite (Slli rs1 (ImmVal 5))
+           (Sll rs1 (Ori (RegVal "x0") (ImmVal 5))))
+
+;; Length 5: best-len5.s
+;; Greenthumb sequence:
+;;   1.     add rd=x2 rs1=x2 rs2=x2
+;;   2.     add rd=x2 rs1=x2 rs2=x2
+;;   3.     add rd=x2 rs1=x2 rs2=x2
+;;   4.     add rd=x2 rs1=x2 rs2=x2
+;;   5.     add rd=x1 rs1=x2 rs2=x2
+(rewrite (Slli rs1 (ImmVal 5))
+           (Add (Add (Add (Add (Add rs1 rs1) (Add rs1 rs1)) (Add (Add rs1 rs1) (Add rs1 rs1))) (Add (Add (Add rs1 rs1) (Add rs1 rs1)) (Add (Add rs1 rs1) (Add rs1 rs1)))) (Add (Add (Add (Add rs1 rs1) (Add rs1 rs1)) (Add (Add rs1 rs1) (Add rs1 rs1))) (Add (Add (Add rs1 rs1) (Add rs1 rs1)) (Add (Add rs1 rs1) (Add rs1 rs1))))))
+
+;; ============================================================
+;; SLT Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; ============================================================
+;; SLTI Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; ============================================================
+;; SLTIU Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; ============================================================
+;; SLTU Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; ============================================================
+;; SRA Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; ============================================================
+;; SRAI Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; Length 2: best-len2.s
+;; Greenthumb sequence:
+;;   1.     xori rd=x1 rs1=x0 imm=5
+;;   2.     sra rd=x1 rs1=x2 rs2=x1
+(rewrite (Srai rs1 (ImmVal 5))
+           (Sra rs1 (Xori (RegVal "x0") (ImmVal 5))))
+
+;; Length 2: best-len3.s
+;; Greenthumb sequence:
+;;   1.     addi rd=x1 rs1=x0 imm=5
+;;   2.     sra rd=x1 rs1=x2 rs2=x1
+(rewrite (Srai rs1 (ImmVal 5))
+           (Sra rs1 (Addi (RegVal "x0") (ImmVal 5))))
+
+;; ============================================================
+;; SRL Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; ============================================================
+;; SRLI Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; Length 2: best-len2.s
+;; Greenthumb sequence:
+;;   1.     addi rd=x1 rs1=x0 imm=5
+;;   2.     srl rd=x1 rs1=x2 rs2=x1
+(rewrite (Srli rs1 (ImmVal 5))
+           (Srl rs1 (Addi (RegVal "x0") (ImmVal 5))))
+
+;; ============================================================
+;; SUB Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; ============================================================
+;; XOR Rewrites (Greenthumb-generated)
+;; ============================================================
+
+; ;; Length 4: best-len4.s
+; ;; Greenthumb sequence:
+; ;;   1.     or rd=x1 rs1=x3 rs2=x2
+; ;;   2.     and rd=x2 rs1=x2 rs2=x3
+; ;;   3.     xori rd=x2 rs1=x2 imm=-1
+; ;;   4.     and rd=x1 rs1=x2 rs2=x1
+(rewrite (Xor rs1 rs2)
+           (And (Xori (And rs1 rs2) (ImmVal -1)) (Or rs2 rs1)))
+
+; ;; Length 4: best-len5.s
+; ;; Greenthumb sequence:
+; ;;   1.     or rd=x1 rs1=x3 rs2=x2
+; ;;   2.     and rd=x3 rs1=x3 rs2=x2
+; ;;   3.     sub rd=x1 rs1=x1 rs2=x3
+; ;;   4.     add rd=x2 rs1=x1 rs2=x1
+(rewrite (Xor rs1 rs2)
+           (Sub (Or rs2 rs1) (And rs2 rs1)))
+
+;; ============================================================
+;; XORI Rewrites (Greenthumb-generated)
+;; ============================================================
+
+;; Length 2: best-len2.s
+;; Greenthumb sequence:
+;;   1.     ori rd=x1 rs1=x0 imm=5
+;;   2.     xor rd=x1 rs1=x2 rs2=x1
+(rewrite (Xori rs1 (ImmVal 5))
+           (Xor rs1 (Ori (RegVal "x0") (ImmVal 5))))
