@@ -1,0 +1,323 @@
+;; ============================================
+;; BASE.EGG - Shared RV32IM ISA Definitions
+;; ============================================
+;; This file contains:
+;; 1. Complete RV32IM instruction set definitions
+;; 2. Common data types (immediates)
+;; 3. Standard rewrite rules for optimization
+;; ============================================
+;; Note: Registers are declared per-block in SSA form
+
+;; ============================================
+;; DATA TYPES
+;; ============================================
+
+;; Immediate values
+(datatype Imm (ImmVal i64) (ImmLabel String))
+;; ============================================
+;; RV32I BASE INTEGER INSTRUCTIONS
+;; ============================================
+
+(datatype Inst
+    ;; === Immediate Instructions (U-type) ===
+    (Lui   Imm)               ; rd = imm << 12
+    (Auipc Imm)               ; rd = PC + (imm << 12)
+
+    ;; === Jump Instructions ===
+    (Jal   Imm)               ; rd = PC + 4; PC = PC + offset
+    (Jalr  Inst Imm)          ; rd = PC + 4; PC = (rs1 + offset) & ~1
+
+    ;; === Branch Instructions (B-type) ===
+    (Beq   Inst Inst Imm)    ; if (rs1 == rs2) PC += offset
+    (Bne   Inst Inst Imm)    ; if (rs1 != rs2) PC += offset
+    (Blt   Inst Inst Imm)    ; if (rs1 < rs2) PC += offset (signed)
+    (Bge   Inst Inst Imm)    ; if (rs1 >= rs2) PC += offset (signed)
+    (Bltu  Inst Inst Imm)    ; if (rs1 < rs2) PC += offset (unsigned)
+    (Bgeu  Inst Inst Imm)    ; if (rs1 >= rs2) PC += offset (unsigned)
+
+    ;; === Load Instructions (I-type) ===
+    (Lb    Inst Imm)          ; rd = sign_ext(M[rs1 + offset][7:0])
+    (Lh    Inst Imm)          ; rd = sign_ext(M[rs1 + offset][15:0])
+    (Lw    Inst Imm)          ; rd = M[rs1 + offset][31:0]
+    (Lbu   Inst Imm)          ; rd = zero_ext(M[rs1 + offset][7:0])
+    (Lhu   Inst Imm)          ; rd = zero_ext(M[rs1 + offset][15:0])
+
+    ;; === Store Instructions (S-type) ===
+    (Sb    Inst Inst Imm)     ; M[rs1 + offset][7:0] = rs2[7:0]
+    (Sh    Inst Inst Imm)     ; M[rs1 + offset][15:0] = rs2[15:0]
+    (Sw    Inst Inst Imm)     ; M[rs1 + offset][31:0] = rs2[31:0]
+
+    ;; === Register-Immediate Arithmetic/Logical (I-type) ===
+    (Addi  Inst Imm)          ; rd = rs1 + imm
+    (Slti  Inst Imm)          ; rd = (rs1 < imm) ? 1 : 0 (signed)
+    (Sltiu Inst Imm)          ; rd = (rs1 < imm) ? 1 : 0 (unsigned)
+    (Xori  Inst Imm)          ; rd = rs1 ^ imm
+    (Ori   Inst Imm)          ; rd = rs1 | imm
+    (Andi  Inst Imm)          ; rd = rs1 & imm
+    (Slli  Inst Imm)          ; rd = rs1 << shamt
+    (Srli  Inst Imm)          ; rd = rs1 >> shamt (logical)
+    (Srai  Inst Imm)          ; rd = rs1 >> shamt (arithmetic)
+
+    ;; === Register-Register Arithmetic/Logical (R-type) ===
+    (Add   Inst Inst)         ; rd = rs1 + rs2
+    (Sub   Inst Inst)         ; rd = rs1 - rs2
+    (Sll   Inst Inst)         ; rd = rs1 << rs2[4:0]
+    (Slt   Inst Inst)         ; rd = (rs1 < rs2) ? 1 : 0 (signed)
+    (Sltu  Inst Inst)         ; rd = (rs1 < rs2) ? 1 : 0 (unsigned)
+    (Xor   Inst Inst)         ; rd = rs1 ^ rs2
+    (Srl   Inst Inst)         ; rd = rs1 >> rs2[4:0] (logical)
+    (Sra   Inst Inst)         ; rd = rs1 >> rs2[4:0] (arithmetic)
+    (Or    Inst Inst)         ; rd = rs1 | rs2
+    (And   Inst Inst)         ; rd = rs1 & rs2
+
+    ;; === Memory Ordering ===
+    (Fence Imm Imm)           ; Memory fence
+    (FenceI)                  ; Instruction fence
+
+    ;; === System Instructions ===
+    (Ecall)                   ; Environment call
+    (Ebreak)                  ; Environment breakpoint
+    (Pause)                   ; Pause hint
+
+    ;; ============================================
+    ;; RV32M MULTIPLICATION/DIVISION EXTENSION
+    ;; ============================================
+
+    (Mul    Inst Inst)        ; rd = (rs1 * rs2)[31:0]
+    (Mulh   Inst Inst)        ; rd = (rs1 * rs2)[63:32] (signed × signed)
+    (Mulhsu Inst Inst)        ; rd = (rs1 * rs2)[63:32] (signed × unsigned)
+    (Mulhu  Inst Inst)        ; rd = (rs1 * rs2)[63:32] (unsigned × unsigned)
+    (Div    Inst Inst)        ; rd = rs1 / rs2 (signed)
+    (Divu   Inst Inst)        ; rd = rs1 / rs2 (unsigned)
+    (Rem    Inst Inst)        ; rd = rs1 % rs2 (signed)
+    (Remu   Inst Inst)        ; rd = rs1 % rs2 (unsigned)
+
+    ;; === Special Values ===
+    (LoadImm Imm)             ; Load immediate value
+    (RegVal String)           ; Register value reference (takes register name as string)
+    (Nop)                     ; No operation
+
+    ;; === Instruction Sequences ===
+    ;; Seq2 allows rewriting single instructions as 2-instruction sequences
+    ;; Longer sequences can be built by nesting: Seq2(a, Seq2(b, Seq2(c, d)))
+    (Seq2 Inst Inst))         ; Sequence of 2 instructions
+
+;; ============================================
+;; STANDARD OPTIMIZATION RULES
+;; ============================================
+
+
+;; Shift by zero (immediate versions)
+(rewrite (Slli v (ImmVal 0)) v)
+(rewrite (Srli v (ImmVal 0)) v)
+(rewrite (Srai v (ImmVal 0)) v)
+
+;; === Instruction Decomposition ===
+
+;; Double shifts for larger shift amounts (example for constant propagation)
+(rewrite (Slli v (ImmVal 4))
+         (Slli (Slli v (ImmVal 2)) (ImmVal 2)))
+(rewrite (Slli v (ImmVal 6))
+         (Slli (Slli v (ImmVal 3)) (ImmVal 3)))
+(rewrite (Srli v (ImmVal 4))
+         (Srli (Srli v (ImmVal 2)) (ImmVal 2)))
+(rewrite (Srai v (ImmVal 4))
+         (Srai (Srai v (ImmVal 2)) (ImmVal 2)))
+
+;; === Load/Store Optimizations ===
+;; Decompose byte and halfword loads/stores to use only LW/SW
+;; This allows hardware to implement only word-size memory operations
+
+;; Load Byte Signed: LB = LW + sign extension
+;; Assumes little-endian, byte 0 at lowest address
+(birewrite (Lb base offset)
+           (Srai (Slli (Lw base offset) (ImmVal 24)) (ImmVal 24)))
+
+;; Load Byte Unsigned: LBU = LW + mask
+(birewrite (Lbu base offset)
+           (Andi (Lw base offset) (ImmVal 255)))
+
+;; Load Halfword Signed: LH = LW + sign extension
+(birewrite (Lh base offset)
+           (Srai (Slli (Lw base offset) (ImmVal 16)) (ImmVal 16)))
+
+;; Load Halfword Unsigned: LHU = LW + mask
+(birewrite (Lhu base offset)
+           (Andi (Lw base offset) (ImmVal 65535)))
+
+;; Store Word decomposition: SW = 4× SB (simpler than RMW approach)
+;; SW stores 4 bytes sequentially using SB (assumes little-endian)
+;; Example: SW value, 0(base) = SB byte0; SB byte1; SB byte2; SB byte3
+;;
+;; Using nested Seq2:
+;; (birewrite (Sw base value (ImmVal 0))
+;;            (Seq2 (Sb base (Andi value (ImmVal 255)) (ImmVal 0))
+;;                  (Seq2 (Sb base (Andi (Srli value (ImmVal 8)) (ImmVal 255)) (ImmVal 1))
+;;                        (Seq2 (Sb base (Andi (Srli value (ImmVal 16)) (ImmVal 255)) (ImmVal 2))
+;;                              (Sb base (Srli value (ImmVal 24)) (ImmVal 3))))))
+;;
+;; Store Halfword decomposition: SH = 2× SB
+;; (birewrite (Sh base value (ImmVal 0))
+;;            (Seq2 (Sb base (Andi value (ImmVal 255)) (ImmVal 0))
+;;                  (Sb base (Andi (Srli value (ImmVal 8)) (ImmVal 255)) (ImmVal 1))))
+;;
+;; Note: Currently commented out - full implementation requires offset arithmetic
+;; and would only work for constant offsets (ImmVal), not symbolic (ImmLabel)
+
+;; ============================================
+;; I-type Decomposition: Use Only ADDI + R-type
+;; ============================================
+;; All I-type instructions except ADDI can be implemented using:
+;;   - ADDI to load immediate (Addi x0 imm produces the immediate value)
+;;   - R-type operation using that value
+;; This allows hardware to omit 8 I-type decoders, keeping only ADDI
+;;
+;; Note: Addi signature is (Addi Inst Imm), so Addi(x0, imm) loads imm
+
+;; XORI rd, rs, imm  =  xor rd, rs, (addi x0, imm)
+(birewrite (Xori rs imm)
+           (Xor rs (Addi (RegVal "x0") imm)))
+
+;; ANDI rd, rs, imm  =  and rd, rs, (addi x0, imm)
+(birewrite (Andi rs imm)
+           (And rs (Addi (RegVal "x0") imm)))
+
+;; ORI rd, rs, imm  =  or rd, rs, (addi x0, imm)
+(birewrite (Ori rs imm)
+           (Or rs (Addi (RegVal "x0") imm)))
+
+;; SLTI rd, rs, imm  =  slt rd, rs, (addi x0, imm)
+(birewrite (Slti rs imm)
+           (Slt rs (Addi (RegVal "x0") imm)))
+
+;; SLTIU rd, rs, imm  =  sltu rd, rs, (addi x0, imm)
+(birewrite (Sltiu rs imm)
+           (Sltu rs (Addi (RegVal "x0") imm)))
+
+;; SLLI rd, rs, imm  =  sll rd, rs, (addi x0, imm)
+(birewrite (Slli rs imm)
+           (Sll rs (Addi (RegVal "x0") imm)))
+
+;; SRLI rd, rs, imm  =  srl rd, rs, (addi x0, imm)
+(birewrite (Srli rs imm)
+           (Srl rs (Addi (RegVal "x0") imm)))
+
+;; SRAI rd, rs, imm  =  sra rd, rs, (addi x0, imm)
+(birewrite (Srai rs imm)
+           (Sra rs (Addi (RegVal "x0") imm)))
+
+;; ============================================
+;; LUI Decomposition (Commented - Too Complex)
+;; ============================================
+;; LUI can be eliminated by loading 32-bit constants using shift-and-add sequences
+;; Example: Load 0xABCDE000 (LUI loads upper 20 bits, lower 12 are 0)
+;;
+;; Method: Break constant into chunks, shift and add iteratively
+;;   addi sft, x0, 12         ; Shift amount = 12 bits
+;;   addi foo, x0, 0xABC      ; Load high 12 bits [31:20]
+;;   sll  foo, foo, sft       ; Shift left 12
+;;   addi foo, foo, 0xDE0     ; Add middle bits [19:8]
+;;   sll  foo, foo, sft       ; Shift left 12 again
+;;   addi foo, foo, 0x000     ; Add low bits [7:0]
+;;
+;; Requires 6 instructions vs 1 LUI (3x cost increase)
+;; Pattern would need:
+;;   - Constant splitting (can't express in egglog patterns)
+;;   - Complex nested Seq2 (5 levels deep)
+;;   - Only works for ImmVal, not ImmLabel
+;;
+;; Alternative: Use constant pool + LW (like ARM)
+;;   jal ra, next
+;; next: lw rd, const_pool_offset(ra)
+;;
+;; Conclusion: LUI removal saves very little area, adds significant complexity
+;; Recommendation: Keep LUI in hardware
+
+;; ============================================
+;; SLT/SLTU Decomposition Using Branches
+;; ============================================
+;; Set-less-than can be implemented using branch instructions
+;; Pattern: Assume true (1), branch-skip-if-true, set false (0)
+;;
+;; slt a, b, c becomes:
+;;   addi a, x0, 1      ; Assume result = 1 (true)
+;;   blt b, c, .+4      ; If b < c, skip next instruction
+;;   addi a, x0, 0      ; Result = 0 (false, only executed if branch not taken)
+;;
+;; Uses Seq2 because these are sequential with strict ordering (control flow)
+
+;; SLT rd, rs1, rs2  =  addi tmp, x0, 1; blt rs1, rs2, +4; addi tmp, x0, 0
+(birewrite (Slt rs1 rs2)
+           (Seq2 (Addi (RegVal "x0") (ImmVal 1))
+                 (Seq2 (Blt rs1 rs2 (ImmVal 4))
+                       (Addi (RegVal "x0") (ImmVal 0)))))
+
+;; SLTU rd, rs1, rs2  =  addi tmp, x0, 1; bltu rs1, rs2, +4; addi tmp, x0, 0
+(birewrite (Sltu rs1 rs2)
+           (Seq2 (Addi (RegVal "x0") (ImmVal 1))
+                 (Seq2 (Bltu rs1 rs2 (ImmVal 4))
+                       (Addi (RegVal "x0") (ImmVal 0)))))
+
+;; === Branch Simplifications ===
+;; Branch on same values
+(rewrite (Beq v v target) (Jal target))    ; Always taken
+(rewrite (Bne v v target) (Nop))           ; Never taken
+(rewrite (Blt v v target) (Nop))           ; Never taken
+(rewrite (Bge v v target) (Jal target))    ; Always taken
+(rewrite (Bltu v v target) (Nop))          ; Never taken (unsigned)
+(rewrite (Bgeu v v target) (Jal target))   ; Always taken (unsigned)
+
+
+;; Expressing signed comparisons in reverse
+;; a < b is equivalent to b > a, which is bge b, a, target (with swapped operands)
+(rewrite (Blt a b target) (Bge b a target))
+;; Similarly for unsigned
+(rewrite (Bltu a b target) (Bgeu b a target))
+
+;; === Branch Sequence Rewrites ===
+;; These show how branch instructions can be implemented as 2-instruction sequences
+;; Both sides are Inst (Seq2 is now an Inst constructor), so no type mismatch
+
+;; beq a, b, target  <==>  bne a, b, 4; jal target
+;; "If equal, jump to target" <==> "If not equal, skip next inst; jump to target"
+(rewrite (Beq a b target)
+           (Seq2 (Bne a b (ImmVal 4)) (Jal target)))
+
+;; bne a, b, target  <==>  beq a, b, 4; jal target
+;; "If not equal, jump to target" <==> "If equal, skip next inst; jump to target"
+(rewrite (Bne a b target)
+           (Seq2 (Beq a b (ImmVal 4)) (Jal target)))
+
+;; blt a, b, target  <==>  bge a, b, 4; jal target
+(rewrite (Blt a b target)
+           (Seq2 (Bge a b (ImmVal 4)) (Jal target)))
+
+;; bge a, b, target  <==>  blt a, b, 4; jal target
+(rewrite (Bge a b target)
+           (Seq2 (Blt a b (ImmVal 4)) (Jal target)))
+
+;; bltu a, b, target  <==>  bgeu a, b, 4; jal target
+(rewrite (Bltu a b target)
+           (Seq2 (Bgeu a b (ImmVal 4)) (Jal target)))
+
+;; bgeu a, b, target  <==>  bltu a, b, 4; jal target
+(rewrite (Bgeu a b target)
+           (Seq2 (Bltu a b (ImmVal 4)) (Jal target)))
+
+;; === De Morgan's Laws ===
+(rewrite (Xori (And a b) (ImmVal -1))
+         (Or (Xori a (ImmVal -1)) (Xori b (ImmVal -1))))
+(rewrite (Xori (Or a b) (ImmVal -1))
+         (And (Xori a (ImmVal -1)) (Xori b (ImmVal -1))))
+
+;; === Distribution (optional - increases expression size) ===
+;; Uncomment if needed for specific optimizations
+;; (rewrite (Mul a (Add b c)) (Add (Mul a b) (Mul a c)))
+;; (rewrite (Add (Mul a b) (Mul a c)) (Mul a (Add b c)))  ; factoring
+
+;; === Boolean simplifications ===
+(rewrite (And (Or a b) (Or a c))
+         (Or a (And b c)))
+(rewrite (Or (And a b) (And a c))
+         (And a (Or b c)))
+

@@ -2,7 +2,7 @@
 # ILP 提取器 - 使用方法: ./run_extractor.sh <program_name> [best_k]
 # 示例: ./run_extractor.sh dijkstra_small_O3
 #       ./run_extractor.sh dijkstra_small_O3 5
-
+module load gurobi
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [ $# -eq 0 ]; then
