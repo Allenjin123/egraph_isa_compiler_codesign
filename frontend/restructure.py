@@ -126,11 +126,12 @@ class BlockGraph:
                 full_eclass_id = prefix + eclass_short.replace('-', '_')
                 
                 # 解析原始指令，提取 rd（第一个操作数）
-                # 格式如: "addi a5, a0, 0" 或 "lw a0, 8(sp)"
+                # 格式如: "addi a5, a0, 0" 或 "lw a0, 8(sp)" 或 "addi a5,a0,0" (无空格)
                 parts = original_line.split()
                 if len(parts) >= 2:
                     # 第一个是指令，第二个通常是 rd（可能带逗号）
-                    rd_raw = parts[1].rstrip(',')
+                    # 处理无空格格式：取第一个逗号之前的部分
+                    rd_raw = parts[1].split(',')[0]
                     # 应用 norm_reg
                     rd_normed = norm_reg(rd_raw)
                     eclass_to_rd[full_eclass_id] = rd_normed
