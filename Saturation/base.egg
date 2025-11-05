@@ -164,6 +164,75 @@
 ;; Note: Currently commented out - full implementation requires offset arithmetic
 ;; and would only work for constant offsets (ImmVal), not symbolic (ImmLabel)
 
+;; ============================================
+;; I-type Decomposition: Use Only ADDI + R-type
+;; ============================================
+;; All I-type instructions except ADDI can be implemented using:
+;;   - ADDI to load immediate (Addi x0 imm produces the immediate value)
+;;   - R-type operation using that value
+;; This allows hardware to omit 8 I-type decoders, keeping only ADDI
+;;
+;; Note: Addi signature is (Addi Inst Imm), so Addi(x0, imm) loads imm
+
+;; XORI rd, rs, imm  =  xor rd, rs, (addi x0, imm)
+(birewrite (Xori rs imm)
+           (Xor rs (Addi (RegVal "x0") imm)))
+
+;; ANDI rd, rs, imm  =  and rd, rs, (addi x0, imm)
+(birewrite (Andi rs imm)
+           (And rs (Addi (RegVal "x0") imm)))
+
+;; ORI rd, rs, imm  =  or rd, rs, (addi x0, imm)
+(birewrite (Ori rs imm)
+           (Or rs (Addi (RegVal "x0") imm)))
+
+;; SLTI rd, rs, imm  =  slt rd, rs, (addi x0, imm)
+(birewrite (Slti rs imm)
+           (Slt rs (Addi (RegVal "x0") imm)))
+
+;; SLTIU rd, rs, imm  =  sltu rd, rs, (addi x0, imm)
+(birewrite (Sltiu rs imm)
+           (Sltu rs (Addi (RegVal "x0") imm)))
+
+;; SLLI rd, rs, imm  =  sll rd, rs, (addi x0, imm)
+(birewrite (Slli rs imm)
+           (Sll rs (Addi (RegVal "x0") imm)))
+
+;; SRLI rd, rs, imm  =  srl rd, rs, (addi x0, imm)
+(birewrite (Srli rs imm)
+           (Srl rs (Addi (RegVal "x0") imm)))
+
+;; SRAI rd, rs, imm  =  sra rd, rs, (addi x0, imm)
+(birewrite (Srai rs imm)
+           (Sra rs (Addi (RegVal "x0") imm)))
+
+;; ============================================
+;; LUI Decomposition (Commented - Too Complex)
+;; ============================================
+;; LUI can be eliminated by loading 32-bit constants using shift-and-add sequences
+;; Example: Load 0xABCDE000 (LUI loads upper 20 bits, lower 12 are 0)
+;;
+;; Method: Break constant into chunks, shift and add iteratively
+;;   addi sft, x0, 12         ; Shift amount = 12 bits
+;;   addi foo, x0, 0xABC      ; Load high 12 bits [31:20]
+;;   sll  foo, foo, sft       ; Shift left 12
+;;   addi foo, foo, 0xDE0     ; Add middle bits [19:8]
+;;   sll  foo, foo, sft       ; Shift left 12 again
+;;   addi foo, foo, 0x000     ; Add low bits [7:0]
+;;
+;; Requires 6 instructions vs 1 LUI (3x cost increase)
+;; Pattern would need:
+;;   - Constant splitting (can't express in egglog patterns)
+;;   - Complex nested Seq2 (5 levels deep)
+;;   - Only works for ImmVal, not ImmLabel
+;;
+;; Alternative: Use constant pool + LW (like ARM)
+;;   jal ra, next
+;; next: lw rd, const_pool_offset(ra)
+;;
+;; Conclusion: LUI removal saves very little area, adds significant complexity
+;; Recommendation: Keep LUI in hardware
+
 ;; === Branch Simplifications ===
 ;; Branch on same values
 (rewrite (Beq v v target) (Jal target))    ; Always taken
