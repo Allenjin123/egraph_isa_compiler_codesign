@@ -63,15 +63,9 @@ class AsmBlockAnalyzer:
         
         return True
     
-    def extract_mnemonic_and_operands(self, line: str) -> Optional[Tuple[str, str]]:
-        """Extract mnemonic and raw operands string (without parsing)
-        
-        Args:
-            line: Instruction line, e.g. '  addi  sp,sp,-16'
-            
-        Returns:
-            (mnemonic, operands_str) or None
-            Example: ('addi', 'sp,sp,-16')
+    def parse_instruction(self, line: str) -> Optional[Tuple[str, str]]:
+        """Parse instruction line, return (mnemonic, operands)
+        Example: '  addi  sp,sp,-16' -> ('addi', 'sp,sp,-16')
         """
         stripped = line.strip()
         parts = stripped.split(None, 1)  # Split on first whitespace
@@ -108,7 +102,7 @@ class AsmBlockAnalyzer:
                     prev_line = line
                 continue
             
-            parsed = self.extract_mnemonic_and_operands(line)
+            parsed = self.parse_instruction(line)
             if not parsed:
                 prev_line = line
                 continue
@@ -165,7 +159,7 @@ class AsmBlockAnalyzer:
         Returns: 
             - List of basic blocks, each block is a list of instruction lines
             - Dict mapping label names to block IDs
-            - Dict mapping label names to metadata (block_id, line_count in original file)
+            - Dict mapping label names to metadata (label_line_count and blocks info)
         """
         with open(asm_file, 'r', encoding='utf-8', errors='ignore') as f:
             lines = f.readlines()
@@ -197,14 +191,14 @@ class AsmBlockAnalyzer:
                 pending_labels = []
         
         if not instruction_indices:
-            return [], {}, {}
+            return []
         
         # Step 3: Determine basic block boundaries
         block_starts = {0}  # First instruction always starts a block
         
         for i, line_idx in enumerate(instruction_indices):
             line = lines[line_idx]
-            parsed = self.extract_mnemonic_and_operands(line)
+            parsed = self.parse_instruction(line)
             
             if not parsed:
                 raise ValueError(
@@ -249,112 +243,100 @@ class AsmBlockAnalyzer:
             
             basic_blocks.append(block_lines)
         
-        # Step 5: Create label to block mapping with line count metadata
+        # Step 5: Create label to block mapping
         # Only include labels that are actual branch targets
         # Exclude data labels (.LC*) and pcrel labels (.Lpcrel_*)
         label_to_block = {}
-        label_metadata = {}  # Extended metadata: {label: {label_line_count: ..., blocks: {block_4: {id: 4, count: 6}, ...}}}
-        
         for label, instr_idx in label_to_idx.items():
             if instr_idx in instr_idx_to_block:
                 # Filter out data labels and pcrel labels
                 if label.startswith('.LC') or label.startswith('.Lpcrel_'):
                     continue
-                start_block_id = instr_idx_to_block[instr_idx]
-                label_to_block[label] = start_block_id
-                
-                # Calculate line count in original file for this label
-                # Count from AFTER label line to the start of next label (excluding both labels)
-                label_line_idx = None
-                for i, line in enumerate(lines):
-                    if self.is_label_line(line):
-                        extracted_label = self.extract_label_from_line(line)
-                        if extracted_label == label:
-                            label_line_idx = i
-                            break
-                
-                if label_line_idx is not None:
-                    # Count lines from AFTER this label until next non-.Lpcrel label
-                    label_line_count = 0
-                    i = label_line_idx + 1  # Start from AFTER the label line
-                    end_line_idx = len(lines)
-                    while i < len(lines):
-                        line = lines[i]
-                        # Stop at next real label (not .Lpcrel_)
+                label_to_block[label] = instr_idx_to_block[instr_idx]
+        
+        # Step 6: Create label metadata (line counts and block info)
+        label_metadata = {}
+        
+        for label, start_block_id in label_to_block.items():
+            # Find label position in original file
+            label_line_idx = None
+            for i, line in enumerate(lines):
+                if self.is_label_line(line):
+                    if self.extract_label_from_line(line) == label:
+                        label_line_idx = i
+                        break
+            
+            if label_line_idx is None:
+                continue
+            
+            # Count lines from AFTER this label until next non-.Lpcrel_ label
+            label_line_count = 0
+            i = label_line_idx + 1
+            while i < len(lines):
+                line = lines[i]
+                # Stop at next real label (not .Lpcrel_)
+                if self.is_label_line(line):
+                    next_label = self.extract_label_from_line(line)
+                    if next_label and not next_label.startswith('.Lpcrel_'):
+                        break
+                # Count instructions and .Lpcrel_ labels
+                if (self.is_instruction_line(line) or 
+                    (line.strip().startswith('.Lpcrel_') and line.strip().endswith(':'))):
+                    label_line_count += 1
+                i += 1
+            
+            # Find all blocks belonging to this label
+            # (from start_block_id until the next label's block)
+            next_block_id = len(basic_blocks)  # Default: until end
+            
+            for other_label, other_block_id in label_to_block.items():
+                if other_block_id > start_block_id and other_block_id < next_block_id:
+                    # Find label positions to ensure correct ordering
+                    other_label_line_idx = None
+                    for j, line in enumerate(lines):
                         if self.is_label_line(line):
-                            next_label = self.extract_label_from_line(line)
-                            if next_label and not next_label.startswith('.Lpcrel_'):
-                                end_line_idx = i
+                            if self.extract_label_from_line(line) == other_label:
+                                other_label_line_idx = j
                                 break
-                        # Count instructions and .Lpcrel_ labels (NOT the main label itself)
+                    # Only consider it if it appears after our label in the file
+                    if other_label_line_idx and other_label_line_idx > label_line_idx:
+                        next_block_id = other_block_id
+            
+            # Collect block info
+            blocks_info = {}
+            for block_id in range(start_block_id, next_block_id):
+                # Count physical lines for this block (instructions + .Lpcrel_ labels)
+                block_start_line = None
+                block_end_line = None
+                
+                # Find the line range for this block in original file
+                for instr_idx, bid in instr_idx_to_block.items():
+                    if bid == block_id:
+                        line_idx = instruction_indices[instr_idx]
+                        if block_start_line is None or line_idx < block_start_line:
+                            block_start_line = line_idx
+                        if block_end_line is None or line_idx > block_end_line:
+                            block_end_line = line_idx
+                
+                if block_start_line is not None and block_end_line is not None:
+                    # Count physical lines between start and end (inclusive)
+                    physical_count = 0
+                    for line_idx in range(block_start_line, block_end_line + 1):
+                        line = lines[line_idx]
                         if (self.is_instruction_line(line) or
                             (line.strip().startswith('.Lpcrel_') and line.strip().endswith(':'))):
-                            label_line_count += 1
-                        i += 1
+                            physical_count += 1
                     
-                    # Find all blocks that belong to this label
-                    # (from start_block_id until the next label's block)
-                    blocks_info = {}
-                    
-                    # Find the next label's block ID to determine range
-                    next_block_id = len(basic_blocks)  # Default: until end
-                    for other_label, other_instr_idx in label_to_idx.items():
-                        if other_label.startswith('.LC') or other_label.startswith('.Lpcrel_'):
-                            continue
-                        if other_instr_idx in instr_idx_to_block:
-                            other_block_id = instr_idx_to_block[other_instr_idx]
-                            # Find the smallest block_id that's greater than start_block_id
-                            if other_block_id > start_block_id and other_block_id < next_block_id:
-                                # Check if this label appears in the original file after our label
-                                other_label_line_idx = None
-                                for j, line in enumerate(lines):
-                                    if self.is_label_line(line):
-                                        extracted = self.extract_label_from_line(line)
-                                        if extracted == other_label:
-                                            other_label_line_idx = j
-                                            break
-                                if other_label_line_idx and other_label_line_idx == end_line_idx:
-                                    next_block_id = other_block_id
-                    
-                    # Collect all blocks in range [start_block_id, next_block_id)
-                    # For each block, count physical lines (instructions + .Lpcrel_ labels in that block's range)
-                    for block_id in range(start_block_id, next_block_id):
-                        # Count physical lines for this block in the original file
-                        # Find the instruction range for this block
-                        block_start_instr_idx = None
-                        block_end_instr_idx = None
-                        
-                        for instr_idx, bid in instr_idx_to_block.items():
-                            if bid == block_id:
-                                if block_start_instr_idx is None or instr_idx < block_start_instr_idx:
-                                    block_start_instr_idx = instr_idx
-                                if block_end_instr_idx is None or instr_idx > block_end_instr_idx:
-                                    block_end_instr_idx = instr_idx
-                        
-                        if block_start_instr_idx is not None and block_end_instr_idx is not None:
-                            # Get the actual line indices in original file
-                            start_line = instruction_indices[block_start_instr_idx]
-                            end_line = instruction_indices[block_end_instr_idx]
-                            
-                            # Count physical lines between start_line and end_line (inclusive)
-                            # including instructions and .Lpcrel_ labels
-                            physical_count = 0
-                            for line_idx in range(start_line, end_line + 1):
-                                line = lines[line_idx]
-                                if (self.is_instruction_line(line) or
-                                    (line.strip().startswith('.Lpcrel_') and line.strip().endswith(':'))):
-                                    physical_count += 1
-                            
-                            block_key = f"block_{block_id}"
-                            blocks_info[block_key] = {
-                                "id": block_id,
-                                "count": physical_count
-                            }
-                    
-                    label_metadata[label] = {
-                        'label_line_count': label_line_count,  # Total lines under this label (not including label itself)
-                        'blocks': blocks_info  # All blocks belonging to this label with physical line counts
+                    block_key = f"block_{block_id}"
+                    blocks_info[block_key] = {
+                        "id": block_id,
+                        "count": physical_count
                     }
+            
+            label_metadata[label] = {
+                "label_line_count": label_line_count,
+                "blocks": blocks_info
+            }
         
         if self.verbose:
             print(f"  Split into {len(basic_blocks)} basic blocks")
@@ -394,7 +376,7 @@ class AsmBlockAnalyzer:
         with open(label_mapping_file, 'w', encoding='utf-8') as f:
             json.dump(label_to_block, f, indent=2, ensure_ascii=False)
         
-        # Save extended label metadata with line counts
+        # Save label metadata with line counts
         label_metadata_file = output_dir.parent / "label_metadata.json"
         with open(label_metadata_file, 'w', encoding='utf-8') as f:
             json.dump(label_metadata, f, indent=2, ensure_ascii=False)

@@ -150,38 +150,27 @@ dequeue:
 	lw	a5,%lo(g_qCount)(a7)
 	bge	zero,a5,.L17
 	lui	a6,%hi(qFront)
-	lw	a3,%lo(qFront)(a6)
+	lw	a4,%lo(qFront)(a6)
 	lui	a4,%hi(queue)
 	addi	a4,a4,%lo(queue)
-	slli	a5,a3,1
-	sub	t0,zero,a5
-	sub	a5,a3,t0
-	slli	a5,a5,2
-	sub	t1,zero,a5
-	sub	a5,a4,t1
-	lw	a3,0(a5)
+	slli	a3,a4,1
+	sub	t0,zero,a3
+	sub	a3,a4,t0
+	slli	a3,a3,2
+	sub	t1,zero,a3
+	sub	a4,a4,t1
+	lw	a3,0(a4)
 	lui	a5,429497
 	addi	a5,a5,-1107
 	sw	a3,0(a0)
-	lw	t1,%lo(qFront)(a6)
 	lui	a0,2
 	addi	a0,a0,1808
-	slli	a3,a3,1
-	sub	a3,a3,t0
-	slli	a3,a5,2
-	sub	a3,a4,t1
-	lw	a3,4(a5)
+	lw	a3,4(a4)
 	sw	a3,0(a1)
-	lw	a1,%lo(qFront)(a6)
-	slli	a3,a3,1
-	sub	a3,a3,t0
-	slli	a3,a5,2
-	sub	a4,a4,t1
-	lw	a4,8(a5)
+	lw	a4,8(a4)
 	sw	a4,0(a2)
-	lw	a4,%lo(qFront)(a6)
 	lw	a3,%lo(g_qCount)(a7)
-	addi	a4,a3,1
+	addi	a4,a4,1
 	mulh	a5,a4,a5
 	srai	a2,a4,31
 	addi	a3,a3,-1
@@ -200,333 +189,6 @@ dequeue:
 qcount:
 	lui	a5,%hi(g_qCount)
 	lw	a0,%lo(g_qCount)(a5)
-	jalr	zero,ra,0
-	addi	sp,sp,-80
-	sw	s5,52(sp)
-	lui	s5,%hi(.LANCHOR0)
-	addi	s5,s5,%lo(.LANCHOR0)
-	lui	a2,2
-	sw	ra,76(sp)
-	sw	s0,72(sp)
-	addi	a3,a1,0
-	addi	a4,s5,800
-	addi	a5,s5,0
-	addi	a2,a2,1807
-	sw	a2,0(a5)
-	sw	a2,4(a5)
-	addi	a5,a5,8
-	bne	a4,a5,.L21
-	lui	a5,%hi(ch)
-	addi	s0,zero,100
-	sw	s0,%lo(ch)(a5)
-	beq	a0,a3,.L45
-	sw	s9,36(sp)
-	lui	s9,%hi(qRear)
-	lw	a1,%lo(qRear)(s9)
-	sw	s2,64(sp)
-	lui	s2,429497
-	addi	a6,a1,1
-	addi	s2,s2,-1107
-	mulh	a4,a6,s2
-	sw	s3,60(sp)
-	srai	a7,a6,31
-	lui	s3,2
-	addi	s3,s3,1808
-	sw	s8,40(sp)
-	lui	s8,%hi(g_qCount)
-	lw	t0,%lo(g_qCount)(s8)
-	slli	a5,a1,1
-	sub	t1,zero,a1
-	sub	a5,a5,t1
-	srai	a4,a4,12
-	sub	a4,a4,a7
-	mul	a4,s3,a4
-	lui	t2,%hi(queue)
-	slli	a5,a5,2
-	addi	t2,t2,%lo(queue)
-	slli	a1,a0,3
-	sw	s1,68(sp)
-	sw	s4,56(sp)
-	sub	t3,zero,t2
-	sub	a5,a5,t3
-	sub	t4,zero,a1
-	sub	a1,s5,t4
-	addi	t0,t0,1
-	sub	a4,a6,a4
-	sw	a0,0(a5)
-	sw	zero,4(a5)
-	sw	a2,8(a5)
-	sw	zero,0(a1)
-	sw	a4,%lo(qRear)(s9)
-	sw	a2,4(a1)
-	sw	t0,%lo(g_qCount)(s8)
-	bge	zero,t0,.L24
-	sw	s10,32(sp)
-	lui	s10,%hi(qFront)
-	lw	t1,%lo(qFront)(s10)
-	sw	s6,48(sp)
-	lui	t5,2
-	lui	s6,%hi(AdjMatrix)
-	sw	s7,44(sp)
-	sw	s11,28(sp)
-	addi	s6,s6,%lo(AdjMatrix)
-	addi	t5,t5,1807
-	addi	s4,zero,0
-	addi	s7,zero,400
-	addi	t4,a3,0
-	addi	a6,t1,1
-	mulh	a3,a6,s2
-	slli	a5,t1,1
-	sub	t6,zero,t1
-	sub	a5,a5,t6
-	slli	a5,a5,2
-	sub	a1,zero,a5
-	sub	a5,t2,a1
-	lw	t3,0(a5)
-	lw	s1,4(a5)
-	lw	a5,8(a5)
-	srai	t1,a6,31
-	addi	t0,t0,-1
-	sw	a5,12(sp)
-	srai	a5,a3,12
-	sub	t1,a5,t1
-	mul	a0,s7,t3
-	addi	a3,s5,0
-	addi	a2,zero,0
-	mul	t1,s3,t1
-	sub	a5,zero,s6
-	sub	a0,a0,a5
-	sub	t1,a6,t1
-	slli	a5,a4,1
-	lw	a7,0(a0)
-	sub	t6,zero,a4
-	sub	a5,a5,t6
-	addi	a1,a4,1
-	slli	a5,a5,2
-	srai	s11,a1,31
-	sub	a6,zero,t2
-	sub	a5,a5,a6
-	beq	a7,t5,.L25
-	lw	t6,0(a3)
-	sub	op_0,zero,a7
-	sub	a6,s1,op_0
-	beq	t5,t6,.L26
-	bge	a6,t6,.L25
-	mulh	a4,a1,s2
-	sw	a6,0(a3)
-	sw	t3,4(a3)
-	sw	a2,0(a5)
-	sw	a6,4(a5)
-	sw	t3,8(a5)
-	addi	t0,t0,1
-	addi	s4,zero,1
-	srai	a4,a4,12
-	sub	a4,a4,s11
-	mul	a4,s3,a4
-	sub	a4,a1,a4
-	addi	a2,a2,1
-	addi	a0,a0,4
-	addi	a3,a3,8
-	bne	s0,a2,.L27
-	bne	zero,t0,.L28
-	addi	a1,t3,0
-	lw	t3,12(sp)
-	lui	a5,%hi(i)
-	sw	t1,%lo(qFront)(s10)
-	lui	a6,%hi(iDist)
-	lui	t1,%hi(iPrev)
-	lui	a0,%hi(iNode)
-	sw	a2,%lo(i)(a5)
-	lui	a5,%hi(iCost)
-	sw	zero,%lo(g_qCount)(s8)
-	sw	t3,%lo(iPrev)(t1)
-	sw	s1,%lo(iDist)(a6)
-	sw	a1,%lo(iNode)(a0)
-	sw	a7,%lo(iCost)(a5)
-	addi	a3,t4,0
-	beq	zero,s4,.L44
-	lw	s6,48(sp)
-	lw	s7,44(sp)
-	lw	s10,32(sp)
-	lw	s11,28(sp)
-	sw	a4,%lo(qRear)(s9)
-	slli	s0,a3,3
-	sub	t0,zero,s5
-	sub	s2,s0,t0
-	lw	a1,0(s2)
-	lui	a0,%hi(.LC3)
-	addi	a0,a0,%lo(.LC3)
-	addi	s1,a3,0
-.Lpcrel_7:
-	auipc	ra,%pcrel_hi(printf)
-	jalr	ra,ra,%pcrel_lo(.Lpcrel_7)
-	lui	a0,%hi(.LC4)
-	addi	a0,a0,%lo(.LC4)
-.Lpcrel_8:
-	auipc	ra,%pcrel_hi(printf)
-	jalr	ra,ra,%pcrel_lo(.Lpcrel_8)
-	lw	s2,4(s2)
-	lui	a5,2
-	addi	a5,a5,1807
-	bne	a5,s2,.L41
-	lui	s3,%hi(.LC1)
-	addi	a1,s1,0
-	addi	a0,s3,%lo(.LC1)
-.Lpcrel_9:
-	auipc	ra,%pcrel_hi(printf)
-	jalr	ra,ra,%pcrel_lo(.Lpcrel_9)
-	addi	a0,zero,10
-.Lpcrel_10:
-	auipc	ra,%pcrel_hi(putchar)
-	jalr	ra,ra,%pcrel_lo(.Lpcrel_10)
-	sub	t0,zero,s0
-	sub	s5,s5,t0
-	lui	a4,%hi(result_sink)
-	lw	a3,0(s5)
-	lw	a5,%lo(result_sink)(a4)
-	lw	ra,76(sp)
-	lw	s0,72(sp)
-	sub	t1,zero,a5
-	sub	a5,a3,t1
-	sw	a5,%lo(result_sink)(a4)
-	lw	s1,68(sp)
-	lw	s2,64(sp)
-	lw	s3,60(sp)
-	lw	s4,56(sp)
-	lw	s8,40(sp)
-	lw	s9,36(sp)
-	lw	s5,52(sp)
-	addi	sp,sp,80
-	jalr	zero,ra,0
-	slli	a4,s2,3
-	sub	t0,zero,s5
-	sub	a4,a4,t0
-	lw	s4,4(a4)
-	bne	a5,s4,.L42
-	lui	s3,%hi(.LC1)
-	addi	a1,s2,0
-	addi	a0,s3,%lo(.LC1)
-.Lpcrel_11:
-	auipc	ra,%pcrel_hi(printf)
-	jalr	ra,ra,%pcrel_lo(.Lpcrel_11)
-	jal	zero,.L30
-	lw	s6,48(sp)
-	lw	s7,44(sp)
-	lw	s10,32(sp)
-	lw	s11,28(sp)
-	jal	zero,.L24
-	lw	s0,72(sp)
-	lw	ra,76(sp)
-	lw	s5,52(sp)
-	lui	a0,%hi(.LC2)
-	addi	a0,a0,%lo(.LC2)
-	addi	sp,sp,80
-.Lpcrel_12:
-	auipc	t1,%pcrel_hi(puts)
-	jalr	zero,t1,%pcrel_lo(.Lpcrel_12)
-	slli	a4,s4,3
-	sub	t0,zero,a4
-	sub	a4,s5,t0
-	lw	a1,4(a4)
-	beq	a5,a1,.L32
-	addi	a0,s5,0
-.Lpcrel_13:
-	auipc	ra,%pcrel_hi(print_path)
-	jalr	ra,ra,%pcrel_lo(.Lpcrel_13)
-	lui	s3,%hi(.LC1)
-	addi	a1,s4,0
-	addi	a0,s3,%lo(.LC1)
-.Lpcrel_14:
-	auipc	ra,%pcrel_hi(printf)
-	jalr	ra,ra,%pcrel_lo(.Lpcrel_14)
-	jal	zero,.L31
-	lui	t0,1048567
-	addi	sp,sp,-2032
-	addi	t0,t0,-1136
-	lui	a5,%hi(.LC0)
-	lui	a3,10
-	sw	ra,2028(sp)
-	sw	s0,2024(sp)
-	sw	s1,2020(sp)
-	sw	s2,2016(sp)
-	sw	s3,2012(sp)
-	sw	s4,2008(sp)
-	addi	a5,a5,%lo(.LC0)
-	sub	t0,zero,t0
-	sub	sp,sp,t0
-	addi	a3,a3,-960
-	lui	a0,%hi(qFront)
-	lui	a1,%hi(qRear)
-	lui	a2,%hi(g_qCount)
-	addi	a4,sp,0
-	sub	t1,zero,a5
-	sub	a3,a3,t1
-	sw	zero,%lo(qFront)(a0)
-	sw	zero,%lo(qRear)(a1)
-	sw	zero,%lo(g_qCount)(a2)
-	lw	a6,0(a5)
-	lw	a0,4(a5)
-	lw	a1,8(a5)
-	lw	a2,12(a5)
-	sw	a6,0(a4)
-	sw	a0,4(a4)
-	sw	a1,8(a4)
-	sw	a2,12(a4)
-	addi	a5,a5,16
-	addi	a4,a4,16
-	bne	a5,a3,.L47
-	lui	a3,10
-	addi	a3,a3,-960
-	lui	a4,%hi(AdjMatrix)
-	addi	a5,sp,0
-	sub	t0,zero,sp
-	sub	a3,a3,t0
-	addi	a4,a4,%lo(AdjMatrix)
-	lw	a2,8(a5)
-	lw	a0,0(a5)
-	lw	a1,4(a5)
-	sw	a2,8(a4)
-	sw	a0,0(a4)
-	sw	a1,4(a4)
-	lw	a2,12(a5)
-	addi	a5,a5,16
-	addi	a4,a4,16
-	sw	a2,-4(a4)
-	bne	a3,a5,.L48
-	lui	s2,335544
-	addi	s2,s2,1311
-	addi	a5,zero,50
-	addi	s1,zero,0
-	addi	s4,zero,100
-	addi	s3,zero,20
-	mulh	s0,a5,s2
-	srai	a4,a5,31
-	addi	a0,s1,0
-	addi	s1,s1,1
-	srai	s0,s0,5
-	sub	s0,s0,a4
-	mul	s0,s4,s0
-	sub	s0,a5,s0
-	addi	a1,s0,0
-.Lpcrel_15:
-	auipc	ra,%pcrel_hi(dijkstra)
-	jalr	ra,ra,%pcrel_lo(.Lpcrel_15)
-	addi	a5,s0,1
-	bne	s3,s1,.L49
-	lui	t0,9
-	lui	a5,%hi(result_sink)
-	addi	t0,t0,1136
-	lw	a0,%lo(result_sink)(a5)
-	sub	t0,zero,t0
-	sub	sp,sp,t0
-	lw	ra,2028(sp)
-	lw	s0,2024(sp)
-	lw	s1,2020(sp)
-	lw	s2,2016(sp)
-	lw	s3,2012(sp)
-	lw	s4,2008(sp)
-	slti	a0,a0,1
-	addi	sp,sp,2032
 	jalr	zero,ra,0
 	.size	qcount, .-qcount
 	.section	.rodata.str1.4
@@ -706,10 +368,12 @@ dijkstra:
 	lui	a0,%hi(.LC3)
 	addi	a0,a0,%lo(.LC3)
 	addi	s1,a3,0
+.Lpcrel_7:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_7)
 	lui	a0,%hi(.LC4)
 	addi	a0,a0,%lo(.LC4)
+.Lpcrel_8:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_8)
 	lw	s2,4(s2)
@@ -720,9 +384,11 @@ dijkstra:
 .L30:
 	addi	a1,s1,0
 	addi	a0,s3,%lo(.LC1)
+.Lpcrel_9:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_9)
 	addi	a0,zero,10
+.Lpcrel_10:
 	auipc	ra,%pcrel_hi(putchar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_10)
 	sub	t0,zero,s0
@@ -754,6 +420,7 @@ dijkstra:
 .L31:
 	addi	a1,s2,0
 	addi	a0,s3,%lo(.LC1)
+.Lpcrel_11:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_11)
 	jal	zero,.L30
@@ -770,6 +437,7 @@ dijkstra:
 	lui	a0,%hi(.LC2)
 	addi	a0,a0,%lo(.LC2)
 	addi	sp,sp,80
+.Lpcrel_12:
 	auipc	t1,%pcrel_hi(puts)
 	jalr	zero,t1,%pcrel_lo(.Lpcrel_12)
 .L42:
@@ -779,12 +447,14 @@ dijkstra:
 	lw	a1,4(a4)
 	beq	a5,a1,.L32
 	addi	a0,s5,0
+.Lpcrel_13:
 	auipc	ra,%pcrel_hi(print_path)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_13)
 .L32:
 	lui	s3,%hi(.LC1)
 	addi	a1,s4,0
 	addi	a0,s3,%lo(.LC1)
+.Lpcrel_14:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_14)
 	jal	zero,.L31
@@ -865,6 +535,7 @@ main:
 	mul	s0,s4,s0
 	sub	s0,a5,s0
 	addi	a1,s0,0
+.Lpcrel_15:
 	auipc	ra,%pcrel_hi(dijkstra)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_15)
 	addi	a5,s0,1
