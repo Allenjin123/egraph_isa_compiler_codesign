@@ -159,8 +159,25 @@ class AsmReconstructor:
                         block_lines = rewritten_blocks[current_block_id]
                         
                         # 处理 .Lpcrel 标签插入
-                        processed_lines = self.insert_pcrel_labels(block_lines)
-                        output_lines.extend(processed_lines)
+                        # 注释掉这里的插入，改为在 postprocess_pcrel_labels 中统一处理
+                        # processed_lines = self.insert_pcrel_labels(block_lines)
+                        processed_lines = block_lines
+                        
+                        # 为指令添加缩进（制表符）
+                        indented_lines = []
+                        for line in processed_lines:
+                            # 如果是标签行（以':'结尾且无前导空白），不添加缩进
+                            stripped = line.strip()
+                            if stripped.endswith(':') and not line.startswith(('\t', ' ')):
+                                indented_lines.append(line)
+                            else:
+                                # 指令行添加制表符缩进
+                                if not line.startswith(('\t', ' ')) and stripped:
+                                    indented_lines.append('\t' + line)
+                                else:
+                                    indented_lines.append(line)
+                        
+                        output_lines.extend(indented_lines)
                     
                     in_block = False
                     continue
@@ -201,6 +218,7 @@ class AsmReconstructor:
         # 第一遍：找出所有需要插入标签的位置和已存在的标签
         pcrel_positions = {}  # {行号: 标签名}
         existing_labels = set()  # 已存在的标签
+        labels_to_insert = set()  # 待插入的标签（用于去重）
         
         for i, line in enumerate(lines):
             # 记录已存在的标签
@@ -214,12 +232,13 @@ class AsmReconstructor:
                 match = re.search(r'%pcrel_lo\((\.Lpcrel_\d+)\)', line)
                 if match:
                     pcrel_label = match.group(1)
-                    # 如果标签已存在，跳过
-                    if pcrel_label in existing_labels:
+                    # 如果标签已存在或已经准备插入，跳过
+                    if pcrel_label in existing_labels or pcrel_label in labels_to_insert:
                         continue
                     # 计算插入位置：当前行的前一行（auipc 之前）
                     insert_pos = max(0, i - 1)
                     pcrel_positions[insert_pos] = pcrel_label
+                    labels_to_insert.add(pcrel_label)  # 标记为待插入
         
         # 第二遍：构建结果，在合适的位置插入标签
         result = []

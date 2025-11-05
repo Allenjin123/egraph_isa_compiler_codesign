@@ -418,16 +418,16 @@ class BlockGraph:
             # reordered_ops = reorder_instruction_args(op, child_ops)
             
             
-            # 构建汇编指令字符串
+            # 构建汇编指令字符串（格式对齐，与原始 .s 文件一致）
             # INSTRUCTIONS_WITHOUT_RD 中存储的是小写指令名
             if op in INSTRUCTIONS_WITHOUT_RD:
                 # 不需要 rd 的指令（如 Store、Branch）
                 if op in ['sb', 'sh', 'sw'] and len(child_ops) >= 3:
                     # Store 指令特殊格式: sw rs2, offset(rs1)
-                    inst_str = f"{op} {child_ops[1]}, {child_ops[2]}({child_ops[0]})"
+                    inst_str = f"{op}\t{child_ops[1]},{child_ops[2]}({child_ops[0]})"
                 elif child_ops:
                     # 其他不需要 rd 的指令（Branch等）
-                    inst_str = f"{op} {', '.join(child_ops)}"
+                    inst_str = f"{op}\t{','.join(child_ops)}"
                 else:
                     inst_str = f"{op}"
                 instructions.append(inst_str)
@@ -446,12 +446,12 @@ class BlockGraph:
                 # Load 指令特殊格式: lw rd, offset(rs1)
                 # children: [rs1, offset] -> 保持不变
                 if op in RV32I_LOAD and len(child_ops) >= 2:
-                    inst_str = f"{op} {current_op}, {child_ops[1]}({child_ops[0]})"
+                    inst_str = f"{op}\t{current_op},{child_ops[1]}({child_ops[0]})"
                 elif child_ops:
                     # 其他需要 rd 的指令
-                    inst_str = f"{op} {current_op}, {', '.join(child_ops)}"
+                    inst_str = f"{op}\t{current_op},{','.join(child_ops)}"
                 else:
-                    inst_str = f"{op} {current_op}"
+                    inst_str = f"{op}\t{current_op}"
                 
                 instructions.append(inst_str)
         
@@ -469,6 +469,10 @@ class BlockGraph:
         
         # 替换所有 op_n 为实际的空闲寄存器
         instructions = self._replace_temp_regs_with_free_regs(instructions)
+        
+        # 将 x0 替换为 zero（RISC-V 别名）
+        # 使用正则表达式确保只替换寄存器名 x0，不影响其他内容
+        instructions = [re.sub(r'\bx0\b', 'zero', inst) for inst in instructions]
         
         # 写入文件
         with open(output_file, 'w') as f:
@@ -560,199 +564,60 @@ def build_block_graphs(egraph: EGraph, choices: Dict[str, str]) -> Dict[Tuple[st
 
 
 
-if __name__ == "__main__":
-    """测试代码：加载 dijkstra_small_O3 的数据并验证 BlockGraph 构建"""
+def main():
+    """主函数：从 ILP 解生成重写后的基本块"""
+    import argparse
     
-    print("="*60)
-    print("测试 BlockGraph 构建与可达性验证")
-    print("="*60)
+    parser = argparse.ArgumentParser(description='从 ILP 解生成重写后的基本块')
+    parser.add_argument('program_name', help='程序名 (如 dijkstra_small_O3)')
+    parser.add_argument('-v', '--verbose', action='store_true', help='详细输出')
+    args = parser.parse_args()
     
-    # 1. 设置程序名称
-    program_name = "dijkstra_small_O3"
-    print(f"\n程序名称: {program_name}")
+    program_name = args.program_name
+    verbose = args.verbose
     
-    # 2. 加载 EGraph (从 output/frontend/)
-    print("\n加载 EGraph...")
+    if verbose:
+        print("="*60)
+        print(f"生成重写后的基本块: {program_name}")
+        print("="*60)
+    
+    # 加载 EGraph
+    if verbose:
+        print("\n加载 EGraph...")
     egraph = EGraph(program_name)
-    print(f"  - EClasses: {len(egraph.eclasses)}")
-    print(f"  - ENodes: {len(egraph.enodes)}")
+    if verbose:
+        print(f"  - EClasses: {len(egraph.eclasses)}, ENodes: {len(egraph.enodes)}")
     
-    # 3. 加载 solution 文件 (从 output/ilp/)
+    # 加载 solution 文件
     sol_path = ILP_OUTPUT_DIR / program_name / "sol" / "solution.sol"
-    print(f"\n加载 solution 文件: {sol_path}")
-    
     if not sol_path.exists():
         print(f"错误：找不到 solution 文件: {sol_path}")
         sys.exit(1)
     
+    if verbose:
+        print(f"\n加载 solution: {sol_path}")
+    
     variables = parse_solution_file(str(sol_path))
-    print(f"  - 解析到 {len(variables)} 个变量")
-    
-    # 4. 提取选择
-    print("\n提取 ILP 选择...")
     choices = extract_solution(egraph, variables)
-    print(f"  - 选中 {len(choices)} 个 eclass")
     
-    # 5. 构建 BlockGraph
-    print("\n构建 BlockGraph...")
+    # 构建 BlockGraph
     blocks = build_block_graphs(egraph, choices)
-    print(f"  - 找到 {len(blocks)} 个 block")
-    
-    # 6. 打印每个 block 的统计信息
-    print("\n" + "="*60)
-    print("BlockGraph 详细信息")
-    print("="*60)
-    
-    total_blocks = 0
-    valid_blocks = 0
-    total_unreachable = 0
-    
-    for (prog_name, block_num), block_graph in sorted(blocks.items()):
-        total_blocks += 1
-        print(f"\nBlock: {prog_name}_{block_num}")
-        print(f"  - Root children: {len(block_graph.root_children)}")
-        print(f"  - ENodes in subgraph: {len(block_graph.enodes)}")
-        print(f"  - EClasses in subgraph: {len(block_graph.eclasses)}")
-        print(f"  - Parent relationships: {len(block_graph.parent_map)}")
-        print(f"  - Children relationships: {len(block_graph.children_map)}")
-        
-        # 验证可达性
-        verification = block_graph.verify_reachability()
-        print(f"\n  可达性验证:")
-        print(f"    - 总选中节点: {verification['total_selected']}")
-        print(f"    - 可达节点: {verification['reachable']}")
-        print(f"    - 不可达节点: {verification['unreachable']}")
-        
-        if verification['is_valid']:
-            print(f"    ✅ 所有选中的节点都可达")
-            valid_blocks += 1
-        else:
-            print(f"    ❌ 发现 {verification['unreachable']} 个不可达节点！")
-            total_unreachable += verification['unreachable']
-            print(f"    不可达的 eclass (前5个):")
-            for eclass_id in verification['unreachable_eclasses'][:5]:
-                if eclass_id in choices:
-                    enode_id = choices[eclass_id]
-                    enode = egraph.enodes.get(enode_id)
-                    op = enode.op if enode else "?"
-                    print(f"      - {eclass_id} -> {op}")
-            if len(verification['unreachable_eclasses']) > 5:
-                print(f"      ... 还有 {len(verification['unreachable_eclasses']) - 5} 个")
-        
-        # 打印前几个 enode 的详情
-        if block_graph.enodes:
-            print(f"\n  前 3 个 ENode:")
-            for i, (enode_id, enode) in enumerate(list(block_graph.enodes.items())[:3]):
-                print(f"    [{i+1}] {enode_id}")
-                print(f"        - op: {enode.op}")
-                print(f"        - eclass: {enode.eclass_id}")
-                print(f"        - children: {len(enode.children)}")
-        
-        # 检查图的干净度
-        leaf_eclasses = set(block_graph.parent_map.keys()) - set(block_graph.eclasses.keys())
-        if leaf_eclasses:
-            print(f"\n  ⚠️  叶子节点 eclass（在 parent_map 中但不在 eclasses 中）: {len(leaf_eclasses)}")
-            print(f"      示例: {list(leaf_eclasses)[:3]}")
-        else:
-            print(f"\n  ✅  图是完全干净的（所有 parent_map 的 key 都有对应的 enode）")
-    
-    # 打印总体统计
-    print("\n" + "="*60)
-    print("可达性验证总结")
-    print("="*60)
-    print(f"总 block 数: {total_blocks}")
-    print(f"全部可达的 block: {valid_blocks}")
-    print(f"有不可达节点的 block: {total_blocks - valid_blocks}")
-    print(f"不可达节点总数: {total_unreachable}")
-    if total_unreachable == 0:
-        print("✅ 所有 block 的选择都是可达的！")
-    else:
-        print(f"❌ 发现 {total_unreachable} 个不可达节点，需要检查！")
     
     # 生成重写输出
-    print("\n" + "="*60)
-    print("生成重写后的指令文件")
-    print("="*60)
-    
+    print(f"\n生成重写后的指令文件...")
     total_instructions = 0
     for (prog_name, block_num), block_graph in sorted(blocks.items()):
         num_instructions = block_graph.generate_rewrite_output(egraph, FRONTEND_OUTPUT_DIR)
         total_instructions += num_instructions
-        print(f"Block {block_num}: 生成 {num_instructions} 条指令")
+        if verbose:
+            print(f"  Block {block_num}: {num_instructions} 条指令")
     
     rewrite_dir = FRONTEND_OUTPUT_DIR / program_name / "basic_blocks_rewrite"
-    print(f"\n✅ 所有重写文件已保存到: {rewrite_dir}")
-    print(f"总共生成 {total_instructions} 条指令")
+    print(f"✓ 生成 {len(blocks)} 个块，共 {total_instructions} 条指令")
+    print(f"✓ 输出目录: {rewrite_dir}")
     
-    # 7. 详细展示一个小的 block 的图结构
-    print("\n" + "="*60)
-    print("详细展示一个 Block 的图结构")
-    print("="*60)
-    
-    # 选择一个较小的 block 进行可视化
-    small_blocks = [(k, v) for k, v in blocks.items() if 5 <= len(v.enodes) <= 10]
-    if small_blocks:
-        (prog_name, block_num), sample_block = small_blocks[0]
-        print(f"\n选择 Block: {prog_name}_{block_num}")
-        print(f"Root children (指令序列的顶层 eclass): {sample_block.root_children}")
-        print(f"\n图中包含 {len(sample_block.enodes)} 个节点:")
-        
-        # 打印所有节点的详细信息
-        for i, (enode_id, enode) in enumerate(sample_block.enodes.items(), 1):
-            print(f"\n[{i}] ENode: {enode_id}")
-            print(f"    操作符 (op): {enode.op}")
-            print(f"    所属 EClass: {enode.eclass_id}")
-            print(f"    Cost: {enode.cost}")
-            # 显示子图中的子节点
-            children_in_subgraph = sample_block.children_map.get(enode_id, [])
-            if children_in_subgraph:
-                print(f"    子节点 (子图中的 children):")
-                for j, child_eclass in enumerate(children_in_subgraph, 1):
-                    # 找到这个 eclass 对应的 enode
-                    child_enodes = sample_block.eclasses[child_eclass]
-                    child_enode_id = list(child_enodes)[0] if child_enodes else "?"
-                    child_enode = sample_block.enodes.get(child_enode_id)
-                    child_op = child_enode.op if child_enode else "?"
-                    print(f"        [{j}] {child_eclass} → {child_op}")
-            else:
-                print(f"    无子节点 (叶子)")
-            # 显示原始的 children 数量（用于对比）
-            if len(enode.children) != len(children_in_subgraph):
-                print(f"    (原始 children 数量: {len(enode.children)}, 子图中: {len(children_in_subgraph)})")
-        
-        # 打印图的拓扑结构
-        print(f"\n\n图的层次结构（从 root 开始的树形展示）:")
-        print("="*60)
-        
-        def print_tree(eclass_id, indent=0, visited=None):
-            if visited is None:
-                visited = set()
-            if eclass_id in visited:
-                print("  " * indent + f"↻ {eclass_id} (已访问)")
-                return
-            visited.add(eclass_id)
-            
-            if eclass_id not in sample_block.choices:
-                print("  " * indent + f"└─ {eclass_id} (未选中或叶子)")
-                return
-            
-            enode_id = sample_block.choices[eclass_id]
-            if enode_id not in sample_block.enodes:
-                print("  " * indent + f"└─ {eclass_id} (节点不在子图)")
-                return
-            
-            enode = sample_block.enodes[enode_id]
-            print("  " * indent + f"└─ [{enode.op}] {eclass_id}")
-            
-            # 使用 children_map 确保只遍历子图中的节点
-            for child_eclass in sample_block.children_map.get(enode_id, []):
-                print_tree(child_eclass, indent + 1, visited)
-        
-        print("\n从 root_children 开始:")
-        for root_child in sample_block.root_children:
-            print(f"\nRoot: {root_child}")
-            print_tree(root_child, 1)
-    
-    print("\n" + "="*60)
-    print("测试完成")
-    print("="*60)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

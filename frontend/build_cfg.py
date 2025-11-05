@@ -27,9 +27,15 @@ class CFGBuilder:
         self.verbose = verbose
         self.branch_instructions = BRANCH_INSTRUCTIONS
     
-    def parse_instruction(self, line: str) -> Optional[Tuple[str, str]]:
-        """解析指令行，返回(mnemonic, operands)
-        示例: '  addi  sp,sp,-16' -> ('addi', 'sp,sp,-16')
+    def extract_mnemonic_and_operands(self, line: str) -> Optional[Tuple[str, str]]:
+        """提取指令的助记符和原始操作数字符串（不解析）
+        
+        Args:
+            line: 指令行，例如 '  addi  sp,sp,-16'
+            
+        Returns:
+            (mnemonic, operands_str) 或 None
+            例如: ('addi', 'sp,sp,-16')
         """
         # 移除注释
         clean = re.sub(r'#.*$', '', line).strip()
@@ -84,7 +90,7 @@ class CFGBuilder:
         # 只分析最后一条指令
         last_line = lines[-1]
         
-        parsed = self.parse_instruction(last_line)
+        parsed = self.extract_mnemonic_and_operands(last_line)
         if not parsed:
             return 'fallthrough', None
         

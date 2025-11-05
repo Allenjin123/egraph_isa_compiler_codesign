@@ -17,7 +17,7 @@ CURRENT_DIR = Path(__file__).resolve().parent
 if str(CURRENT_DIR) not in sys.path:
     sys.path.insert(0, str(CURRENT_DIR))
 
-from util import analyze_instruction, is_register
+from util import analyze_instruction, is_register, parse_instruction
 
 
 class DefUseAnalyzer:
@@ -25,38 +25,6 @@ class DefUseAnalyzer:
     
     def __init__(self, verbose=False):
         self.verbose = verbose
-    
-    def parse_instruction(self, line: str) -> Tuple[str, List[str]]:
-        """解析指令，返回(mnemonic, operands_list)
-        
-        示例转换:
-            "lw a0, 8(sp)  # comment" → ("lw", ["a0", "8", "sp"])
-            "add a0, a1, a2"          → ("add", ["a0", "a1", "a2"])
-        """
-        # 移除注释（#之后的所有内容）
-        clean = re.sub(r'#.*$', '', line).strip()
-        
-        # 移除符号引用 (<...>)
-        clean = re.sub(r'<[^>]+>', '', clean).strip()
-        
-        # 分割mnemonic和operands（只分割一次）
-        parts = clean.split(None, 1)
-        if not parts:
-            return "", []
-        
-        mnemonic = parts[0]
-        operands_str = parts[1] if len(parts) > 1 else ""
-        
-        # 解析操作数（处理offset(base)格式的内存操作）
-        operands = []
-        if operands_str:
-            # 将offset(base)转换为offset,base
-            operands_str = operands_str.replace('(', ',').replace(')', '')
-            
-            # 用逗号分割并去除空格
-            operands = [op.strip() for op in operands_str.split(',') if op.strip()]
-        
-        return mnemonic, operands
     
     def analyze_block(self, block_file: Path) -> Dict:
         """分析一个基本块"""
@@ -70,7 +38,7 @@ class DefUseAnalyzer:
             lines = [line.strip() for line in f if line.strip()]
         
         for line in lines:
-            mnemonic, operands = self.parse_instruction(line)
+            mnemonic, operands = parse_instruction(line)
             if not mnemonic:
                 continue
             
