@@ -1,27 +1,15 @@
-#!/usr/bin/env python3
-"""
-从 ILP 解(solution*.sol)与 EGraph 出发，
-为每个 basic block 搭建结构化数据与输出目录骨架：
-
-output/ilp/<program>/rewrite/variant{N}/<block>.txt
-
-- variant{N} 对应第 N 个解（solution.sol 或 solution_i.sol → variant{i+1}）；
-- 目前仅创建占位文件（写入元信息），后续再实现后序遍历转写为汇编；
-- 预留 RegVal/ImmVal 与 norm_reg 逻辑接口。
-"""
-
 import sys
 import json
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Set
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "Extractor" / "src"))
-from egraph import EGraph, ENode  # type: ignore
-from ILP.ilp_solver import parse_solution_file, extract_solution  # type: ignore
-from util import INSTRUCTIONS_WITHOUT_RD, RV32I_LOAD
+from egraph import EGraph, ENode 
+from ILP.ilp_solver import parse_solution_file, extract_solution  
+from util import INSTRUCTIONS_WITHOUT_RD, RV32I_LOAD, ALL_ABI_REGS, parse_instruction
 
 # 路径配置
 FRONTEND_OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output" / "frontend"
@@ -41,587 +29,622 @@ def strip_quotes(s: str) -> str:
     return s
 
 
-# def reorder_instruction_args(op: str, child_ops: List[str]) -> List[str]:
-#     """根据指令类型重新排列参数顺序
+def get_eclass_to_rd(program_name: str, block_num: int) -> List[Tuple[str, str]]:
+    """从 eclass 文件中按顺序提取每个 eclass 对应的原始 rd 寄存器名（已 norm）
     
-#     有些指令的汇编格式参数顺序和 egraph children 顺序不同：
-#     - Store 指令 (sw, sh, sb, sd): children=[rs1, rs2, offset] -> asm: rs2, offset(rs1)
-
-#     Args:
-#         op: 指令名（小写）
-#         child_ops: 子节点的操作数列表（按 egraph children 顺序）
+    返回: List[(eclass_id, rd), ...]，按文件行顺序，相同 eclass 不覆盖
+    例如: [
+        ("dijkstra_small_O3_17_eclass_Inst_5", "a6"),
+        ("dijkstra_small_O3_17_eclass_Inst_7", "a3"),
+        ("dijkstra_small_O3_17_eclass_Inst_7", "t1"),  # 第二次出现 Inst-7
+        ...
+    ]
+    """
+    eclass_file = FRONTEND_OUTPUT_DIR / program_name / "basic_blocks_eclass" / f"{block_num}.txt"
+    prefix = f"{program_name}_{block_num}_eclass_"
+    result = []
     
-#     Returns:
-#         重新排序后的操作数列表（按汇编格式顺序）
-#     """
-#     # Store 指令: sw rs2, offset(rs1)
-#     # children: [rs1, rs2, offset] -> [rs2, offset, rs1]
-#     if op in ['sb', 'sh', 'sw']:
-#         if len(child_ops) >= 3:
-#             return [child_ops[1], child_ops[2], child_ops[0]]  # [rs2, offset, rs1]
-    
-#     # Branch 指令: beq rs1, rs2, label
-#     # children 顺序已经和汇编格式一致: [rs1, rs2, label]，不需要交换
-    
-#     # Load 指令: lw rd, offset(rs1)
-#     # children: [rs1, offset] -> 保持不变，但需要特殊格式化
-#     # 这里只返回顺序，格式化在后面处理
-    
-#     # 其他指令保持原顺序
-#     return child_ops
-
-
-@dataclass
-class BlockGraph:
-    program_name: str
-    block_num: int
-    # 该 block 下的 root 子 eclass 列表（每个 root 可能有多个子 eclass）
-    root_children: List[str] = field(default_factory=list)
-    # 选择的节点映射（eclass → enode_id）
-    choices: Dict[str, str] = field(default_factory=dict)
-    # 存储子图中的所有 enode（enode_id -> ENode）
-    enodes: Dict[str, 'ENode'] = field(default_factory=dict)
-    # 存储子图中的所有 eclass（eclass_id -> set of enode_ids）
-    eclasses: Dict[str, set] = field(default_factory=dict)
-    # 父子关系映射（eclass_id -> list of parent enode_ids）
-    parent_map: Dict[str, List[str]] = field(default_factory=dict)
-    # 子节点映射（enode_id -> list of child eclass_ids in subgraph）
-    children_map: Dict[str, List[str]] = field(default_factory=dict)
-    # 原始 JSON 数据缓存
-    _original_json: Dict = field(default_factory=dict)
-
-    def add_root_children(self, children: List[str]) -> None:
-        self.root_children.extend(children)
-    
-    def load_ordered_insts(self) -> List[str]:
-        """从 eclass 目录读取对应的 txt 文件，按行顺序提取 class 标识符"""
-        with open(f"{FRONTEND_OUTPUT_DIR}/{self.program_name}/basic_blocks_eclass/{self.block_num}.txt") as f:
-            return [l.split(';')[-1].strip() for l in f if l.strip()]
-    
-    def load_original_instructions(self) -> Dict[str, str]:
-        """从原始 basic_blocks 和 eclass 文件中提取每个 eclass 对应的原始 rd 寄存器
-        
-        Returns:
-            Dict[eclass_id, rd]: eclass -> 原始指令的 rd 寄存器名（已 norm）
-        """
-        eclass_file = f"{FRONTEND_OUTPUT_DIR}/{self.program_name}/basic_blocks_eclass/{self.block_num}.txt"
-        original_file = f"{FRONTEND_OUTPUT_DIR}/{self.program_name}/basic_blocks/{self.block_num}.txt"
-        
-        eclass_to_rd = {}
-        prefix = f"{self.program_name}_{self.block_num}_eclass_"
-        
-        try:
-            with open(eclass_file, 'r') as f:
-                eclass_lines = [l.strip() for l in f if l.strip()]
+    with open(eclass_file, 'r') as f:
+        for line in f:
+            line = line.strip()
+            if not line or ';' not in line:
+                continue
             
-            with open(original_file, 'r') as f:
-                original_lines = [l.strip() for l in f if l.strip()]
+            # 解析: "addi a5_0, a0_0, 0; Inst-6"
+            inst_text = line.split(';')[0].strip()
+            eclass_short = line.split(';')[-1].strip()  # "Inst-6"
+            eclass_full = prefix + eclass_short.replace('-', '_')  # "dijkstra_small_O3_17_eclass_Inst_6"
             
-            # 逐行匹配
-            for i, (eclass_line, original_line) in enumerate(zip(eclass_lines, original_lines)):
-                # 提取 eclass 标识符（如 "Inst-6"）
-                if ';' not in eclass_line:
-                    continue
-                eclass_short = eclass_line.split(';')[-1].strip()
-                full_eclass_id = prefix + eclass_short.replace('-', '_')
-                
-                # 如果有多个相同的 eclass，以第一个为准
-                if full_eclass_id in eclass_to_rd:
-                    continue
-                
-                # 解析原始指令，提取 rd（第一个操作数）
-                # 格式如: "addi a5, a0, 0" 或 "lw a0, 8(sp)" 或 "addi a5,a0,0" (无空格)
-                parts = original_line.split()
-                if len(parts) >= 2:
-                    # 第一个是指令，第二个通常是 rd（可能带逗号）
-                    # 处理无空格格式：取第一个逗号之前的部分
-                    rd_raw = parts[1].split(',')[0]
-                    # 应用 norm_reg
-                    rd_normed = norm_reg(rd_raw)
-                    eclass_to_rd[full_eclass_id] = rd_normed
-        
-        except FileNotFoundError:
-            pass  # 如果文件不存在，返回空字典
-        
-        return eclass_to_rd
+            # 提取 rd（第一个操作数）
+            parts = inst_text.split()
+            if len(parts) >= 2:
+                inst_op = parts[0].lower()  # 指令名
+                # 检查是否是有 rd 的指令（不在 INSTRUCTIONS_WITHOUT_RD 中）
+                if inst_op not in INSTRUCTIONS_WITHOUT_RD:
+                    rd_raw = parts[1].rstrip(',')  # "a5_0," -> "a5_0"
+                    rd = norm_reg(rd_raw)  # "a5_0" -> "a5"
+                    result.append((eclass_full, rd))
+                else:
+                    result.append((eclass_full, None))
     
-    def load_free_registers(self) -> List[str]:
-        """从liveness.json加载该block的空闲寄存器列表
-        
-        Returns:
-            按优先级排序的空闲寄存器列表 (t寄存器 > a寄存器 > 其他)
-        """
-        liveness_file = f"{FRONTEND_OUTPUT_DIR}/{self.program_name}/liveness.json"
-        
-        try:
-            with open(liveness_file, 'r') as f:
-                liveness_data = json.load(f)
-            
-            # 获取该block的空闲寄存器
-            block_key = str(self.block_num)
-            if block_key in liveness_data:
-                free_regs = liveness_data[block_key].get('FREE_at_exit', [])
-                
-                # 分类寄存器
-                t_regs = []
-                a_regs = []
-                other_regs = []
-                
-                for reg in free_regs:
-                    if reg.startswith('t'):
-                        t_regs.append(reg)
-                    elif reg.startswith('a'):
-                        a_regs.append(reg)
-                    else:
-                        other_regs.append(reg)
-                
-                # 按优先级排序：t > a > other
-                # 每个类别内部按名称排序
-                sorted_regs = sorted(t_regs) + sorted(a_regs) + sorted(other_regs)
-                return sorted_regs
-        
-        except (FileNotFoundError, json.JSONDecodeError, KeyError):
-            pass  # 如果文件不存在或格式错误，返回空列表
-        
+    return result
+
+
+def extract_def_use(inst_line: str) -> Tuple[Set[str], Set[str]]:
+    """提取一条指令的 def 和 use 寄存器
+    
+    Returns:
+        (def_regs, use_regs) - 两个集合，包含定义和使用的寄存器
+    """
+    mnemonic, operands = parse_instruction(inst_line)
+    if not mnemonic:
+        return set(), set()
+    
+    mnemonic = mnemonic.lower()
+    def_regs = set()
+    use_regs = set()
+    
+    # 规范化操作数（去除下标）
+    norm_operands = [norm_reg(op) for op in operands if norm_reg(op) in ALL_ABI_REGS]
+    
+    # 没有 rd 的指令（store, branch, etc.）
+    if mnemonic in INSTRUCTIONS_WITHOUT_RD:
+        # 所有操作数都是 use
+        use_regs = set(norm_operands)
+    else:
+        # 有 rd 的指令：第一个操作数是 def，其他是 use
+        if norm_operands:
+            def_regs = {norm_operands[0]}
+            use_regs = set(norm_operands[1:])
+    
+    return def_regs, use_regs
+
+
+def compute_free_regs_per_line(program_name: str, block_num: int) -> List[List[str]]:
+    """计算每行指令可用的 free 寄存器列表
+    
+    从后向前遍历 basic block，根据 def/use 计算每行可用的临时寄存器。
+    
+    算法：
+    1. 从 liveness.json 读取 FREE_at_exit（块出口处不活跃的寄存器）
+    2. 读取 basic_blocks 中的每一行指令
+    3. 从最后一行开始向前遍历：
+       - 每行可用的 free_regs = 当前活跃的 free_regs - 该行的 use
+       - 处理完该行后，更新活跃集合：移除该行的 def，添加该行的 use
+    
+    Returns:
+        List[List[str]]: 每行可用的 free_regs 列表，按原始顺序（第0行到第n行）
+    """
+    # 1. 读取 liveness.json 中的 FREE_at_exit
+    liveness_file = FRONTEND_OUTPUT_DIR / program_name / "liveness.json"
+    with open(liveness_file, 'r') as f:
+        liveness_data = json.load(f)
+    
+    block_key = str(block_num)
+    if block_key not in liveness_data:
+        # 如果没有 liveness 信息，返回默认值
         return []
     
-    def sort_root_children(self) -> None:
-        """按 eclass 文件中的行顺序排序 root_children"""
-        order = self.load_ordered_insts()
-        # 构建完整 eclass_id 到顺序的映射
-        prefix = f"{self.program_name}_{self.block_num}_eclass_"
-        order_map = {}
-        for i, ec in enumerate(order):
-            # 将 Inst-6 转换为 dijkstra_small_O3_2_eclass_Inst_6
-            full_eclass_id = prefix + ec.replace('-', '_')
-            order_map[full_eclass_id] = i
-        
-        self.root_children.sort(key=lambda x: order_map.get(x, 999999))
+    free_at_exit = liveness_data[block_key].get('FREE_at_exit', [])
+    # 过滤出以 t 和 a 开头的寄存器
+    free_at_exit = [reg for reg in free_at_exit if reg.startswith(('t', 'a'))]
     
-    def add_enode(self, enode: 'ENode') -> None:
-        """添加一个 enode 到子图中"""
-        self.enodes[enode.enode_id] = enode
-        # 更新 eclass 成员
-        if enode.eclass_id not in self.eclasses:
-            self.eclasses[enode.eclass_id] = set()
-        self.eclasses[enode.eclass_id].add(enode.enode_id)
-        # 更新父子关系（反向映射）
-        for child_eclass in enode.children:
-            if child_eclass not in self.parent_map:
-                self.parent_map[child_eclass] = []
-            self.parent_map[child_eclass].append(enode.enode_id)
-        # 初始化子节点映射（先存储所有 children，后续会过滤）
-        self.children_map[enode.enode_id] = list(enode.children)
+    # 2. 读取 basic block 的每一行指令
+    block_file = FRONTEND_OUTPUT_DIR / program_name / "basic_blocks" / f"{block_num}.txt"
+    with open(block_file, 'r') as f:
+        lines = [line.rstrip('\n') for line in f]
     
-    def build_subgraph(self, egraph: 'EGraph') -> None:
-        """从 egraph 和 choices 中构建完整的子图结构"""
-        # BFS 遍历所有被选中的节点
-        visited = set()
-        queue = []
-        
-        # 从 root_children 开始
-        for eclass_id in self.root_children:
-            if eclass_id in self.choices:
-                queue.append(eclass_id)
-        
-        while queue:
-            current_eclass = queue.pop(0)
-            if current_eclass in visited:
-                continue
-            visited.add(current_eclass)
-            
-            # 获取选中的 enode
-            if current_eclass not in self.choices:
-                continue
-            enode_id = self.choices[current_eclass]
-            if enode_id not in egraph.enodes:
-                continue
-            
-            # 添加 enode 到子图
-            enode = egraph.enodes[enode_id]
-            self.add_enode(enode)
-            
-            # 将子节点加入队列
-            for child_eclass in enode.children:
-                if child_eclass not in visited:
-                    queue.append(child_eclass)
-        
-        # 过滤 children_map，只保留在子图中实际存在的 children
-        self._filter_children_map()
+    # 移除空行
+    lines = [line for line in lines if line.strip()]
     
-    def _filter_children_map(self) -> None:
-        """过滤 children_map，只保留在子图中实际存在的 eclass"""
-        for enode_id in self.children_map:
-            # 过滤出在子图中实际存在的 children
-            filtered_children = [
-                child_eclass for child_eclass in self.children_map[enode_id]
-                if child_eclass in self.eclasses
-            ]
-            self.children_map[enode_id] = filtered_children
+    if not lines:
+        return []
     
-    def verify_reachability(self) -> Dict[str, any]:
-        """验证该 block 中所有被选中的节点是否都从 root 可达
-        
-        返回验证结果字典：
-        {
-            'total_selected': int,  # 该 block 中被选中的总节点数
-            'reachable': int,       # 从 root 可达的节点数
-            'unreachable': int,     # 不可达的节点数
-            'unreachable_eclasses': list,  # 不可达的 eclass 列表
-            'is_valid': bool        # 是否所有节点都可达
-        }
-        """
-        # 1. 找出该 block 中所有被选中的 eclass
-        prefix = f"{self.program_name}_{self.block_num}_"
-        selected_eclasses = set()
-        for eclass_id in self.choices.keys():
-            # 跳过全局 root 和其他 block 的节点
-            if eclass_id.startswith(prefix) and not eclass_id.endswith('_eclass_root'):
-                selected_eclasses.add(eclass_id)
-        
-        # 2. 找出从 root 可达的 eclass（就是当前子图中的 eclass）
-        reachable_eclasses = set(self.eclasses.keys())
-        
-        # 3. 找出不可达的 eclass
-        unreachable_eclasses = selected_eclasses - reachable_eclasses
-        
-        return {
-            'total_selected': len(selected_eclasses),
-            'reachable': len(reachable_eclasses),
-            'unreachable': len(unreachable_eclasses),
-            'unreachable_eclasses': sorted(list(unreachable_eclasses)),
-            'is_valid': len(unreachable_eclasses) == 0
-        }
+    # 3. 从后向前遍历，计算每行的 free_regs
+    num_lines = len(lines)
+    free_regs_per_line = [[] for _ in range(num_lines)]
     
-    def load_original_json(self) -> None:
-        """加载 merged.json 以获取 leaf 节点的实际值"""
-        if self._original_json:
-            return  # 已加载
+    # 从最后一行开始
+    last_line = set(free_at_exit)
+    last_def_regs = set()
+    for i in range(num_lines - 1, -1, -1):
+        line = lines[i]
+        def_regs, use_regs = extract_def_use(line)
         
-        # 直接加载 merged.json，它保留了原始的 op 值
+        # 当前行可用的 free_regs = last_line - use[i] + last_def_regs
+        free_set = (last_line - use_regs) | last_def_regs
+        free_regs_per_line[i] = sorted(free_set)
+        
+        # 更新 current_free 供前一行使用：
+        # free[i-1] = free[i] - use[i] + def[i]
+        # 但我们已经在上面计算了 free[i] - use[i]，所以：
+        # current_free = free_set + def[i]
+        last_def_regs = def_regs
+        last_line = free_set
+    return free_regs_per_line
+
+@dataclass
+class GraphNode:
+    """图中的一个节点"""
+    enode_id: str          # enode 唯一标识
+    eclass_id: str         # 所属 eclass
+    op: str                # 操作符
+    children: List[str]    # 子节点 eclass_id 列表
+    rd: str = None         # 分配的寄存器
+
+
+class BlockGraph:
+    def __init__(self, program_name: str, block_num: int, egraph: EGraph, choices: Dict[str, str]):
+        self.program_name = program_name
+        self.block_num = block_num
+        self.egraph = egraph
+        self.choices = choices  # eclass_id -> enode_id (ILP solution)
+        self.root_eclass_id = []
+        # self.nodes: List[GraphNode] = [] 
+        self.eclasses_to_nodes: Dict[str, GraphNode] = {} 
+        self.merged_data: Dict = {}  # merged.json 数据
+        
+    def load_merged_json(self):
+        """加载 merged.json"""
         json_file = FRONTEND_OUTPUT_DIR / self.program_name / "merged.json"
         if json_file.exists():
             with open(json_file, 'r') as f:
                 data = json.load(f)
-                self._original_json = data.get('nodes', {})
+                self.merged_data = data.get('nodes', {})
     
     def get_leaf_value(self, enode_id: str) -> str:
-        """从 merged.json 获取 leaf 节点的实际值"""
-        # 确保已加载 merged.json
-        self.load_original_json()
-        
-        # merged.json 中的 key 就是完整的 enode_id，直接查询即可！
-        if enode_id in self._original_json:
-            op_value = self._original_json[enode_id].get('op', '')
-            # 去除引号（如果有的话）
-            return strip_quotes(op_value)
-        
-        # 如果找不到，返回提取的后缀作为后备
-        return enode_id.split('_')[-1] if '_' in enode_id else enode_id
-    
-    
-    def generate_rewrite_output(self, egraph: 'EGraph', output_dir: Path) -> None:
-        """生成重写后的指令文件
-        
-        通过后序遍历 root_children，为每个节点分配 op_n 编号，并输出到文件
-        
-        Args:
-            egraph: EGraph 对象（用于获取原始操作符信息）
-            output_dir: 输出目录路径
-        """
-        # 加载原始 JSON 数据
-        self.load_original_json()
-        
-        # 加载原始指令的 rd 映射
-        eclass_to_original_rd = self.load_original_instructions()
-        
-        # 按照 eclass 文件中的顺序排序 root_children
-        self.sort_root_children()
-        
-        # 创建输出目录
-        rewrite_dir = output_dir / self.program_name / "basic_blocks_rewrite"
-        rewrite_dir.mkdir(parents=True, exist_ok=True)
-        
-        # 输出文件路径
-        output_file = rewrite_dir / f"{self.block_num}.txt"
-        
-        # 用于存储指令序列
-        instructions = []
-        
-        # 用于为每个 eclass 分配 op_n 编号
-        op_counter = 0
-        eclass_to_op = {}  # eclass_id -> op_n 或原始 rd
-        
-        # 获取 eclass 顺序映射
-        eclass_order = self.load_ordered_insts()
-        # 构建完整 eclass_id 到顺序的映射
-        # eclass_order 中是 "Inst-6" 格式，需要转换为完整 ID
-        prefix = f"{self.program_name}_{self.block_num}_eclass_"
-        eclass_order_map = {}
-        eclass_in_file = set()  # 记录哪些 eclass 在原始文件中出现
-        for i, ec in enumerate(eclass_order):
-            # 将 Inst-6 转换为 dijkstra_small_O3_2_eclass_Inst_6
-            full_eclass_id = prefix + ec.replace('-', '_')
-            eclass_order_map[full_eclass_id] = i
-            eclass_in_file.add(full_eclass_id)
-        
-        
-        # 后序遍历辅助函数
-        def postorder_traverse(eclass_id: str, visited: set) -> None:
-            """后序遍历并生成指令"""
-            nonlocal op_counter
-            
-            if eclass_id in visited:
-                return
-            visited.add(eclass_id)
-            
-            # 获取选中的 enode
-            if eclass_id not in self.choices:
-                return
-            enode_id = self.choices[eclass_id]
-            if enode_id not in self.enodes:
-                return
-            
-            enode = self.enodes[enode_id]
-            
-            # 递归处理所有子节点（后序遍历）
-            # 使用 children_map 而不是 enode.children，确保只遍历子图中实际存在的节点
-            child_ops = []
-            for child_eclass in self.children_map.get(enode_id, []):
-                postorder_traverse(child_eclass, visited)
-                # 记录子节点的 op 编号
-                if child_eclass in eclass_to_op:
-                    child_ops.append(eclass_to_op[child_eclass])
-            
-            # 获取操作符名称
-            op = enode.op.lower()
-            
-            # 处理 leaf 节点（获取实际值）
-            if op == 'leaf':
-                # 从原始 JSON 中获取实际值
-                leaf_value = self.get_leaf_value(enode_id)
-                # 如果是寄存器名，应用 norm_reg
-                leaf_value_normed = norm_reg(leaf_value)
-                eclass_to_op[eclass_id] = leaf_value_normed
-                return
-            
-            # 处理 RegVal、ImmVal、ImmLabel（包装值）
-            if op in ['regval', 'immval', 'immlabel']:
-                # 这些节点的子节点应该是 leaf，获取其值
-                if child_ops:
-                    # 如果是 regval，应用 norm_reg
-                    if op == 'regval':
-                        eclass_to_op[eclass_id] = norm_reg(child_ops[0])
-                    else:
-                        eclass_to_op[eclass_id] = child_ops[0]
-                else:
-                    eclass_to_op[eclass_id] = f"<{op}>"
-                return
-            
-            # 重新排列参数顺序（根据指令类型）
-            # reordered_ops = reorder_instruction_args(op, child_ops)
-            
-            
-            # 构建汇编指令字符串（格式对齐，与原始 .s 文件一致）
-            # INSTRUCTIONS_WITHOUT_RD 中存储的是小写指令名
-            if op in INSTRUCTIONS_WITHOUT_RD:
-                # 不需要 rd 的指令（如 Store、Branch）
-                if op in ['sb', 'sh', 'sw'] and len(child_ops) >= 3:
-                    # Store 指令特殊格式: sw rs2, offset(rs1)
-                    inst_str = f"{op}\t{child_ops[1]},{child_ops[2]}({child_ops[0]})"
-                elif child_ops:
-                    # 其他不需要 rd 的指令（Branch等）
-                    inst_str = f"{op}\t{','.join(child_ops)}"
-                else:
-                    inst_str = f"{op}"
-                instructions.append(inst_str)
+        """获取 leaf 节点的实际值"""
+        if enode_id in self.merged_data:
+            op =  strip_quotes(self.merged_data[enode_id].get('op', ''))
+            if norm_reg(op) in ALL_ABI_REGS:
+                return norm_reg(op)
             else:
-                # 需要 rd 的指令
-                # 如果 eclass 在原始文件中存在，使用原始的 rd
-                if eclass_id in eclass_to_original_rd:
-                    current_op = eclass_to_original_rd[eclass_id]
-                else:
-                    # 否则生成新的 op_n
-                    current_op = f"op_{op_counter}"
-                    op_counter += 1
-                
-                eclass_to_op[eclass_id] = current_op
-                
-                # Load 指令特殊格式: lw rd, offset(rs1)
-                # children: [rs1, offset] -> 保持不变
-                if op in RV32I_LOAD and len(child_ops) >= 2:
-                    inst_str = f"{op}\t{current_op},{child_ops[1]}({child_ops[0]})"
-                elif child_ops:
-                    # 其他需要 rd 的指令
-                    inst_str = f"{op}\t{current_op},{','.join(child_ops)}"
-                else:
-                    inst_str = f"{op}\t{current_op}"
-                
-                instructions.append(inst_str)
-        
-        # 按照 eclass 文件的顺序处理所有指令
-        visited = set()
-        
-        # 按照 eclass 文件顺序处理每个指令
-        for ec_short in eclass_order:
-            full_eclass_id = prefix + ec_short.replace('-', '_')
-            
-            # 如果这个 eclass 在子图中
-            if full_eclass_id in self.eclasses:
-                # 后序遍历生成指令（包括所有依赖）
-                postorder_traverse(full_eclass_id, visited)
-        
-        # 替换所有 op_n 为实际的空闲寄存器
-        instructions = self._replace_temp_regs_with_free_regs(instructions)
-        
-        # 将 x0 替换为 zero（RISC-V 别名）
-        # 使用正则表达式确保只替换寄存器名 x0，不影响其他内容
-        instructions = [re.sub(r'\bx0\b', 'zero', inst) for inst in instructions]
-        
-        # 写入文件
-        with open(output_file, 'w') as f:
-            for inst in instructions:
-                f.write(inst + '\n')
-        
-        return len(instructions)
+                return op
+        else:
+            raise ValueError(f"Enode {enode_id} not found in merged.json")
     
-    def _replace_temp_regs_with_free_regs(self, instructions: List[str]) -> List[str]:
-        """将指令中的 op_n 替换为实际的空闲寄存器
+    def load_root_eclass(self):
+        """从 choices 中找到 root 节点，提取其子 eclass"""
+        root_key = f"{self.program_name}_{self.block_num}_eclass_root"
+        
+        if root_key in self.choices:
+            root_enode_id = self.choices[root_key]
+            if root_enode_id in self.egraph.enodes:
+                root_enode = self.egraph.enodes[root_enode_id]
+                self.root_eclass_id = list(root_enode.children)
+    
+    def build_graph(self):
+        """构建图：从 root 开始递归添加所有依赖节点"""
+        self.load_merged_json()
+        self.load_root_eclass()
+        visited = set()
+        for eclass_id in self.root_eclass_id:
+            self._add_node_recursive(eclass_id, visited)
+    
+    def _add_node_recursive(self, eclass_id: str, visited: Set[str]):
+        """递归添加节点"""
+        if eclass_id in visited or eclass_id not in self.choices:
+            return
+        visited.add(eclass_id)
+        
+        enode_id = self.choices[eclass_id]
+        if enode_id not in self.egraph.enodes:
+            return
+        
+        enode = self.egraph.enodes[enode_id]
+        
+        # 如果是 leaf 节点，获取实际值作为 op
+        if enode.op.lower() == 'leaf':
+            op = self.get_leaf_value(enode_id)
+        else:
+            op = enode.op.lower()
+        
+        # 如果是包装节点（ImmVal, ImmLabel, RegVal），跳过它，直接处理其唯一子节点
+        if op in ['immval', 'immlabel', 'regval']:
+            if enode.children:
+                self._add_node_recursive(enode.children[0], visited)
+            return
+        
+        # 处理子节点：如果是包装节点，unwrap 一层
+        children = list(enode.children)
+        for i, child in enumerate(children):
+            if child in self.choices:
+                child_enode = self.egraph.enodes[self.choices[child]]
+                if child_enode.op.lower() in ['immval', 'immlabel', 'regval']:
+                    if child_enode.children:
+                        children[i] = child_enode.children[0]
+        
+        # 创建节点
+        node = GraphNode(
+            enode_id=enode_id,
+            eclass_id=eclass_id,
+            op=op,
+            children=children
+        )
+        self.eclasses_to_nodes[eclass_id] = node
+        
+        # 递归处理子节点
+        for child_eclass in children:
+            self._add_node_recursive(child_eclass, visited)
+
+class RewriteBlock:
+    def __init__(self, program_name: str, block_num: int, egraph: EGraph, choices: Dict[str, str]):
+        self.program_name = program_name
+        self.block_num = block_num
+        self.block_graph = BlockGraph(program_name, block_num, egraph, choices)
+        self.block_graph.build_graph()
+        self.lines: List[str] = []
+        self.eclass_to_rd_list: List[Tuple[str, str]] = get_eclass_to_rd(program_name, block_num)
+        self.block_lines: List[List[str]] = [[] for _ in range(len(self.eclass_to_rd_list))]
+        self.eclass_to_rd_map: Dict[str, str] = {}  # 初始化为空，走一行更新一行
+        # 计算每行可用的 free_regs
+        self.free_regs_per_line: List[List[str]] = compute_free_regs_per_line(program_name, block_num)
+        self.free_regs: List[str] = []
+        self.temp_counter: int = 0  # 临时寄存器计数器
+        self.current_line_idx: int = 0  # 当前处理的行索引
+        self.stack: Dict[str, List[str]] = {"push": [], "pop": []}  # 栈操作
+
+    def get_free_reg(self) -> str:
+        if self.free_regs:
+            return self.free_regs.pop(0)
+        else:
+            # 无法分配临时寄存器，触发 fallback
+            self.use_fallback = True
+            raise RuntimeError("No free registers, fallback to original")
+
+    def rewrite_line(self, eclass_id: str, rd: str, line_idx: int):
+        """以 eclass_id 展开后序遍历，生成指令，最后更新 rd
         
         Args:
-            instructions: 原始指令列表（可能包含 op_0, op_1 等临时寄存器）
-        
-        Returns:
-            替换后的指令列表
+            eclass_id: 要处理的 eclass ID
+            rd: 这个 eclass 应该写入的目标寄存器
         """
-        # 加载空闲寄存器
-        free_regs = self.load_free_registers()
+        # 获取这个 eclass 对应的节点
+        if eclass_id not in self.block_graph.eclasses_to_nodes:
+            raise ValueError(f"Eclass {eclass_id} not found in block graph")
+        node = self.block_graph.eclasses_to_nodes[eclass_id]
         
-        if not free_regs:
-            # 如果没有空闲寄存器信息，直接返回原指令
-            return instructions
+        # 递归处理所有子节点（后序遍历）
+        child_operands = []
+        for child_eclass in node.children:
+            # 检查子节点是否在图中
+            if child_eclass not in self.block_graph.eclasses_to_nodes:
+                raise ValueError(f"Child eclass {child_eclass} not found in block graph")
+            
+            # 如果子节点已经处理过，直接使用其 rd
+            if child_eclass in self.eclass_to_rd_map:
+                child_operands.append(self.eclass_to_rd_map[child_eclass])
+                continue
+            
+            child_node = self.block_graph.eclasses_to_nodes[child_eclass]
+            if child_node.children:
+                # 有子节点，需要递归生成指令
+                child_rd = self.get_free_reg()  # 如果无法分配会抛出 fallback 异常
+                self.rewrite_line(child_eclass, child_rd, line_idx)
+                # self.eclass_to_rd_map[child_eclass] = child_rd 展开的指令暂时不记录
+                child_operands.append(child_rd)
+            else:
+                # leaf 节点，直接使用其 op 值
+                child_operands.append(child_node.op)
         
-        # 找出所有的 op_n 模式
-        op_pattern = re.compile(r'\bop_(\d+)\b')
-        op_to_reg = {}  # op_n -> 实际寄存器
-        free_reg_index = 0
+        # 生成指令
+        inst_str = self._format_instruction(node.op, rd, child_operands)
+        self.block_lines[line_idx].append(inst_str)
+    
+    def _use_original_instruction(self, line_idx: int):
+        """使用原始 basic_blocks 中的指令（fallback）"""
+        # 读取原始 basic block
+        block_file = FRONTEND_OUTPUT_DIR / self.program_name / "basic_blocks" / f"{self.block_num}.txt"
+        with open(block_file, 'r') as f:
+            lines = [line.rstrip('\n') for line in f if line.strip()]
         
-        # 第一遍：收集所有需要替换的 op_n
-        for inst in instructions:
-            matches = op_pattern.findall(inst)
-            for op_num in matches:
-                op_name = f"op_{op_num}"
-                if op_name not in op_to_reg:
-                    # 分配一个新的空闲寄存器
-                    if free_reg_index < len(free_regs):
-                        op_to_reg[op_name] = free_regs[free_reg_index]
-                        free_reg_index += 1
+        if line_idx < len(lines):
+            original_line = lines[line_idx]
+            # 去除前导空白
+            original_line = original_line.lstrip()
+            self.block_lines[line_idx].append(original_line)
+    
+    def _format_instruction(self, op: str, rd: str, operands: List[str]) -> str:
+        """格式化指令为汇编格式"""
+        # 不需要 rd 的指令
+        if op in INSTRUCTIONS_WITHOUT_RD:
+            if op in ['sb', 'sh', 'sw'] and len(operands) >= 3:
+                # Store 指令: sw rs2, offset(rs1)
+                return f"{op}\t{operands[1]},{operands[2]}({operands[0]})"
+            elif operands:
+                return f"{op}\t{','.join(operands)}"
+            else:
+                return f"{op}"
+        
+        # Load 指令特殊格式
+        if op in RV32I_LOAD and len(operands) >= 2:
+            return f"{op}\t{rd},{operands[1]}({operands[0]})"
+        
+        # # 特殊处理: sub rd, x0, rs -> neg rd, rs (RISC-V 伪指令)
+        # if op == 'sub' and len(operands) == 2 and operands[0] in ('x0', 'zero'):
+        #     return f"neg\t{rd},{operands[1]}"
+        
+        # 普通指令
+        if operands:
+            return f"{op}\t{rd},{','.join(operands)}"
+        else:
+            return f"{op}\t{rd}" 
+
+    def rewrite_block(self):
+        """重写整个 block，按顺序处理每一行"""
+        for line_idx, (eclass_id, rd) in enumerate(self.eclass_to_rd_list):
+            if eclass_id in self.block_graph.eclasses_to_nodes:
+                # 设置当前行索引和可用的 free_regs
+                self.current_line_idx = line_idx
+                self.temp_counter = 0  # 重置临时寄存器计数器
+                
+                if line_idx < len(self.free_regs_per_line):
+                    self.free_regs = self.free_regs_per_line[line_idx].copy()
+                else:
+                    raise ValueError(f"Line {line_idx} has no free registers")
+                
+                # 尝试处理这一行
+                try:
+                    self.rewrite_line(eclass_id, rd, line_idx)
+                    # 更新映射
+                    self.eclass_to_rd_map[eclass_id] = rd
+                except RuntimeError as e:
+                    if "fallback" in str(e):
+                        # Fallback：直接使用原始指令
+                        self._use_original_instruction(line_idx)
                     else:
-                        # 空闲寄存器用完了，保持原样
-                        op_to_reg[op_name] = op_name
-        
-        # 第二遍：替换所有 op_n
-        replaced_instructions = []
-        for inst in instructions:
-            # 替换所有 op_n
-            replaced_inst = inst
-            for op_name, reg_name in sorted(op_to_reg.items(), key=lambda x: -int(x[0].split('_')[1])):
-                # 从大到小替换，避免 op_1 被替换成 op_10 的一部分
-                replaced_inst = re.sub(r'\b' + re.escape(op_name) + r'\b', reg_name, replaced_inst)
-            replaced_instructions.append(replaced_inst)
-        
-        return replaced_instructions
+                        raise
+            else:
+                # 不在图中的 eclass，说明图构建有问题
+                raise ValueError(f"Eclass {eclass_id} from file not found in block graph")
 
+        max_placeholders = 0
+        temp_lines = [line for sublist in self.block_lines for line in sublist]
+        for line in temp_lines:
+            placeholders = re.findall(r'op_\d+_\d+', line)
+            num_placeholders = len(set(placeholders))  # 去重
+            max_placeholders = max(max_placeholders, num_placeholders)
 
-def build_block_graphs(egraph: EGraph, choices: Dict[str, str]) -> Dict[Tuple[str, int], BlockGraph]:
-    """从已选 eclass→node 结果中，抽取各个 block 的 root，并记录其子 eclass。
-    命名约定：root eclass 形如 "<program_name>_<block>_eclass_root"。
+        self.allocate_registers(max_placeholders)
+        self.replace_placeholders()
+        self.merge_lines()
+        
+    def allocate_registers(self, max_placeholders: int):
+        """分配需要借用的寄存器并生成栈操作指令"""
+        if max_placeholders == 0:
+            return
+        
+        # 选择可借用的寄存器（s 寄存器）
+        borrowed_regs = self._select_borrowable_registers(max_placeholders)
+        
+        if len(borrowed_regs) < max_placeholders:
+            raise RuntimeError(f"需要 {max_placeholders} 个寄存器，但只能借用 {len(borrowed_regs)} 个")
+        
+        # 生成压栈指令
+        stack_size = 4 * len(borrowed_regs)
+        self.stack["push"].append(f"addi\tsp,sp,{-stack_size}")
+        for i, reg in enumerate(borrowed_regs):
+            self.stack["push"].append(f"sw\t{reg},{4*i}(sp)")
+        
+        # 生成出栈指令
+        for i, reg in enumerate(borrowed_regs):
+            self.stack["pop"].append(f"lw\t{reg},{4*i}(sp)")
+        self.stack["pop"].append(f"addi\tsp,sp,{stack_size}")
+        
+        # 保存借用的寄存器列表供替换使用
+        self.borrowed_regs = borrowed_regs
+    
+    def _select_borrowable_registers(self, num_needed: int) -> List[str]:
+        """选择可以借用的寄存器
+        
+        选择标准：没被 block 使用过且没被 block 定义过
+        """
+        # 读取 defuse 信息
+        defuse_file = FRONTEND_OUTPUT_DIR / self.program_name / "defuse.json"
+        with open(defuse_file, 'r') as f:
+            defuse_data = json.load(f)
+        
+        block_key = str(self.block_num)
+        use_all = set(defuse_data[block_key].get('USE_all', []))  # block 所有使用的寄存器
+        def_all = set(defuse_data[block_key].get('DEF_all', []))  # block 所有定义的寄存器
+        
+        # 候选寄存器：s 寄存器优先（callee-saved）
+        candidate_regs = ['s2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11']
+        
+        borrowable = []
+        for reg in candidate_regs:
+            # 可以借用：既不在 USE_all 也不在 DEF_all
+            if reg not in use_all and reg not in def_all:
+                borrowable.append(reg)
+            
+            if len(borrowable) >= num_needed:
+                break
+        
+        return borrowable[:num_needed]
+    
+    def replace_placeholders(self):
+        """替换占位符为实际寄存器"""
+        if not hasattr(self, 'borrowed_regs') or not self.borrowed_regs:
+            return
+        
+        import re
+        placeholder_to_reg = {}
+        
+        # 按行处理，每行的占位符从 borrowed_regs[0] 开始分配
+        for sublist in self.block_lines:
+            for line in sublist:
+                placeholders = re.findall(r'op_\d+_\d+', line)
+                for i, placeholder in enumerate(placeholders):
+                    if i < len(self.borrowed_regs):
+                        placeholder_to_reg[placeholder] = self.borrowed_regs[i]
+                    else:
+                        raise RuntimeError(f"占位符 {placeholder} 无法分配寄存器（需要 {i+1} 个，只有 {len(self.borrowed_regs)} 个）")
+        
+        # 替换所有占位符
+        for i in range(len(self.block_lines)):
+            for j in range(len(self.block_lines[i])):
+                for placeholder, reg in placeholder_to_reg.items():
+                    self.block_lines[i][j] = self.block_lines[i][j].replace(placeholder, reg)
+    
+    def merge_lines(self):
+        push_stack = [line for line in self.stack["push"]]
+        pop_stack = [line for line in self.stack["pop"]]
+        lines = [line for sublist in self.block_lines for line in sublist]
+        
+        # 检查最后一条指令是否是 branch
+        if lines and pop_stack:
+            last_line = lines[-1].strip()
+            mnemonic = last_line.split()[0] if last_line else ""
+            # RV32I branch 指令
+            branch_ops = {'beq', 'bne', 'blt', 'bge', 'bltu', 'bgeu', 'jal', 'jalr'}
+            
+            if mnemonic in branch_ops:
+                # 把 pop 插入到最后一条指令之前
+                self.lines = push_stack + lines[:-1] + pop_stack + [lines[-1]]
+            else:
+                self.lines = push_stack + lines + pop_stack
+        else:
+            self.lines = push_stack + lines + pop_stack
+
+def get_all_blocks(program_name: str) -> List[int]:
+    """获取一个 program 的所有 block 编号
+    
+    从 basic_blocks_eclass 目录中读取所有的 .txt 文件，提取 block 编号
+    
+    Returns:
+        排序后的 block 编号列表
     """
-    blocks: Dict[Tuple[str, int], BlockGraph] = {}
-    for eclass_id, node_id in choices.items():
-        # 仅处理 root eclass
-        if not eclass_id.endswith('_eclass_root'):
-            continue
-        # 提取 program_name 与 block 号
-        prefix = eclass_id.split('_eclass_root')[0]
-        m = re.match(r'^(.*)_(\d+)$', prefix)
-        if not m:
-            continue
-        current_program_name = m.group(1)
-        block_num = int(m.group(2))
-        # 读取 root 节点的子 eclass
-        if node_id not in egraph.enodes:
-            continue
-        node = egraph.enodes[node_id]
-        children = list(node.children) if node.children else []
+    blocks_dir = FRONTEND_OUTPUT_DIR / program_name / "basic_blocks_eclass"
+    if not blocks_dir.exists():
+        raise ValueError(f"Blocks directory not found: {blocks_dir}")
+    
+    block_nums = []
+    for file in blocks_dir.iterdir():
+        if file.suffix == '.txt':
+            try:
+                block_num = int(file.stem)
+                block_nums.append(block_num)
+            except ValueError:
+                # 跳过不是数字的文件名
+                continue
+    
+    return sorted(block_nums)
 
-        key = (current_program_name, block_num)
-        if key not in blocks:
-            blocks[key] = BlockGraph(program_name=current_program_name, block_num=block_num, choices=choices)
-        blocks[key].add_root_children(children)
 
-    # 为每个 block 构建完整的子图结构
-    for block_graph in blocks.values():
-        block_graph.build_subgraph(egraph)
-
-    return blocks
-
+def rewrite_program(program_name: str, solution_file: str = None, output_dir: str = None):
+    """处理整个 program，重写所有 basic blocks
+    
+    Args:
+        program_name: 程序名称 (例如 "dijkstra_small_O3")
+        solution_file: ILP solution 文件路径（默认为 output/ilp/<program_name>/sol/solution.sol）
+        output_dir: 输出目录（默认为 output/frontend/<program_name>/basic_blocks_rewrite）
+    
+    Returns:
+        Dict: 包含统计信息的字典
+    """
+    print(f"=" * 60)
+    print(f"重写程序: {program_name}")
+    print(f"=" * 60)
+    
+    # 1. 加载 EGraph
+    print(f"\n正在加载 EGraph...")
+    egraph = EGraph(program_name)
+    print(f"  - 加载完成，共 {len(egraph.eclasses)} 个 eclasses，{len(egraph.enodes)} 个 enodes")
+    
+    # 2. 加载 ILP solution
+    if solution_file is None:
+        solution_file = str(ILP_OUTPUT_DIR / program_name / "sol" / "solution.sol")
+    
+    print(f"\n正在解析 ILP solution: {solution_file}")
+    variables = parse_solution_file(solution_file)
+    print(f"  - 解析完成，共 {len(variables)} 个变量")
+    
+    choices = extract_solution(egraph, variables)
+    print(f"  - 提取选择完成，共 {len(choices)} 个 eclass 选择")
+    
+    # 3. 获取所有 block 编号
+    print(f"\n正在获取所有 blocks...")
+    block_nums = get_all_blocks(program_name)
+    print(f"  - 找到 {len(block_nums)} 个 blocks: {block_nums}")
+    
+    # 4. 设置输出目录
+    if output_dir is None:
+        output_dir = FRONTEND_OUTPUT_DIR / program_name / "basic_blocks_rewrite"
+    else:
+        output_dir = Path(output_dir)
+    
+    output_dir.mkdir(parents=True, exist_ok=True)
+    print(f"\n输出目录: {output_dir}")
+    
+    # 5. 处理每个 block
+    print(f"\n开始重写 blocks...")
+    stats = {
+        'total_blocks': len(block_nums),
+        'success_blocks': 0,
+        'failed_blocks': 0,
+        'total_lines': 0,
+        'errors': []
+    }
+    
+    for block_num in block_nums:
+        try:
+            print(f"\n处理 block {block_num}...", end=" ")
+            
+            # 创建 RewriteBlock 实例
+            rewriter = RewriteBlock(program_name, block_num, egraph, choices)
+            
+            # 重写 block
+            rewriter.rewrite_block()
+            
+            # 写入文件
+            output_file = output_dir / f"{block_num}.txt"
+            with open(output_file, 'w') as f:
+                for line in rewriter.lines:
+                    f.write(line + '\n')
+            
+            stats['success_blocks'] += 1
+            stats['total_lines'] += len(rewriter.lines)
+            print(f"✓ ({len(rewriter.lines)} 行)")
+            
+        except Exception as e:
+            stats['failed_blocks'] += 1
+            error_msg = f"Block {block_num}: {str(e)}"
+            stats['errors'].append(error_msg)
+            print(f"✗ 错误: {str(e)}")
+    
+    # 6. 输出统计信息
+    print(f"\n" + "=" * 60)
+    print(f"重写完成统计")
+    print(f"=" * 60)
+    print(f"总 blocks:    {stats['total_blocks']}")
+    print(f"成功:         {stats['success_blocks']}")
+    print(f"失败:         {stats['failed_blocks']}")
+    print(f"总指令行数:   {stats['total_lines']}")
+    
+    if stats['errors']:
+        print(f"\n错误详情:")
+        for error in stats['errors']:
+            print(f"  - {error}")
+    
+    print(f"\n输出目录: {output_dir}")
+    print(f"=" * 60)
+    
+    return stats
 
 
 def main():
-    """主函数：从 ILP 解生成重写后的基本块"""
+    """命令行入口"""
     import argparse
     
-    parser = argparse.ArgumentParser(description='从 ILP 解生成重写后的基本块')
-    parser.add_argument('program_name', help='程序名 (如 dijkstra_small_O3)')
-    parser.add_argument('-v', '--verbose', action='store_true', help='详细输出')
+    parser = argparse.ArgumentParser(description="重写 RISC-V 程序的所有 basic blocks")
+    parser.add_argument("program_name", help="程序名称 (例如 dijkstra_small_O3)")
+    parser.add_argument("--solution", "-s", help="ILP solution 文件路径（可选）")
+    parser.add_argument("--output", "-o", help="输出目录（可选）")
+    
     args = parser.parse_args()
     
-    program_name = args.program_name
-    verbose = args.verbose
-    
-    if verbose:
-        print("="*60)
-        print(f"生成重写后的基本块: {program_name}")
-        print("="*60)
-    
-    # 加载 EGraph
-    if verbose:
-        print("\n加载 EGraph...")
-    egraph = EGraph(program_name)
-    if verbose:
-        print(f"  - EClasses: {len(egraph.eclasses)}, ENodes: {len(egraph.enodes)}")
-    
-    # 加载 solution 文件
-    sol_path = ILP_OUTPUT_DIR / program_name / "sol" / "solution.sol"
-    if not sol_path.exists():
-        print(f"错误：找不到 solution 文件: {sol_path}")
-        sys.exit(1)
-    
-    if verbose:
-        print(f"\n加载 solution: {sol_path}")
-    
-    variables = parse_solution_file(str(sol_path))
-    choices = extract_solution(egraph, variables)
-    
-    # 构建 BlockGraph
-    blocks = build_block_graphs(egraph, choices)
-    
-    # 生成重写输出
-    print(f"\n生成重写后的指令文件...")
-    total_instructions = 0
-    for (prog_name, block_num), block_graph in sorted(blocks.items()):
-        num_instructions = block_graph.generate_rewrite_output(egraph, FRONTEND_OUTPUT_DIR)
-        total_instructions += num_instructions
-        if verbose:
-            print(f"  Block {block_num}: {num_instructions} 条指令")
-    
-    rewrite_dir = FRONTEND_OUTPUT_DIR / program_name / "basic_blocks_rewrite"
-    print(f"✓ 生成 {len(blocks)} 个块，共 {total_instructions} 条指令")
-    print(f"✓ 输出目录: {rewrite_dir}")
-    
-    return 0
+    rewrite_program(args.program_name, args.solution, args.output)
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

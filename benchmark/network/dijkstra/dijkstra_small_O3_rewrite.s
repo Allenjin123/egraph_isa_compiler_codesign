@@ -15,8 +15,8 @@
 	.type	print_path, @function
 print_path:
 	slli	a5,a1,3
-	sub	t0,zero,a0
-	sub	a5,a5,t0
+	sub	a2,x0,a0
+	sub	a5,a5,a2
 	lw	a2,4(a5)
 	lui	a5,2
 	addi	a5,a5,1807
@@ -29,8 +29,8 @@ print_path:
 	jalr	zero,t1,%pcrel_lo(.Lpcrel_1)
 .L9:
 	slli	a1,a2,3
-	sub	t0,zero,a0
-	sub	a1,a1,t0
+	sub	a4,x0,a0
+	sub	a1,a1,a4
 	lw	a6,4(a1)
 	addi	sp,sp,-32
 	sw	ra,28(sp)
@@ -55,8 +55,8 @@ print_path:
 	jalr	zero,t1,%pcrel_lo(.Lpcrel_3)
 .L10:
 	slli	a1,a6,3
-	sub	t0,zero,a0
-	sub	a1,a1,t0
+	sub	a4,x0,a0
+	sub	a1,a1,a4
 	lw	a7,4(a1)
 	bne	a7,a5,.L11
 	lui	a5,%hi(.LC1)
@@ -75,8 +75,8 @@ print_path:
 	jal	zero,.L3
 .L11:
 	slli	a1,a7,3
-	sub	t0,zero,a1
-	sub	a4,a0,t0
+	sub	a1,x0,a1
+	sub	a4,a0,a1
 	lw	a1,4(a4)
 	beq	a5,a1,.L5
 	sw	a3,12(sp)
@@ -123,16 +123,16 @@ enqueue:
 	lui	t3,%hi(g_qCount)
 	lw	a7,%lo(g_qCount)(t3)
 	slli	a6,a4,1
-	sub	t0,zero,a6
-	sub	a6,a4,t0
+	sub	a3,x0,a6
+	sub	a6,a4,a3
 	lui	a4,%hi(queue)
 	slli	a6,a6,2
 	srai	a5,a5,12
 	sub	a5,a5,t5
 	mul	a5,t1,a5
 	addi	a4,a4,%lo(queue)
-	sub	t1,zero,a4
-	sub	a4,a6,t1
+	sub	a3,x0,a4
+	sub	a4,a6,a3
 	addi	a7,a7,1
 	sw	a0,0(a4)
 	sw	a1,4(a4)
@@ -150,25 +150,40 @@ dequeue:
 	lw	a5,%lo(g_qCount)(a7)
 	bge	zero,a5,.L17
 	lui	a6,%hi(qFront)
-	lw	a4,%lo(qFront)(a6)
+	lw	a3,%lo(qFront)(a6)
 	lui	a4,%hi(queue)
 	addi	a4,a4,%lo(queue)
-	slli	a3,a4,1
-	sub	t0,zero,a3
-	sub	a3,a4,t0
-	slli	a3,a3,2
-	sub	t1,zero,a3
-	sub	a4,a4,t1
-	lw	a3,0(a4)
+	slli	a5,a3,1
+	sub	a1,x0,a5
+	sub	a5,a3,a1
+	slli	a5,a5,2
+	sub	a1,x0,a5
+	sub	a5,a4,a1
+	lw	a3,0(a5)
 	lui	a5,429497
 	addi	a5,a5,-1107
 	sw	a3,0(a0)
+	lw	t1,%lo(qFront)(a6)
 	lui	a0,2
 	addi	a0,a0,1808
-	lw	a3,4(a4)
+	slli	a3,t1,1
+	sub	a1,x0,a3
+	sub	a3,t1,a1
+	slli	a3,a3,2
+	sub	a1,x0,a3
+	sub	a3,a4,a1
+	lw	a3,4(a3)
 	sw	a3,0(a1)
+	lw	a1,%lo(qFront)(a6)
+	slli	a3,a1,1
+	sub	a3,x0,a3
+	sub	a3,a1,a3
+	slli	a3,a3,2
+	sub	a4,x0,a3
+	sub	a4,a4,a4
 	lw	a4,8(a4)
 	sw	a4,0(a2)
+	lw	a4,%lo(qFront)(a6)
 	lw	a3,%lo(g_qCount)(a7)
 	addi	a4,a4,1
 	mulh	a5,a4,a5
@@ -242,8 +257,8 @@ dijkstra:
 	lui	s8,%hi(g_qCount)
 	lw	t0,%lo(g_qCount)(s8)
 	slli	a5,a1,1
-	sub	t1,zero,a1
-	sub	a5,a5,t1
+	sub	a4,x0,a1
+	sub	a5,a5,a4
 	srai	a4,a4,12
 	sub	a4,a4,a7
 	mul	a4,s3,a4
@@ -253,10 +268,10 @@ dijkstra:
 	slli	a1,a0,3
 	sw	s1,68(sp)
 	sw	s4,56(sp)
-	sub	t3,zero,t2
-	sub	a5,a5,t3
-	sub	t4,zero,a1
-	sub	a1,s5,t4
+	sub	a1,x0,t2
+	sub	a5,a5,a1
+	sub	a4,x0,a1
+	sub	a1,s5,a4
 	addi	t0,t0,1
 	sub	a4,a6,a4
 	sw	a0,0(a5)
@@ -284,11 +299,11 @@ dijkstra:
 	addi	a6,t1,1
 	mulh	a3,a6,s2
 	slli	a5,t1,1
-	sub	t6,zero,t1
-	sub	a5,a5,t6
+	sub	a0,x0,t1
+	sub	a5,a5,a0
 	slli	a5,a5,2
-	sub	a1,zero,a5
-	sub	a5,t2,a1
+	sub	a0,x0,a5
+	sub	a5,t2,a0
 	lw	t3,0(a5)
 	lw	s1,4(a5)
 	lw	a5,8(a5)
@@ -301,23 +316,22 @@ dijkstra:
 	addi	a3,s5,0
 	addi	a2,zero,0
 	mul	t1,s3,t1
-	sub	a5,zero,s6
-	sub	a0,a0,a5
+	sub	a1,x0,s6
+	sub	a0,a0,a1
 	sub	t1,a6,t1
 .L27:
 	slli	a5,a4,1
 	lw	a7,0(a0)
-	sub	t6,zero,a4
-	sub	a5,a5,t6
+	sub	a1,x0,a4
+	sub	a5,a5,a1
 	addi	a1,a4,1
 	slli	a5,a5,2
 	srai	s11,a1,31
-	sub	a6,zero,t2
+	sub	a6,x0,t2
 	sub	a5,a5,a6
 	beq	a7,t5,.L25
 	lw	t6,0(a3)
-	sub	op_0,zero,a7
-	sub	a6,s1,op_0
+	add	a6,a7,s1
 	beq	t5,t6,.L26
 	bge	a6,t6,.L25
 .L26:
@@ -362,8 +376,8 @@ dijkstra:
 	sw	a4,%lo(qRear)(s9)
 .L24:
 	slli	s0,a3,3
-	sub	t0,zero,s5
-	sub	s2,s0,t0
+	sub	a0,x0,s5
+	sub	s2,s0,a0
 	lw	a1,0(s2)
 	lui	a0,%hi(.LC3)
 	addi	a0,a0,%lo(.LC3)
@@ -391,15 +405,15 @@ dijkstra:
 .Lpcrel_10:
 	auipc	ra,%pcrel_hi(putchar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_10)
-	sub	t0,zero,s0
-	sub	s5,s5,t0
+	sub	a2,x0,s0
+	sub	s5,s5,a2
 	lui	a4,%hi(result_sink)
 	lw	a3,0(s5)
 	lw	a5,%lo(result_sink)(a4)
 	lw	ra,76(sp)
 	lw	s0,72(sp)
-	sub	t1,zero,a5
-	sub	a5,a3,t1
+	sub	a2,x0,a5
+	sub	a5,a3,a2
 	sw	a5,%lo(result_sink)(a4)
 	lw	s1,68(sp)
 	lw	s2,64(sp)
@@ -412,8 +426,8 @@ dijkstra:
 	jalr	zero,ra,0
 .L41:
 	slli	a4,s2,3
-	sub	t0,zero,s5
-	sub	a4,a4,t0
+	sub	a0,x0,s5
+	sub	a4,a4,a0
 	lw	s4,4(a4)
 	bne	a5,s4,.L42
 	lui	s3,%hi(.LC1)
@@ -442,8 +456,8 @@ dijkstra:
 	jalr	zero,t1,%pcrel_lo(.Lpcrel_12)
 .L42:
 	slli	a4,s4,3
-	sub	t0,zero,a4
-	sub	a4,s5,t0
+	sub	a0,x0,a4
+	sub	a4,s5,a0
 	lw	a1,4(a4)
 	beq	a5,a1,.L32
 	addi	a0,s5,0
@@ -476,15 +490,15 @@ main:
 	sw	s3,2012(sp)
 	sw	s4,2008(sp)
 	addi	a5,a5,%lo(.LC0)
-	sub	t0,zero,t0
-	sub	sp,sp,t0
+	sub	a0,x0,t0
+	sub	sp,sp,a0
 	addi	a3,a3,-960
 	lui	a0,%hi(qFront)
 	lui	a1,%hi(qRear)
 	lui	a2,%hi(g_qCount)
 	addi	a4,sp,0
-	sub	t1,zero,a5
-	sub	a3,a3,t1
+	sub	a6,x0,a5
+	sub	a3,a3,a6
 	sw	zero,%lo(qFront)(a0)
 	sw	zero,%lo(qRear)(a1)
 	sw	zero,%lo(g_qCount)(a2)
@@ -504,8 +518,8 @@ main:
 	addi	a3,a3,-960
 	lui	a4,%hi(AdjMatrix)
 	addi	a5,sp,0
-	sub	t0,zero,sp
-	sub	a3,a3,t0
+	sub	a0,x0,sp
+	sub	a3,a3,a0
 	addi	a4,a4,%lo(AdjMatrix)
 .L48:
 	lw	a2,8(a5)
@@ -544,8 +558,8 @@ main:
 	lui	a5,%hi(result_sink)
 	addi	t0,t0,1136
 	lw	a0,%lo(result_sink)(a5)
-	sub	t0,zero,t0
-	sub	sp,sp,t0
+	sub	a0,x0,t0
+	sub	sp,sp,a0
 	lw	ra,2028(sp)
 	lw	s0,2024(sp)
 	lw	s1,2020(sp)
