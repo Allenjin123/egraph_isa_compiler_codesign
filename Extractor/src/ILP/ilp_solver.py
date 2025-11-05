@@ -402,7 +402,17 @@ def main():
         default=1,
         help="Number of best solutions to find (default: 1)"
     )
-    
+    parser.add_argument(
+        "--node-cost-scale",
+        type=float,
+        default=1.0,
+        help="Scaling factor for node costs in objective function. "
+             "0=ignore node costs (only operator diversity), "
+             "1=default balance, "
+             ">1=emphasize node costs (prefer simpler expressions). "
+             "(default: 1.0)"
+    )
+
     args = parser.parse_args()
     
     # Create output directories (append program name under the base output path)
@@ -473,8 +483,9 @@ def main():
     lp_file = lp_dir / f"extraction.lp"
     
     print(f"\nGenerating ILP file: {lp_file}")
+    print(f"  Node cost scale: {args.node_cost_scale}")
     start_time = time.time()
-    generate_ilp_file(egraph, str(lp_file))
+    generate_ilp_file(egraph, str(lp_file), node_cost_scale=args.node_cost_scale)
     ilp_time = time.time() - start_time
     print(f"ILP generation completed (time: {ilp_time:.2f}s)")
     

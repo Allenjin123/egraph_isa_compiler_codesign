@@ -21,21 +21,60 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.egraph import sanitize, DATA_DIR, get_file_name, clean_folder, EGraph
 
+# Operator-specific weights for cost model
+# Higher weight = more expensive = ILP tries harder to avoid
+OP_TYPE_WEIGHTS = {
+    # M-extension operations (very expensive - larger area, higher latency)
+    'Mul': 300,
+    'Mulh': 300,
+    'Mulhsu': 300,
+    'Mulhu': 300,
+    'Div': 500,      # Division is especially expensive
+    'Divu': 500,
+    'Rem': 400,
+    'Remu': 400,
+
+    # Memory operations (medium cost)
+    'Lw': 150,
+    'Lb': 150,
+    'Lh': 150,
+    'Lbu': 150,
+    'Lhu': 150,
+    'Sw': 150,
+    'Sb': 150,
+    'Sh': 150,
+
+    # Branch/Jump (medium cost)
+    'Beq': 120,
+    'Bne': 120,
+    'Blt': 120,
+    'Bge': 120,
+    'Bltu': 120,
+    'Bgeu': 120,
+    'Jal': 110,
+    'Jalr': 110,
+
+    # Default weight for unlisted operations (cheap ALU ops like Add, Sub, And, etc.)
+}
+DEFAULT_OP_WEIGHT = 100
+
 
 def generate_ilp_file(
     egraph,
     #root_eclasses: List[str],
     file_path: str,
-    zero_nodes: Optional[Set[str]] = None
+    zero_nodes: Optional[Set[str]] = None,
+    node_cost_scale: float = 1.0
 ):
     """
     Generate ILP file (LP format) with objective to minimize operator types
-    
+
     Parameters:
         egraph: EGraph object
         root_eclasses: List of root eclass IDs
         file_path: Output LP file path
         zero_nodes: Set of nodes to force to 0 (warm start pruning)
+        node_cost_scale: Scaling factor for node costs (0=ignore, 1=default, >1=emphasize)
     """
     
     if zero_nodes is None:
@@ -110,30 +149,34 @@ def generate_ilp_file(
     lp_lines.append("Minimize")
     obj_terms = []
     
-    # Part 1: Operator type cost (weight = 100)
-    OP_TYPE_WEIGHT = 100
+    # Part 1: Operator type cost (operator-specific weights)
     for op_name in sorted(op_vars.keys()):
         if op_name not in excluded_ops:
-            obj_terms.append(f"{OP_TYPE_WEIGHT} {op_vars[op_name]}")
+            # Get operator-specific weight (default 100 for cheap ops)
+            weight = OP_TYPE_WEIGHTS.get(op_name, DEFAULT_OP_WEIGHT)
+            obj_terms.append(f"{weight} {op_vars[op_name]}")
     
-    # Part 2: Node selection cost
+    # Part 2: Node selection cost (scaled by node_cost_scale parameter)
     for eclass_id, eclass in egraph.eclasses.items():
         for node_id in eclass.member_enodes:
             if node_id not in egraph.enodes:
                 continue
             if (eclass_id, node_id) not in node_vars:
                 continue
-            
+
             node = egraph.enodes[node_id]
             cost = node.cost
-            
+
+            # Apply scaling factor to node cost
+            scaled_cost = cost * node_cost_scale
+
             # Only add non-zero cost terms
-            if cost != 0.0:
+            if scaled_cost != 0.0:
                 node_var = node_vars[(eclass_id, node_id)]
-                if cost == 1.0:
+                if scaled_cost == 1.0:
                     obj_terms.append(node_var)
                 else:
-                    obj_terms.append(f"{cost} {node_var}")
+                    obj_terms.append(f"{scaled_cost} {node_var}")
     
     if obj_terms:
         lp_lines.append(" obj: " + " + ".join(obj_terms))
