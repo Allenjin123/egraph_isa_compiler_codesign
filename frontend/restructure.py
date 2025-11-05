@@ -125,6 +125,10 @@ class BlockGraph:
                 eclass_short = eclass_line.split(';')[-1].strip()
                 full_eclass_id = prefix + eclass_short.replace('-', '_')
                 
+                # 如果有多个相同的 eclass，以第一个为准
+                if full_eclass_id in eclass_to_rd:
+                    continue
+                
                 # 解析原始指令，提取 rd（第一个操作数）
                 # 格式如: "addi a5, a0, 0" 或 "lw a0, 8(sp)" 或 "addi a5,a0,0" (无空格)
                 parts = original_line.split()
