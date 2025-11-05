@@ -1,8 +1,0 @@
-	slli	a5,a4,1
-	lw	a7,0(a0)
-	add	a5,a5,a4
-	addi	a1,a4,1
-	slli	a5,a5,2
-	srai	s11,a1,31
-	add	a5,t2,a5
-	beq	a7,t5,.L25

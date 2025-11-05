@@ -74,3 +74,6 @@ temp/mibench_script/
 
 # egglog output
 Saturation/egglog_output/
+
+
+output/

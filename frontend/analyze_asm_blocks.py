@@ -243,9 +243,14 @@ class AsmBlockAnalyzer:
             basic_blocks.append(block_lines)
         
         # Step 5: Create label to block mapping
+        # Only include labels that are actual branch targets
+        # Exclude data labels (.LC*) and pcrel labels (.Lpcrel_*)
         label_to_block = {}
         for label, instr_idx in label_to_idx.items():
             if instr_idx in instr_idx_to_block:
+                # Filter out data labels and pcrel labels
+                if label.startswith('.LC') or label.startswith('.Lpcrel_'):
+                    continue
                 label_to_block[label] = instr_idx_to_block[instr_idx]
         
         if self.verbose:
@@ -300,8 +305,8 @@ def analyze_single_file(asm_file: Path, output_base: Path, verbose=False):
         output_base: Base output directory (default: output/frontend/)
         verbose: Verbose output
     """
-    # Get program name (remove .s suffix)
-    program_name = asm_file.stem
+    # Get program name (remove .s suffix and _clean suffix)
+    program_name = asm_file.stem.replace('_clean', '')
     
     # Create output directory: <output_base>/<program_name>/basic_blocks
     output_dir = output_base / program_name / 'basic_blocks'

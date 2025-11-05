@@ -1,8 +1,0 @@
-	lw	a3,4(sp)
-	lw	a5,0(sp)
-	lw	ra,28(sp)
-	addi	a1, a3, 0
-	addi	a0,a5,%lo(.LC1)
-	addi	sp,sp,32
-	auipc	t1, %pcrel_hi(printf)
-	jalr	zero, t1, %pcrel_lo(.Lpcrel_3)

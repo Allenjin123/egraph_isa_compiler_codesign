@@ -1,5 +1,0 @@
-	lui	s3,%hi(.LC1)
-	addi	a1, s4, 0
-	addi	a0,s3,%lo(.LC1)
-	auipc	ra, %pcrel_hi(printf)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_14)
