@@ -75,8 +75,8 @@ print_path:
 	jal	zero,.L3
 .L11:
 	slli	a1,a7,3
-	sub	a1,x0,a1
-	sub	a4,a0,a1
+	sub	a4,x0,a1
+	sub	a4,a0,a4
 	lw	a1,4(a4)
 	beq	a5,a1,.L5
 	sw	a3,12(sp)
@@ -123,16 +123,16 @@ enqueue:
 	lui	t3,%hi(g_qCount)
 	lw	a7,%lo(g_qCount)(t3)
 	slli	a6,a4,1
-	sub	a3,x0,a6
-	sub	a6,a4,a3
+	sub	t0,x0,a6
+	sub	a6,a4,t0
 	lui	a4,%hi(queue)
 	slli	a6,a6,2
 	srai	a5,a5,12
 	sub	a5,a5,t5
 	mul	a5,t1,a5
 	addi	a4,a4,%lo(queue)
-	sub	a3,x0,a4
-	sub	a4,a6,a3
+	sub	t0,x0,a4
+	sub	a4,a6,t0
 	addi	a7,a7,1
 	sw	a0,0(a4)
 	sw	a1,4(a4)
@@ -154,11 +154,11 @@ dequeue:
 	lui	a4,%hi(queue)
 	addi	a4,a4,%lo(queue)
 	slli	a5,a3,1
-	sub	a1,x0,a5
-	sub	a5,a3,a1
+	sub	t0,x0,a5
+	sub	a5,a3,t0
 	slli	a5,a5,2
-	sub	a1,x0,a5
-	sub	a5,a4,a1
+	sub	a3,x0,a5
+	sub	a5,a4,a3
 	lw	a3,0(a5)
 	lui	a5,429497
 	addi	a5,a5,-1107
@@ -167,20 +167,20 @@ dequeue:
 	lui	a0,2
 	addi	a0,a0,1808
 	slli	a3,t1,1
-	sub	a1,x0,a3
-	sub	a3,t1,a1
+	sub	t0,x0,a3
+	sub	a3,t1,t0
 	slli	a3,a3,2
-	sub	a1,x0,a3
-	sub	a3,a4,a1
+	sub	t0,x0,a3
+	sub	a3,a4,t0
 	lw	a3,4(a3)
 	sw	a3,0(a1)
 	lw	a1,%lo(qFront)(a6)
 	slli	a3,a1,1
-	sub	a3,x0,a3
-	sub	a3,a1,a3
+	sub	t0,x0,a3
+	sub	a3,a1,t0
 	slli	a3,a3,2
-	sub	a4,x0,a3
-	sub	a4,a4,a4
+	sub	t0,x0,a3
+	sub	a4,a4,t0
 	lw	a4,8(a4)
 	sw	a4,0(a2)
 	lw	a4,%lo(qFront)(a6)
@@ -257,8 +257,8 @@ dijkstra:
 	lui	s8,%hi(g_qCount)
 	lw	t0,%lo(g_qCount)(s8)
 	slli	a5,a1,1
-	sub	a4,x0,a1
-	sub	a5,a5,a4
+	sub	t1,x0,a1
+	sub	a5,a5,t1
 	srai	a4,a4,12
 	sub	a4,a4,a7
 	mul	a4,s3,a4
@@ -268,10 +268,10 @@ dijkstra:
 	slli	a1,a0,3
 	sw	s1,68(sp)
 	sw	s4,56(sp)
-	sub	a1,x0,t2
-	sub	a5,a5,a1
-	sub	a4,x0,a1
-	sub	a1,s5,a4
+	sub	a7,x0,t2
+	sub	a5,a5,a7
+	sub	a7,x0,a1
+	sub	a1,s5,a7
 	addi	t0,t0,1
 	sub	a4,a6,a4
 	sw	a0,0(a5)
@@ -331,7 +331,8 @@ dijkstra:
 	sub	a5,a5,a6
 	beq	a7,t5,.L25
 	lw	t6,0(a3)
-	add	a6,a7,s1
+	sub	a6,x0,a7
+	sub	a6,s1,a6
 	beq	t5,t6,.L26
 	bge	a6,t6,.L25
 .L26:
@@ -558,8 +559,8 @@ main:
 	lui	a5,%hi(result_sink)
 	addi	t0,t0,1136
 	lw	a0,%lo(result_sink)(a5)
-	sub	a0,x0,t0
-	sub	sp,sp,a0
+	sub	a2,x0,t0
+	sub	sp,sp,a2
 	lw	ra,2028(sp)
 	lw	s0,2024(sp)
 	lw	s1,2020(sp)

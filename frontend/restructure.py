@@ -146,20 +146,20 @@ def compute_free_regs_per_line(program_name: str, block_num: int) -> List[List[s
     
     # 从最后一行开始
     last_line = set(free_at_exit)
-    last_def_regs = set()
+    # last_def_regs = set()
     for i in range(num_lines - 1, -1, -1):
         line = lines[i]
         def_regs, use_regs = extract_def_use(line)
         
         # 当前行可用的 free_regs = last_line - use[i] + last_def_regs
-        free_set = (last_line - use_regs) | last_def_regs
+        free_set = (last_line  | def_regs) - use_regs
         free_regs_per_line[i] = sorted(free_set)
         
         # 更新 current_free 供前一行使用：
         # free[i-1] = free[i] - use[i] + def[i]
         # 但我们已经在上面计算了 free[i] - use[i]，所以：
         # current_free = free_set + def[i]
-        last_def_regs = def_regs
+        # last_def_regs = def_regs
         last_line = free_set
     return free_regs_per_line
 
@@ -285,12 +285,17 @@ class RewriteBlock:
         self.stack: Dict[str, List[str]] = {"push": [], "pop": []}  # 栈操作
 
     def get_free_reg(self) -> str:
+        """获取一个可用的寄存器
+        
+        优先使用 free_regs，如果用完了就生成占位符（后续会替换为借用的寄存器）
+        """
         if self.free_regs:
             return self.free_regs.pop(0)
         else:
-            # 无法分配临时寄存器，触发 fallback
-            self.use_fallback = True
-            raise RuntimeError("No free registers, fallback to original")
+            # 生成占位符：op_<line_idx>_<temp_counter>
+            placeholder = f"op_{self.current_line_idx}_{self.temp_counter}"
+            self.temp_counter += 1
+            return placeholder
 
     def rewrite_line(self, eclass_id: str, rd: str, line_idx: int):
         """以 eclass_id 展开后序遍历，生成指令，最后更新 rd
@@ -383,17 +388,13 @@ class RewriteBlock:
                 else:
                     raise ValueError(f"Line {line_idx} has no free registers")
                 
-                # 尝试处理这一行
-                try:
-                    self.rewrite_line(eclass_id, rd, line_idx)
-                    # 更新映射
-                    self.eclass_to_rd_map[eclass_id] = rd
-                except RuntimeError as e:
-                    if "fallback" in str(e):
-                        # Fallback：直接使用原始指令
-                        self._use_original_instruction(line_idx)
-                    else:
-                        raise
+                # # 测试：直接使用原始指令
+                # self._use_original_instruction(line_idx)
+                
+                # 处理这一行
+                self.rewrite_line(eclass_id, rd, line_idx)
+                # 更新映射
+                self.eclass_to_rd_map[eclass_id] = rd
             else:
                 # 不在图中的 eclass，说明图构建有问题
                 raise ValueError(f"Eclass {eclass_id} from file not found in block graph")
@@ -421,7 +422,10 @@ class RewriteBlock:
             raise RuntimeError(f"需要 {max_placeholders} 个寄存器，但只能借用 {len(borrowed_regs)} 个")
         
         # 生成压栈指令
-        stack_size = 4 * len(borrowed_regs)
+        # RISC-V ABI 要求 sp 必须保持 16 字节对齐
+        raw_stack_size = 4 * len(borrowed_regs)
+        stack_size = ((raw_stack_size + 15) // 16) * 16  # 向上对齐到 16 的倍数
+        
         self.stack["push"].append(f"addi\tsp,sp,{-stack_size}")
         for i, reg in enumerate(borrowed_regs):
             self.stack["push"].append(f"sw\t{reg},{4*i}(sp)")
@@ -463,25 +467,40 @@ class RewriteBlock:
         return borrowable[:num_needed]
     
     def replace_placeholders(self):
-        """替换占位符为实际寄存器"""
+        """替换占位符为实际寄存器
+        
+        每个 sublist（每行原始指令展开后的结果）独立分配寄存器，
+        因为占位符名字包含 line_idx，不同 sublist 的占位符不会冲突，
+        可以复用相同的借用寄存器
+        """
         if not hasattr(self, 'borrowed_regs') or not self.borrowed_regs:
             return
         
         import re
-        placeholder_to_reg = {}
         
-        # 按行处理，每行的占位符从 borrowed_regs[0] 开始分配
-        for sublist in self.block_lines:
+        # 按 sublist 独立处理
+        for i, sublist in enumerate(self.block_lines):
+            # 1. 收集当前 sublist 中所有唯一的占位符（保持首次出现顺序）
+            seen_placeholders = []
             for line in sublist:
                 placeholders = re.findall(r'op_\d+_\d+', line)
-                for i, placeholder in enumerate(placeholders):
-                    if i < len(self.borrowed_regs):
-                        placeholder_to_reg[placeholder] = self.borrowed_regs[i]
-                    else:
-                        raise RuntimeError(f"占位符 {placeholder} 无法分配寄存器（需要 {i+1} 个，只有 {len(self.borrowed_regs)} 个）")
-        
-        # 替换所有占位符
-        for i in range(len(self.block_lines)):
+                for placeholder in placeholders:
+                    if placeholder not in seen_placeholders:
+                        seen_placeholders.append(placeholder)
+            
+            if not seen_placeholders:
+                continue
+            
+            # 2. 检查寄存器数量是否足够
+            if len(seen_placeholders) > len(self.borrowed_regs):
+                raise RuntimeError(f"Sublist {i} 需要 {len(seen_placeholders)} 个寄存器，但只借用了 {len(self.borrowed_regs)} 个")
+            
+            # 3. 为当前 sublist 分配寄存器（按首次出现顺序）
+            placeholder_to_reg = {}
+            for idx, placeholder in enumerate(seen_placeholders):
+                placeholder_to_reg[placeholder] = self.borrowed_regs[idx]
+            
+            # 4. 替换当前 sublist 中的占位符
             for j in range(len(self.block_lines[i])):
                 for placeholder, reg in placeholder_to_reg.items():
                     self.block_lines[i][j] = self.block_lines[i][j].replace(placeholder, reg)
@@ -491,18 +510,30 @@ class RewriteBlock:
         pop_stack = [line for line in self.stack["pop"]]
         lines = [line for sublist in self.block_lines for line in sublist]
         
-        # 检查最后一条指令是否是 branch
-        if lines and pop_stack:
-            last_line = lines[-1].strip()
-            mnemonic = last_line.split()[0] if last_line else ""
-            # RV32I branch 指令
-            branch_ops = {'beq', 'bne', 'blt', 'bge', 'bltu', 'bgeu', 'jal', 'jalr'}
+        if not lines or not pop_stack:
+            self.lines = push_stack + lines + pop_stack
+            return
+        
+        # 检查最后一条和倒数第二条指令
+        last_line = lines[-1].strip()
+        last_mnemonic = last_line.split()[0] if last_line else ""
+        
+        # 检查是否是 auipc + jalr 配对（用于函数调用）
+        if len(lines) >= 2 and last_mnemonic == 'jalr':
+            second_last_line = lines[-2].strip()
+            second_last_mnemonic = second_last_line.split()[0] if second_last_line else ""
             
-            if mnemonic in branch_ops:
-                # 把 pop 插入到最后一条指令之前
-                self.lines = push_stack + lines[:-1] + pop_stack + [lines[-1]]
-            else:
-                self.lines = push_stack + lines + pop_stack
+            if second_last_mnemonic == 'auipc':
+                # auipc + jalr 配对，pop 必须插入到 auipc 之前
+                self.lines = push_stack + lines[:-2] + pop_stack + lines[-2:]
+                return
+        
+        # RV32I branch 指令
+        branch_ops = {'beq', 'bne', 'blt', 'bge', 'bltu', 'bgeu', 'jal', 'jalr'}
+        
+        if last_mnemonic in branch_ops:
+            # 普通 branch，pop 插入到最后一条指令之前
+            self.lines = push_stack + lines[:-1] + pop_stack + [lines[-1]]
         else:
             self.lines = push_stack + lines + pop_stack
 
