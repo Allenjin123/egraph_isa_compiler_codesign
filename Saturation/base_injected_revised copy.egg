@@ -235,25 +235,6 @@
 (rewrite (And rs1 rs2)
            (Sub rs1 (Sub (Or rs1 rs2) rs2)))
 
-;; Length 4: best-len4.s
-;; Greenthumb sequence:
-;;   1.     xori rd=x1 rs1=x2 imm=-1
-;;   2.     or rd=x1 rs1=x3 rs2=x2
-;;   3.     sub rd=x1 rs1=x1 rs2=x3
-;;   4.     sub rd=x1 rs1=x2 rs2=x1
-(rewrite (And rs1 rs2)
-           (Sub rs1 (Sub (Or rs2 rs1) rs2)))
-
-;; Length 5: best-len5.s
-;; Greenthumb sequence:
-;;   1.     or rd=x1 rs1=x3 rs2=x2
-;;   2.     or rd=x1 rs1=x3 rs2=x1
-;;   3.     sub rd=x1 rs1=x1 rs2=x2
-;;   4.     sub rd=x2 rs1=x3 rs2=x1
-;;   5.     sub rd=x1 rs1=x3 rs2=x1
-(rewrite (And rs1 rs2)
-           (Sub rs2 (Sub (Or rs2 (Or rs2 rs1)) rs1)))
-
 ;; ============================================================
 ;; ANDI Rewrites (Greenthumb-generated)
 ;; ============================================================
