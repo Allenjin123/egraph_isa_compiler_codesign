@@ -42,38 +42,57 @@ def filter_dummy_instructions(instructions: List[text_inst]) -> List[text_inst]:
     return [inst for inst in instructions if inst.rd != 'x0']
 
 
-def expand_pseudo_instruction(inst: text_inst) -> text_inst:
+def expand_pseudo_instruction(inst: text_inst, avoid_instruction: Optional[str] = None) -> List[text_inst]:
     """
-    Expand RISC-V pseudo-instruction to its base form.
+    Expand RISC-V pseudo-instruction to its base form, avoiding circular dependencies.
 
-    Expansions:
-        neg rd, rs  → sub rd, x0, rs    (negate)
-        not rd, rs  → xori rd, rs, -1   (bitwise NOT)
-        seqz rd, rs → sltiu rd, rs, 1   (set if equal to zero)
-        snez rd, rs → sltu rd, x0, rs   (set if not equal to zero)
+    Expansions (default):
+        neg rd, rs  → sub rd, x0, rs
+        not rd, rs  → xori rd, rs, -1
+        seqz rd, rs → sltiu rd, rs, 1
+        snez rd, rs → sltu rd, x0, rs
+
+    Alternative expansions (when avoiding target instruction):
+        neg (avoid sub) → xori temp, rs, -1; addi rd, temp, 1  (two's complement)
+        not (avoid xori) → Keep as-is (xori is the natural expansion)
 
     Args:
         inst: Instruction to expand
+        avoid_instruction: Instruction type to avoid (e.g., 'sub' when synthesizing sub)
 
     Returns:
-        Expanded instruction (or original if not a pseudo-instruction)
+        List of expanded instructions (or [original] if not pseudo)
     """
-    if inst.op_name in PSEUDO_EXPANSIONS:
-        return PSEUDO_EXPANSIONS[inst.op_name](inst.rd, inst.rs1)
-    return inst
+    if inst.op_name not in PSEUDO_EXPANSIONS:
+        return [inst]  # Not a pseudo-instruction
+
+    # Handle neg special case: avoid sub by using two's complement
+    if inst.op_name == 'neg' and avoid_instruction == 'sub':
+        # Two's complement: ~rs + 1 (avoids sub)
+        return [
+            text_inst('xori', rd=f'{inst.rd}_tmp', rs1=inst.rs1, imm=-1),
+            text_inst('addi', rd=inst.rd, rs1=f'{inst.rd}_tmp', imm=1)
+        ]
+
+    # Handle not: xori is the natural form, keep it even if avoiding xori
+    # (There's no better alternative)
+
+    # Default expansion
+    return [PSEUDO_EXPANSIONS[inst.op_name](inst.rd, inst.rs1)]
 
 
-def parse_greenthumb_file(file_path: str) -> List[text_inst]:
+def parse_greenthumb_file(file_path: str, avoid_instruction: Optional[str] = None) -> List[text_inst]:
     """
     Parse a greenthumb .s file and return cleaned instruction list.
 
     Steps:
     1. Parse each line using text_inst.parse_instruction()
     2. Filter out dummy instructions (rd == x0)
-    3. Expand pseudo-instructions (neg, not, etc.)
+    3. Expand pseudo-instructions (neg, not, etc.) while avoiding circular dependencies
 
     Args:
         file_path: Path to .s file
+        avoid_instruction: Instruction type to avoid in expansions (e.g., 'sub' when synthesizing sub)
 
     Returns:
         List of cleaned and expanded instructions
@@ -84,9 +103,9 @@ def parse_greenthumb_file(file_path: str) -> List[text_inst]:
         for line in f:
             inst = text_inst.parse_instruction(line)
             if inst:
-                # Expand pseudo-instructions first
-                inst = expand_pseudo_instruction(inst)
-                instructions.append(inst)
+                # Expand pseudo-instructions (may return multiple instructions)
+                expanded = expand_pseudo_instruction(inst, avoid_instruction)
+                instructions.extend(expanded)
 
     # Filter dummy instructions
     return filter_dummy_instructions(instructions)
@@ -400,8 +419,8 @@ def process_instruction_directory(inst_name: str, inst_dir: Path, verbose: bool 
 
     for rewrite_file in rewrite_files:
         try:
-            # Parse rewrite sequence
-            sequence = parse_greenthumb_file(str(rewrite_file))
+            # Parse rewrite sequence, avoiding the target instruction to prevent circular rewrites
+            sequence = parse_greenthumb_file(str(rewrite_file), avoid_instruction=target.op_name)
 
             if not sequence:
                 if verbose:
