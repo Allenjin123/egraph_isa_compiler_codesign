@@ -233,6 +233,31 @@
 ;; Conclusion: LUI removal saves very little area, adds significant complexity
 ;; Recommendation: Keep LUI in hardware
 
+;; ============================================
+;; SLT/SLTU Decomposition Using Branches
+;; ============================================
+;; Set-less-than can be implemented using branch instructions
+;; Pattern: Assume true (1), branch-skip-if-true, set false (0)
+;;
+;; slt a, b, c becomes:
+;;   addi a, x0, 1      ; Assume result = 1 (true)
+;;   blt b, c, .+4      ; If b < c, skip next instruction
+;;   addi a, x0, 0      ; Result = 0 (false, only executed if branch not taken)
+;;
+;; Uses Seq2 because these are sequential with strict ordering (control flow)
+
+;; SLT rd, rs1, rs2  =  addi tmp, x0, 1; blt rs1, rs2, +4; addi tmp, x0, 0
+(birewrite (Slt rs1 rs2)
+           (Seq2 (Addi (RegVal "x0") (ImmVal 1))
+                 (Seq2 (Blt rs1 rs2 (ImmVal 4))
+                       (Addi (RegVal "x0") (ImmVal 0)))))
+
+;; SLTU rd, rs1, rs2  =  addi tmp, x0, 1; bltu rs1, rs2, +4; addi tmp, x0, 0
+(birewrite (Sltu rs1 rs2)
+           (Seq2 (Addi (RegVal "x0") (ImmVal 1))
+                 (Seq2 (Bltu rs1 rs2 (ImmVal 4))
+                       (Addi (RegVal "x0") (ImmVal 0)))))
+
 ;; === Branch Simplifications ===
 ;; Branch on same values
 (rewrite (Beq v v target) (Jal target))    ; Always taken
