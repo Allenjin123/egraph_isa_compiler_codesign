@@ -1,0 +1,41 @@
+{
+  "nodes": {
+    "primitive-String-1": {
+      "op": "\"%hi(.LC1)\"",
+      "children": [],
+      "eclass": "String-1",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-ImmLabel": {
+      "op": "ImmLabel",
+      "children": [
+        "primitive-String-1"
+      ],
+      "eclass": "Imm-0",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-0-Lui": {
+      "op": "Lui",
+      "children": [
+        "function-0-ImmLabel"
+      ],
+      "eclass": "Inst-1",
+      "cost": 1.0,
+      "subsumed": false
+    }
+  },
+  "root_eclasses": [],
+  "class_data": {
+    "Imm-0": {
+      "type": "Imm"
+    },
+    "String-1": {
+      "type": "String"
+    },
+    "Inst-1": {
+      "type": "Inst"
+    }
+  }
+}

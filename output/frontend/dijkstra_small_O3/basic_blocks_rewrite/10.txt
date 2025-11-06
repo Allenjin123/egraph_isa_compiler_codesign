@@ -1,0 +1,6 @@
+slli	a1,a7,3
+sub	a4,x0,a0
+sub	a4,a1,a4
+lw	a1,4(a4)
+bne	a1,a5,.+8
+jal	x0,.L5

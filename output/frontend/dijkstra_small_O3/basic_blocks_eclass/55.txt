@@ -1,0 +1,6 @@
+lui s2_0, 335544; Inst-2
+addi s2_1, s2_0, 1311; Inst-4
+addi a5_0, zero_0, 50; Inst-6
+addi s1_0, zero_0, 0; Inst-8
+addi s4_0, zero_0, 100; Inst-10
+addi s3_0, zero_0, 20; Inst-12

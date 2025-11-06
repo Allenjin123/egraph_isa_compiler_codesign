@@ -1,0 +1,6 @@
+lui	s2,335544
+addi	s2,s2,1311
+addi	a5,zero,50
+addi	s1,zero,0
+addi	s4,zero,100
+addi	s3,zero,20

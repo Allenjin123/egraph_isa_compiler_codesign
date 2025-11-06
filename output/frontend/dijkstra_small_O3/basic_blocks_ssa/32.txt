@@ -1,0 +1,16 @@
+addi a1_0, t3_0, 0
+lw t3_1, 12(sp_0)
+lui a5_0, %hi(i)
+sw t1_0, %lo(qFront)(s10_0)
+lui a6_0, %hi(iDist)
+lui t1_1, %hi(iPrev)
+lui a0_0, %hi(iNode)
+sw a2_0, %lo(i)(a5_0)
+lui a5_1, %hi(iCost)
+sw zero_0, %lo(g_qCount)(s8_0)
+sw t3_1, %lo(iPrev)(t1_1)
+sw s1_0, %lo(iDist)(a6_0)
+sw a1_0, %lo(iNode)(a0_0)
+sw a7_0, %lo(iCost)(a5_1)
+addi a3_0, t4_0, 0
+beq s4_0, zero_0, .L44

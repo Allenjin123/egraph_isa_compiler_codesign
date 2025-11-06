@@ -1,0 +1,4 @@
+slli a1_0, a7_0, 3; Inst-4
+add a4_0, a0_0, a1_0; Inst-5
+lw a1_1, 4(a4_0); Inst-7
+beq a1_1, a5_0, .L5; Inst-9

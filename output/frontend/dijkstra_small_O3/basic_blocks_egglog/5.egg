@@ -1,0 +1,53 @@
+; EGraph for dijkstra_small_O3 - Block 5
+; Total instructions: 8
+; Input registers: 1, Output registers: 8
+
+(include "../../../../Saturation/base.egg")
+
+; Input register declarations (used but not defined in this block)
+(let sp_0 (RegVal "sp_0"))
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     lw rd=a3_0 rs1=sp_0 imm=4
+(let a3_0_val (Lw sp_0 (ImmVal 4)))
+
+;; Step 2:     lw rd=a5_0 rs1=sp_0 imm=0
+(let a5_0_val (Lw sp_0 (ImmVal 0)))
+
+;; Step 3:     lw rd=ra_0 rs1=sp_0 imm=28
+(let ra_0_val (Lw sp_0 (ImmVal 28)))
+
+;; Step 4:     addi rd=a1_0 rs1=a3_0 imm=0
+(let a1_0_val (Addi a3_0_val (ImmVal 0)))
+
+;; Step 5:     addi rd=a0_0 rs1=a5_0 imm=%lo(.LC1)
+(let a0_0_val (Addi a5_0_val (ImmLabel "%lo(.LC1)")))
+
+;; Step 6:     addi rd=sp_1 rs1=sp_0 imm=32
+(let sp_1_val (Addi sp_0 (ImmVal 32)))
+
+;; Step 7:     auipc rd=t1_0 imm=%pcrel_hi(printf)
+(let t1_0_val (Auipc (ImmLabel "%pcrel_hi(printf)")))
+
+;; Step 8:     jalr rd=zero_0 rs1=t1_0 imm=%pcrel_lo(.Lpcrel_3)
+(let zero_0_val (Jalr t1_0_val (ImmLabel "%pcrel_lo(.Lpcrel_3)")))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 6)
+
+; ============================================
+; Print eclass IDs for each instruction
+; ============================================
+(print-eclass-id a3_0_val)
+(print-eclass-id a5_0_val)
+(print-eclass-id ra_0_val)
+(print-eclass-id a1_0_val)
+(print-eclass-id a0_0_val)
+(print-eclass-id sp_1_val)
+(print-eclass-id t1_0_val)
+(print-eclass-id zero_0_val)
