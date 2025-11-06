@@ -1,0 +1,8 @@
+slli s0_0, a3_0, 3
+add s2_0, s5_0, s0_0
+lw a1_0, 0(s2_0)
+lui a0_0, %hi(.LC3)
+addi a0_1, a0_0, %lo(.LC3)
+addi s1_0, a3_0, 0
+auipc ra_0, %pcrel_hi(printf)
+jalr ra_1, ra_0, %pcrel_lo(.Lpcrel_7)

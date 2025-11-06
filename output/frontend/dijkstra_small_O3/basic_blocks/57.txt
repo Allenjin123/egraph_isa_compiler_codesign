@@ -1,0 +1,2 @@
+	addi	a5,s0,1
+	bne	s1,s3,.L49

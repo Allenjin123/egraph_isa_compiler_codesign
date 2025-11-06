@@ -1,0 +1,7 @@
+	slli	a5,a1,3
+	add	a5,a0,a5
+	lw	a2,4(a5)
+	lui	a5, 2
+	addi	a5,a5,1807
+	addi	a3, a1, 0
+	bne	a2,a5,.L9

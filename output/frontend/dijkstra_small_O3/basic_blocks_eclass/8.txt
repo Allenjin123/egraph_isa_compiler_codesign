@@ -1,0 +1,7 @@
+addi a0_0, a5_0, %lo(.LC1); Inst-6
+addi a1_0, a6_0, 0; Inst-8
+sw a3_0, 8(sp_0); Inst-10
+sw a2_0, 4(sp_0); Inst-12
+sw a5_0, 0(sp_0); Inst-13
+auipc ra_0, %pcrel_hi(printf); Inst-15
+jalr ra_1, ra_0, %pcrel_lo(.Lpcrel_4); Inst-17
