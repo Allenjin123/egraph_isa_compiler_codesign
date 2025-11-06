@@ -388,8 +388,8 @@ def main():
     parser.add_argument(
         "--timeout",
         type=int,
-        default=1800,
-        help="Solver timeout (seconds, default: 1800)"
+        default=180,
+        help="Solver timeout (seconds, default: 180)"
     )
     parser.add_argument(
         "--output",

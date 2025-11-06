@@ -154,7 +154,7 @@ BRANCH_INSTRUCTIONS = {
 
 # RISC-V Register Definitions
 #  s0 = frame pointer = fp
-SPECIAL_REGS = ['zero', 'ra', 'sp', 'gp', 'tp', 'fp']
+SPECIAL_REGS = ['x0', 'zero', 'ra', 'sp', 'gp', 'tp', 'fp']
 T_REGS = ['t0', 't1', 't2', 't3', 't4', 't5', 't6']  # Temporary (caller-saved)
 S_REGS = ['s0', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11']  # Saved (callee-saved)
 A_REGS = ['a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7']  # Arguments/return values
@@ -195,6 +195,47 @@ def is_register(s: str) -> bool:
         return 0 <= num <= 31
     # ABI names
     return s in ALL_ABI_REGS
+
+def extract_registers_from_operand(operand: str) -> List[str]:
+    """
+    从操作数中提取所有寄存器。
+    
+    支持的格式：
+    - 普通寄存器：'a5' -> ['a5']
+    - 立即数偏移：'12(sp)' -> ['sp']
+    - 特殊格式：'%lo(symbol)(a5)' -> ['a5']
+    - 特殊格式：'%pcrel_hi(symbol)' -> []
+    - 特殊格式：'%hi(symbol)' -> []
+    
+    Args:
+        operand: 操作数字符串
+        
+    Returns:
+        提取到的寄存器列表
+    """
+    import re
+    
+    if not operand:
+        return []
+    
+    registers = []
+    
+    # 首先检查是否是普通寄存器
+    if is_register(operand):
+        return [operand]
+    
+    # 查找所有括号中的内容，可能是寄存器
+    # 例如：'12(sp)' 或 '%lo(g_qCount)(a5)'
+    # 使用正则表达式查找所有 '(...)'
+    pattern = r'\(([^)]+)\)'
+    matches = re.findall(pattern, operand)
+    
+    for match in matches:
+        # 检查括号中的内容是否是寄存器
+        if is_register(match):
+            registers.append(match)
+    
+    return registers
 
 def is_temp_register(s: str) -> bool:
     """Check if register is a temporary register (t0-t6)"""
@@ -317,6 +358,71 @@ def get_instruction_category(mnemonic: str) -> str:
     else:
         return 'unknown'
 
+def parse_instruction(line: str) -> Tuple[str, List[str]]:
+    """解析指令，返回(mnemonic, operands_list)
+    
+    示例转换:
+        "lw a0, 8(sp)  # comment"           → ("lw", ["a0", "8", "sp"])
+        "lw a0, %lo(g_qCount)(a5)"          → ("lw", ["a0", "%lo(g_qCount)", "a5"])
+        "add a0, a1, a2"                    → ("add", ["a0", "a1", "a2"])
+        "lui a5, %hi(g_qCount)"             → ("lui", ["a5", "%hi(g_qCount)"])
+    """
+    import re
+    
+    # 移除注释（#之后的所有内容）
+    clean = re.sub(r'#.*$', '', line).strip()
+    
+    # 移除符号引用 (<...>)
+    clean = re.sub(r'<[^>]+>', '', clean).strip()
+    
+    # 分割mnemonic和operands（只分割一次）
+    parts = clean.split(None, 1)
+    if not parts:
+        return "", []
+    
+    mnemonic = parts[0]
+    operands_str = parts[1] if len(parts) > 1 else ""
+    
+    # 解析操作数
+    operands = []
+    if operands_str:
+        # 先按逗号分割
+        raw_operands = [op.strip() for op in operands_str.split(',')]
+        
+        for op in raw_operands:
+            # 检查是否包含括号（内存访问格式）
+            if '(' in op and ')' in op:
+                # 处理两种情况：
+                # 1. 普通格式：8(sp) → ["8", "sp"]
+                # 2. 特殊格式：%lo(symbol)(reg) → ["%lo(symbol)", "reg"]
+                # 3. 非寄存器格式：%hi(symbol) → ["%hi(symbol)"]（保持原样）
+                
+                # 提取最后括号中的内容
+                reg_match = re.search(r'\(([^)]+)\)$', op)
+                if reg_match:
+                    last_token = reg_match.group(1)
+                    
+                    # 判断最后括号里的内容是否是寄存器
+                    if is_register(last_token):
+                        # 是寄存器，分离成 offset 和 reg
+                        last_paren = op.rfind('(')
+                        offset = op[:last_paren]
+                        
+                        # 添加偏移量和寄存器
+                        if offset:
+                            operands.append(offset)
+                        operands.append(last_token)
+                    else:
+                        # 不是寄存器（如 %hi(symbol)），保持原样
+                        operands.append(op)
+                else:
+                    # 解析失败，保持原样
+                    operands.append(op)
+            else:
+                # 普通操作数，直接添加
+                operands.append(op)
+    
+    return mnemonic, operands
 
 def analyze_instruction(mnemonic: str, operands: List[str]) -> Tuple[Set[str], Set[str]]:
     """Analyze USE and DEF registers for an instruction
