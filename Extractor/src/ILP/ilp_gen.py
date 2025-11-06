@@ -25,14 +25,14 @@ from src.egraph import sanitize, DATA_DIR, get_file_name, clean_folder, EGraph
 # Higher weight = more expensive = ILP tries harder to avoid
 OP_TYPE_WEIGHTS = {
     # M-extension operations (very expensive - larger area, higher latency)
-    'Mul': 300,
-    'Mulh': 300,
-    'Mulhsu': 300,
-    'Mulhu': 300,
-    'Div': 500,      # Division is especially expensive
-    'Divu': 500,
-    'Rem': 400,
-    'Remu': 400,
+    'Mul': 3000,
+    'Mulh': 3000,
+    'Mulhsu': 3000,
+    'Mulhu': 3000,
+    'Div': 5000,      # Division is especially expensive
+    'Divu': 5000,
+    'Rem': 4000,
+    'Remu': 4000,
 
     # Memory operations (medium cost)
     'Lw': 150,
@@ -92,7 +92,7 @@ def generate_ilp_file(
     node_vars: Dict[tuple, str] = {}
     # L_<class_id>: level variable (prevent cycles)
     level_vars: Dict[str, str] = {}
-    # Opp_<class_id>_<node_index>: opposite variable (prevent cycles)
+    # Opp_<class_id>_<node. _index>: opposite variable (prevent cycles)
     opposite_vars: Dict[tuple, str] = {}
     # Op_<op_name>: operator usage variable (NEW!)
     op_vars: Dict[str, str] = {}

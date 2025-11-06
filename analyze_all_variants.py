@@ -1,30 +1,101 @@
 #!/usr/bin/env python3
 """
-Analyze all variants using the backend_parser.program class.
-This script wraps the existing backend analysis infrastructure.
+Analyze all variants in parallel using multiprocessing.
+This script parallelizes the synthesis step for maximum performance.
 
 Usage:
-    python analyze_all_variants.py <variants_dir> <program_name> <output_dir>
+    python analyze_all_variants.py <variants_dir> <program_name> <output_dir> [num_processes]
 """
 
 import sys
+import json
+import time
 from pathlib import Path
+from multiprocessing import Pool
+from functools import partial
 
 # Add paths for imports
 sys.path.insert(0, str(Path(__file__).parent))
 
-from backend.backend_parser import program
+import Saturation.data_structure as ds
+import backend.area_parser as ap
+import backend.latency_parser as lp
+import matplotlib.pyplot as plt
+
+
+def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir):
+    """
+    Analyze a single variant (to be called in parallel).
+
+    Args:
+        variant_id: ID of the variant to analyze
+        variants_dir: Path to variants directory
+        program_name: Name of the program
+        dsl_dir: Directory to save DSL files
+
+    Returns:
+        Tuple of (variant_id, subset, area, latency, num_blocks) or None on error
+    """
+    try:
+        variant_path = Path(variants_dir) / f"variant_{variant_id}"
+
+        if not variant_path.exists():
+            print(f"Variant {variant_id}: Directory not found", file=sys.stderr)
+            return None
+
+        # Create text_program instance
+        prog = ds.text_program(f"{program_name}_variant_{variant_id}")
+
+        # Load from basic_blocks_ssa if available, otherwise basic_blocks
+        if (variant_path / "basic_blocks_ssa").exists():
+            prog.from_directory(str(variant_path), suffix="_ssa")
+        elif (variant_path / "basic_blocks").exists():
+            prog.from_directory(str(variant_path), suffix="")
+        else:
+            print(f"Variant {variant_id}: No basic blocks found", file=sys.stderr)
+            return None
+
+        # Calculate instruction subset
+        subset = set()
+        for block in prog.basic_blocks:
+            for instr in block.inst_list:
+                subset.add(instr.op_name)
+
+        # Generate DSL file path
+        dsl_file_path = str(Path(dsl_dir) / f"variant_{variant_id}.dsl")
+
+        # Calculate area (this runs synthesis - the slow part)
+        # area_parser.py will create the output directory automatically
+        print(f"Variant {variant_id}: Starting synthesis with {len(subset)} instructions...")
+        start_time = time.time()
+        area = ap.parse_area(subset, dsl_file_path)
+        synthesis_time = time.time() - start_time
+
+        # Calculate latency
+        latency = lp.parse_latency(prog)
+
+        print(f"Variant {variant_id}: ✓ Complete in {synthesis_time:.1f}s - "
+              f"Area={area:.2f} µm², Latency={latency}, Instructions={len(subset)}")
+
+        return (variant_id, subset, area, latency, len(prog.basic_blocks))
+
+    except Exception as e:
+        print(f"Variant {variant_id}: ✗ Error - {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc(file=sys.stderr)
+        return None
 
 
 def main():
-    if len(sys.argv) != 4:
-        print("Usage: python analyze_all_variants.py <variants_dir> <program_name> <output_dir>")
-        print("Example: python analyze_all_variants.py output/backend/dijkstra_small_O3/variants dijkstra_small_O3 output/backend/dijkstra_small_O3")
+    if len(sys.argv) < 4:
+        print("Usage: python analyze_all_variants.py <variants_dir> <program_name> <output_dir> [num_processes]")
+        print("Example: python analyze_all_variants.py output/backend/dijkstra_small_O3/variants dijkstra_small_O3 output/backend/dijkstra_small_O3 72")
         sys.exit(1)
 
     variants_dir = sys.argv[1]
     program_name = sys.argv[2]
     output_dir = sys.argv[3]
+    num_processes = int(sys.argv[4]) if len(sys.argv) > 4 else 72  # Default to 72
 
     variants_path = Path(variants_dir)
     output_path = Path(output_dir)
@@ -33,74 +104,148 @@ def main():
         print(f"Error: Variants directory not found: {variants_path}")
         sys.exit(1)
 
-    print(f"Analyzing variants in: {variants_path}")
+    # Create DSL directory
+    dsl_dir = output_path / "dsl_files"
+    dsl_dir.mkdir(parents=True, exist_ok=True)
+
+    print("=" * 80)
+    print(f"Parallel Variant Analysis")
+    print("=" * 80)
+    print(f"Variants directory: {variants_path}")
     print(f"Program name: {program_name}")
     print(f"Output directory: {output_path}")
+    print(f"Parallel processes: {num_processes}")
+    print(f"DSL files: {dsl_dir}")
+    print("=" * 80)
     print()
 
     try:
-        # Create program instance
-        prog = program(program_name, variants_path)
+        # Find all variant directories
+        variant_dirs = sorted([d for d in variants_path.iterdir() if d.is_dir() and d.name.startswith("variant_")])
+        num_variants = len(variant_dirs)
 
-        # Parse all variants
-        print(f"Parsing variant directories...")
-        prog.parse_variants()
-        print(f"Found {len(prog.variants)} variants")
+        print(f"Found {num_variants} variants")
+        print(f"Starting parallel synthesis with {num_processes} processes...")
         print()
 
-        # Parse subsets, areas, and delays
-        # Save DSL files to output_dir/dsl_files
-        dsl_dir = output_path / "dsl_files"
-        print(f"Analyzing instruction subsets, areas, and latencies...")
-        print(f"DSL files will be saved to: {dsl_dir}")
+        # Create partial function with fixed arguments
+        analyze_func = partial(analyze_single_variant,
+                              variants_dir=str(variants_path),
+                              program_name=program_name,
+                              dsl_dir=str(dsl_dir))
+
+        # Run analysis in parallel
+        overall_start = time.time()
+        with Pool(processes=num_processes) as pool:
+            results = pool.map(analyze_func, range(num_variants))
+        overall_time = time.time() - overall_start
+
+        # Filter out None results (failed analyses)
+        valid_results = [r for r in results if r is not None]
+
         print()
-        prog.parse_subsets(str(dsl_dir))
+        print("=" * 80)
+        print(f"Synthesis Complete: {len(valid_results)}/{num_variants} successful")
+        print(f"Total time: {overall_time:.1f}s ({overall_time/60:.1f} minutes)")
+        if len(valid_results) > 0:
+            print(f"Average per variant: {overall_time/len(valid_results):.1f}s")
+        print("=" * 80)
         print()
 
-        # Get Pareto frontier
-        pareto_frontier = prog.get_pareto_frontier()
+        if len(valid_results) == 0:
+            print("Error: No variants analyzed successfully")
+            sys.exit(1)
+
+        # Organize results
+        subsets = {}
+        areas = {}
+        latencies = {}
+        num_blocks = {}
+
+        for variant_id, subset, area, latency, blocks in valid_results:
+            subsets[variant_id] = subset
+            areas[variant_id] = area
+            latencies[variant_id] = latency
+            num_blocks[variant_id] = blocks
+
+        # Calculate Pareto frontier
+        print("Calculating Pareto frontier...")
+        pareto_frontier = []
+        for i in subsets.keys():
+            dominated = False
+            for j in subsets.keys():
+                if i != j:
+                    if (areas[j] <= areas[i] and latencies[j] < latencies[i]) or \
+                       (areas[j] < areas[i] and latencies[j] <= latencies[i]):
+                        dominated = True
+                        break
+            if not dominated:
+                pareto_frontier.append((i, areas[i], latencies[i]))
+
         print(f"Pareto Frontier ({len(pareto_frontier)} optimal variants):")
-        for variant_index, area, latency in sorted(pareto_frontier, key=lambda x: x[1]):
-            print(f"  Variant {variant_index}: Area = {area:.2f} µm², Latency = {latency}")
+        for variant_id, area, latency in sorted(pareto_frontier, key=lambda x: x[1]):
+            print(f"  Variant {variant_id}: Area = {area:.2f} µm², Latency = {latency}")
         print()
 
-        # Generate visualization
+        # Generate visualization (matching backend_parser style)
         plot_path = output_path / "pareto_frontier.png"
         print(f"Generating Pareto frontier plot...")
-        prog.visualize_pareto_frontier(str(plot_path), pareto_frontier)
+
+        plt.figure(figsize=(10, 6))
+
+        # Plot all variants
+        all_areas = [areas[i] for i in sorted(areas.keys())]
+        all_latencies = [latencies[i] for i in sorted(latencies.keys())]
+        plt.scatter(all_areas, all_latencies, color='blue', label='Variants', alpha=0.6)
+
+        # Highlight Pareto frontier
+        pareto_areas = [p[1] for p in pareto_frontier]
+        pareto_latencies = [p[2] for p in pareto_frontier]
+        plt.scatter(pareto_areas, pareto_latencies, color='red', label='Pareto Frontier', s=100)
+
+        plt.title('Pareto Frontier of Program Variants')
+        plt.xlabel('Area (µm²)')
+        plt.ylabel('Latency')
+        plt.legend()
+        plt.grid(True)
+        plt.savefig(str(plot_path))
+        plt.close()
+
         print(f"Plot saved to: {plot_path}")
         print()
 
         # Save detailed results to JSON
-        import json
         results_file = output_path / "analysis_results.json"
-        results = {
+        results_data = {
             "program_name": program_name,
-            "num_variants": len(prog.variants),
+            "num_variants": len(valid_results),
+            "num_processes": num_processes,
+            "total_synthesis_time": overall_time,
             "variants": []
         }
 
-        for i in range(len(prog.variants)):
-            results["variants"].append({
-                "variant_id": i,
-                "area": prog.areas[i],
-                "latency": prog.delays[i],
-                "instruction_subset": list(prog.subsets[i]),
-                "num_instructions": len(prog.subsets[i]),
-                "is_pareto_optimal": any(p[0] == i for p in pareto_frontier)
+        for variant_id in sorted(subsets.keys()):
+            results_data["variants"].append({
+                "variant_id": variant_id,
+                "area": areas[variant_id],
+                "latency": latencies[variant_id],
+                "instruction_subset": sorted(list(subsets[variant_id])),
+                "num_instructions": len(subsets[variant_id]),
+                "num_blocks": num_blocks[variant_id],
+                "is_pareto_optimal": any(p[0] == variant_id for p in pareto_frontier)
             })
 
-        results["pareto_frontier"] = [
+        results_data["pareto_frontier"] = [
             {
                 "variant_id": p[0],
                 "area": p[1],
                 "latency": p[2]
             }
-            for p in pareto_frontier
+            for p in sorted(pareto_frontier, key=lambda x: x[1])
         ]
 
         with open(results_file, 'w') as f:
-            json.dump(results, f, indent=2)
+            json.dump(results_data, f, indent=2)
 
         print(f"Results saved to: {results_file}")
         print()
