@@ -1,9 +1,0 @@
-slli	s0,a3,3
-sub	a0,x0,s5
-sub	s2,s0,a0
-lw	a1,0(s2)
-lui	a0,%hi(.LC3)
-addi	a0,a0,%lo(.LC3)
-addi	s1,a3,0
-auipc	ra,%pcrel_hi(printf)
-jalr	ra,ra,%pcrel_lo(.Lpcrel_7)
