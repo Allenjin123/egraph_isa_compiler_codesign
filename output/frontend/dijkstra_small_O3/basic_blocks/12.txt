@@ -1,0 +1,4 @@
+	lw	a3,12(sp)
+	lw	a7,8(sp)
+	lw	a6,4(sp)
+	lw	a2,0(sp)

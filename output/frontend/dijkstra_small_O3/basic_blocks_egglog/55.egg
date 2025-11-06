@@ -1,0 +1,45 @@
+; EGraph for dijkstra_small_O3 - Block 55
+; Total instructions: 6
+; Input registers: 1, Output registers: 6
+
+(include "../../../../Saturation/base.egg")
+
+; Input register declarations (used but not defined in this block)
+(let zero_0 (RegVal "zero_0"))
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     lui rd=s2_0 imm=335544
+(let s2_0_val (Lui (ImmVal 335544)))
+
+;; Step 2:     addi rd=s2_1 rs1=s2_0 imm=1311
+(let s2_1_val (Addi s2_0_val (ImmVal 1311)))
+
+;; Step 3:     addi rd=a5_0 rs1=zero_0 imm=50
+(let a5_0_val (Addi zero_0 (ImmVal 50)))
+
+;; Step 4:     addi rd=s1_0 rs1=zero_0 imm=0
+(let s1_0_val (Addi zero_0 (ImmVal 0)))
+
+;; Step 5:     addi rd=s4_0 rs1=zero_0 imm=100
+(let s4_0_val (Addi zero_0 (ImmVal 100)))
+
+;; Step 6:     addi rd=s3_0 rs1=zero_0 imm=20
+(let s3_0_val (Addi zero_0 (ImmVal 20)))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 6)
+
+; ============================================
+; Print eclass IDs for each instruction
+; ============================================
+(print-eclass-id s2_0_val)
+(print-eclass-id s2_1_val)
+(print-eclass-id a5_0_val)
+(print-eclass-id s1_0_val)
+(print-eclass-id s4_0_val)
+(print-eclass-id s3_0_val)

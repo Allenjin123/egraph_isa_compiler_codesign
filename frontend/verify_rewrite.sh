@@ -22,12 +22,16 @@ MIBENCH_DIR="$PROJECT_ROOT/mibench_script"
 # Usage
 ###############################################################################
 usage() {
-    echo "Usage: $0 <program_name>"
+    echo "Usage: $0 <program_name> [diff]"
+    echo ""
+    echo "Arguments:"
+    echo "  program_name  - Name of the program to verify"
+    echo "  diff          - Optional: generate diff file between clean and rewrite versions"
     echo ""
     echo "Examples:"
-    echo "  $0 dijkstra_small_O3"
-    echo "  $0 qsort_large_O3"
-    echo "  $0 bitcnts_O3"
+    echo "  $0 dijkstra_small_O3          # Verify without generating diff"
+    echo "  $0 dijkstra_small_O3 diff     # Verify and generate diff file"
+    echo "  $0 qsort_large_O3 diff"
     echo ""
     echo "The script will search for <program_name>_rewrite.s and <program_name>_clean.s"
     echo "in the benchmark directory."
@@ -35,13 +39,25 @@ usage() {
 }
 
 # Check argument
-if [ $# -ne 1 ]; then
-    echo -e "${RED}Error: Missing argument${NC}"
+if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+    echo -e "${RED}Error: Invalid number of arguments${NC}"
     echo ""
     usage
 fi
 
 PROGRAM_NAME="$1"
+GENERATE_DIFF=0
+
+# Check if second argument is "diff"
+if [ $# -eq 2 ]; then
+    if [ "$2" = "diff" ]; then
+        GENERATE_DIFF=1
+    else
+        echo -e "${RED}Error: Second argument must be 'diff'${NC}"
+        echo ""
+        usage
+    fi
+fi
 
 ###############################################################################
 # Function to determine program arguments based on benchmark name
@@ -197,15 +213,20 @@ if [ -n "$prog_args" ]; then
     echo ""
 fi
 
-# Generate diff
-DIFF_DIR="$PROJECT_ROOT/output/diff"
-mkdir -p "$DIFF_DIR"
-DIFF_FILE="$DIFF_DIR/${PROGRAM_NAME}.diff"
+# Generate diff (optional)
+if [ $GENERATE_DIFF -eq 1 ]; then
+    DIFF_DIR="$PROJECT_ROOT/output/diff"
+    mkdir -p "$DIFF_DIR"
+    DIFF_FILE="$DIFF_DIR/${PROGRAM_NAME}.diff"
 
-echo "Generating diff between clean and rewrite versions..."
-diff -u "$CLEAN_ASM" "$REWRITE_ASM" > "$DIFF_FILE" 2>&1 || true
-echo -e "${GREEN}✓ Diff saved to: $DIFF_FILE${NC}"
-echo ""
+    echo "Generating diff between clean and rewrite versions..."
+    diff -u "$CLEAN_ASM" "$REWRITE_ASM" > "$DIFF_FILE" 2>&1 || true
+    echo -e "${GREEN}✓ Diff saved to: $DIFF_FILE${NC}"
+    echo ""
+else
+    echo "Skipping diff generation (use 'diff' argument to enable)"
+    echo ""
+fi
 
 # RISC-V settings
 RISCV_ARCH="rv32im_zicsr_zifencei"
@@ -224,6 +245,9 @@ fi
 
 # Create temp directory
 BUILD_DIR=$(mktemp -d)
+# Save outputs to project directory for inspection
+OUTPUT_SAVE_DIR="$PROJECT_ROOT/output/verify_outputs"
+mkdir -p "$OUTPUT_SAVE_DIR"
 trap "rm -rf $BUILD_DIR" EXIT
 
 ###############################################################################
@@ -347,8 +371,15 @@ if diff -q "$CLEAN_OUTPUT" "$REWRITE_OUTPUT" > /dev/null 2>&1; then
     echo -e "${GREEN}✓ Clean and Rewrite outputs are IDENTICAL${NC}"
 else
     echo -e "${YELLOW}⚠ Clean and Rewrite outputs differ${NC}"
-    echo "Differences:"
-    diff "$CLEAN_OUTPUT" "$REWRITE_OUTPUT" | head -20
+    echo ""
+    echo "--- CLEAN OUTPUT ---"
+    cat "$CLEAN_OUTPUT"
+    echo ""
+    echo "--- REWRITE OUTPUT ---"
+    cat "$REWRITE_OUTPUT"
+    echo ""
+    echo "--- DIFF (Clean vs Rewrite) ---"
+    diff "$CLEAN_OUTPUT" "$REWRITE_OUTPUT"
 fi
 echo ""
 

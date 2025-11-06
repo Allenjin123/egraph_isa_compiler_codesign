@@ -1,0 +1,1 @@
+	bne	t0,zero,.L28

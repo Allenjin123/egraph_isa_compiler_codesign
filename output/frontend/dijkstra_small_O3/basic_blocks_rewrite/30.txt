@@ -1,0 +1,4 @@
+addi	a2,a2,1
+addi	a0,a0,4
+addi	a3,a3,8
+bne	a2,s0,.L27

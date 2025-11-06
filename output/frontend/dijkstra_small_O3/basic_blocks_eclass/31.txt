@@ -1,0 +1,1 @@
+bne t0_0, zero_0, .L28; Inst-3

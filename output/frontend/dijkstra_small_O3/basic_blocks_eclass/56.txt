@@ -1,0 +1,11 @@
+mulh s0_0, a5_0, s2_0; Inst-4
+srai a4_0, a5_0, 31; Inst-6
+addi a0_0, s1_0, 0; Inst-8
+addi s1_1, s1_0, 1; Inst-10
+srai s0_1, s0_0, 5; Inst-12
+sub s0_2, s0_1, a4_0; Inst-13
+mul s0_3, s0_2, s4_0; Inst-14
+sub s0_4, a5_0, s0_3; Inst-15
+addi a1_0, s0_4, 0; Inst-16
+auipc ra_0, %pcrel_hi(dijkstra); Inst-18
+jalr ra_1, ra_0, %pcrel_lo(.Lpcrel_15); Inst-20

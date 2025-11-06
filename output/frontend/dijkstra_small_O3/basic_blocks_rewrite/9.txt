@@ -1,0 +1,4 @@
+lw	a3,8(sp)
+lw	a2,4(sp)
+lw	a5,0(sp)
+jal	zero,.L3

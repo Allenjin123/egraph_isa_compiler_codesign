@@ -1,0 +1,4 @@
+sw	a2,0(a5)
+sw	a2,4(a5)
+addi	a5,a5,8
+bne	a5,a4,.L21

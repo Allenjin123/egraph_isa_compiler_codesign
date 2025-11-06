@@ -1,0 +1,7 @@
+lui	a3,10
+addi	a3,a3,-960
+lui	a4,%hi(AdjMatrix)
+addi	a5,sp,0
+sub	a0,x0,sp
+sub	a3,a3,a0
+addi	a4,a4,%lo(AdjMatrix)
