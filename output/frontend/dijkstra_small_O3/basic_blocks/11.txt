@@ -1,0 +1,6 @@
+	sw	a3,12(sp)
+	sw	a7,8(sp)
+	sw	a6,4(sp)
+	sw	a2,0(sp)
+	auipc	ra, %pcrel_hi(print_path)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_5)

@@ -1,0 +1,38 @@
+sw s9_0, 36(sp_0)
+lui s9_1, %hi(qRear)
+lw a1_0, %lo(qRear)(s9_1)
+sw s2_0, 64(sp_0)
+lui s2_1, 429497
+addi a6_0, a1_0, 1
+addi s2_2, s2_1, -1107
+mulh a4_0, a6_0, s2_2
+sw s3_0, 60(sp_0)
+srai a7_0, a6_0, 31
+lui s3_1, 2
+addi s3_2, s3_1, 1808
+sw s8_0, 40(sp_0)
+lui s8_1, %hi(g_qCount)
+lw t0_0, %lo(g_qCount)(s8_1)
+slli a5_0, a1_0, 1
+add a5_1, a5_0, a1_0
+srai a4_1, a4_0, 12
+sub a4_2, a4_1, a7_0
+mul a4_3, a4_2, s3_2
+lui t2_0, %hi(queue)
+slli a5_2, a5_1, 2
+addi t2_1, t2_0, %lo(queue)
+slli a1_1, a0_0, 3
+sw s1_0, 68(sp_0)
+sw s4_0, 56(sp_0)
+add a5_3, t2_1, a5_2
+add a1_2, s5_0, a1_1
+addi t0_1, t0_0, 1
+sub a4_4, a6_0, a4_3
+sw a0_0, 0(a5_3)
+sw zero_0, 4(a5_3)
+sw a2_0, 8(a5_3)
+sw zero_0, 0(a1_2)
+sw a4_4, %lo(qRear)(s9_1)
+sw a2_0, 4(a1_2)
+sw t0_1, %lo(g_qCount)(s8_1)
+bge zero_0, t0_1, .L24

@@ -1,0 +1,39 @@
+; EGraph for dijkstra_small_O3 - Block 21
+; Total instructions: 4
+; Input registers: 3, Output registers: 1
+
+(include "../../../../Saturation/base.egg")
+
+; Input register declarations (used but not defined in this block)
+(let a2_0 (RegVal "a2_0"))
+(let a4_0 (RegVal "a4_0"))
+(let a5_0 (RegVal "a5_0"))
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     sw rs1=a5_0 rs2=a2_0 imm=0
+(let inst_0 (Sw a5_0 a2_0 (ImmVal 0)))
+
+;; Step 2:     sw rs1=a5_0 rs2=a2_0 imm=4
+(let inst_1 (Sw a5_0 a2_0 (ImmVal 4)))
+
+;; Step 3:     addi rd=a5_1 rs1=a5_0 imm=8
+(let a5_1_val (Addi a5_0 (ImmVal 8)))
+
+;; Step 4:     bne rs1=a5_1 rs2=a4_0 imm=.L21
+(let inst_3 (Bne a5_1_val a4_0 (ImmLabel ".L21")))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 6)
+
+; ============================================
+; Print eclass IDs for each instruction
+; ============================================
+(print-eclass-id inst_0)
+(print-eclass-id inst_1)
+(print-eclass-id a5_1_val)
+(print-eclass-id inst_3)
