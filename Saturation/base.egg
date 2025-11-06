@@ -277,32 +277,33 @@
 ;; === Branch Sequence Rewrites ===
 ;; These show how branch instructions can be implemented as 2-instruction sequences
 ;; Both sides are Inst (Seq2 is now an Inst constructor), so no type mismatch
+;; Note: Offset is 8 bytes (skip branch itself + jal instruction)
 
-;; beq a, b, target  <==>  bne a, b, 4; jal target
+;; beq a, b, target  <==>  bne a, b, 8; jal target
 ;; "If equal, jump to target" <==> "If not equal, skip next inst; jump to target"
 (rewrite (Beq a b target)
-           (Seq2 (Bne a b (ImmVal 4)) (Jal target)))
+           (Seq2 (Bne a b (ImmVal 8)) (Jal target)))
 
-;; bne a, b, target  <==>  beq a, b, 4; jal target
+;; bne a, b, target  <==>  beq a, b, 8; jal target
 ;; "If not equal, jump to target" <==> "If equal, skip next inst; jump to target"
 (rewrite (Bne a b target)
-           (Seq2 (Beq a b (ImmVal 4)) (Jal target)))
+           (Seq2 (Beq a b (ImmVal 8)) (Jal target)))
 
-;; blt a, b, target  <==>  bge a, b, 4; jal target
+;; blt a, b, target  <==>  bge a, b, 8; jal target
 (rewrite (Blt a b target)
-           (Seq2 (Bge a b (ImmVal 4)) (Jal target)))
+           (Seq2 (Bge a b (ImmVal 8)) (Jal target)))
 
-;; bge a, b, target  <==>  blt a, b, 4; jal target
+;; bge a, b, target  <==>  blt a, b, 8; jal target
 (rewrite (Bge a b target)
-           (Seq2 (Blt a b (ImmVal 4)) (Jal target)))
+           (Seq2 (Blt a b (ImmVal 8)) (Jal target)))
 
-;; bltu a, b, target  <==>  bgeu a, b, 4; jal target
+;; bltu a, b, target  <==>  bgeu a, b, 8; jal target
 (rewrite (Bltu a b target)
-           (Seq2 (Bgeu a b (ImmVal 4)) (Jal target)))
+           (Seq2 (Bgeu a b (ImmVal 8)) (Jal target)))
 
-;; bgeu a, b, target  <==>  bltu a, b, 4; jal target
+;; bgeu a, b, target  <==>  bltu a, b, 8; jal target
 (rewrite (Bgeu a b target)
-           (Seq2 (Bltu a b (ImmVal 4)) (Jal target)))
+           (Seq2 (Bltu a b (ImmVal 8)) (Jal target)))
 
 ;; === De Morgan's Laws ===
 (rewrite (Xori (And a b) (ImmVal -1))
