@@ -105,7 +105,7 @@ def generate_ilp_file(
     # Primary: Minimize operator types (weighted by 100)
     # Secondary: Minimize total node costs
     # Exclude special operators from objective: root, ImmVal, RegVal, leaf
-    excluded_ops = {"root", "ImmVal", "RegVal", "leaf", "ImmLabel"}
+    excluded_ops = {"root", "ImmVal", "RegVal", "leaf", "ImmLabel", "Seq2"}
     
     lp_lines.append("Minimize")
     obj_terms = []
