@@ -11,10 +11,13 @@
 set -e  # Exit on error
 
 # Default configuration
-DEFAULT_SCALES="0 0.25 0.5 1 10 1000"
+DEFAULT_SCALES="0 0.1 0.2 0.3 0.4 0.5 1 10 100 1000 10000"
 DEFAULT_K=3
 DEFAULT_TIMEOUT=180
-DEFAULT_PARALLEL_JOBS=6
+DEFAULT_PARALLEL_JOBS=24
+DEFAULT_SYNTH_JOBS=72  # Parallel synthesis processes
+DEFAULT_CLEAN=true     # Clean old outputs by default
+DEFAULT_RUN_SATURATION=true  # Run saturation by default
 
 # Color codes for output
 RED='\033[0;31m'
@@ -40,15 +43,21 @@ usage() {
     echo "  -s, --scales SCALES        空格分隔的缩放因子列表 (默认: '$DEFAULT_SCALES')"
     echo "  -k, --best-k K             每个缩放因子的变体数 (默认: $DEFAULT_K)"
     echo "  -t, --timeout TIMEOUT      ILP 求解器超时秒数 (默认: $DEFAULT_TIMEOUT)"
-    echo "  -j, --jobs JOBS            并行任务数 (默认: $DEFAULT_PARALLEL_JOBS)"
+    echo "  -j, --jobs JOBS            ILP 并行任务数 (默认: $DEFAULT_PARALLEL_JOBS)"
+    echo "  -sj, --synth-jobs JOBS     合成并行进程数 (默认: $DEFAULT_SYNTH_JOBS)"
     echo "  -o, --output-dir DIR       输出目录 (默认: output/backend/<program>)"
+    echo "  --clean                    清理旧输出（默认：是）"
+    echo "  --no-clean                 不清理旧输出"
+    echo "  --skip-saturation          跳过饱和步骤（使用现有 JSON 文件）"
     echo "  -r, --reconstruct-only     仅重建汇编文件（跳过 ILP 提取）"
     echo "  -h, --help                 显示此帮助信息"
     echo ""
     echo "示例:"
-    echo "  $0 dijkstra_small_O3                                    # 使用默认设置"
+    echo "  $0 dijkstra_small_O3                                    # 完整流程：清理+饱和+ILP+Pareto"
     echo "  $0 dijkstra_small_O3 -s '0 1 100' -k 5                 # 3个缩放因子，每个5个变体"
-    echo "  $0 dijkstra_small_O3 -j 10 -t 300                      # 10个并行任务，300秒超时"
+    echo "  $0 dijkstra_small_O3 -j 10 -t 300                      # 10个ILP并行任务，300秒超时"
+    echo "  $0 dijkstra_small_O3 -sj 72                            # 72个并行合成进程"
+    echo "  $0 dijkstra_small_O3 --skip-saturation --no-clean      # 跳过清理和饱和"
     echo ""
     exit 1
 }
@@ -68,8 +77,11 @@ SCALES="$DEFAULT_SCALES"
 BEST_K="$DEFAULT_K"
 TIMEOUT="$DEFAULT_TIMEOUT"
 PARALLEL_JOBS="$DEFAULT_PARALLEL_JOBS"
+SYNTH_JOBS="$DEFAULT_SYNTH_JOBS"
 OUTPUT_DIR=""
 RECONSTRUCT_ONLY=false
+CLEAN_OUTPUTS="$DEFAULT_CLEAN"
+RUN_SATURATION="$DEFAULT_RUN_SATURATION"
 
 # Parse all arguments
 while [[ $# -gt 0 ]]; do
@@ -90,9 +102,25 @@ while [[ $# -gt 0 ]]; do
             PARALLEL_JOBS="$2"
             shift 2
             ;;
+        -sj|--synth-jobs)
+            SYNTH_JOBS="$2"
+            shift 2
+            ;;
         -o|--output-dir)
             OUTPUT_DIR="$2"
             shift 2
+            ;;
+        --clean)
+            CLEAN_OUTPUTS=true
+            shift
+            ;;
+        --no-clean)
+            CLEAN_OUTPUTS=false
+            shift
+            ;;
+        --skip-saturation)
+            RUN_SATURATION=false
+            shift
             ;;
         -r|--reconstruct-only)
             RECONSTRUCT_ONLY=true
@@ -145,10 +173,66 @@ echo -e "缩放因子: ${GREEN}${SCALES}${NC} (${NUM_SCALES} 个)"
 echo -e "每个缩放因子变体数: ${GREEN}${BEST_K}${NC}"
 echo -e "总变体数: ${GREEN}${TOTAL_VARIANTS}${NC}"
 echo -e "ILP 超时: ${GREEN}${TIMEOUT}秒${NC}"
-echo -e "并行任务数: ${GREEN}${PARALLEL_JOBS}${NC}"
+echo -e "ILP 并行任务数: ${GREEN}${PARALLEL_JOBS}${NC}"
+echo -e "合成并行进程数: ${GREEN}${SYNTH_JOBS}${NC}"
 echo -e "输出目录: ${GREEN}${OUTPUT_DIR}${NC}"
 echo -e "${CYAN}========================================${NC}"
 echo ""
+
+# ============================================================================
+# Step 0: Clean old outputs (if enabled)
+# ============================================================================
+if [ "$CLEAN_OUTPUTS" = true ]; then
+    echo -e "${BLUE}步骤 0: 清理旧输出...${NC}"
+
+    # Clean ILP outputs for this program
+    if [ -d "$OUTPUT_BASE/ilp" ]; then
+        echo -e "${CYAN}  清理 ILP 输出: output/ilp/${PROGRAM_NAME}*${NC}"
+        rm -rf "$OUTPUT_BASE/ilp/${PROGRAM_NAME}"*
+    fi
+
+    # Clean backend outputs for this program
+    if [ -d "$BACKEND_OUTPUT/$PROGRAM_NAME" ]; then
+        echo -e "${CYAN}  清理后端输出: output/backend/${PROGRAM_NAME}${NC}"
+        rm -rf "$BACKEND_OUTPUT/$PROGRAM_NAME"
+    fi
+
+    # Clean synthesis outputs
+    SYNTH_OUTPUT_DIR="$SCRIPT_DIR/PdatScorrWrapper/ScorrPdat/output"
+    if [ -d "$SYNTH_OUTPUT_DIR" ]; then
+        echo -e "${CYAN}  清理合成输出: PdatScorrWrapper/ScorrPdat/output/variant_*${NC}"
+        rm -rf "$SYNTH_OUTPUT_DIR"/variant_*
+    fi
+
+    echo -e "${GREEN}  ✓ 清理完成${NC}"
+    echo ""
+fi
+
+# ============================================================================
+# Step 0.5: Run saturation (if enabled)
+# ============================================================================
+if [ "$RUN_SATURATION" = true ]; then
+    echo -e "${BLUE}步骤 0.5: 运行饱和（E-graph 生成与重写）...${NC}"
+
+    SATURATION_DIR="$SCRIPT_DIR/Saturation"
+    SATURATION_SCRIPT="$SATURATION_DIR/run_saturation.sh"
+
+    if [ ! -f "$SATURATION_SCRIPT" ]; then
+        echo -e "${RED}错误: 饱和脚本未找到: $SATURATION_SCRIPT${NC}"
+        exit 1
+    fi
+
+    echo -e "${CYAN}  运行: cd Saturation && ./run_saturation.sh $PROGRAM_NAME${NC}"
+
+    # Run saturation
+    (cd "$SATURATION_DIR" && bash run_saturation.sh "$PROGRAM_NAME") || {
+        echo -e "${RED}✗ 饱和失败${NC}"
+        exit 1
+    }
+
+    echo -e "${GREEN}  ✓ 饱和完成${NC}"
+    echo ""
+fi
 
 # Create output directory and subdirectories
 mkdir -p "$OUTPUT_DIR"
@@ -159,7 +243,7 @@ mkdir -p "$ILP_INTERMEDIATE"
 # Step 1: Generate merged.json (only once)
 # ============================================================================
 if [ "$RECONSTRUCT_ONLY" = false ]; then
-    echo -e "${BLUE}步骤 1/4: 生成 merged.json...${NC}"
+    echo -e "${BLUE}步骤 1/6: 生成 merged.json...${NC}"
 
     # Check if merged.json already exists
     MERGED_JSON="$OUTPUT_BASE/ilp/$PROGRAM_NAME/merged.json"
@@ -177,7 +261,7 @@ if [ "$RECONSTRUCT_ONLY" = false ]; then
     # ============================================================================
     # Step 2: Run ILP extraction with different scaling factors in parallel
     # ============================================================================
-    echo -e "${BLUE}步骤 2/4: 并行运行 ILP 提取（${NUM_SCALES} 个缩放因子 × ${BEST_K} 个变体）...${NC}"
+    echo -e "${BLUE}步骤 2/6: 并行运行 ILP 提取（${NUM_SCALES} 个缩放因子 × ${BEST_K} 个变体）...${NC}"
 
     # Create temporary directory for job scripts
     JOBS_DIR="$ILP_INTERMEDIATE/jobs"
@@ -268,7 +352,7 @@ EOF
     # ============================================================================
     # Step 2.5: Collect all solution files into main ILP directory
     # ============================================================================
-    echo -e "${BLUE}步骤 2.5/4: 收集所有解文件...${NC}"
+    echo -e "${BLUE}步骤 2.5/6: 收集所有解文件...${NC}"
 
     # Clear existing solution files
     rm -f "$OUTPUT_BASE/ilp/$PROGRAM_NAME/sol/solution_*.sol" 2>/dev/null
@@ -300,7 +384,7 @@ fi
 # ============================================================================
 # Step 3: Reconstruct assembly files for all variants
 # ============================================================================
-echo -e "${BLUE}步骤 3/4: 重建所有变体的汇编文件...${NC}"
+echo -e "${BLUE}步骤 3/6: 重建所有变体的汇编文件...${NC}"
 
 # Use the solution count from the collection step
 if [ "$RECONSTRUCT_ONLY" = false ]; then
@@ -328,7 +412,7 @@ bash "$FRONTEND_DIR/run_reconstruct.sh" "$PROGRAM_NAME" "$ACTUAL_VARIANTS" || {
 # Step 4: Organize output files
 # ============================================================================
 echo ""
-echo -e "${BLUE}步骤 4/4: 组织输出文件...${NC}"
+echo -e "${BLUE}步骤 4/6: 组织输出文件...${NC}"
 
 # Create organized output directory
 FINAL_OUTPUT="$OUTPUT_DIR/variants"
@@ -363,7 +447,7 @@ done
 # Step 5: Generate basic blocks and SSA for each variant
 # ============================================================================
 echo ""
-echo -e "${BLUE}步骤 5/5: 为每个变体生成基本块和 SSA 形式...${NC}"
+echo -e "${BLUE}步骤 5/6: 为每个变体生成基本块和 SSA 形式...${NC}"
 
 SSA_COUNT=0
 for ((i=0; i<$VARIANT_COUNT; i++)); do
@@ -429,10 +513,10 @@ echo -e "${GREEN}成功处理 ${SSA_COUNT}/${VARIANT_COUNT} 个变体的 SSA 转
 # Step 6: Analyze area and latency for all variants + Pareto frontier
 # ============================================================================
 echo ""
-echo -e "${BLUE}步骤 6/6: 分析所有变体的面积和延迟...${NC}"
+echo -e "${BLUE}步骤 6/6: 并行分析所有变体的面积和延迟 (${SYNTH_JOBS} 个进程)...${NC}"
 
-# Use the backend_parser.program class to analyze all variants
-python3 "$SCRIPT_DIR/analyze_all_variants.py" "$FINAL_OUTPUT" "$PROGRAM_NAME" "$OUTPUT_DIR"
+# Use parallel analysis with configurable number of synthesis processes
+python3 "$SCRIPT_DIR/analyze_all_variants.py" "$FINAL_OUTPUT" "$PROGRAM_NAME" "$OUTPUT_DIR" "$SYNTH_JOBS"
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓ Pareto 分析完成${NC}"
@@ -492,7 +576,8 @@ Configuration:
 - SSA conversions successful: $SSA_COUNT
 - Area/Latency analysis: $([ $ANALYSIS_SUCCESS -eq 1 ] && echo "Completed" || echo "Not completed")
 - ILP timeout: ${TIMEOUT}s
-- Parallel jobs: $PARALLEL_JOBS
+- ILP parallel jobs: $PARALLEL_JOBS
+- Synthesis parallel processes: $SYNTH_JOBS
 
 Pareto Analysis:
 $(if [ -f "$OUTPUT_DIR/pareto_frontier.png" ]; then
