@@ -1,6 +1,8 @@
 #!/bin/bash
 ###############################################################################
-# Script to verify dijkstra_small_O3_rewrite.s
+# Script to verify *_rewrite.s files against *_clean.s and reference outputs
+# Usage: ./verify_rewrite.sh <path_to_rewrite.s>
+# Example: ./verify_rewrite.sh ../benchmark/network/dijkstra/dijkstra_small_O3_rewrite.s
 ###############################################################################
 
 set -e
@@ -13,22 +15,178 @@ NC='\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+MIBENCH_DIR="$PROJECT_ROOT/mibench_script"
 
+###############################################################################
+# Usage
+###############################################################################
+usage() {
+    echo "Usage: $0 <path_to_rewrite.s>"
+    echo ""
+    echo "Example:"
+    echo "  $0 ../benchmark/network/dijkstra/dijkstra_small_O3_rewrite.s"
+    echo "  $0 benchmark/automotive/qsort/qsort_large_O3_rewrite.s"
+    exit 1
+}
+
+# Check argument
+if [ $# -ne 1 ]; then
+    echo -e "${RED}Error: Missing argument${NC}"
+    echo ""
+    usage
+fi
+
+REWRITE_ASM="$1"
+
+# Check if file exists
+if [ ! -f "$REWRITE_ASM" ]; then
+    echo -e "${RED}Error: File not found: $REWRITE_ASM${NC}"
+    exit 1
+fi
+
+# Check if filename ends with _rewrite.s
+if [[ ! "$REWRITE_ASM" =~ _rewrite\.s$ ]]; then
+    echo -e "${RED}Error: File must end with _rewrite.s${NC}"
+    exit 1
+fi
+
+###############################################################################
+# Function to determine program arguments based on benchmark name
+###############################################################################
+get_program_args() {
+    local prog_name="$1"
+    local size_type="$2"
+    
+    case "$prog_name" in
+        bitcount|bitcnts)
+            if [ "$size_type" = "small" ]; then
+                echo "75000"
+            else
+                echo "1125000"
+            fi
+            ;;
+        *)
+            echo ""
+            ;;
+    esac
+}
+
+###############################################################################
+# Function to extract program info from filename
+# Input: dijkstra_small_O3_rewrite.s
+# Output: prog_name=dijkstra, size_type=small
+###############################################################################
+parse_filename() {
+    local filename="$1"
+    local basename="${filename%.s}"        # Remove .s
+    basename="${basename%_rewrite}"        # Remove _rewrite
+    
+    # Try to extract size (small/large)
+    local size_type="small"  # Default
+    if [[ "$basename" =~ _large ]]; then
+        size_type="large"
+        basename="${basename%_large*}"
+    elif [[ "$basename" =~ _small ]]; then
+        size_type="small"
+        basename="${basename%_small*}"
+    fi
+    
+    # Remove optimization flags like _O3, _O2, etc
+    basename="${basename%_O[0-3]}"
+    basename="${basename%_O[0-3]s}"
+    
+    echo "$basename|$size_type"
+}
+
+###############################################################################
+# Function to find corresponding mibench directory
+###############################################################################
+find_mibench_dir() {
+    local prog_name="$1"
+    
+    # Special mappings for known aliases
+    case "$prog_name" in
+        bitcnts)
+            prog_name="bitcount"
+            ;;
+    esac
+    
+    # Search in network and automotive directories
+    for category in network automotive; do
+        for subdir in "$MIBENCH_DIR/$category"/*; do
+            if [ -d "$subdir" ]; then
+                local dir_name=$(basename "$subdir")
+                # Match by program name
+                if [[ "$dir_name" == "$prog_name"* ]] || [[ "$prog_name" == "$dir_name"* ]]; then
+                    echo "$subdir"
+                    return 0
+                fi
+            fi
+        done
+    done
+    
+    return 1
+}
+
+###############################################################################
+# Parse input file
+###############################################################################
 echo "========================================="
 echo "RISC-V Rewrite Assembly Verification"
 echo "========================================="
 echo ""
 
-# Files
-CLEAN_ASM="$PROJECT_ROOT/benchmark/network/dijkstra/dijkstra_small_O3_clean.s"
-REWRITE_ASM="$PROJECT_ROOT/benchmark/network/dijkstra/dijkstra_small_O3_rewrite.s"
-REF_OUTPUT="$PROJECT_ROOT/mibench_script/network/dijkstra/old_output/output_small.txt"
-PROGRAM_NAME="dijkstra_small_O3"
+# Get absolute path
+REWRITE_ASM="$(cd "$(dirname "$REWRITE_ASM")" && pwd)/$(basename "$REWRITE_ASM")"
+
+# Derive clean.s path
+CLEAN_ASM="${REWRITE_ASM%_rewrite.s}_clean.s"
+
+if [ ! -f "$CLEAN_ASM" ]; then
+    echo -e "${RED}Error: Corresponding clean file not found: $CLEAN_ASM${NC}"
+    exit 1
+fi
+
+echo "Rewrite file: $REWRITE_ASM"
+echo "Clean file:   $CLEAN_ASM"
+echo ""
+
+# Parse filename
+filename=$(basename "$REWRITE_ASM")
+parse_result=$(parse_filename "$filename")
+prog_name="${parse_result%|*}"
+size_type="${parse_result#*|}"
+
+echo "Program: $prog_name"
+echo "Size:    $size_type"
+echo ""
+
+# Find mibench directory
+if ! mibench_dir=$(find_mibench_dir "$prog_name"); then
+    echo -e "${RED}Error: Cannot find mibench directory for $prog_name${NC}"
+    exit 1
+fi
+
+REF_OUTPUT="$mibench_dir/old_output/output_${size_type}.txt"
+if [ ! -f "$REF_OUTPUT" ]; then
+    echo -e "${RED}Error: Reference output not found: $REF_OUTPUT${NC}"
+    exit 1
+fi
+
+echo "Reference:    $REF_OUTPUT"
+echo ""
+
+# Get program arguments
+prog_args=$(get_program_args "$prog_name" "$size_type")
+if [ -n "$prog_args" ]; then
+    echo "Arguments:    $prog_args"
+    echo ""
+fi
 
 # Generate diff
 DIFF_DIR="$PROJECT_ROOT/output/diff"
 mkdir -p "$DIFF_DIR"
-DIFF_FILE="$DIFF_DIR/${PROGRAM_NAME}.diff"
+DIFF_FILE="$DIFF_DIR/${prog_name}_${size_type}.diff"
 
 echo "Generating diff between clean and rewrite versions..."
 diff -u "$CLEAN_ASM" "$REWRITE_ASM" > "$DIFF_FILE" 2>&1 || true
@@ -50,18 +208,9 @@ else
     fi
 fi
 
-# Check reference output exists
-if [ ! -f "$REF_OUTPUT" ]; then
-    echo -e "${RED}Error: Reference output not found: $REF_OUTPUT${NC}"
-    exit 1
-fi
-
 # Create temp directory
 BUILD_DIR=$(mktemp -d)
 trap "rm -rf $BUILD_DIR" EXIT
-
-echo "Building directory: $BUILD_DIR"
-echo ""
 
 ###############################################################################
 # Test Clean version
@@ -70,7 +219,7 @@ echo "========================================="
 echo "Testing CLEAN version"
 echo "========================================="
 
-CLEAN_EXE="$BUILD_DIR/dijkstra_clean"
+CLEAN_EXE="$BUILD_DIR/${prog_name}_clean"
 echo "Compiling clean.s..."
 if ! riscv32-unknown-elf-gcc \
     -march="$RISCV_ARCH" \
@@ -85,13 +234,25 @@ echo -e "${GREEN}✓ Compilation succeeded${NC}"
 
 echo "Running with spike..."
 CLEAN_OUTPUT="$BUILD_DIR/output_clean.txt"
-if ! timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$CLEAN_EXE" > "$CLEAN_OUTPUT" 2>/dev/null; then
-    exit_code=$?
-    if [ $exit_code -eq 124 ]; then
-        echo -e "${RED}✗ Execution timeout${NC}"
-        exit 1
+
+if [ -n "$prog_args" ]; then
+    if ! timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$CLEAN_EXE" $prog_args < /dev/null > "$CLEAN_OUTPUT" 2>/dev/null; then
+        exit_code=$?
+        if [ $exit_code -eq 124 ]; then
+            echo -e "${RED}✗ Execution timeout${NC}"
+            exit 1
+        fi
+        echo -e "${YELLOW}⚠ Exited with code $exit_code${NC}"
     fi
-    echo -e "${YELLOW}⚠ Exited with code $exit_code${NC}"
+else
+    if ! timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$CLEAN_EXE" < /dev/null > "$CLEAN_OUTPUT" 2>/dev/null; then
+        exit_code=$?
+        if [ $exit_code -eq 124 ]; then
+            echo -e "${RED}✗ Execution timeout${NC}"
+            exit 1
+        fi
+        echo -e "${YELLOW}⚠ Exited with code $exit_code${NC}"
+    fi
 fi
 echo -e "${GREEN}✓ Execution completed${NC}"
 
@@ -112,7 +273,7 @@ echo "========================================="
 echo "Testing REWRITE version"
 echo "========================================="
 
-REWRITE_EXE="$BUILD_DIR/dijkstra_rewrite"
+REWRITE_EXE="$BUILD_DIR/${prog_name}_rewrite"
 echo "Compiling rewrite.s..."
 if ! riscv32-unknown-elf-gcc \
     -march="$RISCV_ARCH" \
@@ -127,13 +288,25 @@ echo -e "${GREEN}✓ Compilation succeeded${NC}"
 
 echo "Running with spike..."
 REWRITE_OUTPUT="$BUILD_DIR/output_rewrite.txt"
-if ! timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$REWRITE_EXE" > "$REWRITE_OUTPUT" 2>/dev/null; then
-    exit_code=$?
-    if [ $exit_code -eq 124 ]; then
-        echo -e "${RED}✗ Execution timeout${NC}"
-        exit 1
+
+if [ -n "$prog_args" ]; then
+    if ! timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$REWRITE_EXE" $prog_args < /dev/null > "$REWRITE_OUTPUT" 2>/dev/null; then
+        exit_code=$?
+        if [ $exit_code -eq 124 ]; then
+            echo -e "${RED}✗ Execution timeout${NC}"
+            exit 1
+        fi
+        echo -e "${YELLOW}⚠ Exited with code $exit_code${NC}"
     fi
-    echo -e "${YELLOW}⚠ Exited with code $exit_code${NC}"
+else
+    if ! timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$REWRITE_EXE" < /dev/null > "$REWRITE_OUTPUT" 2>/dev/null; then
+        exit_code=$?
+        if [ $exit_code -eq 124 ]; then
+            echo -e "${RED}✗ Execution timeout${NC}"
+            exit 1
+        fi
+        echo -e "${YELLOW}⚠ Exited with code $exit_code${NC}"
+    fi
 fi
 echo -e "${GREEN}✓ Execution completed${NC}"
 
@@ -183,4 +356,3 @@ else
     echo -e "${RED}Rewrite version output is incorrect${NC}"
     exit 1
 fi
-
