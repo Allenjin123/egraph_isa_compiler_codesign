@@ -68,6 +68,36 @@ class AsmReconstructor:
             pcrel_labels.update(matches)
         return pcrel_labels
     
+    def insert_pcrel_labels_in_block(self, block_lines: List[str]) -> List[str]:
+        """在 block 中正确位置插入 .Lpcrel 标签
+        
+        找到包含 %pcrel_lo(.Lpcrel_X) 的行，在其前一行（auipc）之前插入标签
+        """
+        result = []
+        i = 0
+        
+        while i < len(block_lines):
+            line = block_lines[i]
+            
+            # 检查当前行是否有 %pcrel_lo 引用
+            match = re.search(r'%pcrel_lo\((\.Lpcrel_\d+)\)', line)
+            if match and i > 0:
+                pcrel_label = match.group(1)
+                # 在前一行（auipc）之前插入标签
+                # 先把之前已添加的最后一行（auipc）取出
+                if result:
+                    auipc_line = result.pop()
+                    result.append(f"{pcrel_label}:\n")
+                    result.append(auipc_line)
+                else:
+                    # 如果 result 为空，说明这是第一行，直接插入标签
+                    result.append(f"{pcrel_label}:\n")
+            
+            result.append(line)
+            i += 1
+        
+        return result
+    
     def reconstruct_asm(self, clean_file: Path, output_dir: Path, benchmark_dir: Path):
         """重建汇编文件，将重写后的基本块替换回去
         
@@ -79,7 +109,16 @@ class AsmReconstructor:
         if self.verbose:
             print(f"\n处理: {clean_file}")
         
-        # 读取 label_to_block 映射
+        # 读取 label_metadata（包含行数信息）
+        label_metadata_file = output_dir / "label_metadata.json"
+        if not label_metadata_file.exists():
+            print(f"  错误: 找不到 {label_metadata_file}")
+            return False
+        
+        with open(label_metadata_file, 'r', encoding='utf-8') as f:
+            label_metadata = json.load(f)
+        
+        # 读取 label_to_block 映射（用于快速查找）
         label_to_block_file = output_dir / "label_to_block.json"
         if not label_to_block_file.exists():
             print(f"  错误: 找不到 {label_to_block_file}")
@@ -111,9 +150,6 @@ class AsmReconstructor:
         # 重建输出
         output_lines = []
         i = 0
-        current_block_id = None
-        pending_labels = []  # 等待写入的标签
-        in_block = False
         
         while i < len(lines):
             line = lines[i]
@@ -122,67 +158,65 @@ class AsmReconstructor:
             if self.is_label_line(line):
                 label = self.extract_label_from_line(line)
                 
-                # 检查是否是 .Lpcrel 标签（这种标签不算真正的块起始标签）
+                # 跳过 .Lpcrel 标签（会在插入 block 时重新生成）
                 if label and label.startswith('.Lpcrel'):
-                    # 这种标签会在后面处理，直接跳过原文件中的
                     i += 1
                     continue
                 
-                # 其他标签：保留标签，准备替换后面的 block
-                if label and label in label_to_block:
-                    # 如果之前有未完成的 block，先输出
-                    if in_block:
-                        in_block = False
+                # 检查是否是需要替换的标签
+                if label and label in label_metadata:
+                    metadata = label_metadata[label]
                     
-                    # 保留标签行
+                    # 输出标签行
                     output_lines.append(line)
-                    
-                    # 记录当前 block ID
-                    current_block_id = label_to_block[label]
-                    in_block = True
-                    
-                    # 跳过原文件中该 block 的所有指令，直到下一个标签或非指令行
                     i += 1
-                    while i < len(lines):
+                    
+                    # 1. 一次性删除该标签下的所有行（label_line_count）
+                    label_line_count = metadata['label_line_count']
+                    deleted = 0
+                    while i < len(lines) and deleted < label_line_count:
                         next_line = lines[i]
-                        if self.is_instruction_line(next_line):
-                            i += 1
-                        elif self.is_label_line(next_line):
-                            # 遇到下一个标签，不增加 i，让下一轮循环处理
-                            break
-                        else:
-                            # 非指令行（空行、注释、指令等），保留
-                            break
+                        # 只计数指令行和 .Lpcrel_ 标签
+                        if (self.is_instruction_line(next_line) or
+                            (next_line.strip().startswith('.Lpcrel_') and next_line.strip().endswith(':'))):
+                            deleted += 1
+                        i += 1
                     
-                    # 插入重写后的 block
-                    if current_block_id in rewritten_blocks:
-                        block_lines = rewritten_blocks[current_block_id]
+                    # 2. 插入该标签下的所有 blocks
+                    blocks_info = metadata['blocks']
+                    for block_key in sorted(blocks_info.keys()):  # block_0, block_1, ...
+                        block_id = blocks_info[block_key]['id']
                         
-                        # 处理 .Lpcrel 标签插入
-                        processed_lines = self.insert_pcrel_labels(block_lines)
-                        output_lines.extend(processed_lines)
+                        if block_id in rewritten_blocks:
+                            block_lines = rewritten_blocks[block_id]
+                            
+                            # 在 block 中正确位置插入 .Lpcrel 标签
+                            processed_lines = self.insert_pcrel_labels_in_block(block_lines)
+                            
+                            # 插入 block 内容（添加缩进）
+                            for block_line in processed_lines:
+                                stripped = block_line.strip()
+                                # 标签行不需要缩进
+                                if stripped.endswith(':') and not block_line.startswith(('\t', ' ')):
+                                    output_lines.append(block_line)
+                                # 已有缩进或空行，直接添加
+                                elif block_line.startswith(('\t', ' ')) or not stripped:
+                                    output_lines.append(block_line)
+                                # 否则添加缩进
+                                else:
+                                    output_lines.append('\t' + block_line)
                     
-                    in_block = False
                     continue
                 else:
-                    # 不在 label_to_block 中的标签，直接保留
+                    # 不需要替换的标签，直接保留
                     output_lines.append(line)
                     i += 1
                     continue
             
-            # 如果是指令行且在 block 中，说明我们漏掉了，理论上不应该到这里
-            elif self.is_instruction_line(line) and in_block:
-                # 已经在上面处理了，跳过
-                i += 1
-                continue
-            
-            # 其他行（指令、注释、空行等）直接保留
+            # 其他行直接保留
             else:
                 output_lines.append(line)
                 i += 1
-        
-        # 后处理：为所有 %pcrel_lo 引用插入标签
-        output_lines = self.postprocess_pcrel_labels(output_lines)
         
         # 写入 _rewrite.s 文件
         output_file = clean_file.parent / clean_file.name.replace('_clean.s', '_rewrite.s')
@@ -191,77 +225,6 @@ class AsmReconstructor:
         
         print(f"  ✓ 生成重写文件: {output_file}")
         return True
-    
-    def postprocess_pcrel_labels(self, lines: List[str]) -> List[str]:
-        """后处理：为整个文件中所有 %pcrel_lo 引用插入标签
-        
-        扫描所有指令，找到包含 %pcrel_lo(.Lpcrel_X) 的行，
-        在其前一行（通常是 auipc 指令）之前插入 .Lpcrel_X: 标签
-        """
-        # 第一遍：找出所有需要插入标签的位置和已存在的标签
-        pcrel_positions = {}  # {行号: 标签名}
-        existing_labels = set()  # 已存在的标签
-        
-        for i, line in enumerate(lines):
-            # 记录已存在的标签
-            if self.is_label_line(line):
-                label = self.extract_label_from_line(line)
-                if label:
-                    existing_labels.add(label)
-            
-            # 检查是否有 pcrel_lo 引用
-            if self.is_instruction_line(line):
-                match = re.search(r'%pcrel_lo\((\.Lpcrel_\d+)\)', line)
-                if match:
-                    pcrel_label = match.group(1)
-                    # 如果标签已存在，跳过
-                    if pcrel_label in existing_labels:
-                        continue
-                    # 计算插入位置：当前行的前一行（auipc 之前）
-                    insert_pos = max(0, i - 1)
-                    pcrel_positions[insert_pos] = pcrel_label
-        
-        # 第二遍：构建结果，在合适的位置插入标签
-        result = []
-        for i, line in enumerate(lines):
-            # 如果这个位置需要插入标签，先插入
-            if i in pcrel_positions:
-                result.append(f"{pcrel_positions[i]}:\n")
-            
-            # 添加当前行
-            result.append(line)
-        
-        return result
-    
-    def insert_pcrel_labels(self, block_lines: List[str]) -> List[str]:
-        """在 block 中插入 .Lpcrel 标签
-        
-        如果指令操作数中有 %pcrel_lo(.Lpcrel_X)，在该指令前两行（即 auipc 之前）插入 .Lpcrel_X:
-        """
-        # 第一遍：找出所有需要插入标签的位置
-        pcrel_positions = {}  # {行号: 标签名}
-        
-        for i, line in enumerate(block_lines):
-            # 检查是否有 pcrel_lo 引用
-            match = re.search(r'%pcrel_lo\((\.Lpcrel_\d+)\)', line)
-            if match:
-                pcrel_label = match.group(1)
-                # 计算插入位置：当前行的前两行（即 auipc 指令之前）
-                # 如果前面不够两行，就插在最前面
-                insert_pos = max(0, i - 1)
-                pcrel_positions[insert_pos] = pcrel_label
-        
-        # 第二遍：构建结果，在合适的位置插入标签
-        result = []
-        for i, line in enumerate(block_lines):
-            # 如果这个位置需要插入标签，先插入
-            if i in pcrel_positions:
-                result.append(f"{pcrel_positions[i]}:\n")
-            
-            # 添加当前指令
-            result.append(line)
-        
-        return result
 
 
 def reconstruct_single_file(clean_file: Path, output_base: Path, benchmark_dir: Path, verbose=False):

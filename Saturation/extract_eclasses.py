@@ -14,6 +14,7 @@ import os
 import sys
 import subprocess
 import argparse
+import shutil
 from pathlib import Path
 
 
@@ -209,8 +210,8 @@ Output:
                        help='Output subdirectory name (default: basic_blocks_eclass)')
     parser.add_argument('-v', '--verbose', action='store_true',
                        help='Verbose output')
-    parser.add_argument('--egglog', default='/home/allenjin/egglog/target/release/egglog',
-                       help='Path to egglog binary (default: /home/allenjin/egglog/target/release/egglog)')
+    parser.add_argument('--egglog', default=None,
+                       help='Path to egglog binary (default: auto-detect from PATH)')
 
     args = parser.parse_args()
 
@@ -220,11 +221,20 @@ Output:
         print(f"Error: Directory does not exist: {program_dir}")
         return 1
 
-    # Check egglog binary exists
-    if not Path(args.egglog).exists():
-        print(f"Error: egglog binary not found: {args.egglog}")
-        print("Please compile egglog or specify path with --egglog")
-        return 1
+    # Find egglog binary
+    if args.egglog:
+        egglog_binary = args.egglog
+        if not Path(egglog_binary).exists():
+            print(f"Error: Specified egglog binary not found: {egglog_binary}")
+            return 1
+    else:
+        # Auto-detect egglog from PATH
+        egglog_binary = shutil.which('egglog')
+        if egglog_binary is None:
+            print(f"Error: egglog command not found in PATH")
+            print("Please install egglog or specify path with --egglog")
+            return 1
+        print(f"Using egglog at: {egglog_binary}")
 
     # Check if this is a program directory (has basic_blocks_egglog/)
     if not (program_dir / "basic_blocks_egglog").exists():
@@ -233,7 +243,7 @@ Output:
         return 1
 
     # Process the program
-    total_blocks = process_program(program_dir, args.output, args.egglog, args.verbose)
+    total_blocks = process_program(program_dir, args.output, egglog_binary, args.verbose)
 
     print(f"\nTotal: {total_blocks} blocks annotated with eclasses")
     print(f"Output: {program_dir}/{args.output}/<block>.txt")
