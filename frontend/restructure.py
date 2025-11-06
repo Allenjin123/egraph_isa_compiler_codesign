@@ -309,6 +309,19 @@ class RewriteBlock:
             raise ValueError(f"Eclass {eclass_id} not found in block graph")
         node = self.block_graph.eclasses_to_nodes[eclass_id]
         
+        # 特殊处理 Seq2：展开为多条指令，不生成 seq2 本身
+        if node.op == 'seq2':
+            # Seq2 有两个子节点，顺序执行
+            for i, child_eclass in enumerate(node.children):
+
+                child_node = self.block_graph.eclasses_to_nodes.get(child_eclass)
+                if child_node and child_node.op not in INSTRUCTIONS_WITHOUT_RD:
+                    self.rewrite_line(child_eclass, rd, line_idx)
+                else:
+                    # 不需要 rd（如分支指令），使用 None
+                    self.rewrite_line(child_eclass, None, line_idx)
+            return
+        
         # 递归处理所有子节点（后序遍历）
         child_operands = []
         for child_eclass in node.children:
@@ -324,7 +337,10 @@ class RewriteBlock:
             child_node = self.block_graph.eclasses_to_nodes[child_eclass]
             if child_node.children:
                 # 有子节点，需要递归生成指令
-                child_rd = self.get_free_reg()  # 如果无法分配会抛出 fallback 异常
+                if child_node.op not in INSTRUCTIONS_WITHOUT_RD:
+                    child_rd = self.get_free_reg()  
+                else:
+                    child_rd = None
                 self.rewrite_line(child_eclass, child_rd, line_idx)
                 # self.eclass_to_rd_map[child_eclass] = child_rd 展开的指令暂时不记录
                 child_operands.append(child_rd)
@@ -360,6 +376,10 @@ class RewriteBlock:
                 return f"{op}\t{','.join(operands)}"
             else:
                 return f"{op}"
+        
+        # 如果 rd 为 None，使用 x0（零寄存器）
+        if rd is None:
+            rd = 'x0'
         
         # Load 指令特殊格式
         if op in RV32I_LOAD and len(operands) >= 2:

@@ -228,7 +228,7 @@ for asm_file in "${clean_files[@]}"; do
     if [ -n "$prog_args" ]; then
         echo "    Arguments: $prog_args"
         # Run spike with timeout, capture stdout only (stderr to /dev/null)
-        timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$exe_file" $prog_args > "$output_file" 2>/dev/null
+        timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$exe_file" $prog_args < /dev/null > "$output_file" 2>/dev/null
         exit_code=$?
         if [ $exit_code -eq 124 ]; then
             echo -e "  ${RED}✗ Execution timeout (300s)${NC}"
@@ -241,7 +241,7 @@ for asm_file in "${clean_files[@]}"; do
         fi
     else
         # Run spike with timeout, capture stdout only (stderr to /dev/null)
-        timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$exe_file" > "$output_file" 2>/dev/null
+        timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$exe_file" < /dev/null > "$output_file" 2>/dev/null
         exit_code=$?
         if [ $exit_code -eq 124 ]; then
             echo -e "  ${RED}✗ Execution timeout (300s)${NC}"
