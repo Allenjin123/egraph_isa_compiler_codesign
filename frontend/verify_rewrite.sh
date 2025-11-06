@@ -1,8 +1,8 @@
 #!/bin/bash
 ###############################################################################
 # Script to verify *_rewrite.s files against *_clean.s and reference outputs
-# Usage: ./verify_rewrite.sh <path_to_rewrite.s>
-# Example: ./verify_rewrite.sh ../benchmark/network/dijkstra/dijkstra_small_O3_rewrite.s
+# Usage: ./verify_rewrite.sh <program_name>
+# Example: ./verify_rewrite.sh dijkstra_small_O3
 ###############################################################################
 
 set -e
@@ -15,17 +15,22 @@ NC='\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+BENCHMARK_DIR="$PROJECT_ROOT/benchmark"
 MIBENCH_DIR="$PROJECT_ROOT/mibench_script"
 
 ###############################################################################
 # Usage
 ###############################################################################
 usage() {
-    echo "Usage: $0 <path_to_rewrite.s>"
+    echo "Usage: $0 <program_name>"
     echo ""
-    echo "Example:"
-    echo "  $0 ../benchmark/network/dijkstra/dijkstra_small_O3_rewrite.s"
-    echo "  $0 benchmark/automotive/qsort/qsort_large_O3_rewrite.s"
+    echo "Examples:"
+    echo "  $0 dijkstra_small_O3"
+    echo "  $0 qsort_large_O3"
+    echo "  $0 bitcnts_O3"
+    echo ""
+    echo "The script will search for <program_name>_rewrite.s and <program_name>_clean.s"
+    echo "in the benchmark directory."
     exit 1
 }
 
@@ -36,19 +41,7 @@ if [ $# -ne 1 ]; then
     usage
 fi
 
-REWRITE_ASM="$1"
-
-# Check if file exists
-if [ ! -f "$REWRITE_ASM" ]; then
-    echo -e "${RED}Error: File not found: $REWRITE_ASM${NC}"
-    exit 1
-fi
-
-# Check if filename ends with _rewrite.s
-if [[ ! "$REWRITE_ASM" =~ _rewrite\.s$ ]]; then
-    echo -e "${RED}Error: File must end with _rewrite.s${NC}"
-    exit 1
-fi
+PROGRAM_NAME="$1"
 
 ###############################################################################
 # Function to determine program arguments based on benchmark name
@@ -73,29 +66,27 @@ get_program_args() {
 
 ###############################################################################
 # Function to extract program info from filename
-# Input: dijkstra_small_O3_rewrite.s
+# Input: dijkstra_small_O3
 # Output: prog_name=dijkstra, size_type=small
 ###############################################################################
-parse_filename() {
-    local filename="$1"
-    local basename="${filename%.s}"        # Remove .s
-    basename="${basename%_rewrite}"        # Remove _rewrite
+parse_program_name() {
+    local name="$1"
     
     # Try to extract size (small/large)
     local size_type="small"  # Default
-    if [[ "$basename" =~ _large ]]; then
+    if [[ "$name" =~ _large ]]; then
         size_type="large"
-        basename="${basename%_large*}"
-    elif [[ "$basename" =~ _small ]]; then
+        name="${name%_large*}"
+    elif [[ "$name" =~ _small ]]; then
         size_type="small"
-        basename="${basename%_small*}"
+        name="${name%_small*}"
     fi
     
     # Remove optimization flags like _O3, _O2, etc
-    basename="${basename%_O[0-3]}"
-    basename="${basename%_O[0-3]s}"
+    name="${name%_O[0-3]}"
+    name="${name%_O[0-3]s}"
     
-    echo "$basename|$size_type"
+    echo "$name|$size_type"
 }
 
 ###############################################################################
@@ -129,31 +120,54 @@ find_mibench_dir() {
 }
 
 ###############################################################################
-# Parse input file
+# Find rewrite and clean files
 ###############################################################################
 echo "========================================="
 echo "RISC-V Rewrite Assembly Verification"
 echo "========================================="
 echo ""
 
-# Get absolute path
-REWRITE_ASM="$(cd "$(dirname "$REWRITE_ASM")" && pwd)/$(basename "$REWRITE_ASM")"
+echo "Searching for: ${PROGRAM_NAME}_rewrite.s and ${PROGRAM_NAME}_clean.s"
+echo ""
 
-# Derive clean.s path
-CLEAN_ASM="${REWRITE_ASM%_rewrite.s}_clean.s"
+# Find rewrite file
+REWRITE_FILES=($(find "$BENCHMARK_DIR" -name "${PROGRAM_NAME}_rewrite.s" -type f))
 
-if [ ! -f "$CLEAN_ASM" ]; then
-    echo -e "${RED}Error: Corresponding clean file not found: $CLEAN_ASM${NC}"
+if [ ${#REWRITE_FILES[@]} -eq 0 ]; then
+    echo -e "${RED}Error: No ${PROGRAM_NAME}_rewrite.s found in benchmark directory${NC}"
+    exit 1
+elif [ ${#REWRITE_FILES[@]} -gt 1 ]; then
+    echo -e "${RED}Error: Multiple ${PROGRAM_NAME}_rewrite.s files found:${NC}"
+    for f in "${REWRITE_FILES[@]}"; do
+        echo "  - $f"
+    done
     exit 1
 fi
+
+REWRITE_ASM="${REWRITE_FILES[0]}"
+
+# Find clean file
+CLEAN_FILES=($(find "$BENCHMARK_DIR" -name "${PROGRAM_NAME}_clean.s" -type f))
+
+if [ ${#CLEAN_FILES[@]} -eq 0 ]; then
+    echo -e "${RED}Error: No ${PROGRAM_NAME}_clean.s found in benchmark directory${NC}"
+    exit 1
+elif [ ${#CLEAN_FILES[@]} -gt 1 ]; then
+    echo -e "${RED}Error: Multiple ${PROGRAM_NAME}_clean.s files found:${NC}"
+    for f in "${CLEAN_FILES[@]}"; do
+        echo "  - $f"
+    done
+    exit 1
+fi
+
+CLEAN_ASM="${CLEAN_FILES[0]}"
 
 echo "Rewrite file: $REWRITE_ASM"
 echo "Clean file:   $CLEAN_ASM"
 echo ""
 
-# Parse filename
-filename=$(basename "$REWRITE_ASM")
-parse_result=$(parse_filename "$filename")
+# Parse program name
+parse_result=$(parse_program_name "$PROGRAM_NAME")
 prog_name="${parse_result%|*}"
 size_type="${parse_result#*|}"
 
@@ -186,7 +200,7 @@ fi
 # Generate diff
 DIFF_DIR="$PROJECT_ROOT/output/diff"
 mkdir -p "$DIFF_DIR"
-DIFF_FILE="$DIFF_DIR/${prog_name}_${size_type}.diff"
+DIFF_FILE="$DIFF_DIR/${PROGRAM_NAME}.diff"
 
 echo "Generating diff between clean and rewrite versions..."
 diff -u "$CLEAN_ASM" "$REWRITE_ASM" > "$DIFF_FILE" 2>&1 || true
@@ -219,7 +233,7 @@ echo "========================================="
 echo "Testing CLEAN version"
 echo "========================================="
 
-CLEAN_EXE="$BUILD_DIR/${prog_name}_clean"
+CLEAN_EXE="$BUILD_DIR/${PROGRAM_NAME}_clean"
 echo "Compiling clean.s..."
 if ! riscv32-unknown-elf-gcc \
     -march="$RISCV_ARCH" \
@@ -273,7 +287,7 @@ echo "========================================="
 echo "Testing REWRITE version"
 echo "========================================="
 
-REWRITE_EXE="$BUILD_DIR/${prog_name}_rewrite"
+REWRITE_EXE="$BUILD_DIR/${PROGRAM_NAME}_rewrite"
 echo "Compiling rewrite.s..."
 if ! riscv32-unknown-elf-gcc \
     -march="$RISCV_ARCH" \
