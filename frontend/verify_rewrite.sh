@@ -23,6 +23,17 @@ echo ""
 CLEAN_ASM="$PROJECT_ROOT/benchmark/network/dijkstra/dijkstra_small_O3_clean.s"
 REWRITE_ASM="$PROJECT_ROOT/benchmark/network/dijkstra/dijkstra_small_O3_rewrite.s"
 REF_OUTPUT="$PROJECT_ROOT/mibench_script/network/dijkstra/old_output/output_small.txt"
+PROGRAM_NAME="dijkstra_small_O3"
+
+# Generate diff
+DIFF_DIR="$PROJECT_ROOT/output/diff"
+mkdir -p "$DIFF_DIR"
+DIFF_FILE="$DIFF_DIR/${PROGRAM_NAME}.diff"
+
+echo "Generating diff between clean and rewrite versions..."
+diff -u "$CLEAN_ASM" "$REWRITE_ASM" > "$DIFF_FILE" 2>&1 || true
+echo -e "${GREEN}✓ Diff saved to: $DIFF_FILE${NC}"
+echo ""
 
 # RISC-V settings
 RISCV_ARCH="rv32im_zicsr_zifencei"
