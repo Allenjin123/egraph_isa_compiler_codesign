@@ -367,13 +367,25 @@ class RewriteBlock:
     
     def _format_instruction(self, op: str, rd: str, operands: List[str]) -> str:
         """格式化指令为汇编格式"""
+        # Branch 指令列表
+        branch_ops = {'beq', 'bne', 'blt', 'bge', 'bltu', 'bgeu'}
+        
         # 不需要 rd 的指令
         if op in INSTRUCTIONS_WITHOUT_RD:
             if op in ['sb', 'sh', 'sw'] and len(operands) >= 3:
                 # Store 指令: sw rs2, offset(rs1)
                 return f"{op}\t{operands[1]},{operands[2]}({operands[0]})"
             elif operands:
-                return f"{op}\t{','.join(operands)}"
+                # Branch 指令特殊处理：如果最后一个操作数是数字，改成 ".+数字"
+                if op in branch_ops and operands:
+                    modified_operands = operands.copy()
+                    last_operand = modified_operands[-1]
+                    # 检查是否是纯数字（可能有正负号）
+                    if re.match(r'^-?\d+$', last_operand):
+                        modified_operands[-1] = f".+{last_operand}"
+                    return f"{op}\t{','.join(modified_operands)}"
+                else:
+                    return f"{op}\t{','.join(operands)}"
             else:
                 return f"{op}"
         
