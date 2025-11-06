@@ -84,7 +84,7 @@ def inject_rewrites(base_egg_path: Path, rewrites_content: str, backup: bool = T
     print(f"Successfully injected {rewrites_content.count('birewrite')} rewrite rules into {base_egg_path}")
 
 
-def show_preview(rewrites_content: str, num_lines: int = 20) -> None:
+def show_preview(rewrites_content: str, num_lines: int = 500) -> None:
     """
     Show preview of what will be injected.
 

@@ -112,36 +112,6 @@ print_path:
 	.globl	enqueue
 	.type	enqueue, @function
 enqueue:
-	lui	t4,%hi(qRear)
-	lw	a4,%lo(qRear)(t4)
-	lui	a5,429497
-	addi	a5,a5,-1107
-	addi	a3,a4,1
-	mulh	a5,a3,a5
-	srai	t5,a3,31
-	lui	t1,2
-	addi	t1,t1,1808
-	lui	t3,%hi(g_qCount)
-	lw	a7,%lo(g_qCount)(t3)
-	slli	a6,a4,1
-	sub	t0,x0,a6
-	sub	a6,a4,t0
-	lui	a4,%hi(queue)
-	slli	a6,a6,2
-	srai	a5,a5,12
-	sub	a5,a5,t5
-	mul	a5,a5,t1
-	addi	a4,a4,%lo(queue)
-	sub	t0,x0,a4
-	sub	a4,a6,t0
-	addi	a7,a7,1
-	sw	a0,0(a4)
-	sw	a1,4(a4)
-	sw	a2,8(a4)
-	sw	a7,%lo(g_qCount)(t3)
-	sub	a3,a3,a5
-	sw	a3,%lo(qRear)(t4)
-	jalr	zero,ra,0
 	.size	enqueue, .-enqueue
 	.align	2
 	.globl	dequeue
@@ -150,52 +120,6 @@ dequeue:
 	lui	a7,%hi(g_qCount)
 	lw	a5,%lo(g_qCount)(a7)
 	bge	zero,a5,.L17
-	lui	a6,%hi(qFront)
-	lw	a3,%lo(qFront)(a6)
-	lui	a4,%hi(queue)
-	addi	a4,a4,%lo(queue)
-	slli	a5,a3,1
-	sub	t0,x0,a5
-	sub	a5,a3,t0
-	slli	a5,a5,2
-	sub	a3,x0,a4
-	sub	a5,a5,a3
-	lw	a3,0(a5)
-	lui	a5,429497
-	addi	a5,a5,-1107
-	sw	a3,0(a0)
-	lw	t1,%lo(qFront)(a6)
-	lui	a0,2
-	addi	a0,a0,1808
-	slli	a3,t1,1
-	sub	t0,x0,a3
-	sub	a3,t1,t0
-	slli	a3,a3,2
-	sub	t0,x0,a4
-	sub	a3,a3,t0
-	lw	a3,4(a3)
-	sw	a3,0(a1)
-	lw	a1,%lo(qFront)(a6)
-	slli	a3,a1,1
-	sub	t0,x0,a3
-	sub	a3,a1,t0
-	slli	a3,a3,2
-	sub	t0,x0,a4
-	sub	a4,a3,t0
-	lw	a4,8(a4)
-	sw	a4,0(a2)
-	lw	a4,%lo(qFront)(a6)
-	lw	a3,%lo(g_qCount)(a7)
-	addi	a4,a4,1
-	mulh	a5,a4,a5
-	srai	a2,a4,31
-	addi	a3,a3,-1
-	sw	a3,%lo(g_qCount)(a7)
-	srai	a5,a5,12
-	sub	a5,a5,a2
-	mul	a5,a5,a0
-	sub	a4,a4,a5
-	sw	a4,%lo(qFront)(a6)
 .L17:
 	jalr	zero,ra,0
 	.size	dequeue, .-dequeue
@@ -243,47 +167,6 @@ dijkstra:
 	sw	s0,%lo(ch)(a5)
 	bne	a0,a3,.+8
 	jal	x0,.L45
-	sw	s9,36(sp)
-	lui	s9,%hi(qRear)
-	lw	a1,%lo(qRear)(s9)
-	sw	s2,64(sp)
-	lui	s2,429497
-	addi	a6,a1,1
-	addi	s2,s2,-1107
-	mulh	a4,a6,s2
-	sw	s3,60(sp)
-	srai	a7,a6,31
-	lui	s3,2
-	addi	s3,s3,1808
-	sw	s8,40(sp)
-	lui	s8,%hi(g_qCount)
-	lw	t0,%lo(g_qCount)(s8)
-	slli	a5,a1,1
-	sub	t1,x0,a5
-	sub	a5,a1,t1
-	srai	a4,a4,12
-	sub	a4,a4,a7
-	mul	a4,a4,s3
-	lui	t2,%hi(queue)
-	slli	a5,a5,2
-	addi	t2,t2,%lo(queue)
-	slli	a1,a0,3
-	sw	s1,68(sp)
-	sw	s4,56(sp)
-	sub	a7,x0,t2
-	sub	a5,a5,a7
-	sub	a7,x0,s5
-	sub	a1,a1,a7
-	addi	t0,t0,1
-	sub	a4,a6,a4
-	sw	a0,0(a5)
-	sw	zero,4(a5)
-	sw	a2,8(a5)
-	sw	zero,0(a1)
-	sw	a4,%lo(qRear)(s9)
-	sw	a2,4(a1)
-	sw	t0,%lo(g_qCount)(s8)
-	bge	zero,t0,.L24
 	sw	s10,32(sp)
 	lui	s10,%hi(qFront)
 	lw	t1,%lo(qFront)(s10)
@@ -298,29 +181,6 @@ dijkstra:
 	addi	s7,zero,400
 	addi	t4,a3,0
 .L28:
-	addi	a6,t1,1
-	mulh	a3,a6,s2
-	slli	a5,t1,1
-	sub	a0,x0,a5
-	sub	a5,t1,a0
-	slli	a5,a5,2
-	sub	a0,x0,t2
-	sub	a5,a5,a0
-	lw	t3,0(a5)
-	lw	s1,4(a5)
-	lw	a5,8(a5)
-	srai	t1,a6,31
-	addi	t0,t0,-1
-	sw	a5,12(sp)
-	srai	a5,a3,12
-	sub	t1,a5,t1
-	mul	a0,t3,s7
-	addi	a3,s5,0
-	addi	a2,zero,0
-	mul	t1,t1,s3
-	sub	a1,x0,s6
-	sub	a0,a0,a1
-	sub	t1,a6,t1
 .L27:
 	slli	a5,a4,1
 	lw	a7,0(a0)
@@ -340,18 +200,6 @@ dijkstra:
 	jal	x0,.L26
 	bge	a6,t6,.L25
 .L26:
-	mulh	a4,a1,s2
-	sw	a6,0(a3)
-	sw	t3,4(a3)
-	sw	a2,0(a5)
-	sw	a6,4(a5)
-	sw	t3,8(a5)
-	addi	t0,t0,1
-	addi	s4,zero,1
-	srai	a4,a4,12
-	sub	a4,a4,s11
-	mul	a4,a4,s3
-	sub	a4,a1,a4
 .L25:
 	addi	a2,a2,1
 	addi	a0,a0,4
@@ -547,18 +395,6 @@ main:
 	addi	s4,zero,100
 	addi	s3,zero,20
 .L49:
-	mulh	s0,a5,s2
-	srai	a4,a5,31
-	addi	a0,s1,0
-	addi	s1,s1,1
-	srai	s0,s0,5
-	sub	s0,s0,a4
-	mul	s0,s0,s4
-	sub	s0,a5,s0
-	addi	a1,s0,0
-.Lpcrel_15:
-	auipc	ra,%pcrel_hi(dijkstra)
-	jalr	ra,ra,%pcrel_lo(.Lpcrel_15)
 	addi	a5,s0,1
 	bne	s1,s3,.L49
 	lui	t0,9

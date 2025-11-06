@@ -126,22 +126,29 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None) -> float:
     if not synth_script.exists():
         raise FileNotFoundError(f"Synthesis script not found: {synth_script}")
 
+    # Determine output directory for synthesis (unique per DSL file to avoid conflicts)
+    dsl_path_obj = Path(dsl_path_abs)
+    synth_output_dir = synth_script.parent / "output" / dsl_path_obj.stem
+
     # Run synthesis (use absolute path so it works from any cwd)
     print(f"Running synthesis with {dsl_path_abs}...")
+    print(f"Synthesis output will be in: {synth_output_dir}")
     try:
         result = subprocess.run(
-            [str(synth_script), "--gates", "--core", "ibex",dsl_path_abs ],
+            [str(synth_script), "--gates", "--core", "ibex", dsl_path_abs, str(synth_output_dir)],
             capture_output=True,
             text=True,
             timeout=600,  # 10 minute timeout for synthesis
             cwd=synth_script.parent
         )
 
-        if result.returncode != 0:
-            print(f"Synthesis stderr: {result.stderr}")
-            raise ValueError(f"Synthesis failed with return code {result.returncode}")
+        # Combine stdout and stderr for parsing (synthesis writes area to stdout)
+        synthesis_output = result.stdout + "\n" + result.stderr
 
-        synthesis_output = result.stdout
+        # Note: synth_core.sh may return non-zero even on success due to warnings
+        # We'll try to parse the output anyway and only fail if we can't find chip area
+        if result.returncode != 0:
+            print(f"Warning: Synthesis returned code {result.returncode}, but attempting to parse output...")
 
     except subprocess.TimeoutExpired:
         raise ValueError("Synthesis timed out after 10 minutes")
