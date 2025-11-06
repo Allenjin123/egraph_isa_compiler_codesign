@@ -1,8 +1,0 @@
-slli	a5,a1,3
-sub	a2,x0,a0
-sub	a5,a5,a2
-lw	a2,4(a5)
-lui	a5,2
-addi	a5,a5,1807
-addi	a3,a1,0
-bne	a2,a5,.L9

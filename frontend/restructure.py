@@ -695,18 +695,141 @@ def rewrite_program(program_name: str, solution_file: str = None, output_dir: st
     return stats
 
 
+def rewrite_program_all_variants(program_name: str, num_variants: int = 5):
+    """Process all variants of a program
+
+    Args:
+        program_name: Program name (e.g., "dijkstra_small_O3")
+        num_variants: Number of variants to process (default 5)
+
+    Returns:
+        List[Dict]: Statistics for all variants
+    """
+    print(f"\n{'='*70}")
+    print(f"重写程序的多个变体: {program_name}")
+    print(f"变体数量: {num_variants}")
+    print(f"{'='*70}")
+
+    # Base output directory
+    base_output_dir = FRONTEND_OUTPUT_DIR / program_name / "basic_blocks_rewrite"
+
+    # Clean up existing directory or symlink and create fresh
+    if base_output_dir.exists() or base_output_dir.is_symlink():
+        import shutil
+        if base_output_dir.is_symlink():
+            base_output_dir.unlink()  # Remove symlink
+        elif base_output_dir.is_dir():
+            shutil.rmtree(base_output_dir)  # Remove directory
+    base_output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Process each variant
+    all_stats = []
+
+    for variant_num in range(num_variants):
+        # Check if solution file exists
+        solution_file = ILP_OUTPUT_DIR / program_name / "sol" / f"solution_{variant_num}.sol"
+
+        if not solution_file.exists():
+            print(f"\n警告: 变体 {variant_num} 的解文件不存在: {solution_file}")
+            # Try fallback to single solution file for variant 0
+            if variant_num == 0:
+                fallback_file = ILP_OUTPUT_DIR / program_name / "sol" / "solution.sol"
+                if fallback_file.exists():
+                    print(f"  使用备用文件: {fallback_file}")
+                    solution_file = fallback_file
+                else:
+                    print(f"  跳过变体 {variant_num}")
+                    continue
+            else:
+                # For non-zero variants, check if we should break or continue
+                # If we have at least one variant, we can stop here
+                if all_stats:
+                    print(f"  未找到更多变体，停止处理")
+                    break
+                print(f"  跳过变体 {variant_num}")
+                continue
+
+        try:
+            print(f"\n{'='*60}")
+            print(f"处理变体 {variant_num}: {program_name}")
+            print(f"{'='*60}")
+
+            # Create variant output directory
+            variant_dir = base_output_dir / f"variant_{variant_num}"
+            variant_dir.mkdir(parents=True, exist_ok=True)
+
+            # Rewrite with this solution
+            stats = rewrite_program(program_name, str(solution_file), str(variant_dir))
+            stats['variant'] = variant_num
+            all_stats.append(stats)
+
+        except Exception as e:
+            print(f"\n处理变体 {variant_num} 时出错: {str(e)}")
+            all_stats.append({
+                'variant': variant_num,
+                'error': str(e),
+                'total_blocks': 0,
+                'success_blocks': 0,
+                'failed_blocks': 0
+            })
+
+    # Final summary
+    print(f"\n{'='*70}")
+    print(f"最终汇总")
+    print(f"{'='*70}")
+    print(f"程序: {program_name}")
+    print(f"处理的变体数: {len(all_stats)}")
+
+    total_success = sum(s.get('success_blocks', 0) for s in all_stats)
+    total_failed = sum(s.get('failed_blocks', 0) for s in all_stats)
+
+    print(f"所有变体成功的基本块总数: {total_success}")
+    print(f"所有变体失败的基本块总数: {total_failed}")
+
+    print(f"\n每个变体汇总:")
+    for stats in all_stats:
+        variant = stats.get('variant', '?')
+        success = stats.get('success_blocks', 0)
+        total = stats.get('total_blocks', 0)
+        if 'error' in stats:
+            print(f"  变体 {variant}: 错误 - {stats['error']}")
+        else:
+            print(f"  变体 {variant}: {success}/{total} 个块成功")
+
+    print(f"\n输出目录结构:")
+    print(f"  {base_output_dir}/")
+    for i in range(len(all_stats)):
+        variant_dir = base_output_dir / f"variant_{i}"
+        if variant_dir.exists():
+            num_files = len(list(variant_dir.glob("*.txt")))
+            print(f"    variant_{i}/  ({num_files} 个文件)")
+
+    print(f"{'='*70}\n")
+
+    return all_stats
+
+
 def main():
     """命令行入口"""
     import argparse
-    
+
     parser = argparse.ArgumentParser(description="重写 RISC-V 程序的所有 basic blocks")
     parser.add_argument("program_name", help="程序名称 (例如 dijkstra_small_O3)")
-    parser.add_argument("--solution", "-s", help="ILP solution 文件路径（可选）")
-    parser.add_argument("--output", "-o", help="输出目录（可选）")
-    
+    parser.add_argument("--solution", "-s", help="ILP solution 文件路径（可选，仅用于单变体模式）")
+    parser.add_argument("--output", "-o", help="输出目录（可选，仅用于单变体模式）")
+    parser.add_argument("--variants", "-k", type=int, default=5,
+                        help="要处理的变体数量 (默认: 5)")
+    parser.add_argument("--single-variant", action="store_true",
+                        help="只处理单个变体（使用 --solution 指定的文件）")
+
     args = parser.parse_args()
-    
-    rewrite_program(args.program_name, args.solution, args.output)
+
+    if args.single_variant:
+        # Single variant mode (backward compatibility)
+        rewrite_program(args.program_name, args.solution, args.output)
+    else:
+        # Multi-variant mode (default)
+        rewrite_program_all_variants(args.program_name, args.variants)
 
 
 if __name__ == "__main__":

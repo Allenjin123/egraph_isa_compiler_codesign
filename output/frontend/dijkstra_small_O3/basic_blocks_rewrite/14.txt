@@ -1,5 +1,0 @@
-lw	a3,12(sp)
-lw	a6,8(sp)
-lw	a2,4(sp)
-lw	a5,0(sp)
-jal	zero,.L4
