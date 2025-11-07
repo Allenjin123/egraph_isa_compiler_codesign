@@ -18,7 +18,7 @@ DEFAULT_PARALLEL_JOBS=24
 DEFAULT_SYNTH_JOBS=72  # Parallel synthesis processes
 DEFAULT_CLEAN=true     # Clean old outputs by default
 DEFAULT_RUN_SATURATION=true  # Run saturation by default
-DEFAULT_PROGRAMS="basicmath_small_O3 bitcount_small_O3 qsort_small_O3 qsort_large_small_O3 dijkstra_small_O3 patricia_small_O3"
+DEFAULT_PROGRAMS="basicmath_small_O3 bitcnts_O3 qsort_small_O3 qsort_large_O3 dijkstra_small_O3 patricia_O3"
 
 # Color codes for output
 RED='\033[0;31m'
@@ -233,6 +233,43 @@ if [ "$CLEAN_OUTPUTS" = true ]; then
     fi
 
     echo -e "${GREEN}  ✓ 清理完成${NC}"
+    echo ""
+fi
+
+# ============================================================================
+# Step 0.4: Run frontend analysis if needed
+# ============================================================================
+FRONTEND_OUTPUT_DIR="$OUTPUT_BASE/frontend/$PROGRAM_NAME"
+if [ ! -d "$FRONTEND_OUTPUT_DIR/basic_blocks_ssa" ]; then
+    echo -e "${BLUE}步骤 0.4: 运行前端分析（生成 SSA 基本块）...${NC}"
+    echo -e "${YELLOW}  前端输出不存在，开始分析...${NC}"
+
+    FRONTEND_SCRIPT="$FRONTEND_DIR/run_full_analysis.sh"
+    if [ ! -f "$FRONTEND_SCRIPT" ]; then
+        echo -e "${RED}错误: 前端分析脚本未找到: $FRONTEND_SCRIPT${NC}"
+        PROGRAM_FAILED=1
+    else
+        echo -e "${CYAN}  运行: cd frontend && ./run_full_analysis.sh $PROGRAM_NAME${NC}"
+
+        # Run frontend analysis
+        if ! (cd "$FRONTEND_DIR" && bash run_full_analysis.sh "$PROGRAM_NAME"); then
+            echo -e "${RED}✗ 程序 ${PROGRAM_NAME} 前端分析失败，跳过此程序${NC}"
+            PROGRAM_FAILED=1
+        else
+            echo -e "${GREEN}  ✓ 前端分析完成${NC}"
+        fi
+    fi
+
+    # Check if program failed
+    if [ $PROGRAM_FAILED -eq 1 ]; then
+        FAILED_PROGRAMS=$((FAILED_PROGRAMS + 1))
+        echo -e "${RED}跳过程序 ${PROGRAM_NAME}，继续下一个程序${NC}"
+        set -e
+        continue
+    fi
+    echo ""
+else
+    echo -e "${YELLOW}步骤 0.4: 前端输出已存在，跳过前端分析${NC}"
     echo ""
 fi
 
