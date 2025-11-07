@@ -438,8 +438,8 @@ class RewriteBlock:
             num_placeholders = len(set(placeholders))  # 去重
             max_placeholders = max(max_placeholders, num_placeholders)
 
-        self.allocate_registers(max_placeholders)
-        self.replace_placeholders()
+        #self.allocate_registers(max_placeholders)
+        #self.replace_placeholders()
         self.merge_lines()
         
     def allocate_registers(self, max_placeholders: int):
