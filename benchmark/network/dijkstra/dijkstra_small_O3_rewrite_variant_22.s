@@ -107,6 +107,56 @@ print_path:
 	.globl	enqueue
 	.type	enqueue, @function
 enqueue:
+	lui	t4,%hi(qRear)
+	lw	a4,%lo(qRear)(t4)
+	lui	a5,429497
+	addi	a5,a5,-1107
+	addi	a3,a4,1
+	srli	t1,a3,16
+	srli	t2,a5,16
+	mul	t0,t1,t2
+	andi	op_5_0,a3,65535
+	srli	op_5_1,a5,16
+	mul	zero,op_5_0,op_5_1
+	srli	op_5_3,a3,16
+	andi	op_5_4,a5,65535
+	mul	op_5_2,op_5_3,op_5_4
+	add	t6,zero,op_5_2
+	andi	op_5_7,a3,65535
+	andi	op_5_8,a5,65535
+	mul	op_5_6,op_5_7,op_5_8
+	srli	op_5_5,op_5_6,16
+	add	t5,t6,op_5_5
+	srli	t3,t5,16
+	add	a7,t0,t3
+	srai	op_5_10,a3,31
+	and	op_5_9,op_5_10,a5
+	sub	a6,a7,op_5_9
+	srai	op_5_12,a5,31
+	and	op_5_11,op_5_12,a3
+	sub	a5,a6,op_5_11
+	srai	t5,a3,31
+	lui	t1,2
+	addi	t1,t1,1808
+	lui	t3,%hi(g_qCount)
+	lw	a7,%lo(g_qCount)(t3)
+	slli	a6,a4,1
+	add	a6,a6,a4
+	lui	a4,%hi(queue)
+	slli	a6,a6,2
+	srai	a5,a5,12
+	sub	a5,a5,t5
+	mul	a5,a5,t1
+	addi	a4,a4,%lo(queue)
+	add	a4,a4,a6
+	addi	a7,a7,1
+	sw	a0,0(a4)
+	sw	a1,4(a4)
+	sw	a2,8(a4)
+	sw	a7,%lo(g_qCount)(t3)
+	sub	a3,a3,a5
+	sw	a3,%lo(qRear)(t4)
+	jalr	zero,ra,0
 	.size	enqueue, .-enqueue
 	.align	2
 	.globl	dequeue
@@ -115,6 +165,68 @@ dequeue:
 	lui	a7,%hi(g_qCount)
 	lw	a5,%lo(g_qCount)(a7)
 	bge	zero,a5,.L17
+	lui	a6,%hi(qFront)
+	lw	a3,%lo(qFront)(a6)
+	lui	a4,%hi(queue)
+	addi	a4,a4,%lo(queue)
+	slli	a5,a3,1
+	add	a5,a5,a3
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a3,0(a5)
+	lui	a5,429497
+	addi	a5,a5,-1107
+	sw	a3,0(a0)
+	lw	t1,%lo(qFront)(a6)
+	lui	a0,2
+	addi	a0,a0,1808
+	slli	a3,t1,1
+	add	a3,a3,t1
+	slli	a3,a3,2
+	add	a3,a4,a3
+	lw	a3,4(a3)
+	sw	a3,0(a1)
+	lw	a1,%lo(qFront)(a6)
+	slli	a3,a1,1
+	add	a3,a3,a1
+	slli	a3,a3,2
+	add	a4,a4,a3
+	lw	a4,8(a4)
+	sw	a4,0(a2)
+	lw	a4,%lo(qFront)(a6)
+	lw	a3,%lo(g_qCount)(a7)
+	addi	a4,a4,1
+	srli	t2,a4,16
+	srli	t3,a5,16
+	mul	t1,t2,t3
+	andi	op_31_1,a4,65535
+	srli	op_31_2,a5,16
+	mul	op_31_0,op_31_1,op_31_2
+	srli	op_31_4,a4,16
+	andi	op_31_5,a5,65535
+	mul	op_31_3,op_31_4,op_31_5
+	add	t6,op_31_0,op_31_3
+	andi	op_31_8,a4,65535
+	andi	op_31_9,a5,65535
+	mul	op_31_7,op_31_8,op_31_9
+	srli	op_31_6,op_31_7,16
+	add	t5,t6,op_31_6
+	srli	t4,t5,16
+	add	t0,t1,t4
+	srai	op_31_11,a4,31
+	and	op_31_10,op_31_11,a5
+	sub	a2,t0,op_31_10
+	srai	op_31_13,a5,31
+	and	op_31_12,op_31_13,a4
+	sub	a5,a2,op_31_12
+	srai	a2,a4,31
+	addi	a3,a3,-1
+	sw	a3,%lo(g_qCount)(a7)
+	srai	a5,a5,12
+	sub	a5,a5,a2
+	mul	a5,a5,a0
+	sub	a4,a4,a5
+	sw	a4,%lo(qFront)(a6)
 .L17:
 	jalr	zero,ra,0
 	.size	dequeue, .-dequeue
@@ -161,6 +273,66 @@ dijkstra:
 	addi	s0,zero,100
 	sw	s0,%lo(ch)(a5)
 	beq	a0,a3,.L45
+	sw	s9,36(sp)
+	lui	s9,%hi(qRear)
+	lw	a1,%lo(qRear)(s9)
+	sw	s2,64(sp)
+	lui	s2,429497
+	addi	a6,a1,1
+	addi	s2,s2,-1107
+	srli	t0,a6,16
+	srli	t1,s2,16
+	mul	a7,t0,t1
+	andi	t6,a6,65535
+	srli	op_7_0,s2,16
+	mul	t5,t6,op_7_0
+	srli	op_7_2,a6,16
+	andi	op_7_3,s2,65535
+	mul	op_7_1,op_7_2,op_7_3
+	add	t4,t5,op_7_1
+	andi	op_7_6,a6,65535
+	andi	op_7_7,s2,65535
+	mul	op_7_5,op_7_6,op_7_7
+	srli	op_7_4,op_7_5,16
+	add	t3,t4,op_7_4
+	srli	t2,t3,16
+	add	a5,a7,t2
+	srai	op_7_9,a6,31
+	and	op_7_8,op_7_9,s2
+	sub	a4,a5,op_7_8
+	srai	op_7_11,s2,31
+	and	op_7_10,op_7_11,a6
+	sub	a4,a4,op_7_10
+	sw	s3,60(sp)
+	srai	a7,a6,31
+	lui	s3,2
+	addi	s3,s3,1808
+	sw	s8,40(sp)
+	lui	s8,%hi(g_qCount)
+	lw	t0,%lo(g_qCount)(s8)
+	slli	a5,a1,1
+	add	a5,a5,a1
+	srai	a4,a4,12
+	sub	a4,a4,a7
+	mul	a4,a4,s3
+	lui	t2,%hi(queue)
+	slli	a5,a5,2
+	addi	t2,t2,%lo(queue)
+	slli	a1,a0,3
+	sw	s1,68(sp)
+	sw	s4,56(sp)
+	add	a5,t2,a5
+	add	a1,s5,a1
+	addi	t0,t0,1
+	sub	a4,a6,a4
+	sw	a0,0(a5)
+	sw	zero,4(a5)
+	sw	a2,8(a5)
+	sw	zero,0(a1)
+	sw	a4,%lo(qRear)(s9)
+	sw	a2,4(a1)
+	sw	t0,%lo(g_qCount)(s8)
+	bge	zero,t0,.L24
 	sw	s10,32(sp)
 	lui	s10,%hi(qFront)
 	lw	t1,%lo(qFront)(s10)
@@ -175,6 +347,48 @@ dijkstra:
 	addi	s7,zero,400
 	addi	t4,a3,0
 .L28:
+	addi	a6,t1,1
+	srli	a3,a6,16
+	srli	a5,s2,16
+	mul	a2,a3,a5
+	andi	op_1_0,a6,65535
+	srli	op_1_1,s2,16
+	mul	t6,op_1_0,op_1_1
+	srli	op_1_3,a6,16
+	andi	op_1_4,s2,65535
+	mul	op_1_2,op_1_3,op_1_4
+	add	t3,t6,op_1_2
+	andi	op_1_7,a6,65535
+	andi	op_1_8,s2,65535
+	mul	op_1_6,op_1_7,op_1_8
+	srli	op_1_5,op_1_6,16
+	add	s1,t3,op_1_5
+	srli	a7,s1,16
+	add	a1,a2,a7
+	srai	op_1_10,a6,31
+	and	op_1_9,op_1_10,s2
+	sub	a0,a1,op_1_9
+	srai	op_1_12,s2,31
+	and	op_1_11,op_1_12,a6
+	sub	a3,a0,op_1_11
+	slli	a5,t1,1
+	add	a5,a5,t1
+	slli	a5,a5,2
+	add	a5,t2,a5
+	lw	t3,0(a5)
+	lw	s1,4(a5)
+	lw	a5,8(a5)
+	srai	t1,a6,31
+	addi	t0,t0,-1
+	sw	a5,12(sp)
+	srai	a5,a3,12
+	sub	t1,a5,t1
+	mul	a0,t3,s7
+	addi	a3,s5,0
+	addi	a2,zero,0
+	mul	t1,t1,s3
+	add	a0,s6,a0
+	sub	t1,a6,t1
 .L27:
 	slli	a5,a4,1
 	lw	a7,0(a0)
@@ -189,6 +403,40 @@ dijkstra:
 	beq	t6,t5,.L26
 	bge	a6,t6,.L25
 .L26:
+	srli	op_0_0,a1,16
+	srli	op_0_1,s2,16
+	mul	t6,op_0_0,op_0_1
+	andi	op_0_6,a1,65535
+	srli	op_0_7,s2,16
+	mul	op_0_5,op_0_6,op_0_7
+	srli	op_0_9,a1,16
+	andi	op_0_10,s2,65535
+	mul	op_0_8,op_0_9,op_0_10
+	add	op_0_4,op_0_5,op_0_8
+	andi	op_0_13,a1,65535
+	andi	op_0_14,s2,65535
+	mul	op_0_12,op_0_13,op_0_14
+	srli	op_0_11,op_0_12,16
+	add	op_0_3,op_0_4,op_0_11
+	srli	op_0_2,op_0_3,16
+	add	s4,t6,op_0_2
+	srai	op_0_16,a1,31
+	and	op_0_15,op_0_16,s2
+	sub	a4,s4,op_0_15
+	srai	op_0_18,s2,31
+	and	op_0_17,op_0_18,a1
+	sub	a4,a4,op_0_17
+	sw	a6,0(a3)
+	sw	t3,4(a3)
+	sw	a2,0(a5)
+	sw	a6,4(a5)
+	sw	t3,8(a5)
+	addi	t0,t0,1
+	addi	s4,zero,1
+	srai	a4,a4,12
+	sub	a4,a4,s11
+	mul	a4,a4,s3
+	sub	a4,a1,a4
 .L25:
 	addi	a2,a2,1
 	addi	a0,a0,4
@@ -374,6 +622,40 @@ main:
 	addi	s4,zero,100
 	addi	s3,zero,20
 .L49:
+	srli	a3,a5,16
+	srli	a4,s2,16
+	mul	a2,a3,a4
+	andi	t0,a5,65535
+	srli	t1,s2,16
+	mul	s0,t0,t1
+	srli	t3,a5,16
+	andi	t4,s2,65535
+	mul	t2,t3,t4
+	add	ra,s0,t2
+	andi	op_0_0,a5,65535
+	andi	op_0_1,s2,65535
+	mul	t6,op_0_0,op_0_1
+	srli	t5,t6,16
+	add	a7,ra,t5
+	srli	a6,a7,16
+	add	a1,a2,a6
+	srai	op_0_3,a5,31
+	and	op_0_2,op_0_3,s2
+	sub	a0,a1,op_0_2
+	srai	op_0_5,s2,31
+	and	op_0_4,op_0_5,a5
+	sub	s0,a0,op_0_4
+	srai	a4,a5,31
+	addi	a0,s1,0
+	addi	s1,s1,1
+	srai	s0,s0,5
+	sub	s0,s0,a4
+	mul	s0,s0,s4
+	sub	s0,a5,s0
+	addi	a1,s0,0
+.Lpcrel_15:
+	auipc	ra,%pcrel_hi(dijkstra)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_15)
 	addi	a5,s0,1
 	bne	s1,s3,.L49
 	lui	t0,9

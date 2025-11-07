@@ -431,7 +431,15 @@ class RewriteBlock:
                 # 不在图中的 eclass，说明图构建有问题
                 raise ValueError(f"Eclass {eclass_id} from file not found in block graph")
 
-        self.replace_placeholders()
+        max_placeholders = 0
+        temp_lines = [line for sublist in self.block_lines for line in sublist]
+        for line in temp_lines:
+            placeholders = re.findall(r'op_\d+_\d+', line)
+            num_placeholders = len(set(placeholders))  # 去重
+            max_placeholders = max(max_placeholders, num_placeholders)
+
+        #self.allocate_registers(max_placeholders)
+        #self.replace_placeholders()
         self.merge_lines()
         
     def allocate_registers(self, num_needed: int, avoid_regs: Set[str] = None) -> Tuple[List[str], List[str], List[str]]:
