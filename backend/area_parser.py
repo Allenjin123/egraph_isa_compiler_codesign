@@ -126,16 +126,16 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None) -> float:
     if not synth_script.exists():
         raise FileNotFoundError(f"Synthesis script not found: {synth_script}")
 
-    # Determine output directory for synthesis (unique per DSL file to avoid conflicts)
-    dsl_path_obj = Path(dsl_path_abs)
-    synth_output_dir = synth_script.parent / "output" / dsl_path_obj.stem
+    # Determine output directory for synthesis
+    # synth_core.sh creates subdirectory based on DSL filename (e.g., variant_0.dsl -> output/variant_0/)
+    # So we just pass the base 'output' directory
+    synth_output_base = synth_script.parent / "output"
 
     # Run synthesis (use absolute path so it works from any cwd)
     print(f"Running synthesis with {dsl_path_abs}...")
-    print(f"Synthesis output will be in: {synth_output_dir}")
     try:
         result = subprocess.run(
-            [str(synth_script), "--gates", "--core", "ibex", dsl_path_abs, str(synth_output_dir)],
+            [str(synth_script), "--gates", "--core", "ibex", dsl_path_abs, str(synth_output_base)],
             capture_output=True,
             text=True,
             timeout=600,  # 10 minute timeout for synthesis
