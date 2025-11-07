@@ -1,5 +1,5 @@
---- /home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/benchmark/network/dijkstra/dijkstra_small_O3_clean.s	2025-11-02 22:41:44.891957528 -0500
-+++ /home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/benchmark/network/dijkstra/dijkstra_small_O3_rewrite.s	2025-11-05 21:34:10.925789589 -0500
+--- /home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/benchmark/network/dijkstra/dijkstra_small_O3_clean.s	2025-11-05 21:41:57.267749875 -0500
++++ /home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/benchmark/network/dijkstra/dijkstra_small_O3_rewrite.s	2025-11-07 15:34:03.386730001 -0500
 @@ -15,73 +15,78 @@
  	.type	print_path, @function
  print_path:
@@ -86,7 +86,7 @@
 +	sub	a4,a1,a4
  	lw	a1,4(a4)
 -	beq	a1,a5,.L5
-+	bne	a1,a5, .+8
++	bne	a1,a5,.+8
 +	jal	x0,.L5
  	sw	a3,12(sp)
  	sw	a7,8(sp)
@@ -634,7 +634,7 @@
 -	slti	a0,a0,1
 +	addi	a0,x0,1
 +	addi	a2,x0,1
-+	bge	a2,a0, .+4
++	bge	a2,a0,.+4
 +	addi	a0,x0,0
  	addi	sp,sp,2032
 -	jalr	zero, ra, 0
