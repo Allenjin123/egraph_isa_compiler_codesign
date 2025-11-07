@@ -25,34 +25,34 @@ from src.egraph import sanitize, DATA_DIR, get_file_name, clean_folder, EGraph
 # Higher weight = more expensive = ILP tries harder to avoid
 OP_TYPE_WEIGHTS = {
     # M-extension operations (very expensive - larger area, higher latency)
-    'Mul': 3000,
-    'Mulh': 3000,
-    'Mulhsu': 3000,
-    'Mulhu': 3000,
-    'Div': 5000,      # Division is especially expensive
-    'Divu': 5000,
-    'Rem': 4000,
-    'Remu': 4000,
+    'Op_Mul': 3000,
+    'Op_Mulh': 3000,
+    'Op_Mulhsu': 3000,
+    'Op_Mulhu': 3000,
+    'Op_Div': 5000,      # Division is especially expensive
+    'Op_Divu': 5000,
+    'Op_Rem': 4000,
+    'Op_Remu': 4000,
 
     # Memory operations (medium cost)
-    'Lw': 150,
-    'Lb': 150,
-    'Lh': 150,
-    'Lbu': 150,
-    'Lhu': 150,
-    'Sw': 150,
-    'Sb': 150,
-    'Sh': 150,
+    'Op_Lw': 150,
+    'Op_Lb': 150,
+    'Op_Lh': 150,
+    'Op_Lbu': 150,
+    'Op_Lhu': 150,
+    'Op_Sw': 150,
+    'Op_Sb': 150,
+    'Op_Sh': 150,
 
     # Branch/Jump (medium cost)
-    'Beq': 120,
-    'Bne': 120,
-    'Blt': 120,
-    'Bge': 120,
-    'Bltu': 120,
-    'Bgeu': 120,
-    'Jal': 110,
-    'Jalr': 110,
+    'Op_Beq': 120,
+    'Op_Bne': 120,
+    'Op_Blt': 120,
+    'Op_Bge': 120,
+    'Op_Bltu': 120,
+    'Op_Bgeu': 120,
+    'Op_Jal': 110,
+    'Op_Jalr': 110,
 
     # Default weight for unlisted operations (cheap ALU ops like Add, Sub, And, etc.)
 }
@@ -153,7 +153,8 @@ def generate_ilp_file(
     for op_name in sorted(op_vars.keys()):
         if op_name not in excluded_ops:
             # Get operator-specific weight (default 100 for cheap ops)
-            weight = OP_TYPE_WEIGHTS.get(op_name, DEFAULT_OP_WEIGHT)
+            weight = OP_TYPE_WEIGHTS.get(op_vars[op_name], DEFAULT_OP_WEIGHT)
+            print(f"Operator {op_name} has weight {weight}")
             obj_terms.append(f"{weight} {op_vars[op_name]}")
     
     # Part 2: Node selection cost (scaled by node_cost_scale parameter)
