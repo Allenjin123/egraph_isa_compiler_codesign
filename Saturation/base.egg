@@ -246,17 +246,19 @@
 ;;
 ;; Uses Seq2 because these are sequential with strict ordering (control flow)
 
-;; SLT rd, rs1, rs2  =  addi tmp, x0, 1; blt rs1, rs2, +4; addi tmp, x0, 0
+;; SLT rd, rs1, rs2  =  blt rs1, rs2, +8; addi rd, x0, 0; jal x0, +4; addi rd, x0, 1
 (birewrite (Slt rs1 rs2)
-           (Seq2 (Addi (RegVal "x0") (ImmVal 1))
-                 (Seq2 (Blt rs1 rs2 (ImmVal 4))
-                       (Addi (RegVal "x0") (ImmVal 0)))))
+           (Seq2 (Blt rs1 rs2 (ImmVal 8))
+                 (Seq2 (Addi (RegVal "x0") (ImmVal 0))
+                       (Seq2 (Jal (RegVal "x0") (ImmVal 4))
+                             (Addi (RegVal "x0") (ImmVal 1))))))
 
-;; SLTU rd, rs1, rs2  =  addi tmp, x0, 1; bltu rs1, rs2, +4; addi tmp, x0, 0
+;; SLTU rd, rs1, rs2  =  bltu rs1, rs2, +8; addi tmp, x0, 0; jal x0, +4; addi tmp, x0, 1
 (birewrite (Sltu rs1 rs2)
-           (Seq2 (Addi (RegVal "x0") (ImmVal 1))
-                 (Seq2 (Bltu rs1 rs2 (ImmVal 4))
-                       (Addi (RegVal "x0") (ImmVal 0)))))
+           (Seq2 (Bltu rs1 rs2 (ImmVal 8))
+                 (Seq2 (Addi (RegVal "x0") (ImmVal 0))
+                       (Seq2 (Jal (RegVal "x0") (ImmVal 4))
+                             (Addi (RegVal "x0") (ImmVal 1))))))
 
 ;; === Branch Simplifications ===
 ;; Branch on same values

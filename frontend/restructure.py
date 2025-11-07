@@ -277,12 +277,12 @@ class RewriteBlock:
         self.eclass_to_rd_list: List[Tuple[str, str]] = get_eclass_to_rd(program_name, block_num)
         self.block_lines: List[List[str]] = [[] for _ in range(len(self.eclass_to_rd_list))]
         self.eclass_to_rd_map: Dict[str, str] = {}  # 初始化为空，走一行更新一行
+        self.stack_per_line: List[Dict[str, List[str]]] = [{"push": [], "pop": []} for _ in range(len(self.block_lines))]
         # 计算每行可用的 free_regs
         self.free_regs_per_line: List[List[str]] = compute_free_regs_per_line(program_name, block_num)
         self.free_regs: List[str] = []
         self.temp_counter: int = 0  # 临时寄存器计数器
         self.current_line_idx: int = 0  # 当前处理的行索引
-        self.stack: Dict[str, List[str]] = {"push": [], "pop": []}  # 栈操作
 
     def get_free_reg(self) -> str:
         """获取一个可用的寄存器
@@ -431,68 +431,47 @@ class RewriteBlock:
                 # 不在图中的 eclass，说明图构建有问题
                 raise ValueError(f"Eclass {eclass_id} from file not found in block graph")
 
-        max_placeholders = 0
-        temp_lines = [line for sublist in self.block_lines for line in sublist]
-        for line in temp_lines:
-            placeholders = re.findall(r'op_\d+_\d+', line)
-            num_placeholders = len(set(placeholders))  # 去重
-            max_placeholders = max(max_placeholders, num_placeholders)
-
-        self.allocate_registers(max_placeholders)
         self.replace_placeholders()
         self.merge_lines()
         
-    def allocate_registers(self, max_placeholders: int):
+    def allocate_registers(self, num_needed: int, avoid_regs: Set[str] = None) -> Tuple[List[str], List[str], List[str]]:
         """分配需要借用的寄存器并生成栈操作指令"""
-        if max_placeholders == 0:
-            return
+        if num_needed == 0:
+            return [], [], []
         
-        # 选择可借用的寄存器（s 寄存器）
-        borrowed_regs = self._select_borrowable_registers(max_placeholders)
+        borrowed_regs = self._select_borrowable_registers(num_needed, avoid_regs or set())
         
-        if len(borrowed_regs) < max_placeholders:
-            raise RuntimeError(f"需要 {max_placeholders} 个寄存器，但只能借用 {len(borrowed_regs)} 个")
+        if len(borrowed_regs) < num_needed:
+            raise RuntimeError(f"需要 {num_needed} 个寄存器，但只能借用 {len(borrowed_regs)} 个")
         
-        # 生成压栈指令
-        # RISC-V ABI 要求 sp 必须保持 16 字节对齐
+        borrowed_regs = borrowed_regs[:num_needed]
+        
         raw_stack_size = 4 * len(borrowed_regs)
         stack_size = ((raw_stack_size + 15) // 16) * 16  # 向上对齐到 16 的倍数
         
-        self.stack["push"].append(f"addi\tsp,sp,{-stack_size}")
+        push_stack = [f"addi\tsp,sp,{-stack_size}"]
         for i, reg in enumerate(borrowed_regs):
-            self.stack["push"].append(f"sw\t{reg},{4*i}(sp)")
+            push_stack.append(f"sw\t{reg},{4*i}(sp)")
         
-        # 生成出栈指令
+        pop_stack = []
         for i, reg in enumerate(borrowed_regs):
-            self.stack["pop"].append(f"lw\t{reg},{4*i}(sp)")
-        self.stack["pop"].append(f"addi\tsp,sp,{stack_size}")
+            pop_stack.append(f"lw\t{reg},{4*i}(sp)")
+        pop_stack.append(f"addi\tsp,sp,{stack_size}")
         
-        # 保存借用的寄存器列表供替换使用
-        self.borrowed_regs = borrowed_regs
+        return borrowed_regs, push_stack, pop_stack
     
-    def _select_borrowable_registers(self, num_needed: int) -> List[str]:
+    def _select_borrowable_registers(self, num_needed: int, avoid_regs: Set[str]) -> List[str]:
         """选择可以借用的寄存器
         
-        选择标准：没被 block 使用过且没被 block 定义过
+        选择标准：在当前 sublist 中既未使用也未定义
         """
-        # 读取 defuse 信息
-        defuse_file = FRONTEND_OUTPUT_DIR / self.program_name / "defuse.json"
-        with open(defuse_file, 'r') as f:
-            defuse_data = json.load(f)
-        
-        block_key = str(self.block_num)
-        use_all = set(defuse_data[block_key].get('USE_all', []))  # block 所有使用的寄存器
-        def_all = set(defuse_data[block_key].get('DEF_all', []))  # block 所有定义的寄存器
-        
-        # 候选寄存器：s 寄存器优先（callee-saved）
-        candidate_regs = ['s2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11']
+        candidate_regs = ['s2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11',
+                          'a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 't0', 't1', 't2', 't3', 't4', 't5', 't6']
         
         borrowable = []
         for reg in candidate_regs:
-            # 可以借用：既不在 USE_all 也不在 DEF_all
-            if reg not in use_all and reg not in def_all:
+            if reg not in avoid_regs:
                 borrowable.append(reg)
-            
             if len(borrowable) >= num_needed:
                 break
         
@@ -505,9 +484,6 @@ class RewriteBlock:
         因为占位符名字包含 line_idx，不同 sublist 的占位符不会冲突，
         可以复用相同的借用寄存器
         """
-        if not hasattr(self, 'borrowed_regs') or not self.borrowed_regs:
-            return
-        
         import re
         
         # 按 sublist 独立处理
@@ -523,14 +499,26 @@ class RewriteBlock:
             if not seen_placeholders:
                 continue
             
-            # 2. 检查寄存器数量是否足够
-            if len(seen_placeholders) > len(self.borrowed_regs):
-                raise RuntimeError(f"Sublist {i} 需要 {len(seen_placeholders)} 个寄存器，但只借用了 {len(self.borrowed_regs)} 个")
+            def_regs = set()
+            use_regs = set()
+            for line in sublist:
+                line_def, line_use = extract_def_use(line)
+                def_regs.update(line_def)
+                use_regs.update(line_use)
             
-            # 3. 为当前 sublist 分配寄存器（按首次出现顺序）
+            avoid_regs = def_regs | use_regs
+            
+            borrowed_regs, push_stack, pop_stack = self.allocate_registers(len(seen_placeholders), avoid_regs)
+            self.stack_per_line[i]["push"].extend(push_stack)
+            self.stack_per_line[i]["pop"].extend(pop_stack)
+            
+            if len(borrowed_regs) < len(seen_placeholders):
+                raise RuntimeError(f"Sublist {i} 需要 {len(seen_placeholders)} 个寄存器，但只借用了 {len(borrowed_regs)} 个")
+            
+            # 3. 为当前 sublist 分配寄存器（按首次出现顺序） 
             placeholder_to_reg = {}
-            for idx, placeholder in enumerate(seen_placeholders):
-                placeholder_to_reg[placeholder] = self.borrowed_regs[idx]
+            for idx, placeholder in enumerate(seen_placeholders): 
+                placeholder_to_reg[placeholder] = borrowed_regs[idx]
             
             # 4. 替换当前 sublist 中的占位符
             for j in range(len(self.block_lines[i])):
@@ -538,36 +526,15 @@ class RewriteBlock:
                     self.block_lines[i][j] = self.block_lines[i][j].replace(placeholder, reg)
     
     def merge_lines(self):
-        push_stack = [line for line in self.stack["push"]]
-        pop_stack = [line for line in self.stack["pop"]]
-        lines = [line for sublist in self.block_lines for line in sublist]
+
+        for idx, sublist in enumerate(self.block_lines):
+            push_stack = [line for line in self.stack_per_line[idx]["push"]]
+            pop_stack = [line for line in self.stack_per_line[idx]["pop"]]
+            lines = [line for line in sublist]
+            combined = push_stack + lines + pop_stack    
+            self.block_lines[idx] = combined
         
-        if not lines or not pop_stack:
-            self.lines = push_stack + lines + pop_stack
-            return
-        
-        # 检查最后一条和倒数第二条指令
-        last_line = lines[-1].strip()
-        last_mnemonic = last_line.split()[0] if last_line else ""
-        
-        # 检查是否是 auipc + jalr 配对（用于函数调用）
-        if len(lines) >= 2 and last_mnemonic == 'jalr':
-            second_last_line = lines[-2].strip()
-            second_last_mnemonic = second_last_line.split()[0] if second_last_line else ""
-            
-            if second_last_mnemonic == 'auipc':
-                # auipc + jalr 配对，pop 必须插入到 auipc 之前
-                self.lines = push_stack + lines[:-2] + pop_stack + lines[-2:]
-                return
-        
-        # RV32I branch 指令
-        branch_ops = {'beq', 'bne', 'blt', 'bge', 'bltu', 'bgeu', 'jal', 'jalr'}
-        
-        if last_mnemonic in branch_ops:
-            # 普通 branch，pop 插入到最后一条指令之前
-            self.lines = push_stack + lines[:-1] + pop_stack + [lines[-1]]
-        else:
-            self.lines = push_stack + lines + pop_stack
+        self.lines = [line for sublist in self.block_lines for line in sublist]
 
 def get_all_blocks(program_name: str) -> List[int]:
     """获取一个 program 的所有 block 编号
