@@ -18,6 +18,7 @@ DEFAULT_PARALLEL_JOBS=24
 DEFAULT_SYNTH_JOBS=72  # Parallel synthesis processes
 DEFAULT_CLEAN=true     # Clean old outputs by default
 DEFAULT_RUN_SATURATION=true  # Run saturation by default
+DEFAULT_PROGRAMS="basicmath_small_O3 bitcount_small_O3 qsort_small_O3 qsort_large_small_O3 dijkstra_small_O3 patricia_small_O3"
 
 # Color codes for output
 RED='\033[0;31m'
@@ -37,7 +38,10 @@ BACKEND_OUTPUT="$SCRIPT_DIR/output/backend"
 
 # Function to display usage
 usage() {
-    echo "使用方法: $0 <program_name> [options]"
+    echo "使用方法: $0 [program_names...] [options]"
+    echo ""
+    echo "参数:"
+    echo "  program_names              程序名称列表（可选，默认运行所有6个基准程序）"
     echo ""
     echo "选项:"
     echo "  -s, --scales SCALES        空格分隔的缩放因子列表 (默认: '$DEFAULT_SCALES')"
@@ -45,40 +49,41 @@ usage() {
     echo "  -t, --timeout TIMEOUT      ILP 求解器超时秒数 (默认: $DEFAULT_TIMEOUT)"
     echo "  -j, --jobs JOBS            ILP 并行任务数 (默认: $DEFAULT_PARALLEL_JOBS)"
     echo "  -sj, --synth-jobs JOBS     合成并行进程数 (默认: $DEFAULT_SYNTH_JOBS)"
-    echo "  -o, --output-dir DIR       输出目录 (默认: output/backend/<program>)"
+    echo "  -o, --output-dir DIR       输出目录基础路径 (默认: output/backend/)"
     echo "  --clean                    清理旧输出（默认：是）"
     echo "  --no-clean                 不清理旧输出"
     echo "  --skip-saturation          跳过饱和步骤（使用现有 JSON 文件）"
     echo "  -r, --reconstruct-only     仅重建汇编文件（跳过 ILP 提取）"
     echo "  -h, --help                 显示此帮助信息"
     echo ""
+    echo "默认基准程序 (6个):"
+    echo "  $DEFAULT_PROGRAMS"
+    echo ""
     echo "示例:"
-    echo "  $0 dijkstra_small_O3                                    # 完整流程：清理+饱和+ILP+Pareto"
-    echo "  $0 dijkstra_small_O3 -s '0 1 100' -k 5                 # 3个缩放因子，每个5个变体"
-    echo "  $0 dijkstra_small_O3 -j 10 -t 300                      # 10个ILP并行任务，300秒超时"
-    echo "  $0 dijkstra_small_O3 -sj 72                            # 72个并行合成进程"
-    echo "  $0 dijkstra_small_O3 --skip-saturation --no-clean      # 跳过清理和饱和"
+    echo "  $0                                                     # 运行所有6个默认基准程序"
+    echo "  $0 dijkstra_small_O3                                   # 运行单个程序"
+    echo "  $0 dijkstra_small_O3 basicmath_small_O3                # 运行2个程序"
+    echo "  $0 -s '0 1 100' -k 5                                   # 所有程序，3个缩放因子，每个5个变体"
+    echo "  $0 dijkstra_small_O3 -j 10 -t 300                      # 单个程序，10个ILP并行任务，300秒超时"
+    echo "  $0 dijkstra_small_O3 -sj 72                            # 单个程序，72个并行合成进程"
+    echo "  $0 --skip-saturation --no-clean                        # 所有程序，跳过清理和饱和"
     echo ""
     exit 1
 }
 
 # Parse command line arguments
-if [ $# -eq 0 ]; then
-    usage
-fi
-
 # Check for help first
 if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
     usage
 fi
 
-PROGRAM_NAME=""
+PROGRAM_NAMES=()
 SCALES="$DEFAULT_SCALES"
 BEST_K="$DEFAULT_K"
 TIMEOUT="$DEFAULT_TIMEOUT"
 PARALLEL_JOBS="$DEFAULT_PARALLEL_JOBS"
 SYNTH_JOBS="$DEFAULT_SYNTH_JOBS"
-OUTPUT_DIR=""
+OUTPUT_BASE_DIR=""
 RECONSTRUCT_ONLY=false
 CLEAN_OUTPUTS="$DEFAULT_CLEAN"
 RUN_SATURATION="$DEFAULT_RUN_SATURATION"
@@ -107,7 +112,7 @@ while [[ $# -gt 0 ]]; do
             shift 2
             ;;
         -o|--output-dir)
-            OUTPUT_DIR="$2"
+            OUTPUT_BASE_DIR="$2"
             shift 2
             ;;
         --clean)
@@ -134,50 +139,73 @@ while [[ $# -gt 0 ]]; do
             usage
             ;;
         *)
-            # This is the program name
-            if [ -z "$PROGRAM_NAME" ]; then
-                PROGRAM_NAME="$1"
-            else
-                echo -e "${RED}错误: 多余的参数 $1${NC}"
-                usage
-            fi
+            # This is a program name
+            PROGRAM_NAMES+=("$1")
             shift
             ;;
     esac
 done
 
-# Check if program name was provided
-if [ -z "$PROGRAM_NAME" ]; then
-    echo -e "${RED}错误: 必须提供程序名称${NC}"
-    usage
+# If no program names provided, use defaults
+if [ ${#PROGRAM_NAMES[@]} -eq 0 ]; then
+    echo -e "${YELLOW}未指定程序，使用默认6个基准程序${NC}"
+    IFS=' ' read -ra PROGRAM_NAMES <<< "$DEFAULT_PROGRAMS"
 fi
 
-# Set output directory if not specified
-if [ -z "$OUTPUT_DIR" ]; then
-    OUTPUT_DIR="$BACKEND_OUTPUT/$PROGRAM_NAME"
+# Set output base directory if not specified
+if [ -z "$OUTPUT_BASE_DIR" ]; then
+    OUTPUT_BASE_DIR="$BACKEND_OUTPUT"
 fi
 
 # Convert scales string to array
 IFS=' ' read -ra SCALE_ARRAY <<< "$SCALES"
 NUM_SCALES=${#SCALE_ARRAY[@]}
-TOTAL_VARIANTS=$((NUM_SCALES * BEST_K))
+TOTAL_VARIANTS_PER_PROGRAM=$((NUM_SCALES * BEST_K))
+NUM_PROGRAMS=${#PROGRAM_NAMES[@]}
+TOTAL_PROGRAMS_VARIANTS=$((TOTAL_VARIANTS_PER_PROGRAM * NUM_PROGRAMS))
 
 # ============================================================================
-# Display configuration
+# Display global configuration
 # ============================================================================
 echo -e "${CYAN}========================================${NC}"
-echo -e "${CYAN}多缩放因子变体生成${NC}"
+echo -e "${CYAN}多缩放因子变体生成 - 批处理模式${NC}"
 echo -e "${CYAN}========================================${NC}"
-echo -e "程序名称: ${GREEN}$PROGRAM_NAME${NC}"
+echo -e "程序数量: ${GREEN}${NUM_PROGRAMS}${NC}"
+echo -e "程序列表: ${GREEN}${PROGRAM_NAMES[*]}${NC}"
 echo -e "缩放因子: ${GREEN}${SCALES}${NC} (${NUM_SCALES} 个)"
 echo -e "每个缩放因子变体数: ${GREEN}${BEST_K}${NC}"
-echo -e "总变体数: ${GREEN}${TOTAL_VARIANTS}${NC}"
+echo -e "每个程序变体数: ${GREEN}${TOTAL_VARIANTS_PER_PROGRAM}${NC}"
+echo -e "总变体数 (所有程序): ${GREEN}${TOTAL_PROGRAMS_VARIANTS}${NC}"
 echo -e "ILP 超时: ${GREEN}${TIMEOUT}秒${NC}"
 echo -e "ILP 并行任务数: ${GREEN}${PARALLEL_JOBS}${NC}"
 echo -e "合成并行进程数: ${GREEN}${SYNTH_JOBS}${NC}"
-echo -e "输出目录: ${GREEN}${OUTPUT_DIR}${NC}"
+echo -e "输出基础目录: ${GREEN}${OUTPUT_BASE_DIR}${NC}"
 echo -e "${CYAN}========================================${NC}"
 echo ""
+
+# ============================================================================
+# Main loop: Process each program
+# ============================================================================
+GLOBAL_START_TIME=$(date +%s)
+SUCCESSFUL_PROGRAMS=0
+FAILED_PROGRAMS=0
+
+for PROGRAM_IDX in "${!PROGRAM_NAMES[@]}"; do
+    PROGRAM_NAME="${PROGRAM_NAMES[$PROGRAM_IDX]}"
+    PROGRAM_NUM=$((PROGRAM_IDX + 1))
+
+    echo ""
+    echo -e "${MAGENTA}================================================================================${NC}"
+    echo -e "${MAGENTA}处理程序 ${PROGRAM_NUM}/${NUM_PROGRAMS}: ${PROGRAM_NAME}${NC}"
+    echo -e "${MAGENTA}================================================================================${NC}"
+    echo ""
+
+    # Set output directory for this program
+    OUTPUT_DIR="$OUTPUT_BASE_DIR/$PROGRAM_NAME"
+
+    # Temporarily disable exit on error for this program (allow continuation if one program fails)
+    set +e
+    PROGRAM_FAILED=0
 
 # ============================================================================
 # Step 0: Clean old outputs (if enabled)
@@ -219,19 +247,29 @@ if [ "$RUN_SATURATION" = true ]; then
 
     if [ ! -f "$SATURATION_SCRIPT" ]; then
         echo -e "${RED}错误: 饱和脚本未找到: $SATURATION_SCRIPT${NC}"
-        exit 1
+        PROGRAM_FAILED=1
+    else
+        echo -e "${CYAN}  运行: cd Saturation && ./run_saturation.sh $PROGRAM_NAME${NC}"
+
+        # Run saturation
+        if ! (cd "$SATURATION_DIR" && bash run_saturation.sh "$PROGRAM_NAME"); then
+            echo -e "${RED}✗ 程序 ${PROGRAM_NAME} 饱和失败，跳过此程序${NC}"
+            PROGRAM_FAILED=1
+        fi
     fi
 
-    echo -e "${CYAN}  运行: cd Saturation && ./run_saturation.sh $PROGRAM_NAME${NC}"
-
-    # Run saturation
-    (cd "$SATURATION_DIR" && bash run_saturation.sh "$PROGRAM_NAME") || {
-        echo -e "${RED}✗ 饱和失败${NC}"
-        exit 1
-    }
-
-    echo -e "${GREEN}  ✓ 饱和完成${NC}"
+    if [ $PROGRAM_FAILED -eq 0 ]; then
+        echo -e "${GREEN}  ✓ 饱和完成${NC}"
+    fi
     echo ""
+fi
+
+# Skip to next program if this one failed
+if [ $PROGRAM_FAILED -eq 1 ]; then
+    FAILED_PROGRAMS=$((FAILED_PROGRAMS + 1))
+    echo -e "${RED}跳过程序 ${PROGRAM_NAME}，继续下一个程序${NC}"
+    set -e  # Re-enable exit on error for loop
+    continue
 fi
 
 # Create output directory and subdirectories
@@ -250,11 +288,20 @@ if [ "$RECONSTRUCT_ONLY" = false ]; then
     if [ -f "$MERGED_JSON" ]; then
         echo -e "${YELLOW}  merged.json 已存在，跳过生成${NC}"
     else
-        python3 "$EXTRACTOR_DIR/src/egraph.py" "$PROGRAM_NAME" || {
-            echo -e "${RED}错误: 生成 merged.json 失败${NC}"
-            exit 1
-        }
-        echo -e "${GREEN}  ✓ merged.json 生成成功${NC}"
+        if ! python3 "$EXTRACTOR_DIR/src/egraph.py" "$PROGRAM_NAME"; then
+            echo -e "${RED}错误: 程序 ${PROGRAM_NAME} 生成 merged.json 失败，跳过此程序${NC}"
+            PROGRAM_FAILED=1
+        else
+            echo -e "${GREEN}  ✓ merged.json 生成成功${NC}"
+        fi
+    fi
+
+    # Check if program failed
+    if [ $PROGRAM_FAILED -eq 1 ]; then
+        FAILED_PROGRAMS=$((FAILED_PROGRAMS + 1))
+        echo -e "${RED}跳过程序 ${PROGRAM_NAME}，继续下一个程序${NC}"
+        set -e
+        continue
     fi
     echo ""
 
@@ -395,18 +442,26 @@ else
 fi
 
 if [ $ACTUAL_VARIANTS -eq 0 ]; then
-    echo -e "${RED}错误: 未找到任何解文件${NC}"
-    exit 1
+    echo -e "${RED}错误: 程序 ${PROGRAM_NAME} 未找到任何解文件，跳过此程序${NC}"
+    PROGRAM_FAILED=1
+else
+    echo -e "${GREEN}准备重建 ${ACTUAL_VARIANTS} 个变体...${NC}"
+
+    # Run reconstruction with all variants
+    echo "运行重建脚本..."
+    if ! bash "$FRONTEND_DIR/run_reconstruct.sh" "$PROGRAM_NAME" "$ACTUAL_VARIANTS"; then
+        echo -e "${RED}错误: 程序 ${PROGRAM_NAME} 重建失败，跳过此程序${NC}"
+        PROGRAM_FAILED=1
+    fi
 fi
 
-echo -e "${GREEN}准备重建 ${ACTUAL_VARIANTS} 个变体...${NC}"
-
-# Run reconstruction with all variants
-echo "运行重建脚本..."
-bash "$FRONTEND_DIR/run_reconstruct.sh" "$PROGRAM_NAME" "$ACTUAL_VARIANTS" || {
-    echo -e "${RED}错误: 重建失败${NC}"
-    exit 1
-}
+# Check if program failed during reconstruction
+if [ $PROGRAM_FAILED -eq 1 ]; then
+    FAILED_PROGRAMS=$((FAILED_PROGRAMS + 1))
+    echo -e "${RED}跳过程序 ${PROGRAM_NAME}，继续下一个程序${NC}"
+    set -e
+    continue
+fi
 
 # ============================================================================
 # Step 4: Organize output files
@@ -614,5 +669,59 @@ EOF
 
 echo ""
 echo -e "${YELLOW}汇总报告已保存至: $SUMMARY_FILE${NC}"
+
+    # Track program success/failure
+    if [ $ANALYSIS_SUCCESS -eq 1 ]; then
+        SUCCESSFUL_PROGRAMS=$((SUCCESSFUL_PROGRAMS + 1))
+        echo -e "${GREEN}✓ 程序 ${PROGRAM_NAME} 完成${NC}"
+    else
+        FAILED_PROGRAMS=$((FAILED_PROGRAMS + 1))
+        echo -e "${YELLOW}⚠ 程序 ${PROGRAM_NAME} 完成但分析未成功${NC}"
+    fi
+
+    # Re-enable exit on error for next program
+    set -e
+
+done  # End of main program loop
+
+# ============================================================================
+# Global Summary (All Programs)
+# ============================================================================
+GLOBAL_END_TIME=$(date +%s)
+GLOBAL_DURATION=$((GLOBAL_END_TIME - GLOBAL_START_TIME))
+GLOBAL_DURATION_MIN=$((GLOBAL_DURATION / 60))
+GLOBAL_DURATION_SEC=$((GLOBAL_DURATION % 60))
+
+echo ""
+echo -e "${CYAN}================================================================================${NC}"
+echo -e "${CYAN}全局汇总 - 所有程序处理完成${NC}"
+echo -e "${CYAN}================================================================================${NC}"
+echo -e "处理程序数: ${GREEN}${NUM_PROGRAMS}${NC}"
+echo -e "成功: ${GREEN}${SUCCESSFUL_PROGRAMS}${NC}"
+if [ $FAILED_PROGRAMS -gt 0 ]; then
+    echo -e "失败/警告: ${YELLOW}${FAILED_PROGRAMS}${NC}"
+fi
+echo -e "总耗时: ${GREEN}${GLOBAL_DURATION_MIN}分${GLOBAL_DURATION_SEC}秒${NC}"
+echo -e "输出目录: ${GREEN}${OUTPUT_BASE_DIR}${NC}"
+echo ""
+
+echo -e "${BLUE}各程序输出目录:${NC}"
+for PROGRAM_NAME in "${PROGRAM_NAMES[@]}"; do
+    PROG_OUTPUT="$OUTPUT_BASE_DIR/$PROGRAM_NAME"
+    if [ -d "$PROG_OUTPUT" ]; then
+        VARIANT_COUNT=$(ls -d "$PROG_OUTPUT/variants/variant_"* 2>/dev/null | wc -l)
+        if [ -f "$PROG_OUTPUT/pareto_frontier.png" ]; then
+            echo -e "  ${GREEN}✓${NC} $PROGRAM_NAME (${VARIANT_COUNT} 变体, Pareto图已生成)"
+        else
+            echo -e "  ${YELLOW}⚠${NC} $PROGRAM_NAME (${VARIANT_COUNT} 变体, 无Pareto图)"
+        fi
+    else
+        echo -e "  ${RED}✗${NC} $PROGRAM_NAME (未找到输出)"
+    fi
+done
+
+echo ""
+echo -e "${GREEN}✓ 批处理完成！${NC}"
+echo -e "${CYAN}================================================================================${NC}"
 
 exit 0
