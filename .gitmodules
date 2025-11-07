@@ -5,6 +5,17 @@
 [submodule "PdatScorrWrapper"]
 	path = PdatScorrWrapper
 	url = https://github.com/CrucibleComputingGroup/PdatScorrWrapper.git
+	update = none
+
+[submodule "PdatScorrWrapper/CoreSim"]
+    update = none
+
+[submodule "PdatScorrWrapper/PdatDsl"]
+    update = none
+
+[submodule "PdatScorrWrapper/ScorrPdat"]
+    update = none
+
 [submodule "egglog"]
 	path = egglog
 	url = https://github.com/Allenjin123/egglog.git

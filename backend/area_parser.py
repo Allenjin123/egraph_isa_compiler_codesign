@@ -121,7 +121,7 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None) -> float:
 
     # Step 2: Call synthesis script
     # Path to synthesis script
-    synth_script = Path(__file__).parent.parent / "PdatScorrWrapper" / "ScorrPdat" / "synth_core.sh"
+    synth_script = Path(__file__).parent.parent / "PdatScorrWrapper" / "ScorrPdat" / "synth_ibex_with_constraints.sh"
 
     if not synth_script.exists():
         raise FileNotFoundError(f"Synthesis script not found: {synth_script}")
@@ -135,7 +135,7 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None) -> float:
     print(f"Running synthesis with {dsl_path_abs}...")
     try:
         result = subprocess.run(
-            [str(synth_script), "--gates", "--core", "ibex", dsl_path_abs, str(synth_output_base)],
+            [str(synth_script), "--gates", dsl_path_abs, str(synth_output_base)],
             capture_output=True,
             text=True,
             timeout=600,  # 10 minute timeout for synthesis
