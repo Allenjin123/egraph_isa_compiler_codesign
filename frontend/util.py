@@ -2,7 +2,7 @@
 # Provides common branch instruction predicates for RISC-V disassembly handling.
 
 from typing import List, Set, Tuple
-
+import re
 # ============================================================================
 # RV32IM 指令集定义 (RISC-V 32-bit Integer + Multiply/Divide)
 # ============================================================================
@@ -184,6 +184,9 @@ def normalize_mnemonic(mnemonic: str) -> str:
 # ============================================================================
 # Register Utility Functions
 # ============================================================================
+def norm_reg(s: str) -> str:
+    m = re.match(r'^([A-Za-z0-9]+)(?:_.*)?$', s)
+    return m.group(1) if m else s
 
 def is_register(s: str) -> bool:
     """Check if string is a valid RISC-V register"""
@@ -194,7 +197,7 @@ def is_register(s: str) -> bool:
         num = int(s[1:])
         return 0 <= num <= 31
     # ABI names
-    return s in ALL_ABI_REGS
+    return norm_reg(s) in ALL_ABI_REGS
 
 def extract_registers_from_operand(operand: str) -> List[str]:
     """
