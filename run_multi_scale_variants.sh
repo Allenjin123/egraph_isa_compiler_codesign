@@ -536,6 +536,49 @@ for i in "${!SCALE_ARRAY[@]}"; do
 done
 
 # ============================================================================
+# Step 4.5: Add original program as baseline variant
+# ============================================================================
+echo ""
+echo -e "${BLUE}步骤 4.5/6: 添加原始程序作为基线变体...${NC}"
+
+# Find the original clean.s file
+ORIGINAL_ASM=$(find "$SCRIPT_DIR/benchmark" -name "${PROGRAM_NAME}_clean.s" -type f | head -1)
+
+if [ -f "$ORIGINAL_ASM" ]; then
+    # Create variant_original directory
+    ORIGINAL_VARIANT_DIR="$FINAL_OUTPUT/variant_original"
+    mkdir -p "$ORIGINAL_VARIANT_DIR"
+
+    # Copy original assembly file
+    cp "$ORIGINAL_ASM" "$ORIGINAL_VARIANT_DIR/${PROGRAM_NAME}_original.s"
+    echo -e "${GREEN}  ✓ 原始程序: $(basename "$ORIGINAL_ASM")${NC}"
+
+    # Link to original frontend outputs (basic_blocks_ssa, etc.)
+    # This avoids re-analyzing the original program
+    ORIGINAL_FRONTEND="$OUTPUT_BASE/frontend/$PROGRAM_NAME"
+    if [ -d "$ORIGINAL_FRONTEND/basic_blocks" ]; then
+        ln -sf "$ORIGINAL_FRONTEND/basic_blocks" "$ORIGINAL_VARIANT_DIR/basic_blocks"
+        echo -e "${CYAN}    链接: basic_blocks/${NC}"
+    fi
+    if [ -d "$ORIGINAL_FRONTEND/basic_blocks_ssa" ]; then
+        ln -sf "$ORIGINAL_FRONTEND/basic_blocks_ssa" "$ORIGINAL_VARIANT_DIR/basic_blocks_ssa"
+        echo -e "${CYAN}    链接: basic_blocks_ssa/${NC}"
+    fi
+
+    # Copy metadata files if they exist
+    for meta_file in label_to_block.json label_metadata.json; do
+        if [ -f "$ORIGINAL_FRONTEND/$meta_file" ]; then
+            cp "$ORIGINAL_FRONTEND/$meta_file" "$ORIGINAL_VARIANT_DIR/"
+        fi
+    done
+
+    echo -e "${GREEN}  ✓ 原始程序已添加为 variant_original${NC}"
+else
+    echo -e "${YELLOW}  ⚠ 未找到原始程序: ${PROGRAM_NAME}_clean.s${NC}"
+fi
+echo ""
+
+# ============================================================================
 # Step 5: Generate basic blocks and SSA for each variant
 # ============================================================================
 echo ""

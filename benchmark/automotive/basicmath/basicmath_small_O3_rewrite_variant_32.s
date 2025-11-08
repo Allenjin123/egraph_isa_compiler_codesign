@@ -2423,7 +2423,7 @@ main:
 	addi	a3,a3,-1
 	slli	a5,a5,2
 	slli	s2,s2,1
-	bgeu	a4,s3,.L111
+	bltu	s3,a4,.L111
 	sub	s3,s3,a4
 	addi	s2,s2,1
 .L111:

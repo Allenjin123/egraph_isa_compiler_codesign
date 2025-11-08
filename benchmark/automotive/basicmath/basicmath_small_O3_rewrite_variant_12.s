@@ -2627,10 +2627,11 @@ main:
 	lw	s9,180(sp)
 	lw	s10,176(sp)
 	lw	s11,172(sp)
-	addi	a0,x0,1
 	addi	a2,x0,1
-	bgeu	a2,a0,.+4
+	bgeu	a2,a0,.+8
 	addi	a0,x0,0
+	jal	a0,4
+	addi	a0,x0,1
 	addi	sp,sp,224
 	jalr	zero,ra,0
 	.size	main, .-main

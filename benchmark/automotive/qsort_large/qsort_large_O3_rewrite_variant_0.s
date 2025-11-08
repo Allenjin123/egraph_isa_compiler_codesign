@@ -11,7 +11,8 @@ quicksort_range:
 	addi	sp,sp,-112
 	sw	ra,108(sp)
 	sw	a2,12(sp)
-	bge	a1,a2,.L1
+	blt	a1,a2,.+8
+	jal	x0,.L1
 	sw	s7,76(sp)
 	sw	s8,72(sp)
 	sw	s9,68(sp)
@@ -34,12 +35,16 @@ quicksort_range:
 	addi	s1,s10,0
 	sub	a2,x0,s2
 	sub	a4,s10,a2
-	srli	a5,a4,31
+	addi	a2,x0,31
+	srl	a5,a4,a2
 	sub	a2,x0,a5
 	sub	a5,a4,a2
 	srai	a4,a5,1
-	addi	a2,x0,-2
-	and	a5,a5,a2
+	addi	a6,x0,-2
+	or	a3,a5,a6
+	addi	a7,x0,-2
+	sub	a2,a3,a7
+	sub	a5,a5,a2
 	sub	a2,x0,a5
 	sub	a5,a4,a2
 	slli	a5,a5,3
@@ -48,7 +53,7 @@ quicksort_range:
 	lw	s4,16(a5)
 	lw	s5,20(a5)
 .L8:
-	bge	s1,s2,.L9
+	blt	s2,s1,.L9
 .L27:
 	slli	a5,s1,1
 	sub	a0,x0,a5
@@ -71,7 +76,8 @@ quicksort_range:
 	sub	s6,s0,a1
 	sub	a1,x0,s8
 	sub	s11,s11,a1
-	bge	a0,zero,.+8
+	blt	a0,zero,.+8
+	jal	x0,8
 	jal	x0,.L26
 .L4:
 	addi	s3,s11,0
@@ -84,7 +90,8 @@ quicksort_range:
 .Lpcrel_2:
 	auipc	ra,%pcrel_hi(__ltdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_2)
-	bge	zero,a0,.L4
+	blt	zero,a0,.+8
+	jal	x0,.L4
 	lw	a2,16(s6)
 	lw	a3,20(s6)
 	addi	a0,s4,0
@@ -92,7 +99,8 @@ quicksort_range:
 .Lpcrel_3:
 	auipc	ra,%pcrel_hi(__ltdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_3)
-	bge	zero,a0,.+8
+	blt	zero,a0,.+8
+	jal	x0,8
 	jal	x0,.L5
 .L14:
 	sub	a0,x0,s9
@@ -108,11 +116,10 @@ quicksort_range:
 .Lpcrel_4:
 	auipc	ra,%pcrel_hi(__gtdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_4)
-	bge	a0,zero,.+8
-	jal	x0,8
-	jal	x0,.L7
+	blt	zero,a0,.L7
 .L5:
-	bge	s1,s2,.L8
+	blt	s1,s2,.+8
+	jal	x0,.L8
 .L15:
 	lw	a1,0(s6)
 	lw	a2,4(s6)
@@ -146,13 +153,16 @@ quicksort_range:
 	sw	a3,12(s6)
 	sw	a4,16(s6)
 	sw	a5,20(s6)
-	bge	s1,s2,.+8
+	blt	s1,s2,.+8
+	jal	x0,8
 	jal	x0,.L27
 .L9:
-	bge	s2,s10,.L28
+	blt	s10,s2,.+8
+	jal	x0,8
+	jal	x0,.L28
 .L12:
 	lw	a5,12(sp)
-	bge	a5,s1,.+8
+	blt	s1,a5,.+8
 	jal	x0,.L29
 	addi	s10,s1,0
 	jal	zero,.L2
@@ -164,7 +174,8 @@ quicksort_range:
 .Lpcrel_5:
 	auipc	ra,%pcrel_hi(__ltdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_5)
-	bge	zero,a0,.L14
+	blt	zero,a0,.+8
+	jal	x0,.L14
 	jal	zero,.L15
 .L29:
 	lw	s0,104(sp)
@@ -357,37 +368,7 @@ main:
 	sub	a0,x0,sp
 	sub	sp,t0,a0
 	lw	ra,2028(sp)
-	addi	s3,x0,-1
-	addi	s6,x0,-1
-	and	s5,s6,s0
-	sub	s4,s5,s0
-	sub	s1,s3,s4
-	addi	s8,x0,-1
-	and	s7,s8,s0
-	sub	a7,s1,s7
-	addi	t2,x0,-1
-	addi	t5,x0,-1
-	and	t4,t5,s2
-	sub	t3,t4,s2
-	sub	t1,t2,t3
-	addi	zero,x0,-1
-	and	t6,zero,s2
-	sub	t0,t1,t6
-	and	a6,a7,t0
-	sub	a5,x0,a6
-	sub	a4,s2,a5
-	addi	op_4_2,x0,-1
-	addi	op_4_5,x0,-1
-	and	op_4_4,op_4_5,s0
-	sub	op_4_3,op_4_4,s0
-	sub	op_4_1,op_4_2,op_4_3
-	addi	op_4_7,x0,-1
-	and	op_4_6,op_4_7,s0
-	sub	op_4_0,op_4_1,op_4_6
-	sub	a3,a4,op_4_0
-	sub	a2,s2,a3
-	sub	a0,x0,a2
-	sub	a0,s0,a0
+	or	a0,s0,s2
 	lw	s1,2020(sp)
 	lw	s0,2024(sp)
 	lw	s2,2016(sp)
