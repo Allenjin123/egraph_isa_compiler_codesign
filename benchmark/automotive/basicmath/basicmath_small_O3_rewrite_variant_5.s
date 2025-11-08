@@ -139,11 +139,8 @@ my_cos:
 .Lpcrel_23:
 	auipc	ra,%pcrel_hi(__adddf3)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_23)
-	addi	a4,x0,3
-	or	a3,s6,a4
-	addi	a5,x0,3
-	sub	a2,a3,a5
-	sub	s2,s6,a2
+	addi	a2,x0,3
+	and	s2,s6,a2
 	addi	a5,zero,1
 	addi	s3,a0,0
 	addi	s5,a1,0
@@ -286,11 +283,11 @@ my_cos:
 	jalr	zero,ra,0
 .L6:
 	lui	a5,524288
-	or	a2,a1,a5
-	or	a6,a1,a5
-	sub	a4,a6,a5
-	sub	a3,a1,a4
-	sub	a5,a2,a3
+	and	a4,a1,a5
+	sub	a3,a4,a5
+	sub	a2,a1,a3
+	and	a6,a1,a5
+	sub	a5,a2,a6
 	jal	zero,.L1
 .L12:
 	lw	a2,%lo(.LC1)(s4)
@@ -305,11 +302,11 @@ my_cos:
 	jal	zero,.L4
 .L5:
 	lui	a5,524288
-	or	a2,a1,a5
-	or	a6,a1,a5
-	sub	a4,a6,a5
-	sub	a3,a1,a4
-	sub	a5,a2,a3
+	and	a4,a1,a5
+	sub	a3,a4,a5
+	sub	a2,a1,a3
+	and	a6,a1,a5
+	sub	a5,a2,a6
 	jal	zero,.L1
 	.size	my_cos, .-my_cos
 	.align	2
@@ -1666,11 +1663,11 @@ SolveCubic:
 	jal	zero,.L32
 .L86:
 	lui	a5,524288
-	or	a0,s5,a5
-	or	a3,s5,a5
-	sub	a2,a3,a5
-	sub	a1,s5,a2
-	sub	s11,a0,a1
+	and	a2,s5,a5
+	sub	a1,a2,a5
+	sub	a0,s5,a1
+	and	a3,s5,a5
+	sub	s11,a0,a3
 	jal	zero,.L41
 .L58:
 	addi	s5,zero,0
@@ -1692,11 +1689,11 @@ SolveCubic:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_198)
 	bge	zero,a0,.L50
 	lui	a5,524288
-	or	a0,a5,s4
-	or	a3,a5,s4
-	sub	a2,a3,s4
-	sub	a1,a5,a2
-	sub	s4,a0,a1
+	and	a2,a5,s4
+	sub	a1,a2,s4
+	sub	a0,a5,a1
+	and	a3,a5,s4
+	sub	s4,a0,a3
 .L50:
 	lw	a2,%lo(.LC25)(s3)
 	lw	a3,%lo(.LC25+4)(s3)
@@ -2630,10 +2627,11 @@ main:
 	lw	s9,180(sp)
 	lw	s10,176(sp)
 	lw	s11,172(sp)
-	addi	a0,x0,1
 	addi	a2,x0,1
-	bgeu	a2,a0,.+4
+	bgeu	a2,a0,.+8
 	addi	a0,x0,0
+	jal	a0,4
+	addi	a0,x0,1
 	addi	sp,sp,224
 	jalr	zero,ra,0
 	.size	main, .-main

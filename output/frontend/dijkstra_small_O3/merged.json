@@ -22023,22 +22023,6 @@
       "cost": 1.0,
       "subsumed": false
     },
-    "dijkstra_small_O3_58_enode_primitive_i64_4": {
-      "op": "4",
-      "children": [],
-      "eclass": "dijkstra_small_O3_58_eclass_i64_4",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "dijkstra_small_O3_58_enode_function_11_ImmVal": {
-      "op": "ImmVal",
-      "children": [
-        "dijkstra_small_O3_58_enode_primitive_i64_4"
-      ],
-      "eclass": "dijkstra_small_O3_58_eclass_Imm_31",
-      "cost": 1.0,
-      "subsumed": false
-    },
     "dijkstra_small_O3_58_enode_primitive_i64_8": {
       "op": "8",
       "children": [],
@@ -22046,12 +22030,28 @@
       "cost": 1.0,
       "subsumed": false
     },
-    "dijkstra_small_O3_58_enode_function_12_ImmVal": {
+    "dijkstra_small_O3_58_enode_function_11_ImmVal": {
       "op": "ImmVal",
       "children": [
         "dijkstra_small_O3_58_enode_primitive_i64_8"
       ],
-      "eclass": "dijkstra_small_O3_58_eclass_Imm_35",
+      "eclass": "dijkstra_small_O3_58_eclass_Imm_31",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "dijkstra_small_O3_58_enode_primitive_i64_4": {
+      "op": "4",
+      "children": [],
+      "eclass": "dijkstra_small_O3_58_eclass_i64_4",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "dijkstra_small_O3_58_enode_function_12_ImmVal": {
+      "op": "ImmVal",
+      "children": [
+        "dijkstra_small_O3_58_enode_primitive_i64_4"
+      ],
+      "eclass": "dijkstra_small_O3_58_eclass_Imm_34",
       "cost": 1.0,
       "subsumed": false
     },
@@ -22108,18 +22108,18 @@
     "dijkstra_small_O3_58_enode_function_0_Jal": {
       "op": "Jal",
       "children": [
-        "dijkstra_small_O3_58_enode_function_11_ImmVal"
+        "dijkstra_small_O3_58_enode_function_12_ImmVal"
       ],
-      "eclass": "dijkstra_small_O3_58_eclass_Inst_37",
+      "eclass": "dijkstra_small_O3_58_eclass_Inst_35",
       "cost": 1.0,
       "subsumed": false
     },
     "dijkstra_small_O3_58_enode_function_1_Jal": {
       "op": "Jal",
       "children": [
-        "dijkstra_small_O3_58_enode_function_12_ImmVal"
+        "dijkstra_small_O3_58_enode_function_11_ImmVal"
       ],
-      "eclass": "dijkstra_small_O3_58_eclass_Inst_40",
+      "eclass": "dijkstra_small_O3_58_eclass_Inst_39",
       "cost": 1.0,
       "subsumed": false
     },
@@ -22147,22 +22147,11 @@
     "dijkstra_small_O3_58_enode_function_1_Blt": {
       "op": "Blt",
       "children": [
-        "dijkstra_small_O3_58_enode_function_0_Lw",
-        "dijkstra_small_O3_58_enode_function_2_Addi",
-        "dijkstra_small_O3_58_enode_function_12_ImmVal"
-      ],
-      "eclass": "dijkstra_small_O3_58_eclass_Inst_39",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "dijkstra_small_O3_58_enode_function_2_Blt": {
-      "op": "Blt",
-      "children": [
         "dijkstra_small_O3_58_enode_function_2_Addi",
         "dijkstra_small_O3_58_enode_function_0_Lw",
-        "dijkstra_small_O3_58_enode_function_12_ImmVal"
+        "dijkstra_small_O3_58_enode_function_11_ImmVal"
       ],
-      "eclass": "dijkstra_small_O3_58_eclass_Inst_36",
+      "eclass": "dijkstra_small_O3_58_eclass_Inst_38",
       "cost": 1.0,
       "subsumed": false
     },
@@ -22182,20 +22171,9 @@
       "children": [
         "dijkstra_small_O3_58_enode_function_0_Lw",
         "dijkstra_small_O3_58_enode_function_2_Addi",
-        "dijkstra_small_O3_58_enode_function_12_ImmVal"
+        "dijkstra_small_O3_58_enode_function_11_ImmVal"
       ],
-      "eclass": "dijkstra_small_O3_58_eclass_Inst_36",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "dijkstra_small_O3_58_enode_function_2_Bge": {
-      "op": "Bge",
-      "children": [
-        "dijkstra_small_O3_58_enode_function_2_Addi",
-        "dijkstra_small_O3_58_enode_function_0_Lw",
-        "dijkstra_small_O3_58_enode_function_12_ImmVal"
-      ],
-      "eclass": "dijkstra_small_O3_58_eclass_Inst_39",
+      "eclass": "dijkstra_small_O3_58_eclass_Inst_38",
       "cost": 1.0,
       "subsumed": false
     },
@@ -22394,30 +22372,30 @@
     "dijkstra_small_O3_58_enode_function_0_Seq2": {
       "op": "Seq2",
       "children": [
-        "dijkstra_small_O3_58_enode_function_0_Blt",
-        "dijkstra_small_O3_58_enode_function_3_Addi"
+        "dijkstra_small_O3_58_enode_function_0_Jal",
+        "dijkstra_small_O3_58_enode_function_2_Addi"
       ],
-      "eclass": "dijkstra_small_O3_58_eclass_Inst_34",
+      "eclass": "dijkstra_small_O3_58_eclass_Inst_36",
       "cost": 1.0,
       "subsumed": false
     },
     "dijkstra_small_O3_58_enode_function_1_Seq2": {
       "op": "Seq2",
       "children": [
-        "dijkstra_small_O3_58_enode_function_2_Addi",
+        "dijkstra_small_O3_58_enode_function_3_Addi",
         "dijkstra_small_O3_58_enode_function_0_Seq2"
       ],
-      "eclass": "dijkstra_small_O3_58_eclass_Inst_23",
+      "eclass": "dijkstra_small_O3_58_eclass_Inst_37",
       "cost": 1.0,
       "subsumed": false
     },
     "dijkstra_small_O3_58_enode_function_2_Seq2": {
       "op": "Seq2",
       "children": [
-        "dijkstra_small_O3_58_enode_function_2_Blt",
-        "dijkstra_small_O3_58_enode_function_0_Jal"
+        "dijkstra_small_O3_58_enode_function_0_Blt",
+        "dijkstra_small_O3_58_enode_function_1_Seq2"
       ],
-      "eclass": "dijkstra_small_O3_58_eclass_Inst_32",
+      "eclass": "dijkstra_small_O3_58_eclass_Inst_23",
       "cost": 1.0,
       "subsumed": false
     },
@@ -22427,7 +22405,7 @@
         "dijkstra_small_O3_58_enode_function_1_Blt",
         "dijkstra_small_O3_58_enode_function_1_Jal"
       ],
-      "eclass": "dijkstra_small_O3_58_eclass_Inst_36",
+      "eclass": "dijkstra_small_O3_58_eclass_Inst_32",
       "cost": 1.0,
       "subsumed": false
     },
@@ -22437,7 +22415,7 @@
         "dijkstra_small_O3_58_enode_function_3_Seq2",
         "dijkstra_small_O3_58_enode_function_1_Jal"
       ],
-      "eclass": "dijkstra_small_O3_58_eclass_Inst_39",
+      "eclass": "dijkstra_small_O3_58_eclass_Inst_38",
       "cost": 1.0,
       "subsumed": false
     },

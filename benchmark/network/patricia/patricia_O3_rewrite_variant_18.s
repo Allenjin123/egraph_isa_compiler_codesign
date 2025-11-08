@@ -414,10 +414,11 @@ pat_insert:
 .L50:
 	addi	a3,a5,-1
 	sub	a3,a3,a2
-	addi	a3,x0,1
 	addi	a0,x0,3
-	bgeu	a0,a3,.+4
+	bgeu	a0,a3,.+8
 	addi	a3,x0,0
+	jal	a3,4
+	addi	a3,x0,1
 	beq	a3,zero,.+8
 	jal	x0,.L51
 	addi	a0,x0,3
@@ -780,14 +781,16 @@ main:
 	lbu	a4,0(s0)
 	addi	a2,a4,-9
 	addi	a5,a4,-32
+	addi	a0,x0,1
+	bgeu	a0,a2,.+8
+	addi	a3,x0,0
+	jal	a3,4
 	addi	a3,x0,1
 	addi	a0,x0,1
-	bgeu	a0,a2,.+4
-	addi	a3,x0,0
-	addi	a5,x0,1
-	addi	a0,x0,1
-	bgeu	a0,a5,.+4
+	bgeu	a0,a5,.+8
 	addi	a5,x0,0
+	jal	a5,4
+	addi	a5,x0,1
 	and	a1,a3,a5
 	sub	a0,a1,a5
 	sub	a3,a3,a0
@@ -1072,10 +1075,11 @@ main:
 	lw	s9,84(sp)
 	lw	s10,80(sp)
 	lw	s11,76(sp)
-	addi	a0,x0,1
 	addi	a2,x0,1
-	bgeu	a2,a0,.+4
+	bgeu	a2,a0,.+8
 	addi	a0,x0,0
+	jal	a0,4
+	addi	a0,x0,1
 	jal	zero,.L178
 .L278:
 	lbu	a6,1(s1)

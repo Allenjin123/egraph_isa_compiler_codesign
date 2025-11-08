@@ -28,7 +28,7 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir):
     Analyze a single variant (to be called in parallel).
 
     Args:
-        variant_id: ID of the variant to analyze
+        variant_id: ID of the variant to analyze (int or "original")
         variants_dir: Path to variants directory
         program_name: Name of the program
         dsl_dir: Directory to save DSL files
@@ -44,7 +44,11 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir):
             return None
 
         # Create text_program instance
-        prog = ds.text_program(f"{program_name}_variant_{variant_id}")
+        # Use consistent naming for original variant
+        if variant_id == "original":
+            prog = ds.text_program(f"{program_name}_original")
+        else:
+            prog = ds.text_program(f"{program_name}_variant_{variant_id}")
 
         # Load from basic_blocks_ssa if available, otherwise basic_blocks
         if (variant_path / "basic_blocks_ssa").exists():
@@ -121,10 +125,28 @@ def main():
 
     try:
         # Find all variant directories
-        variant_dirs = sorted([d for d in variants_path.iterdir() if d.is_dir() and d.name.startswith("variant_")])
-        num_variants = len(variant_dirs)
+        variant_dirs = [d for d in variants_path.iterdir() if d.is_dir() and d.name.startswith("variant_")]
 
-        print(f"Found {num_variants} variants")
+        # Separate original variant from numbered variants
+        original_variant = None
+        numbered_variants = []
+        for d in variant_dirs:
+            if d.name == "variant_original":
+                original_variant = d
+            else:
+                numbered_variants.append(d)
+
+        numbered_variants = sorted(numbered_variants)
+        num_variants = len(numbered_variants)
+
+        # Create list of variant IDs to process
+        variant_ids = list(range(num_variants))
+        if original_variant:
+            variant_ids.append("original")
+            print(f"Found {num_variants} optimized variants + 1 original program")
+        else:
+            print(f"Found {num_variants} variants")
+
         print(f"Starting parallel synthesis with {num_processes} processes...")
         print()
 
@@ -137,7 +159,7 @@ def main():
         # Run analysis in parallel
         overall_start = time.time()
         with Pool(processes=num_processes) as pool:
-            results = pool.map(analyze_func, range(num_variants))
+            results = pool.map(analyze_func, variant_ids)
         overall_time = time.time() - overall_start
 
         # Filter out None results (failed analyses)
@@ -168,6 +190,12 @@ def main():
             latencies[variant_id] = latency
             num_blocks[variant_id] = blocks
 
+        # Show original program stats if available
+        if "original" in areas:
+            print(f"Original Program Baseline:")
+            print(f"  Area = {areas['original']:.2f} µm², Latency = {latencies['original']}, Instructions = {len(subsets['original'])}")
+            print()
+
         # Calculate Pareto frontier
         print("Calculating Pareto frontier...")
         pareto_frontier = []
@@ -184,7 +212,8 @@ def main():
 
         print(f"Pareto Frontier ({len(pareto_frontier)} optimal variants):")
         for variant_id, area, latency in sorted(pareto_frontier, key=lambda x: x[1]):
-            print(f"  Variant {variant_id}: Area = {area:.2f} µm², Latency = {latency}")
+            marker = " [ORIGINAL]" if variant_id == "original" else ""
+            print(f"  Variant {variant_id}: Area = {area:.2f} µm², Latency = {latency}{marker}")
         print()
 
         # Generate visualization (matching backend_parser style)
@@ -193,15 +222,33 @@ def main():
 
         plt.figure(figsize=(10, 6))
 
-        # Plot all variants
-        all_areas = [areas[i] for i in sorted(areas.keys())]
-        all_latencies = [latencies[i] for i in sorted(latencies.keys())]
-        plt.scatter(all_areas, all_latencies, color='blue', label='Variants', alpha=0.6)
+        # Separate original variant from optimized variants
+        original_area = None
+        original_latency = None
+        optimized_areas = []
+        optimized_latencies = []
+
+        for variant_id in areas.keys():
+            if variant_id == "original":
+                original_area = areas[variant_id]
+                original_latency = latencies[variant_id]
+            else:
+                optimized_areas.append(areas[variant_id])
+                optimized_latencies.append(latencies[variant_id])
+
+        # Plot optimized variants
+        if optimized_areas:
+            plt.scatter(optimized_areas, optimized_latencies, color='blue', label='Optimized Variants', alpha=0.6, s=50)
+
+        # Plot original program with distinct marker
+        if original_area is not None:
+            plt.scatter([original_area], [original_latency], color='green', marker='*',
+                       label='Original Program', s=300, edgecolors='black', linewidths=1.5, zorder=10)
 
         # Highlight Pareto frontier
         pareto_areas = [p[1] for p in pareto_frontier]
         pareto_latencies = [p[2] for p in pareto_frontier]
-        plt.scatter(pareto_areas, pareto_latencies, color='red', label='Pareto Frontier', s=100)
+        plt.scatter(pareto_areas, pareto_latencies, color='red', label='Pareto Frontier', s=100, zorder=5)
 
         plt.title('Pareto Frontier of Program Variants')
         plt.xlabel('Area (µm²)')
@@ -224,7 +271,7 @@ def main():
             "variants": []
         }
 
-        for variant_id in sorted(subsets.keys()):
+        for variant_id in sorted(subsets.keys(), key=lambda x: (x != "original", x)):
             results_data["variants"].append({
                 "variant_id": variant_id,
                 "area": areas[variant_id],
@@ -232,7 +279,8 @@ def main():
                 "instruction_subset": sorted(list(subsets[variant_id])),
                 "num_instructions": len(subsets[variant_id]),
                 "num_blocks": num_blocks[variant_id],
-                "is_pareto_optimal": any(p[0] == variant_id for p in pareto_frontier)
+                "is_pareto_optimal": any(p[0] == variant_id for p in pareto_frontier),
+                "is_original": variant_id == "original"
             })
 
         results_data["pareto_frontier"] = [
