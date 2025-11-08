@@ -508,7 +508,13 @@ class RewriteBlock:
             
             avoid_regs = def_regs | use_regs
             
-            borrowed_regs, push_stack, pop_stack = self.allocate_registers(len(seen_placeholders), avoid_regs)
+            try:
+                borrowed_regs, push_stack, pop_stack = self.allocate_registers(len(seen_placeholders), avoid_regs)
+            except RuntimeError as err:
+                print(f"[RewriteBlock] block {self.block_num}, line {i}: "
+                      f"占位符={len(seen_placeholders)}, avoid={sorted(avoid_regs)}, "
+                      f"free_regs={self.free_regs_per_line[i] if i < len(self.free_regs_per_line) else 'N/A'}")
+                borrowed_regs, push_stack, pop_stack = seen_placeholders.copy(), [], []
             self.stack_per_line[i]["push"].extend(push_stack)
             self.stack_per_line[i]["pop"].extend(pop_stack)
             
