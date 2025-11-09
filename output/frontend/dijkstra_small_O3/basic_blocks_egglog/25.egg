@@ -1,6 +1,6 @@
 ; EGraph for dijkstra_small_O3 - Block 25
 ; Total instructions: 20
-; Input registers: 10, Output registers: 19
+; Input registers: 9, Output registers: 19
 
 (include "../../../../Saturation/base.egg")
 
@@ -10,7 +10,6 @@
 (let s5_0 (RegVal "s5_0"))
 (let s6_0 (RegVal "s6_0"))
 (let s7_0 (RegVal "s7_0"))
-(let sp_0 (RegVal "sp_0"))
 (let t0_0 (RegVal "t0_0"))
 (let t1_0 (RegVal "t1_0"))
 (let t2_0 (RegVal "t2_0"))
@@ -38,14 +37,14 @@
 ;; Step 6:     add rd=a5_3 rs1=t2_0 rs2=a5_2
 (let a5_3_val (Add t2_0 a5_2_val))
 
-;; Step 7:     lw rd=t3_0 rs1=a5_3 imm=0
-(let t3_0_val (Lw a5_3_val (ImmVal 0)))
+;; Step 7:     lw rd=t3_0 rs1=0 imm=a5_3
+(let t3_0_val (Lw (RegVal "0") (ImmLabel "a5_3")))
 
-;; Step 8:     lw rd=s1_0 rs1=a5_3 imm=4
-(let s1_0_val (Lw a5_3_val (ImmVal 4)))
+;; Step 8:     lw rd=s1_0 rs1=4 imm=a5_3
+(let s1_0_val (Lw (RegVal "4") (ImmLabel "a5_3")))
 
-;; Step 9:     lw rd=a5_4 rs1=a5_3 imm=8
-(let a5_4_val (Lw a5_3_val (ImmVal 8)))
+;; Step 9:     lw rd=a5_4 rs1=8 imm=a5_3
+(let a5_4_val (Lw (RegVal "8") (ImmLabel "a5_3")))
 
 ;; Step 10:     srai rd=t1_1 rs1=a6_0 imm=31
 (let t1_1_val (Srai a6_0_val (ImmVal 31)))
@@ -53,8 +52,8 @@
 ;; Step 11:     addi rd=t0_1 rs1=t0_0 imm=-1
 (let t0_1_val (Addi t0_0 (ImmVal -1)))
 
-;; Step 12:     sw rs1=sp_0 rs2=a5_4 imm=12
-(let inst_11 (Sw sp_0 a5_4_val (ImmVal 12)))
+;; Step 12:     sw rs1=12 rs2=a5_4 imm=sp_0
+(let inst_11 (Sw (RegVal "12") a5_4_val (ImmLabel "sp_0")))
 
 ;; Step 13:     srai rd=a5_5 rs1=a3_0 imm=12
 (let a5_5_val (Srai a3_0_val (ImmVal 12)))

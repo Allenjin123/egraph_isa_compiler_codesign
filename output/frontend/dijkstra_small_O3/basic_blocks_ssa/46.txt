@@ -1,6 +1,6 @@
-lw s0_0, 72(sp_0)
-lw ra_0, 76(sp_0)
-lw s5_0, 52(sp_0)
+lw s0_0, sp_0(72)
+lw ra_0, sp_0(76)
+lw s5_0, sp_0(52)
 lui a0_0, %hi(.LC2)
 addi a0_1, a0_0, %lo(.LC2)
 addi sp_1, sp_0, 80

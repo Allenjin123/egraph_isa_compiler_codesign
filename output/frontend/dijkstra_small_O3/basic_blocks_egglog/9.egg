@@ -1,24 +1,21 @@
 ; EGraph for dijkstra_small_O3 - Block 9
 ; Total instructions: 4
-; Input registers: 1, Output registers: 4
+; Input registers: 0, Output registers: 4
 
 (include "../../../../Saturation/base.egg")
-
-; Input register declarations (used but not defined in this block)
-(let sp_0 (RegVal "sp_0"))
 
 ; ============================================
 ; Instruction sequence as a DAG
 ; ============================================
 
-;; Step 1:     lw rd=a3_0 rs1=sp_0 imm=8
-(let a3_0_val (Lw sp_0 (ImmVal 8)))
+;; Step 1:     lw rd=a3_0 rs1=8 imm=sp_0
+(let a3_0_val (Lw (RegVal "8") (ImmLabel "sp_0")))
 
-;; Step 2:     lw rd=a2_0 rs1=sp_0 imm=4
-(let a2_0_val (Lw sp_0 (ImmVal 4)))
+;; Step 2:     lw rd=a2_0 rs1=4 imm=sp_0
+(let a2_0_val (Lw (RegVal "4") (ImmLabel "sp_0")))
 
-;; Step 3:     lw rd=a5_0 rs1=sp_0 imm=0
-(let a5_0_val (Lw sp_0 (ImmVal 0)))
+;; Step 3:     lw rd=a5_0 rs1=0 imm=sp_0
+(let a5_0_val (Lw (RegVal "0") (ImmLabel "sp_0")))
 
 ;; Step 4:     jal rd=zero_0 imm=.L3
 (let zero_0_val (Jal (ImmLabel ".L3")))

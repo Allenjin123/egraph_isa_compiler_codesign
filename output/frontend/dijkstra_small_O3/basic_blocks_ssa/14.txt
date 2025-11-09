@@ -1,5 +1,5 @@
-lw a3_0, 12(sp_0)
-lw a6_0, 8(sp_0)
-lw a2_0, 4(sp_0)
-lw a5_0, 0(sp_0)
+lw a3_0, sp_0(12)
+lw a6_0, sp_0(8)
+lw a2_0, sp_0(4)
+lw a5_0, sp_0(0)
 jal zero_0, .L4

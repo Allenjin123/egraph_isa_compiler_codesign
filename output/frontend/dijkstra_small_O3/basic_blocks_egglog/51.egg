@@ -1,10 +1,13 @@
 ; EGraph for dijkstra_small_O3 - Block 51
 ; Total instructions: 22
-; Input registers: 8, Output registers: 13
+; Input registers: 11, Output registers: 13
 
 (include "../../../../Saturation/base.egg")
 
 ; Input register declarations (used but not defined in this block)
+(let g_qCount (RegVal "g_qCount"))
+(let qFront (RegVal "qFront"))
+(let qRear (RegVal "qRear"))
 (let ra_0 (RegVal "ra_0"))
 (let s0_0 (RegVal "s0_0"))
 (let s1_0 (RegVal "s1_0"))
@@ -33,23 +36,23 @@
 ;; Step 5:     lui rd=a3_0 imm=10
 (let a3_0_val (Lui (ImmVal 10)))
 
-;; Step 6:     sw rs1=sp_1 rs2=ra_0 imm=2028
-(let inst_5 (Sw sp_1_val ra_0 (ImmVal 2028)))
+;; Step 6:     sw rs1=2028 rs2=ra_0 imm=sp_1
+(let inst_5 (Sw (RegVal "2028") ra_0 (ImmLabel "sp_1")))
 
-;; Step 7:     sw rs1=sp_1 rs2=s0_0 imm=2024
-(let inst_6 (Sw sp_1_val s0_0 (ImmVal 2024)))
+;; Step 7:     sw rs1=2024 rs2=s0_0 imm=sp_1
+(let inst_6 (Sw (RegVal "2024") s0_0 (ImmLabel "sp_1")))
 
-;; Step 8:     sw rs1=sp_1 rs2=s1_0 imm=2020
-(let inst_7 (Sw sp_1_val s1_0 (ImmVal 2020)))
+;; Step 8:     sw rs1=2020 rs2=s1_0 imm=sp_1
+(let inst_7 (Sw (RegVal "2020") s1_0 (ImmLabel "sp_1")))
 
-;; Step 9:     sw rs1=sp_1 rs2=s2_0 imm=2016
-(let inst_8 (Sw sp_1_val s2_0 (ImmVal 2016)))
+;; Step 9:     sw rs1=2016 rs2=s2_0 imm=sp_1
+(let inst_8 (Sw (RegVal "2016") s2_0 (ImmLabel "sp_1")))
 
-;; Step 10:     sw rs1=sp_1 rs2=s3_0 imm=2012
-(let inst_9 (Sw sp_1_val s3_0 (ImmVal 2012)))
+;; Step 10:     sw rs1=2012 rs2=s3_0 imm=sp_1
+(let inst_9 (Sw (RegVal "2012") s3_0 (ImmLabel "sp_1")))
 
-;; Step 11:     sw rs1=sp_1 rs2=s4_0 imm=2008
-(let inst_10 (Sw sp_1_val s4_0 (ImmVal 2008)))
+;; Step 11:     sw rs1=2008 rs2=s4_0 imm=sp_1
+(let inst_10 (Sw (RegVal "2008") s4_0 (ImmLabel "sp_1")))
 
 ;; Step 12:     addi rd=a5_1 rs1=a5_0 imm=%lo(.LC0)
 (let a5_1_val (Addi a5_0_val (ImmLabel "%lo(.LC0)")))
@@ -75,14 +78,14 @@
 ;; Step 19:     add rd=a3_2 rs1=a5_1 rs2=a3_1
 (let a3_2_val (Add a5_1_val a3_1_val))
 
-;; Step 20:     sw rs1=a0_0 rs2=zero_0 imm=%lo(qFront)
-(let inst_19 (Sw a0_0_val zero_0 (ImmLabel "%lo(qFront)")))
+;; Step 20:     sw rs1=qFront rs2=zero_0 imm=a0_0(%lo
+(let inst_19 (Sw qFront zero_0 (ImmLabel "a0_0(%lo")))
 
-;; Step 21:     sw rs1=a1_0 rs2=zero_0 imm=%lo(qRear)
-(let inst_20 (Sw a1_0_val zero_0 (ImmLabel "%lo(qRear)")))
+;; Step 21:     sw rs1=qRear rs2=zero_0 imm=a1_0(%lo
+(let inst_20 (Sw qRear zero_0 (ImmLabel "a1_0(%lo")))
 
-;; Step 22:     sw rs1=a2_0 rs2=zero_0 imm=%lo(g_qCount)
-(let inst_21 (Sw a2_0_val zero_0 (ImmLabel "%lo(g_qCount)")))
+;; Step 22:     sw rs1=g_qCount rs2=zero_0 imm=a2_0(%lo
+(let inst_21 (Sw g_qCount zero_0 (ImmLabel "a2_0(%lo")))
 
 ; ============================================
 ; Run saturation to apply rewrite rules

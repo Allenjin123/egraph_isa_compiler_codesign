@@ -1,6 +1,6 @@
-lw a3_0, 4(sp_0)
-lw a5_0, 0(sp_0)
-lw ra_0, 28(sp_0)
+lw a3_0, sp_0(4)
+lw a5_0, sp_0(0)
+lw ra_0, sp_0(28)
 addi a1_0, a3_0, 0
 addi a0_0, a5_0, %lo(.LC1)
 addi sp_1, sp_0, 32

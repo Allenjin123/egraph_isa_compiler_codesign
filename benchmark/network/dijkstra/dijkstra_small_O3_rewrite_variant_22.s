@@ -112,57 +112,7 @@ enqueue:
 	lui	a5,429497
 	addi	a5,a5,-1107
 	addi	a3,a4,1
-	addi	sp,sp,-64
-	sw	s2,0(sp)
-	sw	s3,4(sp)
-	sw	s4,8(sp)
-	sw	s5,12(sp)
-	sw	s6,16(sp)
-	sw	s7,20(sp)
-	sw	s8,24(sp)
-	sw	s9,28(sp)
-	sw	s10,32(sp)
-	sw	s11,36(sp)
-	sw	a0,40(sp)
-	sw	a1,44(sp)
-	sw	a2,48(sp)
-	srli	t1,a3,16
-	srli	t2,a5,16
-	mul	t0,t1,t2
-	andi	s2,a3,65535
-	srli	s3,a5,16
-	mul	zero,s2,s3
-	srli	s4,a3,16
-	andi	s5,a5,65535
-	mul	s6,s4,s5
-	add	t6,zero,s6
-	andi	s7,a3,65535
-	andi	s8,a5,65535
-	mul	s9,s7,s8
-	srli	s10,s9,16
-	add	t5,t6,s10
-	srli	t3,t5,16
-	add	a7,t0,t3
-	srai	s30,a3,31
-	and	a0,s30,a5
-	sub	a6,a7,a0
-	srai	s32,a5,31
-	and	s31,s32,a3
-	sub	a5,a6,s31
-	lw	s2,0(sp)
-	lw	s3,4(sp)
-	lw	s4,8(sp)
-	lw	s5,12(sp)
-	lw	s6,16(sp)
-	lw	s7,20(sp)
-	lw	s8,24(sp)
-	lw	s9,28(sp)
-	lw	s10,32(sp)
-	lw	s11,36(sp)
-	lw	a0,40(sp)
-	lw	a1,44(sp)
-	lw	a2,48(sp)
-	addi	sp,sp,64
+	sub	a5
 	srai	t5,a3,31
 	lui	t1,2
 	addi	t1,t1,1808
@@ -224,59 +174,7 @@ dequeue:
 	lw	a4,%lo(qFront)(a6)
 	lw	a3,%lo(g_qCount)(a7)
 	addi	a4,a4,1
-	addi	sp,sp,-64
-	sw	s2,0(sp)
-	sw	s3,4(sp)
-	sw	s4,8(sp)
-	sw	s5,12(sp)
-	sw	s6,16(sp)
-	sw	s7,20(sp)
-	sw	s8,24(sp)
-	sw	s9,28(sp)
-	sw	s10,32(sp)
-	sw	s11,36(sp)
-	sw	a0,40(sp)
-	sw	a1,44(sp)
-	sw	a3,48(sp)
-	sw	a6,52(sp)
-	srli	t2,a4,16
-	srli	t3,a5,16
-	mul	t1,t2,t3
-	andi	s2,a4,65535
-	srli	s3,a5,16
-	mul	s4,s2,s3
-	srli	s5,a4,16
-	andi	s6,a5,65535
-	mul	s7,s5,s6
-	add	t6,s4,s7
-	andi	s8,a4,65535
-	andi	s9,a5,65535
-	mul	s10,s8,s9
-	srli	s11,s10,16
-	add	t5,t6,s11
-	srli	t4,t5,16
-	add	t0,t1,t4
-	srai	s21,a4,31
-	and	s20,s21,a5
-	sub	a2,t0,s20
-	srai	s23,a5,31
-	and	s22,s23,a4
-	sub	a5,a2,s22
-	lw	s2,0(sp)
-	lw	s3,4(sp)
-	lw	s4,8(sp)
-	lw	s5,12(sp)
-	lw	s6,16(sp)
-	lw	s7,20(sp)
-	lw	s8,24(sp)
-	lw	s9,28(sp)
-	lw	s10,32(sp)
-	lw	s11,36(sp)
-	lw	a0,40(sp)
-	lw	a1,44(sp)
-	lw	a3,48(sp)
-	lw	a6,52(sp)
-	addi	sp,sp,64
+	sub	a5
 	srai	a2,a4,31
 	addi	a3,a3,-1
 	sw	a3,%lo(g_qCount)(a7)
@@ -338,55 +236,7 @@ dijkstra:
 	lui	s2,429497
 	addi	a6,a1,1
 	addi	s2,s2,-1107
-	addi	sp,sp,-48
-	sw	s3,0(sp)
-	sw	s4,4(sp)
-	sw	s5,8(sp)
-	sw	s6,12(sp)
-	sw	s7,16(sp)
-	sw	s8,20(sp)
-	sw	s9,24(sp)
-	sw	s10,28(sp)
-	sw	s11,32(sp)
-	sw	a0,36(sp)
-	sw	a1,40(sp)
-	sw	a2,44(sp)
-	srli	t0,a6,16
-	srli	t1,s2,16
-	mul	a7,t0,t1
-	andi	t6,a6,65535
-	srli	s3,s2,16
-	mul	t5,t6,s3
-	srli	s4,a6,16
-	andi	s5,s2,65535
-	mul	s6,s4,s5
-	add	t4,t5,s6
-	andi	s7,a6,65535
-	andi	s8,s2,65535
-	mul	s9,s7,s8
-	srli	s10,s9,16
-	add	t3,t4,s10
-	srli	t2,t3,16
-	add	a5,a7,t2
-	srai	s11,a6,31
-	and	a0,s11,s2
-	sub	a4,a5,a0
-	srai	s61,s2,31
-	and	s60,s61,a6
-	sub	a4,a4,s60
-	lw	s3,0(sp)
-	lw	s4,4(sp)
-	lw	s5,8(sp)
-	lw	s6,12(sp)
-	lw	s7,16(sp)
-	lw	s8,20(sp)
-	lw	s9,24(sp)
-	lw	s10,28(sp)
-	lw	s11,32(sp)
-	lw	a0,36(sp)
-	lw	a1,40(sp)
-	lw	a2,44(sp)
-	addi	sp,sp,48
+	sub	a4
 	sw	s3,60(sp)
 	srai	a7,a6,31
 	lui	s3,2
@@ -432,57 +282,7 @@ dijkstra:
 	addi	t4,a3,0
 .L28:
 	addi	a6,t1,1
-	addi	sp,sp,-64
-	sw	s3,0(sp)
-	sw	s4,4(sp)
-	sw	s5,8(sp)
-	sw	s6,12(sp)
-	sw	s7,16(sp)
-	sw	s8,20(sp)
-	sw	s9,24(sp)
-	sw	s10,28(sp)
-	sw	s11,32(sp)
-	sw	a4,36(sp)
-	sw	t0,40(sp)
-	sw	t1,44(sp)
-	sw	t2,48(sp)
-	srli	a3,a6,16
-	srli	a5,s2,16
-	mul	a2,a3,a5
-	andi	s3,a6,65535
-	srli	s4,s2,16
-	mul	t6,s3,s4
-	srli	s5,a6,16
-	andi	s6,s2,65535
-	mul	s7,s5,s6
-	add	t3,t6,s7
-	andi	s8,a6,65535
-	andi	s9,s2,65535
-	mul	s10,s8,s9
-	srli	s11,s10,16
-	add	s1,t3,s11
-	srli	a7,s1,16
-	add	a1,a2,a7
-	srai	s40,a6,31
-	and	t0,s40,s2
-	sub	a0,a1,t0
-	srai	s42,s2,31
-	and	s41,s42,a6
-	sub	a3,a0,s41
-	lw	s3,0(sp)
-	lw	s4,4(sp)
-	lw	s5,8(sp)
-	lw	s6,12(sp)
-	lw	s7,16(sp)
-	lw	s8,20(sp)
-	lw	s9,24(sp)
-	lw	s10,28(sp)
-	lw	s11,32(sp)
-	lw	a4,36(sp)
-	lw	t0,40(sp)
-	lw	t1,44(sp)
-	lw	t2,48(sp)
-	addi	sp,sp,64
+	sub	a3
 	slli	a5,t1,1
 	add	a5,a5,t1
 	slli	a5,a5,2
@@ -515,69 +315,7 @@ dijkstra:
 	beq	t6,t5,.L26
 	bge	a6,t6,.L25
 .L26:
-	addi	sp,sp,-80
-	sw	s3,0(sp)
-	sw	s5,4(sp)
-	sw	s6,8(sp)
-	sw	s7,12(sp)
-	sw	s8,16(sp)
-	sw	s9,20(sp)
-	sw	s10,24(sp)
-	sw	s11,28(sp)
-	sw	a0,32(sp)
-	sw	a2,36(sp)
-	sw	a3,40(sp)
-	sw	a5,44(sp)
-	sw	a6,48(sp)
-	sw	a7,52(sp)
-	sw	t0,56(sp)
-	sw	t1,60(sp)
-	sw	t2,64(sp)
-	sw	t3,68(sp)
-	sw	t4,72(sp)
-	srli	s3,a1,16
-	srli	s5,s2,16
-	mul	t6,s3,s5
-	andi	s6,a1,65535
-	srli	s7,s2,16
-	mul	s8,s6,s7
-	srli	s9,a1,16
-	andi	s50,s2,65535
-	mul	s11,s9,s50
-	add	a0,s8,s11
-	andi	s53,a1,65535
-	andi	s54,s2,65535
-	mul	s52,s53,s54
-	srli	s51,s52,16
-	add	a7,a0,s51
-	srli	t0,a7,16
-	add	s4,t6,t0
-	srai	s56,a1,31
-	and	s55,s56,s2
-	sub	a4,s4,s55
-	srai	s58,s2,31
-	and	s57,s58,a1
-	sub	a4,a4,s57
-	lw	s3,0(sp)
-	lw	s5,4(sp)
-	lw	s6,8(sp)
-	lw	s7,12(sp)
-	lw	s8,16(sp)
-	lw	s9,20(sp)
-	lw	s10,24(sp)
-	lw	s11,28(sp)
-	lw	a0,32(sp)
-	lw	a2,36(sp)
-	lw	a3,40(sp)
-	lw	a5,44(sp)
-	lw	a6,48(sp)
-	lw	a7,52(sp)
-	lw	t0,56(sp)
-	lw	t1,60(sp)
-	lw	t2,64(sp)
-	lw	t3,68(sp)
-	lw	t4,72(sp)
-	addi	sp,sp,80
+	sub	a4
 	sw	a6,0(a3)
 	sw	t3,4(a3)
 	sw	a2,0(a5)
@@ -774,43 +512,7 @@ main:
 	addi	s4,zero,100
 	addi	s3,zero,20
 .L49:
-	addi	sp,sp,-32
-	sw	s3,0(sp)
-	sw	s4,4(sp)
-	sw	s5,8(sp)
-	sw	s6,12(sp)
-	sw	s7,16(sp)
-	sw	s8,20(sp)
-	srli	a3,a5,16
-	srli	a4,s2,16
-	mul	a2,a3,a4
-	andi	t0,a5,65535
-	srli	t1,s2,16
-	mul	s0,t0,t1
-	srli	t3,a5,16
-	andi	t4,s2,65535
-	mul	t2,t3,t4
-	add	ra,s0,t2
-	andi	s3,a5,65535
-	andi	s4,s2,65535
-	mul	t6,s3,s4
-	srli	t5,t6,16
-	add	a7,ra,t5
-	srli	a6,a7,16
-	add	a1,a2,a6
-	srai	s5,a5,31
-	and	s6,s5,s2
-	sub	a0,a1,s6
-	srai	s7,s2,31
-	and	s8,s7,a5
-	sub	s0,a0,s8
-	lw	s3,0(sp)
-	lw	s4,4(sp)
-	lw	s5,8(sp)
-	lw	s6,12(sp)
-	lw	s7,16(sp)
-	lw	s8,20(sp)
-	addi	sp,sp,32
+	sub	s0
 	srai	a4,a5,31
 	addi	a0,s1,0
 	addi	s1,s1,1

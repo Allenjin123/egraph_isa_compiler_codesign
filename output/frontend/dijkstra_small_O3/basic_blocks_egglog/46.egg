@@ -11,14 +11,14 @@
 ; Instruction sequence as a DAG
 ; ============================================
 
-;; Step 1:     lw rd=s0_0 rs1=sp_0 imm=72
-(let s0_0_val (Lw sp_0 (ImmVal 72)))
+;; Step 1:     lw rd=s0_0 rs1=72 imm=sp_0
+(let s0_0_val (Lw (RegVal "72") (ImmLabel "sp_0")))
 
-;; Step 2:     lw rd=ra_0 rs1=sp_0 imm=76
-(let ra_0_val (Lw sp_0 (ImmVal 76)))
+;; Step 2:     lw rd=ra_0 rs1=76 imm=sp_0
+(let ra_0_val (Lw (RegVal "76") (ImmLabel "sp_0")))
 
-;; Step 3:     lw rd=s5_0 rs1=sp_0 imm=52
-(let s5_0_val (Lw sp_0 (ImmVal 52)))
+;; Step 3:     lw rd=s5_0 rs1=52 imm=sp_0
+(let s5_0_val (Lw (RegVal "52") (ImmLabel "sp_0")))
 
 ;; Step 4:     lui rd=a0_0 imm=%hi(.LC2)
 (let a0_0_val (Lui (ImmLabel "%hi(.LC2)")))

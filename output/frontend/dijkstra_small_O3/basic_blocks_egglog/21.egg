@@ -13,11 +13,11 @@
 ; Instruction sequence as a DAG
 ; ============================================
 
-;; Step 1:     sw rs1=a5_0 rs2=a2_0 imm=0
-(let inst_0 (Sw a5_0 a2_0 (ImmVal 0)))
+;; Step 1:     sw rs1=0 rs2=a2_0 imm=a5_0
+(let inst_0 (Sw (RegVal "0") a2_0 (ImmLabel "a5_0")))
 
-;; Step 2:     sw rs1=a5_0 rs2=a2_0 imm=4
-(let inst_1 (Sw a5_0 a2_0 (ImmVal 4)))
+;; Step 2:     sw rs1=4 rs2=a2_0 imm=a5_0
+(let inst_1 (Sw (RegVal "4") a2_0 (ImmLabel "a5_0")))
 
 ;; Step 3:     addi rd=a5_1 rs1=a5_0 imm=8
 (let a5_1_val (Addi a5_0 (ImmVal 8)))

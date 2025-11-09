@@ -18,8 +18,8 @@
 ;; Step 2:     add rd=a5_1 rs1=a0_0 rs2=a5_0
 (let a5_1_val (Add a0_0 a5_0_val))
 
-;; Step 3:     lw rd=a2_0 rs1=a5_1 imm=4
-(let a2_0_val (Lw a5_1_val (ImmVal 4)))
+;; Step 3:     lw rd=a2_0 rs1=4 imm=a5_1
+(let a2_0_val (Lw (RegVal "4") (ImmLabel "a5_1")))
 
 ;; Step 4:     lui rd=a5_2 imm=2
 (let a5_2_val (Lui (ImmVal 2)))

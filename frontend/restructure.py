@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "Extractor" / "s
 from egraph import EGraph, ENode 
 from ILP.ilp_solver import parse_solution_file, extract_solution  
 from util import INSTRUCTIONS_WITHOUT_RD, RV32I_LOAD, ALL_ABI_REGS, parse_instruction, format_instruction, SPECIAL_REGS
-from reg_alloc import linear_scan_rewrite
+from reg_alloc import allocate_compact_mapping
 # 路径配置
 FRONTEND_OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output" / "frontend"
 ILP_OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output" / "ilp"
@@ -275,7 +275,6 @@ class RewriteBlock:
         self.block_lines: List[List[str]] = [[] for _ in range(len(self.eclass_to_rd_list))]
         self.eclass_to_rd_map: Dict[str, str] = {}  # 初始化为空，走一行更新一行
         self.stack_per_line: List[Dict[str, List[str]]] = [{"push": [], "pop": []} for _ in range(len(self.block_lines))]
-        self.placeholders_to_regs: List[Dict[str, str]] = [{} for _ in range(len(self.block_lines))]
         # 计算每行可用的 free_regs
         self.free_regs_per_line: List[List[str]] = compute_free_regs_per_line(program_name, block_num)['free_regs_per_line']
         self.defs_uses_per_line: List[Tuple[Set[str], Set[str]]] = compute_free_regs_per_line(program_name, block_num)['defs_uses_per_line']
@@ -326,9 +325,7 @@ class RewriteBlock:
             
             # 如果子节点已经处理过，直接使用其 rd
             if child_eclass in self.eclass_to_rd_map:
-                temp_rd = self.get_placeholder_reg()  
-                self.placeholders_to_regs[line_idx][temp_rd] = self.eclass_to_rd_map[child_eclass]
-                child_operands.append(temp_rd)
+                child_operands.append(self.eclass_to_rd_map[child_eclass])
                 continue
             
             child_node = self.block_graph.eclasses_to_nodes[child_eclass]
@@ -338,12 +335,7 @@ class RewriteBlock:
                     child_rd = self.get_placeholder_reg()  
             else:
                 # leaf 节点，直接使用其 op 值
-                if norm_reg(child_node.op) in ALL_ABI_REGS and norm_reg(child_node.op) not in SPECIAL_REGS:
-                    temp_rd = self.get_placeholder_reg()  
-                    self.placeholders_to_regs[line_idx][temp_rd] = norm_reg(child_node.op)
-                    child_operands.append(temp_rd)
-                else:
-                    child_operands.append(child_node.op)
+                child_operands.append(child_node.op)
         
         # 生成指令
         inst_str = format_instruction(node.op, rd, child_operands)
@@ -358,13 +350,9 @@ class RewriteBlock:
                 self.temp_counter = 0  # 重置临时寄存器计数器
                 
                 if line_idx < len(self.free_regs_per_line):
-                    self.free_regs = self.free_regs_per_line[line_idx].copy() 
-                    | self.defs_uses_per_line[line_idx][0] | self.defs_uses_per_line[line_idx][1]
+                    self.free_regs = self.free_regs_per_line[line_idx]
                 else:
                     raise ValueError(f"Line {line_idx} has no free registers")
-                
-                # # 测试：直接使用原始指令
-                # self._use_original_instruction(line_idx)
                 
                 # 处理这一行
                 live_out = set()
@@ -372,7 +360,7 @@ class RewriteBlock:
                     if use not in self.free_regs_per_line[line_idx]:
                         live_out.add(use)
                 self.rewrite_line(eclass_id, rd, line_idx)
-                #self.replace_placeholders(line_idx,live_out)
+                self.replace_placeholders(line_idx, live_out)
                 # 更新映射
                 self.eclass_to_rd_map[eclass_id] = rd
             else:
@@ -382,15 +370,65 @@ class RewriteBlock:
         self.merge_lines()
 
     def replace_placeholders(self, line_idx: int, live_out: Set[str]):
-        """TODO:替换占位符为借用的寄存器"""
-        # 找到最大占位符的number
-        max_placeholder_number = ?
-        num_needed = max_placeholder_number + 1 - len(self.free_regs)
+        """替换占位符为借用的寄存器或使用寄存器分配算法"""
+        lines = self.block_lines[line_idx]
+        if not lines:
+            return
         
-        self.allocate_registers(num_needed)
-        regs_to_replace = [borrowed_regs] + self.free_regs
-        for line in self.block_lines[line_idx]:
-
+        # 找到所有占位符
+        all_text = ' '.join(lines)
+        placeholders = re.findall(r'op_(\d+)', all_text)
+        if not placeholders:
+            return
+        
+        # 调用寄存器分配算法
+        mapping, m = allocate_compact_mapping(lines, live_out)
+        
+        # 计算需要借用的寄存器数量（虚拟寄存器的数量）
+        num_virtual = m + 1 if m >= 0 else 0
+        num_free = len(self.free_regs)
+        num_needed = max(0, num_virtual - num_free)
+        
+        if num_needed > 0:
+            # 需要借用寄存器
+            borrowed_regs, push_stack, pop_stack = self.allocate_registers(num_needed)
+            
+            # 构建最终的寄存器映射：op_k -> 真实寄存器
+            final_mapping = {}
+            for op_name, allocated in mapping.items():
+                if allocated.startswith('op_'):
+                    # 虚拟寄存器，分配到 free_regs 或 borrowed_regs
+                    op_num = int(allocated.split('_')[1])
+                    if op_num < num_free:
+                        final_mapping[op_name] = self.free_regs[op_num]
+                    else:
+                        final_mapping[op_name] = borrowed_regs[op_num - num_free]
+                else:
+                    # 已经是真实寄存器
+                    final_mapping[op_name] = allocated
+            
+            # 记录栈操作
+            self.stack_per_line[line_idx]["push"] = push_stack
+            self.stack_per_line[line_idx]["pop"] = pop_stack
+        else:
+            # 不需要借用寄存器
+            final_mapping = {}
+            for op_name, allocated in mapping.items():
+                if allocated.startswith('op_'):
+                    # 虚拟寄存器，分配到 free_regs
+                    op_num = int(allocated.split('_')[1])
+                    final_mapping[op_name] = self.free_regs[op_num]
+                else:
+                    # 已经是真实寄存器
+                    final_mapping[op_name] = allocated
+        
+        # 替换所有占位符
+        for i, line in enumerate(lines):
+            for op_name, real_reg in final_mapping.items():
+                # 使用正则表达式确保只替换完整的寄存器名
+                line = re.sub(r'\b' + re.escape(op_name) + r'\b', real_reg, line)
+            self.block_lines[line_idx][i] = line
+        
     def _select_borrowable_registers(self, num_needed: int) -> List[str]:
         """选择可以借用的寄存器
         
@@ -401,7 +439,7 @@ class RewriteBlock:
         
         borrowable = []
         for reg in candidate_regs:
-            if reg not in self.free_regs:
+            if reg not in self.free_regs and reg not in borrowable:
                 borrowable.append(reg)
             if len(borrowable) >= num_needed:
                 break

@@ -1,1 +1,0 @@
-lui a5_0, %hi(.LC1); Inst-1

@@ -1,7 +1,7 @@
 addi a0_0, a5_0, %lo(.LC1)
 addi a1_0, a6_0, 0
-sw a3_0, 8(sp_0)
-sw a2_0, 4(sp_0)
-sw a5_0, 0(sp_0)
+sw a3_0, sp_0(8)
+sw a2_0, sp_0(4)
+sw a5_0, sp_0(0)
 auipc ra_0, %pcrel_hi(printf)
 jalr ra_1, ra_0, %pcrel_lo(.Lpcrel_4)

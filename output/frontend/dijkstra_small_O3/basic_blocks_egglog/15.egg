@@ -1,6 +1,6 @@
 ; EGraph for dijkstra_small_O3 - Block 15
 ; Total instructions: 28
-; Input registers: 4, Output registers: 23
+; Input registers: 6, Output registers: 23
 
 (include "../../../../Saturation/base.egg")
 
@@ -8,6 +8,8 @@
 (let a0_0 (RegVal "a0_0"))
 (let a1_0 (RegVal "a1_0"))
 (let a2_0 (RegVal "a2_0"))
+(let g_qCount (RegVal "g_qCount"))
+(let qRear (RegVal "qRear"))
 (let ra_0 (RegVal "ra_0"))
 
 ; ============================================
@@ -17,8 +19,8 @@
 ;; Step 1:     lui rd=t4_0 imm=%hi(qRear)
 (let t4_0_val (Lui (ImmLabel "%hi(qRear)")))
 
-;; Step 2:     lw rd=a4_0 rs1=t4_0 imm=%lo(qRear)
-(let a4_0_val (Lw t4_0_val (ImmLabel "%lo(qRear)")))
+;; Step 2:     lw rd=a4_0 rs1=qRear imm=t4_0(%lo
+(let a4_0_val (Lw qRear (ImmLabel "t4_0(%lo")))
 
 ;; Step 3:     lui rd=a5_0 imm=429497
 (let a5_0_val (Lui (ImmVal 429497)))
@@ -44,8 +46,8 @@
 ;; Step 10:     lui rd=t3_0 imm=%hi(g_qCount)
 (let t3_0_val (Lui (ImmLabel "%hi(g_qCount)")))
 
-;; Step 11:     lw rd=a7_0 rs1=t3_0 imm=%lo(g_qCount)
-(let a7_0_val (Lw t3_0_val (ImmLabel "%lo(g_qCount)")))
+;; Step 11:     lw rd=a7_0 rs1=g_qCount imm=t3_0(%lo
+(let a7_0_val (Lw g_qCount (ImmLabel "t3_0(%lo")))
 
 ;; Step 12:     slli rd=a6_0 rs1=a4_0 imm=1
 (let a6_0_val (Slli a4_0_val (ImmVal 1)))
@@ -77,23 +79,23 @@
 ;; Step 21:     addi rd=a7_1 rs1=a7_0 imm=1
 (let a7_1_val (Addi a7_0_val (ImmVal 1)))
 
-;; Step 22:     sw rs1=a4_3 rs2=a0_0 imm=0
-(let inst_21 (Sw a4_3_val a0_0 (ImmVal 0)))
+;; Step 22:     sw rs1=0 rs2=a0_0 imm=a4_3
+(let inst_21 (Sw (RegVal "0") a0_0 (ImmLabel "a4_3")))
 
-;; Step 23:     sw rs1=a4_3 rs2=a1_0 imm=4
-(let inst_22 (Sw a4_3_val a1_0 (ImmVal 4)))
+;; Step 23:     sw rs1=4 rs2=a1_0 imm=a4_3
+(let inst_22 (Sw (RegVal "4") a1_0 (ImmLabel "a4_3")))
 
-;; Step 24:     sw rs1=a4_3 rs2=a2_0 imm=8
-(let inst_23 (Sw a4_3_val a2_0 (ImmVal 8)))
+;; Step 24:     sw rs1=8 rs2=a2_0 imm=a4_3
+(let inst_23 (Sw (RegVal "8") a2_0 (ImmLabel "a4_3")))
 
-;; Step 25:     sw rs1=t3_0 rs2=a7_1 imm=%lo(g_qCount)
-(let inst_24 (Sw t3_0_val a7_1_val (ImmLabel "%lo(g_qCount)")))
+;; Step 25:     sw rs1=g_qCount rs2=a7_1 imm=t3_0(%lo
+(let inst_24 (Sw g_qCount a7_1_val (ImmLabel "t3_0(%lo")))
 
 ;; Step 26:     sub rd=a3_1 rs1=a3_0 rs2=a5_5
 (let a3_1_val (Sub a3_0_val a5_5_val))
 
-;; Step 27:     sw rs1=t4_0 rs2=a3_1 imm=%lo(qRear)
-(let inst_26 (Sw t4_0_val a3_1_val (ImmLabel "%lo(qRear)")))
+;; Step 27:     sw rs1=qRear rs2=a3_1 imm=t4_0(%lo
+(let inst_26 (Sw qRear a3_1_val (ImmLabel "t4_0(%lo")))
 
 ;; Step 28:     jalr rd=zero_0 rs1=ra_0 imm=0
 (let zero_0_val (Jalr ra_0 (ImmVal 0)))

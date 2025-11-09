@@ -1,5 +1,5 @@
-lw s6_0, 48(sp_0)
-lw s7_0, 44(sp_0)
-lw s10_0, 32(sp_0)
-lw s11_0, 28(sp_0)
+lw s6_0, sp_0(48)
+lw s7_0, sp_0(44)
+lw s10_0, sp_0(32)
+lw s11_0, sp_0(28)
 jal zero_0, .L24

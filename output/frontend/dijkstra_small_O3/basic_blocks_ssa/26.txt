@@ -1,5 +1,5 @@
 slli a5_0, a4_0, 1
-lw a7_0, 0(a0_0)
+lw a7_0, a0_0(0)
 add a5_1, a5_0, a4_0
 addi a1_0, a4_0, 1
 slli a5_2, a5_1, 2

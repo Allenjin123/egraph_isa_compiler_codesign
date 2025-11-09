@@ -18,8 +18,8 @@
 ;; Step 1:     addi rd=sp_1 rs1=sp_0 imm=-80
 (let sp_1_val (Addi sp_0 (ImmVal -80)))
 
-;; Step 2:     sw rs1=sp_1 rs2=s5_0 imm=52
-(let inst_1 (Sw sp_1_val s5_0 (ImmVal 52)))
+;; Step 2:     sw rs1=52 rs2=s5_0 imm=sp_1
+(let inst_1 (Sw (RegVal "52") s5_0 (ImmLabel "sp_1")))
 
 ;; Step 3:     lui rd=s5_1 imm=%hi(.LANCHOR0)
 (let s5_1_val (Lui (ImmLabel "%hi(.LANCHOR0)")))
@@ -30,11 +30,11 @@
 ;; Step 5:     lui rd=a2_0 imm=2
 (let a2_0_val (Lui (ImmVal 2)))
 
-;; Step 6:     sw rs1=sp_1 rs2=ra_0 imm=76
-(let inst_5 (Sw sp_1_val ra_0 (ImmVal 76)))
+;; Step 6:     sw rs1=76 rs2=ra_0 imm=sp_1
+(let inst_5 (Sw (RegVal "76") ra_0 (ImmLabel "sp_1")))
 
-;; Step 7:     sw rs1=sp_1 rs2=s0_0 imm=72
-(let inst_6 (Sw sp_1_val s0_0 (ImmVal 72)))
+;; Step 7:     sw rs1=72 rs2=s0_0 imm=sp_1
+(let inst_6 (Sw (RegVal "72") s0_0 (ImmLabel "sp_1")))
 
 ;; Step 8:     addi rd=a3_0 rs1=a1_0 imm=0
 (let a3_0_val (Addi a1_0 (ImmVal 0)))

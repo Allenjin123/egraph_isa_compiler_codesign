@@ -13,29 +13,29 @@
 ; Instruction sequence as a DAG
 ; ============================================
 
-;; Step 1:     lw rd=a6_0 rs1=a5_0 imm=0
-(let a6_0_val (Lw a5_0 (ImmVal 0)))
+;; Step 1:     lw rd=a6_0 rs1=0 imm=a5_0
+(let a6_0_val (Lw (RegVal "0") (ImmLabel "a5_0")))
 
-;; Step 2:     lw rd=a0_0 rs1=a5_0 imm=4
-(let a0_0_val (Lw a5_0 (ImmVal 4)))
+;; Step 2:     lw rd=a0_0 rs1=4 imm=a5_0
+(let a0_0_val (Lw (RegVal "4") (ImmLabel "a5_0")))
 
-;; Step 3:     lw rd=a1_0 rs1=a5_0 imm=8
-(let a1_0_val (Lw a5_0 (ImmVal 8)))
+;; Step 3:     lw rd=a1_0 rs1=8 imm=a5_0
+(let a1_0_val (Lw (RegVal "8") (ImmLabel "a5_0")))
 
-;; Step 4:     lw rd=a2_0 rs1=a5_0 imm=12
-(let a2_0_val (Lw a5_0 (ImmVal 12)))
+;; Step 4:     lw rd=a2_0 rs1=12 imm=a5_0
+(let a2_0_val (Lw (RegVal "12") (ImmLabel "a5_0")))
 
-;; Step 5:     sw rs1=a4_0 rs2=a6_0 imm=0
-(let inst_4 (Sw a4_0 a6_0_val (ImmVal 0)))
+;; Step 5:     sw rs1=0 rs2=a6_0 imm=a4_0
+(let inst_4 (Sw (RegVal "0") a6_0_val (ImmLabel "a4_0")))
 
-;; Step 6:     sw rs1=a4_0 rs2=a0_0 imm=4
-(let inst_5 (Sw a4_0 a0_0_val (ImmVal 4)))
+;; Step 6:     sw rs1=4 rs2=a0_0 imm=a4_0
+(let inst_5 (Sw (RegVal "4") a0_0_val (ImmLabel "a4_0")))
 
-;; Step 7:     sw rs1=a4_0 rs2=a1_0 imm=8
-(let inst_6 (Sw a4_0 a1_0_val (ImmVal 8)))
+;; Step 7:     sw rs1=8 rs2=a1_0 imm=a4_0
+(let inst_6 (Sw (RegVal "8") a1_0_val (ImmLabel "a4_0")))
 
-;; Step 8:     sw rs1=a4_0 rs2=a2_0 imm=12
-(let inst_7 (Sw a4_0 a2_0_val (ImmVal 12)))
+;; Step 8:     sw rs1=12 rs2=a2_0 imm=a4_0
+(let inst_7 (Sw (RegVal "12") a2_0_val (ImmLabel "a4_0")))
 
 ;; Step 9:     addi rd=a5_1 rs1=a5_0 imm=16
 (let a5_1_val (Addi a5_0 (ImmVal 16)))

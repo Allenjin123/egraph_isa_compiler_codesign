@@ -1,10 +1,10 @@
 addi sp_1, sp_0, -80
-sw s5_0, 52(sp_1)
+sw s5_0, sp_1(52)
 lui s5_1, %hi(.LANCHOR0)
 addi s5_2, s5_1, %lo(.LANCHOR0)
 lui a2_0, 2
-sw ra_0, 76(sp_1)
-sw s0_0, 72(sp_1)
+sw ra_0, sp_1(76)
+sw s0_0, sp_1(72)
 addi a3_0, a1_0, 0
 addi a4_0, s5_2, 800
 addi a5_0, s5_2, 0

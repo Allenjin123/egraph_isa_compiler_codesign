@@ -4,12 +4,12 @@ slli a5_0, t1_0, 1
 add a5_1, a5_0, t1_0
 slli a5_2, a5_1, 2
 add a5_3, t2_0, a5_2
-lw t3_0, 0(a5_3)
-lw s1_0, 4(a5_3)
-lw a5_4, 8(a5_3)
+lw t3_0, a5_3(0)
+lw s1_0, a5_3(4)
+lw a5_4, a5_3(8)
 srai t1_1, a6_0, 31
 addi t0_1, t0_0, -1
-sw a5_4, 12(sp_0)
+sw a5_4, sp_0(12)
 srai a5_5, a3_0, 12
 sub t1_2, a5_5, t1_1
 mul a0_0, t3_0, s7_0

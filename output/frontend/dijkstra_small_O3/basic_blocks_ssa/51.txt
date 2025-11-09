@@ -3,12 +3,12 @@ addi sp_1, sp_0, -2032
 addi t0_1, t0_0, -1136
 lui a5_0, %hi(.LC0)
 lui a3_0, 10
-sw ra_0, 2028(sp_1)
-sw s0_0, 2024(sp_1)
-sw s1_0, 2020(sp_1)
-sw s2_0, 2016(sp_1)
-sw s3_0, 2012(sp_1)
-sw s4_0, 2008(sp_1)
+sw ra_0, sp_1(2028)
+sw s0_0, sp_1(2024)
+sw s1_0, sp_1(2020)
+sw s2_0, sp_1(2016)
+sw s3_0, sp_1(2012)
+sw s4_0, sp_1(2008)
 addi a5_1, a5_0, %lo(.LC0)
 add sp_2, sp_1, t0_1
 addi a3_1, a3_0, -960
@@ -17,6 +17,6 @@ lui a1_0, %hi(qRear)
 lui a2_0, %hi(g_qCount)
 addi a4_0, sp_2, 0
 add a3_2, a5_1, a3_1
-sw zero_0, %lo(qFront)(a0_0)
-sw zero_0, %lo(qRear)(a1_0)
-sw zero_0, %lo(g_qCount)(a2_0)
+sw zero_0, a0_0(%lo(qFront))
+sw zero_0, a1_0(%lo(qRear))
+sw zero_0, a2_0(%lo(g_qCount))

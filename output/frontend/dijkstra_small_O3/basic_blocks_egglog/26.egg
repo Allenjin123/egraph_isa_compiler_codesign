@@ -1,11 +1,10 @@
 ; EGraph for dijkstra_small_O3 - Block 26
 ; Total instructions: 8
-; Input registers: 4, Output registers: 7
+; Input registers: 3, Output registers: 7
 
 (include "../../../../Saturation/base.egg")
 
 ; Input register declarations (used but not defined in this block)
-(let a0_0 (RegVal "a0_0"))
 (let a4_0 (RegVal "a4_0"))
 (let t2_0 (RegVal "t2_0"))
 (let t5_0 (RegVal "t5_0"))
@@ -17,8 +16,8 @@
 ;; Step 1:     slli rd=a5_0 rs1=a4_0 imm=1
 (let a5_0_val (Slli a4_0 (ImmVal 1)))
 
-;; Step 2:     lw rd=a7_0 rs1=a0_0 imm=0
-(let a7_0_val (Lw a0_0 (ImmVal 0)))
+;; Step 2:     lw rd=a7_0 rs1=0 imm=a0_0
+(let a7_0_val (Lw (RegVal "0") (ImmLabel "a0_0")))
 
 ;; Step 3:     add rd=a5_1 rs1=a5_0 rs2=a4_0
 (let a5_1_val (Add a5_0_val a4_0))

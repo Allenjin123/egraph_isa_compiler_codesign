@@ -1,6 +1,0 @@
-slli a1_0, a2_0, 3; Inst-6
-add a1_1, a0_0, a1_0; Inst-7
-lw a6_0, 4(a1_1); Inst-9
-addi sp_1, sp_0, -32; Inst-11
-sw ra_0, 28(sp_1); Inst-13
-bne a6_0, a5_0, .L10; Inst-15

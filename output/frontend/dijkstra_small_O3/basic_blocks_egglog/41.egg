@@ -19,8 +19,8 @@
 ;; Step 2:     add rd=a4_1 rs1=s5_0 rs2=a4_0
 (let a4_1_val (Add s5_0 a4_0_val))
 
-;; Step 3:     lw rd=s4_0 rs1=a4_1 imm=4
-(let s4_0_val (Lw a4_1_val (ImmVal 4)))
+;; Step 3:     lw rd=s4_0 rs1=4 imm=a4_1
+(let s4_0_val (Lw (RegVal "4") (ImmLabel "a4_1")))
 
 ;; Step 4:     bne rs1=s4_0 rs2=a5_0 imm=.L42
 (let inst_3 (Bne s4_0_val a5_0 (ImmLabel ".L42")))
