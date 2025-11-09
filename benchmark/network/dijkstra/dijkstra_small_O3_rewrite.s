@@ -72,7 +72,7 @@ print_path:
 	lw	a3,8(sp)
 	lw	a2,4(sp)
 	lw	a5,0(sp)
-	jal	zero,.L3
+	jal	x0,.L3
 .L11:
 	slli	a1,a7,3
 	sub	a4,x0,a0
@@ -106,7 +106,7 @@ print_path:
 	lw	a6,8(sp)
 	lw	a2,4(sp)
 	lw	a5,0(sp)
-	jal	zero,.L4
+	jal	x0,.L4
 	.size	print_path, .-print_path
 	.align	2
 	.globl	enqueue
@@ -382,8 +382,8 @@ dijkstra:
 	sw	a4,%lo(qRear)(s9)
 .L24:
 	slli	s0,a3,3
-	sub	a0,x0,s5
-	sub	s2,s0,a0
+	sub	s2,x0,s5
+	sub	s2,s0,s2
 	lw	a1,0(s2)
 	lui	a0,%hi(.LC3)
 	addi	a0,a0,%lo(.LC3)
@@ -443,13 +443,13 @@ dijkstra:
 .Lpcrel_11:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_11)
-	jal	zero,.L30
+	jal	x0,.L30
 .L44:
 	lw	s6,48(sp)
 	lw	s7,44(sp)
 	lw	s10,32(sp)
 	lw	s11,28(sp)
-	jal	zero,.L24
+	jal	x0,.L24
 .L45:
 	lw	s0,72(sp)
 	lw	ra,76(sp)
@@ -478,7 +478,7 @@ dijkstra:
 .Lpcrel_14:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_14)
-	jal	zero,.L31
+	jal	x0,.L31
 	.size	dijkstra, .-dijkstra
 	.section	.text.startup,"ax",@progbits
 	.align	2

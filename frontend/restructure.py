@@ -9,8 +9,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "Extractor" / "src"))
 from egraph import EGraph, ENode 
 from ILP.ilp_solver import parse_solution_file, extract_solution  
-from util import INSTRUCTIONS_WITHOUT_RD, RV32I_LOAD, ALL_ABI_REGS, parse_instruction
-
+from util import INSTRUCTIONS_WITHOUT_RD, RV32I_LOAD, ALL_ABI_REGS, parse_instruction, format_instruction, SPECIAL_REGS
+from reg_alloc import allocate_compact_mapping
 # 路径配置
 FRONTEND_OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output" / "frontend"
 ILP_OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output" / "ilp"
@@ -115,6 +115,7 @@ def compute_free_regs_per_line(program_name: str, block_num: int) -> List[List[s
     Returns:
         List[List[str]]: 每行可用的 free_regs 列表，按原始顺序（第0行到第n行）
     """
+    results = {'free_regs_per_line': [], 'defs_uses_per_line': []}
     # 1. 读取 liveness.json 中的 FREE_at_exit
     liveness_file = FRONTEND_OUTPUT_DIR / program_name / "liveness.json"
     with open(liveness_file, 'r') as f:
@@ -143,10 +144,9 @@ def compute_free_regs_per_line(program_name: str, block_num: int) -> List[List[s
     # 3. 从后向前遍历，计算每行的 free_regs
     num_lines = len(lines)
     free_regs_per_line = [[] for _ in range(num_lines)]
-    
+    defs_uses_per_line = [(set(), set()) for _ in range(num_lines)]
     # 从最后一行开始
     last_line = set(free_at_exit)
-    # last_def_regs = set()
     for i in range(num_lines - 1, -1, -1):
         line = lines[i]
         def_regs, use_regs = extract_def_use(line)
@@ -154,14 +154,11 @@ def compute_free_regs_per_line(program_name: str, block_num: int) -> List[List[s
         # 当前行可用的 free_regs = last_line - use[i] + last_def_regs
         free_set = (last_line  | def_regs) - use_regs
         free_regs_per_line[i] = sorted(free_set)
-        
-        # 更新 current_free 供前一行使用：
-        # free[i-1] = free[i] - use[i] + def[i]
-        # 但我们已经在上面计算了 free[i] - use[i]，所以：
-        # current_free = free_set + def[i]
-        # last_def_regs = def_regs
+        defs_uses_per_line[i] = (def_regs, use_regs)
         last_line = free_set
-    return free_regs_per_line
+    results['free_regs_per_line'] = free_regs_per_line
+    results['defs_uses_per_line'] = defs_uses_per_line
+    return results
 
 @dataclass
 class GraphNode:
@@ -277,26 +274,23 @@ class RewriteBlock:
         self.eclass_to_rd_list: List[Tuple[str, str]] = get_eclass_to_rd(program_name, block_num)
         self.block_lines: List[List[str]] = [[] for _ in range(len(self.eclass_to_rd_list))]
         self.eclass_to_rd_map: Dict[str, str] = {}  # 初始化为空，走一行更新一行
+        self.stack_per_line: List[Dict[str, List[str]]] = [{"push": [], "pop": []} for _ in range(len(self.block_lines))]
         # 计算每行可用的 free_regs
-        self.free_regs_per_line: List[List[str]] = compute_free_regs_per_line(program_name, block_num)
+        self.free_regs_per_line: List[List[str]] = compute_free_regs_per_line(program_name, block_num)['free_regs_per_line']
+        self.defs_uses_per_line: List[Tuple[Set[str], Set[str]]] = compute_free_regs_per_line(program_name, block_num)['defs_uses_per_line']
         self.free_regs: List[str] = []
         self.temp_counter: int = 0  # 临时寄存器计数器
         self.current_line_idx: int = 0  # 当前处理的行索引
-        self.stack: Dict[str, List[str]] = {"push": [], "pop": []}  # 栈操作
 
-    def get_free_reg(self) -> str:
+    def get_placeholder_reg(self) -> str:
         """获取一个可用的寄存器
         
-        优先使用 free_regs，如果用完了就生成占位符（后续会替换为借用的寄存器）
+        生成占位符：op_<temp_counter>
         """
-        if self.free_regs:
-            return self.free_regs.pop(0)
-        else:
-            # 生成占位符：op_<line_idx>_<temp_counter>
-            placeholder = f"op_{self.current_line_idx}_{self.temp_counter}"
-            self.temp_counter += 1
-            return placeholder
-
+        placeholder = f"op_{self.temp_counter}"
+        self.temp_counter += 1
+        return placeholder
+            
     def rewrite_line(self, eclass_id: str, rd: str, line_idx: int):
         """以 eclass_id 展开后序遍历，生成指令，最后更新 rd
         
@@ -338,7 +332,7 @@ class RewriteBlock:
             if child_node.children:
                 # 有子节点，需要递归生成指令
                 if child_node.op not in INSTRUCTIONS_WITHOUT_RD:
-                    child_rd = self.get_free_reg()  
+                    child_rd = self.get_placeholder_reg()  
                 else:
                     child_rd = None
                 self.rewrite_line(child_eclass, child_rd, line_idx)
@@ -349,63 +343,8 @@ class RewriteBlock:
                 child_operands.append(child_node.op)
         
         # 生成指令
-        inst_str = self._format_instruction(node.op, rd, child_operands)
+        inst_str = format_instruction(node.op, rd, child_operands)
         self.block_lines[line_idx].append(inst_str)
-    
-    def _use_original_instruction(self, line_idx: int):
-        """使用原始 basic_blocks 中的指令（fallback）"""
-        # 读取原始 basic block
-        block_file = FRONTEND_OUTPUT_DIR / self.program_name / "basic_blocks" / f"{self.block_num}.txt"
-        with open(block_file, 'r') as f:
-            lines = [line.rstrip('\n') for line in f if line.strip()]
-        
-        if line_idx < len(lines):
-            original_line = lines[line_idx]
-            # 去除前导空白
-            original_line = original_line.lstrip()
-            self.block_lines[line_idx].append(original_line)
-    
-    def _format_instruction(self, op: str, rd: str, operands: List[str]) -> str:
-        """格式化指令为汇编格式"""
-        # Branch 指令列表
-        branch_ops = {'beq', 'bne', 'blt', 'bge', 'bltu', 'bgeu'}
-        
-        # 不需要 rd 的指令
-        if op in INSTRUCTIONS_WITHOUT_RD:
-            if op in ['sb', 'sh', 'sw'] and len(operands) >= 3:
-                # Store 指令: sw rs2, offset(rs1)
-                return f"{op}\t{operands[1]},{operands[2]}({operands[0]})"
-            elif operands:
-                # Branch 指令特殊处理：如果最后一个操作数是数字，改成 ".+数字"
-                if op in branch_ops and operands:
-                    modified_operands = operands.copy()
-                    last_operand = modified_operands[-1]
-                    # 检查是否是纯数字（可能有正负号）
-                    if re.match(r'^-?\d+$', last_operand):
-                        modified_operands[-1] = f".+{last_operand}"
-                    return f"{op}\t{','.join(modified_operands)}"
-                else:
-                    return f"{op}\t{','.join(operands)}"
-            else:
-                return f"{op}"
-        
-        # 如果 rd 为 None，使用 x0（零寄存器）
-        if rd is None:
-            rd = 'x0'
-        
-        # Load 指令特殊格式
-        if op in RV32I_LOAD and len(operands) >= 2:
-            return f"{op}\t{rd},{operands[1]}({operands[0]})"
-        
-        # # 特殊处理: sub rd, x0, rs -> neg rd, rs (RISC-V 伪指令)
-        # if op == 'sub' and len(operands) == 2 and operands[0] in ('x0', 'zero'):
-        #     return f"neg\t{rd},{operands[1]}"
-        
-        # 普通指令
-        if operands:
-            return f"{op}\t{rd},{','.join(operands)}"
-        else:
-            return f"{op}\t{rd}" 
 
     def rewrite_block(self):
         """重写整个 block，按顺序处理每一行"""
@@ -416,158 +355,140 @@ class RewriteBlock:
                 self.temp_counter = 0  # 重置临时寄存器计数器
                 
                 if line_idx < len(self.free_regs_per_line):
-                    self.free_regs = self.free_regs_per_line[line_idx].copy()
+                    self.free_regs = self.free_regs_per_line[line_idx]
                 else:
                     raise ValueError(f"Line {line_idx} has no free registers")
                 
-                # # 测试：直接使用原始指令
-                # self._use_original_instruction(line_idx)
-                
                 # 处理这一行
+                live_out = set()
+                for use in self.defs_uses_per_line[line_idx][1]:
+                    if use not in self.free_regs_per_line[line_idx]:
+                        live_out.add(use)
                 self.rewrite_line(eclass_id, rd, line_idx)
+                self.replace_placeholders(line_idx, live_out)
                 # 更新映射
                 self.eclass_to_rd_map[eclass_id] = rd
             else:
                 # 不在图中的 eclass，说明图构建有问题
                 raise ValueError(f"Eclass {eclass_id} from file not found in block graph")
 
-        max_placeholders = 0
-        temp_lines = [line for sublist in self.block_lines for line in sublist]
-        for line in temp_lines:
-            placeholders = re.findall(r'op_\d+_\d+', line)
-            num_placeholders = len(set(placeholders))  # 去重
-            max_placeholders = max(max_placeholders, num_placeholders)
-
-        self.allocate_registers(max_placeholders)
-        self.replace_placeholders()
         self.merge_lines()
-        
-    def allocate_registers(self, max_placeholders: int):
-        """分配需要借用的寄存器并生成栈操作指令"""
-        if max_placeholders == 0:
+
+    def replace_placeholders(self, line_idx: int, live_out: Set[str]):
+        """替换占位符为借用的寄存器或使用寄存器分配算法"""
+        lines = self.block_lines[line_idx]
+        if not lines:
             return
         
-        # 选择可借用的寄存器（s 寄存器）
-        borrowed_regs = self._select_borrowable_registers(max_placeholders)
+        # 找到所有占位符
+        all_text = ' '.join(lines)
+        placeholders = re.findall(r'op_(\d+)', all_text)
+        if not placeholders:
+            return
         
-        if len(borrowed_regs) < max_placeholders:
-            raise RuntimeError(f"需要 {max_placeholders} 个寄存器，但只能借用 {len(borrowed_regs)} 个")
+        # 调用寄存器分配算法
+        mapping, m = allocate_compact_mapping(lines, live_out)
         
-        # 生成压栈指令
-        # RISC-V ABI 要求 sp 必须保持 16 字节对齐
-        raw_stack_size = 4 * len(borrowed_regs)
-        stack_size = ((raw_stack_size + 15) // 16) * 16  # 向上对齐到 16 的倍数
+        # 计算需要借用的寄存器数量（虚拟寄存器的数量）
+        num_virtual = m + 1 if m >= 0 else 0
+        num_free = len(self.free_regs)
+        num_needed = max(0, num_virtual - num_free)
         
-        self.stack["push"].append(f"addi\tsp,sp,{-stack_size}")
-        for i, reg in enumerate(borrowed_regs):
-            self.stack["push"].append(f"sw\t{reg},{4*i}(sp)")
+        if num_needed > 0:
+            # 需要借用寄存器
+            borrowed_regs, push_stack, pop_stack = self.allocate_registers(num_needed)
+            
+            # 构建最终的寄存器映射：op_k -> 真实寄存器
+            final_mapping = {}
+            for op_name, allocated in mapping.items():
+                if allocated.startswith('op_'):
+                    # 虚拟寄存器，分配到 free_regs 或 borrowed_regs
+                    op_num = int(allocated.split('_')[1])
+                    if op_num < num_free:
+                        final_mapping[op_name] = self.free_regs[op_num]
+                    else:
+                        final_mapping[op_name] = borrowed_regs[op_num - num_free]
+                else:
+                    # 已经是真实寄存器
+                    final_mapping[op_name] = allocated
+            
+            # 记录栈操作
+            self.stack_per_line[line_idx]["push"] = push_stack
+            self.stack_per_line[line_idx]["pop"] = pop_stack
+        else:
+            # 不需要借用寄存器
+            final_mapping = {}
+            for op_name, allocated in mapping.items():
+                if allocated.startswith('op_'):
+                    # 虚拟寄存器，分配到 free_regs
+                    op_num = int(allocated.split('_')[1])
+                    final_mapping[op_name] = self.free_regs[op_num]
+                else:
+                    # 已经是真实寄存器
+                    final_mapping[op_name] = allocated
         
-        # 生成出栈指令
-        for i, reg in enumerate(borrowed_regs):
-            self.stack["pop"].append(f"lw\t{reg},{4*i}(sp)")
-        self.stack["pop"].append(f"addi\tsp,sp,{stack_size}")
+        # 替换所有占位符
+        for i, line in enumerate(lines):
+            for op_name, real_reg in final_mapping.items():
+                # 使用正则表达式确保只替换完整的寄存器名
+                line = re.sub(r'\b' + re.escape(op_name) + r'\b', real_reg, line)
+            self.block_lines[line_idx][i] = line
         
-        # 保存借用的寄存器列表供替换使用
-        self.borrowed_regs = borrowed_regs
-    
     def _select_borrowable_registers(self, num_needed: int) -> List[str]:
         """选择可以借用的寄存器
         
-        选择标准：没被 block 使用过且没被 block 定义过
+        选择标准：在当前 sublist 中既未使用也未定义
         """
-        # 读取 defuse 信息
-        defuse_file = FRONTEND_OUTPUT_DIR / self.program_name / "defuse.json"
-        with open(defuse_file, 'r') as f:
-            defuse_data = json.load(f)
-        
-        block_key = str(self.block_num)
-        use_all = set(defuse_data[block_key].get('USE_all', []))  # block 所有使用的寄存器
-        def_all = set(defuse_data[block_key].get('DEF_all', []))  # block 所有定义的寄存器
-        
-        # 候选寄存器：s 寄存器优先（callee-saved）
-        candidate_regs = ['s2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11']
+        candidate_regs = ['s2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11',
+                          'a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 't0', 't1', 't2', 't3', 't4', 't5', 't6']
         
         borrowable = []
         for reg in candidate_regs:
-            # 可以借用：既不在 USE_all 也不在 DEF_all
-            if reg not in use_all and reg not in def_all:
+            if reg not in self.free_regs and reg not in borrowable:
                 borrowable.append(reg)
-            
             if len(borrowable) >= num_needed:
                 break
         
         return borrowable[:num_needed]
+        
+    def allocate_registers(self, num_needed: int) -> Tuple[List[str], List[str], List[str]]:
+        """分配需要借用的寄存器并生成栈操作指令"""
+        if num_needed == 0:
+            return [], [], []
+        
+        borrowed_regs = self._select_borrowable_registers(num_needed)
+        
+        if len(borrowed_regs) < num_needed:
+            raise RuntimeError(f"需要 {num_needed} 个寄存器，但只能借用 {len(borrowed_regs)} 个")
+        
+        borrowed_regs = borrowed_regs[:num_needed]
+        
+        raw_stack_size = 4 * len(borrowed_regs)
+        stack_size = ((raw_stack_size + 15) // 16) * 16  # 向上对齐到 16 的倍数
+        
+        push_stack = [f"addi\tsp,sp,{-stack_size}"]
+        for i, reg in enumerate(borrowed_regs):
+            push_stack.append(f"sw\t{reg},{4*i}(sp)")
+        
+        pop_stack = []
+        for i, reg in enumerate(borrowed_regs):
+            pop_stack.append(f"lw\t{reg},{4*i}(sp)")
+        pop_stack.append(f"addi\tsp,sp,{stack_size}")
+        
+        return borrowed_regs, push_stack, pop_stack
     
-    def replace_placeholders(self):
-        """替换占位符为实际寄存器
-        
-        每个 sublist（每行原始指令展开后的结果）独立分配寄存器，
-        因为占位符名字包含 line_idx，不同 sublist 的占位符不会冲突，
-        可以复用相同的借用寄存器
-        """
-        if not hasattr(self, 'borrowed_regs') or not self.borrowed_regs:
-            return
-        
-        import re
-        
-        # 按 sublist 独立处理
-        for i, sublist in enumerate(self.block_lines):
-            # 1. 收集当前 sublist 中所有唯一的占位符（保持首次出现顺序）
-            seen_placeholders = []
-            for line in sublist:
-                placeholders = re.findall(r'op_\d+_\d+', line)
-                for placeholder in placeholders:
-                    if placeholder not in seen_placeholders:
-                        seen_placeholders.append(placeholder)
-            
-            if not seen_placeholders:
-                continue
-            
-            # 2. 检查寄存器数量是否足够
-            if len(seen_placeholders) > len(self.borrowed_regs):
-                raise RuntimeError(f"Sublist {i} 需要 {len(seen_placeholders)} 个寄存器，但只借用了 {len(self.borrowed_regs)} 个")
-            
-            # 3. 为当前 sublist 分配寄存器（按首次出现顺序）
-            placeholder_to_reg = {}
-            for idx, placeholder in enumerate(seen_placeholders):
-                placeholder_to_reg[placeholder] = self.borrowed_regs[idx]
-            
-            # 4. 替换当前 sublist 中的占位符
-            for j in range(len(self.block_lines[i])):
-                for placeholder, reg in placeholder_to_reg.items():
-                    self.block_lines[i][j] = self.block_lines[i][j].replace(placeholder, reg)
+    
     
     def merge_lines(self):
-        push_stack = [line for line in self.stack["push"]]
-        pop_stack = [line for line in self.stack["pop"]]
-        lines = [line for sublist in self.block_lines for line in sublist]
+
+        for idx, sublist in enumerate(self.block_lines):
+            push_stack = [line for line in self.stack_per_line[idx]["push"]]
+            pop_stack = [line for line in self.stack_per_line[idx]["pop"]]
+            lines = [line for line in sublist]
+            combined = push_stack + lines + pop_stack    
+            self.block_lines[idx] = combined
         
-        if not lines or not pop_stack:
-            self.lines = push_stack + lines + pop_stack
-            return
-        
-        # 检查最后一条和倒数第二条指令
-        last_line = lines[-1].strip()
-        last_mnemonic = last_line.split()[0] if last_line else ""
-        
-        # 检查是否是 auipc + jalr 配对（用于函数调用）
-        if len(lines) >= 2 and last_mnemonic == 'jalr':
-            second_last_line = lines[-2].strip()
-            second_last_mnemonic = second_last_line.split()[0] if second_last_line else ""
-            
-            if second_last_mnemonic == 'auipc':
-                # auipc + jalr 配对，pop 必须插入到 auipc 之前
-                self.lines = push_stack + lines[:-2] + pop_stack + lines[-2:]
-                return
-        
-        # RV32I branch 指令
-        branch_ops = {'beq', 'bne', 'blt', 'bge', 'bltu', 'bgeu', 'jal', 'jalr'}
-        
-        if last_mnemonic in branch_ops:
-            # 普通 branch，pop 插入到最后一条指令之前
-            self.lines = push_stack + lines[:-1] + pop_stack + [lines[-1]]
-        else:
-            self.lines = push_stack + lines + pop_stack
+        self.lines = [line for sublist in self.block_lines for line in sublist]
 
 def get_all_blocks(program_name: str) -> List[int]:
     """获取一个 program 的所有 block 编号
@@ -695,18 +616,141 @@ def rewrite_program(program_name: str, solution_file: str = None, output_dir: st
     return stats
 
 
+def rewrite_program_all_variants(program_name: str, num_variants: int = 5):
+    """Process all variants of a program
+
+    Args:
+        program_name: Program name (e.g., "dijkstra_small_O3")
+        num_variants: Number of variants to process (default 5)
+
+    Returns:
+        List[Dict]: Statistics for all variants
+    """
+    print(f"\n{'='*70}")
+    print(f"重写程序的多个变体: {program_name}")
+    print(f"变体数量: {num_variants}")
+    print(f"{'='*70}")
+
+    # Base output directory
+    base_output_dir = FRONTEND_OUTPUT_DIR / program_name / "basic_blocks_rewrite"
+
+    # Clean up existing directory or symlink and create fresh
+    if base_output_dir.exists() or base_output_dir.is_symlink():
+        import shutil
+        if base_output_dir.is_symlink():
+            base_output_dir.unlink()  # Remove symlink
+        elif base_output_dir.is_dir():
+            shutil.rmtree(base_output_dir)  # Remove directory
+    base_output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Process each variant
+    all_stats = []
+
+    for variant_num in range(num_variants):
+        # Check if solution file exists
+        solution_file = ILP_OUTPUT_DIR / program_name / "sol" / f"solution_{variant_num}.sol"
+
+        if not solution_file.exists():
+            print(f"\n警告: 变体 {variant_num} 的解文件不存在: {solution_file}")
+            # Try fallback to single solution file for variant 0
+            if variant_num == 0:
+                fallback_file = ILP_OUTPUT_DIR / program_name / "sol" / "solution.sol"
+                if fallback_file.exists():
+                    print(f"  使用备用文件: {fallback_file}")
+                    solution_file = fallback_file
+                else:
+                    print(f"  跳过变体 {variant_num}")
+                    continue
+            else:
+                # For non-zero variants, check if we should break or continue
+                # If we have at least one variant, we can stop here
+                if all_stats:
+                    print(f"  未找到更多变体，停止处理")
+                    break
+                print(f"  跳过变体 {variant_num}")
+                continue
+
+        try:
+            print(f"\n{'='*60}")
+            print(f"处理变体 {variant_num}: {program_name}")
+            print(f"{'='*60}")
+
+            # Create variant output directory
+            variant_dir = base_output_dir / f"variant_{variant_num}"
+            variant_dir.mkdir(parents=True, exist_ok=True)
+
+            # Rewrite with this solution
+            stats = rewrite_program(program_name, str(solution_file), str(variant_dir))
+            stats['variant'] = variant_num
+            all_stats.append(stats)
+
+        except Exception as e:
+            print(f"\n处理变体 {variant_num} 时出错: {str(e)}")
+            all_stats.append({
+                'variant': variant_num,
+                'error': str(e),
+                'total_blocks': 0,
+                'success_blocks': 0,
+                'failed_blocks': 0
+            })
+
+    # Final summary
+    print(f"\n{'='*70}")
+    print(f"最终汇总")
+    print(f"{'='*70}")
+    print(f"程序: {program_name}")
+    print(f"处理的变体数: {len(all_stats)}")
+
+    total_success = sum(s.get('success_blocks', 0) for s in all_stats)
+    total_failed = sum(s.get('failed_blocks', 0) for s in all_stats)
+
+    print(f"所有变体成功的基本块总数: {total_success}")
+    print(f"所有变体失败的基本块总数: {total_failed}")
+
+    print(f"\n每个变体汇总:")
+    for stats in all_stats:
+        variant = stats.get('variant', '?')
+        success = stats.get('success_blocks', 0)
+        total = stats.get('total_blocks', 0)
+        if 'error' in stats:
+            print(f"  变体 {variant}: 错误 - {stats['error']}")
+        else:
+            print(f"  变体 {variant}: {success}/{total} 个块成功")
+
+    print(f"\n输出目录结构:")
+    print(f"  {base_output_dir}/")
+    for i in range(len(all_stats)):
+        variant_dir = base_output_dir / f"variant_{i}"
+        if variant_dir.exists():
+            num_files = len(list(variant_dir.glob("*.txt")))
+            print(f"    variant_{i}/  ({num_files} 个文件)")
+
+    print(f"{'='*70}\n")
+
+    return all_stats
+
+
 def main():
     """命令行入口"""
     import argparse
-    
+
     parser = argparse.ArgumentParser(description="重写 RISC-V 程序的所有 basic blocks")
     parser.add_argument("program_name", help="程序名称 (例如 dijkstra_small_O3)")
-    parser.add_argument("--solution", "-s", help="ILP solution 文件路径（可选）")
-    parser.add_argument("--output", "-o", help="输出目录（可选）")
-    
+    parser.add_argument("--solution", "-s", help="ILP solution 文件路径（可选，仅用于单变体模式）")
+    parser.add_argument("--output", "-o", help="输出目录（可选，仅用于单变体模式）")
+    parser.add_argument("--variants", "-k", type=int, default=5,
+                        help="要处理的变体数量 (默认: 5)")
+    parser.add_argument("--single-variant", action="store_true",
+                        help="只处理单个变体（使用 --solution 指定的文件）")
+
     args = parser.parse_args()
-    
-    rewrite_program(args.program_name, args.solution, args.output)
+
+    if args.single_variant:
+        # Single variant mode (backward compatibility)
+        rewrite_program(args.program_name, args.solution, args.output)
+    else:
+        # Multi-variant mode (default)
+        rewrite_program_all_variants(args.program_name, args.variants)
 
 
 if __name__ == "__main__":
