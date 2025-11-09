@@ -2384,7 +2384,7 @@ main:
 	addi	s3,s3,-1
 	slli	a3,a3,2
 	slli	s2,s2,1
-	bgeu	a4,a5,.L108
+	bltu	a5,a4,.L108
 	sub	a5,a5,a4
 	addi	s2,s2,1
 .L108:

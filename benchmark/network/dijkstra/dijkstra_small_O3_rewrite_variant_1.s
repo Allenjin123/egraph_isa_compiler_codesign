@@ -119,7 +119,9 @@ enqueue:
 dequeue:
 	lui	a7,%hi(g_qCount)
 	lw	a5,%lo(g_qCount)(a7)
-	bge	zero,a5,.L17
+	bge	zero,a5,.+8
+	jal	x0,8
+	jal	x0,.L17
 .L17:
 	jalr	zero,ra,0
 	.size	dequeue, .-dequeue
@@ -199,14 +201,17 @@ dijkstra:
 	sub	a6,s1,a6
 	bne	t6,t5,.+8
 	jal	x0,.L26
-	bge	a6,t6,.L25
+	bge	t6,a6,.+8
+	jal	x0,.L25
 .L26:
 .L25:
 	addi	a2,a2,1
 	addi	a0,a0,4
 	addi	a3,a3,8
 	bne	a2,s0,.L27
-	bne	t0,zero,.L28
+	bne	t0,zero,.+8
+	jal	x0,8
+	jal	x0,.L28
 	addi	a1,t3,0
 	lw	t3,12(sp)
 	lui	a5,%hi(i)
@@ -410,10 +415,12 @@ main:
 	lw	s2,2016(sp)
 	lw	s3,2012(sp)
 	lw	s4,2008(sp)
-	addi	a0,x0,1
 	addi	a2,x0,1
-	bge	a2,a0,.+4
+	bge	a0,a2,.+8
+	jal	a0,8
 	addi	a0,x0,0
+	jal	a0,4
+	addi	a0,x0,1
 	addi	sp,sp,2032
 	jalr	zero,ra,0
 	.size	main, .-main

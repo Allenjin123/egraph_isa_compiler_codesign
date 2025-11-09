@@ -15,24 +15,29 @@ insertR:
 	addi	t1,a0,0
 	addi	a5,a1,0
 	addi	a4,a2,0
-	bge	a2,a6,.+8
-	jal	x0,.L2
+	bge	a6,a2,.L2
 	lw	a0,9(a3)
 	addi	t0,x0,255
 	and	a3,a0,t0
-	bgeu	a3,a6,.L2
+	bltu	a6,a3,.+8
+	jal	x0,8
+	jal	x0,.L2
 	lui	a0,524288
 	addi	sp,sp,-32
 	srl	a3,a0,a6
 	sw	ra,28(sp)
 	and	a3,a3,a7
-	beq	a3,zero,.L6
+	beq	a3,zero,.+8
+	jal	x0,8
+	jal	x0,.L6
 	lw	a3,16(t1)
 	lw	t0,9(a3)
 	addi	t2,x0,255
 	and	t3,t0,t2
 	bge	t3,a2,.L23
-	bgeu	a6,t3,.L23
+	bltu	t3,a6,.+8
+	jal	x0,8
+	jal	x0,.L23
 	srl	a0,a0,t3
 	and	a0,a0,a7
 	sw	t1,12(sp)
@@ -73,7 +78,7 @@ insertR:
 	addi	t2,x0,255
 	and	t3,t0,t2
 	bge	t3,a2,.L24
-	bgeu	t3,a6,.+8
+	bltu	a6,t3,.+8
 	jal	x0,.L24
 	srl	a0,a0,t3
 	and	a0,a0,a7
@@ -172,7 +177,9 @@ pat_insert:
 	lw	a5,9(a4)
 	addi	t0,x0,255
 	and	a5,a5,t0
-	bgeu	a3,a5,.L35
+	bltu	a5,a3,.+8
+	jal	x0,8
+	jal	x0,.L35
 .L34:
 	addi	a3,a5,0
 	srl	a5,a6,a3
@@ -184,7 +191,7 @@ pat_insert:
 	lw	a5,9(a4)
 	addi	t0,x0,255
 	and	a5,a5,t0
-	bgeu	a5,a3,.L34
+	bltu	a3,a5,.L34
 .L35:
 	lw	a3,0(a4)
 	beq	t1,a3,.L37
@@ -199,8 +206,7 @@ pat_insert:
 	addi	a2,zero,1
 	addi	a6,zero,32
 	lui	a7,524288
-	bge	a5,zero,.+8
-	jal	x0,.L121
+	bge	zero,a5,.L121
 .L38:
 	addi	a2,a2,1
 	srl	a5,a7,a2
@@ -220,7 +226,9 @@ pat_insert:
 	addi	a3,x0,255
 	and	a0,a0,a3
 	bge	a0,a2,.L96
-	bgeu	t3,a0,.L96
+	bltu	a0,t3,.+8
+	jal	x0,8
+	jal	x0,.L96
 	srl	a3,a1,a0
 	and	a3,a3,t1
 	beq	a3,zero,.L58
@@ -228,9 +236,9 @@ pat_insert:
 	lw	t0,9(a3)
 	addi	t2,x0,255
 	and	t3,t0,t2
-	bge	a2,t3,.+8
+	bge	t3,a2,.L97
+	bltu	a0,t3,.+8
 	jal	x0,.L97
-	bgeu	a0,t3,.L97
 	srl	a5,a1,t3
 	and	a5,a5,t1
 	sw	a4,12(sp)
@@ -261,7 +269,8 @@ pat_insert:
 	addi	a3,x0,255
 	and	a0,a0,a3
 	bge	a0,a2,.L98
-	bgeu	a0,t3,.+8
+	bltu	a0,t3,.+8
+	jal	x0,8
 	jal	x0,.L98
 	srl	a3,a1,a0
 	and	a3,a3,t1
@@ -271,7 +280,7 @@ pat_insert:
 	addi	t2,x0,255
 	and	t3,t0,t2
 	bge	t3,a2,.L99
-	bgeu	t3,a0,.+8
+	bltu	a0,t3,.+8
 	jal	x0,.L99
 	srl	a5,a1,t3
 	and	a5,a5,t1
@@ -431,7 +440,8 @@ pat_insert:
 	sub	a6,x0,a3
 	sub	a3,t1,a6
 	lw	a6,0(a3)
-	bgeu	a7,a6,.+8
+	bltu	a7,a6,.+8
+	jal	x0,8
 	jal	x0,.L126
 	lw	a2,0(a3)
 	addi	a6,x0,255
@@ -481,11 +491,11 @@ pat_insert:
 .L50:
 	addi	a3,a5,-1
 	sub	a3,a3,a2
-	addi	a3,x0,1
 	addi	a0,x0,3
-	bgeu	a3,a0,.+8
-	jal	a3,4
+	bltu	a3,a0,.+8
 	addi	a3,x0,0
+	jal	a3,4
+	addi	a3,x0,1
 	beq	a3,zero,.+8
 	jal	x0,.L51
 	addi	a0,x0,3
@@ -511,7 +521,8 @@ pat_insert:
 	addi	t2,x0,255
 	and	t3,t0,t2
 	bge	t3,a2,.L100
-	bgeu	t3,a0,.+8
+	bltu	t3,a0,.+8
+	jal	x0,8
 	jal	x0,.L100
 	srl	a5,a1,t3
 	and	a5,a5,t1
@@ -733,7 +744,8 @@ pat_search:
 	lw	a4,9(a1)
 	addi	a5,x0,255
 	and	a5,a4,a5
-	bgeu	a3,a5,.L172
+	bltu	a3,a5,.+8
+	jal	x0,.L172
 .L171:
 	lw	a4,4(a1)
 	lw	a6,0(a1)
@@ -753,7 +765,7 @@ pat_search:
 	lw	a4,9(a1)
 	addi	a5,x0,255
 	and	a5,a4,a5
-	bgeu	a5,a3,.L171
+	bltu	a3,a5,.L171
 .L172:
 	lw	a4,4(a1)
 	lw	a5,0(a1)
@@ -781,7 +793,8 @@ main:
 	lw	a5,%lo(node_count)(a1)
 	lui	a4,3
 	addi	a4,a4,-289
-	bge	a5,a4,.L270
+	bge	a4,a5,.+8
+	jal	x0,.L270
 	lui	a3,%hi(static_nodes)
 	addi	sp,sp,-128
 	addi	a3,a3,%lo(static_nodes)
@@ -804,7 +817,8 @@ main:
 	sw	zero,12(s2)
 	sw	zero,16(s2)
 	sw	a3,%lo(node_count)(a1)
-	bge	a2,a4,.L276
+	bge	a4,a2,.+8
+	jal	x0,.L276
 	lui	a3,%hi(static_masks)
 	addi	a3,a3,%lo(static_masks)
 	sw	a3,44(sp)
@@ -820,7 +834,8 @@ main:
 	sw	zero,0(a3)
 	sw	zero,4(a3)
 	sw	a2,%lo(mask_count)(a0)
-	bge	a1,a4,.L180
+	bge	a4,a1,.+8
+	jal	x0,.L180
 	addi	a4,zero,20
 	mul	a5,a5,a4
 	lui	a4,%hi(static_data)
@@ -879,14 +894,18 @@ main:
 	and	a4,a0,a1
 	addi	a2,a4,-9
 	addi	a5,a4,-32
+	addi	a0,x0,1
+	bltu	a0,a2,.+8
+	jal	a3,8
+	addi	a3,x0,0
+	jal	a3,4
 	addi	a3,x0,1
 	addi	a0,x0,1
-	bgeu	a0,a2,.+4
-	addi	a3,x0,0
-	addi	a5,x0,1
-	addi	a0,x0,1
-	bgeu	a0,a5,.+4
+	bltu	a0,a5,.+8
+	jal	a5,8
 	addi	a5,x0,0
+	jal	a5,4
+	addi	a5,x0,1
 	and	a1,a3,a5
 	sub	a0,a1,a5
 	sub	a3,a3,a0
@@ -899,9 +918,7 @@ main:
 	addi	s1,s1,1
 	addi	a5,a6,-32
 	addi	a1,a6,-9
-	beq	a5,zero,.+8
-	jal	x0,8
-	jal	x0,.L248
+	beq	a5,zero,.L248
 	beq	a1,zero,.L248
 .L185:
 	addi	a5,zero,45
@@ -931,7 +948,7 @@ main:
 	addi	s11,a6,-48
 	addi	a0,x0,255
 	and	a1,s11,a0
-	bgeu	a1,s6,.L195
+	bltu	s6,a1,.L195
 	beq	s0,zero,.+8
 	jal	x0,.L193
 	addi	a5,s11,0
@@ -968,7 +985,7 @@ main:
 	addi	a2,x0,255
 	and	a3,s2,a2
 	beq	a6,zero,.L261
-	bgeu	a3,s6,.+8
+	bltu	s6,a3,.+8
 	jal	x0,.L192
 	lw	s0,12(sp)
 	lw	s1,8(sp)
@@ -979,7 +996,9 @@ main:
 	addi	a4,a6,-32
 	beq	a4,zero,.L266
 	addi	a6,a6,-9
-	beq	a6,zero,.L266
+	beq	a6,zero,.+8
+	jal	x0,8
+	jal	x0,.L266
 	lw	a0,1(s2)
 	addi	a1,x0,255
 	and	a6,a0,a1
@@ -1003,9 +1022,7 @@ main:
 	jal	x0,.L198
 	jal	zero,.L197
 .L256:
-	beq	a3,zero,.+8
-	jal	x0,8
-	jal	x0,.L249
+	beq	a3,zero,.L249
 .L198:
 	lw	a0,1(s0)
 	addi	a1,x0,255
@@ -1028,7 +1045,9 @@ main:
 	addi	s0,s0,1
 	addi	a4,a5,-32
 	addi	a3,a5,-9
-	beq	a4,zero,.L249
+	beq	a4,zero,.+8
+	jal	x0,8
+	jal	x0,.L249
 	beq	a3,zero,.L249
 	addi	a4,zero,45
 	beq	a5,a4,.L281
@@ -1046,7 +1065,7 @@ main:
 	and	a3,a5,a0
 	addi	a2,zero,9
 	addi	a4,zero,0
-	bgeu	a3,a2,.L202
+	bltu	a2,a3,.L202
 	addi	a3,a4,0
 .L207:
 	slli	a4,a3,2
@@ -1062,14 +1081,17 @@ main:
 	addi	a0,x0,255
 	and	a4,a5,a0
 	addi	s0,s0,1
-	bgeu	a2,a4,.L207
+	bltu	a4,a2,.+8
+	jal	x0,8
+	jal	x0,.L207
 	addi	a4,a3,0
 .L202:
 	lui	a6,%hi(node_count)
 	lw	a5,%lo(node_count)(a6)
 	lui	a3,3
 	addi	a3,a3,-289
-	bge	a5,a3,.L274
+	bge	a3,a5,.+8
+	jal	x0,.L274
 	lw	a2,16(sp)
 	slli	a0,a5,2
 	sub	a7,x0,a0
@@ -1133,7 +1155,9 @@ main:
 	lw	a1,9(a4)
 	addi	a3,x0,255
 	and	a5,a1,a3
-	bgeu	a2,a5,.L216
+	bltu	a5,a2,.+8
+	jal	x0,8
+	jal	x0,.L216
 .L215:
 	lw	a3,4(a4)
 	lw	a1,0(a4)
@@ -1153,7 +1177,7 @@ main:
 	lw	a1,9(a4)
 	addi	a3,x0,255
 	and	a5,a1,a3
-	bgeu	a5,a2,.L215
+	bltu	a2,a5,.L215
 .L216:
 	lw	a5,4(a4)
 	lw	a3,0(a4)
@@ -1196,10 +1220,12 @@ main:
 	lw	s9,84(sp)
 	lw	s10,80(sp)
 	lw	s11,76(sp)
-	addi	a0,x0,1
 	addi	a2,x0,1
-	bgeu	a2,a0,.+4
+	bltu	a2,a0,.+8
+	jal	a0,8
 	addi	a0,x0,0
+	jal	a0,4
+	addi	a0,x0,1
 	jal	zero,.L178
 .L278:
 	lw	a0,1(s1)
@@ -1258,7 +1284,8 @@ main:
 	beq	a6,zero,.L266
 .L275:
 	addi	s0,zero,1
-	bgeu	s6,a5,.L193
+	bltu	s6,a5,.+8
+	jal	x0,.L193
 	beq	a6,s8,.+8
 	jal	x0,.L194
 .L280:
