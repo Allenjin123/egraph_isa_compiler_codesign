@@ -25,8 +25,7 @@ bitcount:
 	sub	a5,a4,a0
 	lui	a3,61681
 	addi	a3,a3,-241
-	srli	a0,a5,2
-	srli	a4,a0,2
+	srli	a4,a5,4
 	and	a4,a4,a3
 	and	a5,a5,a3
 	sub	a0,x0,a4
@@ -235,8 +234,7 @@ ntbl_bitcnt:
 	and	a4,a5,a4
 	sub	a6,x0,a2
 	sub	a4,a4,a6
-	srai	a6,a5,2
-	srai	a5,a6,2
+	srai	a5,a5,4
 	sub	a6,x0,a3
 	sub	a3,a0,a6
 	lw	a0,0(a4)
@@ -300,6 +298,154 @@ srand:
 	.globl	rand
 	.type	rand, @function
 rand:
+	lui	a6,%hi(bitcnts_rand_state)
+	lw	a3,%lo(bitcnts_rand_state)(a6)
+	lw	a4,%lo(bitcnts_rand_state+4)(a6)
+	lui	a2,313688
+	lui	a1,361759
+	addi	a2,a2,-211
+	addi	a1,a1,1069
+	mul	a1,a3,a1
+	mul	a5,a3,a2
+	mul	a4,a4,a2
+	addi	t3,x0,65535
+	and	t2,a3,t3
+	srli	t4,a2,16
+	mul	t1,t2,t4
+	srli	zero,a3,16
+	addi	op_10_1,x0,65535
+	and	op_10_0,a2,op_10_1
+	mul	t6,zero,op_10_0
+	addi	op_10_5,x0,65535
+	and	op_10_4,a3,op_10_5
+	srli	op_10_6,a2,16
+	mul	op_10_3,op_10_4,op_10_6
+	sub	op_10_2,x0,op_10_3
+	sub	t5,t6,op_10_2
+	bgeu	t1,t5,.+8
+	addi	t0,x0,0
+	jal	t0,4
+	addi	t0,x0,1
+	addi	op_10_12,x0,65535
+	and	op_10_11,a3,op_10_12
+	srli	op_10_13,a2,16
+	mul	op_10_10,op_10_11,op_10_13
+	srli	op_10_16,a3,16
+	addi	op_10_18,x0,65535
+	and	op_10_17,a2,op_10_18
+	mul	op_10_15,op_10_16,op_10_17
+	addi	op_10_22,x0,65535
+	and	op_10_21,a3,op_10_22
+	srli	op_10_23,a2,16
+	mul	op_10_20,op_10_21,op_10_23
+	sub	op_10_19,x0,op_10_20
+	sub	op_10_14,op_10_15,op_10_19
+	bgeu	op_10_10,op_10_14,.+8
+	addi	op_10_9,x0,0
+	jal	op_10_9,4
+	addi	op_10_9,x0,1
+	addi	op_10_28,x0,65535
+	and	op_10_27,a3,op_10_28
+	addi	op_10_30,x0,65535
+	and	op_10_29,a2,op_10_30
+	mul	op_10_26,op_10_27,op_10_29
+	srli	op_10_25,op_10_26,16
+	addi	op_10_35,x0,65535
+	and	op_10_34,a3,op_10_35
+	addi	op_10_37,x0,65535
+	and	op_10_36,a2,op_10_37
+	mul	op_10_33,op_10_34,op_10_36
+	srli	op_10_32,op_10_33,16
+	srli	op_10_41,a3,16
+	addi	op_10_43,x0,65535
+	and	op_10_42,a2,op_10_43
+	mul	op_10_40,op_10_41,op_10_42
+	addi	op_10_47,x0,65535
+	and	op_10_46,a3,op_10_47
+	srli	op_10_48,a2,16
+	mul	op_10_45,op_10_46,op_10_48
+	sub	op_10_44,x0,op_10_45
+	sub	op_10_39,op_10_40,op_10_44
+	sub	op_10_38,x0,op_10_39
+	sub	op_10_31,op_10_32,op_10_38
+	bgeu	op_10_25,op_10_31,.+8
+	addi	op_10_24,x0,0
+	jal	op_10_24,4
+	addi	op_10_24,x0,1
+	and	op_10_8,op_10_9,op_10_24
+	addi	op_10_53,x0,65535
+	and	op_10_52,a3,op_10_53
+	addi	op_10_55,x0,65535
+	and	op_10_54,a2,op_10_55
+	mul	op_10_51,op_10_52,op_10_54
+	srli	op_10_50,op_10_51,16
+	addi	op_10_60,x0,65535
+	and	op_10_59,a3,op_10_60
+	addi	op_10_62,x0,65535
+	and	op_10_61,a2,op_10_62
+	mul	op_10_58,op_10_59,op_10_61
+	srli	op_10_57,op_10_58,16
+	srli	op_10_66,a3,16
+	addi	op_10_68,x0,65535
+	and	op_10_67,a2,op_10_68
+	mul	op_10_65,op_10_66,op_10_67
+	addi	op_10_72,x0,65535
+	and	op_10_71,a3,op_10_72
+	srli	op_10_73,a2,16
+	mul	op_10_70,op_10_71,op_10_73
+	sub	op_10_69,x0,op_10_70
+	sub	op_10_64,op_10_65,op_10_69
+	sub	op_10_63,x0,op_10_64
+	sub	op_10_56,op_10_57,op_10_63
+	bgeu	op_10_50,op_10_56,.+8
+	addi	op_10_49,x0,0
+	jal	op_10_49,4
+	addi	op_10_49,x0,1
+	sub	op_10_7,op_10_8,op_10_49
+	sub	a7,t0,op_10_7
+	slli	a0,a7,16
+	addi	op_10_81,x0,65535
+	and	op_10_80,a3,op_10_81
+	addi	op_10_83,x0,65535
+	and	op_10_82,a2,op_10_83
+	mul	op_10_79,op_10_80,op_10_82
+	srli	op_10_78,op_10_79,16
+	srli	op_10_87,a3,16
+	addi	op_10_89,x0,65535
+	and	op_10_88,a2,op_10_89
+	mul	op_10_86,op_10_87,op_10_88
+	addi	op_10_93,x0,65535
+	and	op_10_92,a3,op_10_93
+	srli	op_10_94,a2,16
+	mul	op_10_91,op_10_92,op_10_94
+	sub	op_10_90,x0,op_10_91
+	sub	op_10_85,op_10_86,op_10_90
+	sub	op_10_84,x0,op_10_85
+	sub	op_10_77,op_10_78,op_10_84
+	srli	op_10_76,op_10_77,16
+	srli	op_10_97,a3,16
+	srli	op_10_98,a2,16
+	mul	op_10_96,op_10_97,op_10_98
+	sub	op_10_95,x0,op_10_96
+	sub	op_10_75,op_10_76,op_10_95
+	sub	op_10_74,x0,op_10_75
+	sub	a3,a0,op_10_74
+	sub	a0,x0,a4
+	sub	a4,a1,a0
+	addi	a2,a5,1
+	bgeu	a5,a2,.+8
+	addi	a5,x0,0
+	jal	a5,4
+	addi	a5,x0,1
+	sw	a2,%lo(bitcnts_rand_state)(a6)
+	sub	a0,x0,a4
+	sub	a4,a3,a0
+	sub	a0,x0,a5
+	sub	a5,a4,a0
+	slli	a0,a5,1
+	sw	a5,%lo(bitcnts_rand_state+4)(a6)
+	srli	a0,a0,1
+	jalr	zero,ra,0
 	.size	rand, .-rand
 	.align	2
 	.globl	atoi
@@ -348,9 +494,7 @@ atoi:
 	addi	a2,x0,255
 	and	a5,a3,a2
 	addi	a4,zero,0
-	bgeu	a1,a5,.+8
-	jal	x0,8
-	jal	x0,.L34
+	bgeu	a1,a5,.L34
 .L42:
 	addi	a0,zero,0
 	jalr	zero,ra,0
@@ -399,8 +543,7 @@ main:
 	beq	a5,a4,.L65
 	addi	a5,a5,-43
 	addi	a1,x0,1
-	bgeu	a5,a1,.+8
-	jal	a5,8
+	bgeu	a1,a5,.+8
 	addi	a5,x0,0
 	jal	a5,4
 	addi	a5,x0,1
@@ -432,8 +575,7 @@ main:
 	addi	a4,x0,255
 	and	a4,a1,a4
 	addi	a2,a2,1
-	bgeu	a4,a6,.+8
-	jal	x0,.L46
+	bgeu	a6,a4,.L46
 	addi	a4,a3,0
 .L47:
 	mul	a7,a5,a4
@@ -484,6 +626,150 @@ main:
 .Lpcrel_1:
 	auipc	ra,%pcrel_hi(clock)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_1)
+	lw	a5,%lo(bitcnts_rand_state)(s3)
+	lw	a4,%lo(bitcnts_rand_state+4)(s3)
+	lw	a3,28(sp)
+	sw	a0,8(sp)
+	mul	a4,a4,s5
+	mul	a3,a5,a3
+	sub	a2,x0,a4
+	sub	a4,a3,a2
+	addi	t1,x0,65535
+	and	t0,a5,t1
+	srli	t2,s5,16
+	mul	a7,t0,t2
+	srli	t5,a5,16
+	addi	op_7_0,x0,65535
+	and	t6,s5,op_7_0
+	mul	t4,t5,t6
+	addi	op_7_4,x0,65535
+	and	op_7_3,a5,op_7_4
+	srli	op_7_5,s5,16
+	mul	op_7_2,op_7_3,op_7_5
+	sub	op_7_1,x0,op_7_2
+	sub	t3,t4,op_7_1
+	bgeu	a7,t3,.+8
+	addi	a6,x0,0
+	jal	a6,4
+	addi	a6,x0,1
+	addi	op_7_11,x0,65535
+	and	op_7_10,a5,op_7_11
+	srli	op_7_12,s5,16
+	mul	op_7_9,op_7_10,op_7_12
+	srli	op_7_15,a5,16
+	addi	op_7_17,x0,65535
+	and	op_7_16,s5,op_7_17
+	mul	op_7_14,op_7_15,op_7_16
+	addi	op_7_21,x0,65535
+	and	op_7_20,a5,op_7_21
+	srli	op_7_22,s5,16
+	mul	op_7_19,op_7_20,op_7_22
+	sub	op_7_18,x0,op_7_19
+	sub	op_7_13,op_7_14,op_7_18
+	bgeu	op_7_9,op_7_13,.+8
+	addi	op_7_8,x0,0
+	jal	op_7_8,4
+	addi	op_7_8,x0,1
+	addi	op_7_27,x0,65535
+	and	op_7_26,a5,op_7_27
+	addi	op_7_29,x0,65535
+	and	op_7_28,s5,op_7_29
+	mul	op_7_25,op_7_26,op_7_28
+	srli	op_7_24,op_7_25,16
+	addi	op_7_34,x0,65535
+	and	op_7_33,a5,op_7_34
+	addi	op_7_36,x0,65535
+	and	op_7_35,s5,op_7_36
+	mul	op_7_32,op_7_33,op_7_35
+	srli	op_7_31,op_7_32,16
+	srli	op_7_40,a5,16
+	addi	op_7_42,x0,65535
+	and	op_7_41,s5,op_7_42
+	mul	op_7_39,op_7_40,op_7_41
+	addi	op_7_46,x0,65535
+	and	op_7_45,a5,op_7_46
+	srli	op_7_47,s5,16
+	mul	op_7_44,op_7_45,op_7_47
+	sub	op_7_43,x0,op_7_44
+	sub	op_7_38,op_7_39,op_7_43
+	sub	op_7_37,x0,op_7_38
+	sub	op_7_30,op_7_31,op_7_37
+	bgeu	op_7_24,op_7_30,.+8
+	addi	op_7_23,x0,0
+	jal	op_7_23,4
+	addi	op_7_23,x0,1
+	and	op_7_7,op_7_8,op_7_23
+	addi	op_7_52,x0,65535
+	and	op_7_51,a5,op_7_52
+	addi	op_7_54,x0,65535
+	and	op_7_53,s5,op_7_54
+	mul	op_7_50,op_7_51,op_7_53
+	srli	op_7_49,op_7_50,16
+	addi	op_7_59,x0,65535
+	and	op_7_58,a5,op_7_59
+	addi	op_7_61,x0,65535
+	and	op_7_60,s5,op_7_61
+	mul	op_7_57,op_7_58,op_7_60
+	srli	op_7_56,op_7_57,16
+	srli	op_7_65,a5,16
+	addi	op_7_67,x0,65535
+	and	op_7_66,s5,op_7_67
+	mul	op_7_64,op_7_65,op_7_66
+	addi	op_7_71,x0,65535
+	and	op_7_70,a5,op_7_71
+	srli	op_7_72,s5,16
+	mul	op_7_69,op_7_70,op_7_72
+	sub	op_7_68,x0,op_7_69
+	sub	op_7_63,op_7_64,op_7_68
+	sub	op_7_62,x0,op_7_63
+	sub	op_7_55,op_7_56,op_7_62
+	bgeu	op_7_49,op_7_55,.+8
+	addi	op_7_48,x0,0
+	jal	op_7_48,4
+	addi	op_7_48,x0,1
+	sub	op_7_6,op_7_7,op_7_48
+	sub	a3,a6,op_7_6
+	slli	a2,a3,16
+	addi	op_7_80,x0,65535
+	and	op_7_79,a5,op_7_80
+	addi	op_7_82,x0,65535
+	and	op_7_81,s5,op_7_82
+	mul	op_7_78,op_7_79,op_7_81
+	srli	op_7_77,op_7_78,16
+	srli	op_7_86,a5,16
+	addi	op_7_88,x0,65535
+	and	op_7_87,s5,op_7_88
+	mul	op_7_85,op_7_86,op_7_87
+	addi	op_7_92,x0,65535
+	and	op_7_91,a5,op_7_92
+	srli	op_7_93,s5,16
+	mul	op_7_90,op_7_91,op_7_93
+	sub	op_7_89,x0,op_7_90
+	sub	op_7_84,op_7_85,op_7_89
+	sub	op_7_83,x0,op_7_84
+	sub	op_7_76,op_7_77,op_7_83
+	srli	op_7_75,op_7_76,16
+	srli	op_7_96,a5,16
+	srli	op_7_97,s5,16
+	mul	op_7_95,op_7_96,op_7_97
+	sub	op_7_94,x0,op_7_95
+	sub	op_7_74,op_7_75,op_7_94
+	sub	op_7_73,x0,op_7_74
+	sub	a3,a2,op_7_73
+	mul	a5,a5,s5
+	sub	a2,x0,a4
+	sub	a4,a3,a2
+	addi	a3,a5,1
+	bgeu	a5,a3,.+8
+	addi	a5,x0,0
+	jal	a5,4
+	addi	a5,x0,1
+	sub	a2,x0,a5
+	sub	a5,a4,a2
+	lw	a4,24(sp)
+	sw	a5,%lo(bitcnts_rand_state+4)(s3)
+	sw	a3,%lo(bitcnts_rand_state)(s3)
+	bge	zero,a4,.L56
 	lw	a4,48(sp)
 	lw	s2,0(s7)
 	addi	s0,zero,0
