@@ -128,7 +128,7 @@ class AsmReconstructor:
             label_to_block = json.load(f)
         
         # 读取重写后的基本块
-        rewrite_blocks_dir = output_dir / "basic_blocks_rewrite"
+        rewrite_blocks_dir = output_dir / "basic_blocks_rewrite" / "variant_0"
         if not rewrite_blocks_dir.exists():
             print(f"  警告: 找不到 {rewrite_blocks_dir}，跳过")
             return False

@@ -1,5 +1,0 @@
-slli	a4,s2,3
-sub	a0,x0,s5
-sub	a4,a4,a0
-lw	s4,4(a4)
-bne	s4,a5,.L42

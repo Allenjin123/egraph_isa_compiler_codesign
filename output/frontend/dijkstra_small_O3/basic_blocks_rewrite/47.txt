@@ -1,6 +1,0 @@
-slli	a4,s4,3
-sub	a0,x0,s5
-sub	a4,a4,a0
-lw	a1,4(a4)
-bne	a1,a5,.+8
-jal	x0,.L32

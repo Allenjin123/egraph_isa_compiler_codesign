@@ -1,6 +1,0 @@
-addi	a1,a2,0
-addi	a0,a5,%lo(.LC1)
-sw	a3,4(sp)
-sw	a5,0(sp)
-auipc	ra,%pcrel_hi(printf)
-jalr	ra,ra,%pcrel_lo(.Lpcrel_2)
