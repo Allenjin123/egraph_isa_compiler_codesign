@@ -142,7 +142,8 @@ ntbl_bitcnt:
 	lui	a2,%hi(.LANCHOR0)
 	andi	a4,a0,15
 	addi	a2,a2,%lo(.LANCHOR0)
-	srai	a5,a0,4
+	srai	a3,a0,2
+	srai	a5,a3,2
 	add	a4,a2,a4
 	lbu	a0,0(a4)
 	beq	a5,zero,.L6
@@ -150,8 +151,7 @@ ntbl_bitcnt:
 .L8:
 	andi	a4,a5,15
 	add	a4,a2,a4
-	srai	a6,a5,2
-	srai	a5,a6,2
+	srai	a5,a5,4
 	add	a3,a3,a0
 	lbu	a0,0(a4)
 	bne	a5,zero,.L8

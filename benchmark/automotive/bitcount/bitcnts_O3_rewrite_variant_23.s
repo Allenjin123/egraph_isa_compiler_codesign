@@ -153,8 +153,7 @@ ntbl_bitcnt:
 	srai	a5,a5,4
 	add	a3,a3,a0
 	lbu	a0,0(a4)
-	beq	a5,zero,.+8
-	jal	x0,.L8
+	bne	a5,zero,.L8
 	add	a0,a0,a3
 .L6:
 	jalr	zero,ra,0
@@ -173,8 +172,7 @@ bit_shifter:
 	addi	a2,a4,-32
 	add	a0,a0,a3
 	beq	a5,zero,.L13
-	beq	a2,zero,.+8
-	jal	x0,.L15
+	bne	a2,zero,.L15
 	jalr	zero,ra,0
 .L13:
 	jalr	zero,ra,0
@@ -190,8 +188,7 @@ bit_count:
 	addi	a4,a5,-1
 	and	a5,a5,a4
 	addi	a0,a0,1
-	beq	a5,zero,.+8
-	jal	x0,.L24
+	bne	a5,zero,.L24
 .L23:
 	jalr	zero,ra,0
 	.size	bit_count, .-bit_count
@@ -208,6 +205,74 @@ srand:
 	.globl	rand
 	.type	rand, @function
 rand:
+	lui	a6,%hi(bitcnts_rand_state)
+	lw	a3,%lo(bitcnts_rand_state)(a6)
+	lw	a4,%lo(bitcnts_rand_state+4)(a6)
+	lui	a2,313688
+	lui	a1,361759
+	addi	a2,a2,-211
+	addi	a1,a1,1069
+	mul	a1,a3,a1
+	mul	a5,a3,a2
+	mul	a4,a4,a2
+	srli	t0,a3,16
+	srli	t1,a2,16
+	mul	a7,t0,t1
+	andi	t6,a3,65535
+	srli	zero,a2,16
+	mul	t5,t6,zero
+	srli	op_10_1,a3,16
+	andi	op_10_2,a2,65535
+	mul	op_10_0,op_10_1,op_10_2
+	add	t4,t5,op_10_0
+	andi	op_10_5,a3,65535
+	andi	op_10_6,a2,65535
+	mul	op_10_4,op_10_5,op_10_6
+	srli	op_10_3,op_10_4,16
+	add	t3,t4,op_10_3
+	srli	t2,t3,16
+	add	a0,a7,t2
+	andi	op_10_12,a3,65535
+	srli	op_10_13,a2,16
+	mul	op_10_11,op_10_12,op_10_13
+	srli	op_10_15,a3,16
+	andi	op_10_16,a2,65535
+	mul	op_10_14,op_10_15,op_10_16
+	add	op_10_10,op_10_11,op_10_14
+	andi	op_10_18,a3,65535
+	srli	op_10_19,a2,16
+	mul	op_10_17,op_10_18,op_10_19
+	sltu	op_10_9,op_10_10,op_10_17
+	andi	op_10_24,a3,65535
+	srli	op_10_25,a2,16
+	mul	op_10_23,op_10_24,op_10_25
+	srli	op_10_27,a3,16
+	andi	op_10_28,a2,65535
+	mul	op_10_26,op_10_27,op_10_28
+	add	op_10_22,op_10_23,op_10_26
+	andi	op_10_31,a3,65535
+	andi	op_10_32,a2,65535
+	mul	op_10_30,op_10_31,op_10_32
+	srli	op_10_29,op_10_30,16
+	add	op_10_21,op_10_22,op_10_29
+	andi	op_10_35,a3,65535
+	andi	op_10_36,a2,65535
+	mul	op_10_34,op_10_35,op_10_36
+	srli	op_10_33,op_10_34,16
+	sltu	op_10_20,op_10_21,op_10_33
+	or	op_10_8,op_10_9,op_10_20
+	slli	op_10_7,op_10_8,16
+	add	a3,a0,op_10_7
+	add	a4,a4,a1
+	addi	a2,a5,1
+	sltu	a5,a2,a5
+	sw	a2,%lo(bitcnts_rand_state)(a6)
+	add	a4,a4,a3
+	add	a5,a5,a4
+	slli	a0,a5,1
+	sw	a5,%lo(bitcnts_rand_state+4)(a6)
+	srli	a0,a0,1
+	jalr	zero,ra,0
 	.size	rand, .-rand
 	.align	2
 	.globl	atoi
@@ -358,6 +423,70 @@ main:
 .Lpcrel_1:
 	auipc	ra,%pcrel_hi(clock)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_1)
+	lw	a5,%lo(bitcnts_rand_state)(s3)
+	lw	a4,%lo(bitcnts_rand_state+4)(s3)
+	lw	a3,28(sp)
+	sw	a0,8(sp)
+	mul	a4,a4,s5
+	mul	a3,a5,a3
+	add	a4,a4,a3
+	srli	a6,a5,16
+	srli	a7,s5,16
+	mul	a3,a6,a7
+	andi	t4,a5,65535
+	srli	t5,s5,16
+	mul	t3,t4,t5
+	srli	op_7_0,a5,16
+	andi	op_7_1,s5,65535
+	mul	t6,op_7_0,op_7_1
+	add	t2,t3,t6
+	andi	op_7_4,a5,65535
+	andi	op_7_5,s5,65535
+	mul	op_7_3,op_7_4,op_7_5
+	srli	op_7_2,op_7_3,16
+	add	t1,t2,op_7_2
+	srli	t0,t1,16
+	add	a2,a3,t0
+	andi	op_7_11,a5,65535
+	srli	op_7_12,s5,16
+	mul	op_7_10,op_7_11,op_7_12
+	srli	op_7_14,a5,16
+	andi	op_7_15,s5,65535
+	mul	op_7_13,op_7_14,op_7_15
+	add	op_7_9,op_7_10,op_7_13
+	andi	op_7_17,a5,65535
+	srli	op_7_18,s5,16
+	mul	op_7_16,op_7_17,op_7_18
+	sltu	op_7_8,op_7_9,op_7_16
+	andi	op_7_23,a5,65535
+	srli	op_7_24,s5,16
+	mul	op_7_22,op_7_23,op_7_24
+	srli	op_7_26,a5,16
+	andi	op_7_27,s5,65535
+	mul	op_7_25,op_7_26,op_7_27
+	add	op_7_21,op_7_22,op_7_25
+	andi	op_7_30,a5,65535
+	andi	op_7_31,s5,65535
+	mul	op_7_29,op_7_30,op_7_31
+	srli	op_7_28,op_7_29,16
+	add	op_7_20,op_7_21,op_7_28
+	andi	op_7_34,a5,65535
+	andi	op_7_35,s5,65535
+	mul	op_7_33,op_7_34,op_7_35
+	srli	op_7_32,op_7_33,16
+	sltu	op_7_19,op_7_20,op_7_32
+	or	op_7_7,op_7_8,op_7_19
+	slli	op_7_6,op_7_7,16
+	add	a3,a2,op_7_6
+	mul	a5,a5,s5
+	add	a4,a4,a3
+	addi	a3,a5,1
+	sltu	a5,a3,a5
+	add	a5,a5,a4
+	lw	a4,24(sp)
+	sw	a5,%lo(bitcnts_rand_state+4)(s3)
+	sw	a3,%lo(bitcnts_rand_state)(s3)
+	bge	zero,a4,.L56
 	lw	a4,48(sp)
 	lw	s2,0(s7)
 	addi	s0,zero,0

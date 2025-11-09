@@ -2410,7 +2410,7 @@ main:
 	addi	s3,s3,-1
 	slli	a3,a3,2
 	slli	s2,s2,1
-	bgeu	a4,a5,.L108
+	bltu	a5,a4,.L108
 	sub	a5,a5,a4
 	addi	s2,s2,1
 .L108:
@@ -2450,7 +2450,7 @@ main:
 	addi	a3,a3,-1
 	slli	a5,a5,2
 	slli	s2,s2,1
-	bgeu	a4,s3,.L111
+	bltu	s3,a4,.L111
 	sub	s3,s3,a4
 	addi	s2,s2,1
 .L111:
@@ -2628,7 +2628,7 @@ main:
 	lw	s10,176(sp)
 	lw	s11,172(sp)
 	addi	a2,x0,1
-	bgeu	a2,a0,.+8
+	bltu	a0,a2,.+8
 	addi	a0,x0,0
 	jal	a0,4
 	addi	a0,x0,1
