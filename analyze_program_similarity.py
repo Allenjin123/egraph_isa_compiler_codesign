@@ -259,7 +259,8 @@ class ProgramClusterer:
 
         # Calculate metrics
         self.inertia = self.kmeans.inertia_
-        if n_groups < len(self.programs):
+        # Silhouette score requires at least 2 clusters
+        if n_groups >= 2 and n_groups < len(self.programs):
             self.silhouette = silhouette_score(self.scaled_features, self.labels)
             self.davies_bouldin = davies_bouldin_score(self.scaled_features, self.labels)
         else:
@@ -274,6 +275,70 @@ class ProgramClusterer:
             clusters[label].append(self.program_names[i])
 
         return clusters
+
+    def cluster_multiple_k(self, k_values: List[int]) -> Dict:
+        """
+        Perform clustering for multiple K values.
+
+        Args:
+            k_values: List of K values to cluster with
+
+        Returns:
+            Dictionary: {k: {cluster_id: [program_names]}}
+        """
+        all_clusterings = {}
+
+        for k in k_values:
+            if k > len(self.programs):
+                print(f"Warning: K={k} > number of programs ({len(self.programs)}), skipping")
+                continue
+
+            print(f"\nClustering with K={k}...")
+            clusters = self.cluster(k)
+            all_clusterings[k] = clusters
+
+            # Print brief summary
+            print(f"  K={k}: {len(clusters)} clusters")
+            for cluster_id, progs in clusters.items():
+                print(f"    Cluster {cluster_id}: {progs}")
+
+        return all_clusterings
+
+    def export_multiple_k_clusterings(
+        self,
+        all_clusterings: Dict,
+        output_path: str = "multi_k_clustering.json"
+    ):
+        """
+        Export clustering results for multiple K values.
+
+        Args:
+            all_clusterings: Results from cluster_multiple_k()
+            output_path: Output JSON file path
+        """
+        export_data = {
+            'programs': self.program_names,
+            'num_programs': len(self.programs),
+            'feature_dimensions': self.feature_matrix.shape[1],
+            'clusterings': {}
+        }
+
+        for k, clusters in all_clusterings.items():
+            export_data['clusterings'][f'k{k}'] = {
+                'n_clusters': k,
+                'clusters': {
+                    f'cluster_{cid}': {
+                        'programs': prog_list,
+                        'size': len(prog_list)
+                    }
+                    for cid, prog_list in clusters.items()
+                }
+            }
+
+        with open(output_path, 'w') as f:
+            json.dump(export_data, f, indent=2)
+
+        print(f"\nMulti-K clustering results exported to: {output_path}")
 
     def print_clusters(self, clusters: Dict):
         """Print clustering results."""
@@ -467,6 +532,19 @@ def main():
         action='store_true',
         help="Find optimal number of clusters using elbow method"
     )
+    parser.add_argument(
+        '--k-values',
+        nargs='+',
+        type=int,
+        default=None,
+        help="Cluster for multiple K values (e.g., --k-values 1 2 3 6)"
+    )
+    parser.add_argument(
+        '--export-multi-k',
+        type=str,
+        default=None,
+        help="Export clustering results for multiple K values to JSON file"
+    )
 
     args = parser.parse_args()
 
@@ -506,28 +584,56 @@ def main():
           f"(binary: {clusterer.binary_features.shape[1]}, "
           f"frequency: {clusterer.frequency_features.shape[1]})")
 
-    # Find optimal k if requested
-    if args.find_optimal_k or args.n_groups is None:
-        optimal_k = clusterer.find_optimal_k()
-        if args.n_groups is None:
-            args.n_groups = optimal_k
+    # Handle multi-K clustering or single K
+    if args.k_values:
+        # Multi-K clustering mode
+        print(f"\n{'='*60}")
+        print(f"Multi-K Clustering Mode")
+        print(f"{'='*60}")
+        print(f"K values: {args.k_values}")
+        print()
 
-    # Perform clustering
-    print(f"\nPerforming k-means clustering with k={args.n_groups}...")
-    clusters = clusterer.cluster(args.n_groups)
+        all_clusterings = clusterer.cluster_multiple_k(args.k_values)
 
-    # Print results
-    clusterer.print_clusters(clusters)
+        # Export multi-K results
+        export_path = args.export_multi_k or str(args.output_dir / "multi_k_clustering.json")
+        clusterer.export_multiple_k_clusterings(all_clusterings, export_path)
 
-    # Visualize
-    print(f"{'='*60}")
-    print("Generating visualizations...")
-    print(f"{'='*60}")
-    clusterer.visualize(clusters, args.output_dir / "program_clusters.png")
+        # For visualization, use the first K value
+        if all_clusterings:
+            first_k = min(all_clusterings.keys())
+            clusters = all_clusterings[first_k]
+            print(f"\nGenerating visualizations for K={first_k}...")
+            clusterer.print_clusters(clusters)
+            clusterer.visualize(clusters, args.output_dir / f"program_clusters_k{first_k}.png")
+
+    else:
+        # Single K clustering mode (original behavior)
+        # Find optimal k if requested
+        if args.find_optimal_k or args.n_groups is None:
+            optimal_k = clusterer.find_optimal_k()
+            if args.n_groups is None:
+                args.n_groups = optimal_k
+
+        # Perform clustering
+        print(f"\nPerforming k-means clustering with k={args.n_groups}...")
+        clusters = clusterer.cluster(args.n_groups)
+
+        # Print results
+        clusterer.print_clusters(clusters)
+
+        # Visualize
+        print(f"{'='*60}")
+        print("Generating visualizations...")
+        print(f"{'='*60}")
+        clusterer.visualize(clusters, args.output_dir / "program_clusters.png")
+
+        # Export results
+        clusterer.export_results(clusters, args.output_dir / "clustering_results.json")
+
+    # Always generate heatmap
+    print(f"\nGenerating instruction heatmap...")
     clusterer.visualize_heatmap(args.output_dir / "instruction_heatmap.png")
-
-    # Export results
-    clusterer.export_results(clusters, args.output_dir / "clustering_results.json")
 
     print(f"\n{'='*60}")
     print("✓ Analysis complete!")

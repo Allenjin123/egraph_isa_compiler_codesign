@@ -341,16 +341,21 @@ def analyze_solution(egraph: EGraph, choices: Dict[str, str], variables: Dict[st
     }
 
 
-def run_gurobi_solver(lp_file: str, sol_file: str, log_file: str, timeout: int, mst_file: Optional[str] = None, best_k: int = 1) -> bool:
-    """Run Gurobi solver"""
+def run_gurobi_solver(lp_file: str, sol_file: str, log_file: str, timeout: int, mst_file: Optional[str] = None, best_k: int = 1, threads: int = 0) -> bool:
+    """
+    Run Gurobi solver.
+
+    Args:
+        threads: Number of threads (0 = use all available cores, default)
+    """
     print(f"\nUsing Gurobi solver...")
-    
+
     gurobi_solver = Path(__file__).parent / "gurobi" / "gurobi_solver"
-    
+
     if not gurobi_solver.exists():
         print(f"Error: Gurobi solver does not exist: {gurobi_solver}")
         return False
-    
+
     cmd = [
         str(gurobi_solver),
         "--lp_file", lp_file,
@@ -358,8 +363,9 @@ def run_gurobi_solver(lp_file: str, sol_file: str, log_file: str, timeout: int, 
         "--time_limit", str(timeout),
         "--log_file", log_file,
         "--best_k", str(best_k),
+        "--threads", str(threads),
     ]
-    
+
     if mst_file and os.path.exists(mst_file):
         cmd.extend(["--mst_file", mst_file])
         print(f"Using warm start file: {mst_file}")
