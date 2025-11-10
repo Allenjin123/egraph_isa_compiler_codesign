@@ -7,6 +7,52 @@ from backend.global_parameter import get_required_set, get_removed_instructions
 # create a DSL representation of the input instructions
 # example DSL representation: /home/allenjin/Codes/egraph_isa_compiler_codesign/PdatScorrWrapper/PdatDsl/workload/rv32im_no_add.dsl
 
+def create_empty_dsl(output_path: Optional[str] = None) -> str:
+    """
+    Create an empty DSL file for a general-purpose processor with no constraints.
+
+    This DSL represents a full RV32IM instruction set with no outlawed instructions,
+    suitable for a general-purpose processor baseline.
+
+    Args:
+        output_path: Optional path to write DSL file. If None, returns DSL as string.
+
+    Returns:
+        Path to created DSL file, or DSL content as string if output_path is None
+
+    Example:
+        >>> create_empty_dsl('workload/general_purpose.dsl')
+        'workload/general_purpose.dsl'
+    """
+    # Build DSL content for full instruction set
+    dsl_lines = []
+
+    # Header comment
+    dsl_lines.append("# General-purpose processor DSL (full RV32IM instruction set)")
+    dsl_lines.append("# No instruction constraints - all instructions available")
+    dsl_lines.append("")
+
+    # Specify full instruction set
+    dsl_lines.append("# Full instruction set extensions")
+    dsl_lines.append("require RV32I")
+    dsl_lines.append("require RV32M")
+    dsl_lines.append("")
+    dsl_lines.append("# No instructions outlawed - general purpose processor")
+    dsl_lines.append("")
+
+    # Join all lines
+    dsl_content = "\n".join(dsl_lines)
+
+    # Write to file if output_path is specified
+    if output_path:
+        output_file = Path(output_path)
+        output_file.parent.mkdir(parents=True, exist_ok=True)
+        output_file.write_text(dsl_content)
+        return str(output_file)
+    else:
+        # Return DSL content as string
+        return dsl_content
+
 def create_dsl(isa_subset: set, output_path: Optional[str] = None) -> str:
     """
     Create a DSL file for PdatScorrWrapper based on the instruction subset.
@@ -76,18 +122,19 @@ def create_dsl(isa_subset: set, output_path: Optional[str] = None) -> str:
         # Return DSL content as string
         return dsl_content
 
-def parse_area(isa_subset: set, output_path: Optional[str] = None) -> float:
+def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl: bool = False) -> float:
     """
     Generate DSL file, run synthesis, and extract chip area.
 
     This function:
-    1. Creates a DSL file from the instruction subset
+    1. Creates a DSL file from the instruction subset (or empty DSL if use_empty_dsl=True)
     2. Runs synthesis with the DSL constraints using synth_ibex_with_constraints.sh
     3. Parses the chip area from the synthesis log
 
     Args:
         isa_subset: Set of instruction opcodes used by the program
         output_path: Optional path for DSL file. If None, generates in temp location.
+        use_empty_dsl: If True, create empty DSL (general purpose processor) instead of using isa_subset
 
     Returns:
         Chip area in µm² (micrometers squared)
@@ -99,6 +146,8 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None) -> float:
     Example:
         >>> area = parse_area({'add', 'sub', 'mul', 'lw'})
         >>> print(f"Chip area: {area} µm²")
+        >>> area_gp = parse_area(set(), use_empty_dsl=True)  # General purpose processor
+        >>> print(f"GP Chip area: {area_gp} µm²")
     """
     import subprocess
     import re
@@ -110,10 +159,16 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None) -> float:
         # Create temporary DSL file
         with tempfile.NamedTemporaryFile(mode='w', suffix='.dsl', delete=False, dir='/tmp') as f:
             dsl_path = f.name
-            dsl_content = create_dsl(isa_subset)
+            if use_empty_dsl:
+                dsl_content = create_empty_dsl()
+            else:
+                dsl_content = create_dsl(isa_subset)
             f.write(dsl_content)
     else:
-        dsl_path = create_dsl(isa_subset, output_path)
+        if use_empty_dsl:
+            dsl_path = create_empty_dsl(output_path)
+        else:
+            dsl_path = create_dsl(isa_subset, output_path)
 
     # Convert to absolute path for synthesis (which runs from different cwd)
     dsl_path_abs = str(Path(dsl_path).absolute())

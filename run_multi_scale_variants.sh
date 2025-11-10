@@ -579,6 +579,48 @@ fi
 echo ""
 
 # ============================================================================
+# Step 4.6: Add general purpose processor variant (variant_gp)
+# ============================================================================
+echo ""
+echo -e "${BLUE}步骤 4.6/6: 添加通用处理器变体 (variant_gp)...${NC}"
+
+# variant_gp uses the same program as variant_original
+# but will be synthesized with empty DSL (no instruction constraints)
+if [ -f "$ORIGINAL_ASM" ]; then
+    # Create variant_gp directory
+    GP_VARIANT_DIR="$FINAL_OUTPUT/variant_gp"
+    mkdir -p "$GP_VARIANT_DIR"
+
+    # Copy original assembly file
+    cp "$ORIGINAL_ASM" "$GP_VARIANT_DIR/${PROGRAM_NAME}_gp.s"
+    echo -e "${GREEN}  ✓ 通用处理器: $(basename "$ORIGINAL_ASM")${NC}"
+
+    # Link to original frontend outputs (basic_blocks_ssa, etc.)
+    # This avoids re-analyzing the original program
+    ORIGINAL_FRONTEND="$OUTPUT_BASE/frontend/$PROGRAM_NAME"
+    if [ -d "$ORIGINAL_FRONTEND/basic_blocks" ]; then
+        ln -sf "$ORIGINAL_FRONTEND/basic_blocks" "$GP_VARIANT_DIR/basic_blocks"
+        echo -e "${CYAN}    链接: basic_blocks/${NC}"
+    fi
+    if [ -d "$ORIGINAL_FRONTEND/basic_blocks_ssa" ]; then
+        ln -sf "$ORIGINAL_FRONTEND/basic_blocks_ssa" "$GP_VARIANT_DIR/basic_blocks_ssa"
+        echo -e "${CYAN}    链接: basic_blocks_ssa/${NC}"
+    fi
+
+    # Copy metadata files if they exist
+    for meta_file in label_to_block.json label_metadata.json; do
+        if [ -f "$ORIGINAL_FRONTEND/$meta_file" ]; then
+            cp "$ORIGINAL_FRONTEND/$meta_file" "$GP_VARIANT_DIR/"
+        fi
+    done
+
+    echo -e "${GREEN}  ✓ 通用处理器已添加为 variant_gp (将使用空 DSL 合成)${NC}"
+else
+    echo -e "${YELLOW}  ⚠ 未找到原始程序: ${PROGRAM_NAME}_clean.s${NC}"
+fi
+echo ""
+
+# ============================================================================
 # Step 5: Generate basic blocks and SSA for each variant
 # ============================================================================
 echo ""

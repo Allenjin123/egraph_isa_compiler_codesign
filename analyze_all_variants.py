@@ -13,6 +13,7 @@ import time
 from pathlib import Path
 from multiprocessing import Pool
 from functools import partial
+from typing import Union, List
 
 # Add paths for imports
 sys.path.insert(0, str(Path(__file__).parent))
@@ -44,9 +45,11 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir):
             return None
 
         # Create text_program instance
-        # Use consistent naming for original variant
+        # Use consistent naming for original and gp variants
         if variant_id == "original":
             prog = ds.text_program(f"{program_name}_original")
+        elif variant_id == "gp":
+            prog = ds.text_program(f"{program_name}_gp")
         else:
             prog = ds.text_program(f"{program_name}_variant_{variant_id}")
 
@@ -70,10 +73,17 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir):
 
         # Calculate area (this runs synthesis - the slow part)
         # area_parser.py will create the output directory automatically
-        print(f"Variant {variant_id}: Starting synthesis with {len(subset)} instructions...")
-        start_time = time.time()
-        area = ap.parse_area(subset, dsl_file_path)
-        synthesis_time = time.time() - start_time
+        # For variant_gp (general purpose processor), use empty DSL with no constraints
+        if variant_id == "gp":
+            print(f"Variant {variant_id}: Starting synthesis with EMPTY DSL (general purpose processor, full RV32IM)...")
+            start_time = time.time()
+            area = ap.parse_area(subset, dsl_file_path, use_empty_dsl=True)
+            synthesis_time = time.time() - start_time
+        else:
+            print(f"Variant {variant_id}: Starting synthesis with {len(subset)} instructions...")
+            start_time = time.time()
+            area = ap.parse_area(subset, dsl_file_path)
+            synthesis_time = time.time() - start_time
 
         # Calculate latency
         latency = lp.parse_latency(prog)
@@ -127,23 +137,38 @@ def main():
         # Find all variant directories
         variant_dirs = [d for d in variants_path.iterdir() if d.is_dir() and d.name.startswith("variant_")]
 
-        # Separate original variant from numbered variants
+        # Separate special variants (original, gp) from numbered variants
         original_variant = None
+        gp_variant = None
         numbered_variants = []
         for d in variant_dirs:
             if d.name == "variant_original":
                 original_variant = d
+            elif d.name == "variant_gp":
+                gp_variant = d
             else:
                 numbered_variants.append(d)
 
         numbered_variants = sorted(numbered_variants)
         num_variants = len(numbered_variants)
 
-        # Create list of variant IDs to process
-        variant_ids = list(range(num_variants))
+        # Create list of variant IDs to process (can be int for numbered variants or str for special variants)
+        variant_ids: List[Union[int, str]] = list(range(num_variants))
+        special_variants_count = 0
         if original_variant:
             variant_ids.append("original")
-            print(f"Found {num_variants} optimized variants + 1 original program")
+            special_variants_count += 1
+        if gp_variant:
+            variant_ids.append("gp")
+            special_variants_count += 1
+
+        if special_variants_count > 0:
+            special_names = []
+            if original_variant:
+                special_names.append("original program")
+            if gp_variant:
+                special_names.append("general purpose processor")
+            print(f"Found {num_variants} optimized variants + {special_variants_count} baseline ({', '.join(special_names)})")
         else:
             print(f"Found {num_variants} variants")
 
@@ -190,10 +215,15 @@ def main():
             latencies[variant_id] = latency
             num_blocks[variant_id] = blocks
 
-        # Show original program stats if available
+        # Show baseline stats if available
         if "original" in areas:
             print(f"Original Program Baseline:")
             print(f"  Area = {areas['original']:.2f} µm², Latency = {latencies['original']}, Instructions = {len(subsets['original'])}")
+            print()
+
+        if "gp" in areas:
+            print(f"General Purpose Processor Baseline (Full RV32IM):")
+            print(f"  Area = {areas['gp']:.2f} µm², Latency = {latencies['gp']}, Instructions = {len(subsets['gp'])}")
             print()
 
         # Calculate Pareto frontier
@@ -212,7 +242,12 @@ def main():
 
         print(f"Pareto Frontier ({len(pareto_frontier)} optimal variants):")
         for variant_id, area, latency in sorted(pareto_frontier, key=lambda x: x[1]):
-            marker = " [ORIGINAL]" if variant_id == "original" else ""
+            if variant_id == "original":
+                marker = " [ORIGINAL]"
+            elif variant_id == "gp":
+                marker = " [GENERAL PURPOSE]"
+            else:
+                marker = ""
             print(f"  Variant {variant_id}: Area = {area:.2f} µm², Latency = {latency}{marker}")
         print()
 
@@ -222,9 +257,11 @@ def main():
 
         plt.figure(figsize=(10, 6))
 
-        # Separate original variant from optimized variants
+        # Separate special variants (original, gp) from optimized variants
         original_area = None
         original_latency = None
+        gp_area = None
+        gp_latency = None
         optimized_areas = []
         optimized_latencies = []
 
@@ -232,6 +269,9 @@ def main():
             if variant_id == "original":
                 original_area = areas[variant_id]
                 original_latency = latencies[variant_id]
+            elif variant_id == "gp":
+                gp_area = areas[variant_id]
+                gp_latency = latencies[variant_id]
             else:
                 optimized_areas.append(areas[variant_id])
                 optimized_latencies.append(latencies[variant_id])
@@ -244,6 +284,11 @@ def main():
         if original_area is not None:
             plt.scatter([original_area], [original_latency], color='green', marker='*',
                        label='Original Program', s=300, edgecolors='black', linewidths=1.5, zorder=10)
+
+        # Plot general purpose processor with distinct marker
+        if gp_area is not None:
+            plt.scatter([gp_area], [gp_latency], color='orange', marker='s',
+                       label='General Purpose (RV32IM)', s=200, edgecolors='black', linewidths=1.5, zorder=10)
 
         # Highlight Pareto frontier
         pareto_areas = [p[1] for p in pareto_frontier]
@@ -271,7 +316,16 @@ def main():
             "variants": []
         }
 
-        for variant_id in sorted(subsets.keys(), key=lambda x: (x != "original", x)):
+        # Sort: original and gp first, then numbered variants
+        def sort_key(x):
+            if x == "original":
+                return (0, 0, x)
+            elif x == "gp":
+                return (0, 1, x)
+            else:
+                return (1, 0, x)
+
+        for variant_id in sorted(subsets.keys(), key=sort_key):
             results_data["variants"].append({
                 "variant_id": variant_id,
                 "area": areas[variant_id],
@@ -280,7 +334,8 @@ def main():
                 "num_instructions": len(subsets[variant_id]),
                 "num_blocks": num_blocks[variant_id],
                 "is_pareto_optimal": any(p[0] == variant_id for p in pareto_frontier),
-                "is_original": variant_id == "original"
+                "is_original": variant_id == "original",
+                "is_general_purpose": variant_id == "gp"
             })
 
         results_data["pareto_frontier"] = [
