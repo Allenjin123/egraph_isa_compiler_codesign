@@ -2,7 +2,7 @@
 # Provides common branch instruction predicates for RISC-V disassembly handling.
 
 from typing import List, Set, Tuple
-
+import re
 # ============================================================================
 # RV32IM 指令集定义 (RISC-V 32-bit Integer + Multiply/Divide)
 # ============================================================================
@@ -184,6 +184,9 @@ def normalize_mnemonic(mnemonic: str) -> str:
 # ============================================================================
 # Register Utility Functions
 # ============================================================================
+def norm_reg(s: str) -> str:
+    m = re.match(r'^([A-Za-z0-9]+)(?:_.*)?$', s)
+    return m.group(1) if m else s
 
 def is_register(s: str) -> bool:
     """Check if string is a valid RISC-V register"""
@@ -194,7 +197,7 @@ def is_register(s: str) -> bool:
         num = int(s[1:])
         return 0 <= num <= 31
     # ABI names
-    return s in ALL_ABI_REGS
+    return norm_reg(s) in ALL_ABI_REGS
 
 def extract_registers_from_operand(operand: str) -> List[str]:
     """
@@ -358,7 +361,7 @@ def get_instruction_category(mnemonic: str) -> str:
     else:
         return 'unknown'
 
-def parse_instruction(line: str) -> Tuple[str, List[str]]:
+def parse_instruction(line: str, op_reg = None) -> Tuple[str, List[str]]:
     """解析指令，返回(mnemonic, operands_list)
     
     示例转换:
@@ -393,8 +396,8 @@ def parse_instruction(line: str) -> Tuple[str, List[str]]:
             # 检查是否包含括号（内存访问格式）
             if '(' in op and ')' in op:
                 # 处理两种情况：
-                # 1. 普通格式：8(sp) → ["8", "sp"]
-                # 2. 特殊格式：%lo(symbol)(reg) → ["%lo(symbol)", "reg"]
+                # 1. 普通格式：8(sp) → ["sp", "8"]
+                # 2. 特殊格式：%lo(symbol)(reg) → ["reg", "%lo(symbol)"]
                 # 3. 非寄存器格式：%hi(symbol) → ["%hi(symbol)"]（保持原样）
                 
                 # 提取最后括号中的内容
@@ -403,15 +406,20 @@ def parse_instruction(line: str) -> Tuple[str, List[str]]:
                     last_token = reg_match.group(1)
                     
                     # 判断最后括号里的内容是否是寄存器
-                    if is_register(last_token):
+                    if is_register(last_token) or (op_reg and last_token.startswith(op_reg)):
                         # 是寄存器，分离成 offset 和 reg
                         last_paren = op.rfind('(')
                         offset = op[:last_paren]
                         
                         # 添加偏移量和寄存器
-                        if offset:
-                            operands.append(offset)
-                        operands.append(last_token)
+                        if op_reg:
+                            operands.append(last_token)
+                            if offset:
+                                operands.append(offset)
+                        else:
+                            if offset:
+                                operands.append(offset)
+                            operands.append(last_token)
                     else:
                         # 不是寄存器（如 %hi(symbol)），保持原样
                         operands.append(op)
@@ -517,3 +525,41 @@ def analyze_instruction(mnemonic: str, operands: List[str]) -> Tuple[Set[str], S
         raise ValueError(f"Unknown standard instruction: {mnemonic}")
         
     return use_regs, def_regs
+
+def format_instruction(op: str, rd: str, operands: List[str]) -> str:
+    """格式化指令为汇编格式"""
+    # Branch 指令列表
+    branch_ops = {'beq', 'bne', 'blt', 'bge', 'bltu', 'bgeu'}
+    
+    # 不需要 rd 的指令
+    if op in INSTRUCTIONS_WITHOUT_RD:
+        if op in ['sb', 'sh', 'sw'] and len(operands) >= 3:
+            # Store 指令: sw rs2, offset(rs1)
+            return f"{op}\t{operands[1]},{operands[2]}({operands[0]})"
+        elif operands:
+            # Branch 指令特殊处理：如果最后一个操作数是数字，改成 ".+数字"
+            if op in branch_ops and operands:
+                modified_operands = operands.copy()
+                last_operand = modified_operands[-1]
+                # 检查是否是纯数字（不能有负号）
+                if re.match(r'^\d+$', last_operand):
+                    modified_operands[-1] = f".+{last_operand}"
+                return f"{op}\t{','.join(modified_operands)}"
+            else:
+                return f"{op}\t{','.join(operands)}"
+        else:
+            return f"{op}"
+    
+    # 如果 rd 为 None，使用 x0（零寄存器）
+    if rd is None or op == 'jal':
+        rd = 'x0'
+    
+    # Load 指令特殊格式
+    if op in RV32I_LOAD and len(operands) >= 2:
+        return f"{op}\t{rd},{operands[1]}({operands[0]})"
+    
+    # 普通指令
+    if operands:
+        return f"{op}\t{rd},{','.join(operands)}"
+    else:
+        return f"{op}\t{rd}" 
