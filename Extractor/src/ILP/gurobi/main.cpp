@@ -236,10 +236,20 @@ int main(int argc, char* argv[]) {
         if (time_limit != GRB_INFINITY) {
             model.set(GRB_DoubleParam_TimeLimit, time_limit);
         }
-        
+
+        // Set number of threads (0 = use all available cores)
+        int threads = 0;  // Default: use all cores
+        if (params.find("threads") != params.end()) {
+            threads = std::stoi(params["threads"]);
+            std::cout << "Using " << threads << " threads" << std::endl;
+        } else {
+            std::cout << "Using all available cores (default)" << std::endl;
+        }
+        model.set(GRB_IntParam_Threads, threads);
+
         // Make sure we capture all incumbent solutions
         model.set(GRB_IntParam_OutputFlag, 1);
-        
+
         // Set solution pool parameters for best_k solutions
         if (best_k > 1) {
             model.set(GRB_IntParam_PoolSearchMode, 2);  // Search for k best solutions
