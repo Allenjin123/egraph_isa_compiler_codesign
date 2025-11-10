@@ -356,8 +356,8 @@ dijkstra:
 	sw	a4,%lo(qRear)(s9)
 .L24:
 	slli	s0,a3,3
-	sub	a0,x0,s5
-	sub	s2,s0,a0
+	sub	s2,x0,s5
+	sub	s2,s0,s2
 	lw	a1,0(s2)
 	lui	a0,%hi(.LC3)
 	addi	a0,a0,%lo(.LC3)
