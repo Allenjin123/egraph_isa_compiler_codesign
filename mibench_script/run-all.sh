@@ -32,7 +32,8 @@ SRCDIRS="automotive/basicmath
          automotive/bitcount
          automotive/qsort
          network/dijkstra
-         network/patricia"
+         network/patricia
+         security/rijndael"
          
 # SRCDIRS="automotive/qsort"
 CURRDIR=$(pwd)

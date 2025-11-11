@@ -42,6 +42,10 @@
 #include <ctype.h>
 
 #include "aes.h"
+#include "input_large.h"
+#include "input_small.h"
+#include "enc_small.h"
+#include "file.h"
 
 /* A Pseudo Random Number Generator (PRNG) used for the     */
 /* Initialisation Vector. The PRNG is George Marsaglia's    */
@@ -95,24 +99,24 @@ void fillrand(char *buf, int len)
     }
 }    
 
-int encfile(FILE *fin, FILE *fout, aes *ctx, char* fn)
+int encfile(FAKEFILE *fin, FAKEFILE *fout, aes *ctx, char* fn)
 {   char            inbuf[16], outbuf[16];
-    fpos_t          flen;
+    long          flen = fin->size;
     unsigned long   i=0, l=0;
 
     fillrand(outbuf, 16);           /* set an IV for CBC mode           */
-    fseek(fin, 0, SEEK_END);        /* get the length of the file       */
-    fgetpos(fin, &flen);            /* and then reset to start          */
-    fseek(fin, 0, SEEK_SET);        
-    fwrite(outbuf, 1, 16, fout);    /* write the IV to the output       */
+    // fseek(fin, 0, SEEK_END);        /* get the length of the file       */
+    // fgetpos(fin, &flen);            /* and then reset to start          */
+    // fseek(fin, 0, SEEK_SET);        
+    fake_fwrite(outbuf, 1, 16, fout);    /* write the IV to the output       */
     fillrand(inbuf, 1);             /* make top 4 bits of a byte random */
     l = 15;                         /* and store the length of the last */
                                     /* block in the lower 4 bits        */
     inbuf[0] = ((char)flen & 15) | (inbuf[0] & ~15);
 
-    while(!feof(fin))               /* loop to encrypt the input file   */
+    while(!fake_feof(fin))               /* loop to encrypt the input file   */
     {                               /* input 1st 16 bytes to buf[1..16] */
-        i = fread(inbuf + 16 - l, 1, l, fin);  /*  on 1st round byte[0] */
+        i = fake_fread(inbuf + 16 - l, 1, l, fin);  /*  on 1st round byte[0] */
                                                /* is the length code    */
         if(i < l) break;            /* if end of the input file reached */
 
@@ -121,7 +125,7 @@ int encfile(FILE *fin, FILE *fout, aes *ctx, char* fn)
 
         encrypt(inbuf, outbuf, ctx);    /* and do the encryption        */
 
-        if(fwrite(outbuf, 1, 16, fout) != 16)
+        if(fake_fwrite(outbuf, 1, 16, fout) != 16)
         {
             printf("Error writing to output file: %s\n", fn);
             return -7;
@@ -149,7 +153,7 @@ int encfile(FILE *fin, FILE *fout, aes *ctx, char* fn)
 
         encrypt(inbuf, outbuf, ctx);    /* encrypt and output it        */
 
-        if(fwrite(outbuf, 1, 16, fout) != 16)
+        if(fake_fwrite(outbuf, 1, 16, fout) != 16)
         {
             printf("Error writing to output file: %s\n", fn);
             return -8;
@@ -159,17 +163,17 @@ int encfile(FILE *fin, FILE *fout, aes *ctx, char* fn)
     return 0;
 }
 
-int decfile(FILE *fin, FILE *fout, aes *ctx, char* ifn, char* ofn)
+int decfile(FAKEFILE *fin, FAKEFILE *fout, aes *ctx, char* ifn, char* ofn)
 {   char    inbuf1[16], inbuf2[16], outbuf[16], *bp1, *bp2, *tp;
     int     i, l, flen;
 
-    if(fread(inbuf1, 1, 16, fin) != 16)  /* read Initialisation Vector   */
+    if(fake_fread(inbuf1, 1, 16, fin) != 16)  /* read Initialisation Vector   */
     {
         printf("Error reading from input file: %s\n", ifn);
         return 9;
     }
 
-    i = fread(inbuf2, 1, 16, fin);  /* read 1st encrypted file block    */
+    i = fake_fread(inbuf2, 1, 16, fin);  /* read 1st encrypted file block    */
 
     if(i && i != 16)
     {
@@ -189,7 +193,7 @@ int decfile(FILE *fin, FILE *fout, aes *ctx, char* ifn, char* ofn)
 
     while(1)
     {
-        i = fread(bp1, 1, 16, fin);     /* read next encrypted block    */
+        i = fake_fread(bp1, 1, 16, fin);     /* read next encrypted block    */
                                         /* to first input buffer        */
         if(i != 16)         /* no more bytes in input - the decrypted   */
             break;          /* partial final buffer needs to be output  */
@@ -197,7 +201,7 @@ int decfile(FILE *fin, FILE *fout, aes *ctx, char* ifn, char* ofn)
         /* if a block has been read the previous block must have been   */
         /* full lnegth so we can now write it out                       */
          
-        if(fwrite(outbuf + 16 - l, 1, l, fout) != (unsigned long)l)
+        if(fake_fwrite(outbuf + 16 - l, 1, l, fout) != (unsigned long)l)
         {
             printf("Error writing to output file: %s\n", ofn);
             return -11;
@@ -222,7 +226,7 @@ int decfile(FILE *fin, FILE *fout, aes *ctx, char* ifn, char* ofn)
     l = (l == 15 ? 1 : 0); flen += 1 - l;
 
     if(flen)
-        if(fwrite(outbuf + l, 1, flen, fout) != (unsigned long)flen)
+        if(fake_fwrite(outbuf + l, 1, flen, fout) != (unsigned long)flen)
         {
             printf("Error writing to output file: %s\n", ofn);
             return -12;
@@ -231,19 +235,38 @@ int decfile(FILE *fin, FILE *fout, aes *ctx, char* ifn, char* ofn)
     return 0;
 }
 
+extern unsigned char input_small_asc[];
+extern unsigned int input_small_asc_len;
+extern unsigned char input_large_asc[];
+extern unsigned int input_large_asc_len;
+
+extern unsigned char output_small_enc[];
+extern unsigned int output_small_enc_len;
+
 int main(int argc, char *argv[])
-{   FILE    *fin = 0, *fout = 0;
+{
+    
+    FAKEFILE small = {input_small_asc, 0, input_small_asc_len, 0};
+    FAKEFILE large = {input_large_asc, 0, input_large_asc_len, 0};
+    FAKEFILE small_enc = {output_small_enc, 0, output_small_enc_len, 0};
+
+    char out[5000000];
+    FAKEFILE fake_output = {out, 0, 5000000, 0};
+    
     char    *cp, ch, key[32];
     int     i=0, by=0, key_len=0, err = 0;
     aes     ctx[1];
 
-    if(argc != 5 || (toupper(*argv[3]) != 'D' && toupper(*argv[3]) != 'E'))
+    if(argc != 4 || (toupper(*argv[2]) != 'D' && toupper(*argv[2]) != 'E') || (toupper(*argv[1]) != 'L' && toupper(*argv[1]) != 'S'))
     {
-        printf("usage: rijndael in_filename out_filename [d/e] key_in_hex\n"); 
+        printf("usage: rijndael [L/S] [d/e] key_in_hex\n"); 
         err = -1; goto exit;
     }
 
-    cp = argv[4];   /* this is a pointer to the hexadecimal key digits  */
+    FAKEFILE * fin = toupper(*argv[2]) == 'D' ? &small_enc : ((toupper(*argv[1]) == 'L') ? &large : &small);
+    FAKEFILE * fout = &fake_output;
+
+    cp = argv[3];   /* this is a pointer to the hexadecimal key digits  */
     i = 0;          /* this is a count for the input digits processed   */
     
     while(i < 64 && *cp)    /* the maximum key length is 32 bytes and   */
@@ -277,35 +300,19 @@ int main(int argc, char *argv[])
 
     key_len = i / 2;
 
-    if(!(fin = fopen(argv[1], "rb")))   /* try to open the input file */
+    if (toupper(*argv[2]) == 'E')   /* encryption in Cipher Block Chaining mode */
     {
-        printf("The input file: %s could not be opened\n", argv[1]); 
-        err = -5; goto exit;
-    }
-
-    if(!(fout = fopen(argv[2], "wb")))  /* try to open the output file */
-    {
-        printf("The output file: %s could not be opened\n", argv[1]); 
-        err = -6; goto exit;
-    }
-
-    if(toupper(*argv[3]) == 'E')
-    {                           /* encryption in Cipher Block Chaining mode */
         set_key(key, key_len, enc, ctx);
-
         err = encfile(fin, fout, ctx, argv[1]);
-    }
-    else
-    {                           /* decryption in Cipher Block Chaining mode */
+    } else {
+        /* decryption in Cipher Block Chaining mode */
         set_key(key, key_len, dec, ctx);
-    
         err = decfile(fin, fout, ctx, argv[1], argv[2]);
     }
+
+    print_fake(fout);
+
 exit:   
-    if(fout) 
-        fclose(fout);
-    if(fin)
-        fclose(fin);
 
     return err;
 }
