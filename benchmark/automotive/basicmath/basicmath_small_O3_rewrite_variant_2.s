@@ -140,7 +140,10 @@ my_cos:
 	auipc	ra,%pcrel_hi(__adddf3)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_23)
 	addi	s2,x0,3
-	and	s2,s6,s2
+	or	s2,s6,s2
+	addi	a2,x0,3
+	sub	x0,s2,a2
+	sub	s2,s6,x0
 	addi	a5,zero,1
 	addi	s3,a0,0
 	addi	s5,a1,0
@@ -283,11 +286,11 @@ my_cos:
 	jalr	zero,ra,0
 .L6:
 	lui	a5,524288
-	and	a2,a1,a5
-	sub	a2,a2,a5
-	sub	a2,a1,a2
-	and	a3,a1,a5
-	sub	a5,a2,a3
+	or	a2,a1,a5
+	or	a3,a1,a5
+	sub	a3,a3,a5
+	sub	a5,a1,a3
+	sub	a5,a2,a5
 	jal	x0,.L1
 .L12:
 	lw	a2,%lo(.LC1)(s4)
@@ -302,11 +305,11 @@ my_cos:
 	jal	x0,.L4
 .L5:
 	lui	a5,524288
-	and	a2,a1,a5
-	sub	a2,a2,a5
-	sub	a2,a1,a2
-	and	a3,a1,a5
-	sub	a5,a2,a3
+	or	a2,a1,a5
+	or	a3,a1,a5
+	sub	a3,a3,a5
+	sub	a5,a1,a3
+	sub	a5,a2,a5
 	jal	x0,.L1
 	.size	my_cos, .-my_cos
 	.align	2
@@ -746,7 +749,8 @@ SolveCubic:
 .Lpcrel_66:
 	auipc	ra,%pcrel_hi(__gtdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_66)
-	bge	zero,a0,.L84
+	bge	a0,zero,.+8
+	jal	x0,.L84
 	addi	a0,s3,0
 	addi	a1,s0,0
 	addi	a2,zero,0
@@ -1386,7 +1390,8 @@ SolveCubic:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_157)
 	addi	s4,zero,0
 	addi	s3,zero,0
-	bge	zero,a0,.L87
+	bge	a0,zero,.+8
+	jal	x0,.L87
 .L24:
 	lw	s6,8(sp)
 	lw	s5,28(sp)
@@ -1664,10 +1669,10 @@ SolveCubic:
 	jal	x0,.L32
 .L86:
 	lui	a5,524288
-	and	s11,s5,a5
-	sub	s11,s11,a5
-	sub	s11,s5,s11
-	and	a0,s5,a5
+	or	s11,s5,a5
+	or	a0,s5,a5
+	sub	a0,a0,a5
+	sub	a0,s5,a0
 	sub	s11,s11,a0
 	jal	x0,.L41
 .L58:
@@ -1688,13 +1693,14 @@ SolveCubic:
 .Lpcrel_198:
 	auipc	ra,%pcrel_hi(__lttf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_198)
-	bge	zero,a0,.L50
+	bge	a0,zero,.+8
+	jal	x0,.L50
 	lui	a5,524288
-	and	a0,a5,s4
-	sub	a0,a0,s4
-	sub	a0,a5,a0
-	and	a1,a5,s4
-	sub	s4,a0,a1
+	or	a0,a5,s4
+	or	a1,a5,s4
+	sub	a1,a1,s4
+	sub	s4,a5,a1
+	sub	s4,a0,s4
 .L50:
 	lw	a2,%lo(.LC25)(s3)
 	lw	a3,%lo(.LC25+4)(s3)
@@ -1849,7 +1855,8 @@ SolveCubic:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_217)
 	addi	s4,zero,0
 	addi	s3,zero,0
-	bge	a0,zero,.L24
+	bge	zero,a0,.+8
+	jal	x0,.L24
 	lui	a5,%hi(.LC17)
 	lw	s4,%lo(.LC17)(a5)
 	lw	s3,%lo(.LC17+4)(a5)
@@ -1876,7 +1883,9 @@ SolveCubic:
 .Lpcrel_219:
 	auipc	ra,%pcrel_hi(__gedf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_219)
-	bge	a0,zero,.L53
+	bge	a0,zero,.+8
+	jal	x0,8
+	jal	x0,.L53
 	lw	a2,%lo(.LC23)(s3)
 	lw	a3,%lo(.LC23+4)(s3)
 	addi	a0,s8,0
@@ -2088,7 +2097,8 @@ main:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_234)
 	lw	s5,132(sp)
-	bge	zero,s5,.L93
+	bge	s5,zero,.+8
+	jal	x0,.L93
 	lui	a5,%hi(.LC35)
 	addi	s2,a5,%lo(.LC35)
 	addi	s4,s6,0
@@ -2197,7 +2207,8 @@ main:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_244)
 	lw	s5,132(sp)
-	bge	zero,s5,.L97
+	bge	s5,zero,.+8
+	jal	x0,.L97
 	lui	a5,%hi(.LC35)
 	addi	s2,a5,%lo(.LC35)
 	addi	s4,s6,0
@@ -2359,7 +2370,9 @@ main:
 	addi	s8,a1,0
 	addi	a5,a5,-1
 	sw	a5,68(sp)
-	bne	a5,zero,.L105
+	bne	a5,zero,.+8
+	jal	x0,8
+	jal	x0,.L105
 	lw	a0,52(sp)
 	lw	a1,56(sp)
 	lw	a2,96(sp)
@@ -2455,7 +2468,9 @@ main:
 	sub	s3,s3,a4
 	addi	s2,s2,1
 .L111:
-	bne	a3,zero,.L112
+	bne	a3,zero,.+8
+	jal	x0,8
+	jal	x0,.L112
 	addi	a0,s2,0
 .Lpcrel_261:
 	auipc	ra,%pcrel_hi(__floatunsidf)
@@ -2542,7 +2557,9 @@ main:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_269)
 	addi	s8,a0,0
 	addi	s6,a1,0
-	bne	s3,zero,.L113
+	bne	s3,zero,.+8
+	jal	x0,8
+	jal	x0,.L113
 	addi	a0,zero,10
 	lw	s3,28(sp)
 	lw	s2,24(sp)

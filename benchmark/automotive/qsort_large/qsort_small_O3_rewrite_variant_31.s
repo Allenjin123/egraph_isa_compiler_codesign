@@ -113,7 +113,8 @@ quicksort_range:
 	addi	a3,zero,0
 	sltu	a5,a5,a4
 	sub	a5,a3,a5
-	beq	a5,s3,.L17
+	bne	a5,s3,.+8
+	jal	x0,.L17
 .L50:
 	bge	s1,s2,.L51
 .L19:

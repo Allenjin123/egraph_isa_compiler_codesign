@@ -11,8 +11,7 @@ quicksort_range:
 	addi	sp,sp,-112
 	sw	ra,108(sp)
 	sw	a2,12(sp)
-	blt	a1,a2,.+8
-	jal	x0,.L1
+	bge	a1,a2,.L1
 	sw	s7,76(sp)
 	sw	s8,72(sp)
 	sw	s9,68(sp)
@@ -38,8 +37,7 @@ quicksort_range:
 	srli	a5,a4,31
 	sub	a2,x0,a5
 	sub	a5,a4,a2
-	addi	a4,x0,1
-	sra	a4,a5,a4
+	srai	a4,a5,1
 	addi	a2,x0,-2
 	or	a2,a5,a2
 	addi	a3,x0,-2
@@ -53,7 +51,8 @@ quicksort_range:
 	lw	s4,16(a5)
 	lw	s5,20(a5)
 .L8:
-	blt	s2,s1,.L9
+	bge	s2,s1,.+8
+	jal	x0,.L9
 .L27:
 	slli	a5,s1,1
 	sub	a0,x0,a5
@@ -76,8 +75,7 @@ quicksort_range:
 	sub	s6,s0,s6
 	sub	a1,x0,s8
 	sub	s11,s11,a1
-	blt	a0,zero,.+8
-	jal	x0,8
+	bge	a0,zero,.+8
 	jal	x0,.L26
 .L4:
 	addi	s3,s11,0
@@ -90,7 +88,8 @@ quicksort_range:
 .Lpcrel_2:
 	auipc	ra,%pcrel_hi(__ltdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_2)
-	blt	a0,zero,.L4
+	bge	a0,zero,.+8
+	jal	x0,.L4
 	lw	a2,16(s6)
 	lw	a3,20(s6)
 	addi	a0,s4,0
@@ -98,9 +97,7 @@ quicksort_range:
 .Lpcrel_3:
 	auipc	ra,%pcrel_hi(__ltdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_3)
-	blt	zero,a0,.+8
-	jal	x0,8
-	jal	x0,.L5
+	bge	a0,zero,.L5
 .L14:
 	sub	a0,x0,s9
 	sub	s0,s0,a0
@@ -115,10 +112,10 @@ quicksort_range:
 .Lpcrel_4:
 	auipc	ra,%pcrel_hi(__gtdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_4)
-	blt	a0,zero,.+8
+	bge	zero,a0,.+8
 	jal	x0,.L7
 .L5:
-	blt	s1,s2,.+8
+	bge	s2,s1,.+8
 	jal	x0,.L8
 .L15:
 	lw	a1,0(s6)
@@ -153,16 +150,14 @@ quicksort_range:
 	sw	a3,12(s6)
 	sw	a4,16(s6)
 	sw	a5,20(s6)
-	blt	s2,s1,.+8
+	bge	s1,s2,.+8
 	jal	x0,.L27
 .L9:
-	blt	s2,s10,.+8
+	bge	s10,s2,.+8
 	jal	x0,.L28
 .L12:
 	lw	a5,12(sp)
-	blt	a5,s1,.+8
-	jal	x0,8
-	jal	x0,.L29
+	bge	s1,a5,.L29
 	addi	s10,s1,0
 	jal	x0,.L2
 .L26:
@@ -173,7 +168,7 @@ quicksort_range:
 .Lpcrel_5:
 	auipc	ra,%pcrel_hi(__ltdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_5)
-	blt	a0,zero,.+8
+	bge	zero,a0,.+8
 	jal	x0,8
 	jal	x0,.L14
 	jal	x0,.L15
@@ -325,8 +320,7 @@ main:
 	sub	s0,a1,a0
 	sub	a0,x0,s0
 	sub	s0,a2,a0
-	addi	a2,x0,31
-	sra	a2,s0,a2
+	srai	a2,s0,31
 	sub	a0,x0,a3
 	sub	a3,a2,a0
 	sub	a0,x0,a4

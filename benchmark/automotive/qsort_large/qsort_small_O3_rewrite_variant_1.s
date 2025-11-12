@@ -8,8 +8,7 @@
 	.align	2
 	.type	quicksort_range, @function
 quicksort_range:
-	bge	a1,a2,.+8
-	jal	x0,8
+	bge	a2,a1,.+8
 	jal	x0,.L42
 	addi	sp,sp,-320
 	sw	s3,300(sp)
@@ -31,12 +30,10 @@ quicksort_range:
 .L2:
 	sub	a5,x0,s7
 	sub	a5,s6,a5
-	addi	a2,x0,31
-	srl	a2,a5,a2
+	srli	a2,a5,31
 	sub	a3,x0,a2
 	sub	a2,a5,a3
-	addi	a3,x0,1
-	sra	a2,a2,a3
+	srai	a2,a2,1
 	slli	a2,a2,7
 	addi	a3,sp,16
 	addi	a5,zero,0
@@ -151,11 +148,11 @@ quicksort_range:
 	bne	a5,s3,.+8
 	jal	x0,.L17
 .L50:
-	bge	s2,s1,.+8
+	bge	s1,s2,.+8
+	jal	x0,8
 	jal	x0,.L51
 .L19:
-	bge	s1,s6,.+8
-	jal	x0,8
+	bge	s6,s1,.+8
 	jal	x0,.L52
 	bge	s2,s7,.L1
 .L22:
@@ -262,9 +259,7 @@ main:
 	sub	a1,x0,a5
 	sub	a5,sp,a1
 	addi	a6,a6,4
-	bne	a5,a2,.+8
-	jal	x0,8
-	jal	x0,.L57
+	bne	a5,a2,.L57
 	lui	a2,2
 	addi	a0,sp,0
 	addi	a2,a2,1807

@@ -233,7 +233,9 @@ rand:
 atoi:
 	lbu	a2,0(a0)
 	addi	a5,zero,45
-	beq	a2,a5,.L40
+	beq	a2,a5,.+8
+	jal	x0,8
+	jal	x0,.L40
 	addi	a5,zero,43
 	addi	a6,zero,1
 	beq	a2,a5,.L41
@@ -262,7 +264,9 @@ atoi:
 	addi	a3,a2,-48
 	andi	a5,a3,255
 	addi	a4,zero,0
-	bgeu	a1,a5,.L34
+	bgeu	a1,a5,.+8
+	jal	x0,8
+	jal	x0,.L34
 .L42:
 	addi	a0,zero,0
 	jalr	zero,ra,0

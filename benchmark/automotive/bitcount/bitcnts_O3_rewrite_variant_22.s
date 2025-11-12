@@ -23,8 +23,7 @@ bitcount:
 	add	a5,a5,a4
 	lui	a3,61681
 	addi	a3,a3,-241
-	srli	a4,a5,2
-	srli	a4,a4,2
+	srli	a4,a5,4
 	and	a4,a4,a3
 	and	a5,a5,a3
 	add	a4,a4,a5
@@ -153,8 +152,7 @@ ntbl_bitcnt:
 	srai	a5,a5,4
 	add	a3,a3,a0
 	lbu	a0,0(a4)
-	beq	a5,zero,.+8
-	jal	x0,.L8
+	bne	a5,zero,.L8
 	add	a0,a0,a3
 .L6:
 	jalr	zero,ra,0
@@ -173,8 +171,7 @@ bit_shifter:
 	addi	a2,a4,-32
 	add	a0,a0,a3
 	beq	a5,zero,.L13
-	beq	a2,zero,.+8
-	jal	x0,.L15
+	bne	a2,zero,.L15
 	jalr	zero,ra,0
 .L13:
 	jalr	zero,ra,0
@@ -190,8 +187,7 @@ bit_count:
 	addi	a4,a5,-1
 	and	a5,a5,a4
 	addi	a0,a0,1
-	beq	a5,zero,.+8
-	jal	x0,.L24
+	bne	a5,zero,.L24
 .L23:
 	jalr	zero,ra,0
 	.size	bit_count, .-bit_count
@@ -281,9 +277,11 @@ rand:
 	.globl	atoi
 	.type	atoi, @function
 atoi:
-	lbu	a2,0(a0)
+	lw	a2,0(a0)
+	andi	a2,a2,255
 	addi	a5,zero,45
-	beq	a2,a5,.L40
+	bne	a2,a5,.+8
+	jal	x0,.L40
 	addi	a5,zero,43
 	addi	a6,zero,1
 	beq	a2,a5,.L41
@@ -292,7 +290,8 @@ atoi:
 	andi	a5,a3,255
 	addi	a1,zero,9
 	addi	a4,zero,0
-	bgeu	a5,a1,.L42
+	bgeu	a1,a5,.+8
+	jal	x0,.L42
 .L34:
 	slli	a5,a4,2
 	lbu	a2,1(a0)

@@ -746,7 +746,8 @@ SolveCubic:
 .Lpcrel_66:
 	auipc	ra,%pcrel_hi(__gtdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_66)
-	bge	zero,a0,.L84
+	bge	a0,zero,.+8
+	jal	x0,.L84
 	addi	a0,s3,0
 	addi	a1,s0,0
 	addi	a2,zero,0
@@ -1386,7 +1387,8 @@ SolveCubic:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_157)
 	addi	s4,zero,0
 	addi	s3,zero,0
-	bge	zero,a0,.L87
+	bge	a0,zero,.+8
+	jal	x0,.L87
 .L24:
 	lw	s6,8(sp)
 	lw	s5,28(sp)
@@ -1688,7 +1690,8 @@ SolveCubic:
 .Lpcrel_198:
 	auipc	ra,%pcrel_hi(__lttf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_198)
-	bge	zero,a0,.L50
+	bge	a0,zero,.+8
+	jal	x0,.L50
 	lui	a5,524288
 	and	a0,a5,s4
 	sub	a0,a0,s4
@@ -1849,7 +1852,8 @@ SolveCubic:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_217)
 	addi	s4,zero,0
 	addi	s3,zero,0
-	bge	a0,zero,.L24
+	bge	zero,a0,.+8
+	jal	x0,.L24
 	lui	a5,%hi(.LC17)
 	lw	s4,%lo(.LC17)(a5)
 	lw	s3,%lo(.LC17+4)(a5)
@@ -1876,7 +1880,9 @@ SolveCubic:
 .Lpcrel_219:
 	auipc	ra,%pcrel_hi(__gedf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_219)
-	bge	a0,zero,.L53
+	bge	a0,zero,.+8
+	jal	x0,8
+	jal	x0,.L53
 	lw	a2,%lo(.LC23)(s3)
 	lw	a3,%lo(.LC23+4)(s3)
 	addi	a0,s8,0
@@ -2088,7 +2094,8 @@ main:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_234)
 	lw	s5,132(sp)
-	bge	zero,s5,.L93
+	bge	s5,zero,.+8
+	jal	x0,.L93
 	lui	a5,%hi(.LC35)
 	addi	s2,a5,%lo(.LC35)
 	addi	s4,s6,0
@@ -2197,7 +2204,8 @@ main:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_244)
 	lw	s5,132(sp)
-	bge	zero,s5,.L97
+	bge	s5,zero,.+8
+	jal	x0,.L97
 	lui	a5,%hi(.LC35)
 	addi	s2,a5,%lo(.LC35)
 	addi	s4,s6,0
@@ -2359,7 +2367,9 @@ main:
 	addi	s8,a1,0
 	addi	a5,a5,-1
 	sw	a5,68(sp)
-	bne	a5,zero,.L105
+	bne	a5,zero,.+8
+	jal	x0,8
+	jal	x0,.L105
 	lw	a0,52(sp)
 	lw	a1,56(sp)
 	lw	a2,96(sp)
@@ -2455,7 +2465,9 @@ main:
 	sub	s3,s3,a4
 	addi	s2,s2,1
 .L111:
-	bne	a3,zero,.L112
+	bne	a3,zero,.+8
+	jal	x0,8
+	jal	x0,.L112
 	addi	a0,s2,0
 .Lpcrel_261:
 	auipc	ra,%pcrel_hi(__floatunsidf)
@@ -2542,7 +2554,9 @@ main:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_269)
 	addi	s8,a0,0
 	addi	s6,a1,0
-	bne	s3,zero,.L113
+	bne	s3,zero,.+8
+	jal	x0,8
+	jal	x0,.L113
 	addi	a0,zero,10
 	lw	s3,28(sp)
 	lw	s2,24(sp)

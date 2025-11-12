@@ -330,7 +330,13 @@ main:
 	addi	t0,t0,1984
 	add	sp,sp,t0
 	lw	ra,2028(sp)
-	or	a0,s0,s2
+	addi	a0,x0,-1
+	or	a0,a0,s0
+	addi	a0,x0,-1
+	and	x0,a0,s0
+	sub	x0,a0,x0
+	and	x0,s2,x0
+	add	a0,x0,s0
 	lw	s1,2020(sp)
 	lw	s0,2024(sp)
 	lw	s2,2016(sp)
