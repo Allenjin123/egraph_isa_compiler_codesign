@@ -22,5 +22,5 @@
 	branch = feat/print-eclass
 [submodule "embench-iot"]
 	path = embench-iot
-	url = https://github.com/embench/embench-iot.git
-	branch = master
+	url = https://github.com/fangzhonglyu/embench-rv32-fix.git
+	branch = main
