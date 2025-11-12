@@ -23,8 +23,8 @@ bitcount:
 	add	a5,a5,a4
 	lui	a3,61681
 	addi	a3,a3,-241
-	srli	a0,a5,2
-	srli	a4,a0,2
+	srli	a4,a5,2
+	srli	a4,a4,2
 	and	a4,a4,a3
 	and	a5,a5,a3
 	add	a4,a4,a5
@@ -142,8 +142,8 @@ ntbl_bitcnt:
 	lui	a2,%hi(.LANCHOR0)
 	andi	a4,a0,15
 	addi	a2,a2,%lo(.LANCHOR0)
-	srai	a3,a0,2
-	srai	a5,a3,2
+	srai	a5,a0,2
+	srai	a5,a5,2
 	add	a4,a2,a4
 	lbu	a0,0(a4)
 	beq	a5,zero,.L6
@@ -271,7 +271,7 @@ atoi:
 	lbu	a2,1(a0)
 	addi	a6,zero,-1
 	addi	a0,a0,1
-	jal	zero,.L33
+	jal	x0,.L33
 	.size	atoi, .-atoi
 	.section	.rodata.str1.4,"aMS",@progbits,1
 	.align	2
