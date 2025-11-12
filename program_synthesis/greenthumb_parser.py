@@ -289,7 +289,15 @@ def dag_to_egglog_expr(node: InstructionNode, reg_map: Dict[str, str]) -> str:
         else:
             raise ValueError(f"I-type instruction {inst} missing rs1 child")
 
-    # U-type or other: (Op ...)
+    # U-type: (Op (ImmVal imm)) - only immediate, no source registers (e.g., lui, auipc)
+    elif inst.imm is not None and not inst.rs1 and not inst.rs2:
+        if isinstance(inst.imm, int):
+            return f"({op_name} (ImmVal {inst.imm}))"
+        else:
+            # Symbolic immediate
+            return f"({op_name} (ImmLabel \"{inst.imm}\"))"
+
+    # Unsupported pattern
     else:
         raise ValueError(f"Unsupported instruction pattern for DAG conversion: {inst}")
 
