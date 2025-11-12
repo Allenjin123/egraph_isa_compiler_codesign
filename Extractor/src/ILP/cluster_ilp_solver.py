@@ -100,6 +100,7 @@ class ClusterILPSolver:
         self,
         scales: List[float],
         best_k: int = 3,
+        cost_mode: str = "program_size",
         timeout: int = 900,
         output_dir: str = None
     ) -> Dict:
@@ -109,6 +110,7 @@ class ClusterILPSolver:
         Args:
             scales: List of node cost scaling factors
             best_k: Number of solutions per scaling factor
+            cost_mode: Cost optimization mode ("program_size" or "latency")
             timeout: ILP solver timeout in seconds
             output_dir: Base output directory
 
@@ -128,6 +130,7 @@ class ClusterILPSolver:
         print(f"Cluster name: {self.cluster_name}")
         print(f"Scaling factors: {scales}")
         print(f"Solutions per scale: {best_k}")
+        print(f"Cost mode: {cost_mode}")
         print(f"ILP timeout: {timeout}s")
         print(f"Output directory: {output_path}")
         print("=" * 80)
@@ -150,7 +153,13 @@ class ClusterILPSolver:
             merged_data = json.load(f)
 
         # Create EGraph and load data
-        egraph = EGraph()  # Create empty e-graph
+        egraph = EGraph(cost_mode=cost_mode)  # Create empty e-graph with cost mode
+
+        # Load execution counts from all programs in cluster (BEFORE loading enodes)
+        # This must happen before from_json_file() because costs are computed during loading
+        if cost_mode == "latency":
+            egraph.load_execution_counts_for_cluster(self.cluster_programs)
+
         egraph.from_json_file(merged_data)  # Load from dictionary
 
         # CRITICAL: Add accurate root eclasses from pre-computed individual programs
