@@ -102,8 +102,13 @@ if ! command -v "$PK" &> /dev/null && [ ! -f "$PK" ]; then
 fi
 echo ""
 
-# Create work directory
-WORK_DIR=$(mktemp -d)
+# Create work directory - use local tmp instead of /tmp
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LOCAL_TMP_DIR="$SCRIPT_DIR/tmp"
+mkdir -p "$LOCAL_TMP_DIR"
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+WORK_DIR="$LOCAL_TMP_DIR/${BASE_NAME}_${TIMESTAMP}"
+mkdir -p "$WORK_DIR"
 echo -e "${BLUE}[DEBUG] Work directory: $WORK_DIR${NC}"
 echo -e "${BLUE}[DEBUG] Contents will be preserved on error for debugging${NC}"
 echo ""
@@ -159,6 +164,11 @@ riscv32-unknown-elf-objdump -d "$EXE_FILE" > "$WORK_DIR/objdump.txt"
 
 OBJDUMP_LINES=$(wc -l < "$WORK_DIR/objdump.txt")
 echo -e "${GREEN}[DEBUG] Objdump generated $OBJDUMP_LINES lines${NC}"
+
+echo -e "${BLUE}[DEBUG] Generating full disassembly with source line mapping...${NC}"
+riscv32-unknown-elf-objdump -d -l "$EXE_FILE" > "$WORK_DIR/full.dump"
+FULL_DUMP_LINES=$(wc -l < "$WORK_DIR/full.dump")
+echo -e "${GREEN}[DEBUG] Full disassembly with line info generated: $FULL_DUMP_LINES lines${NC}"
 echo ""
 
 ###############################################################################
@@ -187,8 +197,8 @@ echo -e "${BLUE}[DEBUG] Starting spike at $(date)${NC}"
 # Run spike with configurable timeout; capture both stdout+stderr in spike.log
 if [ -n "$PROG_ARGS" ]; then
     echo -e "${BLUE}[DEBUG] Running with args: $PROG_ARGS${NC}"
-    # Match run_and_verify behavior: redirect stdin from /dev/null, capture stdout, discard stderr
-    timeout "$TIMEOUT" spike --isa="$SPIKE_ISA" $SPIKE_LOG_OPT "$PK" "$EXE_FILE" $PROG_ARGS < /dev/null > "$WORK_DIR/spike.log" 2>/dev/null
+    # Redirect stdin from /dev/null, capture both stdout and stderr (for -g histogram)
+    timeout "$TIMEOUT" spike --isa="$SPIKE_ISA" $SPIKE_LOG_OPT "$PK" "$EXE_FILE" $PROG_ARGS < /dev/null > "$WORK_DIR/spike.log" 2>&1
     SPIKE_EXIT=$?
 else
     echo -e "${BLUE}[DEBUG] Running without args${NC}"
@@ -252,6 +262,34 @@ UNIQUE_ADDRS=$(wc -l < "$WORK_DIR/addr_counts.txt")
 TOTAL_COUNT=$(awk '{s+=$2} END{print s+0}' "$WORK_DIR/addr_counts.txt")
 echo -e "${BLUE}[DEBUG] Unique PCs: $UNIQUE_ADDRS${NC}"
 echo -e "${BLUE}[DEBUG] Total executed instructions (approx by PCs): $TOTAL_COUNT${NC}"
+echo ""
+
+###############################################################################
+# Step 7: Generate assembly-to-execution mapping
+###############################################################################
+echo -e "${MAGENTA}=== Step 7: Generating assembly-to-execution mapping ===${NC}"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MAP_SCRIPT="$SCRIPT_DIR/map_asm_to_execution.py"
+
+if [ -f "$MAP_SCRIPT" ]; then
+    echo -e "${BLUE}[DEBUG] Running mapping script...${NC}"
+    if python3 "$MAP_SCRIPT" \
+        "$ASM_FILE" \
+        "$WORK_DIR/full.dump" \
+        "$WORK_DIR/addr_counts.txt" \
+        "$WORK_DIR/asm_execution_map.txt"; then
+        echo -e "${GREEN}[DEBUG] Mapping generated successfully${NC}"
+        echo -e "${BLUE}[DEBUG] Output: $WORK_DIR/asm_execution_map.txt${NC}"
+        echo -e "${BLUE}[DEBUG] Preview (first 10 lines):${NC}"
+        head -12 "$WORK_DIR/asm_execution_map.txt"
+    else
+        echo -e "${YELLOW}[WARNING] Mapping script failed${NC}"
+    fi
+else
+    echo -e "${YELLOW}[WARNING] Mapping script not found: $MAP_SCRIPT${NC}"
+fi
+echo ""
 
 ###############################################################################
 # Final status
@@ -263,8 +301,10 @@ ls -la "$WORK_DIR"
 echo ""
 echo -e "${GREEN}To examine the files:${NC}"
 echo "  cd $WORK_DIR"
-echo "  cat spike.log | less     # View spike log"
-echo "  cat addr_counts.txt      # View execution counts"
+echo "  cat spike.log | less              # View spike log"
+echo "  cat addr_counts.txt               # View execution counts by PC"
+echo "  cat asm_execution_map.txt | less  # View assembly-to-execution mapping"
+echo "  cat full.dump | less              # View full disassembly with source lines"
 echo ""
 echo -e "${YELLOW}To clean up manually:${NC}"
 echo "  rm -rf $WORK_DIR"
