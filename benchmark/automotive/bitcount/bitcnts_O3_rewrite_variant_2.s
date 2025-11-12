@@ -329,96 +329,80 @@ rand:
 	addi	a0,x0,1
 	addi	a7,x0,65535
 	and	a7,a3,a7
-	addi	t0,x0,65535
-	and	t0,a2,t0
+	srli	t0,a2,16
 	mul	a7,a7,t0
-	srli	a7,a7,16
-	addi	t0,x0,65535
-	and	t0,a3,t0
+	srli	t0,a3,16
 	addi	t1,x0,65535
 	and	t1,a2,t1
 	mul	t0,t0,t1
-	srli	t0,t0,16
-	srli	t1,a3,16
-	addi	t2,x0,65535
-	and	t2,a2,t2
+	addi	t1,x0,65535
+	and	t1,a3,t1
+	srli	t2,a2,16
 	mul	t1,t1,t2
-	addi	t2,x0,65535
-	and	t2,a3,t2
-	srli	t3,a2,16
-	mul	t2,t2,t3
-	sub	t2,x0,t2
-	sub	t1,t1,t2
 	sub	t1,x0,t1
 	sub	t0,t0,t1
 	bgeu	a7,t0,.+8
 	addi	a7,x0,0
 	jal	x0,4
 	addi	a7,x0,1
-	addi	t0,x0,-1
-	addi	t1,x0,-1
+	addi	t0,x0,65535
+	and	t0,a3,t0
+	addi	t1,x0,65535
+	and	t1,a2,t1
+	mul	t0,t0,t1
+	srli	t0,t0,16
+	addi	t1,x0,65535
+	and	t1,a3,t1
 	addi	t2,x0,65535
-	and	t2,a3,t2
-	srli	t3,a2,16
+	and	t2,a2,t2
+	mul	t1,t1,t2
+	srli	t1,t1,16
+	srli	t2,a3,16
+	addi	t3,x0,65535
+	and	t3,a2,t3
 	mul	t2,t2,t3
-	srli	t3,a3,16
-	addi	t4,x0,65535
-	and	t4,a2,t4
+	addi	t3,x0,65535
+	and	t3,a3,t3
+	srli	t4,a2,16
 	mul	t3,t3,t4
-	addi	t4,x0,65535
-	and	t4,a3,t4
-	srli	t5,a2,16
-	mul	t4,t4,t5
-	sub	t4,x0,t4
-	sub	t3,t3,t4
-	bgeu	t2,t3,.+8
-	addi	t2,x0,0
-	jal	x0,4
-	addi	t2,x0,1
-	and	t1,t1,t2
-	addi	t2,x0,65535
-	and	t2,a3,t2
-	srli	t3,a2,16
-	mul	t2,t2,t3
-	srli	t3,a3,16
-	addi	t4,x0,65535
-	and	t4,a2,t4
-	mul	t3,t3,t4
-	addi	t4,x0,65535
-	and	t4,a3,t4
-	srli	t5,a2,16
-	mul	t4,t4,t5
-	sub	t4,x0,t4
-	sub	t3,t3,t4
-	bgeu	t2,t3,.+8
-	addi	t2,x0,0
-	jal	x0,4
-	addi	t2,x0,1
+	sub	t3,x0,t3
+	sub	t2,t2,t3
+	sub	t2,x0,t2
 	sub	t1,t1,t2
-	sub	t0,t0,t1
-	addi	t1,x0,-1
-	addi	t2,x0,65535
-	and	t2,a3,t2
-	srli	t3,a2,16
-	mul	t2,t2,t3
-	srli	t3,a3,16
-	addi	t4,x0,65535
-	and	t4,a2,t4
-	mul	t3,t3,t4
-	addi	t4,x0,65535
-	and	t4,a3,t4
-	srli	t5,a2,16
-	mul	t4,t4,t5
-	sub	t4,x0,t4
-	sub	t3,t3,t4
-	bgeu	t2,t3,.+8
-	addi	t2,x0,0
+	bgeu	t0,t1,.+8
+	addi	t0,x0,0
 	jal	x0,4
-	addi	t2,x0,1
-	and	t1,t1,t2
-	sub	t0,t0,t1
+	addi	t0,x0,1
 	and	a7,a7,t0
-	sub	a7,x0,a7
+	addi	t0,x0,65535
+	and	t0,a3,t0
+	addi	t1,x0,65535
+	and	t1,a2,t1
+	mul	t0,t0,t1
+	srli	t0,t0,16
+	addi	t1,x0,65535
+	and	t1,a3,t1
+	addi	t2,x0,65535
+	and	t2,a2,t2
+	mul	t1,t1,t2
+	srli	t1,t1,16
+	srli	t2,a3,16
+	addi	t3,x0,65535
+	and	t3,a2,t3
+	mul	t2,t2,t3
+	addi	t3,x0,65535
+	and	t3,a3,t3
+	srli	t4,a2,16
+	mul	t3,t3,t4
+	sub	t3,x0,t3
+	sub	t2,t2,t3
+	sub	t2,x0,t2
+	sub	t1,t1,t2
+	bgeu	t0,t1,.+8
+	addi	t0,x0,0
+	jal	x0,4
+	addi	t0,x0,1
+	sub	a7,a7,t0
 	sub	a0,a0,a7
 	slli	a0,a0,16
 	addi	a7,x0,65535
@@ -450,7 +434,8 @@ rand:
 	sub	a0,x0,a4
 	sub	a4,a1,a0
 	addi	a2,a5,1
-	bgeu	a5,a2,.+8
+	bgeu	a2,a5,.+8
+	jal	x0,8
 	addi	a5,x0,0
 	jal	x0,4
 	addi	a5,x0,1
@@ -497,8 +482,7 @@ atoi:
 	addi	a5,x0,255
 	and	a5,a3,a5
 	addi	a0,a0,1
-	bgeu	a5,a1,.+8
-	jal	x0,.L34
+	bgeu	a1,a5,.L34
 	mul	a0,a4,a6
 	jalr	zero,ra,0
 .L41:
@@ -512,7 +496,8 @@ atoi:
 	addi	a5,x0,255
 	and	a5,a3,a5
 	addi	a4,zero,0
-	bgeu	a1,a5,.L34
+	bgeu	a5,a1,.+8
+	jal	x0,.L34
 .L42:
 	addi	a0,zero,0
 	jalr	zero,ra,0
@@ -561,7 +546,8 @@ main:
 	beq	a5,a4,.L65
 	addi	a5,a5,-43
 	addi	a1,x0,1
-	bgeu	a1,a5,.+8
+	bgeu	a5,a1,.+8
+	jal	x0,8
 	addi	a5,x0,0
 	jal	x0,4
 	addi	a5,x0,1
@@ -593,8 +579,7 @@ main:
 	addi	a4,x0,255
 	and	a4,a1,a4
 	addi	a2,a2,1
-	bgeu	a4,a6,.+8
-	jal	x0,.L46
+	bgeu	a6,a4,.L46
 	addi	a4,a3,0
 .L47:
 	mul	a7,a5,a4
@@ -653,10 +638,25 @@ main:
 	mul	a3,a5,a3
 	sub	a2,x0,a4
 	sub	a4,a3,a2
-	addi	a3,x0,65535
-	and	a3,a5,a3
-	srli	a2,s5,16
+	srli	a3,a5,16
+	addi	a2,x0,65535
+	and	a2,s5,a2
 	mul	a3,a3,a2
+	addi	a2,x0,65535
+	and	a2,a5,a2
+	srli	a3,s5,16
+	mul	a2,a2,a3
+	sub	a2,x0,a2
+	sub	a3,a3,a2
+	addi	a2,x0,65535
+	and	x0,a5,a2
+	srli	a2,s5,16
+	mul	x0,x0,a2
+	bgeu	a3,x0,.+8
+	jal	x0,8
+	addi	a3,x0,0
+	jal	x0,4
+	addi	a3,x0,1
 	srli	a2,a5,16
 	addi	a3,x0,65535
 	and	a3,s5,a3
@@ -667,25 +667,12 @@ main:
 	mul	a3,a3,a6
 	sub	a3,x0,a3
 	sub	a2,a2,a3
-	bgeu	a3,a2,.+8
-	addi	a3,x0,0
-	jal	x0,4
-	addi	a3,x0,1
-	addi	a2,x0,65535
-	and	a2,a5,a2
+	addi	a3,x0,65535
+	and	x0,a5,a3
 	srli	a3,s5,16
-	mul	a2,a2,a3
-	srli	a3,a5,16
-	addi	a6,x0,65535
-	and	a6,s5,a6
-	mul	a3,a3,a6
-	addi	a6,x0,65535
-	and	a6,a5,a6
-	srli	a7,s5,16
-	mul	a6,a6,a7
-	sub	a6,x0,a6
-	sub	a3,a3,a6
-	bgeu	a2,a3,.+8
+	mul	x0,x0,a3
+	bgeu	a2,x0,.+8
+	jal	x0,8
 	addi	a2,x0,0
 	jal	x0,4
 	addi	a2,x0,1

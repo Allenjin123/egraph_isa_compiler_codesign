@@ -113,7 +113,8 @@ quicksort_range:
 	addi	a3,zero,0
 	sltu	a5,a5,a4
 	sub	a5,a3,a5
-	beq	a5,s3,.L17
+	bne	a5,s3,.+8
+	jal	x0,.L17
 .L50:
 	bge	s1,s2,.L51
 .L19:
@@ -270,16 +271,11 @@ main:
 	add	sp,sp,t0
 	lw	ra,2028(sp)
 	addi	a0,a0,1808
-	or	a2,a0,a4
-	or	a3,a0,a4
-	sub	a3,a3,a4
-	sub	a3,a0,a3
-	sub	a0,a2,a3
+	xor	a0,a4,a0
 	or	a0,a0,a5
 	lw	s0,2024(sp)
 	lw	s1,2020(sp)
-	addi	a2,x0,1
-	sltu	a0,a0,a2
+	sltiu	a0,a0,1
 	addi	sp,sp,2032
 	jalr	zero,ra,0
 	.size	main, .-main

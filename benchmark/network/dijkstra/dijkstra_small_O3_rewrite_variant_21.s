@@ -112,29 +112,7 @@ enqueue:
 	lui	a5,429497
 	addi	a5,a5,-1107
 	addi	a3,a4,1
-	srli	a6,a3,16
-	srli	a7,a5,16
-	mul	a6,a6,a7
-	andi	a7,a3,65535
-	srli	t0,a5,16
-	mul	a7,a7,t0
-	srli	t0,a3,16
-	andi	t1,a5,65535
-	mul	t0,t0,t1
-	add	a7,a7,t0
-	andi	t0,a3,65535
-	andi	t1,a5,65535
-	mul	t0,t0,t1
-	srli	t0,t0,16
-	add	a7,a7,t0
-	srli	a7,a7,16
-	add	a6,a6,a7
-	srai	a7,a3,31
-	and	a7,a7,a5
-	sub	a6,a6,a7
-	srai	a7,a5,31
-	and	a5,a7,a3
-	sub	a5,a6,a5
+	mulh	a5,a3,a5
 	srai	t5,a3,31
 	lui	t1,2
 	addi	t1,t1,1808
@@ -196,29 +174,7 @@ dequeue:
 	lw	a4,%lo(qFront)(a6)
 	lw	a3,%lo(g_qCount)(a7)
 	addi	a4,a4,1
-	srli	a2,a4,16
-	srli	t0,a5,16
-	mul	a2,a2,t0
-	andi	t0,a4,65535
-	srli	t1,a5,16
-	mul	t0,t0,t1
-	srli	t1,a4,16
-	andi	t2,a5,65535
-	mul	t1,t1,t2
-	add	t0,t0,t1
-	andi	t1,a4,65535
-	andi	t2,a5,65535
-	mul	t1,t1,t2
-	srli	t1,t1,16
-	add	t0,t0,t1
-	srli	t0,t0,16
-	add	a2,a2,t0
-	srai	t0,a4,31
-	and	t0,t0,a5
-	sub	a2,a2,t0
-	srai	t0,a5,31
-	and	a5,t0,a4
-	sub	a5,a2,a5
+	mulh	a5,a4,a5
 	srai	a2,a4,31
 	addi	a3,a3,-1
 	sw	a3,%lo(g_qCount)(a7)
@@ -280,29 +236,7 @@ dijkstra:
 	lui	s2,429497
 	addi	a6,a1,1
 	addi	s2,s2,-1107
-	srli	a4,a6,16
-	srli	a4,s2,16
-	mul	a4,a4,a4
-	andi	a4,a6,65535
-	srli	a5,s2,16
-	mul	a4,a4,a5
-	srli	a5,a6,16
-	andi	a7,s2,65535
-	mul	a5,a5,a7
-	add	a4,a4,a5
-	andi	a5,a6,65535
-	andi	a7,s2,65535
-	mul	a5,a5,a7
-	srli	a5,a5,16
-	add	a4,a4,a5
-	srli	a4,a4,16
-	add	a4,a4,a4
-	srai	a4,a6,31
-	and	a4,a4,s2
-	sub	a4,a4,a4
-	srai	a4,s2,31
-	and	a4,a4,a6
-	sub	a4,a4,a4
+	mulh	a4,a6,s2
 	sw	s3,60(sp)
 	srai	a7,a6,31
 	lui	s3,2
@@ -348,29 +282,7 @@ dijkstra:
 	addi	t4,a3,0
 .L28:
 	addi	a6,t1,1
-	srli	a3,a6,16
-	srli	a0,s2,16
-	mul	a3,a3,a0
-	andi	a0,a6,65535
-	srli	a1,s2,16
-	mul	a0,a0,a1
-	srli	a1,a6,16
-	andi	a2,s2,65535
-	mul	a1,a1,a2
-	add	a0,a0,a1
-	andi	a1,a6,65535
-	andi	a2,s2,65535
-	mul	a1,a1,a2
-	srli	a1,a1,16
-	add	a0,a0,a1
-	srli	a0,a0,16
-	add	a3,a3,a0
-	srai	a0,a6,31
-	and	a0,a0,s2
-	sub	a3,a3,a0
-	srai	a0,s2,31
-	and	a0,a0,a6
-	sub	a3,a3,a0
+	mulh	a3,a6,s2
 	slli	a5,t1,1
 	add	a5,a5,t1
 	slli	a5,a5,2
@@ -403,29 +315,7 @@ dijkstra:
 	beq	t6,t5,.L26
 	bge	a6,t6,.L25
 .L26:
-	srli	a4,a1,16
-	srli	a4,s2,16
-	mul	a4,a4,a4
-	andi	a4,a1,65535
-	srli	s4,s2,16
-	mul	a4,a4,s4
-	srli	s4,a1,16
-	andi	t6,s2,65535
-	mul	s4,s4,t6
-	add	a4,a4,s4
-	andi	s4,a1,65535
-	andi	t6,s2,65535
-	mul	s4,s4,t6
-	srli	s4,s4,16
-	add	a4,a4,s4
-	srli	a4,a4,16
-	add	a4,a4,a4
-	srai	a4,a1,31
-	and	a4,a4,s2
-	sub	a4,a4,a4
-	srai	a4,s2,31
-	and	a4,a4,a1
-	sub	a4,a4,a4
+	mulh	a4,a1,s2
 	sw	a6,0(a3)
 	sw	t3,4(a3)
 	sw	a2,0(a5)
@@ -622,29 +512,7 @@ main:
 	addi	s4,zero,100
 	addi	s3,zero,20
 .L49:
-	srli	s0,a5,16
-	srli	a0,s2,16
-	mul	s0,s0,a0
-	andi	a0,a5,65535
-	srli	a1,s2,16
-	mul	a0,a0,a1
-	srli	a1,a5,16
-	andi	a2,s2,65535
-	mul	a1,a1,a2
-	add	a0,a0,a1
-	andi	a1,a5,65535
-	andi	a2,s2,65535
-	mul	a1,a1,a2
-	srli	a1,a1,16
-	add	a0,a0,a1
-	srli	a0,a0,16
-	add	s0,s0,a0
-	srai	a0,a5,31
-	and	a0,a0,s2
-	sub	s0,s0,a0
-	srai	a0,s2,31
-	and	a0,a0,a5
-	sub	s0,s0,a0
+	mulh	s0,a5,s2
 	srai	a4,a5,31
 	addi	a0,s1,0
 	addi	s1,s1,1
@@ -669,7 +537,11 @@ main:
 	lw	s2,2016(sp)
 	lw	s3,2012(sp)
 	lw	s4,2008(sp)
-	slti	a0,a0,1
+	addi	a2,x0,1
+	bge	a2,a0,.+8
+	addi	a0,x0,0
+	jal	x0,4
+	addi	a0,x0,1
 	addi	sp,sp,2032
 	jalr	zero,ra,0
 	.size	main, .-main

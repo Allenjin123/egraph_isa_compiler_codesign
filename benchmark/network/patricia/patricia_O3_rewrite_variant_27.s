@@ -200,13 +200,16 @@ pat_insert:
 	beq	a3,zero,.L58
 	lw	a3,16(a7)
 	lbu	t3,9(a3)
-	bge	t3,a2,.L97
+	bge	t3,a2,.+8
+	jal	x0,8
+	jal	x0,.L97
 	bgeu	a0,t3,.L97
 	srl	a5,a1,t3
 	and	a5,a5,t1
 	sw	a4,12(sp)
 	sw	a7,8(sp)
-	beq	a5,zero,.L63
+	bne	a5,zero,.+8
+	jal	x0,.L63
 	lw	a0,16(a3)
 	addi	a1,a6,0
 	sw	a3,4(sp)
@@ -270,7 +273,8 @@ pat_insert:
 	jalr	zero,ra,0
 .L37:
 	lbu	a1,8(a4)
-	beq	a1,zero,.L40
+	bne	a1,zero,.+8
+	jal	x0,.L40
 	lw	a3,4(a4)
 	addi	a5,zero,0
 	addi	a6,a3,0
@@ -281,7 +285,8 @@ pat_insert:
 .L43:
 	lw	t1,0(a6)
 	addi	a5,a5,1
-	bne	a7,t1,.L41
+	beq	a7,t1,.+8
+	jal	x0,.L41
 	lw	a5,4(a2)
 	addi	a2,a4,0
 	sw	a5,4(a6)
@@ -329,7 +334,9 @@ pat_insert:
 	lui	a6,3
 	add	a5,a5,a1
 	addi	a6,a6,-288
-	bge	a5,a6,.L125
+	bge	a5,a6,.+8
+	jal	x0,8
+	jal	x0,.L125
 	lui	a6,%hi(static_masks)
 	slli	a1,a1,3
 	addi	a6,a6,%lo(static_masks)
@@ -401,15 +408,23 @@ pat_insert:
 .L50:
 	addi	a3,a5,-1
 	sub	a3,a3,a2
-	sltiu	a3,a3,3
-	bne	a3,zero,.L51
+	addi	a0,x0,3
+	bgeu	a3,a0,.+8
+	jal	x0,8
+	addi	a3,x0,0
+	jal	x0,4
+	addi	a3,x0,1
+	bne	a3,zero,.+8
+	jal	x0,8
+	jal	x0,.L51
 	andi	a3,a2,3
 	bne	a3,zero,.L51
 	lw	a3,0(a2)
 	sw	a3,0(a5)
 	lw	a3,4(a2)
 	sw	a3,4(a5)
-	lbu	a3,8(a4)
+	lw	a3,8(a4)
+	andi	a3,a3,255
 .L46:
 	addi	a3,a3,1
 	sb	a3,8(a4)
@@ -508,7 +523,9 @@ pat_insert:
 	lui	a5,3
 	addi	a5,a5,-288
 	addi	a0,a3,1
-	bge	a0,a5,.L95
+	bge	a0,a5,.+8
+	jal	x0,8
+	jal	x0,.L95
 	lui	a6,%hi(static_masks)
 	slli	a5,a3,3
 	addi	a3,a6,%lo(static_masks)
@@ -614,8 +631,10 @@ pat_search:
 	beq	a5,zero,.L170
 .L176:
 	lw	a1,16(a1)
-	lbu	a5,9(a1)
-	bgeu	a3,a5,.L172
+	lw	a5,9(a1)
+	andi	a5,a5,255
+	bgeu	a5,a3,.+8
+	jal	x0,.L172
 .L171:
 	lw	a4,4(a1)
 	lw	a6,0(a1)
@@ -630,14 +649,17 @@ pat_search:
 	bne	a5,zero,.L176
 .L170:
 	lw	a1,12(a1)
-	lbu	a5,9(a1)
+	lw	a5,9(a1)
+	andi	a5,a5,255
 	bgeu	a5,a3,.L171
 .L172:
 	lw	a4,4(a1)
 	lw	a5,0(a1)
 	lw	a4,0(a4)
 	and	a2,a2,a4
-	beq	a5,a2,.L177
+	beq	a5,a2,.+8
+	jal	x0,8
+	jal	x0,.L177
 	jalr	zero,ra,0
 .L177:
 	addi	a0,a1,0
@@ -830,8 +852,10 @@ main:
 	addi	a4,a6,-32
 	beq	a4,zero,.L266
 	addi	a6,a6,-9
-	beq	a6,zero,.L266
-	lbu	a6,1(s2)
+	bne	a6,zero,.+8
+	jal	x0,.L266
+	lw	a6,1(s2)
+	andi	a6,a6,255
 	addi	s2,s2,1
 	bne	a6,zero,.L196
 .L266:
@@ -872,7 +896,8 @@ main:
 	addi	a4,zero,43
 	addi	a1,zero,1
 	bne	a5,a4,.L206
-	lbu	a5,1(s0)
+	lw	a5,1(s0)
+	andi	a5,a5,255
 	addi	s0,a2,2
 .L206:
 	addi	a5,a5,-48
@@ -1012,9 +1037,11 @@ main:
 	sltiu	a0,a0,1
 	jal	x0,.L178
 .L278:
-	lbu	a6,1(s1)
+	lw	a6,1(s1)
+	andi	a6,a6,255
 	add	s1,s1,s10
-	bne	a6,zero,.L222
+	beq	a6,zero,.+8
+	jal	x0,.L222
 .L279:
 	lui	a5,%hi(.LC0)
 	addi	s7,zero,0

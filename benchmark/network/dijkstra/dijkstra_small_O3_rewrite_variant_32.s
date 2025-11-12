@@ -142,7 +142,8 @@ enqueue:
 dequeue:
 	lui	a7,%hi(g_qCount)
 	lw	a5,%lo(g_qCount)(a7)
-	bge	zero,a5,.L17
+	bge	a5,zero,.+8
+	jal	x0,.L17
 	lui	a6,%hi(qFront)
 	lw	a3,%lo(qFront)(a6)
 	lui	a4,%hi(queue)

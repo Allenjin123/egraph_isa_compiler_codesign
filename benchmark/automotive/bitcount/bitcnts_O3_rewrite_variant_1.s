@@ -309,24 +309,10 @@ rand:
 	mul	a1,a3,a1
 	mul	a5,a3,a2
 	mul	a4,a4,a2
-	srli	a0,a3,16
-	addi	a7,x0,65535
-	and	a7,a2,a7
+	addi	a0,x0,65535
+	and	a0,a3,a0
+	srli	a7,a2,16
 	mul	a0,a0,a7
-	addi	a7,x0,65535
-	and	a7,a3,a7
-	srli	t0,a2,16
-	mul	a7,a7,t0
-	sub	a7,x0,a7
-	sub	a0,a0,a7
-	addi	a7,x0,65535
-	and	a7,a3,a7
-	srli	t0,a2,16
-	mul	a7,a7,t0
-	bltu	a0,a7,.+8
-	addi	a0,x0,0
-	jal	x0,4
-	addi	a0,x0,1
 	srli	a7,a3,16
 	addi	t0,x0,65535
 	and	t0,a2,t0
@@ -336,12 +322,28 @@ rand:
 	srli	t1,a2,16
 	mul	t0,t0,t1
 	sub	t0,x0,t0
-	sub	a7,a7,t0
-	addi	t0,x0,65535
-	and	t0,a3,t0
-	srli	t1,a2,16
+	sub	x0,a7,t0
+	bltu	a0,x0,.+8
+	jal	x0,8
+	addi	a0,x0,0
+	jal	x0,4
+	addi	a0,x0,1
+	addi	a7,x0,65535
+	and	a7,a3,a7
+	srli	t0,a2,16
+	mul	a7,a7,t0
+	srli	t0,a3,16
+	addi	t1,x0,65535
+	and	t1,a2,t1
 	mul	t0,t0,t1
-	bltu	a7,t0,.+8
+	addi	t1,x0,65535
+	and	t1,a3,t1
+	srli	t2,a2,16
+	mul	t1,t1,t2
+	sub	t1,x0,t1
+	sub	x0,t0,t1
+	bltu	a7,x0,.+8
+	jal	x0,8
 	addi	a7,x0,0
 	jal	x0,4
 	addi	a7,x0,1
@@ -351,25 +353,26 @@ rand:
 	and	t1,a2,t1
 	mul	t0,t0,t1
 	srli	t0,t0,16
-	srli	t1,a3,16
-	addi	t2,x0,65535
-	and	t2,a2,t2
-	mul	t1,t1,t2
-	addi	t2,x0,65535
-	and	t2,a3,t2
-	srli	t3,a2,16
-	mul	t2,t2,t3
-	sub	t2,x0,t2
-	sub	t1,t1,t2
-	sub	t1,x0,t1
-	sub	t0,t0,t1
 	addi	t1,x0,65535
 	and	t1,a3,t1
 	addi	t2,x0,65535
 	and	t2,a2,t2
 	mul	t1,t1,t2
 	srli	t1,t1,16
-	bltu	t0,t1,.+8
+	srli	t2,a3,16
+	addi	t3,x0,65535
+	and	t3,a2,t3
+	mul	t2,t2,t3
+	addi	t3,x0,65535
+	and	t3,a3,t3
+	srli	t4,a2,16
+	mul	t3,t3,t4
+	sub	t3,x0,t3
+	sub	t2,t2,t3
+	sub	t2,x0,t2
+	sub	x0,t1,t2
+	bltu	t0,x0,.+8
+	jal	x0,8
 	addi	t0,x0,0
 	jal	x0,4
 	addi	t0,x0,1
@@ -380,25 +383,26 @@ rand:
 	and	t1,a2,t1
 	mul	t0,t0,t1
 	srli	t0,t0,16
-	srli	t1,a3,16
-	addi	t2,x0,65535
-	and	t2,a2,t2
-	mul	t1,t1,t2
-	addi	t2,x0,65535
-	and	t2,a3,t2
-	srli	t3,a2,16
-	mul	t2,t2,t3
-	sub	t2,x0,t2
-	sub	t1,t1,t2
-	sub	t1,x0,t1
-	sub	t0,t0,t1
 	addi	t1,x0,65535
 	and	t1,a3,t1
 	addi	t2,x0,65535
 	and	t2,a2,t2
 	mul	t1,t1,t2
 	srli	t1,t1,16
-	bltu	t0,t1,.+8
+	srli	t2,a3,16
+	addi	t3,x0,65535
+	and	t3,a2,t3
+	mul	t2,t2,t3
+	addi	t3,x0,65535
+	and	t3,a3,t3
+	srli	t4,a2,16
+	mul	t3,t3,t4
+	sub	t3,x0,t3
+	sub	t2,t2,t3
+	sub	t2,x0,t2
+	sub	x0,t1,t2
+	bltu	t0,x0,.+8
+	jal	x0,8
 	addi	t0,x0,0
 	jal	x0,4
 	addi	t0,x0,1
@@ -434,7 +438,8 @@ rand:
 	sub	a0,x0,a4
 	sub	a4,a1,a0
 	addi	a2,a5,1
-	bltu	a2,a5,.+8
+	bltu	a5,a2,.+8
+	jal	x0,8
 	addi	a5,x0,0
 	jal	x0,4
 	addi	a5,x0,1
@@ -466,7 +471,8 @@ atoi:
 	and	a5,a3,a5
 	addi	a1,zero,9
 	addi	a4,zero,0
-	bltu	a1,a5,.L42
+	bltu	a5,a1,.+8
+	jal	x0,.L42
 .L34:
 	slli	a5,a4,2
 	lw	a2,1(a0)
@@ -481,7 +487,8 @@ atoi:
 	addi	a5,x0,255
 	and	a5,a3,a5
 	addi	a0,a0,1
-	bltu	a1,a5,.+8
+	bltu	a5,a1,.+8
+	jal	x0,8
 	jal	x0,.L34
 	mul	a0,a4,a6
 	jalr	zero,ra,0
@@ -546,7 +553,8 @@ main:
 	beq	a5,a4,.L65
 	addi	a5,a5,-43
 	addi	a1,x0,1
-	bltu	a5,a1,.+8
+	bltu	a1,a5,.+8
+	jal	x0,8
 	addi	a5,x0,0
 	jal	x0,4
 	addi	a5,x0,1
@@ -562,7 +570,9 @@ main:
 	addi	a1,a1,-48
 	addi	a3,x0,255
 	and	a3,a1,a3
-	bltu	a6,a3,.L47
+	bltu	a6,a3,.+8
+	jal	x0,8
+	jal	x0,.L47
 	addi	a3,a4,0
 .L46:
 	slli	a4,a3,2
@@ -659,10 +669,8 @@ main:
 	addi	a3,x0,1
 	addi	a2,x0,65535
 	and	a2,a5,a2
-	addi	a3,x0,65535
-	and	a3,s5,a3
+	srli	a3,s5,16
 	mul	a2,a2,a3
-	srli	a2,a2,16
 	srli	a3,a5,16
 	addi	a6,x0,65535
 	and	a6,s5,a6
@@ -672,86 +680,72 @@ main:
 	srli	a7,s5,16
 	mul	a6,a6,a7
 	sub	a6,x0,a6
-	sub	a3,a3,a6
-	sub	a3,x0,a3
-	sub	a2,a2,a3
+	sub	x0,a3,a6
+	bltu	a2,x0,.+8
+	jal	x0,8
+	addi	a2,x0,0
+	jal	x0,4
+	addi	a2,x0,1
 	addi	a3,x0,65535
 	and	a3,a5,a3
 	addi	a6,x0,65535
 	and	a6,s5,a6
 	mul	a3,a3,a6
 	srli	a3,a3,16
-	bltu	a2,a3,.+8
-	addi	a2,x0,0
-	jal	x0,4
-	addi	a2,x0,1
-	addi	a3,x0,-1
-	addi	a6,x0,-1
+	addi	a6,x0,65535
+	and	a6,a5,a6
 	addi	a7,x0,65535
-	and	a7,a5,a7
-	srli	t0,s5,16
+	and	a7,s5,a7
+	mul	a6,a6,a7
+	srli	a6,a6,16
+	srli	a7,a5,16
+	addi	t0,x0,65535
+	and	t0,s5,t0
 	mul	a7,a7,t0
-	srli	t0,a5,16
-	addi	t1,x0,65535
-	and	t1,s5,t1
+	addi	t0,x0,65535
+	and	t0,a5,t0
+	srli	t1,s5,16
 	mul	t0,t0,t1
-	addi	t1,x0,65535
-	and	t1,a5,t1
-	srli	t2,s5,16
-	mul	t1,t1,t2
-	sub	t1,x0,t1
-	sub	x0,t0,t1
-	bltu	a7,x0,.+8
+	sub	t0,x0,t0
+	sub	a7,a7,t0
+	sub	a7,x0,a7
+	sub	x0,a6,a7
+	bltu	a3,x0,.+8
 	jal	x0,8
-	addi	a7,x0,0
+	addi	a3,x0,0
 	jal	x0,4
-	addi	a7,x0,1
-	and	a6,a6,a7
-	addi	a7,x0,65535
-	and	a7,a5,a7
-	srli	t0,s5,16
-	mul	a7,a7,t0
-	srli	t0,a5,16
-	addi	t1,x0,65535
-	and	t1,s5,t1
-	mul	t0,t0,t1
-	addi	t1,x0,65535
-	and	t1,a5,t1
-	srli	t2,s5,16
-	mul	t1,t1,t2
-	sub	t1,x0,t1
-	sub	x0,t0,t1
-	bltu	a7,x0,.+8
-	jal	x0,8
-	addi	a7,x0,0
-	jal	x0,4
-	addi	a7,x0,1
-	sub	a6,a6,a7
-	sub	a3,a3,a6
-	addi	a6,x0,-1
-	addi	a7,x0,65535
-	and	a7,a5,a7
-	srli	t0,s5,16
-	mul	a7,a7,t0
-	srli	t0,a5,16
-	addi	t1,x0,65535
-	and	t1,s5,t1
-	mul	t0,t0,t1
-	addi	t1,x0,65535
-	and	t1,a5,t1
-	srli	t2,s5,16
-	mul	t1,t1,t2
-	sub	t1,x0,t1
-	sub	x0,t0,t1
-	bltu	a7,x0,.+8
-	jal	x0,8
-	addi	a7,x0,0
-	jal	x0,4
-	addi	a7,x0,1
-	and	a6,a6,a7
-	sub	a3,a3,a6
+	addi	a3,x0,1
 	and	a2,a2,a3
-	sub	a2,x0,a2
+	addi	a3,x0,65535
+	and	a3,a5,a3
+	addi	a6,x0,65535
+	and	a6,s5,a6
+	mul	a3,a3,a6
+	srli	a3,a3,16
+	addi	a6,x0,65535
+	and	a6,a5,a6
+	addi	a7,x0,65535
+	and	a7,s5,a7
+	mul	a6,a6,a7
+	srli	a6,a6,16
+	srli	a7,a5,16
+	addi	t0,x0,65535
+	and	t0,s5,t0
+	mul	a7,a7,t0
+	addi	t0,x0,65535
+	and	t0,a5,t0
+	srli	t1,s5,16
+	mul	t0,t0,t1
+	sub	t0,x0,t0
+	sub	a7,a7,t0
+	sub	a7,x0,a7
+	sub	x0,a6,a7
+	bltu	a3,x0,.+8
+	jal	x0,8
+	addi	a3,x0,0
+	jal	x0,4
+	addi	a3,x0,1
+	sub	a2,a2,a3
 	sub	a3,a3,a2
 	slli	a3,a3,16
 	addi	a2,x0,65535
@@ -784,7 +778,8 @@ main:
 	sub	a2,x0,a4
 	sub	a4,a3,a2
 	addi	a3,a5,1
-	bltu	a3,a5,.+8
+	bltu	a5,a3,.+8
+	jal	x0,8
 	addi	a5,x0,0
 	jal	x0,4
 	addi	a5,x0,1

@@ -170,11 +170,7 @@ pat_insert:
 	lw	a3,0(a4)
 	beq	t1,a3,.L37
 	addi	sp,sp,-32
-	and	a2,a3,t1
-	sub	a2,a2,t1
-	sub	a2,a3,a2
-	and	a4,a3,t1
-	sub	a3,a2,a4
+	xor	a3,t1,a3
 	sw	ra,28(sp)
 	slli	a5,a3,1
 	addi	a2,zero,1
@@ -203,8 +199,10 @@ pat_insert:
 	and	a3,a3,t1
 	beq	a3,zero,.L58
 	lw	a3,16(a7)
-	lbu	t3,9(a3)
-	bge	t3,a2,.L97
+	lw	t3,9(a3)
+	andi	t3,t3,255
+	bge	a2,t3,.+8
+	jal	x0,.L97
 	bgeu	a0,t3,.L97
 	srl	a5,a1,t3
 	and	a5,a5,t1
@@ -331,7 +329,8 @@ pat_insert:
 	lw	a1,%lo(mask_count)(t1)
 	addi	a5,a5,1
 	lui	a6,3
-	add	a5,a5,a1
+	sub	t0,x0,a5
+	sub	a5,a1,t0
 	addi	a6,a6,-288
 	bge	a5,a6,.L125
 	lui	a6,%hi(static_masks)
@@ -413,7 +412,8 @@ pat_insert:
 	sw	a3,0(a5)
 	lw	a3,4(a2)
 	sw	a3,4(a5)
-	lbu	a3,8(a4)
+	lw	a3,8(a4)
+	andi	a3,a3,255
 .L46:
 	addi	a3,a3,1
 	sb	a3,8(a4)
@@ -492,7 +492,9 @@ pat_insert:
 	jal	x0,.L57
 .L100:
 	sb	a2,9(a6)
-	and	a5,t1,a5
+	or	a0,t1,a5
+	sub	a0,a0,a5
+	sub	a5,t1,a0
 	addi	a2,a6,0
 	bne	a5,zero,.L80
 	addi	a2,a3,0
@@ -605,7 +607,8 @@ pat_search:
 	addi	a2,a0,0
 	beq	a1,zero,.L174
 	lw	a4,4(a1)
-	lbu	a3,9(a1)
+	lw	a3,9(a1)
+	andi	a3,a3,255
 	lw	a6,0(a1)
 	lw	a4,0(a4)
 	lui	a7,524288
@@ -619,7 +622,8 @@ pat_search:
 .L176:
 	lw	a1,16(a1)
 	lbu	a5,9(a1)
-	bgeu	a3,a5,.L172
+	bgeu	a5,a3,.+8
+	jal	x0,.L172
 .L171:
 	lw	a4,4(a1)
 	lw	a6,0(a1)
@@ -627,14 +631,17 @@ pat_search:
 	lw	a4,0(a4)
 	srl	a5,a7,a3
 	and	a5,a5,a2
-	and	a4,a2,a4
+	or	t0,a2,a4
+	sub	t0,t0,a4
+	sub	a4,a2,t0
 	bne	a4,a6,.L169
 .L175:
 	addi	a0,a1,0
 	bne	a5,zero,.L176
 .L170:
 	lw	a1,12(a1)
-	lbu	a5,9(a1)
+	lw	a5,9(a1)
+	andi	a5,a5,255
 	bgeu	a5,a3,.L171
 .L172:
 	lw	a4,4(a1)
@@ -754,17 +761,18 @@ main:
 	addi	a5,a4,-32
 	sltiu	a3,a2,1
 	sltiu	a5,a5,1
-	and	a0,a3,a5
-	sub	a0,a0,a5
-	sub	a3,a3,a0
+	or	a3,a3,a5
 	beq	a3,zero,.L220
 	addi	s1,s0,0
 .L248:
-	lbu	a6,1(s1)
+	lw	a6,1(s1)
+	andi	a6,a6,255
 	addi	s1,s1,1
 	addi	a5,a6,-32
 	addi	a1,a6,-9
-	beq	a5,zero,.L248
+	beq	a5,zero,.+8
+	jal	x0,8
+	jal	x0,.L248
 	beq	a1,zero,.L248
 .L185:
 	addi	a5,zero,45
@@ -878,7 +886,8 @@ main:
 	addi	a4,zero,43
 	addi	a1,zero,1
 	bne	a5,a4,.L206
-	lbu	a5,1(s0)
+	lw	a5,1(s0)
+	andi	a5,a5,255
 	addi	s0,a2,2
 .L206:
 	addi	a5,a5,-48

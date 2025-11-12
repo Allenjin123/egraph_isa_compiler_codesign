@@ -32,45 +32,35 @@ quicksort_range:
 	lw	a5,12(sp)
 	lw	s2,12(sp)
 	addi	s1,s10,0
-	sub	a4,x0,s2
-	sub	a4,s10,a4
+	add	a4,s2,s10
 	srli	a5,a4,31
-	sub	a2,x0,a5
-	sub	a5,a4,a2
+	add	a5,a5,a4
 	srai	a4,a5,1
-	addi	a2,x0,-2
-	and	a5,a5,a2
-	sub	a2,x0,a5
-	sub	a5,a4,a2
+	andi	a5,a5,-2
+	add	a5,a5,a4
 	slli	a5,a5,3
-	sub	a2,x0,s7
-	sub	a5,a5,a2
+	add	a5,s7,a5
 	lw	s4,16(a5)
 	lw	s5,20(a5)
 .L8:
-	bge	s1,s2,.L9
+	blt	s2,s1,.L9
 .L27:
 	slli	a5,s1,1
-	sub	a0,x0,a5
-	sub	a5,s1,a0
+	add	a5,a5,s1
 	slli	s11,a5,3
-	sub	s3,x0,s7
-	sub	s3,s11,s3
+	add	s3,s7,s11
 	lw	a2,16(s3)
 	lw	a3,20(s3)
 	slli	s0,s2,1
 	addi	a0,s4,0
 	addi	a1,s5,0
-	sub	a1,x0,s0
-	sub	s0,s2,a1
+	add	s0,s0,s2
 	slli	s0,s0,3
 .Lpcrel_1:
 	auipc	ra,%pcrel_hi(__gtdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_1)
-	sub	s6,x0,s7
-	sub	s6,s0,s6
-	sub	a1,x0,s8
-	sub	s11,s11,a1
+	add	s6,s7,s0
+	add	s11,s8,s11
 	bge	zero,a0,.L26
 .L4:
 	addi	s3,s11,0
@@ -93,8 +83,7 @@ quicksort_range:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_3)
 	bge	a0,zero,.L5
 .L14:
-	sub	a0,x0,s9
-	sub	s0,s0,a0
+	add	s0,s9,s0
 .L7:
 	addi	s6,s0,0
 	lw	a0,16(s0)
@@ -106,9 +95,9 @@ quicksort_range:
 .Lpcrel_4:
 	auipc	ra,%pcrel_hi(__gtdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_4)
-	bge	a0,zero,.L7
+	blt	zero,a0,.L7
 .L5:
-	bge	s1,s2,.L8
+	blt	s2,s1,.L8
 .L15:
 	lw	a1,0(s6)
 	lw	a2,4(s6)
@@ -158,7 +147,7 @@ quicksort_range:
 .Lpcrel_5:
 	auipc	ra,%pcrel_hi(__ltdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_5)
-	bge	zero,a0,.L14
+	blt	a0,zero,.L14
 	jal	x0,.L15
 .L29:
 	lw	s0,104(sp)
@@ -212,8 +201,7 @@ main:
 	sw	s6,2000(sp)
 	sw	s7,1996(sp)
 	lui	s8,%hi(input_data)
-	sub	a0,x0,sp
-	sub	sp,t0,a0
+	add	sp,sp,t0
 	addi	s1,sp,0
 	addi	s0,sp,0
 	addi	s8,s8,%lo(input_data)
@@ -284,8 +272,7 @@ main:
 	addi	a5,a5,-128
 	sw	a0,16(s0)
 	sw	a1,20(s0)
-	sub	a0,x0,a5
-	sub	a5,sp,a0
+	add	a5,a5,sp
 	addi	s0,s0,24
 	addi	s8,s8,12
 	bne	a5,s0,.L31
@@ -304,22 +291,16 @@ main:
 	lw	a1,4(a5)
 	lw	a2,8(a5)
 	addi	a5,a5,24
-	sub	a0,x0,s0
-	sub	s0,a1,a0
-	sub	a0,x0,s0
-	sub	s0,a2,a0
+	add	s0,s0,a1
+	add	s0,s0,a2
 	srai	a2,s0,31
-	sub	a0,x0,a3
-	sub	a3,a2,a0
-	sub	a0,x0,a4
-	sub	s0,s0,a0
+	add	a3,a3,a2
+	add	s0,a4,s0
 	lui	a2,293
 	sltu	a4,s0,a4
 	addi	a2,a2,-128
-	sub	s2,x0,a4
-	sub	s2,a3,s2
-	sub	a0,x0,a2
-	sub	a2,sp,a0
+	add	s2,a4,a3
+	add	a2,a2,sp
 	addi	a3,s2,0
 	addi	a4,s0,0
 	bne	a2,a5,.L32
@@ -343,17 +324,13 @@ main:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_17)
 	lui	a5,293
 	addi	a5,a5,-128
-	sub	a0,x0,a5
-	sub	a5,sp,a0
+	add	a5,a5,sp
 	bne	a5,s1,.L33
 	lui	t0,292
 	addi	t0,t0,1984
-	sub	a0,x0,sp
-	sub	sp,t0,a0
+	add	sp,sp,t0
 	lw	ra,2028(sp)
-	and	a0,s0,s2
-	sub	a0,a0,s2
-	sub	a0,s0,a0
+	or	a0,s0,s2
 	lw	s1,2020(sp)
 	lw	s0,2024(sp)
 	lw	s2,2016(sp)
@@ -363,8 +340,7 @@ main:
 	lw	s6,2000(sp)
 	lw	s7,1996(sp)
 	lw	s8,1992(sp)
-	addi	a2,x0,1
-	sltu	a0,a0,a2
+	sltiu	a0,a0,1
 	addi	sp,sp,2032
 	jalr	zero,ra,0
 	.size	main, .-main
