@@ -621,66 +621,69 @@ fi
 echo ""
 
 # ============================================================================
-# Step 5: Generate basic blocks and SSA for each variant
+# Step 5: Copy basic blocks and generate SSA for each variant
 # ============================================================================
 echo ""
-echo -e "${BLUE}步骤 5/6: 为每个变体生成基本块和 SSA 形式...${NC}"
+echo -e "${BLUE}步骤 5/6: 为每个变体复制基本块并生成 SSA 形式...${NC}"
+
+# Path to the rewritten basic blocks from ILP (created by restructure.py)
+FRONTEND_OUTPUT="$SCRIPT_DIR/output/frontend/$PROGRAM_NAME"
+REWRITE_BASE="${FRONTEND_OUTPUT}/basic_blocks_rewrite"
+
+if [ ! -d "$REWRITE_BASE" ]; then
+    echo -e "${RED}错误: 找不到重写的基本块目录: $REWRITE_BASE${NC}"
+    echo -e "${YELLOW}restructure.py 可能未运行或失败${NC}"
+    exit 1
+fi
 
 SSA_COUNT=0
 for ((i=0; i<$VARIANT_COUNT; i++)); do
     VARIANT_DIR="$FINAL_OUTPUT/variant_${i}"
+    echo -e "${CYAN}  处理变体 ${i}...${NC}"
 
-    # Find the .s file in this variant directory
-    S_FILE=$(find "$VARIANT_DIR" -name "*.s" 2>/dev/null | head -1)
+    # Source: rewritten basic blocks from ILP
+    SRC_BB_DIR="$REWRITE_BASE/variant_${i}"
 
-    if [ -f "$S_FILE" ]; then
-        echo -e "${CYAN}  处理变体 ${i}...${NC}"
+    if [ ! -d "$SRC_BB_DIR" ]; then
+        echo -e "${YELLOW}    ⚠ 源基本块目录不存在: $SRC_BB_DIR${NC}"
+        continue
+    fi
 
-        # Step 5.1: Extract basic blocks from .s file
-        # Run analyze_asm_blocks.py to extract basic blocks
-        python3 "$FRONTEND_DIR/analyze_asm_blocks.py" "$S_FILE" -o "$VARIANT_DIR" 2>/dev/null || {
-            echo -e "${YELLOW}    ⚠ 基本块提取失败${NC}"
+    # Step 5.1: Copy rewritten basic blocks directly
+    DST_BB_DIR="$VARIANT_DIR/basic_blocks"
+    if [ -d "$SRC_BB_DIR" ] && [ "$(ls -A $SRC_BB_DIR/*.txt 2>/dev/null)" ]; then
+        mkdir -p "$DST_BB_DIR"
+        cp -r "$SRC_BB_DIR"/*.txt "$DST_BB_DIR/" 2>/dev/null || {
+            echo -e "${YELLOW}    ⚠ 复制基本块失败${NC}"
+            continue
+        }
+        echo -e "${GREEN}    ✓ 基本块已复制 ($(ls "$DST_BB_DIR"/*.txt 2>/dev/null | wc -l) 个文件)${NC}"
+    else
+        echo -e "${YELLOW}    ⚠ 源基本块目录为空${NC}"
+        continue
+    fi
+
+    # Also copy label mapping files from original program
+    ORIG_LABEL_FILE="$FRONTEND_OUTPUT/label_to_block.json"
+    ORIG_META_FILE="$FRONTEND_OUTPUT/label_metadata.json"
+    [ -f "$ORIG_LABEL_FILE" ] && cp "$ORIG_LABEL_FILE" "$VARIANT_DIR/"
+    [ -f "$ORIG_META_FILE" ] && cp "$ORIG_META_FILE" "$VARIANT_DIR/"
+
+    # Step 5.2: Convert basic blocks to SSA form
+    if [ -d "$DST_BB_DIR" ] && [ "$(ls -A $DST_BB_DIR)" ]; then
+        python3 "$FRONTEND_DIR/convert_to_ssa.py" "$VARIANT_DIR" 2>/dev/null || {
+            echo -e "${YELLOW}    ⚠ SSA 转换失败${NC}"
             continue
         }
 
-        # The script creates a subdirectory with the filename stem
-        # Find the created directory and move basic_blocks to the correct location
-        S_FILE_STEM=$(basename "$S_FILE" .s)
-        CREATED_DIR="$VARIANT_DIR/$S_FILE_STEM"
-        BB_DIR="$VARIANT_DIR/basic_blocks"
-
-        if [ -d "$CREATED_DIR/basic_blocks" ]; then
-            # Move basic_blocks to variant directory
-            mv "$CREATED_DIR/basic_blocks" "$BB_DIR"
-            # Also move the json files if they exist
-            [ -f "$CREATED_DIR/label_to_block.json" ] && mv "$CREATED_DIR/label_to_block.json" "$VARIANT_DIR/"
-            [ -f "$CREATED_DIR/label_metadata.json" ] && mv "$CREATED_DIR/label_metadata.json" "$VARIANT_DIR/"
-            # Remove the now-empty created directory
-            rmdir "$CREATED_DIR" 2>/dev/null
-        fi
-
-        # Check if basic blocks were created
-        if [ -d "$BB_DIR" ] && [ "$(ls -A $BB_DIR)" ]; then
-            # Step 5.2: Convert basic blocks to SSA form
-            # This will create basic_blocks_ssa directory automatically
-            python3 "$FRONTEND_DIR/convert_to_ssa.py" "$VARIANT_DIR" 2>/dev/null || {
-                echo -e "${YELLOW}    ⚠ SSA 转换失败${NC}"
-                continue
-            }
-
-            # Check if SSA was created
-            SSA_DIR="$VARIANT_DIR/basic_blocks_ssa"
-            if [ -d "$SSA_DIR" ] && [ "$(ls -A $SSA_DIR)" ]; then
-                echo -e "${GREEN}    ✓ 基本块和 SSA 生成成功${NC}"
-                SSA_COUNT=$((SSA_COUNT + 1))
-            else
-                echo -e "${YELLOW}    ⚠ SSA 目录为空${NC}"
-            fi
+        # Check if SSA was created
+        SSA_DIR="$VARIANT_DIR/basic_blocks_ssa"
+        if [ -d "$SSA_DIR" ] && [ "$(ls -A $SSA_DIR)" ]; then
+            echo -e "${GREEN}    ✓ SSA 生成成功${NC}"
+            SSA_COUNT=$((SSA_COUNT + 1))
         else
-            echo -e "${YELLOW}    ⚠ 基本块目录为空${NC}"
+            echo -e "${YELLOW}    ⚠ SSA 目录为空${NC}"
         fi
-    else
-        echo -e "${YELLOW}  ⚠ 变体 ${i} 缺少 .s 文件${NC}"
     fi
 done
 

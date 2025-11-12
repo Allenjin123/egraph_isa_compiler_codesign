@@ -32,18 +32,27 @@ quicksort_range:
 	lw	a5,12(sp)
 	lw	s2,12(sp)
 	addi	s1,s10,0
-	sub	a2,x0,s2
-	sub	a4,s10,a2
-	addi	a2,x0,31
-	srl	a5,a4,a2
+	sub	a4,x0,s2
+	sub	a4,s10,a4
+	srli	a5,a4,31
 	sub	a2,x0,a5
 	sub	a5,a4,a2
 	srai	a4,a5,1
-	addi	a6,x0,-2
-	or	a3,a5,a6
-	addi	a7,x0,-2
-	sub	a2,a3,a7
-	sub	a5,a5,a2
+	addi	a2,x0,-2
+	addi	a3,x0,-1
+	addi	a6,x0,-1
+	and	a6,a6,a5
+	sub	a6,a6,a5
+	sub	a3,a3,a6
+	addi	a6,x0,-1
+	and	a6,a6,a5
+	sub	a3,a3,a6
+	and	a2,a2,a3
+	sub	a2,x0,a2
+	sub	a2,a5,a2
+	addi	a3,x0,-2
+	sub	x0,a2,a3
+	sub	a5,a5,x0
 	sub	a2,x0,a5
 	sub	a5,a4,a2
 	slli	a5,a5,3
@@ -58,8 +67,8 @@ quicksort_range:
 	sub	a0,x0,a5
 	sub	a5,s1,a0
 	slli	s11,a5,3
-	sub	a0,x0,s7
-	sub	s3,s11,a0
+	sub	s3,x0,s7
+	sub	s3,s11,s3
 	lw	a2,16(s3)
 	lw	a3,20(s3)
 	slli	s0,s2,1
@@ -71,11 +80,12 @@ quicksort_range:
 .Lpcrel_1:
 	auipc	ra,%pcrel_hi(__gtdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_1)
-	sub	a1,x0,s7
-	sub	s6,s0,a1
+	sub	s6,x0,s7
+	sub	s6,s0,s6
 	sub	a1,x0,s8
 	sub	s11,s11,a1
-	bge	a0,zero,.+8
+	bge	zero,a0,.+8
+	jal	x0,8
 	jal	x0,.L26
 .L4:
 	addi	s3,s11,0
@@ -96,8 +106,7 @@ quicksort_range:
 .Lpcrel_3:
 	auipc	ra,%pcrel_hi(__ltdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_3)
-	bge	zero,a0,.+8
-	jal	x0,.L5
+	bge	a0,zero,.L5
 .L14:
 	sub	a0,x0,s9
 	sub	s0,s0,a0
@@ -112,9 +121,11 @@ quicksort_range:
 .Lpcrel_4:
 	auipc	ra,%pcrel_hi(__gtdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_4)
-	bge	a0,zero,.L7
+	bge	zero,a0,.+8
+	jal	x0,.L7
 .L5:
-	bge	s1,s2,.L8
+	bge	s2,s1,.+8
+	jal	x0,.L8
 .L15:
 	lw	a1,0(s6)
 	lw	a2,4(s6)
@@ -157,7 +168,7 @@ quicksort_range:
 	bge	a5,s1,.+8
 	jal	x0,.L29
 	addi	s10,s1,0
-	jal	zero,.L2
+	jal	x0,.L2
 .L26:
 	lw	a2,16(s6)
 	lw	a3,20(s6)
@@ -167,7 +178,7 @@ quicksort_range:
 	auipc	ra,%pcrel_hi(__ltdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_5)
 	bge	zero,a0,.L14
-	jal	zero,.L15
+	jal	x0,.L15
 .L29:
 	lw	s0,104(sp)
 	lw	s1,100(sp)
@@ -192,7 +203,7 @@ quicksort_range:
 .Lpcrel_6:
 	auipc	ra,%pcrel_hi(quicksort_range)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_6)
-	jal	zero,.L12
+	jal	x0,.L12
 	.size	quicksort_range, .-quicksort_range
 	.section	.rodata.str1.4,"aMS",@progbits,1
 	.align	2
@@ -324,8 +335,8 @@ main:
 	lui	a2,293
 	sltu	a4,s0,a4
 	addi	a2,a2,-128
-	sub	a0,x0,a4
-	sub	s2,a3,a0
+	sub	s2,x0,a4
+	sub	s2,a3,s2
 	sub	a0,x0,a2
 	sub	a2,sp,a0
 	addi	a3,s2,0
@@ -359,7 +370,9 @@ main:
 	sub	a0,x0,sp
 	sub	sp,t0,a0
 	lw	ra,2028(sp)
-	or	a0,s0,s2
+	and	a0,s0,s2
+	sub	a0,a0,s2
+	sub	a0,s0,a0
 	lw	s1,2020(sp)
 	lw	s0,2024(sp)
 	lw	s2,2016(sp)
