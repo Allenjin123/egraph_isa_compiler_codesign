@@ -1,5 +1,6 @@
 import re
 import os
+import sys
 import json
 import pickle
 import logging
@@ -183,18 +184,24 @@ class Op:
 
 class EGraph:
 
-    def __init__(self, program_name: Optional[str] = None):
+    def __init__(self, program_name: Optional[str] = None, cost_mode: str = "program_size"):
         """Create an EGraph from a program directory.
-        
+
         Args:
             program_name: Name of the program subdirectory in output/frontend/ (e.g., 'bitcnts_small_O3')
                          If None, creates an empty graph.
+            cost_mode: Cost optimization mode
+                - "program_size": Minimize instruction count (cost=1 for all instructions)
+                - "latency": Minimize execution time (cost=latency*exec_count)
         """
         self.eclasses = {}
         self.enodes = {}
         self.ops = {}
         self.root_ec_en = {}
         self.program_name = program_name
+        self.cost_mode = cost_mode
+        self.block_exec_counts = {}  # {block_id: exec_count}
+
         if program_name:
             # Collect JSON files from program directory and load
             program_dir = os.path.join(DATA_DIR, program_name)
@@ -209,12 +216,139 @@ class EGraph:
 
     def __repr__(self) -> str:
         return f'EGraph: EClass {self.eclasses} ENode {self.enodes} Ops {self.ops}'
-    
+
+    def _load_block_execution_counts(self, program_name: str) -> Dict[int, int]:
+        """Load execution counts from block_execution_counts.txt for a single program.
+
+        Args:
+            program_name: Program name (e.g., 'dijkstra_small_O3')
+
+        Returns:
+            Dict mapping block_id (int) -> execution_count (int)
+        """
+        counts_file = os.path.join(DATA_DIR, program_name, "block_execution_counts.txt")
+        counts = {}
+
+        if not os.path.exists(counts_file):
+            logging.warning(f"Execution counts file not found: {counts_file}")
+            return {}
+
+        try:
+            with open(counts_file, 'r') as f:
+                for line in f:
+                    line = line.strip()
+                    # Skip header and separator lines
+                    if not line or line.startswith('Block ID') or line.startswith('---'):
+                        continue
+
+                    # Parse format: "0          | 43           | 7           | 17-23"
+                    parts = line.split('|')
+                    if len(parts) >= 2:
+                        try:
+                            block_id = int(parts[0].strip())
+                            exec_count = int(parts[1].strip())
+                            counts[block_id] = exec_count
+                        except (ValueError, IndexError):
+                            continue
+        except Exception as e:
+            logging.warning(f"Error reading execution counts from {counts_file}: {e}")
+
+        return counts
+
+    def load_execution_counts_for_cluster(self, program_names: List[str]):
+        """Load execution counts from multiple programs (for cluster mode).
+
+        This method can be called after EGraph creation to load execution counts
+        from multiple programs in a cluster.
+
+        Args:
+            program_names: List of program names
+        """
+        all_counts = {}
+        for prog_name in program_names:
+            prog_counts = self._load_block_execution_counts(prog_name)
+            if prog_counts:
+                # Merge counts, keyed by (program, block_id)
+                # But since enodes already have program name in their ID,
+                # we can use a flat dict with just block_id
+                all_counts.update(prog_counts)
+
+        if all_counts:
+            self.block_exec_counts = all_counts
+            logging.info(f"Loaded execution counts for {len(program_names)} programs, "
+                        f"total {len(all_counts)} blocks")
+
+    def _get_instruction_latency(self, op_name: str) -> int:
+        """Get latency for an instruction operation.
+
+        Args:
+            op_name: ENode op name (e.g., "Slli", "Add", "ImmVal")
+
+        Returns:
+            Latency value (default 1 for unknown ops)
+        """
+        # Import backend global_parameter
+        backend_dir = os.path.join(project_root, "backend")
+        if backend_dir not in sys.path:
+            sys.path.insert(0, backend_dir)
+
+        try:
+            import global_parameter as gp
+        except ImportError:
+            logging.warning("Cannot import backend.global_parameter, using default latency=1")
+            return 1
+
+        # Convert to lowercase to match RV_INSTRUCTIONS keys
+        op_lower = op_name.lower()
+
+        # Check if it's a RISC-V instruction
+        if op_lower in gp.RV_INSTRUCTIONS:
+            return gp.RV_INSTRUCTIONS[op_lower]['latency']
+
+        # Helper ops (ImmVal, leaf, etc.) have no cost
+        if op_name in ['ImmVal', 'ImmLabel', 'RegVal', 'leaf', 'root']:
+            return 0
+
+        # Unknown ops default to 1
+        logging.debug(f"Unknown instruction op: {op_name}, using latency=1")
+        return 1
+
+    def _extract_block_id(self, enode_id: str) -> Optional[int]:
+        """Extract block ID from enode_id.
+
+        Format: {program}_{block_id}_enode_{...}
+        Example: dijkstra_small_O3_17_enode_function_0_ImmVal → 17
+
+        Args:
+            enode_id: ENode ID string
+
+        Returns:
+            Block ID as int, or None if cannot parse
+        """
+        try:
+            # Split by '_enode_' to get prefix
+            if '_enode_' not in enode_id:
+                return None
+
+            prefix = enode_id.split('_enode_')[0]
+            # Last part of prefix is block_id
+            parts = prefix.split('_')
+            block_id_str = parts[-1]
+            return int(block_id_str)
+        except (ValueError, IndexError):
+            logging.debug(f"Cannot extract block_id from: {enode_id}")
+            return None
 
     def from_json_file(self, input_dict):
         node_objs = input_dict.get('nodes', {})
         leaf_op = Op("leaf")
-        
+
+        # Load execution counts if in latency mode
+        if self.cost_mode == "latency" and self.program_name:
+            self.block_exec_counts = self._load_block_execution_counts(self.program_name)
+            if self.block_exec_counts:
+                logging.info(f"Loaded execution counts for {len(self.block_exec_counts)} blocks")
+
         # Pass 1: node -> eclass mapping
         node_to_eclass = {}
         for nid, n in node_objs.items():
@@ -233,7 +367,27 @@ class EGraph:
             self.eclasses[ec].member_enodes.add(node_id)
 
             op = node.get('op', "N/A")
-            cost = node.get('cost', 1)
+
+            # ===== COMPUTE COST BASED ON MODE =====
+            if self.cost_mode == "program_size":
+                # Mode 1: Program size (count instructions)
+                cost = node.get('cost', 1)
+
+            elif self.cost_mode == "latency":
+                # Mode 2: Latency (instruction_latency * execution_count)
+
+                # 1. Get instruction latency
+                latency = self._get_instruction_latency(op)
+
+                # 2. Get block execution count
+                block_id = self._extract_block_id(node_id)
+                exec_count = self.block_exec_counts.get(block_id, 1) if block_id is not None else 1
+
+                # 3. Compute weighted cost
+                cost = latency * exec_count
+
+            else:
+                raise ValueError(f"Unknown cost_mode: {self.cost_mode}")
             # if op.endswith("root"):
             #     self.root_ec_en[ec] = node_id
             # map children (node ids) -> child eclass ids

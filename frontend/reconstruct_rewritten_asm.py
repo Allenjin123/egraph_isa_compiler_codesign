@@ -128,7 +128,20 @@ class AsmReconstructor:
             label_to_block = json.load(f)
         
         # 读取重写后的基本块
-        rewrite_blocks_dir = output_dir / "basic_blocks_rewrite" / "variant_0"
+        # Check if basic_blocks_rewrite is a symlink pointing to a specific variant
+        # (created by run_reconstruct.sh for multi-variant processing)
+        rewrite_base = output_dir / "basic_blocks_rewrite"
+
+        if rewrite_base.is_symlink():
+            # It's a symlink to a specific variant dir, use it directly
+            rewrite_blocks_dir = rewrite_base
+        elif any(rewrite_base.glob("*.txt")):
+            # Contains .txt files directly (single variant mode)
+            rewrite_blocks_dir = rewrite_base
+        else:
+            # Normal case: look for variant_0 subdirectory
+            rewrite_blocks_dir = rewrite_base / "variant_0"
+
         if not rewrite_blocks_dir.exists():
             print(f"  警告: 找不到 {rewrite_blocks_dir}，跳过")
             return False

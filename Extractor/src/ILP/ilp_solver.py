@@ -52,7 +52,8 @@ def ensure_merged_json(program_name: str, json_files_with_prefixes: list) -> Non
             with open(merged_path, 'w') as f:
                 json.dump(merged_data, f, indent=2)
         if need_roots:
-            egraph = EGraph(program_name)
+            # Use default cost_mode for merged artifacts (doesn't affect ILP)
+            egraph = EGraph(program_name, cost_mode='program_size')
             with open(merged_roots_path, 'w') as f:
                 json.dump(egraph.to_json(), f, indent=2)
     except Exception as exc:
@@ -418,6 +419,15 @@ def main():
              ">1=emphasize node costs (prefer simpler expressions). "
              "(default: 1.0)"
     )
+    parser.add_argument(
+        "--cost-mode",
+        choices=['program_size', 'latency'],
+        default='program_size',
+        help="Cost optimization mode: "
+             "program_size (minimize instruction count, cost=1 for all) or "
+             "latency (minimize execution time, cost=latency*exec_count). "
+             "(default: program_size)"
+    )
 
     args = parser.parse_args()
     
@@ -441,6 +451,7 @@ def main():
     print(f"Program: {args.program_name}")
     print(f"Solver: gurobi")
     print(f"Timeout: {args.timeout} seconds")
+    print(f"Cost mode: {args.cost_mode}")
     print(f"Output directory: {output_dir}")
     print()
     
@@ -468,11 +479,11 @@ def main():
         _prefix_to_file_map[prefix] = file_path
     
     print(f"Found {len(json_files_with_prefixes)} JSON files")
-    
+
     # Load e-graph
     print("Loading e-graph...")
     start_time = time.time()
-    egraph = EGraph(args.program_name)
+    egraph = EGraph(args.program_name, cost_mode=args.cost_mode)
     load_time = time.time() - start_time
     
     print(f"Loading completed (time: {load_time:.2f}s)")

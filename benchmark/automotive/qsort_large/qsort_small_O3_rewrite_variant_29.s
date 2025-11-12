@@ -58,7 +58,7 @@ quicksort_range:
 .L24:
 	addi	a2,a0,0
 	addi	a3,sp,16
-	jal	zero,.L7
+	jal	x0,.L7
 .L46:
 	lbu	a4,0(a2)
 	beq	a4,zero,.L8
@@ -85,7 +85,7 @@ quicksort_range:
 	addi	a3,s0,0
 	addi	a2,sp,16
 	bne	a5,zero,.L13
-	jal	zero,.L47
+	jal	x0,.L47
 .L49:
 	bne	a4,a5,.L28
 	lbu	a5,0(a3)
@@ -113,7 +113,9 @@ quicksort_range:
 	addi	a3,zero,0
 	sltu	a5,a5,a4
 	sub	a5,a3,a5
-	beq	a5,s3,.L17
+	beq	a5,s3,.+8
+	jal	x0,8
+	jal	x0,.L17
 .L50:
 	bge	s1,s2,.L51
 .L19:
@@ -121,11 +123,11 @@ quicksort_range:
 	bge	s2,s7,.L1
 .L22:
 	addi	s6,s2,0
-	jal	zero,.L2
+	jal	x0,.L2
 .L48:
 	lbu	a4,1(a2)
 	addi	a3,zero,0
-	jal	zero,.L14
+	jal	x0,.L14
 .L51:
 	addi	a2,zero,128
 	addi	a0,sp,144
@@ -147,7 +149,7 @@ quicksort_range:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_3)
 	addi	s2,s2,1
 	addi	s1,s1,-1
-	jal	zero,.L6
+	jal	x0,.L6
 .L52:
 	addi	a2,s1,0
 	addi	a1,s6,0
