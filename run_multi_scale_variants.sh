@@ -371,6 +371,7 @@ python3 "$EXTRACTOR_DIR/src/ILP/ilp_solver.py" "$PROGRAM_NAME" \\
     --node-cost-scale "$SCALE" \\
     --best_k "$BEST_K" \\
     --timeout "$TIMEOUT" \\
+    --cost-mode latency \\
     --output "\$SCALE_OUTPUT" 2>&1 | tee "$ILP_INTERMEDIATE/ilp_scale_${SCALE}.log"
 
 if [ \$? -eq 0 ]; then

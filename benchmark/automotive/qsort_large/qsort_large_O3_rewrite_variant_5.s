@@ -39,10 +39,7 @@ quicksort_range:
 	sub	a5,a4,a2
 	srai	a4,a5,1
 	addi	a2,x0,-2
-	or	a2,a5,a2
-	addi	a3,x0,-2
-	sub	x0,a2,a3
-	sub	a5,a5,x0
+	and	a5,a5,a2
 	sub	a2,x0,a5
 	sub	a5,a4,a2
 	slli	a5,a5,3
@@ -354,7 +351,9 @@ main:
 	sub	a0,x0,sp
 	sub	sp,t0,a0
 	lw	ra,2028(sp)
-	or	a0,s0,s2
+	and	a0,s0,s2
+	sub	a0,a0,s2
+	sub	a0,s0,a0
 	lw	s1,2020(sp)
 	lw	s0,2024(sp)
 	lw	s2,2016(sp)

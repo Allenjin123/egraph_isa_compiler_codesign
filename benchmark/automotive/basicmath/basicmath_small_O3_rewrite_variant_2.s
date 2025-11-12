@@ -139,8 +139,8 @@ my_cos:
 .Lpcrel_23:
 	auipc	ra,%pcrel_hi(__adddf3)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_23)
-	addi	a2,x0,3
-	and	s2,s6,a2
+	addi	s2,x0,3
+	and	s2,s6,s2
 	addi	a5,zero,1
 	addi	s3,a0,0
 	addi	s5,a1,0
@@ -283,12 +283,12 @@ my_cos:
 	jalr	zero,ra,0
 .L6:
 	lui	a5,524288
-	and	a4,a1,a5
-	sub	a3,a4,a5
-	sub	a2,a1,a3
-	and	a6,a1,a5
-	sub	a5,a2,a6
-	jal	zero,.L1
+	and	a2,a1,a5
+	sub	a2,a2,a5
+	sub	a2,a1,a2
+	and	a3,a1,a5
+	sub	a5,a2,a3
+	jal	x0,.L1
 .L12:
 	lw	a2,%lo(.LC1)(s4)
 	lw	a3,%lo(.LC1+4)(s4)
@@ -299,15 +299,15 @@ my_cos:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_38)
 	addi	a4,a0,0
 	addi	a5,a1,0
-	jal	zero,.L4
+	jal	x0,.L4
 .L5:
 	lui	a5,524288
-	and	a4,a1,a5
-	sub	a3,a4,a5
-	sub	a2,a1,a3
-	and	a6,a1,a5
-	sub	a5,a2,a6
-	jal	zero,.L1
+	and	a2,a1,a5
+	sub	a2,a2,a5
+	sub	a2,a1,a2
+	and	a3,a1,a5
+	sub	a5,a2,a3
+	jal	x0,.L1
 	.size	my_cos, .-my_cos
 	.align	2
 	.type	SolveCubic, @function
@@ -746,8 +746,7 @@ SolveCubic:
 .Lpcrel_66:
 	auipc	ra,%pcrel_hi(__gtdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_66)
-	bge	a0,zero,.+8
-	jal	x0,.L84
+	bge	zero,a0,.L84
 	addi	a0,s3,0
 	addi	a1,s0,0
 	addi	a2,zero,0
@@ -1119,7 +1118,7 @@ SolveCubic:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_117)
 	addi	s5,a0,0
 	addi	s4,a1,0
-	jal	zero,.L43
+	jal	x0,.L43
 .L85:
 	lui	s2,%hi(.LC16)
 	lw	s0,%lo(.LC16+4)(s2)
@@ -1131,8 +1130,7 @@ SolveCubic:
 .Lpcrel_118:
 	auipc	ra,%pcrel_hi(__ltdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_118)
-	bge	a0,zero,.+8
-	jal	x0,.L21
+	bge	zero,a0,.L21
 	addi	s1,s9,0
 	addi	s0,s4,0
 .L21:
@@ -1370,7 +1368,8 @@ SolveCubic:
 .Lpcrel_155:
 	auipc	ra,%pcrel_hi(__gtdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_155)
-	bge	zero,a0,.L17
+	bge	a0,zero,.+8
+	jal	x0,.L17
 	lw	a0,0(sp)
 	addi	a2,s0,0
 	addi	a3,s1,0
@@ -1387,9 +1386,7 @@ SolveCubic:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_157)
 	addi	s4,zero,0
 	addi	s3,zero,0
-	bge	zero,a0,.+8
-	jal	x0,8
-	jal	x0,.L87
+	bge	zero,a0,.L87
 .L24:
 	lw	s6,8(sp)
 	lw	s5,28(sp)
@@ -1664,53 +1661,15 @@ SolveCubic:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_197)
 	addi	s2,a0,0
 	addi	s1,a1,0
-	jal	zero,.L32
+	jal	x0,.L32
 .L86:
 	lui	a5,524288
-	addi	sp,sp,-32
-	sw	s2,0(sp)
-	sw	s3,4(sp)
-	sw	s4,8(sp)
-	sw	s6,12(sp)
-	sw	s7,16(sp)
-	sw	s8,20(sp)
-	sw	s9,24(sp)
-	sw	s10,28(sp)
-	addi	a6,x0,-1
-	addi	t0,x0,-1
-	and	s11,t0,s5
-	sub	a7,s11,s5
-	sub	a4,a6,a7
-	addi	t2,x0,-1
-	and	t1,t2,s5
-	sub	a3,a4,t1
-	and	a2,a5,a3
-	sub	a1,x0,a2
-	sub	a0,s5,a1
-	addi	s2,x0,-1
-	addi	s3,x0,-1
-	and	s4,s3,s5
-	sub	s6,s4,s5
-	sub	s7,s2,s6
-	addi	s8,x0,-1
-	and	s9,s8,s5
-	sub	s10,s7,s9
-	and	zero,a5,s10
-	sub	t6,x0,zero
-	sub	t5,s5,t6
-	sub	t4,t5,a5
-	sub	t3,s5,t4
-	sub	s11,a0,t3
-	lw	s2,0(sp)
-	lw	s3,4(sp)
-	lw	s4,8(sp)
-	lw	s6,12(sp)
-	lw	s7,16(sp)
-	lw	s8,20(sp)
-	lw	s9,24(sp)
-	lw	s10,28(sp)
-	addi	sp,sp,32
-	jal	zero,.L41
+	and	s11,s5,a5
+	sub	s11,s11,a5
+	sub	s11,s5,s11
+	and	a0,s5,a5
+	sub	s11,s11,a0
+	jal	x0,.L41
 .L58:
 	addi	s5,zero,0
 	addi	s4,zero,0
@@ -1731,31 +1690,11 @@ SolveCubic:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_198)
 	bge	zero,a0,.L50
 	lui	a5,524288
-	addi	a6,x0,-1
-	addi	t1,x0,-1
-	and	t0,t1,a5
-	sub	a7,t0,a5
-	sub	a4,a6,a7
-	addi	t3,x0,-1
-	and	t2,t3,a5
-	sub	a3,a4,t2
-	and	a2,s4,a3
-	sub	a1,x0,a2
-	sub	a0,a5,a1
-	addi	op_1_4,x0,-1
-	addi	op_1_7,x0,-1
-	and	op_1_6,op_1_7,a5
-	sub	op_1_5,op_1_6,a5
-	sub	op_1_3,op_1_4,op_1_5
-	addi	op_1_9,x0,-1
-	and	op_1_8,op_1_9,a5
-	sub	op_1_2,op_1_3,op_1_8
-	and	op_1_1,s4,op_1_2
-	sub	op_1_0,x0,op_1_1
-	sub	t6,a5,op_1_0
-	sub	t5,t6,s4
-	sub	t4,a5,t5
-	sub	s4,a0,t4
+	and	a0,a5,s4
+	sub	a0,a0,s4
+	sub	a0,a5,a0
+	and	a1,a5,s4
+	sub	s4,a0,a1
 .L50:
 	lw	a2,%lo(.LC25)(s3)
 	lw	a3,%lo(.LC25+4)(s3)
@@ -1890,7 +1829,7 @@ SolveCubic:
 	lw	a5,292(sp)
 	sw	a0,16(a5)
 	sw	a1,20(a5)
-	jal	zero,.L15
+	jal	x0,.L15
 .L84:
 	addi	a0,s3,0
 	addi	a1,s0,0
@@ -1910,12 +1849,11 @@ SolveCubic:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_217)
 	addi	s4,zero,0
 	addi	s3,zero,0
-	bge	zero,a0,.+8
-	jal	x0,.L24
+	bge	a0,zero,.L24
 	lui	a5,%hi(.LC17)
 	lw	s4,%lo(.LC17)(a5)
 	lw	s3,%lo(.LC17+4)(a5)
-	jal	zero,.L24
+	jal	x0,.L24
 .L87:
 	lui	s3,%hi(.LC23)
 	lw	s9,%lo(.LC23+4)(s3)
@@ -1938,8 +1876,7 @@ SolveCubic:
 .Lpcrel_219:
 	auipc	ra,%pcrel_hi(__gedf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_219)
-	bge	zero,a0,.+8
-	jal	x0,.L53
+	bge	a0,zero,.L53
 	lw	a2,%lo(.LC23)(s3)
 	lw	a3,%lo(.LC23+4)(s3)
 	addi	a0,s8,0
@@ -1956,7 +1893,7 @@ SolveCubic:
 	addi	s10,zero,60
 	addi	s7,zero,0
 	addi	s3,zero,0
-	jal	zero,.L31
+	jal	x0,.L31
 .L89:
 	addi	s10,s10,-1
 	addi	s7,s1,0
@@ -2008,15 +1945,15 @@ SolveCubic:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_226)
 	addi	s4,a0,0
 	addi	s3,a1,0
-	jal	zero,.L24
+	jal	x0,.L24
 .L54:
 	lw	s4,%lo(.LC17)(a5)
 	lw	s3,%lo(.LC17+4)(a5)
-	jal	zero,.L24
+	jal	x0,.L24
 .L53:
 	addi	s4,zero,0
 	addi	s3,zero,0
-	jal	zero,.L24
+	jal	x0,.L24
 	.size	SolveCubic, .-SolveCubic
 	.section	.rodata.str1.4,"aMS",@progbits,1
 	.align	2
@@ -2474,7 +2411,7 @@ main:
 	addi	s3,s3,-1
 	slli	a3,a3,2
 	slli	s2,s2,1
-	bltu	a5,a4,.L108
+	bgeu	a4,a5,.L108
 	sub	a5,a5,a4
 	addi	s2,s2,1
 .L108:
@@ -2514,7 +2451,7 @@ main:
 	addi	a3,a3,-1
 	slli	a5,a5,2
 	slli	s2,s2,1
-	bltu	s3,a4,.L111
+	bgeu	a4,s3,.L111
 	sub	s3,s3,a4
 	addi	s2,s2,1
 .L111:
@@ -2692,9 +2629,9 @@ main:
 	lw	s10,176(sp)
 	lw	s11,172(sp)
 	addi	a2,x0,1
-	bltu	a0,a2,.+8
+	bgeu	a2,a0,.+8
 	addi	a0,x0,0
-	jal	a0,4
+	jal	x0,4
 	addi	a0,x0,1
 	addi	sp,sp,224
 	jalr	zero,ra,0
