@@ -139,6 +139,22 @@ class AsmReconstructor:
             block_id = int(block_file.stem)
             with open(block_file, 'r', encoding='utf-8') as f:
                 rewritten_blocks[block_id] = f.readlines()
+
+        # 读取 placeholder block（可选）
+        placeholder_blocks = None
+        placeholder_dirs = [
+            output_dir / "basic_blocks_placeholder" / "variant_0",
+            output_dir / "basic_blocks_placeholder",
+        ]
+        for placeholder_dir in placeholder_dirs:
+            if placeholder_dir.exists():
+                placeholder_blocks = {}
+                for block_file in sorted(placeholder_dir.glob("*.txt")):
+                    block_id = int(block_file.stem)
+                    with open(block_file, 'r', encoding='utf-8') as f:
+                        placeholder_blocks[block_id] = f.readlines()
+                if placeholder_blocks:
+                    break
         
         if self.verbose:
             print(f"  加载了 {len(rewritten_blocks)} 个重写后的基本块")
@@ -147,83 +163,71 @@ class AsmReconstructor:
         with open(clean_file, 'r', encoding='utf-8', errors='ignore') as f:
             lines = f.readlines()
         
-        # 重建输出
-        output_lines = []
-        i = 0
-        
-        while i < len(lines):
-            line = lines[i]
-            
-            # 如果是标签行
-            if self.is_label_line(line):
-                label = self.extract_label_from_line(line)
-                
-                # 跳过 .Lpcrel 标签（会在插入 block 时重新生成）
-                if label and label.startswith('.Lpcrel'):
-                    i += 1
-                    continue
-                
-                # 检查是否是需要替换的标签
-                if label and label in label_metadata:
-                    metadata = label_metadata[label]
-                    
-                    # 输出标签行
-                    output_lines.append(line)
-                    i += 1
-                    
-                    # 1. 一次性删除该标签下的所有行（label_line_count）
-                    label_line_count = metadata['label_line_count']
-                    deleted = 0
-                    while i < len(lines) and deleted < label_line_count:
-                        next_line = lines[i]
-                        # 只计数指令行和 .Lpcrel_ 标签
-                        if (self.is_instruction_line(next_line) or
-                            (next_line.strip().startswith('.Lpcrel_') and next_line.strip().endswith(':'))):
-                            deleted += 1
+        def build_output_lines(blocks_map: Dict[int, List[str]]) -> List[str]:
+            output_lines = []
+            i = 0
+            while i < len(lines):
+                line = lines[i]
+                if self.is_label_line(line):
+                    label = self.extract_label_from_line(line)
+                    if label and label.startswith('.Lpcrel'):
                         i += 1
-                    
-                    # 2. 插入该标签下的所有 blocks
-                    blocks_info = metadata['blocks']
-                    for block_key in sorted(blocks_info.keys()):  # block_0, block_1, ...
-                        block_id = blocks_info[block_key]['id']
-                        
-                        if block_id in rewritten_blocks:
-                            block_lines = rewritten_blocks[block_id]
-                            
-                            # 在 block 中正确位置插入 .Lpcrel 标签
-                            processed_lines = self.insert_pcrel_labels_in_block(block_lines)
-                            
-                            # 插入 block 内容（添加缩进）
-                            for block_line in processed_lines:
-                                stripped = block_line.strip()
-                                # 标签行不需要缩进
-                                if stripped.endswith(':') and not block_line.startswith(('\t', ' ')):
-                                    output_lines.append(block_line)
-                                # 已有缩进或空行，直接添加
-                                elif block_line.startswith(('\t', ' ')) or not stripped:
-                                    output_lines.append(block_line)
-                                # 否则添加缩进
-                                else:
-                                    output_lines.append('\t' + block_line)
-                    
-                    continue
+                        continue
+                    if label and label in label_metadata:
+                        metadata = label_metadata[label]
+                        output_lines.append(line)
+                        i += 1
+                        label_line_count = metadata['label_line_count']
+                        deleted = 0
+                        while i < len(lines) and deleted < label_line_count:
+                            next_line = lines[i]
+                            if (self.is_instruction_line(next_line) or
+                                (next_line.strip().startswith('.Lpcrel_') and next_line.strip().endswith(':'))):
+                                deleted += 1
+                            i += 1
+                        blocks_info = metadata['blocks']
+                        # 按照 block_id 数字大小排序，而不是按 key 字符串排序
+                        sorted_block_keys = sorted(blocks_info.keys(), key=lambda k: blocks_info[k]['id'])
+                        for block_key in sorted_block_keys:
+                            block_id = blocks_info[block_key]['id']
+                            if block_id in blocks_map:
+                                block_lines = blocks_map[block_id]
+                                processed_lines = self.insert_pcrel_labels_in_block(block_lines)
+                                for block_line in processed_lines:
+                                    stripped = block_line.strip()
+                                    if stripped.endswith(':') and not block_line.startswith(('\t', ' ')):
+                                        output_lines.append(block_line)
+                                    elif block_line.startswith(('\t', ' ')) or not stripped:
+                                        output_lines.append(block_line)
+                                    else:
+                                        output_lines.append('\t' + block_line)
+                        continue
+                    else:
+                        output_lines.append(line)
+                        i += 1
+                        continue
                 else:
-                    # 不需要替换的标签，直接保留
                     output_lines.append(line)
                     i += 1
-                    continue
-            
-            # 其他行直接保留
-            else:
-                output_lines.append(line)
-                i += 1
-        
+            return output_lines
+
+        # 重建输出
+        output_lines = build_output_lines(rewritten_blocks)
+
         # 写入 _rewrite.s 文件
         output_file = clean_file.parent / clean_file.name.replace('_clean.s', '_rewrite.s')
         with open(output_file, 'w', encoding='utf-8') as f:
             f.writelines(output_lines)
-        
         print(f"  ✓ 生成重写文件: {output_file}")
+
+        # 如果存在 placeholder，额外输出
+        if placeholder_blocks is not None:
+            placeholder_output_lines = build_output_lines(placeholder_blocks)
+            placeholder_file = clean_file.parent / clean_file.name.replace('_clean.s', '_placeholder.s')
+            with open(placeholder_file, 'w', encoding='utf-8') as f:
+                f.writelines(placeholder_output_lines)
+            print(f"  ✓ 生成占位符文件: {placeholder_file}")
+
         return True
 
 

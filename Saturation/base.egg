@@ -252,11 +252,12 @@
                  (Seq2 (Blt rs1 rs2 (ImmVal 4))
                        (Addi (RegVal "x0") (ImmVal 0)))))
 
-;; SLTU rd, rs1, rs2  =  addi tmp, x0, 1; bltu rs1, rs2, +4; addi tmp, x0, 0
+;; SLTU rd, rs1, rs2  =  bltu rs1, rs2, +12; addi tmp, x0, 0; jal x0, +8; addi tmp, x0, 1
 (birewrite (Sltu rs1 rs2)
-           (Seq2 (Addi (RegVal "x0") (ImmVal 1))
-                 (Seq2 (Bltu rs1 rs2 (ImmVal 4))
-                       (Addi (RegVal "x0") (ImmVal 0)))))
+           (Seq2 (Bltu rs1 rs2 (ImmVal 12))
+                 (Seq2 (Addi (RegVal "x0") (ImmVal 0))
+                       (Seq2 (Jal (ImmVal 8))
+                             (Addi (RegVal "x0") (ImmVal 1))))))
 
 ;; === Branch Simplifications ===
 ;; Branch on same values

@@ -273,6 +273,8 @@ class RewriteBlock:
         self.lines: List[str] = []
         self.eclass_to_rd_list: List[Tuple[str, str]] = get_eclass_to_rd(program_name, block_num)
         self.block_lines: List[List[str]] = [[] for _ in range(len(self.eclass_to_rd_list))]
+        self.placeholder_block_lines: List[List[str]] = [[] for _ in range(len(self.block_lines))]
+        self.placeholder_lines: List[str] = []
         self.eclass_to_rd_map: Dict[str, str] = {}  # 初始化为空，走一行更新一行
         self.stack_per_line: List[Dict[str, List[str]]] = [{"push": [], "pop": []} for _ in range(len(self.block_lines))]
         # 计算每行可用的 free_regs
@@ -365,6 +367,7 @@ class RewriteBlock:
                     if use not in self.free_regs_per_line[line_idx]:
                         live_out.add(use)
                 self.rewrite_line(eclass_id, rd, line_idx)
+                self.placeholder_block_lines[line_idx] = list(self.block_lines[line_idx])
                 self.replace_placeholders(line_idx, live_out)
                 # 更新映射
                 self.eclass_to_rd_map[eclass_id] = rd
@@ -389,25 +392,34 @@ class RewriteBlock:
         # 调用寄存器分配算法
         mapping, m = allocate_compact_mapping(lines, live_out)
         
+        # 收集 mapping 中直接使用的真实寄存器（需要避免借用这些）
+        used_real_regs = set()
+        for op_name, allocated in mapping.items():
+            if not allocated.startswith('op_'):
+                used_real_regs.add(allocated)
+        
+        # 从 free_regs 中排除已被直接使用的寄存器
+        available_free_regs = [r for r in self.free_regs if r not in used_real_regs]
+        
         # 计算需要借用的寄存器数量（虚拟寄存器的数量）
         num_virtual = m + 1 if m >= 0 else 0
-        num_free = len(self.free_regs)
-        num_needed = max(0, num_virtual - num_free)
+        num_available = len(available_free_regs)
+        num_needed = max(0, num_virtual - num_available)
         
         if num_needed > 0:
-            # 需要借用寄存器
-            borrowed_regs, push_stack, pop_stack = self.allocate_registers(num_needed)
+            # 需要借用寄存器（避开已使用的真实寄存器）
+            borrowed_regs, push_stack, pop_stack = self.allocate_registers(num_needed, used_real_regs)
             
             # 构建最终的寄存器映射：op_k -> 真实寄存器
             final_mapping = {}
             for op_name, allocated in mapping.items():
                 if allocated.startswith('op_'):
-                    # 虚拟寄存器，分配到 free_regs 或 borrowed_regs
+                    # 虚拟寄存器，分配到 available_free_regs 或 borrowed_regs
                     op_num = int(allocated.split('_')[1])
-                    if op_num < num_free:
-                        final_mapping[op_name] = self.free_regs[op_num]
+                    if op_num < num_available:
+                        final_mapping[op_name] = available_free_regs[op_num]
                     else:
-                        final_mapping[op_name] = borrowed_regs[op_num - num_free]
+                        final_mapping[op_name] = borrowed_regs[op_num - num_available]
                 else:
                     # 已经是真实寄存器
                     final_mapping[op_name] = allocated
@@ -420,9 +432,9 @@ class RewriteBlock:
             final_mapping = {}
             for op_name, allocated in mapping.items():
                 if allocated.startswith('op_'):
-                    # 虚拟寄存器，分配到 free_regs
+                    # 虚拟寄存器，分配到 available_free_regs
                     op_num = int(allocated.split('_')[1])
-                    final_mapping[op_name] = self.free_regs[op_num]
+                    final_mapping[op_name] = available_free_regs[op_num]
                 else:
                     # 已经是真实寄存器
                     final_mapping[op_name] = allocated
@@ -434,29 +446,32 @@ class RewriteBlock:
                 line = re.sub(r'\b' + re.escape(op_name) + r'\b', real_reg, line)
             self.block_lines[line_idx][i] = line
         
-    def _select_borrowable_registers(self, num_needed: int) -> List[str]:
+    def _select_borrowable_registers(self, num_needed: int, exclude_regs: Set[str] = None) -> List[str]:
         """选择可以借用的寄存器
         
-        选择标准：在当前 sublist 中既未使用也未定义
+        选择标准：在当前 sublist 中既未使用也未定义，且不在 exclude_regs 中
         """
+        if exclude_regs is None:
+            exclude_regs = set()
+        
         candidate_regs = ['s2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11',
                           'a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 't0', 't1', 't2', 't3', 't4', 't5', 't6']
         
         borrowable = []
         for reg in candidate_regs:
-            if reg not in self.free_regs and reg not in borrowable:
+            if reg not in self.free_regs and reg not in exclude_regs and reg not in borrowable:
                 borrowable.append(reg)
             if len(borrowable) >= num_needed:
                 break
         
         return borrowable[:num_needed]
         
-    def allocate_registers(self, num_needed: int) -> Tuple[List[str], List[str], List[str]]:
+    def allocate_registers(self, num_needed: int, exclude_regs: Set[str] = None) -> Tuple[List[str], List[str], List[str]]:
         """分配需要借用的寄存器并生成栈操作指令"""
         if num_needed == 0:
             return [], [], []
         
-        borrowed_regs = self._select_borrowable_registers(num_needed)
+        borrowed_regs = self._select_borrowable_registers(num_needed, exclude_regs)
         
         if len(borrowed_regs) < num_needed:
             raise RuntimeError(f"需要 {num_needed} 个寄存器，但只能借用 {len(borrowed_regs)} 个")
@@ -487,7 +502,7 @@ class RewriteBlock:
             lines = [line for line in sublist]
             combined = push_stack + lines + pop_stack    
             self.block_lines[idx] = combined
-        
+        self.placeholder_lines = [line for sublist in self.placeholder_block_lines for line in sublist]
         self.lines = [line for sublist in self.block_lines for line in sublist]
 
 def get_all_blocks(program_name: str) -> List[int]:
@@ -558,6 +573,13 @@ def rewrite_program(program_name: str, solution_file: str = None, output_dir: st
         output_dir = Path(output_dir)
     
     output_dir.mkdir(parents=True, exist_ok=True)
+    if output_dir.name.startswith("variant_"):
+        placeholder_base_dir = output_dir.parent.parent / "basic_blocks_placeholder"
+        placeholder_dir = placeholder_base_dir / output_dir.name
+    else:
+        placeholder_base_dir = output_dir.parent / "basic_blocks_placeholder"
+        placeholder_dir = placeholder_base_dir
+    placeholder_dir.mkdir(parents=True, exist_ok=True)
     print(f"\n输出目录: {output_dir}")
     
     # 5. 处理每个 block
@@ -584,6 +606,10 @@ def rewrite_program(program_name: str, solution_file: str = None, output_dir: st
             output_file = output_dir / f"{block_num}.txt"
             with open(output_file, 'w') as f:
                 for line in rewriter.lines:
+                    f.write(line + '\n')
+            placeholder_file = placeholder_dir / f"{block_num}.txt"
+            with open(placeholder_file, 'w') as f:
+                for line in rewriter.placeholder_lines:
                     f.write(line + '\n')
             
             stats['success_blocks'] += 1
