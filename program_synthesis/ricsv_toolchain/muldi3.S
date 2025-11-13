@@ -36,7 +36,7 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
 FUNC_BEGIN (__muldi3)
   mv     a2, a0
   li     a0, 0
-.L1:
+.Mul_L1:
   andi   a3, a1, 1
   beqz   a3, .L2
   add    a0, a0, a2
