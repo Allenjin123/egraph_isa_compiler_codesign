@@ -273,301 +273,268 @@ atoi:
 	.size	atoi, .-atoi
 	.section	.rodata.str1.4,"aMS",@progbits,1
 	.align	2
-.LC2:
-	.string	"%-38s> Time: %7.3f sec.; Bits: %ld\n"
+.LC0:
+	.string	"%-38s> Time: %4ld.%03ld sec.; Bits: %ld\n"
 	.align	2
-.LC3:
+.LC1:
 	.string	"\nBest  > %s\n"
 	.align	2
-.LC4:
+.LC2:
 	.string	"Worst > %s\n"
 	.section	.text.startup,"ax",@progbits
 	.align	2
 	.globl	main
 	.type	main, @function
 main:
-	lw	a2,4(a1)
-	addi	sp,sp,-128
-	sw	ra,124(sp)
-	sw	s0,120(sp)
-	sw	s1,116(sp)
-	sw	s2,112(sp)
-	sw	s3,108(sp)
-	sw	s4,104(sp)
-	sw	s5,100(sp)
-	sw	s6,96(sp)
-	sw	s7,92(sp)
-	sw	s8,88(sp)
-	sw	s9,84(sp)
-	sw	s10,80(sp)
-	sw	s11,76(sp)
-	lbu	a5,0(a2)
-	li	a4,45
-	beq	a5,a4,.L65
+	lw	a4,4(a1)
+	addi	sp,sp,-112
+	sw	ra,108(sp)
+	sw	s0,104(sp)
+	sw	s1,100(sp)
+	sw	s2,96(sp)
+	sw	s3,92(sp)
+	sw	s4,88(sp)
+	sw	s5,84(sp)
+	sw	s6,80(sp)
+	sw	s7,76(sp)
+	sw	s8,72(sp)
+	sw	s9,68(sp)
+	sw	s10,64(sp)
+	sw	s11,60(sp)
+	lbu	a5,0(a4)
+	li	a3,45
+	beq	a5,a3,.L63
 	addi	a5,a5,-43
 	seqz	a5,a5
-	add	a2,a2,a5
-	li	a5,1
+	add	a4,a4,a5
+	li	s8,1
 .L45:
-	lbu	a1,0(a2)
-	li	a6,9
-	li	a4,0
-	addi	a1,a1,-48
-	andi	a3,a1,0xff
-	bgtu	a3,a6,.L47
-	mv	a3,a4
+	lbu	a1,0(a4)
+	li	a0,9
+	li	a3,0
+	addi	a2,a1,-48
+	andi	a5,a2,0xff
+	bgtu	a5,a0,.L47
 .L46:
-	slli	a4,a3,2
-	lbu	a0,1(a2)
-	add	a4,a4,a3
-	slli	a4,a4,1
-	add	a3,a1,a4
-	addi	a1,a0,-48
-	andi	a4,a1,0xff
-	addi	a2,a2,1
-	bleu	a4,a6,.L46
-	mv	a4,a3
+	slli	a5,a3,2
+	lbu	a1,1(a4)
+	add	a5,a5,a3
+	slli	a5,a5,1
+	add	a3,a2,a5
+	addi	a2,a1,-48
+	andi	a5,a2,0xff
+	addi	a4,a4,1
+	bleu	a5,a0,.L46
 .L47:
-	mul	a7,a5,a4
-	lui	a3,%hi(.LANCHOR0)
-	addi	a5,a3,%lo(.LANCHOR0)
-	lui	a2,%hi(.LC1)
-	lw	a1,%lo(.LC1)(a2)
-	sw	a5,60(sp)
-	lw	a2,%lo(.LC1+4)(a2)
-	lui	a4,%hi(.LC0)
-	lw	a6,%lo(.LC0)(a4)
-	li	a5,1481764864
-	slli	a3,a7,1
-	add	a3,a3,a7
-	slli	a3,a3,2
-	add	a3,a3,a7
-	sw	a3,44(sp)
-	lw	a3,60(sp)
-	lw	a4,%lo(.LC0+4)(a4)
-	addi	a5,a5,1069
-	sw	a1,32(sp)
-	sw	a2,36(sp)
-	lui	a1,%hi(.LC2)
-	li	a2,-2147483648
-	li	s8,0
-	li	s11,0
-	addi	s6,a3,256
-	addi	s7,a3,284
+	mul	a5,s8,a3
+	li	s7,-2147483648
 	li	s5,1284866048
-	addi	a3,a1,%lo(.LC2)
-	sw	a5,28(sp)
-	addi	a5,a2,-1
-	mv	s10,s8
-	sw	s11,12(sp)
-	sw	a3,40(sp)
+	addi	s7,s7,-1
 	addi	s5,s5,-211
-	sw	a5,48(sp)
-	sw	zero,56(sp)
-	sw	zero,52(sp)
-	li	s4,0
-	lui	s3,%hi(bitcnts_rand_state)
-	sw	a7,24(sp)
-	sw	a6,16(sp)
-	sw	a4,20(sp)
+	li	s0,0
+	li	s9,0
+	sw	zero,28(sp)
+	sw	zero,24(sp)
+	li	s3,0
+	sw	a5,16(sp)
+	lui	a5,%hi(.LANCHOR0)
+	addi	a5,a5,%lo(.LANCHOR0)
+	sw	a5,44(sp)
+	addi	s6,a5,256
+	lw	a5,16(sp)
+	lw	a2,16(sp)
+	sw	zero,20(sp)
+	slli	a5,a5,1
+	add	a5,a5,a2
+	slli	a5,a5,2
+	add	a5,a5,a2
+	sw	a5,40(sp)
+	li	a5,1481764864
+	addi	a5,a5,1069
+	sw	a5,32(sp)
+	li	a5,1125900288
+	addi	a5,a5,-381
+	sw	a5,36(sp)
+	lui	s4,%hi(bitcnts_rand_state)
+	li	s10,1000
 .L52:
 	call	clock
-	lw	a5,%lo(bitcnts_rand_state)(s3)
-	lw	a4,%lo(bitcnts_rand_state+4)(s3)
-	lw	a3,28(sp)
-	sw	a0,8(sp)
+	lw	a3,%lo(bitcnts_rand_state)(s4)
+	lw	a4,%lo(bitcnts_rand_state+4)(s4)
+	lw	a5,32(sp)
+	sw	a0,12(sp)
 	mul	a4,a4,s5
-	mul	a3,a5,a3
+	mul	a2,a3,a5
+	mul	a5,a3,s5
+	add	a4,a4,a2
+	mulhu	a3,a3,s5
+	addi	a2,a5,1
+	sltu	a5,a2,a5
+	sw	a2,%lo(bitcnts_rand_state)(s4)
 	add	a4,a4,a3
-	mulhu	a3,a5,s5
-	mul	a5,a5,s5
-	add	a4,a4,a3
-	addi	a3,a5,1
-	sltu	a5,a3,a5
 	add	a5,a5,a4
-	lw	a4,24(sp)
-	sw	a5,%lo(bitcnts_rand_state+4)(s3)
-	sw	a3,%lo(bitcnts_rand_state)(s3)
-	ble	a4,zero,.L56
-	lw	a4,48(sp)
-	lw	s2,0(s7)
-	li	s0,0
-	and	s9,a5,a4
-	lw	a5,44(sp)
-	add	s1,s9,a5
+	lw	a4,16(sp)
+	sw	a5,%lo(bitcnts_rand_state+4)(s4)
+	ble	a4,zero,.L55
+	lui	a3,%hi(.LANCHOR0+284)
+	slli	a4,s3,2
+	addi	a3,a3,%lo(.LANCHOR0+284)
+	add	a4,a3,a4
+	lw	s2,0(a4)
+	li	a4,-2147483648
+	addi	a4,a4,-1
+	and	s8,a5,a4
+	lw	a5,40(sp)
+	li	s11,0
+	add	s1,s8,a5
 .L49:
-	mv	a0,s9
+	mv	a0,s8
 	jalr	s2
-	addi	s9,s9,13
-	add	s0,s0,a0
-	bne	s1,s9,.L49
+	addi	s8,s8,13
+	add	s11,s11,a0
+	bne	s8,s1,.L49
+	mv	s1,s11
+	srai	s2,s11,31
 .L48:
 	call	clock
-	lw	a5,8(sp)
-	sub	a0,a0,a5
-	call	__floatunsidf
-	lw	a2,32(sp)
-	lw	a3,36(sp)
-	call	__divdf3
-	lw	a2,16(sp)
-	lw	a3,20(sp)
-	mv	s2,a0
-	mv	s1,a1
-	call	__ltdf2
-	bge	a0,zero,.L50
-	sw	s4,52(sp)
-	sw	s2,16(sp)
-	sw	s1,20(sp)
+	lw	a5,12(sp)
+	lw	a4,36(sp)
+	sub	a5,a0,a5
+	mul	a5,a5,s10
+	mulhu	a5,a5,a4
+	srli	a5,a5,18
+	bge	a5,s7,.L50
+	sw	s3,24(sp)
+	mv	s7,a5
 .L50:
-	lw	a3,12(sp)
-	mv	a2,s10
-	mv	a0,s2
-	mv	a1,s1
-	call	__gtdf2
-	ble	a0,zero,.L51
-	sw	s4,56(sp)
-	mv	s10,s2
-	sw	s1,12(sp)
+	lw	a4,20(sp)
+	ble	a5,a4,.L51
+	sw	s3,28(sp)
+	sw	a5,20(sp)
 .L51:
-	mv	a2,s8
-	mv	a3,s11
-	mv	a0,s2
-	mv	a1,s1
-	call	__adddf3
-	mv	s8,a0
-	mv	a0,s0
-	mv	s9,a1
-	call	__floatsidf
-	mv	a2,s8
-	mv	a3,s9
-	call	__adddf3
-	mv	s8,a0
-	mv	s11,a1
-	lw	a0,40(sp)
+	li	a2,274878464
+	addi	a2,a2,-557
+	mulhu	a2,a5,a2
+	add	s0,a5,s0
+	sltu	a3,s0,a5
+	add	s1,s0,s1
+	add	a3,a3,s9
+	add	a3,a3,s2
+	sltu	s0,s1,s0
+	add	s9,s0,a3
 	lw	a1,0(s6)
-	mv	a2,s2
-	mv	a3,s1
-	mv	a4,s0
-	call	printf
-	addi	s4,s4,1
-	li	a5,7
+	lui	a0,%hi(.LC0)
+	srli	a2,a2,6
+	mul	a3,a2,s10
+	mv	a4,s11
+	addi	a0,a0,%lo(.LC0)
+	addi	s3,s3,1
+	mv	s0,s1
 	addi	s6,s6,4
-	addi	s7,s7,4
-	bne	s4,a5,.L52
-	lw	a7,24(sp)
-	lw	a0,16(sp)
-	lw	a1,20(sp)
-	mv	a2,s8
-	mv	a3,s11
-	sw	a7,8(sp)
-	call	__adddf3
-	mv	a3,a1
-	lw	a1,12(sp)
-	mv	a2,a0
-	mv	a0,s10
-	call	__adddf3
-	lw	s2,52(sp)
-	mv	s0,a0
-	mv	s1,a1
-	mv	a0,s2
-	call	__floatsidf
-	mv	a2,s0
-	mv	a3,s1
-	call	__adddf3
-	lw	s3,56(sp)
-	mv	s0,a0
-	mv	s1,a1
-	mv	a0,s3
-	call	__floatsidf
-	mv	a2,s0
-	mv	a3,s1
-	call	__adddf3
-	mv	s0,a0
-	lw	a0,8(sp)
-	mv	s1,a1
-	call	__floatsidf
-	mv	a2,s0
-	mv	a3,s1
-	call	__adddf3
-	lw	a4,60(sp)
-	slli	a5,s2,2
-	mv	s1,a1
+	sub	a3,a5,a3
+	call	printf
+	li	a5,7
+	bne	s3,a5,.L52
+	lw	a3,20(sp)
+	add	a5,s7,s1
+	sltu	a4,a5,s7
+	add	a5,a3,a5
+	sltu	a3,a5,a3
+	add	a4,a4,s9
+	add	a4,a3,a4
+	lw	a3,24(sp)
+	lw	a2,28(sp)
+	lui	a0,%hi(.LC1)
+	add	a5,a3,a5
+	srai	a3,a3,31
+	add	a4,a3,a4
+	lw	a3,24(sp)
+	srai	a2,a2,31
+	addi	a0,a0,%lo(.LC1)
+	sltu	a3,a5,a3
+	add	a3,a3,a4
+	lw	a4,28(sp)
+	add	a2,a2,a3
+	lw	a3,44(sp)
 	add	a5,a4,a5
-	lw	a1,256(a5)
-	mv	s0,a0
+	lw	a4,24(sp)
+	slli	a4,a4,2
+	add	a4,a3,a4
+	lw	a3,28(sp)
+	lw	a1,256(a4)
+	lw	a4,16(sp)
+	sltu	a3,a5,a3
+	add	a3,a3,a2
+	lw	a2,16(sp)
+	add	a5,a4,a5
+	srai	a4,a4,31
+	sltu	s8,a5,a2
+	mv	s0,a5
+	add	a5,a4,a3
+	add	s1,s8,a5
 	lui	a5,%hi(bitcnts_checksum)
-	lui	a0,%hi(.LC3)
 	sw	s0,%lo(bitcnts_checksum)(a5)
-	addi	a0,a0,%lo(.LC3)
 	sw	s1,%lo(bitcnts_checksum+4)(a5)
 	call	printf
-	lw	a4,60(sp)
-	slli	a5,s3,2
-	lui	a0,%hi(.LC4)
+	lw	a5,28(sp)
+	lw	a4,44(sp)
+	lui	a0,%hi(.LC2)
+	slli	a5,a5,2
 	add	a5,a4,a5
 	lw	a1,256(a5)
-	addi	a0,a0,%lo(.LC4)
+	addi	a0,a0,%lo(.LC2)
 	call	printf
-	mv	a0,s0
-	mv	a1,s1
-	li	a2,0
-	li	a3,0
-	call	__gtdf2
-	lw	ra,124(sp)
-	lw	s0,120(sp)
-	lw	s1,116(sp)
-	lw	s2,112(sp)
-	lw	s3,108(sp)
-	lw	s4,104(sp)
-	lw	s5,100(sp)
-	lw	s6,96(sp)
-	lw	s7,92(sp)
-	lw	s8,88(sp)
-	lw	s9,84(sp)
-	lw	s10,80(sp)
-	lw	s11,76(sp)
-	slti	a0,a0,1
-	addi	sp,sp,128
+	lw	ra,108(sp)
+	seqz	a0,s0
+	lw	s0,104(sp)
+	sub	a0,s1,a0
+	or	a0,s1,a0
+	lw	s2,96(sp)
+	lw	s1,100(sp)
+	lw	s3,92(sp)
+	lw	s4,88(sp)
+	lw	s5,84(sp)
+	lw	s6,80(sp)
+	lw	s7,76(sp)
+	lw	s8,72(sp)
+	lw	s9,68(sp)
+	lw	s10,64(sp)
+	lw	s11,60(sp)
+	srli	a0,a0,31
+	addi	sp,sp,112
 	jr	ra
-.L56:
-	li	s0,0
+.L55:
+	li	s1,0
+	li	s2,0
+	li	s11,0
 	j	.L48
-.L65:
-	addi	a2,a2,1
-	li	a5,-1
+.L63:
+	addi	a4,a4,1
+	li	s8,-1
 	j	.L45
 	.size	main, .-main
 	.section	.rodata.str1.4
 	.align	2
-.LC5:
+.LC3:
 	.string	"Optimized 1 bit/loop counter"
 	.align	2
-.LC6:
+.LC4:
 	.string	"Ratko's mystery algorithm"
 	.align	2
-.LC7:
+.LC5:
 	.string	"Recursive bit count by nybbles"
 	.align	2
-.LC8:
+.LC6:
 	.string	"Non-recursive bit count by nybbles"
 	.align	2
-.LC9:
+.LC7:
 	.string	"Non-recursive bit count by bytes (BW)"
 	.align	2
-.LC10:
+.LC8:
 	.string	"Non-recursive bit count by bytes (AR)"
 	.align	2
-.LC11:
+.LC9:
 	.string	"Shift and count bits"
-	.section	.srodata.cst8,"aM",@progbits,8
-	.align	3
-.LC0:
-	.word	-2048145248
-	.word	2145504499
-	.align	3
-.LC1:
-	.word	0
-	.word	1093567616
 	.section	.rodata
 	.align	2
 	.set	.LANCHOR0,. + 0
@@ -579,13 +546,13 @@ bit_count_table:
 	.type	text.0, @object
 	.size	text.0, 28
 text.0:
+	.word	.LC3
+	.word	.LC4
 	.word	.LC5
 	.word	.LC6
 	.word	.LC7
 	.word	.LC8
 	.word	.LC9
-	.word	.LC10
-	.word	.LC11
 	.type	pBitCntFunc.1, @object
 	.size	pBitCntFunc.1, 28
 pBitCntFunc.1:
@@ -609,11 +576,5 @@ bitcnts_checksum:
 bitcnts_rand_state:
 	.word	1
 	.word	0
-	.globl	__floatsidf
-	.globl	__adddf3
-	.globl	__gtdf2
-	.globl	__ltdf2
-	.globl	__divdf3
-	.globl	__floatunsidf
 	.ident	"GCC: (g1b306039a) 15.1.0"
 	.section	.note.GNU-stack,"",@progbits

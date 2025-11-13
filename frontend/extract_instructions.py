@@ -59,6 +59,9 @@ def main():
     
     # Iterate over all .s files
     for s_file in sorted(BENCHMARK_DIR.rglob("*.s")):
+        stem_lower = s_file.stem.lower()
+        if "clean" in stem_lower or "rewrite" in stem_lower:
+            continue
         insts = extract_instructions(s_file)
         rel_path = s_file.relative_to(BENCHMARK_DIR)
         folder = rel_path.parts[0]  # Only take the first level directory (e.g. automotive)
