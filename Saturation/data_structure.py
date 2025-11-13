@@ -285,6 +285,7 @@ class text_basic_block():
         self.block_name = block_name
         self.block_idx = None
         self.inst_list: List[text_inst] = []
+        self.execution_count = 1  # Default to 1 if not specified
 
     def add_inst(self, inst: text_inst):
         """Add an instruction to the basic block"""
@@ -453,6 +454,79 @@ class text_program():
         """Add a basic block to the program"""
         self.basic_blocks.append(block)
 
+    def _load_execution_counts(self, dir_path: str):
+        """Load execution counts from block_execution_counts.txt if available
+
+        Args:
+            dir_path: Path to program directory or variant directory
+        """
+        # Try to find block_execution_counts.txt in several locations
+        counts_file = None
+
+        # 1. Try current directory first
+        candidate = os.path.join(dir_path, "block_execution_counts.txt")
+        if os.path.exists(candidate):
+            counts_file = candidate
+        else:
+            # 2. Try to find in frontend output directory
+            # Extract program name from path
+            # Path patterns:
+            #   - output/backend/{program}/variants/variant_X/
+            #   - output/frontend/{program}/
+            import re
+
+            # Get absolute path and split
+            abs_path = os.path.abspath(dir_path)
+            path_parts = abs_path.split(os.sep)
+
+            # Look for program name (patterns like qsort_small_O3, dijkstra_small_O3)
+            program_name = None
+            for part in path_parts:
+                if re.match(r'.*_O[0-9]+$', part):
+                    program_name = part
+                    break
+
+            if program_name:
+                # Find project root (directory containing 'output')
+                script_dir = os.path.dirname(os.path.abspath(__file__))
+                project_root = os.path.dirname(script_dir)
+
+                # Try frontend directory
+                frontend_counts = os.path.join(project_root, "output", "frontend", program_name, "block_execution_counts.txt")
+                if os.path.exists(frontend_counts):
+                    counts_file = frontend_counts
+
+        if not counts_file:
+            # No execution counts file found, keep default of 1
+            return
+
+        try:
+            with open(counts_file, 'r') as f:
+                for line in f:
+                    # Skip header and separator lines
+                    if line.startswith('Block ID') or line.startswith('---') or line.startswith('==='):
+                        continue
+                    # Skip summary section
+                    if 'Summary:' in line or 'Total' in line or 'analyzed' in line or 'Errors:' in line:
+                        continue
+
+                    # Parse line format: Block ID | Exec Count | ...
+                    parts = [p.strip() for p in line.split('|')]
+                    if len(parts) >= 2:
+                        try:
+                            block_id = int(parts[0])
+                            exec_count = int(parts[1])
+
+                            # Find the block and set its execution count
+                            if block_id < len(self.basic_blocks):
+                                self.basic_blocks[block_id].execution_count = exec_count
+                        except (ValueError, IndexError):
+                            continue
+
+            print(f"Loaded execution counts from {counts_file}")
+        except Exception as e:
+            print(f"Warning: Failed to load execution counts from {counts_file}: {e}")
+
     def from_directory(self, dir_path: str, suffix: str = ""):
         """Read all basic block files from basic_blocks{suffix} directory
 
@@ -491,6 +565,9 @@ class text_program():
             block = text_basic_block(filename)
             block.from_file(full_path)
             self.add_basic_block(block)
+
+        # Load execution counts if available
+        self._load_execution_counts(dir_path)
 
     def __str__(self):
         """String representation of the program"""

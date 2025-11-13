@@ -80,11 +80,12 @@ done
 
 # 恢复原始目录
 if [ -d "${REWRITE_BASE}_orig" ]; then
-    if [ ! -e "$REWRITE_BASE" ]; then
-        mv "${REWRITE_BASE}_orig" "$REWRITE_BASE"
-    else
-        rm -rf "${REWRITE_BASE}_orig"
+    # Remove symlink if it exists
+    if [ -L "$REWRITE_BASE" ]; then
+        rm -f "$REWRITE_BASE"
     fi
+    # Restore original directory
+    mv "${REWRITE_BASE}_orig" "$REWRITE_BASE"
 fi
 
 echo ""

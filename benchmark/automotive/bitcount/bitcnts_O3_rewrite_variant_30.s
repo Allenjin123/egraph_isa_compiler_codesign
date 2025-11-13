@@ -23,8 +23,7 @@ bitcount:
 	add	a5,a5,a4
 	lui	a3,61681
 	addi	a3,a3,-241
-	srli	a0,a5,2
-	srli	a4,a0,2
+	srli	a4,a5,4
 	and	a4,a4,a3
 	and	a5,a5,a3
 	add	a4,a4,a5
@@ -270,7 +269,7 @@ atoi:
 	lbu	a2,1(a0)
 	addi	a6,zero,-1
 	addi	a0,a0,1
-	jal	zero,.L33
+	jal	x0,.L33
 	.size	atoi, .-atoi
 	.section	.rodata.str1.4,"aMS",@progbits,1
 	.align	2

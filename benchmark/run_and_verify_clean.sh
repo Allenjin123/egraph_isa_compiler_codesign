@@ -241,6 +241,7 @@ for asm_file in "${clean_files[@]}"; do
         fi
     else
         # Run spike with timeout, capture stdout only (stderr to /dev/null)
+        echo "Running: timeout 300 spike --isa=\"$SPIKE_ISA\" \"$PK\" \"$exe_file\" < /dev/null > \"$output_file\" 2>/dev/null"
         timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$exe_file" < /dev/null > "$output_file" 2>/dev/null
         exit_code=$?
         if [ $exit_code -eq 124 ]; then

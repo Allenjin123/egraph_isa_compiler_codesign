@@ -8,7 +8,7 @@
 	.align	2
 	.type	quicksort_range, @function
 quicksort_range:
-	blt	a1,a2,.+8
+	bge	a2,a1,.+8
 	jal	x0,.L42
 	addi	sp,sp,-320
 	sw	s3,300(sp)
@@ -28,13 +28,12 @@ quicksort_range:
 	addi	s4,zero,1
 	addi	s3,zero,-1
 .L2:
-	sub	a2,x0,s7
-	sub	a5,s6,a2
+	sub	a5,x0,s7
+	sub	a5,s6,a5
 	srli	a2,a5,31
 	sub	a3,x0,a2
 	sub	a2,a5,a3
-	addi	a3,x0,1
-	sra	a2,a2,a3
+	srai	a2,a2,1
 	slli	a2,a2,7
 	addi	a3,sp,16
 	addi	a5,zero,0
@@ -44,14 +43,14 @@ quicksort_range:
 	sub	a6,x0,s5
 	sub	a4,a4,a6
 	lw	a6,0(a4)
-	addi	a7,x0,255
-	and	a4,a6,a7
-	beq	a4,zero,.L4
+	addi	a4,x0,255
+	and	a4,a6,a4
+	bne	a4,zero,.+8
+	jal	x0,.L4
 	sb	a4,0(a3)
 	addi	a5,a5,1
 	addi	a3,a3,1
-	beq	a5,s8,.+8
-	jal	x0,.L3
+	bne	a5,s8,.L3
 .L4:
 	sub	a2,x0,a5
 	sub	a5,sp,a2
@@ -59,116 +58,112 @@ quicksort_range:
 	addi	s1,s7,0
 	addi	s2,s6,0
 .L6:
-	blt	s1,s2,.L19
+	bge	s2,s1,.L19
 	slli	a0,s2,7
 	sub	a1,x0,s5
 	sub	a0,a0,a1
-	lw	a1,0(a0)
-	addi	a2,x0,255
-	and	a4,a1,a2
+	lw	a4,0(a0)
+	addi	a1,x0,255
+	and	a4,a4,a1
 	addi	a1,a0,0
-	beq	a4,zero,.L8
+	bne	a4,zero,.+8
+	jal	x0,.L8
 .L24:
 	addi	a2,a0,0
 	addi	a3,sp,16
-	jal	zero,.L7
+	jal	x0,.L7
 .L46:
 	lw	a4,0(a2)
-	addi	a5,x0,255
-	and	a4,a4,a5
-	beq	a4,zero,.L8
-	beq	a5,a4,.+8
-	jal	x0,.L27
+	addi	a4,x0,255
+	and	a4,a4,a4
+	bne	a4,zero,.+8
+	jal	x0,.L8
+	bne	a5,a4,.L27
 .L7:
 	lw	a5,0(a3)
-	addi	a6,x0,255
-	and	a5,a5,a6
+	addi	a5,x0,255
+	and	a5,a5,a5
 	addi	a2,a2,1
 	addi	a3,a3,1
-	beq	a5,zero,.+8
-	jal	x0,.L46
+	bne	a5,zero,.L46
 .L27:
 	sltu	a3,a5,a4
 	sltu	a5,a4,a5
 	sub	a5,a3,a5
 	addi	a0,a0,128
-	beq	a5,s4,.+8
-	jal	x0,.L8
-	lw	a1,0(a0)
-	addi	a2,x0,255
-	and	a4,a1,a2
+	bne	a5,s4,.L8
+	lw	a4,0(a0)
+	addi	a1,x0,255
+	and	a4,a4,a1
 	addi	s2,s2,1
 	addi	a1,a0,0
-	beq	a4,zero,.+8
-	jal	x0,.L24
+	bne	a4,zero,.L24
 .L8:
 	slli	s0,s1,7
 	sub	a2,x0,s5
 	sub	s0,s0,a2
-	lw	a2,0(s0)
-	addi	a3,x0,255
-	and	a5,a2,a3
+	lw	a5,0(s0)
+	addi	a2,x0,255
+	and	a5,a5,a2
 	addi	a3,s0,0
 	addi	a2,sp,16
-	beq	a5,zero,.+8
-	jal	x0,.L13
-	jal	zero,.L47
+	bne	a5,zero,.L13
+	jal	x0,.L47
 .L49:
-	beq	a4,a5,.+8
-	jal	x0,.L28
-	lw	a4,0(a3)
-	addi	a5,x0,255
-	and	a5,a4,a5
-	beq	a5,zero,.L48
+	bne	a4,a5,.L28
+	lw	a5,0(a3)
+	addi	a4,x0,255
+	and	a5,a5,a4
+	bne	a5,zero,.+8
+	jal	x0,.L48
 	addi	a2,a2,1
 .L13:
 	lw	a4,0(a2)
-	addi	a6,x0,255
-	and	a4,a4,a6
+	addi	a4,x0,255
+	and	a4,a4,a4
 	addi	a3,a3,1
-	beq	a4,zero,.+8
-	jal	x0,.L49
+	bne	a4,zero,.L49
 .L28:
 	sltu	a3,a4,a5
 .L14:
 	sltu	a5,a5,a4
 	sub	a5,a3,a5
-	beq	a5,s3,.+8
-	jal	x0,.L50
+	bne	a5,s3,.L50
 .L17:
-	lw	a2,-128(s0)
-	addi	a3,x0,255
-	and	a5,a2,a3
+	lw	a5,-128(s0)
+	addi	a2,x0,255
+	and	a5,a5,a2
 	addi	s0,s0,-128
 	addi	s1,s1,-1
 	addi	a3,s0,0
 	addi	a2,sp,16
-	beq	a5,zero,.+8
-	jal	x0,.L13
+	bne	a5,zero,.L13
 .L47:
-	lw	a2,16(sp)
-	addi	a3,x0,255
-	and	a4,a2,a3
+	lw	a4,16(sp)
+	addi	a2,x0,255
+	and	a4,a4,a2
 	addi	a3,zero,0
 	sltu	a5,a5,a4
 	sub	a5,a3,a5
-	beq	a5,s3,.L17
+	bne	a5,s3,.+8
+	jal	x0,.L17
 .L50:
-	blt	s1,s2,.+8
+	bge	s1,s2,.+8
+	jal	x0,8
 	jal	x0,.L51
 .L19:
-	blt	s6,s1,.L52
-	blt	s2,s7,.+8
-	jal	x0,.L1
+	bge	s6,s1,.+8
+	jal	x0,.L52
+	bge	s2,s7,.L1
 .L22:
 	addi	s6,s2,0
-	jal	zero,.L2
+	jal	x0,.L2
 .L48:
-	lw	a3,1(a2)
-	addi	a4,x0,255
-	and	a4,a3,a4
+	lw	a4,1(a2)
+	addi	a3,x0,255
+	and	a4,a4,a3
 	addi	a3,zero,0
-	jal	zero,.L14
+	jal	x0,.L14
 .L51:
 	addi	a2,zero,128
 	addi	a0,sp,144
@@ -190,7 +185,7 @@ quicksort_range:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_3)
 	addi	s2,s2,1
 	addi	s1,s1,-1
-	jal	zero,.L6
+	jal	x0,.L6
 .L52:
 	addi	a2,s1,0
 	addi	a1,s6,0
@@ -198,7 +193,8 @@ quicksort_range:
 .Lpcrel_4:
 	auipc	ra,%pcrel_hi(quicksort_range)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_4)
-	blt	s2,s7,.L22
+	bge	s2,s7,.+8
+	jal	x0,.L22
 .L1:
 	lw	ra,316(sp)
 	lw	s0,312(sp)
@@ -241,18 +237,18 @@ main:
 	lw	a1,0(a6)
 	addi	a5,zero,0
 .L54:
-	sub	a3,x0,a1
-	sub	a4,a5,a3
+	sub	a4,x0,a1
+	sub	a4,a5,a4
 	lw	a3,0(a4)
-	addi	a7,x0,255
-	and	a4,a3,a7
+	addi	a4,x0,255
+	and	a4,a3,a4
 	sub	a3,x0,a2
 	sub	a3,a5,a3
-	beq	a4,zero,.L55
+	bne	a4,zero,.+8
+	jal	x0,.L55
 	sb	a4,0(a3)
 	addi	a5,a5,1
-	beq	a5,a0,.+8
-	jal	x0,.L54
+	bne	a5,a0,.L54
 .L55:
 	sub	a1,x0,a2
 	sub	a5,a5,a1
@@ -263,8 +259,7 @@ main:
 	sub	a1,x0,a5
 	sub	a5,sp,a1
 	addi	a6,a6,4
-	beq	a5,a2,.+8
-	jal	x0,.L57
+	bne	a5,a2,.L57
 	lui	a2,2
 	addi	a0,sp,0
 	addi	a2,a2,1807
@@ -276,33 +271,32 @@ main:
 	addi	a4,zero,0
 	addi	a5,zero,0
 .L60:
-	lw	a0,0(a6)
-	addi	a1,x0,255
-	and	a2,a0,a1
+	lw	a2,0(a6)
+	addi	a0,x0,255
+	and	a2,a2,a0
 	addi	a1,a6,0
-	beq	a2,zero,.L58
+	bne	a2,zero,.+8
+	jal	x0,.L58
 .L59:
 	addi	a1,a1,1
 	sub	a0,x0,a4
 	sub	a0,a2,a0
 	lw	a2,0(a1)
-	addi	a3,x0,255
-	and	a2,a2,a3
+	addi	a2,x0,255
+	and	a2,a2,a2
 	sltu	a3,a0,a4
 	sub	a4,x0,a3
 	sub	a3,a5,a4
 	addi	a4,a0,0
 	addi	a5,a3,0
-	beq	a2,zero,.+8
-	jal	x0,.L59
+	bne	a2,zero,.L59
 .L58:
 	lui	a3,313
 	addi	a3,a3,-2048
 	addi	a6,a6,128
 	sub	a0,x0,a3
 	sub	a3,sp,a0
-	beq	a6,a3,.+8
-	jal	x0,.L60
+	bne	a6,a3,.L60
 	lui	s1,%hi(qsort_checksum)
 	lui	a0,%hi(.LC0)
 	lui	a1,2
@@ -323,8 +317,7 @@ main:
 	addi	s0,s0,128
 	sub	a0,x0,a5
 	sub	a5,sp,a0
-	beq	a5,s0,.+8
-	jal	x0,.L61
+	bne	a5,s0,.L61
 	lui	t0,312
 	lw	a4,%lo(qsort_checksum)(s1)
 	addi	t0,t0,32
@@ -334,13 +327,13 @@ main:
 	sub	sp,t0,a2
 	lw	ra,2028(sp)
 	addi	a0,a0,1808
-	and	a6,a0,a4
-	sub	a3,a6,a4
-	sub	a2,a0,a3
-	and	a7,a0,a4
-	sub	a0,a2,a7
-	and	a3,a0,a5
-	sub	a2,a3,a5
+	and	a2,a0,a4
+	sub	a2,a2,a4
+	sub	a2,a0,a2
+	and	a3,a0,a4
+	sub	a0,a2,a3
+	and	a2,a0,a5
+	sub	a2,a2,a5
 	sub	a0,a0,a2
 	lw	s0,2024(sp)
 	lw	s1,2020(sp)
