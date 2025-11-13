@@ -24,15 +24,9 @@ if [ -f "$ASM" ]; then
     cp -f "$ASM" "$BENCH_DIR/"
 fi
 
-if [ -f "./input_small.asc" ]; then
-    cp -f "./input_small.asc" "$BENCH_DIR/"
-fi
-
 : > "$OUT_DEC"
 
 if ! $MIBENCH_RUN "$BIN" > "$OUT_DEC"; then
     echo "program execution failed: $BIN" >&2
     exit 1
 fi
-
-cp -f "$OUT_DEC" "$BENCH_DIR/"

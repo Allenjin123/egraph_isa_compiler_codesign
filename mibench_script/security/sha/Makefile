@@ -1,12 +1,20 @@
-# By default, the code is compiled for a "big endian" machine.
-# To compile on a "little endian" machine set the LITTLE_ENDIAN flag.
-# To make smaller object code, but run a little slower, don't use UNROLL_LOOPS.
-# To use NIST's modified SHA of 7/11/94, define USE_MODIFIED_SHA
+OPTFLAGS ?= -O3
+BIN_SUFFIX ?=
+NO_BUILTIN_FLAGS := -fno-builtin -fno-builtin-memcpy -fno-builtin-memset 
 
-CFLAGS = -O3 -Wall
+ASMFLAGS = -S $(OPTFLAGS) -fno-asynchronous-unwind-tables -fno-dwarf2-cfi-asm -mno-relax
+SHA_DEFS = -DUSE_MODIFIED_SHA -DLITTLE_ENDIAN
+SOURCES = sha_driver.c
+TARGET = sha$(BIN_SUFFIX)
+ASM_OUT = $(TARGET).s
 
-sha:	sha_driver.o sha.o
-	$(CC) -o $@ sha_driver.o sha.o
+.PHONY: all clean
+
+all: $(TARGET)
+
+$(TARGET): $(SOURCES) Makefile
+	$(CC) -static $(OPTFLAGS) $(NO_BUILTIN_FLAGS) $(SHA_DEFS) $(SOURCES) -o $@
+	$(CC) $(ASMFLAGS) $(NO_BUILTIN_FLAGS) $(SHA_DEFS) sha_driver.c -o $(ASM_OUT)
 
 clean:
-	rm -rf *.o sha output*
+	rm -rf $(TARGET) $(ASM_OUT) *.o sha output*

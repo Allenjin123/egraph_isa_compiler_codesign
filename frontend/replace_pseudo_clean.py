@@ -138,6 +138,12 @@ def replace_pseudo_instructions(asm_content):
             result.append(f"{indent}sltu\t{rd}, zero, {rs}")
             replaced = True
         
+        # neg rd, rs -> sub rd, zero, rs
+        elif match := re.match(r'^\s*neg\s+(\w+),\s*(\w+)\s*($|#)', line):
+            rd, rs = match.groups()[:2]
+            result.append(f"{indent}sub\t{rd}, zero, {rs}")
+            replaced = True
+
         # sgtu rd, rs, rt -> sltu rd, rt, rs (swap operands)
         elif match := re.match(r'^\s*sgtu\s+(\w+),\s*(\w+),\s*(\w+)\s*($|#)', line):
             rd, rs, rt = match.groups()[:3]
@@ -171,8 +177,11 @@ def process_all_benchmark_files():
     # Find all .s files recursively in benchmark directory
     s_files = list(benchmark_dir.rglob("*.s"))
     
-    # Filter out files that are already _clean files
-    s_files = [f for f in s_files if not f.stem.endswith('_clean')]
+    # Filter out files that are already _clean files or contain rewrite in the stem
+    s_files = [
+        f for f in s_files
+        if not f.stem.endswith('_clean') and 'rewrite' not in f.stem.lower()
+    ]
     
     if not s_files:
         print(f"No .s files found in {benchmark_dir}")
@@ -184,6 +193,11 @@ def process_all_benchmark_files():
     for s_file in sorted(s_files):
         # Get relative path for better display
         rel_path = s_file.relative_to(benchmark_dir)
+        output_file = s_file.parent / f"{s_file.stem}_clean.s"
+        if output_file.exists():
+            print(f"\nSkipping: {rel_path} (clean version already exists)")
+            continue
+
         print(f"\nProcessing: {rel_path}")
         
         try:
@@ -193,9 +207,6 @@ def process_all_benchmark_files():
             
             # Replace pseudo instructions
             cleaned = replace_pseudo_instructions(original)
-            
-            # Create output filename with _clean suffix
-            output_file = s_file.parent / f"{s_file.stem}_clean.s"
             
             # Write cleaned version
             with open(output_file, 'w', encoding='utf-8') as f:

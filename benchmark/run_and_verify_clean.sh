@@ -110,16 +110,21 @@ find_mibench_dir() {
             ;;
     esac
     
-    # Search in network and automotive directories
-    for category in network automotive; do
-        for subdir in "$MIBENCH_DIR/$category"/*; do
-            if [ -d "$subdir" ]; then
-                local dir_name=$(basename "$subdir")
-                # Match by program name
-                if [[ "$dir_name" == "$prog_name"* ]] || [[ "$prog_name" == "$dir_name"* ]]; then
-                    echo "$subdir"
-                    return 0
-                fi
+    # Search in all category directories under mibench_script
+    for category_dir in "$MIBENCH_DIR"/*; do
+        if [ ! -d "$category_dir" ]; then
+            continue
+        fi
+        for subdir in "$category_dir"/*; do
+            if [ ! -d "$subdir" ]; then
+                continue
+            fi
+            local dir_name
+            dir_name=$(basename "$subdir")
+            # Match by program name
+            if [[ "$dir_name" == "$prog_name"* ]] || [[ "$prog_name" == "$dir_name"* ]]; then
+                echo "$subdir"
+                return 0
             fi
         done
     done
