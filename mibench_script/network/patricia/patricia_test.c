@@ -48,9 +48,8 @@ struct ptree {
 /* User data structure */
 struct MyNode {
 	int foo;
-	double bar;
+	long long bar;
 };
-
 
 /* ========================================================================
  * MINIMAL UTILITY FUNCTIONS - No stdlib dependencies
@@ -69,40 +68,48 @@ static void my_memcpy(void *dest, const void *src, unsigned long n)
 	while (n--) *d++ = *s++;
 }
 
-/* Simple string to float parser - using double for better precision */
-static float my_atof(const char *str)
+/* Parse a decimal string to integer microseconds (avoids soft-float). */
+static long long parse_time_us(const char *str)
 {
-	double result = 0.0;
-	double fraction = 0.0;
-	double divisor = 1.0;
-	int sign = 1;
+	long long sign = 1;
+	unsigned long long int_part = 0;
+	unsigned long long frac_part = 0;
+	int frac_digits = 0;
 	int in_fraction = 0;
-	
-	/* Skip whitespace */
+
+	/* Skip leading whitespace */
 	while (*str == ' ' || *str == '\t') str++;
-	
+
 	/* Handle sign */
 	if (*str == '-') { sign = -1; str++; }
 	else if (*str == '+') str++;
-	
-	/* Parse digits */
+
 	while (*str) {
 		if (*str >= '0' && *str <= '9') {
+			unsigned int digit = (unsigned int)(*str - '0');
 			if (!in_fraction) {
-				result = result * 10.0 + (*str - '0');
+				int_part = int_part * 10ULL + digit;
+			} else if (frac_digits < 6) {
+				frac_part = frac_part * 10ULL + digit;
+				frac_digits++;
 			} else {
-				fraction = fraction * 10.0 + (*str - '0');
-				divisor *= 10.0;
+				/* Ignore digits beyond microsecond precision */
 			}
 		} else if (*str == '.' && !in_fraction) {
 			in_fraction = 1;
 		} else if (*str == ' ' || *str == '\t') {
-			break;  /* Stop at whitespace */
+			break;
 		}
 		str++;
 	}
-	
-	return (float)(sign * (result + fraction / divisor));
+
+	/* Scale fractional part to microseconds */
+	while (frac_digits < 6) {
+		frac_part *= 10ULL;
+		frac_digits++;
+	}
+
+	return sign * ((long long)int_part * 1000000LL + (long long)frac_part);
 }
 
 /* Simple string to int parser */
@@ -128,12 +135,12 @@ static int my_atoi(const char *str)
 }
 
 /* Parse test data line: "time addr ..." */
-static void parse_line(const char *line, float *time, unsigned int *addr)
+static void parse_line(const char *line, long long *time_us, unsigned int *addr)
 {
 	const char *p = line;
 	
-	/* Parse time (float) */
-	*time = my_atof(p);
+	/* Parse time as integer microseconds */
+	*time_us = parse_time_us(p);
 	
 	/* Skip to next whitespace-separated field */
 	while (*p && *p != ' ' && *p != '\t') p++;
@@ -539,7 +546,7 @@ main(int argc, char **argv)
 	struct ptree_mask *pm;
 	struct in_addr addr;
 	unsigned long mask = 0xffffffff;
-	float time;
+	long long time_us;
 	int i;
 	
 	(void)argc; (void)argv; /* Unused parameters */
@@ -582,7 +589,7 @@ main(int argc, char **argv)
 		/*
 		 * Parse test data line to extract time and address.
 		 */
-		parse_line(test_data[i], &time, &addr.s_addr);
+		parse_line(test_data[i], &time_us, &addr.s_addr);
 
 		/* Create a Patricia trie node to insert */
 		p = alloc_node();
@@ -608,7 +615,10 @@ main(int argc, char **argv)
 
 		pfind = pat_search(addr.s_addr, phead);
 		if (pfind->p_key == addr.s_addr) {
-			printf("%f %08x: Found.\n", time, addr.s_addr);
+			int whole = (int)time_us / 1000000;
+			int frac = (int)time_us % 1000000;
+			if (frac < 0) frac = -frac;
+			printf("%d.%06d %08x: Found.\n", whole, frac, addr.s_addr);
 			found_count++;
 		} else {
 			/* Insert the node */

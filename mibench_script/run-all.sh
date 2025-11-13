@@ -34,7 +34,7 @@
 #          network/dijkstra
 #          network/patricia"
          
-SRCDIRS="security/sha"
+SRCDIRS="automotive/bitcount"
 CURRDIR=$(pwd)
 
 # compiler
