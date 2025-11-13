@@ -9,16 +9,15 @@
 #include <stdio.h>
 // #include <stdlib.h>
 #include <time.h>
+#include <limits.h>
 
 #define FUNCS  7
-#define DBL_MAX 1e+308
-#define CHAR_BIT 8
 #ifndef CDECL
 #define CDECL
 #endif
 
 static unsigned long long bitcnts_rand_state = 1ULL;
-static volatile double bitcnts_checksum = 0.0;
+static volatile long long bitcnts_checksum = 0;
 
 void srand(unsigned int seed)
 {
@@ -74,11 +73,11 @@ int atoi(const char *s)
 int main(int argc, char *argv[])
 {
       clock_t start, stop;
-      double ct, cmin = DBL_MAX, cmax = 0;
+      long cmin_ms = LONG_MAX, cmax_ms = 0;
       int i, cminix = 0, cmaxix = 0;
       long j, n, seed;
       int iterations;
-      double checksum = 0.0;
+      long long checksum = 0;
       static int (* CDECL pBitCntFunc[FUNCS])(long) = {
             bit_count,
             bitcount,
@@ -115,25 +114,30 @@ int main(int argc, char *argv[])
                   n += pBitCntFunc[i](seed);
 
             stop = clock();
-            ct = (stop - start) / (double)CLOCKS_PER_SEC;
-            if (ct < cmin) {
-                  cmin = ct;
+            int elapsed = (int)(stop - start);
+            int ct_ms = (int)(((unsigned int)elapsed * 1000u) / (unsigned int)CLOCKS_PER_SEC);
+            if (ct_ms < cmin_ms) {
+                  cmin_ms = ct_ms;
                   cminix = i;
             }
-            if (ct > cmax) {
-                  cmax = ct;
+            if (ct_ms > cmax_ms) {
+                  cmax_ms = ct_ms;
                   cmaxix = i;
             }
 
-            checksum += ct;
-            checksum += (double)n;
-            printf("%-38s> Time: %7.3f sec.; Bits: %ld\n", text[i], ct, n);
+            checksum += ct_ms;
+            checksum += (long long)n;
+            long secs = ct_ms / 1000;
+            long millis = ct_ms % 1000;
+            if (millis < 0) millis += 1000, secs -= 1;
+            printf("%-38s> Time: %4ld.%03ld sec.; Bits: %ld\n",
+                   text[i], secs, millis, n);
       }
-      checksum += cmin;
-      checksum += cmax;
-      checksum += (double)cminix;
-      checksum += (double)cmaxix;
-      checksum += (double)iterations;
+      checksum += cmin_ms;
+      checksum += cmax_ms;
+      checksum += (long long)cminix;
+      checksum += (long long)cmaxix;
+      checksum += (long long)iterations;
       bitcnts_checksum = checksum;
       printf("\nBest  > %s\n", text[cminix]);
       printf("Worst > %s\n", text[cmaxix]);

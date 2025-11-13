@@ -2,25 +2,23 @@
 Instruction Set Statistics Summary
 ================================================================================
 
-Total instructions: 44
-  - Standard RV32IM instructions: 31
-  - Pseudo instructions: 13
+Total instructions: 43
+  - Standard RV32IM instructions: 29
+  - Pseudo instructions: 14
 
 ================================================================================
-Standard RV32IM Instructions (31)
+Standard RV32IM Instructions (29)
 ================================================================================
   add
   addi
   and
   andi
-  auipc
   beq
   bge
   bgeu
   blt
   bltu
   bne
-  jal
   jalr
   lbu
   lui
@@ -42,7 +40,7 @@ Standard RV32IM Instructions (31)
   xor
 
 ================================================================================
-Pseudo Instructions (13)
+Pseudo Instructions (14)
 ================================================================================
   bgt
   bgtu
@@ -53,6 +51,7 @@ Pseudo Instructions (13)
   jr
   li
   mv
+  neg
   ret
   seqz
   sgtu
