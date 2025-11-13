@@ -138,7 +138,7 @@ quicksort_range:
 	lw	a5,12(sp)
 	bge	s1,a5,.L29
 	addi	s10,s1,0
-	jal	zero,.L2
+	jal	x0,.L2
 .L26:
 	lw	a2,16(s6)
 	lw	a3,20(s6)
@@ -148,7 +148,7 @@ quicksort_range:
 	auipc	ra,%pcrel_hi(__ltdf2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_5)
 	bge	zero,a0,.L14
-	jal	zero,.L15
+	jal	x0,.L15
 .L29:
 	lw	s0,104(sp)
 	lw	s1,100(sp)
@@ -173,7 +173,7 @@ quicksort_range:
 .Lpcrel_6:
 	auipc	ra,%pcrel_hi(quicksort_range)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_6)
-	jal	zero,.L12
+	jal	x0,.L12
 	.size	quicksort_range, .-quicksort_range
 	.section	.rodata.str1.4,"aMS",@progbits,1
 	.align	2
