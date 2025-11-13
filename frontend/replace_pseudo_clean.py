@@ -194,9 +194,9 @@ def process_all_benchmark_files():
         # Get relative path for better display
         rel_path = s_file.relative_to(benchmark_dir)
         output_file = s_file.parent / f"{s_file.stem}_clean.s"
-        if output_file.exists():
-            print(f"\nSkipping: {rel_path} (clean version already exists)")
-            continue
+        # if output_file.exists():
+        #     print(f"\nSkipping: {rel_path} (clean version already exists)")
+        #     continue
 
         print(f"\nProcessing: {rel_path}")
         
