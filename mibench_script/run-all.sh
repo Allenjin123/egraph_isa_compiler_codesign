@@ -34,7 +34,7 @@
 #          network/dijkstra
 #          network/patricia"
          
-SRCDIRS="security/rijndael"
+SRCDIRS="security/sha"
 CURRDIR=$(pwd)
 
 # compiler
