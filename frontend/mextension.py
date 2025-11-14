@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""扩展 RISC-V 乘法伪指令。
+"""扩展 RISC-V M 扩展伪指令。
 
-目前仅提供一个简单的 `replace_callmul` 函数，用给定的
-`callmul rd, rs1, rs2` 指令替换为调用软乘法例程的展开序列。
+提供函数将 M 扩展伪指令（callmul, calldiv, calldivu, callrem, callremu）
+替换为调用软件实现例程的展开序列。
 """
 
 from __future__ import annotations
@@ -11,9 +11,21 @@ import itertools
 import re
 
 
-_CALLMUL_RE = re.compile(
+# 操作类型到函数名的映射
+_OP_TO_FUNCTION = {
+    "callmul": "__mul",
+    "calldiv": "__riscv_div_lib_divsi3",
+    "calldivu": "__riscv_div_lib_udivsi3",
+    "callrem": "__riscv_div_lib_modsi3",
+    "callremu": "__riscv_div_lib_umodsi3",
+}
+
+# 需要额外保存 t0 的操作
+_OPS_NEED_T0 = {"calldiv", "calldivu", "callrem", "callremu"}
+
+_CALL_M_EXT_RE = re.compile(
     r"""
-    ^(?P<indent>\s*)callmul\s+
+    ^(?P<indent>\s*)(?P<op>callmul|calldiv|calldivu|callrem|callremu)\s+
     (?P<rd>[^\s,#]+)\s*,\s*
     (?P<rs1>[^\s,#]+)\s*,\s*
     (?P<rs2>[^\s,#]+)
@@ -33,10 +45,16 @@ def _is_a1(reg: str) -> bool:
     return reg in {"a1", "x11"}
 
 
-def replace_callmul(asm: str) -> str:
-    """将所有 `callmul rd, rs1, rs2` 伪指令替换为调用软乘实现。
+def _is_t0(reg: str) -> bool:
+    return reg in {"t0", "x5"}
 
+
+def replace_m_extension(asm: str) -> str:
+    """将所有 M 扩展伪指令替换为调用软件实现。
+
+    支持的伪指令：callmul, calldiv, calldivu, callrem, callremu
     根据 rd 是否为 a0/a1 决定是否保留对应的压栈与出栈指令。
+    对于 div/divu 操作，额外保存 t0 寄存器。
     """
 
     if not asm:
@@ -44,16 +62,20 @@ def replace_callmul(asm: str) -> str:
 
     lines = []
     for line in asm.splitlines():
-        match = _CALLMUL_RE.match(line)
+        match = _CALL_M_EXT_RE.match(line)
         if not match:
             lines.append(line)
             continue
 
         indent = match.group("indent")
+        op = match.group("op")
         rd = match.group("rd")
         rs1 = match.group("rs1")
         rs2 = match.group("rs2")
         comment = match.group("comment") or ""
+
+        function_name = _OP_TO_FUNCTION[op]
+        needs_t0 = op in _OPS_NEED_T0
 
         rs1_is_a0 = _is_a0(rs1)
         rs2_is_a1 = _is_a1(rs2)
@@ -62,9 +84,12 @@ def replace_callmul(asm: str) -> str:
 
         save_a0 = not _is_a0(rd)
         save_a1 = not _is_a1(rd)
-        # a2 和 a3 始终保存
-        stack_slots = int(save_a0) + int(save_a1) + 2
-        stack_frame = 4 * stack_slots
+        save_t0 = needs_t0 and not _is_t0(rd)
+        
+        # a2, a3 和 ra 始终保存
+        stack_slots = int(save_a0) + int(save_a1) + int(save_t0) + 3
+        # RISC-V ABI 要求栈指针保持 16 字节对齐
+        stack_frame = ((4 * stack_slots + 15) // 16) * 16
 
         new_lines = []
 
@@ -77,10 +102,15 @@ def replace_callmul(asm: str) -> str:
             if save_a1:
                 new_lines.append(f"{indent}sw\ta1, {offset}(sp)")
                 offset += 4
-            # 始终保存 a2 和 a3
+            if save_t0:
+                new_lines.append(f"{indent}sw\tt0, {offset}(sp)")
+                offset += 4
+            # 始终保存 a2, a3 和 ra
             new_lines.append(f"{indent}sw\ta2, {offset}(sp)")
             offset += 4
             new_lines.append(f"{indent}sw\ta3, {offset}(sp)")
+            offset += 4
+            new_lines.append(f"{indent}sw\tra, {offset}(sp)")
 
         # 处理参数准备：检查参数中有没有 a0
         if rs1_is_a0 or rs2_is_a0:
@@ -107,9 +137,9 @@ def replace_callmul(asm: str) -> str:
                 new_lines.append(f"{indent}add\ta0, {rs1}, x0")
                 new_lines.append(f"{indent}add\ta1, {rs2}, x0")
 
-        label = f".Lpcrel_mul_{next(_LABEL_COUNTER)}"
+        label = f".Lpcrel_{op}_{next(_LABEL_COUNTER)}"
         new_lines.append(f"{label}:")
-        new_lines.append(f"{indent}auipc\tra, %pcrel_hi(__mul)")
+        new_lines.append(f"{indent}auipc\tra, %pcrel_hi({function_name})")
         new_lines.append(f"{indent}jalr\tra, ra, %pcrel_lo({label})")
 
         new_lines.append(f"{indent}add\t{rd}, a0, x0{comment}")
@@ -122,10 +152,15 @@ def replace_callmul(asm: str) -> str:
             if save_a1:
                 new_lines.append(f"{indent}lw\ta1, {offset}(sp)")
                 offset += 4
-            # 始终恢复 a2 和 a3
+            if save_t0:
+                new_lines.append(f"{indent}lw\tt0, {offset}(sp)")
+                offset += 4
+            # 始终恢复 a2, a3 和 ra
             new_lines.append(f"{indent}lw\ta2, {offset}(sp)")
             offset += 4
             new_lines.append(f"{indent}lw\ta3, {offset}(sp)")
+            offset += 4
+            new_lines.append(f"{indent}lw\tra, {offset}(sp)")
             new_lines.append(f"{indent}addi\tsp, sp, {stack_frame}")
 
         lines.extend(new_lines)
