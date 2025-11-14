@@ -333,7 +333,7 @@ echo -e "${BLUE}步骤 0.45: 运行完整分析（Spike 指令计数 + 块执行
 
 # Check if run_complete_analysis.sh exists
 COMPLETE_ANALYSIS_SCRIPT="$BENCHMARK_DIR/run_complete_analysis.sh"
-if [ "$SKIP_FRONTEND" = true ]; then
+if [ "$SKIP_FRONTEND" = false ]; then
     if [ -f "$COMPLETE_ANALYSIS_SCRIPT" ]; then
         echo -e "${CYAN}  运行: cd benchmark && ./run_complete_analysis.sh${NC}"
 
