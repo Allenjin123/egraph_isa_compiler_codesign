@@ -45,9 +45,12 @@ for workload in "${WORKLOADS[@]}"; do
         echo "Processing: $workload"
         echo "  Last line: '$last_line'"
         echo "  Appending mul_clean.s and div_clean.s..."
-
+        echo >> "$file"  # Add a newline between the two files
+        echo >> "$file"  # Add a newline between the two files
         # Append mul_clean.s and div_clean.s (order matters!)
         cat "$MUL_CLEAN" >> "$file"
+        echo >> "$file"  # Add a newline between the two files
+        echo >> "$file"  # Add a newline between the two files
         cat "$DIV_CLEAN" >> "$file"
 
         echo "  Done!"
