@@ -80,7 +80,7 @@ class text_inst():
     def parse_instruction(cls, line: str) -> Optional['text_inst']:
         """Parse a single instruction line from cleaned SSA format"""
         line = line.strip()
-        if not line or line.startswith('#'):
+        if not line or line.startswith('#') or line.startswith('.'):
             return None
 
         # Common instruction patterns

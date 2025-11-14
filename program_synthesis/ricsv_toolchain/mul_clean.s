@@ -1,3 +1,4 @@
+    .text
     .align 2
 __mul:
     add    a2, a0, x0

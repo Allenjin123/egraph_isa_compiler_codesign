@@ -197,20 +197,18 @@ pat_insert:
 	bgeu	t3,a0,.L96
 	srl	a3,a1,a0
 	and	a3,a3,t1
-	bne	a3,zero,.+8
-	jal	x0,.L58
+	beq	a3,zero,.L58
 	lw	a3,16(a7)
 	lbu	t3,9(a3)
 	blt	t3,a2,.+8
 	jal	x0,.L97
-	bgeu	a0,t3,.+8
-	jal	x0,8
-	jal	x0,.L97
+	bgeu	a0,t3,.L97
 	srl	a5,a1,t3
 	and	a5,a5,t1
 	sw	a4,12(sp)
 	sw	a7,8(sp)
-	beq	a5,zero,.L63
+	bne	a5,zero,.+8
+	jal	x0,.L63
 	lw	a0,16(a3)
 	addi	a1,a6,0
 	sw	a3,4(sp)
@@ -274,8 +272,7 @@ pat_insert:
 	jalr	zero,ra,0
 .L37:
 	lbu	a1,8(a4)
-	bne	a1,zero,.+8
-	jal	x0,.L40
+	beq	a1,zero,.L40
 	lw	a3,4(a4)
 	addi	a5,zero,0
 	addi	a6,a3,0
@@ -335,7 +332,8 @@ pat_insert:
 	lui	a6,3
 	add	a5,a5,a1
 	addi	a6,a6,-288
-	bge	a6,a5,.+8
+	blt	a6,a5,.+8
+	jal	x0,8
 	jal	x0,.L125
 	lui	a6,%hi(static_masks)
 	slli	a1,a1,3
@@ -376,11 +374,9 @@ pat_insert:
 	lw	a3,4(a4)
 	lw	a7,0(a2)
 .L49:
-	sub	a6,x0,a3
-	sub	a3,t1,a6
+	add	a3,a3,t1
 	lw	a6,0(a3)
-	bltu	a6,a7,.+8
-	jal	x0,.L126
+	bgeu	a6,a7,.L126
 	lbu	a2,0(a3)
 	addi	a1,a1,1
 	slli	t1,a1,3
@@ -405,22 +401,22 @@ pat_insert:
 	lw	a2,4(a0)
 	jal	x0,.L47
 .L48:
-	bne	t4,zero,.+8
-	jal	x0,8
-	jal	x0,.L46
+	bne	t4,zero,.L46
 	lw	a2,4(a0)
 .L50:
 	addi	a3,a5,-1
 	sub	a3,a3,a2
 	sltiu	a3,a3,3
 	bne	a3,zero,.L51
-	andi	a3,a2,3
+	addi	a3,x0,3
+	and	a3,a2,a3
 	bne	a3,zero,.L51
 	lw	a3,0(a2)
 	sw	a3,0(a5)
 	lw	a3,4(a2)
 	sw	a3,4(a5)
-	lbu	a3,8(a4)
+	lw	a3,8(a4)
+	andi	a3,a3,255
 .L46:
 	addi	a3,a3,1
 	sb	a3,8(a4)
@@ -486,11 +482,10 @@ pat_insert:
 	jal	x0,.L69
 .L97:
 	sb	a2,9(a6)
-	or	a0,t1,a5
-	sub	a0,a0,a5
-	sub	a5,t1,a0
+	and	a5,t1,a5
 	addi	a2,a6,0
-	bne	a5,zero,.L61
+	beq	a5,zero,.+8
+	jal	x0,.L61
 	addi	a2,a3,0
 	addi	a3,a6,0
 .L61:
@@ -503,8 +498,7 @@ pat_insert:
 	sb	a2,9(a6)
 	and	a5,t1,a5
 	addi	a2,a6,0
-	bne	a5,zero,.+8
-	jal	x0,8
+	beq	a5,zero,.+8
 	jal	x0,.L80
 	addi	a2,a3,0
 	addi	a3,a6,0
@@ -548,8 +542,7 @@ pat_insert:
 	sb	a3,6(a5)
 	lbu	a3,7(a2)
 	sb	a3,7(a5)
-	lw	a3,8(a4)
-	andi	a3,a3,255
+	lbu	a3,8(a4)
 	jal	x0,.L46
 .L63:
 	lw	a0,12(a3)
@@ -848,7 +841,11 @@ main:
 	bgeu	a0, a4, .L211
 .L206:
 	addi	a5,a5,-48
-	andi	a3,a5,255
+	addi	a3,x0,255
+	or	a3,a5,a3
+	addi	a0,x0,255
+	sub	x0,a3,a0
+	sub	a3,a5,x0
 	addi	a2,zero,9
 	addi	a4,zero,0
 	bltu	a2,a3,.L202
