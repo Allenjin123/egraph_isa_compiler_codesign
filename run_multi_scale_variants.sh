@@ -11,13 +11,14 @@
 set -e  # Exit on error
 
 # Default configuration
-DEFAULT_SCALES="0 0.0005 0.001 0.005 0.01 0.1 0.5 1 10"
+DEFAULT_SCALES="0 0.0005 0.001 0.002 0.005 0.01 0.1 0.5 1 10"
 DEFAULT_K=3
 DEFAULT_TIMEOUT=180
-DEFAULT_PARALLEL_JOBS=24
-DEFAULT_SYNTH_JOBS=38  # Parallel synthesis processes
-DEFAULT_CLEAN=true     # Clean old outputs by default
-DEFAULT_RUN_SATURATION=true  # Run saturation by default
+DEFAULT_PROGRAM_PARALLEL=4     # Number of programs to process in parallel
+DEFAULT_ILP_PARALLEL=24        # Number of ILP scaling factors to run in parallel per program
+DEFAULT_SYNTH_PARALLEL=38      # Number of synthesis processes to run in parallel
+DEFAULT_CLEAN=true             # Clean old outputs by default
+DEFAULT_RUN_SATURATION=true    # Run saturation by default
 # DEFAULT_PROGRAMS is now dynamically determined from available clean.s files
 
 # Color codes for output
@@ -64,8 +65,9 @@ usage() {
     echo "  -s, --scales SCALES        空格分隔的缩放因子列表 (默认: '$DEFAULT_SCALES')"
     echo "  -k, --best-k K             每个缩放因子的变体数 (默认: $DEFAULT_K)"
     echo "  -t, --timeout TIMEOUT      ILP 求解器超时秒数 (默认: $DEFAULT_TIMEOUT)"
-    echo "  -j, --jobs JOBS            ILP 并行任务数 (默认: $DEFAULT_PARALLEL_JOBS)"
-    echo "  -sj, --synth-jobs JOBS     合成并行进程数 (默认: $DEFAULT_SYNTH_JOBS)"
+    echo "  -p, --program-parallel N   同时处理的程序数量 (默认: $DEFAULT_PROGRAM_PARALLEL)"
+    echo "  -i, --ilp-parallel N       每个程序并行运行的ILP缩放因子数 (默认: $DEFAULT_ILP_PARALLEL)"
+    echo "  -sy, --synth-parallel N    并行合成进程数 (默认: $DEFAULT_SYNTH_PARALLEL)"
     echo "  -o, --output-dir DIR       输出目录基础路径 (默认: output/backend/)"
     echo "  --clean                    清理旧输出（默认：是）"
     echo "  --no-clean                 不清理旧输出"
@@ -83,8 +85,10 @@ usage() {
     echo "  $0 dijkstra_small_O3                                   # 运行单个程序"
     echo "  $0 dijkstra_small_O3 basicmath_small_O3                # 运行2个程序"
     echo "  $0 -s '0 1 100' -k 5                                   # 所有程序，3个缩放因子，每个5个变体"
-    echo "  $0 dijkstra_small_O3 -j 10 -t 300                      # 单个程序，10个ILP并行任务，300秒超时"
-    echo "  $0 dijkstra_small_O3 -sj 72                            # 单个程序，72个并行合成进程"
+    echo "  $0 -p 4                                                # 同时处理4个程序"
+    echo "  $0 -p 6 -i 10                                          # 6个程序并行，每个程序10个ILP并行"
+    echo "  $0 dijkstra_small_O3 -i 10 -t 300                      # 单个程序，10个ILP并行任务，300秒超时"
+    echo "  $0 dijkstra_small_O3 -sy 72                            # 单个程序，72个并行合成进程"
     echo "  $0 --skip-saturation --no-clean                        # 所有程序，跳过清理和饱和"
     echo ""
     exit 1
@@ -100,8 +104,9 @@ PROGRAM_NAMES=()
 SCALES="$DEFAULT_SCALES"
 BEST_K="$DEFAULT_K"
 TIMEOUT="$DEFAULT_TIMEOUT"
-PARALLEL_JOBS="$DEFAULT_PARALLEL_JOBS"
-SYNTH_JOBS="$DEFAULT_SYNTH_JOBS"
+PROGRAM_PARALLEL="$DEFAULT_PROGRAM_PARALLEL"
+ILP_PARALLEL="$DEFAULT_ILP_PARALLEL"
+SYNTH_PARALLEL="$DEFAULT_SYNTH_PARALLEL"
 OUTPUT_BASE_DIR=""
 RECONSTRUCT_ONLY=false
 CLEAN_OUTPUTS="$DEFAULT_CLEAN"
@@ -122,12 +127,16 @@ while [[ $# -gt 0 ]]; do
             TIMEOUT="$2"
             shift 2
             ;;
-        -j|--jobs)
-            PARALLEL_JOBS="$2"
+        -p|--program-parallel)
+            PROGRAM_PARALLEL="$2"
             shift 2
             ;;
-        -sj|--synth-jobs)
-            SYNTH_JOBS="$2"
+        -i|--ilp-parallel)
+            ILP_PARALLEL="$2"
+            shift 2
+            ;;
+        -sy|--synth-parallel)
+            SYNTH_PARALLEL="$2"
             shift 2
             ;;
         -o|--output-dir)
@@ -206,22 +215,29 @@ echo -e "每个缩放因子变体数: ${GREEN}${BEST_K}${NC}"
 echo -e "每个程序变体数: ${GREEN}${TOTAL_VARIANTS_PER_PROGRAM}${NC}"
 echo -e "总变体数 (所有程序): ${GREEN}${TOTAL_PROGRAMS_VARIANTS}${NC}"
 echo -e "ILP 超时: ${GREEN}${TIMEOUT}秒${NC}"
-echo -e "ILP 并行任务数: ${GREEN}${PARALLEL_JOBS}${NC}"
-echo -e "合成并行进程数: ${GREEN}${SYNTH_JOBS}${NC}"
+echo -e "程序并行数: ${GREEN}${PROGRAM_PARALLEL}${NC} (同时处理的程序数)"
+echo -e "ILP 并行数: ${GREEN}${ILP_PARALLEL}${NC} (每个程序的缩放因子并行数)"
+echo -e "合成并行数: ${GREEN}${SYNTH_PARALLEL}${NC} (并行合成进程数)"
 echo -e "输出基础目录: ${GREEN}${OUTPUT_BASE_DIR}${NC}"
 echo -e "${CYAN}========================================${NC}"
 echo ""
 
 # ============================================================================
-# Main loop: Process each program
+# Function to process a single program
 # ============================================================================
-GLOBAL_START_TIME=$(date +%s)
-SUCCESSFUL_PROGRAMS=0
-FAILED_PROGRAMS=0
+process_single_program() {
+    local PROGRAM_NAME="$1"
+    local PROGRAM_NUM="$2"
+    local NUM_PROGRAMS="$3"
 
-for PROGRAM_IDX in "${!PROGRAM_NAMES[@]}"; do
-    PROGRAM_NAME="${PROGRAM_NAMES[$PROGRAM_IDX]}"
-    PROGRAM_NUM=$((PROGRAM_IDX + 1))
+    # Create a log file for this program
+    local LOG_FILE="${OUTPUT_BASE}/logs/${PROGRAM_NAME}_process.log"
+    mkdir -p "$(dirname "$LOG_FILE")"
+
+    # Redirect all output for this program to both console and log file
+    exec 3>&1 4>&2
+    exec 1> >(tee -a "$LOG_FILE")
+    exec 2>&1
 
     echo ""
     echo -e "${MAGENTA}================================================================================${NC}"
@@ -455,7 +471,7 @@ EOF
         chmod +x "$JOB_SCRIPT"
 
         # Run job in background (with job control)
-        if [ ${#JOB_PIDS[@]} -ge $PARALLEL_JOBS ]; then
+        if [ ${#JOB_PIDS[@]} -ge $ILP_PARALLEL ]; then
             # Wait for at least one job to finish
             wait -n
         fi
@@ -746,10 +762,10 @@ echo -e "${GREEN}成功处理 ${SSA_COUNT}/${VARIANT_COUNT} 个变体的 SSA 转
 # Step 6: Analyze area and latency for all variants + Pareto frontier
 # ============================================================================
 echo ""
-echo -e "${BLUE}步骤 6/6: 并行分析所有变体的面积和延迟 (${SYNTH_JOBS} 个进程)...${NC}"
+echo -e "${BLUE}步骤 6/6: 并行分析所有变体的面积和延迟 (${SYNTH_PARALLEL} 个进程)...${NC}"
 
 # Use parallel analysis with configurable number of synthesis processes
-python3 "$SCRIPT_DIR/analyze_all_variants.py" "$FINAL_OUTPUT" "$PROGRAM_NAME" "$OUTPUT_DIR" "$SYNTH_JOBS"
+python3 "$SCRIPT_DIR/analyze_all_variants.py" "$FINAL_OUTPUT" "$PROGRAM_NAME" "$OUTPUT_DIR" "$SYNTH_PARALLEL"
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓ Pareto 分析完成${NC}"
@@ -809,8 +825,8 @@ Configuration:
 - SSA conversions successful: $SSA_COUNT
 - Area/Latency analysis: $([ $ANALYSIS_SUCCESS -eq 1 ] && echo "Completed" || echo "Not completed")
 - ILP timeout: ${TIMEOUT}s
-- ILP parallel jobs: $PARALLEL_JOBS
-- Synthesis parallel processes: $SYNTH_JOBS
+- ILP parallel jobs: $ILP_PARALLEL
+- Synthesis parallel processes: $SYNTH_PARALLEL
 
 Pareto Analysis:
 $(if [ -f "$OUTPUT_DIR/pareto_frontier.png" ]; then
@@ -848,19 +864,126 @@ EOF
 echo ""
 echo -e "${YELLOW}汇总报告已保存至: $SUMMARY_FILE${NC}"
 
-    # Track program success/failure
+    # Restore original file descriptors
+    exec 1>&3 2>&4
+    exec 3>&- 4>&-
+
+    # Return status (0 = success, 1 = partial success/warning, 2 = failure)
     if [ $ANALYSIS_SUCCESS -eq 1 ]; then
-        SUCCESSFUL_PROGRAMS=$((SUCCESSFUL_PROGRAMS + 1))
         echo -e "${GREEN}✓ 程序 ${PROGRAM_NAME} 完成${NC}"
+        return 0
+    else
+        echo -e "${YELLOW}⚠ 程序 ${PROGRAM_NAME} 完成但分析未成功${NC}"
+        return 1
+    fi
+}
+
+# ============================================================================
+# Main processing with program-level parallelism
+# ============================================================================
+GLOBAL_START_TIME=$(date +%s)
+
+# Arrays to track program processing
+declare -a PROGRAM_PIDS
+declare -a PROGRAM_STATUS
+declare -a PROGRAM_NAMES_ARRAY
+
+# Initialize arrays
+for i in "${!PROGRAM_NAMES[@]}"; do
+    PROGRAM_NAMES_ARRAY[$i]="${PROGRAM_NAMES[$i]}"
+done
+
+echo -e "${CYAN}开始处理 ${#PROGRAM_NAMES[@]} 个程序 (最多 ${PROGRAM_PARALLEL} 个并行)...${NC}"
+echo ""
+
+# Process programs with parallelism control
+ACTIVE_JOBS=0
+PROGRAM_INDEX=0
+TOTAL_PROGRAMS=${#PROGRAM_NAMES[@]}
+
+while [ $PROGRAM_INDEX -lt $TOTAL_PROGRAMS ] || [ $ACTIVE_JOBS -gt 0 ]; do
+    # Launch new jobs if we have capacity and programs remaining
+    while [ $ACTIVE_JOBS -lt $PROGRAM_PARALLEL ] && [ $PROGRAM_INDEX -lt $TOTAL_PROGRAMS ]; do
+        PROGRAM_NAME="${PROGRAM_NAMES[$PROGRAM_INDEX]}"
+        PROGRAM_NUM=$((PROGRAM_INDEX + 1))
+
+        echo -e "${BLUE}启动程序 ${PROGRAM_NUM}/${TOTAL_PROGRAMS}: ${PROGRAM_NAME}${NC}"
+
+        # Launch program processing in background
+        process_single_program "$PROGRAM_NAME" "$PROGRAM_NUM" "$TOTAL_PROGRAMS" &
+        PID=$!
+        PROGRAM_PIDS[$PROGRAM_INDEX]=$PID
+
+        echo -e "${CYAN}  PID: $PID${NC}"
+
+        ACTIVE_JOBS=$((ACTIVE_JOBS + 1))
+        PROGRAM_INDEX=$((PROGRAM_INDEX + 1))
+    done
+
+    # Wait for at least one job to finish if we're at capacity
+    if [ $ACTIVE_JOBS -ge $PROGRAM_PARALLEL ] || [ $PROGRAM_INDEX -ge $TOTAL_PROGRAMS ]; then
+        # Wait for any job to complete
+        wait -n
+
+        # Check which jobs have completed
+        for i in "${!PROGRAM_PIDS[@]}"; do
+            PID=${PROGRAM_PIDS[$i]}
+            if [ -n "$PID" ] && ! kill -0 "$PID" 2>/dev/null; then
+                # Job has completed, get exit status
+                wait "$PID"
+                STATUS=$?
+                PROGRAM_STATUS[$i]=$STATUS
+                unset PROGRAM_PIDS[$i]
+                ACTIVE_JOBS=$((ACTIVE_JOBS - 1))
+
+                # Log completion
+                PROG_NAME="${PROGRAM_NAMES_ARRAY[$i]}"
+                if [ $STATUS -eq 0 ]; then
+                    echo -e "${GREEN}✓ 程序 ${PROG_NAME} (PID: $PID) 成功完成${NC}"
+                elif [ $STATUS -eq 1 ]; then
+                    echo -e "${YELLOW}⚠ 程序 ${PROG_NAME} (PID: $PID) 完成但有警告${NC}"
+                else
+                    echo -e "${RED}✗ 程序 ${PROG_NAME} (PID: $PID) 失败${NC}"
+                fi
+            fi
+        done
+    fi
+done
+
+# Wait for all remaining jobs
+echo ""
+echo -e "${CYAN}等待所有剩余任务完成...${NC}"
+for i in "${!PROGRAM_PIDS[@]}"; do
+    PID=${PROGRAM_PIDS[$i]}
+    if [ -n "$PID" ]; then
+        wait "$PID"
+        STATUS=$?
+        PROGRAM_STATUS[$i]=$STATUS
+        PROG_NAME="${PROGRAM_NAMES_ARRAY[$i]}"
+        if [ $STATUS -eq 0 ]; then
+            echo -e "${GREEN}✓ 程序 ${PROG_NAME} (PID: $PID) 成功完成${NC}"
+        elif [ $STATUS -eq 1 ]; then
+            echo -e "${YELLOW}⚠ 程序 ${PROG_NAME} (PID: $PID) 完成但有警告${NC}"
+        else
+            echo -e "${RED}✗ 程序 ${PROG_NAME} (PID: $PID) 失败${NC}"
+        fi
+    fi
+done
+
+# Count successes and failures
+SUCCESSFUL_PROGRAMS=0
+WARNING_PROGRAMS=0
+FAILED_PROGRAMS=0
+
+for STATUS in "${PROGRAM_STATUS[@]}"; do
+    if [ $STATUS -eq 0 ]; then
+        SUCCESSFUL_PROGRAMS=$((SUCCESSFUL_PROGRAMS + 1))
+    elif [ $STATUS -eq 1 ]; then
+        WARNING_PROGRAMS=$((WARNING_PROGRAMS + 1))
     else
         FAILED_PROGRAMS=$((FAILED_PROGRAMS + 1))
-        echo -e "${YELLOW}⚠ 程序 ${PROGRAM_NAME} 完成但分析未成功${NC}"
     fi
-
-    # Re-enable exit on error for next program
-    set -e
-
-done  # End of main program loop
+done
 
 # ============================================================================
 # Global Summary (All Programs)
@@ -876,8 +999,11 @@ echo -e "${CYAN}全局汇总 - 所有程序处理完成${NC}"
 echo -e "${CYAN}================================================================================${NC}"
 echo -e "处理程序数: ${GREEN}${NUM_PROGRAMS}${NC}"
 echo -e "成功: ${GREEN}${SUCCESSFUL_PROGRAMS}${NC}"
+if [ $WARNING_PROGRAMS -gt 0 ]; then
+    echo -e "警告: ${YELLOW}${WARNING_PROGRAMS}${NC}"
+fi
 if [ $FAILED_PROGRAMS -gt 0 ]; then
-    echo -e "失败/警告: ${YELLOW}${FAILED_PROGRAMS}${NC}"
+    echo -e "失败: ${RED}${FAILED_PROGRAMS}${NC}"
 fi
 echo -e "总耗时: ${GREEN}${GLOBAL_DURATION_MIN}分${GLOBAL_DURATION_SEC}秒${NC}"
 echo -e "输出目录: ${GREEN}${OUTPUT_BASE_DIR}${NC}"

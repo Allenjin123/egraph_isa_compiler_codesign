@@ -1,8 +1,9 @@
 #!/bin/bash
 ###############################################################################
 # Complete analysis pipeline:
-# 1. Run spike instruction counts for all workloads (parallel)
-# 2. Run block execution analysis for all workloads (sequential)
+# 1. Append mul/div subroutines to clean.s files if needed
+# 2. Run spike instruction counts for all workloads (parallel)
+# 3. Run block execution analysis for all workloads (sequential)
 ###############################################################################
 
 # Colors
@@ -23,8 +24,22 @@ echo -e "${MAGENTA}Complete Analysis Pipeline${NC}"
 echo -e "${MAGENTA}============================================================${NC}"
 echo ""
 
-# Step 1: Run spike counts
-echo -e "${CYAN}Step 1: Running Spike instruction counts (parallel)${NC}"
+# Step 1: Append mul/div subroutines
+echo -e "${CYAN}Step 1: Appending mul/div subroutines to clean.s files${NC}"
+echo ""
+
+if ! ./append_mul_div.sh; then
+    echo ""
+    echo -e "${RED}Failed to append mul/div subroutines!${NC}"
+    exit 1
+fi
+
+echo ""
+echo -e "${GREEN}✓ Mul/div subroutines appended to clean.s files${NC}"
+echo ""
+
+# Step 2: Run spike counts
+echo -e "${CYAN}Step 2: Running Spike instruction counts (parallel)${NC}"
 echo ""
 
 if ! ./run_all_spike_counts.sh; then
@@ -38,8 +53,8 @@ echo ""
 echo -e "${GREEN}✓ Spike instruction counts completed${NC}"
 echo ""
 
-# Step 2: Run block analysis
-echo -e "${CYAN}Step 2: Running block execution analysis${NC}"
+# Step 3: Run block analysis
+echo -e "${CYAN}Step 3: Running block execution analysis${NC}"
 echo ""
 
 if ! ./run_all_block_analysis.sh; then
