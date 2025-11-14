@@ -23,7 +23,8 @@ insertR:
 	addi	t1,a0,0
 	addi	a5,a1,0
 	addi	a4,a2,0
-	bge	a6,a2,.L2
+	blt	a6,a2,.+8
+	jal	x0,.L2
 	lw	op_1,8(a3)
 	addi	op_2,x0,8
 	srl	op_0,op_1,op_2
@@ -44,8 +45,7 @@ insertR:
 	or	op_1,a3,a7
 	sub	op_0,op_1,a7
 	sub	a3,a3,op_0
-	beq	a3,zero,.+8
-	jal	x0,8
+	bne	a3,zero,.+8
 	jal	x0,.L6
 	lw	a3,16(t1)
 	lw	op_1,8(a3)
@@ -59,7 +59,8 @@ insertR:
 	addi	op_9,x0,255
 	sub	op_3,op_4,op_9
 	sub	t3,op_0,op_3
-	bge	t3,a2,.L23
+	blt	t3,a2,.+8
+	jal	x0,.L23
 	bltu	a6,t3,.+8
 	jal	x0,.L23
 	srl	a0,a0,t3
@@ -67,7 +68,8 @@ insertR:
 	sub	op_0,op_1,a7
 	sub	a0,a0,op_0
 	sw	t1,12(sp)
-	beq	a0,zero,.L11
+	bne	a0,zero,.+8
+	jal	x0,.L11
 	lw	a0,16(a3)
 	sw	a3,8(sp)
 .Lpcrel_1:
@@ -92,7 +94,8 @@ insertR:
 	sub	op_0,op_1,a7
 	sub	a4,a3,op_0
 	addi	a3,a5,0
-	beq	a4,zero,.L4
+	bne	a4,zero,.+8
+	jal	x0,.L4
 	addi	a3,t1,0
 	addi	t1,a5,0
 .L4:
@@ -113,7 +116,8 @@ insertR:
 	addi	op_9,x0,255
 	sub	op_3,op_4,op_9
 	sub	t3,op_0,op_3
-	bge	t3,a2,.L24
+	blt	t3,a2,.+8
+	jal	x0,.L24
 	bltu	a6,t3,.+8
 	jal	x0,.L24
 	srl	a0,a0,t3
@@ -121,7 +125,8 @@ insertR:
 	sub	op_0,op_1,a7
 	sub	a0,a0,op_0
 	sw	t1,12(sp)
-	beq	a0,zero,.L17
+	bne	a0,zero,.+8
+	jal	x0,.L17
 	lw	a0,16(a3)
 	sw	a3,8(sp)
 .Lpcrel_2:
@@ -145,8 +150,7 @@ insertR:
 	sub	op_0,op_1,a7
 	sub	a4,a2,op_0
 	addi	a2,a5,0
-	beq	a4,zero,.+8
-	jal	x0,.L15
+	bne	a4,zero,.L15
 	addi	a2,a3,0
 	addi	a3,a5,0
 .L15:
@@ -161,8 +165,7 @@ insertR:
 	sub	op_0,op_1,a7
 	sub	a4,a2,op_0
 	addi	a2,a5,0
-	beq	a4,zero,.+8
-	jal	x0,.L9
+	bne	a4,zero,.L9
 	addi	a2,a3,0
 	addi	a3,a5,0
 .L9:
@@ -197,10 +200,13 @@ insertR:
 	.globl	pat_insert
 	.type	pat_insert, @function
 pat_insert:
-	beq	a1,zero,.L87
-	beq	a0,zero,.L87
+	bne	a1,zero,.+8
+	jal	x0,.L87
+	bne	a0,zero,.+8
+	jal	x0,.L87
 	lw	a2,4(a0)
-	beq	a2,zero,.L117
+	bne	a2,zero,.+8
+	jal	x0,.L117
 	lw	a7,0(a2)
 	lw	t1,0(a0)
 	lui	a6,524288
@@ -225,7 +231,8 @@ pat_insert:
 	or	op_1,a5,t1
 	sub	op_0,op_1,t1
 	sub	a5,a5,op_0
-	beq	a5,zero,.L33
+	bne	a5,zero,.+8
+	jal	x0,.L33
 .L120:
 	lw	a4,16(a4)
 	lw	op_1,8(a4)
@@ -247,8 +254,7 @@ pat_insert:
 	or	op_1,a5,t1
 	sub	op_0,op_1,t1
 	sub	a5,a5,op_0
-	beq	a5,zero,.+8
-	jal	x0,.L120
+	bne	a5,zero,.L120
 .L33:
 	lw	a4,12(a4)
 	lw	op_1,8(a4)
@@ -265,7 +271,8 @@ pat_insert:
 	bltu	a3,a5,.L34
 .L35:
 	lw	a3,0(a4)
-	beq	t1,a3,.L37
+	bne	t1,a3,.+8
+	jal	x0,.L37
 	addi	sp,sp,-32
 	or	op_0,a3,t1
 	or	op_3,a3,t1
@@ -277,25 +284,47 @@ pat_insert:
 	addi	a2,zero,1
 	addi	a6,zero,32
 	lui	a7,524288
-	bge	a5,zero,.+8
-	jal	x0,.L121
+	blt	a5,zero,.L121
 .L38:
 	addi	a2,a2,1
 	srl	a5,a7,a2
 	or	op_1,a5,a3
 	sub	op_0,op_1,a3
 	sub	a4,a5,op_0
-	beq	a2,a6,.L89
-	beq	a4,zero,.L38
+	bne	a2,a6,.+8
+	jal	x0,.L89
+	bne	a4,zero,.+8
+	jal	x0,.L38
 .L39:
 	addi	a4,a1,0
 	lui	a1,524288
 	srl	a3,a1,t3
-	or	op_1,a3,t1
+	addi	op_8,x0,-1
+	or	op_7,op_8,a3
+	addi	op_10,x0,-1
+	addi	op_13,x0,-1
+	or	op_12,op_13,a3
+	sub	op_11,op_12,a3
+	sub	op_9,op_10,op_11
+	sub	op_6,op_7,op_9
+	or	op_5,t1,op_6
+	addi	op_16,x0,-1
+	or	op_15,op_16,a3
+	addi	op_18,x0,-1
+	addi	op_21,x0,-1
+	or	op_20,op_21,a3
+	sub	op_19,op_20,a3
+	sub	op_17,op_18,op_19
+	sub	op_14,op_15,op_17
+	sub	op_4,op_5,op_14
+	sub	op_3,t1,op_4
+	sub	op_2,x0,op_3
+	sub	op_1,a3,op_2
 	sub	op_0,op_1,t1
 	sub	a3,a3,op_0
 	addi	a6,a0,0
-	beq	a3,zero,.L53
+	bne	a3,zero,.+8
+	jal	x0,.L53
 .L124:
 	lw	a7,16(a4)
 	lw	op_1,8(a7)
@@ -309,14 +338,16 @@ pat_insert:
 	addi	op_9,x0,255
 	sub	op_3,op_4,op_9
 	sub	a0,op_0,op_3
-	bge	a0,a2,.L96
+	blt	a0,a2,.+8
+	jal	x0,.L96
 	bltu	t3,a0,.+8
 	jal	x0,.L96
 	srl	a3,a1,a0
 	or	op_1,a3,t1
 	sub	op_0,op_1,t1
 	sub	a3,a3,op_0
-	beq	a3,zero,.L58
+	bne	a3,zero,.+8
+	jal	x0,.L58
 	lw	a3,16(a7)
 	lw	op_1,8(a3)
 	addi	op_2,x0,8
@@ -329,7 +360,8 @@ pat_insert:
 	addi	op_9,x0,255
 	sub	op_3,op_4,op_9
 	sub	t3,op_0,op_3
-	bge	t3,a2,.L97
+	blt	t3,a2,.+8
+	jal	x0,.L97
 	bltu	a0,t3,.+8
 	jal	x0,.L97
 	srl	a5,a1,t3
@@ -338,7 +370,8 @@ pat_insert:
 	sub	a5,a5,op_0
 	sw	a4,12(sp)
 	sw	a7,8(sp)
-	beq	a5,zero,.L63
+	bne	a5,zero,.+8
+	jal	x0,.L63
 	lw	a0,16(a3)
 	addi	a1,a6,0
 	sw	a3,4(sp)
@@ -371,34 +404,16 @@ pat_insert:
 	addi	op_9,x0,255
 	sub	op_3,op_4,op_9
 	sub	a0,op_0,op_3
-	bge	a0,a2,.L98
+	blt	a0,a2,.+8
+	jal	x0,.L98
 	bltu	t3,a0,.+8
 	jal	x0,.L98
 	srl	a3,a1,a0
-	addi	op_8,x0,-1
-	or	op_7,op_8,a3
-	addi	op_10,x0,-1
-	addi	op_13,x0,-1
-	or	op_12,op_13,a3
-	sub	op_11,op_12,a3
-	sub	op_9,op_10,op_11
-	sub	op_6,op_7,op_9
-	or	op_5,t1,op_6
-	addi	op_16,x0,-1
-	or	op_15,op_16,a3
-	addi	op_18,x0,-1
-	addi	op_21,x0,-1
-	or	op_20,op_21,a3
-	sub	op_19,op_20,a3
-	sub	op_17,op_18,op_19
-	sub	op_14,op_15,op_17
-	sub	op_4,op_5,op_14
-	sub	op_3,t1,op_4
-	sub	op_2,x0,op_3
-	sub	op_1,a3,op_2
+	or	op_1,a3,t1
 	sub	op_0,op_1,t1
 	sub	a3,a3,op_0
-	beq	a3,zero,.L70
+	bne	a3,zero,.+8
+	jal	x0,.L70
 	lw	a3,16(a7)
 	lw	op_1,8(a3)
 	addi	op_2,x0,8
@@ -411,16 +426,38 @@ pat_insert:
 	addi	op_9,x0,255
 	sub	op_3,op_4,op_9
 	sub	t3,op_0,op_3
-	bge	t3,a2,.L99
+	blt	t3,a2,.+8
+	jal	x0,.L99
 	bltu	a0,t3,.+8
 	jal	x0,.L99
 	srl	a5,a1,t3
-	or	op_1,a5,t1
+	addi	op_8,x0,-1
+	or	op_7,op_8,a5
+	addi	op_10,x0,-1
+	addi	op_13,x0,-1
+	or	op_12,op_13,a5
+	sub	op_11,op_12,a5
+	sub	op_9,op_10,op_11
+	sub	op_6,op_7,op_9
+	or	op_5,t1,op_6
+	addi	op_16,x0,-1
+	or	op_15,op_16,a5
+	addi	op_18,x0,-1
+	addi	op_21,x0,-1
+	or	op_20,op_21,a5
+	sub	op_19,op_20,a5
+	sub	op_17,op_18,op_19
+	sub	op_14,op_15,op_17
+	sub	op_4,op_5,op_14
+	sub	op_3,t1,op_4
+	sub	op_2,x0,op_3
+	sub	op_1,a5,op_2
 	sub	op_0,op_1,t1
 	sub	a5,a5,op_0
 	sw	a4,12(sp)
 	sw	a7,8(sp)
-	beq	a5,zero,.L75
+	bne	a5,zero,.+8
+	jal	x0,.L75
 	lw	a0,16(a3)
 	addi	a1,a6,0
 	sw	a3,4(sp)
@@ -454,18 +491,21 @@ pat_insert:
 	addi	op_5,x0,255
 	sub	op_1,op_2,op_5
 	sub	a1,op_0,op_1
-	beq	a1,zero,.L40
+	bne	a1,zero,.+8
+	jal	x0,.L40
 	lw	a3,4(a4)
 	addi	a5,zero,0
 	addi	a6,a3,0
 	jal	x0,.L43
 .L41:
 	addi	a6,a6,8
-	beq	a5,a1,.L122
+	bne	a5,a1,.+8
+	jal	x0,.L122
 .L43:
 	lw	t1,0(a6)
 	addi	a5,a5,1
-	beq	a7,t1,.+8
+	bne	a7,t1,.+8
+	jal	x0,8
 	jal	x0,.L41
 	lw	a5,4(a2)
 	addi	a2,a4,0
@@ -479,7 +519,8 @@ pat_insert:
 	sub	op_0,op_1,a5
 	sub	a5,t1,op_0
 	addi	a3,a6,0
-	beq	a5,zero,.L56
+	bne	a5,zero,.+8
+	jal	x0,.L56
 	addi	a3,a7,0
 	addi	a7,a6,0
 .L56:
@@ -493,8 +534,7 @@ pat_insert:
 	sub	op_0,op_1,a5
 	sub	a5,t1,op_0
 	addi	a3,a6,0
-	beq	a5,zero,.+8
-	jal	x0,.L68
+	bne	a5,zero,.L68
 	addi	a3,a7,0
 	addi	a7,a6,0
 .L68:
@@ -512,7 +552,8 @@ pat_insert:
 	sub	a3,a3,op_0
 	addi	a5,zero,0
 	addi	a6,a0,0
-	beq	a3,zero,.L53
+	bne	a3,zero,.+8
+	jal	x0,.L53
 	jal	x0,.L124
 .L122:
 	lui	t1,%hi(mask_count)
@@ -522,7 +563,8 @@ pat_insert:
 	sub	op_0,x0,a5
 	sub	a5,a1,op_0
 	addi	a6,a6,-288
-	bge	a6,a5,.+8
+	blt	a6,a5,.+8
+	jal	x0,8
 	jal	x0,.L125
 	lui	a6,%hi(static_masks)
 	slli	a1,a1,3
@@ -637,7 +679,8 @@ pat_insert:
 	addi	op_5,x0,255
 	sub	op_1,op_2,op_5
 	sub	a3,op_0,op_1
-	bge	a1,a3,.L46
+	blt	a1,a3,.+8
+	jal	x0,.L46
 .L47:
 	lw	a3,4(a4)
 	lw	a7,0(a2)
@@ -745,12 +788,12 @@ pat_insert:
 	addi	op_5,x0,255
 	sub	op_1,op_2,op_5
 	sub	a3,op_0,op_1
-	bge	a1,a3,.L48
+	blt	a1,a3,.+8
+	jal	x0,.L48
 	lw	a2,4(a0)
 	jal	x0,.L47
 .L48:
-	beq	t4,zero,.+8
-	jal	x0,.L46
+	bne	t4,zero,.L46
 	lw	a2,4(a0)
 .L50:
 	addi	a3,a5,-1
@@ -760,15 +803,13 @@ pat_insert:
 	addi	a3,x0,0
 	jal	x0,8
 	addi	a3,x0,1
-	beq	a3,zero,.+8
-	jal	x0,.L51
+	bne	a3,zero,.L51
 	addi	op_2,x0,3
 	or	op_1,a2,op_2
 	addi	op_3,x0,3
 	sub	op_0,op_1,op_3
 	sub	a3,a2,op_0
-	beq	a3,zero,.+8
-	jal	x0,.L51
+	bne	a3,zero,.L51
 	lw	a3,0(a2)
 	sw	a3,0(a5)
 	lw	a3,4(a2)
@@ -799,7 +840,8 @@ pat_insert:
 	addi	op_9,x0,255
 	sub	op_3,op_4,op_9
 	sub	t3,op_0,op_3
-	bge	t3,a2,.L100
+	blt	t3,a2,.+8
+	jal	x0,.L100
 	bltu	a0,t3,.+8
 	jal	x0,.L100
 	srl	a5,a1,t3
@@ -808,7 +850,8 @@ pat_insert:
 	sub	a5,a5,op_0
 	sw	a4,12(sp)
 	sw	a7,8(sp)
-	beq	a5,zero,.L82
+	bne	a5,zero,.+8
+	jal	x0,.L82
 	lw	a0,16(a3)
 	addi	a1,a6,0
 	sw	a3,4(sp)
@@ -849,8 +892,7 @@ pat_insert:
 	sub	op_0,op_1,a5
 	sub	a5,t1,op_0
 	addi	a2,a6,0
-	beq	a5,zero,.+8
-	jal	x0,.L73
+	bne	a5,zero,.L73
 	addi	a2,a3,0
 	addi	a3,a6,0
 .L73:
@@ -865,8 +907,7 @@ pat_insert:
 	sub	op_0,op_1,a5
 	sub	a5,t1,op_0
 	addi	a2,a6,0
-	beq	a5,zero,.+8
-	jal	x0,.L61
+	bne	a5,zero,.L61
 	addi	a2,a3,0
 	addi	a3,a6,0
 .L61:
@@ -881,8 +922,7 @@ pat_insert:
 	sub	op_0,op_1,a5
 	sub	a5,t1,op_0
 	addi	a2,a6,0
-	beq	a5,zero,.+8
-	jal	x0,.L80
+	bne	a5,zero,.L80
 	addi	a2,a3,0
 	addi	a3,a6,0
 .L80:
@@ -900,8 +940,7 @@ pat_insert:
 	lui	a5,3
 	addi	a5,a5,-288
 	addi	a0,a3,1
-	bge	a5,a0,.+8
-	jal	x0,.L95
+	blt	a5,a0,.L95
 	lui	a6,%hi(static_masks)
 	slli	a5,a3,3
 	addi	a3,a6,%lo(static_masks)
@@ -1061,7 +1100,8 @@ pat_insert:
 	.globl	pat_remove
 	.type	pat_remove, @function
 pat_remove:
-	beq	a0,zero,.L129
+	bne	a0,zero,.+8
+	jal	x0,.L129
 	addi	a0,zero,0
 .L129:
 	jalr	zero,ra,0
@@ -1071,7 +1111,8 @@ pat_remove:
 	.type	pat_search, @function
 pat_search:
 	addi	a2,a0,0
-	beq	a1,zero,.L174
+	bne	a1,zero,.+8
+	jal	x0,.L174
 	lw	a4,4(a1)
 	lw	op_1,8(a1)
 	addi	op_2,x0,8
@@ -1095,9 +1136,11 @@ pat_search:
 	or	op_1,a5,a2
 	sub	op_0,op_1,a2
 	sub	a5,a5,op_0
-	beq	a4,a6,.L175
+	bne	a4,a6,.+8
+	jal	x0,.L175
 .L169:
-	beq	a5,zero,.L170
+	bne	a5,zero,.+8
+	jal	x0,.L170
 .L176:
 	lw	a1,16(a1)
 	lw	op_1,8(a1)
@@ -1122,15 +1165,33 @@ pat_search:
 	or	op_1,a5,a2
 	sub	op_0,op_1,a2
 	sub	a5,a5,op_0
-	or	op_1,a2,a4
+	addi	op_8,x0,-1
+	or	op_7,op_8,a2
+	addi	op_10,x0,-1
+	addi	op_13,x0,-1
+	or	op_12,op_13,a2
+	sub	op_11,op_12,a2
+	sub	op_9,op_10,op_11
+	sub	op_6,op_7,op_9
+	or	op_5,a4,op_6
+	addi	op_16,x0,-1
+	or	op_15,op_16,a2
+	addi	op_18,x0,-1
+	addi	op_21,x0,-1
+	or	op_20,op_21,a2
+	sub	op_19,op_20,a2
+	sub	op_17,op_18,op_19
+	sub	op_14,op_15,op_17
+	sub	op_4,op_5,op_14
+	sub	op_3,a4,op_4
+	sub	op_2,x0,op_3
+	sub	op_1,a2,op_2
 	sub	op_0,op_1,a4
 	sub	a4,a2,op_0
-	beq	a4,a6,.+8
-	jal	x0,.L169
+	bne	a4,a6,.L169
 .L175:
 	addi	a0,a1,0
-	beq	a5,zero,.+8
-	jal	x0,.L176
+	bne	a5,zero,.L176
 .L170:
 	lw	a1,12(a1)
 	lw	op_1,8(a1)
@@ -1152,7 +1213,8 @@ pat_search:
 	or	op_1,a2,a4
 	sub	op_0,op_1,a4
 	sub	a2,a2,op_0
-	beq	a5,a2,.L177
+	bne	a5,a2,.+8
+	jal	x0,.L177
 	jalr	zero,ra,0
 .L177:
 	addi	a0,a1,0
@@ -1174,7 +1236,8 @@ main:
 	lw	a5,%lo(node_count)(a1)
 	lui	a4,3
 	addi	a4,a4,-289
-	bge	a4,a5,.+8
+	blt	a4,a5,.+8
+	jal	x0,8
 	jal	x0,.L270
 	lui	a3,%hi(static_nodes)
 	addi	sp,sp,-128
@@ -1198,8 +1261,7 @@ main:
 	sw	zero,12(s2)
 	sw	zero,16(s2)
 	sw	a3,%lo(node_count)(a1)
-	bge	a4,a2,.+8
-	jal	x0,.L276
+	blt	a4,a2,.L276
 	lui	a3,%hi(static_masks)
 	addi	a3,a3,%lo(static_masks)
 	sw	a3,44(sp)
@@ -1215,7 +1277,8 @@ main:
 	sw	zero,0(a3)
 	sw	zero,4(a3)
 	sw	a2,%lo(mask_count)(a0)
-	bge	a4,a1,.+8
+	blt	a4,a1,.+8
+	jal	x0,8
 	jal	x0,.L180
 	addi	a4,zero,20
 	callmul	a5,a5,a4
@@ -1272,7 +1335,8 @@ main:
 	lbu	a4,1(a3)
 	add	a3,a3,a6
 .L188:
-	beq	a6,zero,.L279
+	bne	a6,zero,.+8
+	jal	x0,.L279
 	addi	a7, zero, 0
 	addi	t1, zero, 0
 	beq	a4,zero,.L194
@@ -1293,9 +1357,9 @@ main:
 	addi	op_3,x0,223
 	sub	op_0,op_1,op_3
 	sub	a4,a4,op_0
-	beq	a4,zero,.L197
-	beq	a2,zero,.+8
-	jal	x0,.L198
+	bne	a4,zero,.+8
+	jal	x0,.L197
+	bne	a2,zero,.L198
 	jal	x0,.L197
 	andi	t0,a1,0xff
 	bgeu	a0, t0, .L258
@@ -1343,7 +1407,8 @@ main:
 	addi	op_3,x0,255
 	sub	op_0,op_1,op_3
 	sub	a3,s2,op_0
-	beq	a6,zero,.L261
+	bne	a6,zero,.+8
+	jal	x0,.L261
 	bltu	s6,a3,.+8
 	jal	x0,.L192
 	lw	s0,12(sp)
@@ -1429,7 +1494,8 @@ main:
 	beq	t5,a1,.L266
 .L217:
 	lw	a5,0(a7)
-	beq	a5,s8,.L284
+	bne	a5,s8,.+8
+	jal	x0,.L284
 	lw	a1,40(sp)
 .Lpcrel_15:
 	auipc	ra,%pcrel_hi(pat_insert)
@@ -1438,7 +1504,8 @@ main:
 	lw	a5,%lo(insert_count)(a4)
 	addi	a5,a5,1
 	sw	a5,%lo(insert_count)(a4)
-	beq	a0,zero,.L274
+	bne	a0,zero,.+8
+	jal	x0,.L274
 	bne	t5,a1,.L217
 .L266:
 	addi	s11,s7,0
@@ -1496,8 +1563,7 @@ main:
 	addi	t3, zero, 1
 	jal	zero, .L191
 .L213:
-	beq	a5,zero,.+8
-	jal	x0,8
+	bne	a5,zero,.+8
 	jal	x0,.L214
 	mul	a5,a5,a4
 	add	s8,s8,a5
@@ -1621,7 +1687,8 @@ main:
 	mul	a2,a2,a4
 	jal	zero, .L195
 .L256:
-	beq	a3,zero,.L249
+	bne	a3,zero,.+8
+	jal	x0,.L249
 	mul	a5,a5,a4
 	lw	s3,44(sp)
 	lw	s9,20(sp)

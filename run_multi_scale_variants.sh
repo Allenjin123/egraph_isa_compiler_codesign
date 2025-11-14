@@ -11,14 +11,14 @@
 set -e  # Exit on error
 
 # Default configuration
-DEFAULT_SCALES="0 0.1 0.2 0.3 0.4 0.5 1 10 100 1000 10000"
+DEFAULT_SCALES="0 0.0005 0.001 0.005 0.01 0.1 0.5 1 10"
 DEFAULT_K=3
 DEFAULT_TIMEOUT=180
 DEFAULT_PARALLEL_JOBS=24
 DEFAULT_SYNTH_JOBS=38  # Parallel synthesis processes
 DEFAULT_CLEAN=true     # Clean old outputs by default
 DEFAULT_RUN_SATURATION=true  # Run saturation by default
-DEFAULT_PROGRAMS="basicmath_small_O3 bitcnts_O3 qsort_small_O3 qsort_large_O3 dijkstra_small_O3 patricia_O3"
+# DEFAULT_PROGRAMS is now dynamically determined from available clean.s files
 
 # Color codes for output
 RED='\033[0;31m'
@@ -35,13 +35,30 @@ EXTRACTOR_DIR="$SCRIPT_DIR/Extractor"
 FRONTEND_DIR="$SCRIPT_DIR/frontend"
 OUTPUT_BASE="$SCRIPT_DIR/output"
 BACKEND_OUTPUT="$SCRIPT_DIR/output/backend"
+BENCHMARK_DIR="$SCRIPT_DIR/benchmark"
+
+# Function to discover available programs from clean.s files
+discover_available_programs() {
+    local programs=()
+
+    # Find all *_clean.s files in benchmark directory
+    while IFS= read -r clean_file; do
+        # Extract program name (remove _clean.s suffix)
+        local filename=$(basename "$clean_file")
+        local program_name="${filename%_clean.s}"
+        programs+=("$program_name")
+    done < <(find "$BENCHMARK_DIR" -name "*_clean.s" -type f | \
+             grep -E "(automotive|network|security|embench-iot)/[^/]+/[^/]+_clean\.s$" | sort)
+
+    echo "${programs[@]}"
+}
 
 # Function to display usage
 usage() {
     echo "使用方法: $0 [program_names...] [options]"
     echo ""
     echo "参数:"
-    echo "  program_names              程序名称列表（可选，默认运行所有6个基准程序）"
+    echo "  program_names              程序名称列表（可选，默认运行所有发现的基准程序）"
     echo ""
     echo "选项:"
     echo "  -s, --scales SCALES        空格分隔的缩放因子列表 (默认: '$DEFAULT_SCALES')"
@@ -56,11 +73,13 @@ usage() {
     echo "  -r, --reconstruct-only     仅重建汇编文件（跳过 ILP 提取）"
     echo "  -h, --help                 显示此帮助信息"
     echo ""
-    echo "默认基准程序 (6个):"
-    echo "  $DEFAULT_PROGRAMS"
+    echo "可用基准程序 (自动发现):"
+    local available_programs=$(discover_available_programs)
+    local program_count=$(echo "$available_programs" | wc -w)
+    echo "  找到 $program_count 个程序: $available_programs"
     echo ""
     echo "示例:"
-    echo "  $0                                                     # 运行所有6个默认基准程序"
+    echo "  $0                                                     # 运行所有发现的基准程序"
     echo "  $0 dijkstra_small_O3                                   # 运行单个程序"
     echo "  $0 dijkstra_small_O3 basicmath_small_O3                # 运行2个程序"
     echo "  $0 -s '0 1 100' -k 5                                   # 所有程序，3个缩放因子，每个5个变体"
@@ -146,10 +165,20 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# If no program names provided, use defaults
+# If no program names provided, discover all available programs
 if [ ${#PROGRAM_NAMES[@]} -eq 0 ]; then
-    echo -e "${YELLOW}未指定程序，使用默认6个基准程序${NC}"
-    IFS=' ' read -ra PROGRAM_NAMES <<< "$DEFAULT_PROGRAMS"
+    echo -e "${YELLOW}未指定程序，自动发现所有可用基准程序...${NC}"
+
+    # Discover available programs from clean.s files
+    DISCOVERED_PROGRAMS=$(discover_available_programs)
+    if [ -z "$DISCOVERED_PROGRAMS" ]; then
+        echo -e "${RED}错误: 未找到任何 *_clean.s 文件在 benchmark/ 目录${NC}"
+        echo -e "${RED}请确保 benchmark/ 目录包含正确结构的 clean.s 文件${NC}"
+        exit 1
+    fi
+
+    IFS=' ' read -ra PROGRAM_NAMES <<< "$DISCOVERED_PROGRAMS"
+    echo -e "${GREEN}发现 ${#PROGRAM_NAMES[@]} 个程序: ${PROGRAM_NAMES[*]}${NC}"
 fi
 
 # Set output base directory if not specified
@@ -272,6 +301,29 @@ else
     echo -e "${YELLOW}步骤 0.4: 前端输出已存在，跳过前端分析${NC}"
     echo ""
 fi
+
+# ============================================================================
+# Step 0.45: Run complete analysis (spike instruction count + block execution)
+# ============================================================================
+echo -e "${BLUE}步骤 0.45: 运行完整分析（Spike 指令计数 + 块执行分析）...${NC}"
+
+# Check if run_complete_analysis.sh exists
+COMPLETE_ANALYSIS_SCRIPT="$BENCHMARK_DIR/run_complete_analysis.sh"
+if [ -f "$COMPLETE_ANALYSIS_SCRIPT" ]; then
+    echo -e "${CYAN}  运行: cd benchmark && ./run_complete_analysis.sh${NC}"
+
+    # Run the complete analysis script
+    if (cd "$BENCHMARK_DIR" && bash run_complete_analysis.sh); then
+        echo -e "${GREEN}  ✓ 完整分析完成${NC}"
+    else
+        echo -e "${YELLOW}  ⚠ 完整分析失败（非致命错误，继续）${NC}"
+    fi
+else
+    echo -e "${YELLOW}  ⚠ 完整分析脚本不存在: $COMPLETE_ANALYSIS_SCRIPT${NC}"
+    echo -e "${YELLOW}  跳过完整分析${NC}"
+fi
+
+echo ""
 
 # ============================================================================
 # Step 0.5: Run saturation (if enabled)

@@ -124,7 +124,24 @@ enqueue:
 	slli	a6,a6,2
 	srai	a5,a5,12
 	sub	a5,a5,t5
-	mul	a5,a5,t1
+	addi	sp, sp, -32
+	sw	a0, 0(sp)
+	sw	a1, 4(sp)
+	sw	a2, 8(sp)
+	sw	a3, 12(sp)
+	sw	ra, 16(sp)
+	add	a0, a5, x0
+	add	a1, t1, x0
+.Lpcrel_callmul_246:
+	auipc	ra, %pcrel_hi(__mul)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_246)
+	add	a5, a0, x0
+	lw	a0, 0(sp)
+	lw	a1, 4(sp)
+	lw	a2, 8(sp)
+	lw	a3, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	addi	a4,a4,%lo(queue)
 	add	a4,a4,a6
 	addi	a7,a7,1
@@ -142,8 +159,7 @@ enqueue:
 dequeue:
 	lui	a7,%hi(g_qCount)
 	lw	a5,%lo(g_qCount)(a7)
-	bge	a5,zero,.+8
-	jal	x0,.L17
+	bge	zero,a5,.L17
 	lui	a6,%hi(qFront)
 	lw	a3,%lo(qFront)(a6)
 	lui	a4,%hi(queue)
@@ -539,9 +555,10 @@ main:
 	lw	s3,2012(sp)
 	lw	s4,2008(sp)
 	addi	a2,x0,1
-	bge	a2,a0,.+8
+	bge	a0,a2,.+8
+	jal	x0,12
 	addi	a0,x0,0
-	jal	x0,4
+	jal	x0,8
 	addi	a0,x0,1
 	addi	sp,sp,2032
 	jalr	zero,ra,0

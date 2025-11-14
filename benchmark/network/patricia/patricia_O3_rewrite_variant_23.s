@@ -193,26 +193,20 @@ pat_insert:
 .L124:
 	lw	a7,16(a4)
 	lbu	a0,9(a7)
-	bge	a0,a2,.+8
-	jal	x0,8
-	jal	x0,.L96
+	bge	a0,a2,.L96
 	bgeu	t3,a0,.L96
 	srl	a3,a1,a0
 	and	a3,a3,t1
 	beq	a3,zero,.L58
 	lw	a3,16(a7)
 	lbu	t3,9(a3)
-	blt	t3,a2,.+8
-	jal	x0,.L97
+	bge	t3,a2,.L97
 	bgeu	a0,t3,.L97
 	srl	a5,a1,t3
-	or	a0,a5,t1
-	sub	a0,a0,t1
-	sub	a5,a5,a0
+	and	a5,a5,t1
 	sw	a4,12(sp)
 	sw	a7,8(sp)
-	bne	a5,zero,.+8
-	jal	x0,.L63
+	beq	a5,zero,.L63
 	lw	a0,16(a3)
 	addi	a1,a6,0
 	sw	a3,4(sp)
@@ -287,7 +281,8 @@ pat_insert:
 .L43:
 	lw	t1,0(a6)
 	addi	a5,a5,1
-	beq	a7,t1,.+8
+	bne	a7,t1,.+8
+	jal	x0,8
 	jal	x0,.L41
 	lw	a5,4(a2)
 	addi	a2,a4,0
@@ -297,9 +292,7 @@ pat_insert:
 	jalr	zero,ra,0
 .L96:
 	sb	a2,9(a6)
-	or	a0,t1,a5
-	sub	a0,a0,a5
-	sub	a5,t1,a0
+	and	a5,t1,a5
 	addi	a3,a6,0
 	beq	a5,zero,.L56
 	addi	a3,a7,0
@@ -338,8 +331,7 @@ pat_insert:
 	lui	a6,3
 	add	a5,a5,a1
 	addi	a6,a6,-288
-	bge	a6,a5,.+8
-	jal	x0,.L125
+	blt	a6,a5,.L125
 	lui	a6,%hi(static_masks)
 	slli	a1,a1,3
 	addi	a6,a6,%lo(static_masks)
@@ -374,14 +366,16 @@ pat_insert:
 	lw	a2,4(a0)
 	sw	t5,0(a2)
 	lbu	a3,8(a4)
-	bge	a1,a3,.L46
+	blt	a1,a3,.+8
+	jal	x0,.L46
 .L47:
 	lw	a3,4(a4)
 	lw	a7,0(a2)
 .L49:
 	add	a3,a3,t1
 	lw	a6,0(a3)
-	bgeu	a6,a7,.L126
+	bltu	a6,a7,.+8
+	jal	x0,.L126
 	lbu	a2,0(a3)
 	addi	a1,a1,1
 	slli	t1,a1,3
@@ -414,7 +408,8 @@ pat_insert:
 	sltiu	a3,a3,3
 	bne	a3,zero,.L51
 	andi	a3,a2,3
-	bne	a3,zero,.L51
+	beq	a3,zero,.+8
+	jal	x0,.L51
 	lw	a3,0(a2)
 	sw	a3,0(a5)
 	lw	a3,4(a2)
@@ -519,9 +514,7 @@ pat_insert:
 	lui	a5,3
 	addi	a5,a5,-288
 	addi	a0,a3,1
-	blt	a5,a0,.+8
-	jal	x0,8
-	jal	x0,.L95
+	blt	a5,a0,.L95
 	lui	a6,%hi(static_masks)
 	slli	a5,a3,3
 	addi	a3,a6,%lo(static_masks)
@@ -546,8 +539,7 @@ pat_insert:
 	sb	a3,6(a5)
 	lbu	a3,7(a2)
 	sb	a3,7(a5)
-	lw	a3,8(a4)
-	andi	a3,a3,255
+	lbu	a3,8(a4)
 	jal	x0,.L46
 .L63:
 	lw	a0,12(a3)
@@ -628,11 +620,9 @@ pat_search:
 	beq	a5,zero,.L170
 .L176:
 	lw	a1,16(a1)
-	lw	a5,8(a1)
-	addi	a4,x0,8
-	srl	x0,a5,a4
-	andi	a5,x0,255
-	bgeu	a3,a5,.L172
+	lbu	a5,9(a1)
+	bltu	a3,a5,.+8
+	jal	x0,.L172
 .L171:
 	lw	a4,4(a1)
 	lw	a6,0(a1)
@@ -648,7 +638,8 @@ pat_search:
 .L170:
 	lw	a1,12(a1)
 	lbu	a5,9(a1)
-	bltu	a3,a5,.L171
+	bgeu	a3,a5,.+8
+	jal	x0,.L171
 .L172:
 	lw	a4,4(a1)
 	lw	a5,0(a1)
@@ -781,9 +772,7 @@ main:
 	add	a7,a1,a4
 .L191:
 	andi	a4,a4,223
-	beq	a4,zero,.+8
-	jal	x0,8
-	jal	x0,.L197
+	beq	a4,zero,.L197
 	bne	a2,zero,.L198
 	jal	x0,.L197
 	andi	t0,a1,0xff

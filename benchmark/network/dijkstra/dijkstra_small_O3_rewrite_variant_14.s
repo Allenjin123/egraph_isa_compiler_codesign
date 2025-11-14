@@ -538,9 +538,10 @@ main:
 	lw	s3,2012(sp)
 	lw	s4,2008(sp)
 	addi	a2,x0,1
-	bge	a2,a0,.+8
+	bge	a0,a2,.+8
+	jal	x0,12
 	addi	a0,x0,0
-	jal	x0,4
+	jal	x0,8
 	addi	a0,x0,1
 	addi	sp,sp,2032
 	jalr	zero,ra,0

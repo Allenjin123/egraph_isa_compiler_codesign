@@ -13,7 +13,8 @@ insertR:
 	addi	t1,a0,0
 	addi	a5,a1,0
 	addi	a4,a2,0
-	bge	a6,a2,.L2
+	blt	a6,a2,.+8
+	jal	x0,.L2
 	lbu	a3,9(a3)
 	bgeu	a3,a6,.L2
 	lui	a0,524288
@@ -24,7 +25,8 @@ insertR:
 	beq	a3,zero,.L6
 	lw	a3,16(t1)
 	lbu	t3,9(a3)
-	bge	t3,a2,.L23
+	blt	t3,a2,.+8
+	jal	x0,.L23
 	bgeu	a6,t3,.L23
 	srl	a0,a0,t3
 	and	a0,a0,a7
@@ -63,7 +65,8 @@ insertR:
 .L6:
 	lw	a3,12(t1)
 	lbu	t3,9(a3)
-	bge	t3,a2,.L24
+	blt	t3,a2,.+8
+	jal	x0,.L24
 	bgeu	a6,t3,.L24
 	srl	a0,a0,t3
 	and	a0,a0,a7
@@ -170,7 +173,9 @@ pat_insert:
 	lw	a3,0(a4)
 	beq	t1,a3,.L37
 	addi	sp,sp,-32
-	xor	a3,t1,a3
+	or	a2,a3,t1
+	and	a4,a3,t1
+	sub	a3,a2,a4
 	sw	ra,28(sp)
 	slli	a5,a3,1
 	addi	a2,zero,1
@@ -198,17 +203,16 @@ pat_insert:
 	bgeu	t3,a0,.L96
 	srl	a3,a1,a0
 	and	a3,a3,t1
-	bne	a3,zero,.+8
-	jal	x0,.L58
+	beq	a3,zero,.L58
 	lw	a3,16(a7)
-	lw	t3,8(a3)
-	addi	t0,x0,8
-	srl	x0,t3,t0
-	andi	t3,x0,255
-	bge	t3,a2,.L97
+	lbu	t3,9(a3)
+	blt	t3,a2,.+8
+	jal	x0,.L97
 	bgeu	a0,t3,.L97
 	srl	a5,a1,t3
-	and	a5,a5,t1
+	or	a0,a5,t1
+	sub	a0,a0,t1
+	sub	a5,a5,a0
 	sw	a4,12(sp)
 	sw	a7,8(sp)
 	beq	a5,zero,.L63
@@ -234,14 +238,16 @@ pat_insert:
 .L53:
 	lw	a7,12(a4)
 	lbu	a0,9(a7)
-	bge	a0,a2,.L98
+	blt	a0,a2,.+8
+	jal	x0,.L98
 	bgeu	t3,a0,.L98
 	srl	a3,a1,a0
 	and	a3,a3,t1
 	beq	a3,zero,.L70
 	lw	a3,16(a7)
 	lbu	t3,9(a3)
-	bge	t3,a2,.L99
+	blt	t3,a2,.+8
+	jal	x0,.L99
 	bgeu	a0,t3,.L99
 	srl	a5,a1,t3
 	and	a5,a5,t1
@@ -283,11 +289,13 @@ pat_insert:
 	jal	x0,.L43
 .L41:
 	addi	a6,a6,8
-	beq	a5,a1,.L122
+	bne	a5,a1,.+8
+	jal	x0,.L122
 .L43:
 	lw	t1,0(a6)
 	addi	a5,a5,1
-	bne	a7,t1,.L41
+	beq	a7,t1,.+8
+	jal	x0,.L41
 	lw	a5,4(a2)
 	addi	a2,a4,0
 	sw	a5,4(a6)
@@ -326,8 +334,7 @@ pat_insert:
 	and	a3,a3,t1
 	addi	a5,zero,0
 	addi	a6,a0,0
-	bne	a3,zero,.+8
-	jal	x0,.L53
+	beq	a3,zero,.L53
 	jal	x0,.L124
 .L122:
 	lui	t1,%hi(mask_count)
@@ -370,8 +377,10 @@ pat_insert:
 	sb	a3,-1(a5)
 	lw	a2,4(a0)
 	sw	t5,0(a2)
-	lbu	a3,8(a4)
-	bge	a1,a3,.L46
+	lw	a3,8(a4)
+	andi	a3,a3,255
+	blt	a1,a3,.+8
+	jal	x0,.L46
 .L47:
 	lw	a3,4(a4)
 	lw	a7,0(a2)
@@ -399,11 +408,14 @@ pat_insert:
 	lbu	a3,7(a3)
 	sb	a3,-1(a5)
 	lbu	a3,8(a4)
-	bge	a1,a3,.L48
+	blt	a1,a3,.+8
+	jal	x0,.L48
 	lw	a2,4(a0)
 	jal	x0,.L47
 .L48:
-	bne	t4,zero,.L46
+	bne	t4,zero,.+8
+	jal	x0,8
+	jal	x0,.L46
 	lw	a2,4(a0)
 .L50:
 	addi	a3,a5,-1
@@ -416,8 +428,7 @@ pat_insert:
 	sw	a3,0(a5)
 	lw	a3,4(a2)
 	sw	a3,4(a5)
-	lw	a3,8(a4)
-	andi	a3,a3,255
+	lbu	a3,8(a4)
 .L46:
 	addi	a3,a3,1
 	sb	a3,8(a4)
@@ -427,7 +438,8 @@ pat_insert:
 .L70:
 	lw	a3,12(a7)
 	lbu	t3,9(a3)
-	bge	t3,a2,.L100
+	blt	t3,a2,.+8
+	jal	x0,.L100
 	bgeu	a0,t3,.L100
 	srl	a5,a1,t3
 	and	a5,a5,t1
@@ -483,7 +495,9 @@ pat_insert:
 	jal	x0,.L69
 .L97:
 	sb	a2,9(a6)
-	and	a5,t1,a5
+	or	a0,t1,a5
+	sub	a0,a0,a5
+	sub	a5,t1,a0
 	addi	a2,a6,0
 	bne	a5,zero,.L61
 	addi	a2,a3,0
@@ -541,8 +555,7 @@ pat_insert:
 	sb	a3,6(a5)
 	lbu	a3,7(a2)
 	sb	a3,7(a5)
-	lw	a3,8(a4)
-	andi	a3,a3,255
+	lbu	a3,8(a4)
 	jal	x0,.L46
 .L63:
 	lw	a0,12(a3)
@@ -610,7 +623,10 @@ pat_search:
 	addi	a2,a0,0
 	beq	a1,zero,.L174
 	lw	a4,4(a1)
-	lbu	a3,9(a1)
+	lw	a3,8(a1)
+	addi	a0,x0,8
+	srl	x0,a3,a0
+	andi	a3,x0,255
 	lw	a6,0(a1)
 	lw	a4,0(a4)
 	lui	a7,524288
@@ -773,7 +789,8 @@ main:
 	add	a7,a1,a4
 .L191:
 	andi	a4,a4,223
-	beq	a4,zero,.L197
+	bne	a4,zero,.+8
+	jal	x0,.L197
 	bne	a2,zero,.L198
 	jal	x0,.L197
 	andi	t0,a1,0xff
