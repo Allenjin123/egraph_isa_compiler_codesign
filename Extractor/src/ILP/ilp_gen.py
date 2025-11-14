@@ -153,7 +153,7 @@ def generate_ilp_file(
     for op_name in sorted(op_vars.keys()):
         if op_name not in excluded_ops:
             # Get operator-specific weight (default 100 for cheap ops)
-            weight = OP_TYPE_WEIGHTS.get(op_vars[op_name], DEFAULT_OP_WEIGHT)
+            weight = OP_TYPE_WEIGHTS.get(op_vars[op_name], DEFAULT_OP_WEIGHT)*(1-node_cost_scale)
             print(f"Operator {op_name} has weight {weight}")
             obj_terms.append(f"{weight} {op_vars[op_name]}")
     
