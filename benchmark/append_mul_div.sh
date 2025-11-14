@@ -40,8 +40,8 @@ for workload in "${WORKLOADS[@]}"; do
     # Get the last line of the file (trim whitespace)
     last_line=$(tail -1 "$file" | sed 's/[[:space:]]*$//')
 
-    # Check if it ends with "# end of subroutine"
-    if [[ "$last_line" != "# end of subroutine" ]]; then
+    # Check if it ends with "# end of subrountine" (note: typo in original file)
+    if [[ "$last_line" != "# end of subrountine" ]]; then
         echo "Processing: $workload"
         echo "  Last line: '$last_line'"
         echo "  Appending mul_clean.s and div_clean.s..."
@@ -55,7 +55,7 @@ for workload in "${WORKLOADS[@]}"; do
 
         echo "  Done!"
     else
-        echo "Skipping: $workload (already ends with '# end of subroutine')"
+        echo "Skipping: $workload (already has mul/div appended)"
     fi
 done
 

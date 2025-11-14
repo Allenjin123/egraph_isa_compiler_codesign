@@ -8,8 +8,7 @@
 	.align	2
 	.type	quicksort_range, @function
 quicksort_range:
-	blt	a1,a2,.+8
-	jal	x0,.L42
+	bge	a1,a2,.L42
 	addi	sp,sp,-320
 	sw	s3,300(sp)
 	sw	s4,296(sp)
@@ -28,61 +27,44 @@ quicksort_range:
 	addi	s4,zero,1
 	addi	s3,zero,-1
 .L2:
-	sub	a5,x0,s7
-	sub	a5,s6,a5
+	add	a5,s7,s6
 	srli	a2,a5,31
-	sub	a3,x0,a2
-	sub	a2,a5,a3
+	add	a2,a2,a5
 	srai	a2,a2,1
 	slli	a2,a2,7
 	addi	a3,sp,16
 	addi	a5,zero,0
 .L3:
-	sub	a4,x0,a2
-	sub	a4,a5,a4
-	sub	a6,x0,s5
-	sub	a4,a4,a6
-	lw	a6,0(a4)
-	addi	a4,x0,255
-	and	a4,a6,a4
-	bne	a4,zero,.+8
-	jal	x0,.L4
+	add	a4,a2,a5
+	add	a4,s5,a4
+	lbu	a4,0(a4)
+	beq	a4,zero,.L4
 	sb	a4,0(a3)
 	addi	a5,a5,1
 	addi	a3,a3,1
 	bne	a5,s8,.L3
 .L4:
-	sub	a2,x0,a5
-	sub	a5,sp,a2
+	add	a5,a5,sp
 	sb	zero,16(a5)
 	addi	s1,s7,0
 	addi	s2,s6,0
 .L6:
 	blt	s1,s2,.L19
 	slli	a0,s2,7
-	sub	a1,x0,s5
-	sub	a0,a0,a1
-	lw	a4,0(a0)
-	addi	a1,x0,255
-	and	a4,a4,a1
+	add	a0,s5,a0
+	lbu	a4,0(a0)
 	addi	a1,a0,0
-	bne	a4,zero,.+8
-	jal	x0,.L8
+	beq	a4,zero,.L8
 .L24:
 	addi	a2,a0,0
 	addi	a3,sp,16
 	jal	x0,.L7
 .L46:
 	bne	a5,a4,.L27
-	lw	a4,0(a2)
-	addi	a5,x0,255
-	and	a4,a4,a5
-	bne	a4,zero,.+8
-	jal	x0,.L8
+	lbu	a4,0(a2)
+	beq	a4,zero,.L8
 .L7:
-	lw	a5,0(a3)
-	addi	a6,x0,255
-	and	a5,a5,a6
+	lbu	a5,0(a3)
 	addi	a2,a2,1
 	addi	a3,a3,1
 	bne	a5,zero,.L46
@@ -92,41 +74,27 @@ quicksort_range:
 	sub	a5,a3,a5
 	addi	a0,a0,128
 	bne	a5,s4,.L8
-	lw	a4,0(a0)
-	addi	a1,x0,255
-	and	a4,a4,a1
+	lbu	a4,0(a0)
 	addi	s2,s2,1
 	addi	a1,a0,0
 	bne	a4,zero,.L24
 .L8:
 	slli	s0,s1,7
-	sub	a2,x0,s5
-	sub	s0,s0,a2
-	lw	a5,0(s0)
-	addi	a2,x0,255
-	and	a5,a5,a2
+	add	s0,s5,s0
+	lbu	a5,0(s0)
 	addi	a3,s0,0
 	addi	a2,sp,16
-	bne	a5,zero,.+8
-	jal	x0,8
-	jal	x0,.L13
+	bne	a5,zero,.L13
 	jal	x0,.L47
 .L49:
 	bne	a4,a5,.L28
-	lw	a5,0(a3)
-	addi	a4,x0,255
-	and	a5,a5,a4
-	bne	a5,zero,.+8
-	jal	x0,.L48
+	lbu	a5,0(a3)
+	beq	a5,zero,.L48
 	addi	a2,a2,1
 .L13:
-	lw	a4,0(a2)
-	addi	a6,x0,255
-	and	a4,a4,a6
+	lbu	a4,0(a2)
 	addi	a3,a3,1
-	bne	a4,zero,.+8
-	jal	x0,8
-	jal	x0,.L49
+	bne	a4,zero,.L49
 .L28:
 	sltu	a3,a4,a5
 .L14:
@@ -134,38 +102,29 @@ quicksort_range:
 	sub	a5,a3,a5
 	bne	a5,s3,.L50
 .L17:
-	lw	a5,-128(s0)
-	addi	a2,x0,255
-	and	a5,a5,a2
+	lbu	a5,-128(s0)
 	addi	s0,s0,-128
 	addi	s1,s1,-1
 	addi	a3,s0,0
 	addi	a2,sp,16
 	bne	a5,zero,.L13
 .L47:
-	lw	a4,16(sp)
-	addi	a2,x0,255
-	and	a4,a4,a2
+	lbu	a4,16(sp)
 	addi	a3,zero,0
 	sltu	a5,a5,a4
 	sub	a5,a3,a5
 	bne	a5,s3,.+8
 	jal	x0,.L17
 .L50:
-	blt	s1,s2,.+8
-	jal	x0,.L51
+	bge	s1,s2,.L51
 .L19:
 	blt	s6,s1,.L52
-	blt	s2,s7,.+8
-	jal	x0,.L1
+	bge	s2,s7,.L1
 .L22:
 	addi	s6,s2,0
 	jal	x0,.L2
 .L48:
-	lw	a4,0(a2)
-	srli	a4,a4,8
-	addi	a3,x0,255
-	and	a4,a4,a3
+	lbu	a4,1(a2)
 	addi	a3,zero,0
 	jal	x0,.L14
 .L51:
@@ -230,8 +189,7 @@ main:
 	sw	ra,2028(sp)
 	sw	s1,2020(sp)
 	lui	a6,%hi(input_data)
-	sub	a0,x0,sp
-	sub	sp,t0,a0
+	add	sp,sp,t0
 	addi	s0,sp,0
 	addi	a2,sp,0
 	addi	a6,a6,%lo(input_data)
@@ -240,27 +198,20 @@ main:
 	lw	a1,0(a6)
 	addi	a5,zero,0
 .L54:
-	sub	a4,x0,a1
-	sub	a4,a5,a4
-	lw	a3,0(a4)
-	addi	a4,x0,255
-	and	a4,a3,a4
-	sub	a3,x0,a2
-	sub	a3,a5,a3
-	bne	a4,zero,.+8
-	jal	x0,.L55
+	add	a4,a1,a5
+	lbu	a4,0(a4)
+	add	a3,a2,a5
+	beq	a4,zero,.L55
 	sb	a4,0(a3)
 	addi	a5,a5,1
 	bne	a5,a0,.L54
 .L55:
-	sub	a1,x0,a2
-	sub	a5,a5,a1
+	add	a5,a2,a5
 	sb	zero,0(a5)
 	lui	a5,313
 	addi	a5,a5,-2048
 	addi	a2,a2,128
-	sub	a1,x0,a5
-	sub	a5,sp,a1
+	add	a5,a5,sp
 	addi	a6,a6,4
 	bne	a5,a2,.L57
 	lui	a2,2
@@ -274,22 +225,15 @@ main:
 	addi	a4,zero,0
 	addi	a5,zero,0
 .L60:
-	lw	a2,0(a6)
-	addi	a0,x0,255
-	and	a2,a2,a0
+	lbu	a2,0(a6)
 	addi	a1,a6,0
-	bne	a2,zero,.+8
-	jal	x0,.L58
+	beq	a2,zero,.L58
 .L59:
 	addi	a1,a1,1
-	sub	a0,x0,a4
-	sub	a0,a2,a0
-	lw	a2,0(a1)
-	addi	a3,x0,255
-	and	a2,a2,a3
+	add	a0,a4,a2
+	lbu	a2,0(a1)
 	sltu	a3,a0,a4
-	sub	a4,x0,a3
-	sub	a3,a5,a4
+	add	a3,a3,a5
 	addi	a4,a0,0
 	addi	a5,a3,0
 	bne	a2,zero,.L59
@@ -297,8 +241,7 @@ main:
 	lui	a3,313
 	addi	a3,a3,-2048
 	addi	a6,a6,128
-	sub	a0,x0,a3
-	sub	a3,sp,a0
+	add	a3,a3,sp
 	bne	a6,a3,.L60
 	lui	s1,%hi(qsort_checksum)
 	lui	a0,%hi(.LC0)
@@ -318,33 +261,30 @@ main:
 	lui	a5,313
 	addi	a5,a5,-2048
 	addi	s0,s0,128
-	sub	a0,x0,a5
-	sub	a5,sp,a0
+	add	a5,a5,sp
 	bne	a5,s0,.L61
 	lui	t0,312
 	lw	a4,%lo(qsort_checksum)(s1)
 	addi	t0,t0,32
 	lw	a5,%lo(qsort_checksum+4)(s1)
 	lui	a0,2
-	sub	a2,x0,sp
-	sub	sp,t0,a2
+	add	sp,sp,t0
 	lw	ra,2028(sp)
 	addi	a0,a0,1808
-	and	a2,a0,a4
-	sub	a2,a2,a4
-	sub	a2,a0,a2
-	and	a3,a0,a4
-	sub	a0,a2,a3
 	addi	a2,x0,-1
 	addi	a3,x0,-1
 	and	a3,a3,a0
 	sub	a3,a3,a0
 	sub	a2,a2,a3
 	addi	a3,x0,-1
-	and	a3,a3,a0
-	sub	a2,a2,a3
-	and	a2,a5,a2
-	sub	a2,x0,a2
+	and	x0,a3,a0
+	sub	x0,a2,x0
+	and	x0,a4,x0
+	add	x0,x0,a0
+	and	a2,a0,a4
+	sub	a0,x0,a2
+	and	a2,a0,a5
+	sub	a2,a2,a5
 	sub	a0,a0,a2
 	lw	s0,2024(sp)
 	lw	s1,2020(sp)
@@ -11714,6 +11654,1084 @@ __mul:
     jalr   x0, ra, 0
 
 .text
+.align 2
+
+# Signed 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_divsi3
+__riscv_div_lib_divsi3:
+    blt   a0, zero, __riscv_div_lib_L10      # bltz a0 -> blt a0, zero
+    blt   a1, zero, __riscv_div_lib_L11      # bltz a1 -> blt a1, zero
+    # Since the quotient is positive, fall into udivsi3
+
+# Unsigned 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_udivsi3
+__riscv_div_lib_udivsi3:
+    addi  a2, a1, 0                           # mv a2, a1 -> addi a2, a1, 0
+    addi  a1, a0, 0                           # mv a1, a0 -> addi a1, a0, 0
+    addi  a0, zero, -1                        # li a0, -1 -> addi a0, zero, -1
+    beq   a2, zero, __riscv_div_lib_L5       # beqz a2 -> beq a2, zero
+    addi  a3, zero, 1                         # li a3, 1 -> addi a3, zero, 1
+    bgeu  a2, a1, __riscv_div_lib_L2
+__riscv_div_lib_L1:
+    bge   zero, a2, __riscv_div_lib_L2       # blez a2 -> bge zero, a2
+    slli  a2, a2, 1
+    slli  a3, a3, 1
+    bltu  a2, a1, __riscv_div_lib_L1         # bgtu a1, a2 -> bltu a2, a1
+__riscv_div_lib_L2:
+    addi  a0, zero, 0                         # li a0, 0 -> addi a0, zero, 0
+__riscv_div_lib_L3:
+    bltu  a1, a2, __riscv_div_lib_L4
+    sub   a1, a1, a2
+    or    a0, a0, a3
+__riscv_div_lib_L4:
+    srli  a3, a3, 1
+    srli  a2, a2, 1
+    bne   a3, zero, __riscv_div_lib_L3       # bnez a3 -> bne a3, zero
+__riscv_div_lib_L5:
+    jalr  zero, ra, 0                         # ret -> jalr zero, ra, 0
+
+# Unsigned 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_umodsi3
+__riscv_div_lib_umodsi3:
+    # Call udivsi3(a0, a1), then return the remainder, which is in a1
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Handle negative arguments to divsi3
+__riscv_div_lib_L10:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    # Zero is handled as a negative so that the result will not be inverted
+    blt   zero, a1, __riscv_div_lib_L12      # bgtz a1 -> blt zero, a1
+
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    jal   zero, __riscv_div_lib_udivsi3      # j __riscv_div_lib_udivsi3 -> jal zero
+__riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+__riscv_div_lib_L12:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Signed 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_modsi3
+__riscv_div_lib_modsi3:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
+    blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
+__riscv_div_lib_L30:
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+__riscv_div_lib_L31:
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
+__riscv_div_lib_L32:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# end of subrountine
+
+    .text
+    .align 2
+__mul:
+    add    a2, a0, x0
+    addi   a0, x0, 0
+.Mul_loop:
+    andi   a3, a1, 1
+    beq    a3, x0, .Mul_skip
+    add    a0, a0, a2
+.Mul_skip:
+    srli   a1, a1, 1
+    slli   a2, a2, 1
+    bne    a1, x0, .Mul_loop
+    jalr   x0, ra, 0
+
+.text
+.align 2
+
+# Signed 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_divsi3
+__riscv_div_lib_divsi3:
+    blt   a0, zero, __riscv_div_lib_L10      # bltz a0 -> blt a0, zero
+    blt   a1, zero, __riscv_div_lib_L11      # bltz a1 -> blt a1, zero
+    # Since the quotient is positive, fall into udivsi3
+
+# Unsigned 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_udivsi3
+__riscv_div_lib_udivsi3:
+    addi  a2, a1, 0                           # mv a2, a1 -> addi a2, a1, 0
+    addi  a1, a0, 0                           # mv a1, a0 -> addi a1, a0, 0
+    addi  a0, zero, -1                        # li a0, -1 -> addi a0, zero, -1
+    beq   a2, zero, __riscv_div_lib_L5       # beqz a2 -> beq a2, zero
+    addi  a3, zero, 1                         # li a3, 1 -> addi a3, zero, 1
+    bgeu  a2, a1, __riscv_div_lib_L2
+__riscv_div_lib_L1:
+    bge   zero, a2, __riscv_div_lib_L2       # blez a2 -> bge zero, a2
+    slli  a2, a2, 1
+    slli  a3, a3, 1
+    bltu  a2, a1, __riscv_div_lib_L1         # bgtu a1, a2 -> bltu a2, a1
+__riscv_div_lib_L2:
+    addi  a0, zero, 0                         # li a0, 0 -> addi a0, zero, 0
+__riscv_div_lib_L3:
+    bltu  a1, a2, __riscv_div_lib_L4
+    sub   a1, a1, a2
+    or    a0, a0, a3
+__riscv_div_lib_L4:
+    srli  a3, a3, 1
+    srli  a2, a2, 1
+    bne   a3, zero, __riscv_div_lib_L3       # bnez a3 -> bne a3, zero
+__riscv_div_lib_L5:
+    jalr  zero, ra, 0                         # ret -> jalr zero, ra, 0
+
+# Unsigned 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_umodsi3
+__riscv_div_lib_umodsi3:
+    # Call udivsi3(a0, a1), then return the remainder, which is in a1
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Handle negative arguments to divsi3
+__riscv_div_lib_L10:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    # Zero is handled as a negative so that the result will not be inverted
+    blt   zero, a1, __riscv_div_lib_L12      # bgtz a1 -> blt zero, a1
+
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    jal   zero, __riscv_div_lib_udivsi3      # j __riscv_div_lib_udivsi3 -> jal zero
+__riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+__riscv_div_lib_L12:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Signed 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_modsi3
+__riscv_div_lib_modsi3:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
+    blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
+__riscv_div_lib_L30:
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+__riscv_div_lib_L31:
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
+__riscv_div_lib_L32:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# end of subrountine
+
+    .text
+    .align 2
+__mul:
+    add    a2, a0, x0
+    addi   a0, x0, 0
+.Mul_loop:
+    andi   a3, a1, 1
+    beq    a3, x0, .Mul_skip
+    add    a0, a0, a2
+.Mul_skip:
+    srli   a1, a1, 1
+    slli   a2, a2, 1
+    bne    a1, x0, .Mul_loop
+    jalr   x0, ra, 0
+
+.text
+.align 2
+
+# Signed 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_divsi3
+__riscv_div_lib_divsi3:
+    blt   a0, zero, __riscv_div_lib_L10      # bltz a0 -> blt a0, zero
+    blt   a1, zero, __riscv_div_lib_L11      # bltz a1 -> blt a1, zero
+    # Since the quotient is positive, fall into udivsi3
+
+# Unsigned 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_udivsi3
+__riscv_div_lib_udivsi3:
+    addi  a2, a1, 0                           # mv a2, a1 -> addi a2, a1, 0
+    addi  a1, a0, 0                           # mv a1, a0 -> addi a1, a0, 0
+    addi  a0, zero, -1                        # li a0, -1 -> addi a0, zero, -1
+    beq   a2, zero, __riscv_div_lib_L5       # beqz a2 -> beq a2, zero
+    addi  a3, zero, 1                         # li a3, 1 -> addi a3, zero, 1
+    bgeu  a2, a1, __riscv_div_lib_L2
+__riscv_div_lib_L1:
+    bge   zero, a2, __riscv_div_lib_L2       # blez a2 -> bge zero, a2
+    slli  a2, a2, 1
+    slli  a3, a3, 1
+    bltu  a2, a1, __riscv_div_lib_L1         # bgtu a1, a2 -> bltu a2, a1
+__riscv_div_lib_L2:
+    addi  a0, zero, 0                         # li a0, 0 -> addi a0, zero, 0
+__riscv_div_lib_L3:
+    bltu  a1, a2, __riscv_div_lib_L4
+    sub   a1, a1, a2
+    or    a0, a0, a3
+__riscv_div_lib_L4:
+    srli  a3, a3, 1
+    srli  a2, a2, 1
+    bne   a3, zero, __riscv_div_lib_L3       # bnez a3 -> bne a3, zero
+__riscv_div_lib_L5:
+    jalr  zero, ra, 0                         # ret -> jalr zero, ra, 0
+
+# Unsigned 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_umodsi3
+__riscv_div_lib_umodsi3:
+    # Call udivsi3(a0, a1), then return the remainder, which is in a1
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Handle negative arguments to divsi3
+__riscv_div_lib_L10:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    # Zero is handled as a negative so that the result will not be inverted
+    blt   zero, a1, __riscv_div_lib_L12      # bgtz a1 -> blt zero, a1
+
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    jal   zero, __riscv_div_lib_udivsi3      # j __riscv_div_lib_udivsi3 -> jal zero
+__riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+__riscv_div_lib_L12:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Signed 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_modsi3
+__riscv_div_lib_modsi3:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
+    blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
+__riscv_div_lib_L30:
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+__riscv_div_lib_L31:
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
+__riscv_div_lib_L32:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# end of subrountine
+
+    .text
+    .align 2
+__mul:
+    add    a2, a0, x0
+    addi   a0, x0, 0
+.Mul_loop:
+    andi   a3, a1, 1
+    beq    a3, x0, .Mul_skip
+    add    a0, a0, a2
+.Mul_skip:
+    srli   a1, a1, 1
+    slli   a2, a2, 1
+    bne    a1, x0, .Mul_loop
+    jalr   x0, ra, 0
+
+.text
+.align 2
+
+# Signed 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_divsi3
+__riscv_div_lib_divsi3:
+    blt   a0, zero, __riscv_div_lib_L10      # bltz a0 -> blt a0, zero
+    blt   a1, zero, __riscv_div_lib_L11      # bltz a1 -> blt a1, zero
+    # Since the quotient is positive, fall into udivsi3
+
+# Unsigned 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_udivsi3
+__riscv_div_lib_udivsi3:
+    addi  a2, a1, 0                           # mv a2, a1 -> addi a2, a1, 0
+    addi  a1, a0, 0                           # mv a1, a0 -> addi a1, a0, 0
+    addi  a0, zero, -1                        # li a0, -1 -> addi a0, zero, -1
+    beq   a2, zero, __riscv_div_lib_L5       # beqz a2 -> beq a2, zero
+    addi  a3, zero, 1                         # li a3, 1 -> addi a3, zero, 1
+    bgeu  a2, a1, __riscv_div_lib_L2
+__riscv_div_lib_L1:
+    bge   zero, a2, __riscv_div_lib_L2       # blez a2 -> bge zero, a2
+    slli  a2, a2, 1
+    slli  a3, a3, 1
+    bltu  a2, a1, __riscv_div_lib_L1         # bgtu a1, a2 -> bltu a2, a1
+__riscv_div_lib_L2:
+    addi  a0, zero, 0                         # li a0, 0 -> addi a0, zero, 0
+__riscv_div_lib_L3:
+    bltu  a1, a2, __riscv_div_lib_L4
+    sub   a1, a1, a2
+    or    a0, a0, a3
+__riscv_div_lib_L4:
+    srli  a3, a3, 1
+    srli  a2, a2, 1
+    bne   a3, zero, __riscv_div_lib_L3       # bnez a3 -> bne a3, zero
+__riscv_div_lib_L5:
+    jalr  zero, ra, 0                         # ret -> jalr zero, ra, 0
+
+# Unsigned 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_umodsi3
+__riscv_div_lib_umodsi3:
+    # Call udivsi3(a0, a1), then return the remainder, which is in a1
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Handle negative arguments to divsi3
+__riscv_div_lib_L10:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    # Zero is handled as a negative so that the result will not be inverted
+    blt   zero, a1, __riscv_div_lib_L12      # bgtz a1 -> blt zero, a1
+
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    jal   zero, __riscv_div_lib_udivsi3      # j __riscv_div_lib_udivsi3 -> jal zero
+__riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+__riscv_div_lib_L12:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Signed 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_modsi3
+__riscv_div_lib_modsi3:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
+    blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
+__riscv_div_lib_L30:
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+__riscv_div_lib_L31:
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
+__riscv_div_lib_L32:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# end of subrountine
+
+    .text
+    .align 2
+__mul:
+    add    a2, a0, x0
+    addi   a0, x0, 0
+.Mul_loop:
+    andi   a3, a1, 1
+    beq    a3, x0, .Mul_skip
+    add    a0, a0, a2
+.Mul_skip:
+    srli   a1, a1, 1
+    slli   a2, a2, 1
+    bne    a1, x0, .Mul_loop
+    jalr   x0, ra, 0
+
+
+
+.text
+.align 2
+
+# Signed 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_divsi3
+__riscv_div_lib_divsi3:
+    blt   a0, zero, __riscv_div_lib_L10      # bltz a0 -> blt a0, zero
+    blt   a1, zero, __riscv_div_lib_L11      # bltz a1 -> blt a1, zero
+    # Since the quotient is positive, fall into udivsi3
+
+# Unsigned 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_udivsi3
+__riscv_div_lib_udivsi3:
+    addi  a2, a1, 0                           # mv a2, a1 -> addi a2, a1, 0
+    addi  a1, a0, 0                           # mv a1, a0 -> addi a1, a0, 0
+    addi  a0, zero, -1                        # li a0, -1 -> addi a0, zero, -1
+    beq   a2, zero, __riscv_div_lib_L5       # beqz a2 -> beq a2, zero
+    addi  a3, zero, 1                         # li a3, 1 -> addi a3, zero, 1
+    bgeu  a2, a1, __riscv_div_lib_L2
+__riscv_div_lib_L1:
+    bge   zero, a2, __riscv_div_lib_L2       # blez a2 -> bge zero, a2
+    slli  a2, a2, 1
+    slli  a3, a3, 1
+    bltu  a2, a1, __riscv_div_lib_L1         # bgtu a1, a2 -> bltu a2, a1
+__riscv_div_lib_L2:
+    addi  a0, zero, 0                         # li a0, 0 -> addi a0, zero, 0
+__riscv_div_lib_L3:
+    bltu  a1, a2, __riscv_div_lib_L4
+    sub   a1, a1, a2
+    or    a0, a0, a3
+__riscv_div_lib_L4:
+    srli  a3, a3, 1
+    srli  a2, a2, 1
+    bne   a3, zero, __riscv_div_lib_L3       # bnez a3 -> bne a3, zero
+__riscv_div_lib_L5:
+    jalr  zero, ra, 0                         # ret -> jalr zero, ra, 0
+
+# Unsigned 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_umodsi3
+__riscv_div_lib_umodsi3:
+    # Call udivsi3(a0, a1), then return the remainder, which is in a1
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Handle negative arguments to divsi3
+__riscv_div_lib_L10:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    # Zero is handled as a negative so that the result will not be inverted
+    blt   zero, a1, __riscv_div_lib_L12      # bgtz a1 -> blt zero, a1
+
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    jal   zero, __riscv_div_lib_udivsi3      # j __riscv_div_lib_udivsi3 -> jal zero
+__riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+__riscv_div_lib_L12:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Signed 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_modsi3
+__riscv_div_lib_modsi3:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
+    blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
+__riscv_div_lib_L30:
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+__riscv_div_lib_L31:
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
+__riscv_div_lib_L32:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# end of subrountine    .text
+    .align 2
+__mul:
+    add    a2, a0, x0
+    addi   a0, x0, 0
+.Mul_loop:
+    andi   a3, a1, 1
+    beq    a3, x0, .Mul_skip
+    add    a0, a0, a2
+.Mul_skip:
+    srli   a1, a1, 1
+    slli   a2, a2, 1
+    bne    a1, x0, .Mul_loop
+    jalr   x0, ra, 0
+
+
+
+.text
+.align 2
+
+# Signed 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_divsi3
+__riscv_div_lib_divsi3:
+    blt   a0, zero, __riscv_div_lib_L10      # bltz a0 -> blt a0, zero
+    blt   a1, zero, __riscv_div_lib_L11      # bltz a1 -> blt a1, zero
+    # Since the quotient is positive, fall into udivsi3
+
+# Unsigned 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_udivsi3
+__riscv_div_lib_udivsi3:
+    addi  a2, a1, 0                           # mv a2, a1 -> addi a2, a1, 0
+    addi  a1, a0, 0                           # mv a1, a0 -> addi a1, a0, 0
+    addi  a0, zero, -1                        # li a0, -1 -> addi a0, zero, -1
+    beq   a2, zero, __riscv_div_lib_L5       # beqz a2 -> beq a2, zero
+    addi  a3, zero, 1                         # li a3, 1 -> addi a3, zero, 1
+    bgeu  a2, a1, __riscv_div_lib_L2
+__riscv_div_lib_L1:
+    bge   zero, a2, __riscv_div_lib_L2       # blez a2 -> bge zero, a2
+    slli  a2, a2, 1
+    slli  a3, a3, 1
+    bltu  a2, a1, __riscv_div_lib_L1         # bgtu a1, a2 -> bltu a2, a1
+__riscv_div_lib_L2:
+    addi  a0, zero, 0                         # li a0, 0 -> addi a0, zero, 0
+__riscv_div_lib_L3:
+    bltu  a1, a2, __riscv_div_lib_L4
+    sub   a1, a1, a2
+    or    a0, a0, a3
+__riscv_div_lib_L4:
+    srli  a3, a3, 1
+    srli  a2, a2, 1
+    bne   a3, zero, __riscv_div_lib_L3       # bnez a3 -> bne a3, zero
+__riscv_div_lib_L5:
+    jalr  zero, ra, 0                         # ret -> jalr zero, ra, 0
+
+# Unsigned 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_umodsi3
+__riscv_div_lib_umodsi3:
+    # Call udivsi3(a0, a1), then return the remainder, which is in a1
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Handle negative arguments to divsi3
+__riscv_div_lib_L10:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    # Zero is handled as a negative so that the result will not be inverted
+    blt   zero, a1, __riscv_div_lib_L12      # bgtz a1 -> blt zero, a1
+
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    jal   zero, __riscv_div_lib_udivsi3      # j __riscv_div_lib_udivsi3 -> jal zero
+__riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+__riscv_div_lib_L12:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Signed 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_modsi3
+__riscv_div_lib_modsi3:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
+    blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
+__riscv_div_lib_L30:
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+__riscv_div_lib_L31:
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
+__riscv_div_lib_L32:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# end of subrountine    .text
+    .align 2
+__mul:
+    add    a2, a0, x0
+    addi   a0, x0, 0
+.Mul_loop:
+    andi   a3, a1, 1
+    beq    a3, x0, .Mul_skip
+    add    a0, a0, a2
+.Mul_skip:
+    srli   a1, a1, 1
+    slli   a2, a2, 1
+    bne    a1, x0, .Mul_loop
+    jalr   x0, ra, 0
+
+.text
+.align 2
+
+# Signed 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_divsi3
+__riscv_div_lib_divsi3:
+    blt   a0, zero, __riscv_div_lib_L10      # bltz a0 -> blt a0, zero
+    blt   a1, zero, __riscv_div_lib_L11      # bltz a1 -> blt a1, zero
+    # Since the quotient is positive, fall into udivsi3
+
+# Unsigned 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_udivsi3
+__riscv_div_lib_udivsi3:
+    addi  a2, a1, 0                           # mv a2, a1 -> addi a2, a1, 0
+    addi  a1, a0, 0                           # mv a1, a0 -> addi a1, a0, 0
+    addi  a0, zero, -1                        # li a0, -1 -> addi a0, zero, -1
+    beq   a2, zero, __riscv_div_lib_L5       # beqz a2 -> beq a2, zero
+    addi  a3, zero, 1                         # li a3, 1 -> addi a3, zero, 1
+    bgeu  a2, a1, __riscv_div_lib_L2
+__riscv_div_lib_L1:
+    bge   zero, a2, __riscv_div_lib_L2       # blez a2 -> bge zero, a2
+    slli  a2, a2, 1
+    slli  a3, a3, 1
+    bltu  a2, a1, __riscv_div_lib_L1         # bgtu a1, a2 -> bltu a2, a1
+__riscv_div_lib_L2:
+    addi  a0, zero, 0                         # li a0, 0 -> addi a0, zero, 0
+__riscv_div_lib_L3:
+    bltu  a1, a2, __riscv_div_lib_L4
+    sub   a1, a1, a2
+    or    a0, a0, a3
+__riscv_div_lib_L4:
+    srli  a3, a3, 1
+    srli  a2, a2, 1
+    bne   a3, zero, __riscv_div_lib_L3       # bnez a3 -> bne a3, zero
+__riscv_div_lib_L5:
+    jalr  zero, ra, 0                         # ret -> jalr zero, ra, 0
+
+# Unsigned 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_umodsi3
+__riscv_div_lib_umodsi3:
+    # Call udivsi3(a0, a1), then return the remainder, which is in a1
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Handle negative arguments to divsi3
+__riscv_div_lib_L10:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    # Zero is handled as a negative so that the result will not be inverted
+    blt   zero, a1, __riscv_div_lib_L12      # bgtz a1 -> blt zero, a1
+
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    jal   zero, __riscv_div_lib_udivsi3      # j __riscv_div_lib_udivsi3 -> jal zero
+__riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+__riscv_div_lib_L12:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Signed 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_modsi3
+__riscv_div_lib_modsi3:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
+    blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
+__riscv_div_lib_L30:
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+__riscv_div_lib_L31:
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
+__riscv_div_lib_L32:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# end of subrountine
+
+    .text
+    .align 2
+__mul:
+    add    a2, a0, x0
+    addi   a0, x0, 0
+.Mul_loop:
+    andi   a3, a1, 1
+    beq    a3, x0, .Mul_skip
+    add    a0, a0, a2
+.Mul_skip:
+    srli   a1, a1, 1
+    slli   a2, a2, 1
+    bne    a1, x0, .Mul_loop
+    jalr   x0, ra, 0
+
+.text
+.align 2
+
+# Signed 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_divsi3
+__riscv_div_lib_divsi3:
+    blt   a0, zero, __riscv_div_lib_L10      # bltz a0 -> blt a0, zero
+    blt   a1, zero, __riscv_div_lib_L11      # bltz a1 -> blt a1, zero
+    # Since the quotient is positive, fall into udivsi3
+
+# Unsigned 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_udivsi3
+__riscv_div_lib_udivsi3:
+    addi  a2, a1, 0                           # mv a2, a1 -> addi a2, a1, 0
+    addi  a1, a0, 0                           # mv a1, a0 -> addi a1, a0, 0
+    addi  a0, zero, -1                        # li a0, -1 -> addi a0, zero, -1
+    beq   a2, zero, __riscv_div_lib_L5       # beqz a2 -> beq a2, zero
+    addi  a3, zero, 1                         # li a3, 1 -> addi a3, zero, 1
+    bgeu  a2, a1, __riscv_div_lib_L2
+__riscv_div_lib_L1:
+    bge   zero, a2, __riscv_div_lib_L2       # blez a2 -> bge zero, a2
+    slli  a2, a2, 1
+    slli  a3, a3, 1
+    bltu  a2, a1, __riscv_div_lib_L1         # bgtu a1, a2 -> bltu a2, a1
+__riscv_div_lib_L2:
+    addi  a0, zero, 0                         # li a0, 0 -> addi a0, zero, 0
+__riscv_div_lib_L3:
+    bltu  a1, a2, __riscv_div_lib_L4
+    sub   a1, a1, a2
+    or    a0, a0, a3
+__riscv_div_lib_L4:
+    srli  a3, a3, 1
+    srli  a2, a2, 1
+    bne   a3, zero, __riscv_div_lib_L3       # bnez a3 -> bne a3, zero
+__riscv_div_lib_L5:
+    jalr  zero, ra, 0                         # ret -> jalr zero, ra, 0
+
+# Unsigned 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_umodsi3
+__riscv_div_lib_umodsi3:
+    # Call udivsi3(a0, a1), then return the remainder, which is in a1
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Handle negative arguments to divsi3
+__riscv_div_lib_L10:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    # Zero is handled as a negative so that the result will not be inverted
+    blt   zero, a1, __riscv_div_lib_L12      # bgtz a1 -> blt zero, a1
+
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    jal   zero, __riscv_div_lib_udivsi3      # j __riscv_div_lib_udivsi3 -> jal zero
+__riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+__riscv_div_lib_L12:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Signed 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_modsi3
+__riscv_div_lib_modsi3:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
+    blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
+__riscv_div_lib_L30:
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+__riscv_div_lib_L31:
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
+__riscv_div_lib_L32:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# end of subrountine
+
+    .text
+    .align 2
+__mul:
+    add    a2, a0, x0
+    addi   a0, x0, 0
+.Mul_loop:
+    andi   a3, a1, 1
+    beq    a3, x0, .Mul_skip
+    add    a0, a0, a2
+.Mul_skip:
+    srli   a1, a1, 1
+    slli   a2, a2, 1
+    bne    a1, x0, .Mul_loop
+    jalr   x0, ra, 0
+
+.text
+.align 2
+
+# Signed 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_divsi3
+__riscv_div_lib_divsi3:
+    blt   a0, zero, __riscv_div_lib_L10      # bltz a0 -> blt a0, zero
+    blt   a1, zero, __riscv_div_lib_L11      # bltz a1 -> blt a1, zero
+    # Since the quotient is positive, fall into udivsi3
+
+# Unsigned 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_udivsi3
+__riscv_div_lib_udivsi3:
+    addi  a2, a1, 0                           # mv a2, a1 -> addi a2, a1, 0
+    addi  a1, a0, 0                           # mv a1, a0 -> addi a1, a0, 0
+    addi  a0, zero, -1                        # li a0, -1 -> addi a0, zero, -1
+    beq   a2, zero, __riscv_div_lib_L5       # beqz a2 -> beq a2, zero
+    addi  a3, zero, 1                         # li a3, 1 -> addi a3, zero, 1
+    bgeu  a2, a1, __riscv_div_lib_L2
+__riscv_div_lib_L1:
+    bge   zero, a2, __riscv_div_lib_L2       # blez a2 -> bge zero, a2
+    slli  a2, a2, 1
+    slli  a3, a3, 1
+    bltu  a2, a1, __riscv_div_lib_L1         # bgtu a1, a2 -> bltu a2, a1
+__riscv_div_lib_L2:
+    addi  a0, zero, 0                         # li a0, 0 -> addi a0, zero, 0
+__riscv_div_lib_L3:
+    bltu  a1, a2, __riscv_div_lib_L4
+    sub   a1, a1, a2
+    or    a0, a0, a3
+__riscv_div_lib_L4:
+    srli  a3, a3, 1
+    srli  a2, a2, 1
+    bne   a3, zero, __riscv_div_lib_L3       # bnez a3 -> bne a3, zero
+__riscv_div_lib_L5:
+    jalr  zero, ra, 0                         # ret -> jalr zero, ra, 0
+
+# Unsigned 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_umodsi3
+__riscv_div_lib_umodsi3:
+    # Call udivsi3(a0, a1), then return the remainder, which is in a1
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Handle negative arguments to divsi3
+__riscv_div_lib_L10:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    # Zero is handled as a negative so that the result will not be inverted
+    blt   zero, a1, __riscv_div_lib_L12      # bgtz a1 -> blt zero, a1
+
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    jal   zero, __riscv_div_lib_udivsi3      # j __riscv_div_lib_udivsi3 -> jal zero
+__riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+__riscv_div_lib_L12:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Signed 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_modsi3
+__riscv_div_lib_modsi3:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
+    blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
+__riscv_div_lib_L30:
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+__riscv_div_lib_L31:
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
+__riscv_div_lib_L32:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# end of subrountine
+
+    .text
+    .align 2
+__mul:
+    add    a2, a0, x0
+    addi   a0, x0, 0
+.Mul_loop:
+    andi   a3, a1, 1
+    beq    a3, x0, .Mul_skip
+    add    a0, a0, a2
+.Mul_skip:
+    srli   a1, a1, 1
+    slli   a2, a2, 1
+    bne    a1, x0, .Mul_loop
+    jalr   x0, ra, 0
+
+
+
+
+
+.text
+.align 2
+
+# Signed 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_divsi3
+__riscv_div_lib_divsi3:
+    blt   a0, zero, __riscv_div_lib_L10      # bltz a0 -> blt a0, zero
+    blt   a1, zero, __riscv_div_lib_L11      # bltz a1 -> blt a1, zero
+    # Since the quotient is positive, fall into udivsi3
+
+# Unsigned 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_udivsi3
+__riscv_div_lib_udivsi3:
+    addi  a2, a1, 0                           # mv a2, a1 -> addi a2, a1, 0
+    addi  a1, a0, 0                           # mv a1, a0 -> addi a1, a0, 0
+    addi  a0, zero, -1                        # li a0, -1 -> addi a0, zero, -1
+    beq   a2, zero, __riscv_div_lib_L5       # beqz a2 -> beq a2, zero
+    addi  a3, zero, 1                         # li a3, 1 -> addi a3, zero, 1
+    bgeu  a2, a1, __riscv_div_lib_L2
+__riscv_div_lib_L1:
+    bge   zero, a2, __riscv_div_lib_L2       # blez a2 -> bge zero, a2
+    slli  a2, a2, 1
+    slli  a3, a3, 1
+    bltu  a2, a1, __riscv_div_lib_L1         # bgtu a1, a2 -> bltu a2, a1
+__riscv_div_lib_L2:
+    addi  a0, zero, 0                         # li a0, 0 -> addi a0, zero, 0
+__riscv_div_lib_L3:
+    bltu  a1, a2, __riscv_div_lib_L4
+    sub   a1, a1, a2
+    or    a0, a0, a3
+__riscv_div_lib_L4:
+    srli  a3, a3, 1
+    srli  a2, a2, 1
+    bne   a3, zero, __riscv_div_lib_L3       # bnez a3 -> bne a3, zero
+__riscv_div_lib_L5:
+    jalr  zero, ra, 0                         # ret -> jalr zero, ra, 0
+
+# Unsigned 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_umodsi3
+__riscv_div_lib_umodsi3:
+    # Call udivsi3(a0, a1), then return the remainder, which is in a1
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Handle negative arguments to divsi3
+__riscv_div_lib_L10:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    # Zero is handled as a negative so that the result will not be inverted
+    blt   zero, a1, __riscv_div_lib_L12      # bgtz a1 -> blt zero, a1
+
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    jal   zero, __riscv_div_lib_udivsi3      # j __riscv_div_lib_udivsi3 -> jal zero
+__riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+__riscv_div_lib_L12:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Signed 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_modsi3
+__riscv_div_lib_modsi3:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
+    blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
+__riscv_div_lib_L30:
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+__riscv_div_lib_L31:
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
+__riscv_div_lib_L32:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# end of subrountine    .text
+    .align 2
+__mul:
+    add    a2, a0, x0
+    addi   a0, x0, 0
+.Mul_loop:
+    andi   a3, a1, 1
+    beq    a3, x0, .Mul_skip
+    add    a0, a0, a2
+.Mul_skip:
+    srli   a1, a1, 1
+    slli   a2, a2, 1
+    bne    a1, x0, .Mul_loop
+    jalr   x0, ra, 0
+
+    .text
+    .align 2
+__mul:
+    add    a2, a0, x0
+    addi   a0, x0, 0
+.Mul_loop:
+    andi   a3, a1, 1
+    beq    a3, x0, .Mul_skip
+    add    a0, a0, a2
+.Mul_skip:
+    srli   a1, a1, 1
+    slli   a2, a2, 1
+    bne    a1, x0, .Mul_loop
+    jalr   x0, ra, 0
+
+.text
+.align 2
+
+# Signed 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_divsi3
+__riscv_div_lib_divsi3:
+    blt   a0, zero, __riscv_div_lib_L10      # bltz a0 -> blt a0, zero
+    blt   a1, zero, __riscv_div_lib_L11      # bltz a1 -> blt a1, zero
+    # Since the quotient is positive, fall into udivsi3
+
+# Unsigned 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_udivsi3
+__riscv_div_lib_udivsi3:
+    addi  a2, a1, 0                           # mv a2, a1 -> addi a2, a1, 0
+    addi  a1, a0, 0                           # mv a1, a0 -> addi a1, a0, 0
+    addi  a0, zero, -1                        # li a0, -1 -> addi a0, zero, -1
+    beq   a2, zero, __riscv_div_lib_L5       # beqz a2 -> beq a2, zero
+    addi  a3, zero, 1                         # li a3, 1 -> addi a3, zero, 1
+    bgeu  a2, a1, __riscv_div_lib_L2
+__riscv_div_lib_L1:
+    bge   zero, a2, __riscv_div_lib_L2       # blez a2 -> bge zero, a2
+    slli  a2, a2, 1
+    slli  a3, a3, 1
+    bltu  a2, a1, __riscv_div_lib_L1         # bgtu a1, a2 -> bltu a2, a1
+__riscv_div_lib_L2:
+    addi  a0, zero, 0                         # li a0, 0 -> addi a0, zero, 0
+__riscv_div_lib_L3:
+    bltu  a1, a2, __riscv_div_lib_L4
+    sub   a1, a1, a2
+    or    a0, a0, a3
+__riscv_div_lib_L4:
+    srli  a3, a3, 1
+    srli  a2, a2, 1
+    bne   a3, zero, __riscv_div_lib_L3       # bnez a3 -> bne a3, zero
+__riscv_div_lib_L5:
+    jalr  zero, ra, 0                         # ret -> jalr zero, ra, 0
+
+# Unsigned 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_umodsi3
+__riscv_div_lib_umodsi3:
+    # Call udivsi3(a0, a1), then return the remainder, which is in a1
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Handle negative arguments to divsi3
+__riscv_div_lib_L10:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    # Zero is handled as a negative so that the result will not be inverted
+    blt   zero, a1, __riscv_div_lib_L12      # bgtz a1 -> blt zero, a1
+
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    jal   zero, __riscv_div_lib_udivsi3      # j __riscv_div_lib_udivsi3 -> jal zero
+__riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+__riscv_div_lib_L12:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Signed 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_modsi3
+__riscv_div_lib_modsi3:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
+    blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
+__riscv_div_lib_L30:
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+__riscv_div_lib_L31:
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
+__riscv_div_lib_L32:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# end of subrountine.text
 .align 2
 
 # Signed 32-bit division: a0 = a0 / a1
