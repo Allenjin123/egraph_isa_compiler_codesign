@@ -71,6 +71,7 @@ usage() {
     echo "  -o, --output-dir DIR       输出目录基础路径 (默认: output/backend/)"
     echo "  --clean                    清理旧输出（默认：是）"
     echo "  --no-clean                 不清理旧输出"
+    echo "  --skip-frontend            skip front end processing"
     echo "  --skip-saturation          跳过饱和步骤（使用现有 JSON 文件）"
     echo "  -r, --reconstruct-only     仅重建汇编文件（跳过 ILP 提取）"
     echo "  -h, --help                 显示此帮助信息"
@@ -110,6 +111,7 @@ SYNTH_PARALLEL="$DEFAULT_SYNTH_PARALLEL"
 OUTPUT_BASE_DIR=""
 RECONSTRUCT_ONLY=false
 CLEAN_OUTPUTS="$DEFAULT_CLEAN"
+SKIP_FRONTEND=false
 RUN_SATURATION="$DEFAULT_RUN_SATURATION"
 
 # Parse all arguments
@@ -149,6 +151,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --no-clean)
             CLEAN_OUTPUTS=false
+            shift
+            ;;
+        --skip-frontend)
+            SKIP_FRONTEND=true
             shift
             ;;
         --skip-saturation)
@@ -285,6 +291,7 @@ fi
 # Step 0.4: Run frontend analysis if needed
 # ============================================================================
 FRONTEND_OUTPUT_DIR="$OUTPUT_BASE/frontend/$PROGRAM_NAME"
+
 if [ ! -d "$FRONTEND_OUTPUT_DIR/basic_blocks_ssa" ]; then
     echo -e "${BLUE}步骤 0.4: 运行前端分析（生成 SSA 基本块）...${NC}"
     echo -e "${YELLOW}  前端输出不存在，开始分析...${NC}"
@@ -307,10 +314,11 @@ if [ ! -d "$FRONTEND_OUTPUT_DIR/basic_blocks_ssa" ]; then
 
     # Check if program failed
     if [ $PROGRAM_FAILED -eq 1 ]; then
-        FAILED_PROGRAMS=$((FAILED_PROGRAMS + 1))
-        echo -e "${RED}跳过程序 ${PROGRAM_NAME}，继续下一个程序${NC}"
-        set -e
-        continue
+        echo -e "${RED}程序 ${PROGRAM_NAME} 失败${NC}"
+        # Restore file descriptors before returning
+        exec 1>&3 2>&4
+        exec 3>&- 4>&-
+        return 2  # Return failure status
     fi
     echo ""
 else
@@ -325,18 +333,20 @@ echo -e "${BLUE}步骤 0.45: 运行完整分析（Spike 指令计数 + 块执行
 
 # Check if run_complete_analysis.sh exists
 COMPLETE_ANALYSIS_SCRIPT="$BENCHMARK_DIR/run_complete_analysis.sh"
-if [ -f "$COMPLETE_ANALYSIS_SCRIPT" ]; then
-    echo -e "${CYAN}  运行: cd benchmark && ./run_complete_analysis.sh${NC}"
+if [ "$SKIP_FRONTEND" = true ]; then
+    if [ -f "$COMPLETE_ANALYSIS_SCRIPT" ]; then
+        echo -e "${CYAN}  运行: cd benchmark && ./run_complete_analysis.sh${NC}"
 
-    # Run the complete analysis script
-    if (cd "$BENCHMARK_DIR" && bash run_complete_analysis.sh); then
-        echo -e "${GREEN}  ✓ 完整分析完成${NC}"
+        # Run the complete analysis script
+        if (cd "$BENCHMARK_DIR" && bash run_complete_analysis.sh); then
+            echo -e "${GREEN}  ✓ 完整分析完成${NC}"
+        else
+            echo -e "${YELLOW}  ⚠ 完整分析失败（非致命错误，继续）${NC}"
+        fi
     else
-        echo -e "${YELLOW}  ⚠ 完整分析失败（非致命错误，继续）${NC}"
+        echo -e "${YELLOW}  ⚠ 完整分析脚本不存在: $COMPLETE_ANALYSIS_SCRIPT${NC}"
+        echo -e "${YELLOW}  跳过完整分析${NC}"
     fi
-else
-    echo -e "${YELLOW}  ⚠ 完整分析脚本不存在: $COMPLETE_ANALYSIS_SCRIPT${NC}"
-    echo -e "${YELLOW}  跳过完整分析${NC}"
 fi
 
 echo ""
@@ -371,10 +381,11 @@ fi
 
 # Skip to next program if this one failed
 if [ $PROGRAM_FAILED -eq 1 ]; then
-    FAILED_PROGRAMS=$((FAILED_PROGRAMS + 1))
-    echo -e "${RED}跳过程序 ${PROGRAM_NAME}，继续下一个程序${NC}"
-    set -e  # Re-enable exit on error for loop
-    continue
+    echo -e "${RED}程序 ${PROGRAM_NAME} 饱和失败${NC}"
+    # Restore file descriptors before returning
+    exec 1>&3 2>&4
+    exec 3>&- 4>&-
+    return 2  # Return failure status
 fi
 
 # Create output directory and subdirectories
@@ -403,10 +414,11 @@ if [ "$RECONSTRUCT_ONLY" = false ]; then
 
     # Check if program failed
     if [ $PROGRAM_FAILED -eq 1 ]; then
-        FAILED_PROGRAMS=$((FAILED_PROGRAMS + 1))
-        echo -e "${RED}跳过程序 ${PROGRAM_NAME}，继续下一个程序${NC}"
-        set -e
-        continue
+        echo -e "${RED}程序 ${PROGRAM_NAME} 失败${NC}"
+        # Restore file descriptors before returning
+        exec 1>&3 2>&4
+        exec 3>&- 4>&-
+        return 2  # Return failure status
     fi
     echo ""
 
@@ -563,10 +575,11 @@ fi
 
 # Check if program failed during reconstruction
 if [ $PROGRAM_FAILED -eq 1 ]; then
-    FAILED_PROGRAMS=$((FAILED_PROGRAMS + 1))
-    echo -e "${RED}跳过程序 ${PROGRAM_NAME}，继续下一个程序${NC}"
-    set -e
-    continue
+    echo -e "${RED}程序 ${PROGRAM_NAME} 重建失败${NC}"
+    # Restore file descriptors before returning
+    exec 1>&3 2>&4
+    exec 3>&- 4>&-
+    return 2  # Return failure status
 fi
 
 # ============================================================================

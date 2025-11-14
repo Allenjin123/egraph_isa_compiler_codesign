@@ -1,8 +1,9 @@
 #!/bin/bash
 # 完整的前端分析流程脚本（步骤 1-5）
-# 使用方法: ./run_full_analysis.sh <program_name1> [program_name2] [...]
-# 示例: ./run_full_analysis.sh dijkstra_small_O3
-#       ./run_full_analysis.sh dijkstra_small_O3 basicmath_small_O3
+# 使用方法: ./run_full_analysis.sh [program_name1] [program_name2] [...]
+# 示例: ./run_full_analysis.sh                          # 运行所有程序
+#       ./run_full_analysis.sh dijkstra_small_O3        # 运行单个程序
+#       ./run_full_analysis.sh dijkstra_small_O3 basicmath_small_O3  # 运行多个程序
 
 # 颜色定义
 GREEN='\033[0;32m'
@@ -16,22 +17,26 @@ NC='\033[0m' # No Color
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
-# 检查参数
+# 检查参数 - 如果没有提供参数，则运行所有程序
 if [ $# -eq 0 ]; then
-    echo -e "${RED}错误: 请提供至少一个程序名${NC}"
-    echo "用法: $0 <program_name1> [program_name2] [...]"
-    echo "示例: $0 dijkstra_small_O3"
-    echo "      $0 dijkstra_small_O3 basicmath_small_O3"
+    echo -e "${YELLOW}未提供程序名，将运行所有可用程序${NC}"
     echo ""
-    echo "可用的程序:"
-    find "$PROJECT_ROOT/benchmark" -name "*_clean.s" -type f | while read file; do
+
+    # 自动发现所有程序
+    readarray -t PROGRAMS < <(find "$PROJECT_ROOT/benchmark" -name "*_clean.s" -type f | while read file; do
         basename "$file" .s | sed 's/_clean$//'
-    done | sort | sed 's/^/  - /'
-    exit 1
+    done | sort -u)
+
+    echo "发现 ${#PROGRAMS[@]} 个程序:"
+    printf '  - %s\n' "${PROGRAMS[@]}"
+    echo ""
+else
+    # 使用提供的参数
+    PROGRAMS=("$@")
 fi
 
 # 统计变量
-TOTAL_PROGRAMS=$#
+TOTAL_PROGRAMS=${#PROGRAMS[@]}
 SUCCESS_COUNT=0
 FAIL_COUNT=0
 declare -a FAILED_PROGRAMS
@@ -193,9 +198,9 @@ echo -e "${BLUE}========================================${NC}"
 echo ""
 
 PROGRAM_INDEX=0
-for PROGRAM_NAME in "$@"; do
+for PROGRAM_NAME in "${PROGRAMS[@]}"; do
     PROGRAM_INDEX=$((PROGRAM_INDEX + 1))
-    
+
     # 处理每个程序，即使失败也继续处理下一个
     process_program "$PROGRAM_NAME" "$PROGRAM_INDEX" || true
 done
