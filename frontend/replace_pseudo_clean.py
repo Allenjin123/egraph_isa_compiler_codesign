@@ -126,6 +126,12 @@ def replace_pseudo_instructions(asm_content):
             result.append(f"{indent}bgeu\t{rt}, {rs}, {offset}")
             replaced = True
         
+        # not rd, rs -> xori rd, rs, -1
+        elif match := re.match(r'^\s*not\s+(\w+),\s*(\w+)\s*($|#)', line):
+            rd, rs = match.groups()[:2]
+            result.append(f"{indent}xori\t{rd}, {rs}, -1")
+            replaced = True
+        
         # seqz rd, rs -> sltiu rd, rs, 1
         elif match := re.match(r'^\s*seqz\s+(\w+),\s*(\w+)\s*($|#)', line):
             rd, rs = match.groups()[:2]
@@ -144,6 +150,12 @@ def replace_pseudo_instructions(asm_content):
             result.append(f"{indent}sub\t{rd}, zero, {rs}")
             replaced = True
 
+        # sgt rd, rs, rt -> slt rd, rt, rs (swap operands)
+        elif match := re.match(r'^\s*sgt\s+(\w+),\s*(\w+),\s*(\w+)\s*($|#)', line):
+            rd, rs, rt = match.groups()[:3]
+            result.append(f"{indent}slt\t{rd}, {rt}, {rs}")
+            replaced = True
+        
         # sgtu rd, rs, rt -> sltu rd, rt, rs (swap operands)
         elif match := re.match(r'^\s*sgtu\s+(\w+),\s*(\w+),\s*(\w+)\s*($|#)', line):
             rd, rs, rt = match.groups()[:3]
