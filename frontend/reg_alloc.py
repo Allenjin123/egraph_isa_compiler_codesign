@@ -74,10 +74,11 @@ def allocate_compact_mapping(
                 real_uses[sym].append(block_end)
 
     # 仅对 SSA（op_*）做分配；真实寄存器只作为资源与固有 busy 段
+    # 按活跃区间的起始点排序（线性扫描分配算法要求）
     ssa_intervals = sorted(
         ((name, def_line[name], end_line.get(name, def_line[name]))
          for name in def_line if name.startswith("op_")),
-        key=lambda x: x[1]
+        key=lambda x: (x[1], x[2])  # 按 (start, end) 排序
     )
 
     # 真实寄存器的"固有"占用区间（由代码中真实寄存器的使用/定义推得）
@@ -171,6 +172,9 @@ def allocate_compact_mapping(
         return True
 
     for name, s, e in ssa_intervals:
+        # 调试：打印当前分配的变量及其活跃区间
+        # print(f"Allocating {name}: [{s}, {e})")
+        
         # 触发所有 <= s 的释放事件（使用堆优化）
         while release_times and release_times[0] <= s:
             t = heapq.heappop(release_times)
