@@ -18,24 +18,18 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 cd "$SCRIPT_DIR"
 
-# List of workloads: (program_name, source_path_from_benchmark)
-declare -a PROGRAMS=(
-    "patricia_O3"
-    "dijkstra_small_O3"
-    "basicmath_small_O3"
-    "bitcnts_O3"
-    "qsort_small_O3"
-    "qsort_large_O3"
-)
+# Dynamically find all *_clean.s files and generate program names
+readarray -t SOURCE_PATHS < <(find "$SCRIPT_DIR" -name "*_clean.s" -type f | \
+    grep -E "(automotive|network|security|embench-iot)/[^/]+/[^/]+_clean\.s$" | \
+    sed "s|$SCRIPT_DIR/||" | sort)
 
-declare -a SOURCE_PATHS=(
-    "network/patricia/patricia_O3_clean.s"
-    "network/dijkstra/dijkstra_small_O3_clean.s"
-    "automotive/basicmath/basicmath_small_O3_clean.s"
-    "automotive/bitcount/bitcnts_O3_clean.s"
-    "automotive/qsort_small/qsort_small_O3_clean.s"
-    "automotive/qsort_large/qsort_large_O3_clean.s"
-)
+declare -a PROGRAMS=()
+for source_path in "${SOURCE_PATHS[@]}"; do
+    # Extract program name from filename (remove _clean.s suffix)
+    filename=$(basename "$source_path")
+    program_name="${filename%_clean.s}"
+    PROGRAMS+=("$program_name")
+done
 
 echo -e "${CYAN}========================================${NC}"
 echo -e "${CYAN}Running Block Execution Analysis${NC}"

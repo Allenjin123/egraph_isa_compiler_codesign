@@ -192,26 +192,29 @@ pat_insert:
 	beq	a3,zero,.L53
 .L124:
 	lw	a7,16(a4)
-	lbu	a0,9(a7)
+	lw	a0,8(a7)
+	addi	a3,x0,8
+	srl	x0,a0,a3
+	andi	a0,x0,255
 	bge	a0,a2,.L96
 	bgeu	t3,a0,.L96
 	srl	a3,a1,a0
 	and	a3,a3,t1
-	beq	a3,zero,.+8
-	jal	x0,8
+	bne	a3,zero,.+8
 	jal	x0,.L58
 	lw	a3,16(a7)
-	lw	t3,8(a3)
-	addi	t0,x0,8
-	srl	x0,t3,t0
-	andi	t3,x0,255
-	bge	t3,a2,.L97
+	lbu	t3,9(a3)
+	bge	t3,a2,.+8
+	jal	x0,8
+	jal	x0,.L97
 	bgeu	a0,t3,.L97
 	srl	a5,a1,t3
 	and	a5,a5,t1
 	sw	a4,12(sp)
 	sw	a7,8(sp)
-	beq	a5,zero,.L63
+	beq	a5,zero,.+8
+	jal	x0,8
+	jal	x0,.L63
 	lw	a0,16(a3)
 	addi	a1,a6,0
 	sw	a3,4(sp)
@@ -336,8 +339,7 @@ pat_insert:
 	lui	a6,3
 	add	a5,a5,a1
 	addi	a6,a6,-288
-	blt	a6,a5,.+8
-	jal	x0,8
+	bge	a6,a5,.+8
 	jal	x0,.L125
 	lui	a6,%hi(static_masks)
 	slli	a1,a1,3
@@ -380,7 +382,9 @@ pat_insert:
 .L49:
 	add	a3,a3,t1
 	lw	a6,0(a3)
-	bgeu	a6,a7,.L126
+	bgeu	a6,a7,.+8
+	jal	x0,8
+	jal	x0,.L126
 	lbu	a2,0(a3)
 	addi	a1,a1,1
 	slli	t1,a1,3
@@ -420,7 +424,8 @@ pat_insert:
 	beq	a3,zero,.+8
 	jal	x0,.L51
 	andi	a3,a2,3
-	bne	a3,zero,.L51
+	beq	a3,zero,.+8
+	jal	x0,.L51
 	lw	a3,0(a2)
 	sw	a3,0(a5)
 	lw	a3,4(a2)
@@ -493,8 +498,7 @@ pat_insert:
 	sb	a2,9(a6)
 	and	a5,t1,a5
 	addi	a2,a6,0
-	beq	a5,zero,.+8
-	jal	x0,.L61
+	bne	a5,zero,.L61
 	addi	a2,a3,0
 	addi	a3,a6,0
 .L61:
@@ -507,7 +511,9 @@ pat_insert:
 	sb	a2,9(a6)
 	and	a5,t1,a5
 	addi	a2,a6,0
-	bne	a5,zero,.L80
+	bne	a5,zero,.+8
+	jal	x0,8
+	jal	x0,.L80
 	addi	a2,a3,0
 	addi	a3,a6,0
 .L80:
@@ -525,7 +531,9 @@ pat_insert:
 	lui	a5,3
 	addi	a5,a5,-288
 	addi	a0,a3,1
-	blt	a5,a0,.L95
+	blt	a5,a0,.+8
+	jal	x0,8
+	jal	x0,.L95
 	lui	a6,%hi(static_masks)
 	slli	a5,a3,3
 	addi	a3,a6,%lo(static_masks)
@@ -649,10 +657,7 @@ pat_search:
 	bne	a5,zero,.L176
 .L170:
 	lw	a1,12(a1)
-	lw	a5,8(a1)
-	addi	a4,x0,8
-	srl	x0,a5,a4
-	andi	a5,x0,255
+	lbu	a5,9(a1)
 	bgeu	a3,a5,.+8
 	jal	x0,.L171
 .L172:
@@ -788,8 +793,7 @@ main:
 	bne	t3,zero,.L190
 	add	a7,a1,a4
 .L191:
-	addi	a0,x0,223
-	and	a4,a4,a0
+	andi	a4,a4,223
 	beq	a4,zero,.L197
 	bne	a2,zero,.L198
 	jal	x0,.L197
@@ -861,7 +865,8 @@ main:
 	andi	a3,a5,255
 	addi	a2,zero,9
 	addi	a4,zero,0
-	bgeu	a2,a3,.+8
+	bltu	a2,a3,.+8
+	jal	x0,8
 	jal	x0,.L202
 	addi	a3,a4,0
 	add	a0,a0,a5
