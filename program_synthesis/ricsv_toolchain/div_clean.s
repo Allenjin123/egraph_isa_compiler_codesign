@@ -1,254 +1,80 @@
-    .text
-    .align 2
-    .globl __udivsi3
-    .type __udivsi3, @function
-__udivsi3:
-    addi   sp, sp, -24
-    sw     x1, 0(sp)
-    sw     x4, 4(sp)
-    sw     x5, 8(sp)
-    sw     x6, 12(sp)
-    sw     x7, 16(sp)
-    sw     x8, 20(sp)
-    add    x2, a0, x0
-    add    x3, a1, x0
-    bne    x3, x0, .Ldivu_start
-    addi   x1, x0, -1
-    jal    x0, .Ldivu_done
-.Ldivu_start:
-    addi   x5, x0, 1
-    add    x6, x2, x0
-    add    x4, x3, x0
-    bltu   x4, x6, .Ldivu_align
-    addi   x1, x0, 0
-    jal    x0, .Ldivu_loop
-.Ldivu_align:
-    slli   x7, x4, 1
-    srai   x8, x4, 31
-    bne    x8, x0, .Ldivu_loop_init
-    slli   x4, x4, 1
-    slli   x5, x5, 1
-    bgtu   x6, x4, .Ldivu_align
-.Ldivu_loop_init:
-    addi   x1, x0, 0
-.Ldivu_loop:
-    bltu   x6, x4, .Ldivu_skip
-    sub    x6, x6, x4
-    or     x1, x1, x5
-.Ldivu_skip:
-    srli   x5, x5, 1
-    srli   x4, x4, 1
-    bne    x5, x0, .Ldivu_loop
-.Ldivu_done:
-    add    a0, x1, x0
-    lw     x1, 0(sp)
-    lw     x4, 4(sp)
-    lw     x5, 8(sp)
-    lw     x6, 12(sp)
-    lw     x7, 16(sp)
-    lw     x8, 20(sp)
-    addi   sp, sp, 24
-    jalr   x0, ra, 0
-    .align 2
-    .globl __umodsi3
-    .type __umodsi3, @function
-__umodsi3:
-    addi   sp, sp, -24
-    sw     x1, 0(sp)
-    sw     x4, 4(sp)
-    sw     x5, 8(sp)
-    sw     x6, 12(sp)
-    sw     x7, 16(sp)
-    sw     x8, 20(sp)
-    add    x2, a0, x0
-    add    x3, a1, x0
-    bne    x3, x0, .Lremu_start
-    add    x1, x2, x0
-    jal    x0, .Lremu_done
-.Lremu_start:
-    addi   x5, x0, 1
-    add    x6, x2, x0
-    add    x4, x3, x0
-    bltu   x4, x6, .Lremu_align
-    addi   x7, x0, 0
-    jal    x0, .Lremu_loop
-.Lremu_align:
-    slli   x7, x4, 1
-    srai   x8, x4, 31
-    bne    x8, x0, .Lremu_loop_init
-    slli   x4, x4, 1
-    slli   x5, x5, 1
-    bgtu   x6, x4, .Lremu_align
-.Lremu_loop_init:
-    addi   x7, x0, 0
-.Lremu_loop:
-    bltu   x6, x4, .Lremu_skip
-    sub    x6, x6, x4
-    or     x7, x7, x5
-.Lremu_skip:
-    srli   x5, x5, 1
-    srli   x4, x4, 1
-    bne    x5, x0, .Lremu_loop
-    add    x1, x6, x0
-.Lremu_done:
-    add    a0, x1, x0
-    lw     x1, 0(sp)
-    lw     x4, 4(sp)
-    lw     x5, 8(sp)
-    lw     x6, 12(sp)
-    lw     x7, 16(sp)
-    lw     x8, 20(sp)
-    addi   sp, sp, 24
-    jalr   x0, ra, 0
-    .align 2
-    .globl __divsi3
-    .type __divsi3, @function
-__divsi3:
-    addi   sp, sp, -56
-    sw     x1, 0(sp)
-    sw     x4, 4(sp)
-    sw     x5, 8(sp)
-    sw     x6, 12(sp)
-    sw     x7, 16(sp)
-    sw     x8, 20(sp)
-    sw     x9, 24(sp)
-    sw     x10, 28(sp)
-    sw     x11, 32(sp)
-    sw     x12, 36(sp)
-    sw     x13, 40(sp)
-    sw     x14, 44(sp)
-    sw     x15, 48(sp)
-    sw     x16, 52(sp)
-    add    x2, a0, x0
-    add    x3, a1, x0
-    xor    x7, x2, x3
-    srai   x7, x7, 31
-    srai   x8, x2, 31
-    xor    x9, x2, x8
-    sub    x9, x9, x8
-    srai   x10, x3, 31
-    xor    x11, x3, x10
-    sub    x11, x11, x10
-    bne    x11, x0, .Ldiv_start
-    addi   x1, x0, -1
-    jal    x0, .Ldiv_apply_sign
-.Ldiv_start:
-    addi   x5, x0, 1
-    add    x6, x9, x0
-    add    x4, x11, x0
-    bltu   x4, x6, .Ldiv_align
-    addi   x1, x0, 0
-    jal    x0, .Ldiv_loop
-.Ldiv_align:
-    slli   x12, x4, 1
-    srai   x13, x4, 31
-    bne    x13, x0, .Ldiv_loop_init
-    slli   x4, x4, 1
-    slli   x5, x5, 1
-    bgtu   x6, x4, .Ldiv_align
-.Ldiv_loop_init:
-    addi   x1, x0, 0
-.Ldiv_loop:
-    bltu   x6, x4, .Ldiv_skip
-    sub    x6, x6, x4
-    or     x1, x1, x5
-.Ldiv_skip:
-    srli   x5, x5, 1
-    srli   x4, x4, 1
-    bne    x5, x0, .Ldiv_loop
-.Ldiv_apply_sign:
-    xor    x1, x1, x7
-    sub    x1, x1, x7
-    add    a0, x1, x0
-    lw     x1, 0(sp)
-    lw     x4, 4(sp)
-    lw     x5, 8(sp)
-    lw     x6, 12(sp)
-    lw     x7, 16(sp)
-    lw     x8, 20(sp)
-    lw     x9, 24(sp)
-    lw     x10, 28(sp)
-    lw     x11, 32(sp)
-    lw     x12, 36(sp)
-    lw     x13, 40(sp)
-    lw     x14, 44(sp)
-    lw     x15, 48(sp)
-    lw     x16, 52(sp)
-    addi   sp, sp, 56
-    jalr   x0, ra, 0
-    .align 2
-    .globl __modsi3
-    .type __modsi3, @function
-__modsi3:
-    addi   sp, sp, -56
-    sw     x1, 0(sp)
-    sw     x4, 4(sp)
-    sw     x5, 8(sp)
-    sw     x6, 12(sp)
-    sw     x7, 16(sp)
-    sw     x8, 20(sp)
-    sw     x9, 24(sp)
-    sw     x10, 28(sp)
-    sw     x11, 32(sp)
-    sw     x12, 36(sp)
-    sw     x13, 40(sp)
-    sw     x14, 44(sp)
-    sw     x15, 48(sp)
-    sw     x16, 52(sp)
-    add    x2, a0, x0
-    add    x3, a1, x0
-    srai   x7, x2, 31
-    srai   x8, x2, 31
-    xor    x9, x2, x8
-    sub    x9, x9, x8
-    srai   x10, x3, 31
-    xor    x11, x3, x10
-    sub    x11, x11, x10
-    bne    x11, x0, .Lrem_start
-    add    x1, x2, x0
-    jal    x0, .Lrem_apply_sign
-.Lrem_start:
-    addi   x5, x0, 1
-    add    x6, x9, x0
-    add    x4, x11, x0
-    bltu   x4, x6, .Lrem_align
-    addi   x12, x0, 0
-    jal    x0, .Lrem_loop
-.Lrem_align:
-    slli   x12, x4, 1
-    srai   x13, x4, 31
-    bne    x13, x0, .Lrem_loop_init
-    slli   x4, x4, 1
-    slli   x5, x5, 1
-    bgtu   x6, x4, .Lrem_align
-.Lrem_loop_init:
-    addi   x12, x0, 0
-.Lrem_loop:
-    bltu   x6, x4, .Lrem_skip
-    sub    x6, x6, x4
-    or     x12, x12, x5
-.Lrem_skip:
-    srli   x5, x5, 1
-    srli   x4, x4, 1
-    bne    x5, x0, .Lrem_loop
-    add    x1, x6, x0
-.Lrem_apply_sign:
-    xor    x1, x1, x7
-    sub    x1, x1, x7
-    add    a0, x1, x0
-    lw     x1, 0(sp)
-    lw     x4, 4(sp)
-    lw     x5, 8(sp)
-    lw     x6, 12(sp)
-    lw     x7, 16(sp)
-    lw     x8, 20(sp)
-    lw     x9, 24(sp)
-    lw     x10, 28(sp)
-    lw     x11, 32(sp)
-    lw     x12, 36(sp)
-    lw     x13, 40(sp)
-    lw     x14, 44(sp)
-    lw     x15, 48(sp)
-    lw     x16, 52(sp)
-    addi   sp, sp, 56
-    jalr   x0, ra, 0
+.text
+.align 2
+
+# Signed 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_divsi3
+__riscv_div_lib_divsi3:
+    blt   a0, zero, __riscv_div_lib_L10      # bltz a0 -> blt a0, zero
+    blt   a1, zero, __riscv_div_lib_L11      # bltz a1 -> blt a1, zero
+    # Since the quotient is positive, fall into udivsi3
+
+# Unsigned 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_udivsi3
+__riscv_div_lib_udivsi3:
+    addi  a2, a1, 0                           # mv a2, a1 -> addi a2, a1, 0
+    addi  a1, a0, 0                           # mv a1, a0 -> addi a1, a0, 0
+    addi  a0, zero, -1                        # li a0, -1 -> addi a0, zero, -1
+    beq   a2, zero, __riscv_div_lib_L5       # beqz a2 -> beq a2, zero
+    addi  a3, zero, 1                         # li a3, 1 -> addi a3, zero, 1
+    bgeu  a2, a1, __riscv_div_lib_L2
+__riscv_div_lib_L1:
+    bge   zero, a2, __riscv_div_lib_L2       # blez a2 -> bge zero, a2
+    slli  a2, a2, 1
+    slli  a3, a3, 1
+    bltu  a2, a1, __riscv_div_lib_L1         # bgtu a1, a2 -> bltu a2, a1
+__riscv_div_lib_L2:
+    addi  a0, zero, 0                         # li a0, 0 -> addi a0, zero, 0
+__riscv_div_lib_L3:
+    bltu  a1, a2, __riscv_div_lib_L4
+    sub   a1, a1, a2
+    or    a0, a0, a3
+__riscv_div_lib_L4:
+    srli  a3, a3, 1
+    srli  a2, a2, 1
+    bne   a3, zero, __riscv_div_lib_L3       # bnez a3 -> bne a3, zero
+__riscv_div_lib_L5:
+    jalr  zero, ra, 0                         # ret -> jalr zero, ra, 0
+
+# Unsigned 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_umodsi3
+__riscv_div_lib_umodsi3:
+    # Call udivsi3(a0, a1), then return the remainder, which is in a1
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Handle negative arguments to divsi3
+__riscv_div_lib_L10:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    # Zero is handled as a negative so that the result will not be inverted
+    blt   zero, a1, __riscv_div_lib_L12      # bgtz a1 -> blt zero, a1
+
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    jal   zero, __riscv_div_lib_udivsi3      # j __riscv_div_lib_udivsi3 -> jal zero
+__riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+__riscv_div_lib_L12:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Signed 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_modsi3
+__riscv_div_lib_modsi3:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
+    blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
+__riscv_div_lib_L30:
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+__riscv_div_lib_L31:
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
+__riscv_div_lib_L32:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
