@@ -10036,9 +10036,16 @@ static void init_array(struct myStringStruct *array) {
 }
 
 static void swap_elements(struct myStringStruct *lhs, struct myStringStruct *rhs) {
-  struct myStringStruct tmp = *lhs;
-  *lhs = *rhs;
-  *rhs = tmp;
+  char tmp[sizeof(lhs->qstring)];
+  for (size_t i = 0; i < sizeof(lhs->qstring); ++i) {
+    tmp[i] = lhs->qstring[i];
+  }
+  for (size_t i = 0; i < sizeof(lhs->qstring); ++i) {
+    lhs->qstring[i] = rhs->qstring[i];
+  }
+  for (size_t i = 0; i < sizeof(lhs->qstring); ++i) {
+    rhs->qstring[i] = tmp[i];
+  }
 }
 
 static void quicksort_range(struct myStringStruct *array, int left, int right) {
