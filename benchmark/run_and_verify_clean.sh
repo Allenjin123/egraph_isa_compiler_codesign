@@ -186,20 +186,28 @@ for asm_file in "${clean_files[@]}"; do
     
     echo "  Program: $prog_name, Size: $size_type"
     
-    # Find mibench directory
-    if ! mibench_dir=$(find_mibench_dir "$prog_name"); then
-        echo -e "  ${YELLOW}⚠ Cannot find mibench directory for $prog_name, skipping${NC}"
-        skipped=$((skipped + 1))
-        echo ""
-        continue
+    suite="mibench"
+    category="${rel_path%%/*}"
+    if [[ "$category" == "embench-iot" ]]; then
+        suite="embench"
     fi
+    echo "  Suite: $suite"
     
-    ref_output="$mibench_dir/old_output/output_${size_type}.txt"
-    if [ ! -f "$ref_output" ]; then
-        echo -e "  ${YELLOW}⚠ Reference output not found: $ref_output${NC}"
-        skipped=$((skipped + 1))
-        echo ""
-        continue
+    if [[ "$suite" == "mibench" ]]; then
+        if ! mibench_dir=$(find_mibench_dir "$prog_name"); then
+            echo -e "  ${YELLOW}⚠ Cannot find mibench directory for $prog_name, skipping${NC}"
+            skipped=$((skipped + 1))
+            echo ""
+            continue
+        fi
+        
+        ref_output="$mibench_dir/old_output/output_${size_type}.txt"
+        if [ ! -f "$ref_output" ]; then
+            echo -e "  ${YELLOW}⚠ Reference output not found: $ref_output${NC}"
+            skipped=$((skipped + 1))
+            echo ""
+            continue
+        fi
     fi
     
     # Create temporary directory for build
@@ -233,8 +241,10 @@ for asm_file in "${clean_files[@]}"; do
     if [ -n "$prog_args" ]; then
         echo "    Arguments: $prog_args"
         # Run spike with timeout, capture stdout only (stderr to /dev/null)
+        set +e
         timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$exe_file" $prog_args < /dev/null > "$output_file" 2>/dev/null
         exit_code=$?
+        set -e
         if [ $exit_code -eq 124 ]; then
             echo -e "  ${RED}✗ Execution timeout (300s)${NC}"
             failed=$((failed + 1))
@@ -247,8 +257,10 @@ for asm_file in "${clean_files[@]}"; do
     else
         # Run spike with timeout, capture stdout only (stderr to /dev/null)
         echo "Running: timeout 300 spike --isa=\"$SPIKE_ISA\" \"$PK\" \"$exe_file\" < /dev/null > \"$output_file\" 2>/dev/null"
+        set +e
         timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$exe_file" < /dev/null > "$output_file" 2>/dev/null
         exit_code=$?
+        set -e
         if [ $exit_code -eq 124 ]; then
             echo -e "  ${RED}✗ Execution timeout (300s)${NC}"
             failed=$((failed + 1))
@@ -260,22 +272,30 @@ for asm_file in "${clean_files[@]}"; do
         fi
     fi
     
-    # Compare outputs
-    echo "  Comparing with reference output..."
-    
-    if diff -q "$output_file" "$ref_output" > /dev/null 2>&1; then
-        echo -e "  ${GREEN}✓ Output matches reference${NC}"
-        passed=$((passed + 1))
+    if [[ "$suite" == "mibench" ]]; then
+        echo "  Comparing with reference output..."
+        
+        if diff -q "$output_file" "$ref_output" > /dev/null 2>&1; then
+            echo -e "  ${GREEN}✓ Output matches reference${NC}"
+            passed=$((passed + 1))
+        else
+            echo -e "  ${RED}✗ Output differs from reference${NC}"
+            echo "    Reference: $ref_output"
+            echo "    Generated: $output_file"
+            
+            echo "    First differences:"
+            diff "$output_file" "$ref_output" | head -10 | sed 's/^/      /'
+            
+            failed=$((failed + 1))
+        fi
     else
-        echo -e "  ${RED}✗ Output differs from reference${NC}"
-        echo "    Reference: $ref_output"
-        echo "    Generated: $output_file"
-        
-        # Show first few lines of diff
-        echo "    First differences:"
-        diff "$output_file" "$ref_output" | head -10 | sed 's/^/      /'
-        
-        failed=$((failed + 1))
+        if [ $exit_code -eq 0 ]; then
+            echo -e "  ${GREEN}✓ Spike execution completed (no reference output)${NC}"
+            passed=$((passed + 1))
+        else
+            echo -e "  ${RED}✗ Spike execution failed with code $exit_code${NC}"
+            failed=$((failed + 1))
+        fi
     fi
     
     # Clean up
