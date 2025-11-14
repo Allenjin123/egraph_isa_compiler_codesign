@@ -45,6 +45,15 @@ if [ -d "$REWRITE_BASE" ] && [ ! -L "$REWRITE_BASE" ]; then
     mv "$REWRITE_BASE" "${REWRITE_BASE}_orig"
 fi
 
+# 如果还没有原始备份，说明没有可重建的重写块
+if [ ! -d "${REWRITE_BASE}_orig" ]; then
+    echo "错误: 找不到重写块目录 ${REWRITE_BASE} 或 ${REWRITE_BASE}_orig"
+    exit 1
+fi
+
+# 确保存在占位目录用于放置当前变体的符号链接
+mkdir -p "$REWRITE_BASE"
+
 for ((i=0; i<NUM_VARIANTS; i++)); do
     VARIANT_DIR="${REWRITE_BASE}_orig/variant_${i}"
 
@@ -56,9 +65,9 @@ for ((i=0; i<NUM_VARIANTS; i++)); do
     echo ""
     echo "处理变体 ${i}..."
 
-    # 创建符号链接到当前变体
-    rm -f "$REWRITE_BASE"
-    ln -sfn "${REWRITE_BASE}_orig/variant_${i}" "$REWRITE_BASE"
+    # 为当前变体创建/刷新符号链接
+    rm -f "$REWRITE_BASE/variant_0"
+    ln -sfn "${REWRITE_BASE}_orig/variant_${i}" "$REWRITE_BASE/variant_0"
 
     # 调用重建脚本（不需要额外参数，它会自动找到 basic_blocks_rewrite）
     python3 "$SCRIPT_DIR/reconstruct_rewritten_asm.py" "$CLEAN_FILE" \
@@ -80,11 +89,10 @@ done
 
 # 恢复原始目录
 if [ -d "${REWRITE_BASE}_orig" ]; then
-    # Remove symlink if it exists
-    if [ -L "$REWRITE_BASE" ]; then
-        rm -f "$REWRITE_BASE"
-    fi
-    # Restore original directory
+    # 移除临时符号链接目录
+    rm -f "$REWRITE_BASE/variant_0"
+    rmdir "$REWRITE_BASE" 2>/dev/null
+    # 恢复原始目录
     mv "${REWRITE_BASE}_orig" "$REWRITE_BASE"
 fi
 
