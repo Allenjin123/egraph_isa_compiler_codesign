@@ -1003,44 +1003,44 @@ main:
 	addi	a0,a0,%lo(.LC0)
 	add	a7,a7,a2
 	mul	a6,a7,a6
-	#rem	a4,a6,a1
-	addi  sp, sp, -24        # Allocate stack space for all clobbered registers
-    sw    ra, 20(sp)         # Save return address
-    sw    a0, 16(sp)         # Save a0 (will be clobbered)
-    sw    a1, 12(sp)         # Save a1 (used as input but will be clobbered)
-    sw    a2, 8(sp)          # Save a2 (clobbered internally)
-    sw    a3, 4(sp)          # Save a3 (clobbered internally)
+	rem	a4,a6,a1
+	# addi  sp, sp, -24        # Allocate stack space for all clobbered registers
+    # sw    ra, 20(sp)         # Save return address
+    # sw    a0, 16(sp)         # Save a0 (will be clobbered)
+    # sw    a1, 12(sp)         # Save a1 (used as input but will be clobbered)
+    # sw    a2, 8(sp)          # Save a2 (clobbered internally)
+    # sw    a3, 4(sp)          # Save a3 (clobbered internally)
 
-    mv    a0, a6             # Move dividend (a6) to a0
-    # a1 already contains divisor, no move needed
-    jal   __riscv_div_lib_modsi3  # Call signed remainder function
-    mv    a4, a0             # Move result to destination register (a4)
+    # mv    a0, a6             # Move dividend (a6) to a0
+    # # a1 already contains divisor, no move needed
+    # jal   __riscv_div_lib_modsi3  # Call signed remainder function
+    # mv    a4, a0             # Move result to destination register (a4)
 
-    lw    a3, 4(sp)          # Restore a3
-    lw    a2, 8(sp)          # Restore a2
-    lw    a1, 12(sp)         # Restore a1
-    lw    a0, 16(sp)         # Restore a0
-    lw    ra, 20(sp)         # Restore return address
-    addi  sp, sp, 24         # Deallocate stack space
-	#div a1,a6,a1
-    addi  sp, sp, -24        # Allocate stack for ra, a0, a2, a3 (skip a1 since it's destination)
-      sw    ra, 20(sp)         # Save return address
-      sw    a0, 16(sp)         # Save a0 if live
-      # Don't save a1 - it will be overwritten with result
-      sw    a2, 8(sp)          # Save a2 (IMPORTANT - clobbered by division)
-      sw    a3, 4(sp)          # Save a3 (IMPORTANT - clobbered by division)
+    # lw    a3, 4(sp)          # Restore a3
+    # lw    a2, 8(sp)          # Restore a2
+    # lw    a1, 12(sp)         # Restore a1
+    # lw    a0, 16(sp)         # Restore a0
+    # lw    ra, 20(sp)         # Restore return address
+    # addi  sp, sp, 24         # Deallocate stack space
+	div a1,a6,a1
+    # addi  sp, sp, -24        # Allocate stack for ra, a0, a2, a3 (skip a1 since it's destination)
+    #   sw    ra, 20(sp)         # Save return address
+    #   sw    a0, 16(sp)         # Save a0 if live
+    #   # Don't save a1 - it will be overwritten with result
+    #   sw    a2, 8(sp)          # Save a2 (IMPORTANT - clobbered by division)
+    #   sw    a3, 4(sp)          # Save a3 (IMPORTANT - clobbered by division)
 
-      mv    a0, a6             # Move dividend to a0
-      # a1 already has divisor
-      jal   __riscv_div_lib_divsi3  # Call division
-      mv    a1, a0             # Move result to a1
+    #   mv    a0, a6             # Move dividend to a0
+    #   # a1 already has divisor
+    #   jal   __riscv_div_lib_divsi3  # Call division
+    #   mv    a1, a0             # Move result to a1
 
-      lw    a3, 4(sp)          # Restore a3
-      lw    a2, 8(sp)          # Restore a2
-      # Don't restore a1 - it has our result
-      lw    a0, 16(sp)         # Restore a0
-      lw    ra, 20(sp)         # Restore return address
-      addi  sp, sp, 24         # Deallocate stack
+    #   lw    a3, 4(sp)          # Restore a3
+    #   lw    a2, 8(sp)          # Restore a2
+    #   # Don't restore a1 - it has our result
+    #   lw    a0, 16(sp)         # Restore a0
+    #   lw    ra, 20(sp)         # Restore return address
+    #   addi  sp, sp, 24         # Deallocate stack
     
      
 	srai	a2,a4,31
@@ -44708,9 +44708,21 @@ node_count:
 	.zero	4
 	.ident	"GCC: (g1b306039a) 15.1.0"
 	.section	.note.GNU-stack,"",@progbits
-	.text
-    .align 2
 .text
+    .align 2
+__mul:
+    add    a2, a0, x0
+    addi   a0, x0, 0
+.Mul_loop:
+    andi   a3, a1, 1
+    beq    a3, x0, .Mul_skip
+    add    a0, a0, a2
+.Mul_skip:
+    srli   a1, a1, 1
+    slli   a2, a2, 1
+    bne    a1, x0, .Mul_loop
+    jalr   x0, ra, 0
+
 .align 2
 
 # Signed 32-bit division: a0 = a0 / a1

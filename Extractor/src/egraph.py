@@ -306,7 +306,7 @@ class EGraph:
             return gp.RV_INSTRUCTIONS[op_lower]['latency']
 
         # Helper ops (ImmVal, leaf, etc.) have no cost
-        if op_name in ['ImmVal', 'ImmLabel', 'RegVal', 'leaf', 'root']:
+        if op_name in ['ImmVal', 'ImmLabel', 'RegVal', 'leaf', 'root', "CallMul", "CallDiv","CallDivu", "CallRem","CallRemu"]:
             return 0
 
         # Unknown ops default to 1
