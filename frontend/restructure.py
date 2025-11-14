@@ -11,7 +11,7 @@ from egraph import EGraph, ENode
 from ILP.ilp_solver import parse_solution_file, extract_solution  
 from util import INSTRUCTIONS_WITHOUT_RD, RV32I_LOAD, ALL_ABI_REGS, parse_instruction, format_instruction, SPECIAL_REGS
 from reg_alloc import allocate_compact_mapping
-from mextension import replace_callmul
+from mextension import replace_m_extension
 # 路径配置
 FRONTEND_OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output" / "frontend"
 ILP_OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output" / "ilp"
@@ -506,9 +506,9 @@ class RewriteBlock:
         self.placeholder_lines = [line for sublist in self.placeholder_block_lines for line in sublist]
         self.lines = [line for sublist in self.block_lines for line in sublist]
         
-        # 替换所有 callmul 伪指令
+        # 替换所有 M 扩展伪指令 (callmul, calldiv, calldivu, callrem, callremu)
         asm_text = '\n'.join(self.lines)
-        asm_text = replace_callmul(asm_text)
+        asm_text = replace_m_extension(asm_text)
         self.lines = asm_text.split('\n') if asm_text else []
 
 def get_all_blocks(program_name: str) -> List[int]:
