@@ -612,11 +612,19 @@ def rewrite_program(program_name: str, solution_file: str = None, output_dir: st
             output_file = output_dir / f"{block_num}.txt"
             with open(output_file, 'w') as f:
                 for line in rewriter.lines:
-                    f.write(line + '\n')
+                    # 标签行（以冒号结尾）不缩进，其他行添加制表符缩进
+                    if line.rstrip().endswith(':'):
+                        f.write(line + '\n')
+                    else:
+                        f.write('\t' + line + '\n')
             placeholder_file = placeholder_dir / f"{block_num}.txt"
             with open(placeholder_file, 'w') as f:
                 for line in rewriter.placeholder_lines:
-                    f.write(line + '\n')
+                    # 标签行（以冒号结尾）不缩进，其他行添加制表符缩进
+                    if line.rstrip().endswith(':'):
+                        f.write(line + '\n')
+                    else:
+                        f.write('\t' + line + '\n')
             
             stats['success_blocks'] += 1
             stats['total_lines'] += len(rewriter.lines)
