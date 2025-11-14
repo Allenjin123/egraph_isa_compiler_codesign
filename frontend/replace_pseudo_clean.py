@@ -82,6 +82,15 @@ def replace_pseudo_instructions(asm_content):
             result.append(f"{indent}jalr\tzero, {rs}, 0")
             replaced = True
         
+        # jalr rs -> jalr ra, rs, 0 (single operand form, implicit rd=ra for function call)
+        # Note: This is for indirect function calls through a register
+        elif match := re.match(r'^\s*jalr\s+([a-z]\w*)\s*($|#)', line):
+            rs = match.group(1)
+            # Check if it's really single operand (not followed by comma)
+            if ',' not in line:
+                result.append(f"{indent}jalr\tra, {rs}, 0")
+                replaced = True
+        
         # tail target -> auipc + jalr with zero (tail call, no return address saved)
         elif match := re.match(r'^\s*tail\s+(\S+)\s*($|#)', line):
             target = match.group(1)
