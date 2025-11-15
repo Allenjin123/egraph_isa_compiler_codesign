@@ -560,15 +560,6 @@ def main():
         # Extract S-expressions
         print(f"Extracting S-expressions...")
         sexprs = extract_sexprs(egraph, choices)
-    
-        # Display S-expressions for this solution
-        print(f"\n" + "="*60)
-        print(f"S-expressions (Solution {i+1})")
-        print("="*60)
-        for root_name, data in sexprs.items():
-            print(f"\n{root_name}:")
-            print(f"  eclass: {data['eclass']}")
-            print(f"  sexpr:  {data['sexpr']}")
         
         # Sort sexprs by section (dict order), then block_num, then index
         def sort_key(name):

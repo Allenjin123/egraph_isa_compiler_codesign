@@ -68,8 +68,8 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir):
             for instr in block.inst_list:
                 subset.add(instr.op_name)
 
-        # Generate DSL file path
-        dsl_file_path = str(Path(dsl_dir) / f"variant_{variant_id}.dsl")
+        # Generate DSL file path - include program name to avoid collisions when running in parallel
+        dsl_file_path = str(Path(dsl_dir) / f"{program_name}_variant_{variant_id}.dsl")
 
         # Calculate area (this runs synthesis - the slow part)
         # area_parser.py will create the output directory automatically

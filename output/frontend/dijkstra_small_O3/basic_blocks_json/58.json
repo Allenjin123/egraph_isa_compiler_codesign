@@ -176,6 +176,22 @@
       "cost": 1.0,
       "subsumed": false
     },
+    "primitive-i64-12": {
+      "op": "12",
+      "children": [],
+      "eclass": "i64-12",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-11-ImmVal": {
+      "op": "ImmVal",
+      "children": [
+        "primitive-i64-12"
+      ],
+      "eclass": "Imm-31",
+      "cost": 1.0,
+      "subsumed": false
+    },
     "primitive-i64-8": {
       "op": "8",
       "children": [],
@@ -183,26 +199,10 @@
       "cost": 1.0,
       "subsumed": false
     },
-    "function-11-ImmVal": {
-      "op": "ImmVal",
-      "children": [
-        "primitive-i64-8"
-      ],
-      "eclass": "Imm-31",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "primitive-i64-4": {
-      "op": "4",
-      "children": [],
-      "eclass": "i64-4",
-      "cost": 1.0,
-      "subsumed": false
-    },
     "function-12-ImmVal": {
       "op": "ImmVal",
       "children": [
-        "primitive-i64-4"
+        "primitive-i64-8"
       ],
       "eclass": "Imm-34",
       "cost": 1.0,
@@ -300,31 +300,20 @@
     "function-1-Blt": {
       "op": "Blt",
       "children": [
-        "function-2-Addi",
         "function-0-Lw",
-        "function-11-ImmVal"
+        "function-2-Addi",
+        "function-12-ImmVal"
       ],
-      "eclass": "Inst-38",
+      "eclass": "Inst-40",
       "cost": 1.0,
       "subsumed": false
     },
     "function-0-Bge": {
       "op": "Bge",
       "children": [
-        "function-2-Addi",
-        "function-0-Lw",
-        "function-11-ImmVal"
-      ],
-      "eclass": "Inst-32",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-1-Bge": {
-      "op": "Bge",
-      "children": [
         "function-0-Lw",
         "function-2-Addi",
-        "function-11-ImmVal"
+        "function-12-ImmVal"
       ],
       "eclass": "Inst-38",
       "cost": 1.0,
@@ -555,7 +544,7 @@
     "function-3-Seq2": {
       "op": "Seq2",
       "children": [
-        "function-1-Blt",
+        "function-0-Bge",
         "function-1-Jal"
       ],
       "eclass": "Inst-32",
@@ -565,10 +554,20 @@
     "function-4-Seq2": {
       "op": "Seq2",
       "children": [
-        "function-3-Seq2",
-        "function-1-Jal"
+        "function-1-Blt",
+        "function-0-Jal"
       ],
       "eclass": "Inst-38",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-5-Seq2": {
+      "op": "Seq2",
+      "children": [
+        "function-0-Bge",
+        "function-0-Jal"
+      ],
+      "eclass": "Inst-40",
       "cost": 1.0,
       "subsumed": false
     }
@@ -644,13 +643,13 @@
     "Imm-31": {
       "type": "Imm"
     },
-    "i64-8": {
+    "i64-12": {
       "type": "i64"
     },
     "Imm-34": {
       "type": "Imm"
     },
-    "i64-4": {
+    "i64-8": {
       "type": "i64"
     },
     "Imm-3": {
@@ -690,6 +689,9 @@
       "type": "Inst"
     },
     "Inst-29": {
+      "type": "Inst"
+    },
+    "Inst-40": {
       "type": "Inst"
     },
     "Inst-38": {

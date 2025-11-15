@@ -182,7 +182,7 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl
         raise FileNotFoundError(f"Synthesis script not found: {synth_script}")
 
     # Determine output directory for synthesis
-    # synth_core.sh creates subdirectory based on DSL filename (e.g., variant_0.dsl -> output/variant_0/)
+    # synth_core.sh creates subdirectory based on DSL filename (e.g., program_variant_0.dsl -> output/program_variant_0/)
     # So we just pass the base 'output' directory
     synth_output_base = synth_script.parent / "output"
 

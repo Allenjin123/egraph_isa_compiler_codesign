@@ -144,7 +144,7 @@ def generate_ilp_file(
     # Primary: Minimize operator types (weighted by 100)
     # Secondary: Minimize total node costs
     # Exclude special operators from objective: root, ImmVal, RegVal, leaf
-    excluded_ops = {"root", "ImmVal", "RegVal", "leaf", "ImmLabel", "Seq2"}
+    excluded_ops = {"root", "ImmVal", "RegVal", "leaf", "ImmLabel", "Seq2", "CallMul", "CallDiv","CallDivu", "CallRem","CallRemu"}
     
     lp_lines.append("Minimize")
     obj_terms = []
@@ -153,7 +153,7 @@ def generate_ilp_file(
     for op_name in sorted(op_vars.keys()):
         if op_name not in excluded_ops:
             # Get operator-specific weight (default 100 for cheap ops)
-            weight = OP_TYPE_WEIGHTS.get(op_vars[op_name], DEFAULT_OP_WEIGHT)
+            weight = OP_TYPE_WEIGHTS.get(op_vars[op_name], DEFAULT_OP_WEIGHT)*(1-node_cost_scale)
             print(f"Operator {op_name} has weight {weight}")
             obj_terms.append(f"{weight} {op_vars[op_name]}")
     

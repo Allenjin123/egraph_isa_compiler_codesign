@@ -28,7 +28,37 @@
     "main": 51,
     ".L47": 52,
     ".L48": 54,
-    ".L49": 56
+    ".L49": 56,
+    "rgnNodes": 59,
+    "AdjMatrix": 59,
+    "queue": 59,
+    "result_sink": 59,
+    "iDist": 59,
+    "iCost": 59,
+    "i": 59,
+    "iNode": 59,
+    "iPrev": 59,
+    "ch": 59,
+    "g_qCount": 59,
+    "qRear": 59,
+    "qFront": 59,
+    "__mul": 59,
+    ".Mul_loop": 60,
+    ".Mul_skip": 62,
+    "__riscv_div_lib_divsi3": 64,
+    "__riscv_div_lib_udivsi3": 66,
+    "__riscv_div_lib_L1": 68,
+    "__riscv_div_lib_L2": 70,
+    "__riscv_div_lib_L3": 71,
+    "__riscv_div_lib_L4": 73,
+    "__riscv_div_lib_L5": 74,
+    "__riscv_div_lib_umodsi3": 75,
+    "__riscv_div_lib_L10": 77,
+    "__riscv_div_lib_L12": 80,
+    "__riscv_div_lib_modsi3": 82,
+    "__riscv_div_lib_L30": 84,
+    "__riscv_div_lib_L31": 86,
+    "__riscv_div_lib_L32": 87
   },
   "cfg": {
     "0": {
@@ -629,6 +659,313 @@
       "successors": [],
       "predecessors": [
         57
+      ]
+    },
+    "59": {
+      "terminator_type": "fallthrough",
+      "jump_target": null,
+      "successors": [
+        60
+      ],
+      "predecessors": []
+    },
+    "60": {
+      "terminator_type": "conditional",
+      "jump_target": ".Mul_skip",
+      "successors": [
+        62,
+        61
+      ],
+      "predecessors": [
+        59,
+        62
+      ]
+    },
+    "61": {
+      "terminator_type": "fallthrough",
+      "jump_target": null,
+      "successors": [
+        62
+      ],
+      "predecessors": [
+        60
+      ]
+    },
+    "62": {
+      "terminator_type": "conditional",
+      "jump_target": ".Mul_loop",
+      "successors": [
+        60,
+        63
+      ],
+      "predecessors": [
+        60,
+        61
+      ]
+    },
+    "63": {
+      "terminator_type": "fallthrough",
+      "jump_target": null,
+      "successors": [
+        64
+      ],
+      "predecessors": [
+        62
+      ]
+    },
+    "64": {
+      "terminator_type": "conditional",
+      "jump_target": "__riscv_div_lib_L10",
+      "successors": [
+        77,
+        65
+      ],
+      "predecessors": [
+        63
+      ]
+    },
+    "65": {
+      "terminator_type": "conditional",
+      "jump_target": "__riscv_div_lib_L11",
+      "successors": [
+        66
+      ],
+      "predecessors": [
+        64
+      ]
+    },
+    "66": {
+      "terminator_type": "conditional",
+      "jump_target": "__riscv_div_lib_L5",
+      "successors": [
+        74,
+        67
+      ],
+      "predecessors": [
+        65,
+        78
+      ]
+    },
+    "67": {
+      "terminator_type": "conditional",
+      "jump_target": "__riscv_div_lib_L2",
+      "successors": [
+        70,
+        68
+      ],
+      "predecessors": [
+        66
+      ]
+    },
+    "68": {
+      "terminator_type": "conditional",
+      "jump_target": "__riscv_div_lib_L2",
+      "successors": [
+        70,
+        69
+      ],
+      "predecessors": [
+        67,
+        69
+      ]
+    },
+    "69": {
+      "terminator_type": "conditional",
+      "jump_target": "__riscv_div_lib_L1",
+      "successors": [
+        68,
+        70
+      ],
+      "predecessors": [
+        68
+      ]
+    },
+    "70": {
+      "terminator_type": "fallthrough",
+      "jump_target": null,
+      "successors": [
+        71
+      ],
+      "predecessors": [
+        67,
+        68,
+        69
+      ]
+    },
+    "71": {
+      "terminator_type": "conditional",
+      "jump_target": "__riscv_div_lib_L4",
+      "successors": [
+        73,
+        72
+      ],
+      "predecessors": [
+        70,
+        73
+      ]
+    },
+    "72": {
+      "terminator_type": "fallthrough",
+      "jump_target": null,
+      "successors": [
+        73
+      ],
+      "predecessors": [
+        71
+      ]
+    },
+    "73": {
+      "terminator_type": "conditional",
+      "jump_target": "__riscv_div_lib_L3",
+      "successors": [
+        71,
+        74
+      ],
+      "predecessors": [
+        71,
+        72
+      ]
+    },
+    "74": {
+      "terminator_type": "return",
+      "jump_target": null,
+      "successors": [],
+      "predecessors": [
+        66,
+        73
+      ]
+    },
+    "75": {
+      "terminator_type": "call",
+      "jump_target": "__riscv_div_lib_udivsi3",
+      "successors": [
+        76
+      ],
+      "predecessors": []
+    },
+    "76": {
+      "terminator_type": "unconditional",
+      "jump_target": null,
+      "successors": [],
+      "predecessors": [
+        75
+      ]
+    },
+    "77": {
+      "terminator_type": "conditional",
+      "jump_target": "__riscv_div_lib_L12",
+      "successors": [
+        80,
+        78
+      ],
+      "predecessors": [
+        64
+      ]
+    },
+    "78": {
+      "terminator_type": "unconditional",
+      "jump_target": "__riscv_div_lib_udivsi3",
+      "successors": [
+        66
+      ],
+      "predecessors": [
+        77
+      ]
+    },
+    "79": {
+      "terminator_type": "fallthrough",
+      "jump_target": null,
+      "successors": [
+        80
+      ],
+      "predecessors": []
+    },
+    "80": {
+      "terminator_type": "call",
+      "jump_target": "__riscv_div_lib_udivsi3",
+      "successors": [
+        81
+      ],
+      "predecessors": [
+        77,
+        79
+      ]
+    },
+    "81": {
+      "terminator_type": "unconditional",
+      "jump_target": null,
+      "successors": [],
+      "predecessors": [
+        80
+      ]
+    },
+    "82": {
+      "terminator_type": "conditional",
+      "jump_target": "__riscv_div_lib_L31",
+      "successors": [
+        86,
+        83
+      ],
+      "predecessors": []
+    },
+    "83": {
+      "terminator_type": "conditional",
+      "jump_target": "__riscv_div_lib_L32",
+      "successors": [
+        87,
+        84
+      ],
+      "predecessors": [
+        82
+      ]
+    },
+    "84": {
+      "terminator_type": "call",
+      "jump_target": "__riscv_div_lib_udivsi3",
+      "successors": [
+        85
+      ],
+      "predecessors": [
+        83,
+        86
+      ]
+    },
+    "85": {
+      "terminator_type": "unconditional",
+      "jump_target": null,
+      "successors": [],
+      "predecessors": [
+        84
+      ]
+    },
+    "86": {
+      "terminator_type": "conditional",
+      "jump_target": "__riscv_div_lib_L30",
+      "successors": [
+        84,
+        87
+      ],
+      "predecessors": [
+        82
+      ]
+    },
+    "87": {
+      "terminator_type": "call",
+      "jump_target": "__riscv_div_lib_udivsi3",
+      "successors": [
+        88
+      ],
+      "predecessors": [
+        83,
+        86
+      ]
+    },
+    "88": {
+      "terminator_type": "unconditional",
+      "jump_target": null,
+      "successors": [],
+      "predecessors": [
+        87
       ]
     }
   }

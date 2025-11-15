@@ -221,7 +221,7 @@ WikiMerge.constprop.1.isra.0:
 	lw	a0,0(s4)
 	lw	a1,4(s4)
 	addi	s3,s3,8
-	jalr	s6
+	jalr	ra, s6, 0
 	bne	a0,zero,.L23
 	lw	a5,0(s2)
 	addi	s2,s2,8
@@ -267,7 +267,7 @@ WikiMerge.constprop.1.isra.0:
 	lw	a0,0(s2)
 	lw	a1,4(s2)
 	addi	s9,s9,1
-	jalr	s6
+	jalr	ra, s6, 0
 	lw	a2,0(s11)
 	lw	a3,4(s11)
 	bne	a0,zero,.L35
@@ -2483,7 +2483,7 @@ benchmark_body.constprop.0.isra.0:
 .L584:
 	addi	a0, s0, 0
 	addi	a1, zero, 400
-	jalr	s3
+	jalr	ra, s3, 0
 	sw	a0,0(s1)
 	sw	s0,4(s1)
 	addi	s0,s0,1
@@ -2555,7 +2555,7 @@ benchmark_body.isra.0:
 .L596:
 	addi	a0, s0, 0
 	addi	a1, zero, 400
-	jalr	s2
+	jalr	ra, s2, 0
 	sw	a0,0(s1)
 	sw	s0,4(s1)
 	addi	s0,s0,1
@@ -3250,7 +3250,7 @@ BinaryFirst:
 	lw	a1,4(a5)
 	lw	a2,0(s3)
 	lw	a3,4(s3)
-	jalr	s5
+	jalr	ra, s5, 0
 	beq	a0,zero,.L786
 	addi	s1,s0,1
 	blt	s1,s2,.L784
@@ -3268,7 +3268,7 @@ BinaryFirst:
 	lw	a3,4(s7)
 	lw	a0,0(s4)
 	lw	a1,4(s4)
-	jalr	s5
+	jalr	ra, s5, 0
 	add	s1,s1,a0
 .L781:
 	lw	ra,60(sp)
@@ -3320,7 +3320,7 @@ BinaryLast:
 	lw	a3,4(a5)
 	lw	a0,0(s3)
 	lw	a1,4(s3)
-	jalr	s5
+	jalr	ra, s5, 0
 	bne	a0,zero,.L797
 	addi	s1,s0,1
 	blt	s1, s2, .L793
@@ -3338,7 +3338,7 @@ BinaryLast:
 	lw	a1,4(s7)
 	lw	a2,0(s4)
 	lw	a3,4(s4)
-	jalr	s5
+	jalr	ra, s5, 0
 	sltiu	a0, a0, 1
 	add	s1,s1,a0
 .L790:
@@ -3403,7 +3403,7 @@ InsertionSort:
 	lw	a3,-4(s1)
 	addi	s1,s1,-8
 	addi	s2,s2,-1
-	jalr	s5
+	jalr	ra, s5, 0
 	addi	a5, s0, 0
 	bne	a0,zero,.L815
 	lw	a3,24(sp)
@@ -3936,7 +3936,7 @@ WikiMerge:
 	lw	a0,0(s4)
 	lw	a1,4(s4)
 	addi	s3,s3,8
-	jalr	s6
+	jalr	ra, s6, 0
 	bne	a0,zero,.L941
 	lw	a5,0(s1)
 	addi	s1,s1,8
@@ -3970,7 +3970,7 @@ WikiMerge:
 	lw	a0,0(s2)
 	lw	a1,4(s2)
 	addi	s3,s3,1
-	jalr	s6
+	jalr	ra, s6, 0
 	lw	a2,0(s11)
 	lw	a3,4(s11)
 	bne	a0,zero,.L953
@@ -4215,7 +4215,7 @@ WikiSort:
 	add	a5,s11,a5
 	lw	a0,0(a5)
 	lw	a1,4(a5)
-	jalr	s9
+	jalr	ra, s9, 0
 	lw	a5,56(sp)
 	lw	a4,16(sp)
 	sub	a5,a5,a4
@@ -4228,7 +4228,7 @@ WikiSort:
 	lw	a3,-4(a5)
 	lw	a0,0(a5)
 	lw	a1,4(a5)
-	jalr	s9
+	jalr	ra, s9, 0
 	beq	a0,zero,.L1160
 	lw	a5,8(sp)
 	sub	s0,a5,s2
@@ -4325,7 +4325,7 @@ WikiSort:
 	add	a5,s11,a5
 	lw	a0,0(a5)
 	lw	a1,4(a5)
-	jalr	s9
+	jalr	ra, s9, 0
 	bne	a0,zero,.L1079
 .L1077:
 	addi	a2, s3, 0
@@ -4453,7 +4453,7 @@ WikiSort:
 	lw	a3,4(a4)
 	lw	a0,0(a5)
 	lw	a1,4(a5)
-	jalr	s9
+	jalr	ra, s9, 0
 	beq	a0,zero,.L1098
 	addi	s5, s3, 0
 .L1098:
@@ -4878,13 +4878,13 @@ WikiSort:
 	lw	a2,8(s1)
 	lw	a3,12(s1)
 	addi	s1,s1,8
-	jalr	s9
+	jalr	ra, s9, 0
 	bne	a0,zero,.L1009
 	lw	a2,0(s5)
 	lw	a3,4(s5)
 	lw	a0,0(s1)
 	lw	a1,4(s1)
-	jalr	s9
+	jalr	ra, s9, 0
 	beq	a0,zero,.L1008
 .L1009:
 	addi	a3,s3,1
@@ -4935,13 +4935,13 @@ WikiSort:
 	lw	a2,0(s5)
 	lw	a3,4(s5)
 	lw	a0,-8(s5)
-	jalr	s9
+	jalr	ra, s9, 0
 	bne	a0,zero,.L1055
 	lw	a2,-8(s5)
 	lw	a3,4(s4)
 	lw	a0,0(s5)
 	lw	a1,4(s5)
-	jalr	s9
+	jalr	ra, s9, 0
 	beq	a0,zero,.L1054
 .L1055:
 	addi	a3,s7,1
@@ -4987,13 +4987,13 @@ WikiSort:
 	lw	a2,8(s5)
 	lw	a0,0(s5)
 	lw	a1,4(s5)
-	jalr	s9
+	jalr	ra, s9, 0
 	bne	a0,zero,.L1059
 	lw	a2,0(s5)
 	lw	a3,4(s5)
 	lw	a0,8(s5)
 	lw	a1,4(s1)
-	jalr	s9
+	jalr	ra, s9, 0
 	beq	a0,zero,.L1058
 .L1059:
 	addi	a2, s4, 0
@@ -5113,13 +5113,13 @@ WikiSort:
 	lw	a2,8(s3)
 	lw	a3,12(s3)
 	addi	s3,s3,8
-	jalr	s9
+	jalr	ra, s9, 0
 	bne	a0,zero,.L1031
 	lw	a2,0(s5)
 	lw	a3,4(s5)
 	lw	a0,0(s3)
 	lw	a1,4(s3)
-	jalr	s9
+	jalr	ra, s9, 0
 	beq	a0,zero,.L1030
 .L1031:
 	beq	s0,s4,.L1184
@@ -5156,13 +5156,13 @@ WikiSort:
 	lw	a2,8(s3)
 	lw	a0,0(s3)
 	lw	a1,4(s3)
-	jalr	s9
+	jalr	ra, s9, 0
 	bne	a0,zero,.L1044
 	lw	a1,12(s3)
 	lw	a2,0(s3)
 	lw	a3,4(s3)
 	lw	a0,8(s3)
-	jalr	s9
+	jalr	ra, s9, 0
 	beq	a0,zero,.L1043
 .L1044:
 	beq	s0,s1,.L1276
@@ -5195,13 +5195,13 @@ WikiSort:
 	lw	a0,-8(s1)
 	lw	a1,-4(s1)
 	addi	s1,s1,-8
-	jalr	s9
+	jalr	ra, s9, 0
 	bne	a0,zero,.L1049
 	lw	a2,0(s1)
 	lw	a3,4(s1)
 	lw	a0,0(s4)
 	lw	a1,4(s4)
-	jalr	s9
+	jalr	ra, s9, 0
 	beq	a0,zero,.L1048
 .L1049:
 	beq	s0,s7,.L1186
@@ -5284,7 +5284,7 @@ WikiSort:
 	lw	a3,4(a4)
 	lw	a0,0(a5)
 	lw	a1,4(a5)
-	jalr	s9
+	jalr	ra, s9, 0
 	beq	a0,zero,.L1168
 	bge	s1, s2, .L1283
 	addi	s0,s0,1
@@ -5332,7 +5332,7 @@ WikiSort:
 	lw	a3,4(a4)
 	lw	a0,0(a5)
 	lw	a1,4(a5)
-	jalr	s9
+	jalr	ra, s9, 0
 	beq	a0,zero,.L1172
 	bge	s0, s1, .L1286
 	addi	s7,s7,-1
@@ -5449,13 +5449,13 @@ WikiSort:
 	lw	a2,8(s1)
 	lw	a0,0(s1)
 	lw	a1,4(s1)
-	jalr	s9
+	jalr	ra, s9, 0
 	bne	a0,zero,.L1024
 	lw	a1,12(s1)
 	lw	a2,0(s1)
 	lw	a3,4(s1)
 	lw	a0,8(s1)
-	jalr	s9
+	jalr	ra, s9, 0
 	beq	a0,zero,.L1023
 .L1024:
 	beq	s0,s3,.L1182
@@ -5627,13 +5627,13 @@ WikiSort:
 	lw	a2,8(s1)
 	lw	a0,0(s1)
 	lw	a1,4(s1)
-	jalr	s9
+	jalr	ra, s9, 0
 	bne	a0,zero,.L1037
 	lw	a1,12(s1)
 	lw	a2,0(s1)
 	lw	a3,4(s1)
 	lw	a0,8(s1)
-	jalr	s9
+	jalr	ra, s9, 0
 	beq	a0,zero,.L1036
 .L1037:
 	lw	a5,92(sp)
@@ -6686,3 +6686,102 @@ max_size:
 	.word	400
 	.ident	"GCC: (g1b306039a) 15.1.0"
 	.section	.note.GNU-stack,"",@progbits
+
+
+    .text
+    .align 2
+__mul:
+    add    a2, a0, x0
+    addi   a0, x0, 0
+.Mul_loop:
+    andi   a3, a1, 1
+    beq    a3, x0, .Mul_skip
+    add    a0, a0, a2
+.Mul_skip:
+    srli   a1, a1, 1
+    slli   a2, a2, 1
+    bne    a1, x0, .Mul_loop
+    jalr   x0, ra, 0
+
+.text
+.align 2
+
+# Signed 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_divsi3
+__riscv_div_lib_divsi3:
+    blt   a0, zero, __riscv_div_lib_L10      # bltz a0 -> blt a0, zero
+    blt   a1, zero, __riscv_div_lib_L11      # bltz a1 -> blt a1, zero
+    # Since the quotient is positive, fall into udivsi3
+
+# Unsigned 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_udivsi3
+__riscv_div_lib_udivsi3:
+    addi  a2, a1, 0                           # mv a2, a1 -> addi a2, a1, 0
+    addi  a1, a0, 0                           # mv a1, a0 -> addi a1, a0, 0
+    addi  a0, zero, -1                        # li a0, -1 -> addi a0, zero, -1
+    beq   a2, zero, __riscv_div_lib_L5       # beqz a2 -> beq a2, zero
+    addi  a3, zero, 1                         # li a3, 1 -> addi a3, zero, 1
+    bgeu  a2, a1, __riscv_div_lib_L2
+__riscv_div_lib_L1:
+    bge   zero, a2, __riscv_div_lib_L2       # blez a2 -> bge zero, a2
+    slli  a2, a2, 1
+    slli  a3, a3, 1
+    bltu  a2, a1, __riscv_div_lib_L1         # bgtu a1, a2 -> bltu a2, a1
+__riscv_div_lib_L2:
+    addi  a0, zero, 0                         # li a0, 0 -> addi a0, zero, 0
+__riscv_div_lib_L3:
+    bltu  a1, a2, __riscv_div_lib_L4
+    sub   a1, a1, a2
+    or    a0, a0, a3
+__riscv_div_lib_L4:
+    srli  a3, a3, 1
+    srli  a2, a2, 1
+    bne   a3, zero, __riscv_div_lib_L3       # bnez a3 -> bne a3, zero
+__riscv_div_lib_L5:
+    jalr  zero, ra, 0                         # ret -> jalr zero, ra, 0
+
+# Unsigned 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_umodsi3
+__riscv_div_lib_umodsi3:
+    # Call udivsi3(a0, a1), then return the remainder, which is in a1
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Handle negative arguments to divsi3
+__riscv_div_lib_L10:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    # Zero is handled as a negative so that the result will not be inverted
+    blt   zero, a1, __riscv_div_lib_L12      # bgtz a1 -> blt zero, a1
+
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    jal   zero, __riscv_div_lib_udivsi3      # j __riscv_div_lib_udivsi3 -> jal zero
+__riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+__riscv_div_lib_L12:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# Signed 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_modsi3
+__riscv_div_lib_modsi3:
+    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+    blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
+    blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
+__riscv_div_lib_L30:
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+__riscv_div_lib_L31:
+    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
+    bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
+__riscv_div_lib_L32:
+    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+    sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
+    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+
+# end of subrountine

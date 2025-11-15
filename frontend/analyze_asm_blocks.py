@@ -68,6 +68,9 @@ class AsmBlockAnalyzer:
         Example: '  addi  sp,sp,-16' -> ('addi', 'sp,sp,-16')
         """
         stripped = line.strip()
+        # Remove comments (everything after #)
+        stripped = re.sub(r'#.*$', '', stripped).strip()
+        
         parts = stripped.split(None, 1)  # Split on first whitespace
         
         if not parts:
