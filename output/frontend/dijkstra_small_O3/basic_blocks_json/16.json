@@ -102,17 +102,6 @@
       "cost": 1.0,
       "subsumed": false
     },
-    "function-1-Blt": {
-      "op": "Blt",
-      "children": [
-        "function-0-Lw",
-        "function-0-RegVal",
-        "function-0-ImmVal"
-      ],
-      "eclass": "Inst-10",
-      "cost": 1.0,
-      "subsumed": false
-    },
     "function-0-Bge": {
       "op": "Bge",
       "children": [
@@ -125,17 +114,6 @@
       "subsumed": false
     },
     "function-1-Bge": {
-      "op": "Bge",
-      "children": [
-        "function-0-Lw",
-        "function-0-RegVal",
-        "function-0-ImmVal"
-      ],
-      "eclass": "Inst-8",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-2-Bge": {
       "op": "Bge",
       "children": [
         "function-0-RegVal",
@@ -185,7 +163,7 @@
     "function-1-Seq2": {
       "op": "Seq2",
       "children": [
-        "function-1-Blt",
+        "function-1-Bge",
         "function-1-Jal"
       ],
       "eclass": "Inst-8",
@@ -195,7 +173,7 @@
     "function-2-Seq2": {
       "op": "Seq2",
       "children": [
-        "function-1-Seq2",
+        "function-0-Blt",
         "function-1-Jal"
       ],
       "eclass": "Inst-10",
@@ -247,10 +225,10 @@
     "Inst-4": {
       "type": "Inst"
     },
-    "Inst-10": {
+    "Inst-6": {
       "type": "Inst"
     },
-    "Inst-6": {
+    "Inst-10": {
       "type": "Inst"
     },
     "String-1": {

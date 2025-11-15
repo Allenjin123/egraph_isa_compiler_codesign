@@ -144,19 +144,12 @@
       "cost": 1.0,
       "subsumed": false
     },
-    "primitive-i64-65535": {
-      "op": "65535",
-      "children": [],
-      "eclass": "i64-65535",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-9-ImmVal": {
-      "op": "ImmVal",
+    "function-0-Lui": {
+      "op": "Lui",
       "children": [
-        "primitive-i64-65535"
+        "function-8-ImmVal"
       ],
-      "eclass": "Imm-50",
+      "eclass": "Inst-50",
       "cost": 1.0,
       "subsumed": false
     },
@@ -284,10 +277,10 @@
     "function-8-Addi": {
       "op": "Addi",
       "children": [
-        "function-10-RegVal",
-        "function-9-ImmVal"
+        "function-0-Lui",
+        "function-6-ImmVal"
       ],
-      "eclass": "Inst-65",
+      "eclass": "Inst-51",
       "cost": 1.0,
       "subsumed": false
     },
@@ -297,7 +290,7 @@
         "function-10-RegVal",
         "function-8-ImmVal"
       ],
-      "eclass": "Inst-66",
+      "eclass": "Inst-64",
       "cost": 1.0,
       "subsumed": false
     },
@@ -314,160 +307,80 @@
     "function-0-Xori": {
       "op": "Xori",
       "children": [
-        "function-0-Sra",
+        "function-0-RegVal",
         "function-6-ImmVal"
       ],
-      "eclass": "Inst-78",
+      "eclass": "Inst-75",
       "cost": 1.0,
       "subsumed": false
     },
     "function-1-Xori": {
       "op": "Xori",
       "children": [
-        "function-2-Sra",
+        "function-0-Addi",
         "function-6-ImmVal"
       ],
-      "eclass": "Inst-79",
+      "eclass": "Inst-76",
       "cost": 1.0,
       "subsumed": false
     },
     "function-2-Xori": {
       "op": "Xori",
       "children": [
-        "function-0-Addi",
+        "function-12-Sub",
         "function-6-ImmVal"
       ],
-      "eclass": "Inst-91",
+      "eclass": "Inst-77",
       "cost": 1.0,
       "subsumed": false
     },
     "function-3-Xori": {
       "op": "Xori",
       "children": [
-        "function-0-RegVal",
+        "function-8-Addi",
         "function-6-ImmVal"
       ],
-      "eclass": "Inst-92",
+      "eclass": "Inst-94",
       "cost": 1.0,
       "subsumed": false
     },
     "function-4-Xori": {
       "op": "Xori",
       "children": [
-        "function-68-Sub",
+        "function-9-And",
         "function-6-ImmVal"
       ],
-      "eclass": "Inst-109",
+      "eclass": "Inst-104",
       "cost": 1.0,
       "subsumed": false
     },
     "function-5-Xori": {
       "op": "Xori",
       "children": [
-        "function-69-Sub",
+        "function-10-And",
         "function-6-ImmVal"
       ],
-      "eclass": "Inst-110",
+      "eclass": "Inst-105",
       "cost": 1.0,
       "subsumed": false
     },
     "function-6-Xori": {
       "op": "Xori",
       "children": [
-        "function-10-Addi",
+        "function-11-And",
         "function-6-ImmVal"
       ],
-      "eclass": "Inst-115",
+      "eclass": "Inst-106",
       "cost": 1.0,
       "subsumed": false
     },
     "function-7-Xori": {
       "op": "Xori",
       "children": [
-        "function-8-Addi",
+        "function-10-Addi",
         "function-6-ImmVal"
       ],
-      "eclass": "Inst-132",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-8-Xori": {
-      "op": "Xori",
-      "children": [
-        "function-20-And",
-        "function-6-ImmVal"
-      ],
-      "eclass": "Inst-143",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-9-Xori": {
-      "op": "Xori",
-      "children": [
-        "function-21-And",
-        "function-6-ImmVal"
-      ],
-      "eclass": "Inst-144",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-0-Ori": {
-      "op": "Ori",
-      "children": [
-        "function-0-Addi",
-        "function-9-ImmVal"
-      ],
-      "eclass": "Inst-74",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-1-Ori": {
-      "op": "Ori",
-      "children": [
-        "function-0-RegVal",
-        "function-9-ImmVal"
-      ],
-      "eclass": "Inst-75",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-0-Andi": {
-      "op": "Andi",
-      "children": [
-        "function-0-Addi",
-        "function-9-ImmVal"
-      ],
-      "eclass": "Inst-51",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-1-Andi": {
-      "op": "Andi",
-      "children": [
-        "function-0-RegVal",
-        "function-9-ImmVal"
-      ],
-      "eclass": "Inst-53",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-2-Andi": {
-      "op": "Andi",
-      "children": [
-        "function-0-Srai",
-        "function-6-ImmVal"
-      ],
-      "eclass": "Inst-107",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-3-Andi": {
-      "op": "Andi",
-      "children": [
-        "function-2-Srai",
-        "function-6-ImmVal"
-      ],
-      "eclass": "Inst-108",
+      "eclass": "Inst-113",
       "cost": 1.0,
       "subsumed": false
     },
@@ -494,40 +407,10 @@
     "function-0-Srli": {
       "op": "Srli",
       "children": [
-        "function-0-Addi",
+        "function-4-CallMul",
         "function-8-ImmVal"
       ],
-      "eclass": "Inst-47",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-1-Srli": {
-      "op": "Srli",
-      "children": [
-        "function-0-RegVal",
-        "function-8-ImmVal"
-      ],
-      "eclass": "Inst-48",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-2-Srli": {
-      "op": "Srli",
-      "children": [
-        "function-5-Mul",
-        "function-8-ImmVal"
-      ],
-      "eclass": "Inst-57",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-3-Srli": {
-      "op": "Srli",
-      "children": [
-        "function-14-Sub",
-        "function-8-ImmVal"
-      ],
-      "eclass": "Inst-59",
+      "eclass": "Inst-56",
       "cost": 1.0,
       "subsumed": false
     },
@@ -544,7 +427,7 @@
     "function-1-Srai": {
       "op": "Srai",
       "children": [
-        "function-0-Mulh",
+        "function-15-Sub",
         "function-7-ImmVal"
       ],
       "eclass": "Inst-30",
@@ -554,8 +437,38 @@
     "function-2-Srai": {
       "op": "Srai",
       "children": [
+        "function-0-Addi",
+        "function-8-ImmVal"
+      ],
+      "eclass": "Inst-47",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-3-Srai": {
+      "op": "Srai",
+      "children": [
         "function-0-RegVal",
-        "function-5-ImmVal"
+        "function-8-ImmVal"
+      ],
+      "eclass": "Inst-48",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-4-Srai": {
+      "op": "Srai",
+      "children": [
+        "function-3-Add",
+        "function-8-ImmVal"
+      ],
+      "eclass": "Inst-58",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-5-Srai": {
+      "op": "Srai",
+      "children": [
+        "function-14-Sub",
+        "function-8-ImmVal"
       ],
       "eclass": "Inst-63",
       "cost": 1.0,
@@ -585,7 +498,7 @@
       "op": "Add",
       "children": [
         "function-3-RegVal",
-        "function-0-Mul"
+        "function-0-CallMul"
       ],
       "eclass": "Inst-36",
       "cost": 1.0,
@@ -594,130 +507,130 @@
     "function-3-Add": {
       "op": "Add",
       "children": [
-        "function-3-Mul",
-        "function-4-Mul"
+        "function-3-CallMul",
+        "function-0-Srli"
       ],
-      "eclass": "Inst-55",
+      "eclass": "Inst-57",
       "cost": 1.0,
       "subsumed": false
     },
     "function-4-Add": {
       "op": "Add",
       "children": [
-        "function-3-Add",
-        "function-2-Srli"
+        "function-2-CallMul",
+        "function-4-Srai"
       ],
-      "eclass": "Inst-58",
+      "eclass": "Inst-59",
       "cost": 1.0,
       "subsumed": false
     },
     "function-5-Add": {
       "op": "Add",
       "children": [
-        "function-2-Mul",
-        "function-3-Srli"
+        "function-2-And",
+        "function-5-CallMul"
       ],
-      "eclass": "Inst-60",
+      "eclass": "Inst-62",
       "cost": 1.0,
       "subsumed": false
     },
     "function-6-Add": {
       "op": "Add",
       "children": [
-        "function-4-And",
-        "function-0-Srai"
+        "function-4-Add",
+        "function-5-Srai"
       ],
-      "eclass": "Inst-70",
+      "eclass": "Inst-12",
       "cost": 1.0,
       "subsumed": false
     },
     "function-7-Add": {
       "op": "Add",
       "children": [
-        "function-5-And",
-        "function-2-Srai"
+        "function-3-And",
+        "function-0-RegVal"
       ],
-      "eclass": "Inst-71",
+      "eclass": "Inst-69",
       "cost": 1.0,
       "subsumed": false
     },
     "function-8-Add": {
       "op": "Add",
       "children": [
-        "function-6-And",
+        "function-4-And",
         "function-0-Addi"
       ],
-      "eclass": "Inst-74",
+      "eclass": "Inst-70",
       "cost": 1.0,
       "subsumed": false
     },
     "function-9-Add": {
       "op": "Add",
       "children": [
-        "function-7-And",
-        "function-0-RegVal"
+        "function-5-And",
+        "function-3-Add"
       ],
-      "eclass": "Inst-75",
+      "eclass": "Inst-71",
       "cost": 1.0,
       "subsumed": false
     },
     "function-10-Add": {
       "op": "Add",
       "children": [
-        "function-8-And",
-        "function-0-RegVal"
+        "function-6-And",
+        "function-8-Addi"
       ],
-      "eclass": "Inst-87",
+      "eclass": "Inst-88",
       "cost": 1.0,
       "subsumed": false
     },
     "function-11-Add": {
       "op": "Add",
       "children": [
-        "function-9-And",
-        "function-0-Addi"
+        "function-7-And",
+        "function-8-Addi"
       ],
-      "eclass": "Inst-88",
+      "eclass": "Inst-89",
       "cost": 1.0,
       "subsumed": false
     },
     "function-12-Add": {
       "op": "Add",
       "children": [
-        "function-16-And",
+        "function-8-And",
         "function-8-Addi"
       ],
-      "eclass": "Inst-99",
+      "eclass": "Inst-90",
       "cost": 1.0,
       "subsumed": false
     },
     "function-13-Add": {
       "op": "Add",
       "children": [
-        "function-17-And",
-        "function-8-Addi"
+        "function-18-And",
+        "function-10-Addi"
       ],
-      "eclass": "Inst-100",
+      "eclass": "Inst-107",
       "cost": 1.0,
       "subsumed": false
     },
     "function-14-Add": {
       "op": "Add",
       "children": [
-        "function-18-And",
+        "function-19-And",
         "function-10-Addi"
       ],
-      "eclass": "Inst-111",
+      "eclass": "Inst-108",
       "cost": 1.0,
       "subsumed": false
     },
     "function-15-Add": {
       "op": "Add",
       "children": [
-        "function-19-And",
+        "function-20-And",
         "function-10-Addi"
       ],
-      "eclass": "Inst-112",
+      "eclass": "Inst-109",
       "cost": 1.0,
       "subsumed": false
     },
@@ -725,7 +638,7 @@
       "op": "Sub",
       "children": [
         "function-1-Srai",
-        "function-0-Sra"
+        "function-0-Srai"
       ],
       "eclass": "Inst-31",
       "cost": 1.0,
@@ -735,7 +648,7 @@
       "op": "Sub",
       "children": [
         "function-0-Addi",
-        "function-1-Mul"
+        "function-1-CallMul"
       ],
       "eclass": "Inst-37",
       "cost": 1.0,
@@ -804,20 +717,20 @@
     "function-8-Sub": {
       "op": "Sub",
       "children": [
-        "function-5-Add",
-        "function-0-And"
+        "function-10-RegVal",
+        "function-3-Mul"
       ],
-      "eclass": "Inst-62",
+      "eclass": "Inst-65",
       "cost": 1.0,
       "subsumed": false
     },
     "function-9-Sub": {
       "op": "Sub",
       "children": [
-        "function-8-Sub",
-        "function-1-And"
+        "function-10-RegVal",
+        "function-2-Mul"
       ],
-      "eclass": "Inst-12",
+      "eclass": "Inst-66",
       "cost": 1.0,
       "subsumed": false
     },
@@ -825,7 +738,7 @@
       "op": "Sub",
       "children": [
         "function-10-RegVal",
-        "function-3-Mul"
+        "function-21-Sub"
       ],
       "eclass": "Inst-67",
       "cost": 1.0,
@@ -844,48 +757,48 @@
     "function-12-Sub": {
       "op": "Sub",
       "children": [
-        "function-10-RegVal",
-        "function-2-Mul"
+        "function-0-Srl",
+        "function-8-Sub"
       ],
-      "eclass": "Inst-69",
+      "eclass": "Inst-57",
       "cost": 1.0,
       "subsumed": false
     },
     "function-13-Sub": {
       "op": "Sub",
       "children": [
-        "function-4-Mul",
-        "function-10-Sub"
+        "function-4-Sra",
+        "function-9-Sub"
       ],
-      "eclass": "Inst-55",
+      "eclass": "Inst-59",
       "cost": 1.0,
       "subsumed": false
     },
     "function-14-Sub": {
       "op": "Sub",
       "children": [
-        "function-2-Srl",
-        "function-11-Sub"
+        "function-5-Mul",
+        "function-10-Sub"
       ],
-      "eclass": "Inst-58",
+      "eclass": "Inst-62",
       "cost": 1.0,
       "subsumed": false
     },
     "function-15-Sub": {
       "op": "Sub",
       "children": [
-        "function-3-Srl",
-        "function-12-Sub"
+        "function-5-Sra",
+        "function-11-Sub"
       ],
-      "eclass": "Inst-60",
+      "eclass": "Inst-12",
       "cost": 1.0,
       "subsumed": false
     },
     "function-16-Sub": {
       "op": "Sub",
       "children": [
-        "function-30-Sub",
-        "function-0-RegVal"
+        "function-31-Sub",
+        "function-8-Addi"
       ],
       "eclass": "Inst-72",
       "cost": 1.0,
@@ -894,8 +807,8 @@
     "function-17-Sub": {
       "op": "Sub",
       "children": [
-        "function-31-Sub",
-        "function-0-Addi"
+        "function-32-Sub",
+        "function-8-Addi"
       ],
       "eclass": "Inst-73",
       "cost": 1.0,
@@ -904,88 +817,88 @@
     "function-18-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-Srai",
-        "function-16-Sub"
+        "function-33-Sub",
+        "function-8-Addi"
       ],
-      "eclass": "Inst-61",
+      "eclass": "Inst-74",
       "cost": 1.0,
       "subsumed": false
     },
     "function-19-Sub": {
       "op": "Sub",
       "children": [
-        "function-2-Sra",
-        "function-17-Sub"
+        "function-0-RegVal",
+        "function-16-Sub"
       ],
-      "eclass": "Inst-64",
+      "eclass": "Inst-52",
       "cost": 1.0,
       "subsumed": false
     },
     "function-20-Sub": {
       "op": "Sub",
       "children": [
-        "function-42-Sub",
-        "function-8-Addi"
+        "function-0-Addi",
+        "function-17-Sub"
       ],
-      "eclass": "Inst-76",
+      "eclass": "Inst-54",
       "cost": 1.0,
       "subsumed": false
     },
     "function-21-Sub": {
       "op": "Sub",
       "children": [
-        "function-43-Sub",
-        "function-8-Addi"
+        "function-3-Add",
+        "function-18-Sub"
       ],
-      "eclass": "Inst-77",
+      "eclass": "Inst-60",
       "cost": 1.0,
       "subsumed": false
     },
     "function-22-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-Addi",
-        "function-20-Sub"
+        "function-19-Sub",
+        "function-8-Addi"
       ],
-      "eclass": "Inst-51",
+      "eclass": "Inst-81",
       "cost": 1.0,
       "subsumed": false
     },
     "function-23-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-RegVal",
-        "function-21-Sub"
+        "function-20-Sub",
+        "function-8-Addi"
       ],
-      "eclass": "Inst-53",
+      "eclass": "Inst-82",
       "cost": 1.0,
       "subsumed": false
     },
     "function-24-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-And",
-        "function-0-RegVal"
+        "function-21-Sub",
+        "function-8-Addi"
       ],
-      "eclass": "Inst-82",
+      "eclass": "Inst-83",
       "cost": 1.0,
       "subsumed": false
     },
     "function-25-Sub": {
       "op": "Sub",
       "children": [
-        "function-1-And",
-        "function-0-Addi"
+        "function-0-RegVal",
+        "function-22-Sub"
       ],
-      "eclass": "Inst-83",
+      "eclass": "Inst-69",
       "cost": 1.0,
       "subsumed": false
     },
     "function-26-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-Sra",
-        "function-24-Sub"
+        "function-0-Addi",
+        "function-23-Sub"
       ],
       "eclass": "Inst-70",
       "cost": 1.0,
@@ -994,8 +907,8 @@
     "function-27-Sub": {
       "op": "Sub",
       "children": [
-        "function-2-Srai",
-        "function-25-Sub"
+        "function-12-Sub",
+        "function-24-Sub"
       ],
       "eclass": "Inst-71",
       "cost": 1.0,
@@ -1005,7 +918,7 @@
       "op": "Sub",
       "children": [
         "function-10-RegVal",
-        "function-34-Sub"
+        "function-37-Sub"
       ],
       "eclass": "Inst-85",
       "cost": 1.0,
@@ -1015,7 +928,7 @@
       "op": "Sub",
       "children": [
         "function-10-RegVal",
-        "function-35-Sub"
+        "function-38-Sub"
       ],
       "eclass": "Inst-86",
       "cost": 1.0,
@@ -1024,540 +937,550 @@
     "function-30-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-Srai",
-        "function-28-Sub"
+        "function-10-RegVal",
+        "function-39-Sub"
       ],
-      "eclass": "Inst-70",
+      "eclass": "Inst-87",
       "cost": 1.0,
       "subsumed": false
     },
     "function-31-Sub": {
       "op": "Sub",
       "children": [
-        "function-2-Sra",
-        "function-29-Sub"
+        "function-0-RegVal",
+        "function-28-Sub"
       ],
-      "eclass": "Inst-71",
+      "eclass": "Inst-69",
       "cost": 1.0,
       "subsumed": false
     },
     "function-32-Sub": {
       "op": "Sub",
       "children": [
-        "function-56-Sub",
-        "function-70-Sub"
+        "function-0-Addi",
+        "function-29-Sub"
       ],
-      "eclass": "Inst-89",
+      "eclass": "Inst-70",
       "cost": 1.0,
       "subsumed": false
     },
     "function-33-Sub": {
       "op": "Sub",
       "children": [
-        "function-57-Sub",
-        "function-71-Sub"
+        "function-3-Add",
+        "function-30-Sub"
       ],
-      "eclass": "Inst-90",
+      "eclass": "Inst-71",
       "cost": 1.0,
       "subsumed": false
     },
     "function-34-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-RegVal",
-        "function-32-Sub"
+        "function-52-Sub",
+        "function-73-Sub"
       ],
-      "eclass": "Inst-80",
+      "eclass": "Inst-91",
       "cost": 1.0,
       "subsumed": false
     },
     "function-35-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-Addi",
-        "function-33-Sub"
+        "function-53-Sub",
+        "function-74-Sub"
       ],
-      "eclass": "Inst-81",
+      "eclass": "Inst-92",
       "cost": 1.0,
       "subsumed": false
     },
     "function-36-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-Andi",
-        "function-8-Addi"
+        "function-54-Sub",
+        "function-75-Sub"
       ],
-      "eclass": "Inst-95",
+      "eclass": "Inst-93",
       "cost": 1.0,
       "subsumed": false
     },
     "function-37-Sub": {
       "op": "Sub",
       "children": [
-        "function-1-Andi",
-        "function-8-Addi"
+        "function-8-Addi",
+        "function-34-Sub"
       ],
-      "eclass": "Inst-96",
+      "eclass": "Inst-78",
       "cost": 1.0,
       "subsumed": false
     },
     "function-38-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-Addi",
-        "function-36-Sub"
+        "function-8-Addi",
+        "function-35-Sub"
       ],
-      "eclass": "Inst-74",
+      "eclass": "Inst-79",
       "cost": 1.0,
       "subsumed": false
     },
     "function-39-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-RegVal",
-        "function-37-Sub"
+        "function-8-Addi",
+        "function-36-Sub"
       ],
-      "eclass": "Inst-75",
+      "eclass": "Inst-80",
       "cost": 1.0,
       "subsumed": false
     },
     "function-40-Sub": {
       "op": "Sub",
       "children": [
-        "function-10-RegVal",
-        "function-46-Sub"
+        "function-37-Sub",
+        "function-0-Xor"
       ],
-      "eclass": "Inst-97",
+      "eclass": "Inst-98",
       "cost": 1.0,
       "subsumed": false
     },
     "function-41-Sub": {
       "op": "Sub",
       "children": [
-        "function-10-RegVal",
-        "function-47-Sub"
+        "function-38-Sub",
+        "function-1-Xor"
       ],
-      "eclass": "Inst-98",
+      "eclass": "Inst-99",
       "cost": 1.0,
       "subsumed": false
     },
     "function-42-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-Addi",
-        "function-40-Sub"
+        "function-39-Sub",
+        "function-2-Xor"
       ],
-      "eclass": "Inst-74",
+      "eclass": "Inst-100",
       "cost": 1.0,
       "subsumed": false
     },
     "function-43-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-RegVal",
-        "function-41-Sub"
+        "function-8-Addi",
+        "function-40-Sub"
       ],
-      "eclass": "Inst-75",
+      "eclass": "Inst-88",
       "cost": 1.0,
       "subsumed": false
     },
     "function-44-Sub": {
       "op": "Sub",
       "children": [
-        "function-6-Or",
-        "function-2-Xor"
+        "function-8-Addi",
+        "function-41-Sub"
       ],
-      "eclass": "Inst-101",
+      "eclass": "Inst-89",
       "cost": 1.0,
       "subsumed": false
     },
     "function-45-Sub": {
       "op": "Sub",
       "children": [
-        "function-7-Or",
-        "function-3-Xor"
+        "function-8-Addi",
+        "function-42-Sub"
       ],
-      "eclass": "Inst-102",
+      "eclass": "Inst-90",
       "cost": 1.0,
       "subsumed": false
     },
     "function-46-Sub": {
       "op": "Sub",
       "children": [
-        "function-8-Addi",
-        "function-44-Sub"
+        "function-6-Or",
+        "function-15-And"
       ],
-      "eclass": "Inst-93",
+      "eclass": "Inst-75",
       "cost": 1.0,
       "subsumed": false
     },
     "function-47-Sub": {
       "op": "Sub",
       "children": [
-        "function-8-Addi",
-        "function-45-Sub"
+        "function-7-Or",
+        "function-16-And"
       ],
-      "eclass": "Inst-94",
+      "eclass": "Inst-76",
       "cost": 1.0,
       "subsumed": false
     },
     "function-48-Sub": {
       "op": "Sub",
       "children": [
-        "function-34-Sub",
-        "function-0-Xor"
+        "function-8-Or",
+        "function-17-And"
       ],
-      "eclass": "Inst-105",
+      "eclass": "Inst-77",
       "cost": 1.0,
       "subsumed": false
     },
     "function-49-Sub": {
       "op": "Sub",
       "children": [
-        "function-35-Sub",
-        "function-1-Xor"
+        "function-10-RegVal",
+        "function-67-Sub"
       ],
-      "eclass": "Inst-106",
+      "eclass": "Inst-114",
       "cost": 1.0,
       "subsumed": false
     },
     "function-50-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-RegVal",
-        "function-48-Sub"
+        "function-10-RegVal",
+        "function-68-Sub"
       ],
-      "eclass": "Inst-87",
+      "eclass": "Inst-115",
       "cost": 1.0,
       "subsumed": false
     },
     "function-51-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-Addi",
-        "function-49-Sub"
+        "function-10-RegVal",
+        "function-69-Sub"
       ],
-      "eclass": "Inst-88",
+      "eclass": "Inst-116",
       "cost": 1.0,
       "subsumed": false
     },
     "function-52-Sub": {
       "op": "Sub",
       "children": [
-        "function-8-Or",
-        "function-14-And"
+        "function-8-Addi",
+        "function-49-Sub"
       ],
-      "eclass": "Inst-78",
+      "eclass": "Inst-88",
       "cost": 1.0,
       "subsumed": false
     },
     "function-53-Sub": {
       "op": "Sub",
       "children": [
-        "function-9-Or",
-        "function-15-And"
+        "function-8-Addi",
+        "function-50-Sub"
       ],
-      "eclass": "Inst-79",
+      "eclass": "Inst-89",
       "cost": 1.0,
       "subsumed": false
     },
     "function-54-Sub": {
       "op": "Sub",
       "children": [
-        "function-10-RegVal",
-        "function-66-Sub"
+        "function-8-Addi",
+        "function-51-Sub"
       ],
-      "eclass": "Inst-116",
+      "eclass": "Inst-90",
       "cost": 1.0,
       "subsumed": false
     },
     "function-55-Sub": {
       "op": "Sub",
       "children": [
-        "function-10-RegVal",
-        "function-67-Sub"
+        "function-12-Or",
+        "function-3-Xori"
       ],
-      "eclass": "Inst-117",
+      "eclass": "Inst-126",
       "cost": 1.0,
       "subsumed": false
     },
     "function-56-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-RegVal",
-        "function-54-Sub"
+        "function-13-Or",
+        "function-3-Xor"
       ],
-      "eclass": "Inst-87",
+      "eclass": "Inst-127",
       "cost": 1.0,
       "subsumed": false
     },
     "function-57-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-Addi",
-        "function-55-Sub"
+        "function-14-Or",
+        "function-3-Xori"
       ],
-      "eclass": "Inst-88",
+      "eclass": "Inst-128",
       "cost": 1.0,
       "subsumed": false
     },
     "function-58-Sub": {
       "op": "Sub",
       "children": [
-        "function-12-Or",
-        "function-23-And"
+        "function-15-Or",
+        "function-10-Addi"
       ],
-      "eclass": "Inst-124",
+      "eclass": "Inst-129",
       "cost": 1.0,
       "subsumed": false
     },
     "function-59-Sub": {
       "op": "Sub",
       "children": [
-        "function-13-Or",
-        "function-22-And"
+        "function-16-Or",
+        "function-10-Addi"
       ],
-      "eclass": "Inst-125",
+      "eclass": "Inst-130",
       "cost": 1.0,
       "subsumed": false
     },
     "function-60-Sub": {
       "op": "Sub",
       "children": [
-        "function-14-Or",
+        "function-17-Or",
         "function-10-Addi"
       ],
-      "eclass": "Inst-126",
+      "eclass": "Inst-131",
       "cost": 1.0,
       "subsumed": false
     },
     "function-61-Sub": {
       "op": "Sub",
       "children": [
-        "function-15-Or",
-        "function-10-Addi"
+        "function-18-Or",
+        "function-13-Add"
       ],
-      "eclass": "Inst-127",
+      "eclass": "Inst-132",
       "cost": 1.0,
       "subsumed": false
     },
     "function-62-Sub": {
       "op": "Sub",
       "children": [
-        "function-16-Or",
+        "function-19-Or",
         "function-14-Add"
       ],
-      "eclass": "Inst-128",
+      "eclass": "Inst-133",
       "cost": 1.0,
       "subsumed": false
     },
     "function-63-Sub": {
       "op": "Sub",
       "children": [
-        "function-17-Or",
+        "function-20-Or",
         "function-15-Add"
       ],
-      "eclass": "Inst-129",
+      "eclass": "Inst-134",
       "cost": 1.0,
       "subsumed": false
     },
     "function-64-Sub": {
       "op": "Sub",
       "children": [
-        "function-80-Sub",
-        "function-0-Sra"
+        "function-82-Sub",
+        "function-0-RegVal"
       ],
-      "eclass": "Inst-130",
+      "eclass": "Inst-135",
       "cost": 1.0,
       "subsumed": false
     },
     "function-65-Sub": {
       "op": "Sub",
       "children": [
-        "function-81-Sub",
-        "function-2-Srai"
+        "function-83-Sub",
+        "function-0-Addi"
       ],
-      "eclass": "Inst-131",
+      "eclass": "Inst-136",
       "cost": 1.0,
       "subsumed": false
     },
     "function-66-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-Xori",
-        "function-58-Sub"
+        "function-84-Sub",
+        "function-12-Sub"
       ],
-      "eclass": "Inst-103",
+      "eclass": "Inst-137",
       "cost": 1.0,
       "subsumed": false
     },
     "function-67-Sub": {
       "op": "Sub",
       "children": [
-        "function-1-Xori",
-        "function-59-Sub"
+        "function-0-Xori",
+        "function-55-Sub"
       ],
-      "eclass": "Inst-104",
+      "eclass": "Inst-95",
       "cost": 1.0,
       "subsumed": false
     },
     "function-68-Sub": {
       "op": "Sub",
       "children": [
-        "function-0-Srai",
-        "function-60-Sub"
+        "function-1-Xori",
+        "function-56-Sub"
       ],
-      "eclass": "Inst-107",
+      "eclass": "Inst-96",
       "cost": 1.0,
       "subsumed": false
     },
     "function-69-Sub": {
       "op": "Sub",
       "children": [
-        "function-2-Sra",
-        "function-61-Sub"
+        "function-2-Xori",
+        "function-57-Sub"
       ],
-      "eclass": "Inst-108",
+      "eclass": "Inst-97",
       "cost": 1.0,
       "subsumed": false
     },
     "function-70-Sub": {
       "op": "Sub",
       "children": [
-        "function-10-Or",
-        "function-62-Sub"
+        "function-0-RegVal",
+        "function-58-Sub"
       ],
-      "eclass": "Inst-78",
+      "eclass": "Inst-101",
       "cost": 1.0,
       "subsumed": false
     },
     "function-71-Sub": {
       "op": "Sub",
       "children": [
-        "function-11-Or",
-        "function-63-Sub"
+        "function-0-Addi",
+        "function-59-Sub"
       ],
-      "eclass": "Inst-79",
+      "eclass": "Inst-102",
       "cost": 1.0,
       "subsumed": false
     },
     "function-72-Sub": {
       "op": "Sub",
       "children": [
-        "function-10-Addi",
-        "function-64-Sub"
+        "function-3-Add",
+        "function-60-Sub"
       ],
-      "eclass": "Inst-113",
+      "eclass": "Inst-103",
       "cost": 1.0,
       "subsumed": false
     },
     "function-73-Sub": {
       "op": "Sub",
       "children": [
-        "function-10-Addi",
-        "function-65-Sub"
+        "function-9-Or",
+        "function-61-Sub"
       ],
-      "eclass": "Inst-114",
+      "eclass": "Inst-75",
       "cost": 1.0,
       "subsumed": false
     },
     "function-74-Sub": {
       "op": "Sub",
       "children": [
-        "function-46-Sub",
-        "function-2-Xori"
+        "function-10-Or",
+        "function-62-Sub"
       ],
-      "eclass": "Inst-137",
+      "eclass": "Inst-76",
       "cost": 1.0,
       "subsumed": false
     },
     "function-75-Sub": {
       "op": "Sub",
       "children": [
-        "function-47-Sub",
-        "function-3-Xori"
+        "function-11-Or",
+        "function-63-Sub"
       ],
-      "eclass": "Inst-138",
+      "eclass": "Inst-77",
       "cost": 1.0,
       "subsumed": false
     },
     "function-76-Sub": {
       "op": "Sub",
       "children": [
-        "function-14-And",
-        "function-0-Sra"
+        "function-10-Addi",
+        "function-64-Sub"
       ],
-      "eclass": "Inst-139",
+      "eclass": "Inst-110",
       "cost": 1.0,
       "subsumed": false
     },
     "function-77-Sub": {
       "op": "Sub",
       "children": [
-        "function-15-And",
-        "function-2-Srai"
+        "function-10-Addi",
+        "function-65-Sub"
       ],
-      "eclass": "Inst-140",
+      "eclass": "Inst-111",
       "cost": 1.0,
       "subsumed": false
     },
     "function-78-Sub": {
       "op": "Sub",
       "children": [
-        "function-8-Addi",
-        "function-74-Sub"
+        "function-10-Addi",
+        "function-66-Sub"
       ],
-      "eclass": "Inst-99",
+      "eclass": "Inst-112",
       "cost": 1.0,
       "subsumed": false
     },
     "function-79-Sub": {
       "op": "Sub",
       "children": [
-        "function-8-Addi",
-        "function-75-Sub"
+        "function-15-And",
+        "function-0-RegVal"
       ],
-      "eclass": "Inst-100",
+      "eclass": "Inst-141",
       "cost": 1.0,
       "subsumed": false
     },
     "function-80-Sub": {
       "op": "Sub",
       "children": [
-        "function-10-Addi",
-        "function-76-Sub"
+        "function-16-And",
+        "function-0-Addi"
       ],
-      "eclass": "Inst-111",
+      "eclass": "Inst-142",
       "cost": 1.0,
       "subsumed": false
     },
     "function-81-Sub": {
       "op": "Sub",
       "children": [
-        "function-10-Addi",
-        "function-77-Sub"
+        "function-17-And",
+        "function-12-Sub"
       ],
-      "eclass": "Inst-112",
+      "eclass": "Inst-143",
       "cost": 1.0,
       "subsumed": false
     },
     "function-82-Sub": {
       "op": "Sub",
       "children": [
-        "function-18-Or",
-        "function-24-And"
+        "function-10-Addi",
+        "function-79-Sub"
       ],
-      "eclass": "Inst-91",
+      "eclass": "Inst-107",
       "cost": 1.0,
       "subsumed": false
     },
     "function-83-Sub": {
       "op": "Sub",
       "children": [
-        "function-19-Or",
-        "function-25-And"
+        "function-10-Addi",
+        "function-80-Sub"
       ],
-      "eclass": "Inst-92",
+      "eclass": "Inst-108",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-84-Sub": {
+      "op": "Sub",
+      "children": [
+        "function-10-Addi",
+        "function-81-Sub"
+      ],
+      "eclass": "Inst-109",
       "cost": 1.0,
       "subsumed": false
     },
@@ -1584,100 +1507,80 @@
     "function-0-Xor": {
       "op": "Xor",
       "children": [
-        "function-0-Srai",
+        "function-0-RegVal",
         "function-10-Addi"
       ],
-      "eclass": "Inst-78",
+      "eclass": "Inst-75",
       "cost": 1.0,
       "subsumed": false
     },
     "function-1-Xor": {
       "op": "Xor",
       "children": [
-        "function-2-Sra",
+        "function-0-Addi",
         "function-10-Addi"
       ],
-      "eclass": "Inst-79",
+      "eclass": "Inst-76",
       "cost": 1.0,
       "subsumed": false
     },
     "function-2-Xor": {
       "op": "Xor",
       "children": [
-        "function-0-Addi",
+        "function-3-Add",
         "function-10-Addi"
       ],
-      "eclass": "Inst-91",
+      "eclass": "Inst-77",
       "cost": 1.0,
       "subsumed": false
     },
     "function-3-Xor": {
       "op": "Xor",
       "children": [
-        "function-0-RegVal",
+        "function-8-Addi",
         "function-10-Addi"
       ],
-      "eclass": "Inst-92",
+      "eclass": "Inst-94",
       "cost": 1.0,
       "subsumed": false
     },
     "function-4-Xor": {
       "op": "Xor",
       "children": [
-        "function-68-Sub",
+        "function-9-And",
         "function-10-Addi"
       ],
-      "eclass": "Inst-109",
+      "eclass": "Inst-104",
       "cost": 1.0,
       "subsumed": false
     },
     "function-5-Xor": {
       "op": "Xor",
       "children": [
-        "function-69-Sub",
+        "function-10-And",
         "function-10-Addi"
       ],
-      "eclass": "Inst-110",
+      "eclass": "Inst-105",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-6-Xor": {
+      "op": "Xor",
+      "children": [
+        "function-11-And",
+        "function-10-Addi"
+      ],
+      "eclass": "Inst-106",
       "cost": 1.0,
       "subsumed": false
     },
     "function-0-Srl": {
       "op": "Srl",
       "children": [
-        "function-0-Addi",
+        "function-4-Mul",
         "function-9-Addi"
       ],
-      "eclass": "Inst-47",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-1-Srl": {
-      "op": "Srl",
-      "children": [
-        "function-0-RegVal",
-        "function-9-Addi"
-      ],
-      "eclass": "Inst-48",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-2-Srl": {
-      "op": "Srl",
-      "children": [
-        "function-5-Mul",
-        "function-9-Addi"
-      ],
-      "eclass": "Inst-57",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-3-Srl": {
-      "op": "Srl",
-      "children": [
-        "function-4-Add",
-        "function-9-Addi"
-      ],
-      "eclass": "Inst-59",
+      "eclass": "Inst-56",
       "cost": 1.0,
       "subsumed": false
     },
@@ -1694,7 +1597,7 @@
     "function-1-Sra": {
       "op": "Sra",
       "children": [
-        "function-0-Mulh",
+        "function-15-Sub",
         "function-7-Addi"
       ],
       "eclass": "Inst-30",
@@ -1704,8 +1607,38 @@
     "function-2-Sra": {
       "op": "Sra",
       "children": [
+        "function-0-Addi",
+        "function-9-Addi"
+      ],
+      "eclass": "Inst-47",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-3-Sra": {
+      "op": "Sra",
+      "children": [
         "function-0-RegVal",
-        "function-6-Addi"
+        "function-9-Addi"
+      ],
+      "eclass": "Inst-48",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-4-Sra": {
+      "op": "Sra",
+      "children": [
+        "function-12-Sub",
+        "function-9-Addi"
+      ],
+      "eclass": "Inst-58",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-5-Sra": {
+      "op": "Sra",
+      "children": [
+        "function-5-Add",
+        "function-9-Addi"
       ],
       "eclass": "Inst-63",
       "cost": 1.0,
@@ -1714,80 +1647,80 @@
     "function-0-Or": {
       "op": "Or",
       "children": [
-        "function-0-Srai",
-        "function-0-RegVal"
+        "function-0-RegVal",
+        "function-8-Addi"
       ],
-      "eclass": "Inst-70",
+      "eclass": "Inst-69",
       "cost": 1.0,
       "subsumed": false
     },
     "function-1-Or": {
       "op": "Or",
       "children": [
-        "function-2-Sra",
-        "function-0-Addi"
+        "function-0-Addi",
+        "function-8-Addi"
       ],
-      "eclass": "Inst-71",
+      "eclass": "Inst-70",
       "cost": 1.0,
       "subsumed": false
     },
     "function-2-Or": {
       "op": "Or",
       "children": [
-        "function-0-Addi",
+        "function-3-Add",
         "function-8-Addi"
       ],
-      "eclass": "Inst-74",
+      "eclass": "Inst-71",
       "cost": 1.0,
       "subsumed": false
     },
     "function-3-Or": {
       "op": "Or",
       "children": [
-        "function-0-RegVal",
-        "function-8-Addi"
+        "function-8-Addi",
+        "function-0-Xor"
       ],
-      "eclass": "Inst-75",
+      "eclass": "Inst-88",
       "cost": 1.0,
       "subsumed": false
     },
     "function-4-Or": {
       "op": "Or",
       "children": [
-        "function-0-RegVal",
-        "function-0-Xor"
+        "function-8-Addi",
+        "function-1-Xor"
       ],
-      "eclass": "Inst-87",
+      "eclass": "Inst-89",
       "cost": 1.0,
       "subsumed": false
     },
     "function-5-Or": {
       "op": "Or",
       "children": [
-        "function-0-Addi",
-        "function-1-Xor"
+        "function-8-Addi",
+        "function-2-Xor"
       ],
-      "eclass": "Inst-88",
+      "eclass": "Inst-90",
       "cost": 1.0,
       "subsumed": false
     },
     "function-6-Or": {
       "op": "Or",
       "children": [
-        "function-8-Addi",
-        "function-22-And"
+        "function-10-Addi",
+        "function-0-RegVal"
       ],
-      "eclass": "Inst-99",
+      "eclass": "Inst-107",
       "cost": 1.0,
       "subsumed": false
     },
     "function-7-Or": {
       "op": "Or",
       "children": [
-        "function-8-Addi",
-        "function-23-And"
+        "function-10-Addi",
+        "function-0-Addi"
       ],
-      "eclass": "Inst-100",
+      "eclass": "Inst-108",
       "cost": 1.0,
       "subsumed": false
     },
@@ -1795,39 +1728,39 @@
       "op": "Or",
       "children": [
         "function-10-Addi",
-        "function-0-Sra"
+        "function-12-Sub"
       ],
-      "eclass": "Inst-111",
+      "eclass": "Inst-109",
       "cost": 1.0,
       "subsumed": false
     },
     "function-9-Or": {
       "op": "Or",
       "children": [
-        "function-10-Addi",
-        "function-2-Srai"
+        "function-12-And",
+        "function-7-Xori"
       ],
-      "eclass": "Inst-112",
+      "eclass": "Inst-104",
       "cost": 1.0,
       "subsumed": false
     },
     "function-10-Or": {
       "op": "Or",
       "children": [
-        "function-12-And",
-        "function-6-Xori"
+        "function-13-And",
+        "function-7-Xori"
       ],
-      "eclass": "Inst-109",
+      "eclass": "Inst-105",
       "cost": 1.0,
       "subsumed": false
     },
     "function-11-Or": {
       "op": "Or",
       "children": [
-        "function-13-And",
-        "function-6-Xori"
+        "function-14-And",
+        "function-7-Xori"
       ],
-      "eclass": "Inst-110",
+      "eclass": "Inst-106",
       "cost": 1.0,
       "subsumed": false
     },
@@ -1837,7 +1770,7 @@
         "function-0-Xori",
         "function-3-Xori"
       ],
-      "eclass": "Inst-118",
+      "eclass": "Inst-117",
       "cost": 1.0,
       "subsumed": false
     },
@@ -1845,189 +1778,199 @@
       "op": "Or",
       "children": [
         "function-1-Xori",
-        "function-2-Xori"
+        "function-3-Xor"
       ],
-      "eclass": "Inst-119",
+      "eclass": "Inst-118",
       "cost": 1.0,
       "subsumed": false
     },
     "function-14-Or": {
       "op": "Or",
       "children": [
-        "function-0-Srai",
-        "function-10-Addi"
+        "function-2-Xori",
+        "function-3-Xori"
       ],
-      "eclass": "Inst-120",
+      "eclass": "Inst-119",
       "cost": 1.0,
       "subsumed": false
     },
     "function-15-Or": {
       "op": "Or",
       "children": [
-        "function-2-Sra",
+        "function-0-RegVal",
         "function-10-Addi"
       ],
-      "eclass": "Inst-121",
+      "eclass": "Inst-120",
       "cost": 1.0,
       "subsumed": false
     },
     "function-16-Or": {
       "op": "Or",
       "children": [
-        "function-10-Or",
-        "function-80-Sub"
+        "function-0-Addi",
+        "function-10-Addi"
       ],
-      "eclass": "Inst-122",
+      "eclass": "Inst-121",
       "cost": 1.0,
       "subsumed": false
     },
     "function-17-Or": {
       "op": "Or",
       "children": [
-        "function-11-Or",
-        "function-81-Sub"
+        "function-3-Add",
+        "function-10-Addi"
       ],
-      "eclass": "Inst-123",
+      "eclass": "Inst-122",
       "cost": 1.0,
       "subsumed": false
     },
     "function-18-Or": {
       "op": "Or",
       "children": [
-        "function-10-Addi",
-        "function-0-Addi"
+        "function-9-Or",
+        "function-82-Sub"
       ],
-      "eclass": "Inst-145",
+      "eclass": "Inst-123",
       "cost": 1.0,
       "subsumed": false
     },
     "function-19-Or": {
       "op": "Or",
       "children": [
-        "function-10-Addi",
-        "function-0-RegVal"
+        "function-10-Or",
+        "function-83-Sub"
       ],
-      "eclass": "Inst-146",
+      "eclass": "Inst-124",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-20-Or": {
+      "op": "Or",
+      "children": [
+        "function-11-Or",
+        "function-84-Sub"
+      ],
+      "eclass": "Inst-125",
       "cost": 1.0,
       "subsumed": false
     },
     "function-0-And": {
       "op": "And",
       "children": [
-        "function-0-Sra",
-        "function-0-RegVal"
+        "function-0-RegVal",
+        "function-8-Addi"
       ],
-      "eclass": "Inst-61",
+      "eclass": "Inst-52",
       "cost": 1.0,
       "subsumed": false
     },
     "function-1-And": {
       "op": "And",
       "children": [
-        "function-2-Srai",
-        "function-0-Addi"
+        "function-0-Addi",
+        "function-8-Addi"
       ],
-      "eclass": "Inst-64",
+      "eclass": "Inst-54",
       "cost": 1.0,
       "subsumed": false
     },
     "function-2-And": {
       "op": "And",
       "children": [
-        "function-0-Addi",
+        "function-12-Sub",
         "function-8-Addi"
       ],
-      "eclass": "Inst-51",
+      "eclass": "Inst-60",
       "cost": 1.0,
       "subsumed": false
     },
     "function-3-And": {
       "op": "And",
       "children": [
-        "function-0-RegVal",
-        "function-8-Addi"
+        "function-8-Addi",
+        "function-46-Sub"
       ],
-      "eclass": "Inst-53",
+      "eclass": "Inst-78",
       "cost": 1.0,
       "subsumed": false
     },
     "function-4-And": {
       "op": "And",
       "children": [
-        "function-0-RegVal",
-        "function-52-Sub"
+        "function-8-Addi",
+        "function-47-Sub"
       ],
-      "eclass": "Inst-80",
+      "eclass": "Inst-79",
       "cost": 1.0,
       "subsumed": false
     },
     "function-5-And": {
       "op": "And",
       "children": [
-        "function-0-Addi",
-        "function-53-Sub"
+        "function-8-Addi",
+        "function-48-Sub"
       ],
-      "eclass": "Inst-81",
+      "eclass": "Inst-80",
       "cost": 1.0,
       "subsumed": false
     },
     "function-6-And": {
       "op": "And",
       "children": [
-        "function-8-Addi",
-        "function-82-Sub"
+        "function-73-Sub",
+        "function-3-Xor"
       ],
-      "eclass": "Inst-93",
+      "eclass": "Inst-95",
       "cost": 1.0,
       "subsumed": false
     },
     "function-7-And": {
       "op": "And",
       "children": [
-        "function-8-Addi",
-        "function-83-Sub"
+        "function-74-Sub",
+        "function-3-Xori"
       ],
-      "eclass": "Inst-94",
+      "eclass": "Inst-96",
       "cost": 1.0,
       "subsumed": false
     },
     "function-8-And": {
       "op": "And",
       "children": [
-        "function-70-Sub",
+        "function-75-Sub",
         "function-3-Xor"
       ],
-      "eclass": "Inst-103",
+      "eclass": "Inst-97",
       "cost": 1.0,
       "subsumed": false
     },
     "function-9-And": {
       "op": "And",
       "children": [
-        "function-71-Sub",
-        "function-2-Xor"
+        "function-0-RegVal",
+        "function-10-Addi"
       ],
-      "eclass": "Inst-104",
+      "eclass": "Inst-101",
       "cost": 1.0,
       "subsumed": false
     },
     "function-10-And": {
       "op": "And",
       "children": [
-        "function-0-Srai",
+        "function-0-Addi",
         "function-10-Addi"
       ],
-      "eclass": "Inst-107",
+      "eclass": "Inst-102",
       "cost": 1.0,
       "subsumed": false
     },
     "function-11-And": {
       "op": "And",
       "children": [
-        "function-2-Sra",
+        "function-3-Add",
         "function-10-Addi"
       ],
-      "eclass": "Inst-108",
+      "eclass": "Inst-103",
       "cost": 1.0,
       "subsumed": false
     },
@@ -2035,9 +1978,9 @@
       "op": "And",
       "children": [
         "function-4-Xori",
-        "function-8-Or"
+        "function-6-Or"
       ],
-      "eclass": "Inst-78",
+      "eclass": "Inst-75",
       "cost": 1.0,
       "subsumed": false
     },
@@ -2045,19 +1988,19 @@
       "op": "And",
       "children": [
         "function-5-Xori",
-        "function-9-Or"
+        "function-7-Or"
       ],
-      "eclass": "Inst-79",
+      "eclass": "Inst-76",
       "cost": 1.0,
       "subsumed": false
     },
     "function-14-And": {
       "op": "And",
       "children": [
-        "function-10-Addi",
-        "function-0-Sra"
+        "function-6-Xori",
+        "function-8-Or"
       ],
-      "eclass": "Inst-113",
+      "eclass": "Inst-77",
       "cost": 1.0,
       "subsumed": false
     },
@@ -2065,109 +2008,59 @@
       "op": "And",
       "children": [
         "function-10-Addi",
-        "function-2-Srai"
+        "function-0-RegVal"
       ],
-      "eclass": "Inst-114",
+      "eclass": "Inst-110",
       "cost": 1.0,
       "subsumed": false
     },
     "function-16-And": {
       "op": "And",
       "children": [
-        "function-22-And",
-        "function-7-Xori"
+        "function-10-Addi",
+        "function-0-Addi"
       ],
-      "eclass": "Inst-133",
+      "eclass": "Inst-111",
       "cost": 1.0,
       "subsumed": false
     },
     "function-17-And": {
       "op": "And",
       "children": [
-        "function-23-And",
-        "function-7-Xori"
+        "function-10-Addi",
+        "function-12-Sub"
       ],
-      "eclass": "Inst-134",
+      "eclass": "Inst-112",
       "cost": 1.0,
       "subsumed": false
     },
     "function-18-And": {
       "op": "And",
       "children": [
-        "function-0-Srai",
-        "function-6-Xori"
+        "function-0-RegVal",
+        "function-7-Xori"
       ],
-      "eclass": "Inst-135",
+      "eclass": "Inst-138",
       "cost": 1.0,
       "subsumed": false
     },
     "function-19-And": {
       "op": "And",
       "children": [
-        "function-2-Sra",
-        "function-6-Xori"
+        "function-0-Addi",
+        "function-7-Xori"
       ],
-      "eclass": "Inst-136",
+      "eclass": "Inst-139",
       "cost": 1.0,
       "subsumed": false
     },
     "function-20-And": {
       "op": "And",
       "children": [
-        "function-0-Addi",
-        "function-10-Addi"
+        "function-3-Add",
+        "function-7-Xori"
       ],
-      "eclass": "Inst-141",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-21-And": {
-      "op": "And",
-      "children": [
-        "function-0-RegVal",
-        "function-10-Addi"
-      ],
-      "eclass": "Inst-142",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-22-And": {
-      "op": "And",
-      "children": [
-        "function-8-Xori",
-        "function-18-Or"
-      ],
-      "eclass": "Inst-91",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-23-And": {
-      "op": "And",
-      "children": [
-        "function-9-Xori",
-        "function-19-Or"
-      ],
-      "eclass": "Inst-92",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-24-And": {
-      "op": "And",
-      "children": [
-        "function-10-Addi",
-        "function-0-Addi"
-      ],
-      "eclass": "Inst-147",
-      "cost": 1.0,
-      "subsumed": false
-    },
-    "function-25-And": {
-      "op": "And",
-      "children": [
-        "function-10-Addi",
-        "function-0-RegVal"
-      ],
-      "eclass": "Inst-148",
+      "eclass": "Inst-140",
       "cost": 1.0,
       "subsumed": false
     },
@@ -2194,8 +2087,8 @@
     "function-2-Mul": {
       "op": "Mul",
       "children": [
-        "function-0-Srl",
-        "function-1-Srl"
+        "function-2-Sra",
+        "function-3-Sra"
       ],
       "eclass": "Inst-49",
       "cost": 1.0,
@@ -2204,30 +2097,30 @@
     "function-3-Mul": {
       "op": "Mul",
       "children": [
-        "function-2-And",
-        "function-1-Srli"
+        "function-2-Srai",
+        "function-19-Sub"
       ],
-      "eclass": "Inst-52",
+      "eclass": "Inst-53",
       "cost": 1.0,
       "subsumed": false
     },
     "function-4-Mul": {
       "op": "Mul",
       "children": [
-        "function-0-Srli",
-        "function-3-And"
+        "function-20-Sub",
+        "function-0-And"
       ],
-      "eclass": "Inst-54",
+      "eclass": "Inst-55",
       "cost": 1.0,
       "subsumed": false
     },
     "function-5-Mul": {
       "op": "Mul",
       "children": [
-        "function-0-Andi",
-        "function-1-Andi"
+        "function-1-And",
+        "function-3-Srai"
       ],
-      "eclass": "Inst-56",
+      "eclass": "Inst-61",
       "cost": 1.0,
       "subsumed": false
     },
@@ -2416,6 +2309,66 @@
       "eclass": "Inst-38",
       "cost": 1.0,
       "subsumed": false
+    },
+    "function-0-CallMul": {
+      "op": "CallMul",
+      "children": [
+        "function-0-Lw",
+        "function-4-RegVal"
+      ],
+      "eclass": "Inst-32",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-1-CallMul": {
+      "op": "CallMul",
+      "children": [
+        "function-0-Sub",
+        "function-1-RegVal"
+      ],
+      "eclass": "Inst-35",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-2-CallMul": {
+      "op": "CallMul",
+      "children": [
+        "function-2-Sra",
+        "function-3-Sra"
+      ],
+      "eclass": "Inst-49",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-3-CallMul": {
+      "op": "CallMul",
+      "children": [
+        "function-2-Srai",
+        "function-19-Sub"
+      ],
+      "eclass": "Inst-53",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-4-CallMul": {
+      "op": "CallMul",
+      "children": [
+        "function-20-Sub",
+        "function-0-And"
+      ],
+      "eclass": "Inst-55",
+      "cost": 1.0,
+      "subsumed": false
+    },
+    "function-5-CallMul": {
+      "op": "CallMul",
+      "children": [
+        "function-1-And",
+        "function-3-Srai"
+      ],
+      "eclass": "Inst-61",
+      "cost": 1.0,
+      "subsumed": false
     }
   },
   "root_eclasses": [],
@@ -2474,11 +2427,8 @@
     "i64-16": {
       "type": "i64"
     },
-    "Imm-50": {
-      "type": "Imm"
-    },
-    "i64-65535": {
-      "type": "i64"
+    "Inst-50": {
+      "type": "Inst"
     },
     "Inst-19": {
       "type": "Inst"
@@ -2537,76 +2487,52 @@
     "Inst-42": {
       "type": "Inst"
     },
-    "Inst-65": {
+    "Inst-51": {
       "type": "Inst"
     },
-    "Inst-66": {
+    "Inst-64": {
       "type": "Inst"
     },
     "Inst-84": {
       "type": "Inst"
     },
-    "Inst-78": {
-      "type": "Inst"
-    },
-    "Inst-25": {
-      "type": "Inst"
-    },
-    "Inst-79": {
-      "type": "Inst"
-    },
-    "Inst-63": {
-      "type": "Inst"
-    },
-    "Inst-91": {
-      "type": "Inst"
-    },
-    "Inst-92": {
+    "Inst-75": {
       "type": "Inst"
     },
     "Inst-0": {
       "type": "Inst"
     },
-    "Inst-109": {
+    "Inst-76": {
       "type": "Inst"
     },
-    "Inst-107": {
+    "Inst-77": {
       "type": "Inst"
     },
-    "Inst-110": {
+    "Inst-57": {
       "type": "Inst"
     },
-    "Inst-108": {
+    "Inst-94": {
       "type": "Inst"
     },
-    "Inst-115": {
+    "Inst-104": {
       "type": "Inst"
     },
-    "Inst-132": {
+    "Inst-101": {
       "type": "Inst"
     },
-    "Inst-143": {
+    "Inst-105": {
       "type": "Inst"
     },
-    "Inst-141": {
+    "Inst-102": {
       "type": "Inst"
     },
-    "Inst-144": {
+    "Inst-106": {
       "type": "Inst"
     },
-    "Inst-142": {
+    "Inst-103": {
       "type": "Inst"
     },
-    "Inst-74": {
-      "type": "Inst"
-    },
-    "Inst-75": {
-      "type": "Inst"
-    },
-    "Inst-51": {
-      "type": "Inst"
-    },
-    "Inst-53": {
+    "Inst-113": {
       "type": "Inst"
     },
     "Inst-13": {
@@ -2618,28 +2544,34 @@
     "Inst-14": {
       "type": "Inst"
     },
-    "Inst-47": {
-      "type": "Inst"
-    },
-    "Inst-48": {
-      "type": "Inst"
-    },
-    "Inst-57": {
-      "type": "Inst"
-    },
     "Inst-56": {
       "type": "Inst"
     },
-    "Inst-59": {
+    "Inst-55": {
       "type": "Inst"
     },
-    "Inst-58": {
+    "Inst-25": {
       "type": "Inst"
     },
     "Inst-30": {
       "type": "Inst"
     },
     "Inst-12": {
+      "type": "Inst"
+    },
+    "Inst-47": {
+      "type": "Inst"
+    },
+    "Inst-48": {
+      "type": "Inst"
+    },
+    "Inst-58": {
+      "type": "Inst"
+    },
+    "Inst-63": {
+      "type": "Inst"
+    },
+    "Inst-62": {
       "type": "Inst"
     },
     "Inst-8": {
@@ -2654,73 +2586,73 @@
     "Inst-32": {
       "type": "Inst"
     },
-    "Inst-55": {
+    "Inst-53": {
       "type": "Inst"
     },
-    "Inst-52": {
-      "type": "Inst"
-    },
-    "Inst-54": {
-      "type": "Inst"
-    },
-    "Inst-60": {
+    "Inst-59": {
       "type": "Inst"
     },
     "Inst-49": {
       "type": "Inst"
     },
+    "Inst-60": {
+      "type": "Inst"
+    },
+    "Inst-61": {
+      "type": "Inst"
+    },
+    "Inst-69": {
+      "type": "Inst"
+    },
+    "Inst-78": {
+      "type": "Inst"
+    },
     "Inst-70": {
       "type": "Inst"
     },
-    "Inst-80": {
+    "Inst-79": {
       "type": "Inst"
     },
     "Inst-71": {
       "type": "Inst"
     },
-    "Inst-81": {
-      "type": "Inst"
-    },
-    "Inst-93": {
-      "type": "Inst"
-    },
-    "Inst-94": {
-      "type": "Inst"
-    },
-    "Inst-87": {
-      "type": "Inst"
-    },
-    "Inst-103": {
+    "Inst-80": {
       "type": "Inst"
     },
     "Inst-88": {
       "type": "Inst"
     },
-    "Inst-104": {
+    "Inst-95": {
       "type": "Inst"
     },
-    "Inst-99": {
+    "Inst-89": {
       "type": "Inst"
     },
-    "Inst-133": {
+    "Inst-96": {
       "type": "Inst"
     },
-    "Inst-100": {
+    "Inst-90": {
       "type": "Inst"
     },
-    "Inst-134": {
+    "Inst-97": {
       "type": "Inst"
     },
-    "Inst-111": {
+    "Inst-107": {
       "type": "Inst"
     },
-    "Inst-135": {
+    "Inst-138": {
       "type": "Inst"
     },
-    "Inst-112": {
+    "Inst-108": {
       "type": "Inst"
     },
-    "Inst-136": {
+    "Inst-139": {
+      "type": "Inst"
+    },
+    "Inst-109": {
+      "type": "Inst"
+    },
+    "Inst-140": {
       "type": "Inst"
     },
     "Inst-31": {
@@ -2741,13 +2673,10 @@
     "Inst-45": {
       "type": "Inst"
     },
-    "Inst-62": {
+    "Inst-65": {
       "type": "Inst"
     },
-    "Inst-61": {
-      "type": "Inst"
-    },
-    "Inst-64": {
+    "Inst-66": {
       "type": "Inst"
     },
     "Inst-67": {
@@ -2756,19 +2685,22 @@
     "Inst-68": {
       "type": "Inst"
     },
-    "Inst-69": {
-      "type": "Inst"
-    },
     "Inst-72": {
       "type": "Inst"
     },
     "Inst-73": {
       "type": "Inst"
     },
-    "Inst-76": {
+    "Inst-74": {
       "type": "Inst"
     },
-    "Inst-77": {
+    "Inst-52": {
+      "type": "Inst"
+    },
+    "Inst-54": {
+      "type": "Inst"
+    },
+    "Inst-81": {
       "type": "Inst"
     },
     "Inst-82": {
@@ -2783,112 +2715,115 @@
     "Inst-86": {
       "type": "Inst"
     },
-    "Inst-89": {
+    "Inst-87": {
       "type": "Inst"
     },
-    "Inst-90": {
+    "Inst-91": {
       "type": "Inst"
     },
-    "Inst-95": {
+    "Inst-92": {
       "type": "Inst"
     },
-    "Inst-96": {
-      "type": "Inst"
-    },
-    "Inst-97": {
+    "Inst-93": {
       "type": "Inst"
     },
     "Inst-98": {
       "type": "Inst"
     },
-    "Inst-101": {
+    "Inst-99": {
       "type": "Inst"
     },
-    "Inst-102": {
+    "Inst-100": {
       "type": "Inst"
     },
-    "Inst-105": {
+    "Inst-110": {
       "type": "Inst"
     },
-    "Inst-106": {
+    "Inst-111": {
       "type": "Inst"
     },
-    "Inst-113": {
+    "Inst-112": {
       "type": "Inst"
     },
     "Inst-114": {
       "type": "Inst"
     },
+    "Inst-115": {
+      "type": "Inst"
+    },
     "Inst-116": {
-      "type": "Inst"
-    },
-    "Inst-117": {
-      "type": "Inst"
-    },
-    "Inst-124": {
-      "type": "Inst"
-    },
-    "Inst-118": {
-      "type": "Inst"
-    },
-    "Inst-125": {
-      "type": "Inst"
-    },
-    "Inst-119": {
       "type": "Inst"
     },
     "Inst-126": {
       "type": "Inst"
     },
-    "Inst-120": {
+    "Inst-117": {
       "type": "Inst"
     },
     "Inst-127": {
       "type": "Inst"
     },
-    "Inst-121": {
+    "Inst-118": {
       "type": "Inst"
     },
     "Inst-128": {
       "type": "Inst"
     },
-    "Inst-122": {
+    "Inst-119": {
       "type": "Inst"
     },
     "Inst-129": {
       "type": "Inst"
     },
-    "Inst-123": {
+    "Inst-120": {
       "type": "Inst"
     },
     "Inst-130": {
       "type": "Inst"
     },
+    "Inst-121": {
+      "type": "Inst"
+    },
     "Inst-131": {
+      "type": "Inst"
+    },
+    "Inst-122": {
+      "type": "Inst"
+    },
+    "Inst-132": {
+      "type": "Inst"
+    },
+    "Inst-123": {
+      "type": "Inst"
+    },
+    "Inst-133": {
+      "type": "Inst"
+    },
+    "Inst-124": {
+      "type": "Inst"
+    },
+    "Inst-134": {
+      "type": "Inst"
+    },
+    "Inst-125": {
+      "type": "Inst"
+    },
+    "Inst-135": {
+      "type": "Inst"
+    },
+    "Inst-136": {
       "type": "Inst"
     },
     "Inst-137": {
       "type": "Inst"
     },
-    "Inst-138": {
+    "Inst-141": {
       "type": "Inst"
     },
-    "Inst-139": {
+    "Inst-142": {
       "type": "Inst"
     },
-    "Inst-140": {
-      "type": "Inst"
-    },
-    "Inst-145": {
-      "type": "Inst"
-    },
-    "Inst-147": {
-      "type": "Inst"
-    },
-    "Inst-146": {
-      "type": "Inst"
-    },
-    "Inst-148": {
+    "Inst-143": {
       "type": "Inst"
     },
     "Inst-4": {

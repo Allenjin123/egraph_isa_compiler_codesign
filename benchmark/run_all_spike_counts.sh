@@ -16,15 +16,11 @@ NC='\033[0m'
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# List of workloads (relative paths from benchmark directory)
-WORKLOADS=(
-    "network/patricia/patricia_O3_clean.s"
-    "network/dijkstra/dijkstra_small_O3_clean.s"
-    "automotive/basicmath/basicmath_small_O3_clean.s"
-    "automotive/bitcount/bitcnts_O3_clean.s"
-    "automotive/qsort_small/qsort_small_O3_clean.s"
-    "automotive/qsort_large/qsort_large_O3_clean.s"
-)
+# Dynamically find all *_clean.s files in benchmark directory
+# Structure should be: category/benchmark/benchmark_name_clean.s
+readarray -t WORKLOADS < <(find "$SCRIPT_DIR" -name "*_clean.s" -type f | \
+    grep -E "(automotive|network|security|embench-iot)/[^/]+/[^/]+_clean\.s$" | \
+    sed "s|$SCRIPT_DIR/||" | sort)
 
 echo -e "${CYAN}========================================${NC}"
 echo -e "${CYAN}Running Spike Instruction Counts${NC}"

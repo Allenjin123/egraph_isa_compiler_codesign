@@ -244,6 +244,7 @@ def dag_to_egglog_expr(node: InstructionNode, reg_map: Dict[str, str]) -> str:
     Recursively convert DAG node to nested egglog expression.
 
     Uses post-order traversal: process children first, then current node.
+    Uses explicit pattern matching on instruction names for clarity and scalability.
 
     Args:
         node: Current DAG node
@@ -263,35 +264,97 @@ def dag_to_egglog_expr(node: InstructionNode, reg_map: Dict[str, str]) -> str:
 
     # Recursive case: instruction node
     inst = node.inst
-    op_name = inst.op_name.capitalize()
+    op = inst.op_name.lower()
 
     # Convert children to egglog expressions
     child_exprs = [dag_to_egglog_expr(child, reg_map) for child in node.children]
 
-    # Build egglog expression based on instruction type
-    # Similar to convert_instruction_to_egglog in local_saturation.py
-
-    # R-type: (Op child1 child2)
-    if inst.rs1 and inst.rs2:
-        if len(child_exprs) >= 2:
-            return f"({op_name} {child_exprs[0]} {child_exprs[1]})"
+    # Helper to format immediate values
+    def format_imm(imm_value):
+        """Format immediate value for egglog expression"""
+        if imm_value is None:
+            raise ValueError(f"Immediate value is None for instruction: {inst}")
+        if isinstance(imm_value, int):
+            return f"(ImmVal {imm_value})"
+        elif isinstance(imm_value, str):
+            # Symbolic immediate (e.g., %hi(.LC1), %lo(.LC1))
+            return f"(ImmLabel \"{imm_value}\")"
         else:
-            raise ValueError(f"R-type instruction {inst} missing operand children")
+            raise ValueError(f"Invalid immediate type {type(imm_value)} for instruction: {inst}")
 
-    # I-type with immediate: (Op child1 (ImmVal imm))
-    elif inst.rs1 and inst.imm is not None:
-        if len(child_exprs) >= 1:
-            if isinstance(inst.imm, int):
-                return f"({op_name} {child_exprs[0]} (ImmVal {inst.imm}))"
-            else:
-                # Symbolic immediate (shouldn't occur in greenthumb, but handle it)
-                return f"({op_name} {child_exprs[0]} (ImmLabel \"{inst.imm}\"))"
-        else:
-            raise ValueError(f"I-type instruction {inst} missing rs1 child")
+    # Build egglog expression using explicit instruction type matching
+    # This approach is more maintainable and matches the pattern used in local_saturation.py
+    match op:
+        # R-type instructions: (Op rs1 rs2)
+        # RV32I base instructions
+        case 'add' | 'sub' | 'and' | 'or' | 'xor' | 'sll' | 'srl' | 'sra' | 'slt' | 'sltu':
+            if len(child_exprs) < 2:
+                raise ValueError(f"R-type instruction {inst} missing operand children")
+            return f"({op.capitalize()} {child_exprs[0]} {child_exprs[1]})"
 
-    # U-type or other: (Op ...)
-    else:
-        raise ValueError(f"Unsupported instruction pattern for DAG conversion: {inst}")
+        # RV32M extension instructions
+        case 'mul' | 'mulh' | 'mulhsu' | 'mulhu' | 'div' | 'divu' | 'rem' | 'remu':
+            if len(child_exprs) < 2:
+                raise ValueError(f"R-type instruction {inst} missing operand children")
+            return f"({op.capitalize()} {child_exprs[0]} {child_exprs[1]})"
+
+        # I-type arithmetic/logic instructions: (Op rs1 imm)
+        case 'addi' | 'slti' | 'sltiu' | 'xori' | 'ori' | 'andi' | 'slli' | 'srli' | 'srai':
+            if len(child_exprs) < 1:
+                raise ValueError(f"I-type instruction {inst} missing rs1 child")
+            return f"({op.capitalize()} {child_exprs[0]} {format_imm(inst.imm)})"
+
+        # Load instructions: (Op base offset)
+        case 'lw' | 'lh' | 'lb' | 'lhu' | 'lbu':
+            if len(child_exprs) < 1:
+                raise ValueError(f"Load instruction {inst} missing base register child")
+            op_map = {'lw': 'Lw', 'lh': 'Lh', 'lb': 'Lb', 'lhu': 'Lhu', 'lbu': 'Lbu'}
+            return f"({op_map[op]} {child_exprs[0]} {format_imm(inst.imm)})"
+
+        # Store instructions: (Op base data offset)
+        case 'sw' | 'sh' | 'sb':
+            if len(child_exprs) < 2:
+                raise ValueError(f"Store instruction {inst} missing operand children")
+            op_map = {'sw': 'Sw', 'sh': 'Sh', 'sb': 'Sb'}
+            return f"({op_map[op]} {child_exprs[0]} {child_exprs[1]} {format_imm(inst.imm)})"
+
+        # U-type instructions: (Op imm) - no source registers
+        case 'lui' | 'auipc':
+            # U-type instructions don't have source registers, only immediate
+            return f"({op.capitalize()} {format_imm(inst.imm)})"
+
+        # Branch instructions: (Op rs1 rs2 offset)
+        case 'beq' | 'bne' | 'blt' | 'bge' | 'bltu' | 'bgeu':
+            if len(child_exprs) < 2:
+                raise ValueError(f"Branch instruction {inst} missing operand children")
+            return f"({op.capitalize()} {child_exprs[0]} {child_exprs[1]} {format_imm(inst.imm)})"
+
+        # Pseudo branch instructions
+        case 'beqz':  # beqz rs, offset -> beq rs, x0, offset
+            if len(child_exprs) < 1:
+                raise ValueError(f"beqz instruction {inst} missing rs1 child")
+            return f"(Beq {child_exprs[0]} (RegVal \"x0\") {format_imm(inst.imm)})"
+
+        case 'bnez':  # bnez rs, offset -> bne rs, x0, offset
+            if len(child_exprs) < 1:
+                raise ValueError(f"bnez instruction {inst} missing rs1 child")
+            return f"(Bne {child_exprs[0]} (RegVal \"x0\") {format_imm(inst.imm)})"
+
+        # Jump instructions
+        case 'jal':
+            return f"(Jal {format_imm(inst.imm)})"
+
+        case 'jalr':
+            if len(child_exprs) < 1:
+                raise ValueError(f"jalr instruction {inst} missing rs1 child")
+            return f"(Jalr {child_exprs[0]} {format_imm(inst.imm)})"
+
+        # Unsupported instruction
+        case _:
+            raise ValueError(
+                f"Unsupported instruction for DAG conversion: {inst}\n"
+                f"If this is a valid RISC-V instruction, add it to dag_to_egglog_expr() in greenthumb_parser.py"
+            )
 
 
 def normalize_rewrite_pattern(rewrite_str: str) -> str:

@@ -49,12 +49,14 @@ class text_inst():
 
         # Check for symbolic immediate values (assembly pseudo-ops and labels)
         # These are preserved as strings for later resolution
+        first_char = value_str[0]
+
         if value_str.startswith('%'):
             # Symbolic immediates: %hi(...), %lo(...), %pcrel_hi(...), %pcrel_lo(...)
             return value_str
-        elif value_str.startswith('.') or (value_str and value_str[0].isalpha()):
-            # Labels: .L9, .LC1, printf, main, etc.
-            # Anything that looks like a label/symbol (starts with . or letter)
+        elif first_char in {'.', '_'} or first_char.isalpha():
+            # Labels: .L9, .LC1, printf, main, __riscv_div_lib_L10, etc.
+            # Anything that looks like a label/symbol (starts with ., _, or letter)
             return value_str
 
         try:
@@ -80,7 +82,7 @@ class text_inst():
     def parse_instruction(cls, line: str) -> Optional['text_inst']:
         """Parse a single instruction line from cleaned SSA format"""
         line = line.strip()
-        if not line or line.startswith('#'):
+        if not line or line.startswith('#') or line.startswith('.'):
             return None
 
         # Common instruction patterns

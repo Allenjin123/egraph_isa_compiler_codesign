@@ -1,0 +1,198 @@
+;; ============================================
+;; Complete Load Instruction Alignment Rules
+;; Converts LB/LBU/LH/LHU → LW with proper alignment
+;; ============================================
+
+(datatype Imm (ImmVal i64))
+(datatype Inst
+    (Lw   Inst Imm)
+    (Lb   Inst Imm)
+    (Lbu  Inst Imm)
+    (Lh   Inst Imm)
+    (Lhu  Inst Imm)
+    (Slli Inst Imm)
+    (Srli Inst Imm)
+    (Srai Inst Imm)
+    (Andi Inst Imm)
+    (RegVal String)
+)
+
+;; ============================================
+;; BYTE LOAD ALIGNMENT
+;; ============================================
+
+;; Alignment functions for byte loads
+(function align-down (i64) i64 :merge (min old new))
+(function byte-offset (i64) i64 :merge (min old new))
+
+;; Auto-compute for byte loads: align to 4-byte boundary
+(rule ((= inst (Lbu base (ImmVal off))))
+      ((set (align-down off) (& off (not-i64 3)))))
+(rule ((= inst (Lbu base (ImmVal off))))
+      ((set (byte-offset off) (* (% off 4) 8))))
+
+(rule ((= inst (Lb base (ImmVal off))))
+      ((set (align-down off) (& off (not-i64 3)))))
+(rule ((= inst (Lb base (ImmVal off))))
+      ((set (byte-offset off) (* (% off 4) 8))))
+
+;; ============================================
+;; LBU: Load Byte Unsigned
+;; LBU(base, off) → Andi(Srli(Lw(base, aligned), shift), 255)
+;; ============================================
+(rewrite (Lbu base (ImmVal off))
+         (Andi (Srli (Lw base (ImmVal aligned))
+                     (ImmVal shift))
+               (ImmVal 255))
+         :when ((= aligned (align-down off))
+                (= shift (byte-offset off))))
+
+;; ============================================
+;; LB: Load Byte Signed
+;; LB(base, off) → Srai(Slli(Srli(Lw(base, aligned), shift), 24), 24)
+;; ============================================
+(rewrite (Lb base (ImmVal off))
+         (Srai (Slli (Srli (Lw base (ImmVal aligned))
+                           (ImmVal shift))
+                     (ImmVal 24))
+               (ImmVal 24))
+         :when ((= aligned (align-down off))
+                (= shift (byte-offset off))))
+
+;; ============================================
+;; HALFWORD LOAD ALIGNMENT
+;; ============================================
+
+;; Alignment functions for halfword loads (2-byte aligned)
+(function align-down-half (i64) i64 :merge (min old new))
+(function half-offset (i64) i64 :merge (min old new))
+
+;; Auto-compute for halfword loads: align to 4-byte boundary
+;; Half-offset can only be 0 or 16 (for the two possible halfwords in a word)
+(rule ((= inst (Lhu base (ImmVal off))))
+      ((set (align-down-half off) (& off (not-i64 3)))))
+(rule ((= inst (Lhu base (ImmVal off))))
+      ((set (half-offset off) (* (% (/ off 2) 2) 16))))
+
+(rule ((= inst (Lh base (ImmVal off))))
+      ((set (align-down-half off) (& off (not-i64 3)))))
+(rule ((= inst (Lh base (ImmVal off))))
+      ((set (half-offset off) (* (% (/ off 2) 2) 16))))
+
+;; ============================================
+;; LHU: Load Halfword Unsigned
+;; LHU(base, off) → Andi(Srli(Lw(base, aligned), shift), 65535)
+;; where shift = 0 if (off % 4) ∈ {0,1}, shift = 16 if (off % 4) ∈ {2,3}
+;; ============================================
+(rewrite (Lhu base (ImmVal off))
+         (Andi (Srli (Lw base (ImmVal aligned))
+                     (ImmVal shift))
+               (ImmVal 65535))
+         :when ((= aligned (align-down-half off))
+                (= shift (half-offset off))))
+
+;; ============================================
+;; LH: Load Halfword Signed
+;; LH(base, off) → Srai(Slli(Srli(Lw(base, aligned), shift), 16), 16)
+;; ============================================
+(rewrite (Lh base (ImmVal off))
+         (Srai (Slli (Srli (Lw base (ImmVal aligned))
+                           (ImmVal shift))
+                     (ImmVal 16))
+               (ImmVal 16))
+         :when ((= aligned (align-down-half off))
+                (= shift (half-offset off))))
+
+;; ============================================
+;; COMPREHENSIVE TESTS
+;; ============================================
+
+(let reg (RegVal "a3"))
+
+;; === LBU Tests ===
+(let lbu0 (Lbu reg (ImmVal 0)))
+(let lbu1 (Lbu reg (ImmVal 1)))
+(let lbu2 (Lbu reg (ImmVal 2)))
+(let lbu3 (Lbu reg (ImmVal 3)))
+(let lbu9 (Lbu reg (ImmVal 9)))
+
+;; === LB Tests ===
+(let lb0 (Lb reg (ImmVal 0)))
+(let lb1 (Lb reg (ImmVal 1)))
+(let lb2 (Lb reg (ImmVal 2)))
+(let lb3 (Lb reg (ImmVal 3)))
+(let lb9 (Lb reg (ImmVal 9)))
+
+;; === LHU Tests ===
+(let lhu0 (Lhu reg (ImmVal 0)))   ;; offset=0, align=0, shift=0
+(let lhu2 (Lhu reg (ImmVal 2)))   ;; offset=2, align=0, shift=16
+(let lhu4 (Lhu reg (ImmVal 4)))   ;; offset=4, align=4, shift=0
+(let lhu6 (Lhu reg (ImmVal 6)))   ;; offset=6, align=4, shift=16
+(let lhu10 (Lhu reg (ImmVal 10))) ;; offset=10, align=8, shift=16
+
+;; === LH Tests ===
+(let lh0 (Lh reg (ImmVal 0)))
+(let lh2 (Lh reg (ImmVal 2)))
+(let lh4 (Lh reg (ImmVal 4)))
+(let lh6 (Lh reg (ImmVal 6)))
+(let lh10 (Lh reg (ImmVal 10)))
+
+(run 10)
+
+;; ============================================
+;; Verify LBU
+;; ============================================
+(extract "=== LBU Tests ===")
+(check (= lbu0 (Andi (Srli (Lw reg (ImmVal 0)) (ImmVal 0)) (ImmVal 255))))
+(check (= lbu1 (Andi (Srli (Lw reg (ImmVal 0)) (ImmVal 8)) (ImmVal 255))))
+(check (= lbu2 (Andi (Srli (Lw reg (ImmVal 0)) (ImmVal 16)) (ImmVal 255))))
+(check (= lbu3 (Andi (Srli (Lw reg (ImmVal 0)) (ImmVal 24)) (ImmVal 255))))
+(check (= lbu9 (Andi (Srli (Lw reg (ImmVal 8)) (ImmVal 8)) (ImmVal 255))))
+(extract "✓ LBU: All byte positions work correctly")
+
+;; ============================================
+;; Verify LB
+;; ============================================
+(extract "=== LB Tests ===")
+(check (= lb0 (Srai (Slli (Srli (Lw reg (ImmVal 0)) (ImmVal 0)) (ImmVal 24)) (ImmVal 24))))
+(check (= lb1 (Srai (Slli (Srli (Lw reg (ImmVal 0)) (ImmVal 8)) (ImmVal 24)) (ImmVal 24))))
+(check (= lb2 (Srai (Slli (Srli (Lw reg (ImmVal 0)) (ImmVal 16)) (ImmVal 24)) (ImmVal 24))))
+(check (= lb3 (Srai (Slli (Srli (Lw reg (ImmVal 0)) (ImmVal 24)) (ImmVal 24)) (ImmVal 24))))
+(check (= lb9 (Srai (Slli (Srli (Lw reg (ImmVal 8)) (ImmVal 8)) (ImmVal 24)) (ImmVal 24))))
+(extract "✓ LB: All byte positions work with sign extension")
+
+;; ============================================
+;; Verify LHU
+;; ============================================
+(extract "=== LHU Tests ===")
+(check (= lhu0 (Andi (Srli (Lw reg (ImmVal 0)) (ImmVal 0)) (ImmVal 65535))))
+(check (= lhu2 (Andi (Srli (Lw reg (ImmVal 0)) (ImmVal 16)) (ImmVal 65535))))
+(check (= lhu4 (Andi (Srli (Lw reg (ImmVal 4)) (ImmVal 0)) (ImmVal 65535))))
+(check (= lhu6 (Andi (Srli (Lw reg (ImmVal 4)) (ImmVal 16)) (ImmVal 65535))))
+(check (= lhu10 (Andi (Srli (Lw reg (ImmVal 8)) (ImmVal 16)) (ImmVal 65535))))
+(extract "✓ LHU: Both halfword positions work correctly")
+
+;; ============================================
+;; Verify LH
+;; ============================================
+(extract "=== LH Tests ===")
+(check (= lh0 (Srai (Slli (Srli (Lw reg (ImmVal 0)) (ImmVal 0)) (ImmVal 16)) (ImmVal 16))))
+(check (= lh2 (Srai (Slli (Srli (Lw reg (ImmVal 0)) (ImmVal 16)) (ImmVal 16)) (ImmVal 16))))
+(check (= lh4 (Srai (Slli (Srli (Lw reg (ImmVal 4)) (ImmVal 0)) (ImmVal 16)) (ImmVal 16))))
+(check (= lh6 (Srai (Slli (Srli (Lw reg (ImmVal 4)) (ImmVal 16)) (ImmVal 16)) (ImmVal 16))))
+(check (= lh10 (Srai (Slli (Srli (Lw reg (ImmVal 8)) (ImmVal 16)) (ImmVal 16)) (ImmVal 16))))
+(extract "✓ LH: Both halfword positions work with sign extension")
+
+(extract "")
+(extract "========================================")
+(extract "  ✅ ALL LOAD RULES WORK!")
+(extract "========================================")
+(extract "")
+(extract "Summary:")
+(extract "  • LBU: 4 byte positions × any offset")
+(extract "  • LB:  4 byte positions × any offset")
+(extract "  • LHU: 2 halfword positions × any offset")
+(extract "  • LH:  2 halfword positions × any offset")
+(extract "")
+(extract "All use automatic alignment computation!")
+(extract "========================================")

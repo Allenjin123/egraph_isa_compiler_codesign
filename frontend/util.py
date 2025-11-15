@@ -492,9 +492,14 @@ def analyze_instruction(mnemonic: str, operands: List[str]) -> Tuple[Set[str], S
         if operands and is_register(operands[0]):
             def_regs.add(operands[0])
     
-    # JALR: rd, rs1, offset
+    # JALR: rd, rs1, offset OR jalr rs1 (pseudo-instruction)
     elif mnemonic == 'jalr':
-        if len(operands) >= 2:
+        if len(operands) == 1:
+            # jalr rs1 is pseudo for jalr x0, rs1, 0 (indirect jump)
+            if is_register(operands[0]):
+                use_regs.add(operands[0])
+                def_regs.add('x0')  # implicitly defines x0 (discarded)
+        elif len(operands) >= 2:
             if is_register(operands[0]):
                 def_regs.add(operands[0])
             if is_register(operands[1]):

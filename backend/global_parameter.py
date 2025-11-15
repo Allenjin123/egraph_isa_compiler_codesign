@@ -86,6 +86,17 @@ RV_INSTRUCTIONS = {
     'divu':   {'latency': 1},  # divide unsigned
     'rem':    {'latency': 1},  # remainder signed
     'remu':   {'latency': 1},  # remainder unsigned
+
+    # ========================================
+    # Software subroutine
+    # ========================================
+    # the actual software subroutine has execution times = 0
+    # therefore won't be considered during latency calculation
+    'callmul':    {'latency': 320},  # multiply
+    'calldiv':    {'latency': 400},  # divide signed
+    'calldivu':   {'latency': 400},  # divide unsigned
+    'callrem':    {'latency': 400},  # remainder signed
+    'callremu':   {'latency': 400},  # remainder unsigned
 }
 
 # RV32M Extension Instructions (for minimal ISA detection)
