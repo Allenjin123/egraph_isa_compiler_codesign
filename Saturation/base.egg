@@ -123,14 +123,14 @@
 ;; === Instruction Decomposition ===
 
 ;; Double shifts for larger shift amounts (example for constant propagation)
-(rewrite (Slli v (ImmVal 4))
-         (Slli (Slli v (ImmVal 2)) (ImmVal 2)))
-(rewrite (Slli v (ImmVal 6))
-         (Slli (Slli v (ImmVal 3)) (ImmVal 3)))
-(rewrite (Srli v (ImmVal 4))
-         (Srli (Srli v (ImmVal 2)) (ImmVal 2)))
-(rewrite (Srai v (ImmVal 4))
-         (Srai (Srai v (ImmVal 2)) (ImmVal 2)))
+;;(rewrite (Slli v (ImmVal 4))
+;;         (Slli (Slli v (ImmVal 2)) (ImmVal 2)))
+;;(rewrite (Slli v (ImmVal 6))
+;;         (Slli (Slli v (ImmVal 3)) (ImmVal 3)))
+;;(rewrite (Srli v (ImmVal 4))
+;;         (Srli (Srli v (ImmVal 2)) (ImmVal 2)))
+;;(rewrite (Srai v (ImmVal 4))
+;;         (Srai (Srai v (ImmVal 2)) (ImmVal 2)))
 
 ;; === Load/Store Optimizations ===
 ;; Decompose byte and halfword loads/stores to use only LW/SW
@@ -368,10 +368,19 @@
            (Seq2 (Bltu a b (ImmVal 8)) (Jal target)))
 
 ;; === De Morgan's Laws ===
-(rewrite (Xori (And a b) (ImmVal -1))
-         (Or (Xori a (ImmVal -1)) (Xori b (ImmVal -1))))
-(rewrite (Xori (Or a b) (ImmVal -1))
-         (And (Xori a (ImmVal -1)) (Xori b (ImmVal -1))))
+;;(rewrite (Xori (And a b) (ImmVal -1))
+;;         (Or (Xori a (ImmVal -1)) (Xori b (ImmVal -1))))
+;;(rewrite (Xori (Or a b) (ImmVal -1))
+;;         (And (Xori a (ImmVal -1)) (Xori b (ImmVal -1))))
+
+;; Or(a,b) = (a ^ b) ^ (a & b)
+(rewrite (Or a b)
+         (Xor (Xor a b)
+              (And a b)))
+;; And(a,b) = (a | b) ^ (a ^ b)
+(rewrite (And a b)
+         (Xor (Or a b)
+              (Xor a b)))
 
 ;; === Distribution (optional - increases expression size) ===
 ;; Uncomment if needed for specific optimizations
@@ -379,10 +388,10 @@
 ;; (rewrite (Add (Mul a b) (Mul a c)) (Mul a (Add b c)))  ; factoring
 
 ;; === Boolean simplifications ===
-(rewrite (And (Or a b) (Or a c))
-         (Or a (And b c)))
-(rewrite (Or (And a b) (And a c))
-         (And a (Or b c)))
+;;(rewrite (And (Or a b) (Or a c))
+;;         (Or a (And b c)))
+;;(rewrite (Or (And a b) (And a c))
+;;         (And a (Or b c)))
 
 ;; ============================================================
 ;; INJECTED GREENTHUMB REWRITE RULES
@@ -412,8 +421,8 @@
 ;; Greenthumb sequence:
 ;;   1.     ori rd=x1 rs1=x0 imm=5
 ;;   2.     add rd=x1 rs1=x2 rs2=x1
-(rewrite (Addi rs1 (ImmVal 5))
-           (Add rs1 (Ori (RegVal "x0") (ImmVal 5))))
+(rewrite (Addi rs1 imm)
+           (Add rs1 (Ori (RegVal "x0") imm)))
 
 ;; ============================================================
 ;; AND Rewrites (Greenthumb-generated)
@@ -435,16 +444,16 @@
 ;; Greenthumb sequence:
 ;;   1.     addi rd=x1 rs1=x0 imm=5
 ;;   2.     and rd=x1 rs1=x1 rs2=x2
-(rewrite (Andi rs1 (ImmVal 5))
-           (And (Addi (RegVal "x0") (ImmVal 5)) rs1))
+(rewrite (Andi rs1 imm)
+           (And (Addi (RegVal "x0") imm) rs1))
 
 ;; Length 3: best-len3.s
 ;; Greenthumb sequence:
 ;;   1.     xori rd=x1 rs1=x2 imm=5
 ;;   2.     or rd=x2 rs1=x2 rs2=x1
 ;;   3.     xor rd=x1 rs1=x1 rs2=x2
-(rewrite (Andi rs1 (ImmVal 5))
-           (Xor (Xori rs1 (ImmVal 5)) (Or rs1 (Xori rs1 (ImmVal 5)))))
+(rewrite (Andi rs1 imm)
+           (Xor (Xori rs1 imm) (Or rs1 (Xori rs1 imm))))
 
 ;; Length 4: best-len4.s
 ;; Greenthumb sequence:
@@ -452,9 +461,11 @@
 ;;   2.     ori rd=x1 rs1=x2 imm=1
 ;;   3.     ori rd=x1 rs1=x1 imm=4
 ;;   4.     xor rd=x1 rs1=x2 rs2=x1
-(rewrite (Andi rs1 (ImmVal 5))
-           (Xor (Xori rs1 (ImmVal 5)) (Ori (Ori (Xori rs1 (ImmVal 5)) (ImmVal 1)) (ImmVal 4))))
+;;(rewrite (Andi rs1 (ImmVal 5))
+;;           (Xor (Xori rs1 (ImmVal 5)) (Ori (Ori (Xori rs1 (ImmVal 5)) (ImmVal 1)) (ImmVal 4))))
 
+(rewrite (Andi rs1 imm) 
+            (Xor (Xori rs1 imm) (Ori (Xori rs1 imm) imm)))
 ;; ============================================================
 ;; OR Rewrites (Greenthumb-generated)
 ;; ============================================================

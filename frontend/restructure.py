@@ -1,6 +1,7 @@
 import sys
 import json
 import re
+import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Tuple, Set
@@ -172,7 +173,7 @@ class GraphNode:
 
 
 class BlockGraph:
-    def __init__(self, program_name: str, block_num: int, egraph: EGraph, choices: Dict[str, str]):
+    def __init__(self, program_name: str, block_num: int, egraph: EGraph, choices: Dict[str, str], print_graph: bool = False):
         self.program_name = program_name
         self.block_num = block_num
         self.egraph = egraph
@@ -181,6 +182,7 @@ class BlockGraph:
         # self.nodes: List[GraphNode] = [] 
         self.eclasses_to_nodes: Dict[str, GraphNode] = {} 
         self.merged_data: Dict = {}  # merged.json 数据
+        self.print_graph = print_graph
         
     def load_merged_json(self):
         """加载 merged.json"""
@@ -218,6 +220,22 @@ class BlockGraph:
         visited = set()
         for eclass_id in self.root_eclass_id:
             self._add_node_recursive(eclass_id, visited)
+        if self.print_graph:
+            self.print_adjacency_list()
+
+    def print_adjacency_list(self):
+        """打印 BlockGraph 的邻接表，便于调试"""
+        print(f"\n[BlockGraph] program={self.program_name} block={self.block_num}")
+        if not self.eclasses_to_nodes:
+            print("  (empty graph)")
+            return
+        for eclass_id in sorted(self.eclasses_to_nodes.keys()):
+            node = self.eclasses_to_nodes[eclass_id]
+            if node.children:
+                child_str = ', '.join(node.children)
+            else:
+                child_str = "(leaf)"
+            print(f"  {eclass_id} [{node.op}] -> {child_str}")
     
     def _add_node_recursive(self, eclass_id: str, visited: Set[str]):
         """递归添加节点"""
@@ -266,10 +284,10 @@ class BlockGraph:
             self._add_node_recursive(child_eclass, visited)
 
 class RewriteBlock:
-    def __init__(self, program_name: str, block_num: int, egraph: EGraph, choices: Dict[str, str]):
+    def __init__(self, program_name: str, block_num: int, egraph: EGraph, choices: Dict[str, str], print_graph: bool = False):
         self.program_name = program_name
         self.block_num = block_num
-        self.block_graph = BlockGraph(program_name, block_num, egraph, choices)
+        self.block_graph = BlockGraph(program_name, block_num, egraph, choices, print_graph=print_graph)
         self.block_graph.build_graph()
         self.lines: List[str] = []
         self.eclass_to_rd_list: List[Tuple[str, str]] = get_eclass_to_rd(program_name, block_num)
@@ -303,7 +321,8 @@ class RewriteBlock:
         """
         # 获取这个 eclass 对应的节点
         if eclass_id not in self.block_graph.eclasses_to_nodes:
-            raise ValueError(f"Eclass {eclass_id} not found in block graph")
+            return
+            #raise ValueError(f"Eclass {eclass_id} not found in block graph")
         node = self.block_graph.eclasses_to_nodes[eclass_id]
         
         # 特殊处理 Seq2：展开为多条指令，不生成 seq2 本身
@@ -374,8 +393,8 @@ class RewriteBlock:
                 self.eclass_to_rd_map[eclass_id] = rd
             else:
                 # 不在图中的 eclass，说明图构建有问题
-                raise ValueError(f"Eclass {eclass_id} from file not found in block graph")
-
+                #raise ValueError(f"Eclass {eclass_id} from file not found in block graph")
+                continue
         self.merge_lines()
 
     def replace_placeholders(self, line_idx: int, live_out: Set[str]):
@@ -536,7 +555,7 @@ def get_all_blocks(program_name: str) -> List[int]:
     return sorted(block_nums)
 
 
-def rewrite_program(program_name: str, solution_file: str = None, output_dir: str = None):
+def rewrite_program(program_name: str, solution_file: str = None, output_dir: str = None, print_graph: bool = False):
     """处理整个 program，重写所有 basic blocks
     
     Args:
@@ -603,7 +622,7 @@ def rewrite_program(program_name: str, solution_file: str = None, output_dir: st
             print(f"\n处理 block {block_num}...", end=" ")
             
             # 创建 RewriteBlock 实例
-            rewriter = RewriteBlock(program_name, block_num, egraph, choices)
+            rewriter = RewriteBlock(program_name, block_num, egraph, choices, print_graph=print_graph)
             
             # 重写 block
             rewriter.rewrite_block()
@@ -656,7 +675,7 @@ def rewrite_program(program_name: str, solution_file: str = None, output_dir: st
     return stats
 
 
-def rewrite_program_all_variants(program_name: str, num_variants: int = 5):
+def rewrite_program_all_variants(program_name: str, num_variants: int = 5, print_graph: bool = False):
     """Process all variants of a program
 
     Args:
@@ -720,7 +739,7 @@ def rewrite_program_all_variants(program_name: str, num_variants: int = 5):
             variant_dir.mkdir(parents=True, exist_ok=True)
 
             # Rewrite with this solution
-            stats = rewrite_program(program_name, str(solution_file), str(variant_dir))
+            stats = rewrite_program(program_name, str(solution_file), str(variant_dir), print_graph=print_graph)
             stats['variant'] = variant_num
             all_stats.append(stats)
 
@@ -770,6 +789,18 @@ def rewrite_program_all_variants(program_name: str, num_variants: int = 5):
     return all_stats
 
 
+def debug_print_block_graph(program_name: str, block_num: int, solution_file: str = None):
+    """仅打印指定 block 的 BlockGraph 邻接表，用于快速调试"""
+    print(f"\n[Debug] 打印 program={program_name} block={block_num} 的 BlockGraph")
+    egraph = EGraph(program_name)
+    if solution_file is None:
+        solution_file = str(ILP_OUTPUT_DIR / program_name / "sol" / "solution.sol")
+    variables = parse_solution_file(solution_file)
+    choices = extract_solution(egraph, variables)
+    block_graph = BlockGraph(program_name, block_num, egraph, choices, print_graph=True)
+    block_graph.build_graph()
+
+
 def main():
     """命令行入口"""
     import argparse
@@ -782,16 +813,19 @@ def main():
                         help="要处理的变体数量 (默认: 5)")
     parser.add_argument("--single-variant", action="store_true",
                         help="只处理单个变体（使用 --solution 指定的文件）")
+    parser.add_argument("--print-graph", action="store_true",
+                        help="打印 BlockGraph 邻接表用于调试")
 
     args = parser.parse_args()
 
     if args.single_variant:
         # Single variant mode (backward compatibility)
-        rewrite_program(args.program_name, args.solution, args.output)
+        rewrite_program(args.program_name, args.solution, args.output, print_graph=args.print_graph)
     else:
         # Multi-variant mode (default)
-        rewrite_program_all_variants(args.program_name, args.variants)
+        rewrite_program_all_variants(args.program_name, args.variants, print_graph=args.print_graph)
 
 
 if __name__ == "__main__":
-    main()
+    #main()
+    debug_print_block_graph("md5", 19) 

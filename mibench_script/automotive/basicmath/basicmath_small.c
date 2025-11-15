@@ -1,90 +1,79 @@
 #include <stdio.h>
 
 #ifndef PI
-#define PI 3.141592653589793115997963468544
-
+#define PI 3142  /* PI * 1000 定点数表示 */
 #endif
+
+#define SCALE 1000  /* 定点数缩放因子 */
 
 struct int_sqrt {
   unsigned sqrt;
   unsigned frac;
 };
 
-static double my_fabs(double x) {
-  return (x < 0.0) ? -x : x;
+static long my_fabs(long x) {
+  return (x < 0) ? -x : x;
 }
 
-static double my_sqrt(double x) {
-  if (x <= 0.0) {
-    return 0.0;
+static long my_sqrt(long x) {
+  if (x <= 0) {
+    return 0;
   }
-  double guess = x;
-  if (guess < 1.0) {
-    guess = 1.0;
+  long guess = x;
+  if (guess < SCALE) {
+    guess = SCALE;
   }
   for (int i = 0; i < 12; ++i) {
-    guess = 0.5 * (guess + x / guess);
+    guess = (guess + (x * SCALE) / guess) / 2;
   }
   return guess;
 }
 
-static double my_cbrt(double x) {
-  if (x == 0.0) {
-    return 0.0;
+static long my_cbrt(long x) {
+  if (x == 0) {
+    return 0;
   }
-  double guess = x;
-  double magnitude = my_fabs(guess);
-  if (magnitude < 1.0) {
-    magnitude = 1.0;
+  long guess = x;
+  long magnitude = my_fabs(guess);
+  if (magnitude < SCALE) {
+    magnitude = SCALE;
   }
-  guess = (guess < 0.0) ? -magnitude : magnitude;
+  guess = (guess < 0) ? -magnitude : magnitude;
   for (int i = 0; i < 18; ++i) {
-    double guess_sq = guess * guess;
-    if (guess_sq == 0.0) {
+    long guess_sq = (guess * guess) / SCALE;
+    if (guess_sq == 0) {
       break;
     }
-    guess = (2.0 * guess + x / guess_sq) / 3.0;
+    guess = (2 * guess + (x * SCALE) / guess_sq) / 3;
   }
   return guess;
 }
 
 /* --------------- helpers --------------- */
-static long my_round_to_long(double t) {        /* 最近整数，避免 <math.h> */
-  return (long)(t >= 0.0 ? t + 0.5 : t - 0.5);
+static long my_round_to_long(long t) {        /* 最近整数，定点数转整数 */
+  return (t >= 0 ? (t + SCALE/2) / SCALE : (t - SCALE/2) / SCALE);
 }
 
 /* --------------- cos(x) --------------- */
-static double my_cos(double x) {
+static long my_cos(long x) {
   /* 四象限约简：k = round(x / (pi/2)), y = x - k*(PI/2) */
-  const double INV_PI_2 = 0.63661977236758134308;      /* 2/pi */
-  const double PI_2_HI  = 1.57079632679489655800;      /* (pi/2) high */
-  const double PI_2_LO  = 6.12323399573676603587e-17;  /* (pi/2) low  */
+  const long INV_PI_2 = 637;      /* (2/pi) * 1000 */
+  const long PI_2 = 1571;         /* (pi/2) * 1000 */
 
-  long   k = my_round_to_long(x * INV_PI_2);
-  double y = x - k * PI_2_HI;
-         y = y - k * PI_2_LO;                          /* 抑制约简误差 */
-  double z = y * y;
+  long k = my_round_to_long((x * INV_PI_2) / SCALE);
+  long y = x - k * PI_2;
+  long z = (y * y) / SCALE;
 
-  /* cos(y) minimax 多项式：1 + z*(C1 + z*(C2 + ...))，y ∈ [-pi/4, pi/4] */
-  const double C1 = -0.5;
-  const double C2 =  4.16666666666666019037e-02;
-  const double C3 = -1.38888888888741095749e-03;
-  const double C4 =  2.48015872894767294178e-05;
-  const double C5 = -2.75573143513906633035e-07;
-  const double C6 =  2.08757232129817482790e-09;
-  const double C7 = -1.13596475577881948265e-11;
+  /* cos(y) minimax 多项式简化版：1 + z*C1 */
+  const long C1 = -500;  /* -0.5 * 1000 */
+  const long C2 = 42;    /* 0.04167 * 1000 */
 
-  double cosy = 1.0 + z*(C1 + z*(C2 + z*(C3 + z*(C4 + z*(C5 + z*(C6 + z*C7))))));
+  long cosy = SCALE + (z * C1) / SCALE + (z * z * C2) / (SCALE * SCALE);
 
-  /* sin(y) 多项式（给象限还原用）：y + y*z*(S1 + z*(S2 + ...)) */
-  const double S1 = -1.66666666666666324348e-01;
-  const double S2 =  8.33333333332248946124e-03;
-  const double S3 = -1.98412698298579493134e-04;
-  const double S4 =  2.75573137070700676789e-06;
-  const double S5 = -2.50507602534068634195e-08;
-  const double S6 =  1.58969099521155010221e-10;
+  /* sin(y) 多项式简化版：y - y*z*S1 */
+  const long S1 = -167;  /* -0.16667 * 1000 */
 
-  double siny = y + y*z*(S1 + z*(S2 + z*(S3 + z*(S4 + z*(S5 + z*S6)))));
+  long siny = y + (y * z * S1) / (SCALE * SCALE);
 
   /* 根据 k mod 4 还原 cos(x) */
   switch ((int)(k & 3L)) {
@@ -95,73 +84,73 @@ static double my_cos(double x) {
   }
 }
 
-static double my_acos(double x) {
-  if (x >= 1.0) {
-    return 0.0;
+static long my_acos(long x) {
+  if (x >= SCALE) {
+    return 0;
   }
-  if (x <= -1.0) {
+  if (x <= -SCALE) {
     return PI;
   }
-  double low = 0.0;
-  double high = PI;
+  long low = 0;
+  long high = PI;
   for (int i = 0; i < 60; ++i) {
-    double mid = 0.5 * (low + high);
-    double cos_mid = my_cos(mid);
+    long mid = (low + high) / 2;
+    long cos_mid = my_cos(mid);
     if (cos_mid > x) {
       low = mid;
     } else {
       high = mid;
     }
   }
-  return 0.5 * (low + high);
+  return (low + high) / 2;
 }
 
-static void SolveCubic(double a,
-                       double b,
-                       double c,
-                       double d,
+static void SolveCubic(long a,
+                       long b,
+                       long c,
+                       long d,
                        int *solutions,
-                       double *x) {
-  long double a1 = b / a;
-  long double a2 = c / a;
-  long double a3 = d / a;
-  long double Q = (a1 * a1 - 3.0 * a2) / 9.0;
-  long double R = (2.0 * a1 * a1 * a1 - 9.0 * a1 * a2 + 27.0 * a3) / 54.0;
-  double R_val = (double)R;
-  double Q_val = (double)Q;
-  double R2_Q3 = (double)(R * R - Q * Q * Q);
+                       long *x) {
+  long a1 = (b * SCALE) / a;
+  long a2 = (c * SCALE) / a;
+  long a3 = (d * SCALE) / a;
+  long Q = ((a1 * a1) / SCALE - 3 * a2) / 9;
+  long R = (2 * (a1 * a1 / SCALE) * a1 / SCALE - 9 * (a1 * a2) / SCALE + 27 * a3) / 54;
+  long R_val = R;
+  long Q_val = Q;
+  long R2_Q3 = (R * R) / SCALE - (Q * Q / SCALE) * Q / SCALE;
 
-  double Q3 = (double)(Q * Q * Q);
-  double sqrtQ3 = (Q3 > 0.0) ? my_sqrt(Q3) : 0.0;
-  if (R2_Q3 <= 0.0) {
-    double ratio;
-    if (sqrtQ3 > 0.0) {
-      ratio = R_val / sqrtQ3;
+  long Q3 = (Q * Q / SCALE) * Q / SCALE;
+  long sqrtQ3 = (Q3 > 0) ? my_sqrt(Q3) : 0;
+  if (R2_Q3 <= 0) {
+    long ratio;
+    if (sqrtQ3 > 0) {
+      ratio = (R_val * SCALE) / sqrtQ3;
     } else {
-      ratio = (R_val >= 0.0) ? 1.0 : -1.0;
+      ratio = (R_val >= 0) ? SCALE : -SCALE;
     }
-    if (ratio > 1.0) {
-      ratio = 1.0;
-    } else if (ratio < -1.0) {
-      ratio = -1.0;
+    if (ratio > SCALE) {
+      ratio = SCALE;
+    } else if (ratio < -SCALE) {
+      ratio = -SCALE;
     }
-    double theta = my_acos(ratio);
+    long theta = my_acos(ratio);
     *solutions = 3;
-    double sqrtQ = my_sqrt((Q_val >= 0.0) ? Q_val : 0.0);
-    double factor = -2.0 * sqrtQ;
-    double offset = (double)a1 / 3.0;
-    x[0] = factor * my_cos(theta / 3.0) - offset;
-    x[1] = factor * my_cos((theta + 2.0 * PI) / 3.0) - offset;
-    x[2] = factor * my_cos((theta + 4.0 * PI) / 3.0) - offset;
+    long sqrtQ = my_sqrt((Q_val >= 0) ? Q_val : 0);
+    long factor = -2 * sqrtQ;
+    long offset = a1 / 3;
+    x[0] = (factor * my_cos(theta / 3)) / SCALE - offset;
+    x[1] = (factor * my_cos((theta + 2 * PI) / 3)) / SCALE - offset;
+    x[2] = (factor * my_cos((theta + 4 * PI) / 3)) / SCALE - offset;
   } else {
     *solutions = 1;
-    double term = my_sqrt(my_fabs(R2_Q3)) + my_fabs(R_val);
-    double root = my_cbrt(term);
-    if (root != 0.0) {
-      root += Q_val / root;
+    long term = my_sqrt(my_fabs(R2_Q3)) + my_fabs(R_val);
+    long root = my_cbrt(term);
+    if (root != 0) {
+      root += (Q_val * SCALE) / root;
     }
-    root *= (R < 0.0) ? 1.0 : -1.0;
-    root -= (double)a1 / 3.0;
+    root = (root * ((R < 0) ? SCALE : -SCALE)) / SCALE;
+    root -= a1 / 3;
     x[0] = root;
   }
 }
@@ -189,29 +178,29 @@ static void usqrt(unsigned long x, struct int_sqrt *q) {
   q->frac = (unsigned)(a & 0xFFFF);
 }
 
-static double rad2deg(double rad) {
-  return 180.0 * rad / PI;
+static long rad2deg(long rad) {
+  return (180 * rad * SCALE) / PI;
 }
 
-static double deg2rad(double deg) {
-  return PI * deg / 180.0;
+static long deg2rad(long deg) {
+  return (PI * deg) / 180;
 }
 
 /* The printf's may be removed to isolate just the math calculations */
 
 int main(void) {
-  double a1 = 1.0, b1 = -10.5, c1 = 32.0, d1 = -30.0;
-  double a2 = 1.0, b2 = -4.5, c2 = 17.0, d2 = -30.0;
-  double a3 = 1.0, b3 = -3.5, c3 = 22.0, d3 = -31.0;
-  double a4 = 1.0, b4 = -13.7, c4 = 1.0, d4 = -35.0;
-  double x[3];
-  double X;
+  long a1 = 1*SCALE, b1 = -10*SCALE-SCALE/2, c1 = 32*SCALE, d1 = -30*SCALE;
+  long a2 = 1*SCALE, b2 = -4*SCALE-SCALE/2, c2 = 17*SCALE, d2 = -30*SCALE;
+  long a3 = 1*SCALE, b3 = -3*SCALE-SCALE/2, c3 = 22*SCALE, d3 = -31*SCALE;
+  long a4 = 1*SCALE, b4 = -13*SCALE-7*SCALE/10, c4 = 1*SCALE, d4 = -35*SCALE;
+  long x[3];
+  long X;
   int solutions;
   int i;
   unsigned long l = 0x3fed0169UL;
   struct int_sqrt q;
 
-  double checksum = 0.0;
+  long checksum = 0;
 
   /* solve some cubic functions */
   printf("********* CUBIC FUNCTIONS ***********\n");
@@ -220,7 +209,7 @@ int main(void) {
   printf("Solutions:");
   for (i = 0; i < solutions; i++) {
     checksum += x[i];
-    printf(" %f", x[i]);
+    printf(" %ld.%03ld", x[i]/SCALE, my_fabs(x[i]%SCALE));
   }
   printf("\n");
   /* should get 1 solution: 2.5           */
@@ -228,34 +217,34 @@ int main(void) {
   printf("Solutions:");
   for (i = 0; i < solutions; i++) {
     checksum += x[i];
-    printf(" %f", x[i]);
+    printf(" %ld.%03ld", x[i]/SCALE, my_fabs(x[i]%SCALE));
   }
   printf("\n");
   SolveCubic(a3, b3, c3, d3, &solutions, x);
   printf("Solutions:");
   for (i = 0; i < solutions; i++) {
     checksum += x[i];
-    printf(" %f", x[i]);
+    printf(" %ld.%03ld", x[i]/SCALE, my_fabs(x[i]%SCALE));
   }
   printf("\n");
   SolveCubic(a4, b4, c4, d4, &solutions, x);
   printf("Solutions:");
   for (i = 0; i < solutions; i++) {
     checksum += x[i];
-    printf(" %f", x[i]);
+    printf(" %ld.%03ld", x[i]/SCALE, my_fabs(x[i]%SCALE));
   }
   printf("\n");
 
   /* Now solve some random equations */
-  for (a1 = 1; a1 < 10; a1++) {
-    for (b1 = 10; b1 > 0; b1--) {
-      for (c1 = 5; c1 < 15; c1 += 0.5) {
-        for (d1 = -1; d1 > -11; d1--) {
+  for (a1 = 1*SCALE; a1 < 10*SCALE; a1+=SCALE) {
+    for (b1 = 10*SCALE; b1 > 0; b1-=SCALE) {
+      for (c1 = 5*SCALE; c1 < 15*SCALE; c1 += SCALE/2) {
+        for (d1 = -1*SCALE; d1 > -11*SCALE; d1-=SCALE) {
           SolveCubic(a1, b1, c1, d1, &solutions, x);
           printf("Solutions:");
           for (i = 0; i < solutions; i++) {
             checksum += x[i];
-            printf(" %f", x[i]);
+            printf(" %ld.%03ld", x[i]/SCALE, my_fabs(x[i]%SCALE));
           }
           printf("\n");
         }
@@ -277,15 +266,15 @@ int main(void) {
 
   printf("********* ANGLE CONVERSION ***********\n");
   /* convert some rads to degrees */
-  for (X = 0.0; X <= 360.0; X += 1.0) {
+  for (X = 0; X <= 360*SCALE; X += SCALE) {
     checksum += deg2rad(X);
-    printf("%3.0f degrees = %.12f radians\n", X, deg2rad(X));
+    printf("%3ld degrees = %ld.%03ld radians\n", X/SCALE, deg2rad(X)/SCALE, my_fabs(deg2rad(X)%SCALE));
   }
   printf("\n");
-  for (X = 0.0; X <= (2 * PI + 1e-6); X += (PI / 180)) {
+  for (X = 0; X <= (2 * PI); X += (PI / 180)) {
     checksum += rad2deg(X);
-    printf("%.12f radians = %3.0f degrees\n", X, rad2deg(X));
+    printf("%ld.%03ld radians = %3ld degrees\n", X/SCALE, my_fabs(X%SCALE), rad2deg(X)/SCALE);
   }
 
-  return (checksum != 0.0) ? 0 : 1;
+  return (checksum != 0) ? 0 : 1;
 }

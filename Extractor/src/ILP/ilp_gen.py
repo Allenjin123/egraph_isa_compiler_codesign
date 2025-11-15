@@ -381,10 +381,21 @@ def generate_ilp_file(
         lp_lines.append(f" {var}")
     
     lp_lines.append("")
+    
+    # ============================================
+    # 6. Integer variable declarations (Level variables)
+    # ============================================
+    lp_lines.append("Generals")
+    
+    # Level variables must be integers to enforce strict ordering
+    for var in level_vars.values():
+        lp_lines.append(f" {var}")
+    
+    lp_lines.append("")
     lp_lines.append("End")
     
     # ============================================
-    # 6. Write to file
+    # 7. Write to file
     # ============================================
     with open(file_path, 'w') as f:
         f.write('\n'.join(lp_lines))

@@ -1,4 +1,4 @@
-OPTFLAGS ?= -O3
+OPTFLAGS ?= -Oz
 BIN_SUFFIX ?=
 NO_BUILTIN_FLAGS := -fno-builtin -fno-builtin-memcpy -fno-builtin-memset -fno-builtin-strlen
 

@@ -31,33 +31,56 @@ from typing import Dict, Set, Optional, Tuple
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.egraph import EGraph, DATA_DIR, collect_program_json_files, sanitize, merge_json
-def ensure_merged_json(program_name: str, json_files_with_prefixes: list) -> None:
-    """Ensure output/frontend/<program>/ contains merged.json and merged_with_roots.json."""
+
+def ensure_merged_json(program_name: str, json_files_with_prefixes: list, cost_mode: str = 'program_size') -> Optional[EGraph]:
+    """
+    Ensure output/frontend/<program>/ contains merged.json and merged_with_roots.json.
+    
+    These files are optional artifacts for inspection/debugging. The ILP solver loads
+    data directly from individual block JSON files, not from these merged files.
+    
+    Logic:
+    - If merged_with_roots.json already exists → skip (assume both files are up-to-date), return None
+    - Otherwise: Generate merged.json (if missing) and merged_with_roots.json, return the EGraph
+    
+    Returns:
+        EGraph object if it was created for generating merged files, None if files already exist.
+        The caller can reuse this EGraph to avoid duplicate initialization.
+    
+    Note: This function is for convenience only. Skipping it doesn't affect ILP solving.
+    """
     target_dir = Path(DATA_DIR) / program_name
     merged_path = target_dir / 'merged.json'
     merged_roots_path = target_dir / 'merged_with_roots.json'
 
     if not target_dir.exists():
-        return
+        return None
 
-    need_merged = not merged_path.exists()
-    need_roots = not merged_roots_path.exists()
+    # If merged_with_roots.json exists, assume all merged files are up-to-date
+    if merged_roots_path.exists():
+        return None
 
-    if not (need_merged or need_roots):
-        return
-
+    # Generate missing merged files
     try:
-        if need_merged:
+        # Generate merged.json if needed
+        if not merged_path.exists():
+            print(f"Generating {merged_path}...")
             merged_data = merge_json(json_files_with_prefixes)
             with open(merged_path, 'w') as f:
                 json.dump(merged_data, f, indent=2)
-        if need_roots:
-            # Use default cost_mode for merged artifacts (doesn't affect ILP)
-            egraph = EGraph(program_name, cost_mode='program_size')
-            with open(merged_roots_path, 'w') as f:
-                json.dump(egraph.to_json(), f, indent=2)
+        
+        # Generate merged_with_roots.json
+        print(f"Generating {merged_roots_path}...")
+        # Create EGraph with the specified cost_mode (will be reused by caller)
+        egraph = EGraph(program_name, cost_mode=cost_mode)
+        with open(merged_roots_path, 'w') as f:
+            json.dump(egraph.to_json(), f, indent=2)
+        
+        return egraph  # Return the created EGraph for reuse
+            
     except Exception as exc:
         print(f"Warning: failed to generate merged artifacts: {exc}")
+        return None
 
 from src.ILP.ilp_gen import generate_ilp_file
 
@@ -74,6 +97,8 @@ def parse_solution_file(solution_path: str) -> Dict[str, float]:
     Format: Each line is "variable_name value", e.g.:
         N_class1_node1 1.0
         Op_add 1.0
+    
+    Optimization: Only parse variables with value = 1.0 to reduce memory
     """
     variables = {}
     
@@ -92,7 +117,9 @@ def parse_solution_file(solution_path: str) -> Dict[str, float]:
                 var_name = parts[0]
                 try:
                     var_value = float(parts[1])
-                    variables[var_name] = var_value
+                    # Only store non-zero variables to save memory
+                    if abs(var_value) > 0.001:
+                        variables[var_name] = var_value
                 except ValueError:
                     continue
     
@@ -105,161 +132,157 @@ def extract_solution(egraph: EGraph, variables: Dict[str, float]) -> Dict[str, s
     
     Returns: {eclass_id: node_id}
     """
+    # Build reverse index once: var_name -> (eclass_id, node_id)
+    # This avoids O(n²) complexity
+    var_to_node = {}
+    for node_id, node in egraph.enodes.items():
+        expected_var = f"N_{node.eclass_id}_{node_id}"
+        var_to_node[expected_var] = (node.eclass_id, node_id)
+    
     choices = {}
     
+    # Only iterate through selected variables (value ≈ 1.0)
     for var_name, value in variables.items():
         if var_name.startswith("N_") and abs(value - 1.0) < 0.01:
-            # Parse variable name: N_<eclass_id>_<node_id>
-            # Variable format: N_{eclass_id}_{complete_node_id}
-            # Example: N_5_Reg_2_5_function_0_a5_2
-            # where eclass_id = "5_Reg_2", node_id = "5_function_0_a5_2" (with prefix)
-            
-            # Remove "N_" prefix
-            rest = var_name[2:]
-            found = False
-            # Search for matching node in egraph
-            for node_id, node in egraph.enodes.items():
-                # Check if variable name matches this node
-                # Variable name should be N_{eclass_id}_{node_id}
-                expected_var = f"N_{node.eclass_id}_{node_id}"
-                if var_name == expected_var:
-                    choices[node.eclass_id] = node_id
-                    found = True
-                    break
-            if not found:
+            # O(1) lookup instead of O(n) search
+            if var_name in var_to_node:
+                eclass_id, node_id = var_to_node[var_name]
+                choices[eclass_id] = node_id
+            else:
                 print(f"Warning: Node {var_name} not found in egraph.enodes")
     
     return choices
 
 
-def get_original_op(node_id: str) -> str:
-    """
-    Get the original operator name from the JSON file for leaf nodes
-    
-    Parameters:
-        node_id: Node ID in format like "program_1_eclass_sanitized_original_id"
-                The format is: {program}_{block_num}_eclass_{sanitized_original_node_id}
-    
-    Returns:
-        Original operator name from the JSON file
-    """
-    global _original_json_cache, _prefix_to_file_map
-    
-    # Split by _eclass to separate prefix from rest
-    if '_eclass' not in node_id:
-        return node_id  # Cannot parse, return as-is
-    
-    prefix_with_eclass, sanitized_rest = node_id.split('_eclass', 1)
-    # Remove leading underscore from sanitized_rest if present
-    sanitized_rest = sanitized_rest.lstrip('_')
-    
-    # prefix_with_eclass is like "program_1", which is "{program}_{block_num}"
-    prefix_key = prefix_with_eclass  # This is "{program}_{block_num}"
-    
-    # Load JSON file if not cached
-    if prefix_key not in _original_json_cache:
-        # Get file path from the map
-        json_file_path = _prefix_to_file_map.get(prefix_key)
-        if json_file_path and Path(json_file_path).exists():
-            try:
-                with open(json_file_path, 'r') as f:
-                    data = json.load(f)
-                    _original_json_cache[prefix_key] = data.get('nodes', {})
-            except Exception as e:
-                print(f"Warning: Failed to load {json_file_path}: {e}")
-                _original_json_cache[prefix_key] = {}
-        else:
-            print(f"Warning: JSON file not found for prefix {prefix_key}")
-            _original_json_cache[prefix_key] = {}
-    
-    # Find the original node by matching sanitized node_id
-    # The node_id in egraph is: {program}_{block_num}_eclass_{sanitize(original_node_id)}
-    # So sanitized_rest should match sanitize(original_node_id)
-    nodes = _original_json_cache[prefix_key]
-    for original_node_id, node_data in nodes.items():
-        if sanitize(original_node_id) == sanitized_rest:
-            return node_data.get('op', node_id)
-    
-    # If not found, return the node_id
-    return node_id
+# S-expression related functions (commented out - not used)
+# def get_original_op(node_id: str) -> str:
+#     """
+#     Get the original operator name from the JSON file for leaf nodes
+#     
+#     Parameters:
+#         node_id: Node ID in format like "program_1_eclass_sanitized_original_id"
+#                 The format is: {program}_{block_num}_eclass_{sanitized_original_node_id}
+#     
+#     Returns:
+#         Original operator name from the JSON file
+#     """
+#     global _original_json_cache, _prefix_to_file_map
+#     
+#     # Split by _eclass to separate prefix from rest
+#     if '_eclass' not in node_id:
+#         return node_id  # Cannot parse, return as-is
+#     
+#     prefix_with_eclass, sanitized_rest = node_id.split('_eclass', 1)
+#     # Remove leading underscore from sanitized_rest if present
+#     sanitized_rest = sanitized_rest.lstrip('_')
+#     
+#     # prefix_with_eclass is like "program_1", which is "{program}_{block_num}"
+#     prefix_key = prefix_with_eclass  # This is "{program}_{block_num}"
+#     
+#     # Load JSON file if not cached
+#     if prefix_key not in _original_json_cache:
+#         # Get file path from the map
+#         json_file_path = _prefix_to_file_map.get(prefix_key)
+#         if json_file_path and Path(json_file_path).exists():
+#             try:
+#                 with open(json_file_path, 'r') as f:
+#                     data = json.load(f)
+#                     _original_json_cache[prefix_key] = data.get('nodes', {})
+#             except Exception as e:
+#                 print(f"Warning: Failed to load {json_file_path}: {e}")
+#                 _original_json_cache[prefix_key] = {}
+#         else:
+#             print(f"Warning: JSON file not found for prefix {prefix_key}")
+#             _original_json_cache[prefix_key] = {}
+#     
+#     # Find the original node by matching sanitized node_id
+#     # The node_id in egraph is: {program}_{block_num}_eclass_{sanitize(original_node_id)}
+#     # So sanitized_rest should match sanitize(original_node_id)
+#     nodes = _original_json_cache[prefix_key]
+#     for original_node_id, node_data in nodes.items():
+#         if sanitize(original_node_id) == sanitized_rest:
+#             return node_data.get('op', node_id)
+#     
+#     # If not found, return the node_id
+#     return node_id
 
 
-def build_sexpr(egraph: EGraph, choices: Dict[str, str], eclass_id: str, visited: set = None) -> str:
-    """
-    Recursively build S-expression from the selected nodes
-    
-    Parameters:
-        egraph: EGraph object
-        choices: {eclass_id: node_id} mapping of selected nodes
-        eclass_id: Current eclass to build S-expr for
-        visited: Set of visited eclasses to prevent infinite recursion
-    
-    Returns:
-        S-expression string
-    """
-    if visited is None:
-        visited = set()
-    
-    # Prevent cycles
-    if eclass_id in visited:
-        return f"<cycle:{eclass_id}>"
-    visited.add(eclass_id)
-    
-    # Get the selected node for this eclass
-    if eclass_id not in choices:
-        return f"<missing:{eclass_id}>"
-    
-    node_id = choices[eclass_id]
-    if node_id not in egraph.enodes:
-        return f"<invalid:{node_id}>"
-    
-    node = egraph.enodes[node_id]
-    op = node.op
-    
-    # If no children, it's a leaf node
-    if not node.children:
-        # For leaf nodes, restore original operator name from JSON
-        if op == "leaf":
-            op = get_original_op(node_id)
-        return op
-    
-    # Build S-expr for children recursively
-    child_sexprs = []
-    for child_eclass in node.children:
-        child_sexpr = build_sexpr(egraph, choices, child_eclass, visited.copy())
-        child_sexprs.append(child_sexpr)
-    
-    # Format: (operator child1 child2 ...)
-    if child_sexprs:
-        return f"({op} {' '.join(child_sexprs)})"
-    else:
-        return op
+# def build_sexpr(egraph: EGraph, choices: Dict[str, str], eclass_id: str, visited: set = None) -> str:
+#     """
+#     Recursively build S-expression from the selected nodes
+#     
+#     Parameters:
+#         egraph: EGraph object
+#         choices: {eclass_id: node_id} mapping of selected nodes
+#         eclass_id: Current eclass to build S-expr for
+#         visited: Set of visited eclasses to prevent infinite recursion
+#     
+#     Returns:
+#         S-expression string
+#     """
+#     if visited is None:
+#         visited = set()
+#     
+#     # Prevent cycles
+#     if eclass_id in visited:
+#         return f"<cycle:{eclass_id}>"
+#     visited.add(eclass_id)
+#     
+#     # Get the selected node for this eclass
+#     if eclass_id not in choices:
+#         return f"<missing:{eclass_id}>"
+#     
+#     node_id = choices[eclass_id]
+#     if node_id not in egraph.enodes:
+#         return f"<invalid:{node_id}>"
+#     
+#     node = egraph.enodes[node_id]
+#     op = node.op
+#     
+#     # If no children, it's a leaf node
+#     if not node.children:
+#         # For leaf nodes, restore original operator name from JSON
+#         if op == "leaf":
+#             op = get_original_op(node_id)
+#         return op
+#     
+#     # Build S-expr for children recursively
+#     child_sexprs = []
+#     for child_eclass in node.children:
+#         child_sexpr = build_sexpr(egraph, choices, child_eclass, visited.copy())
+#         child_sexprs.append(child_sexpr)
+#     
+#     # Format: (operator child1 child2 ...)
+#     if child_sexprs:
+#         return f"({op} {' '.join(child_sexprs)})"
+#     else:
+#         return op
 
 
-def extract_sexprs(egraph: EGraph, choices: Dict[str, str]) -> Dict[str, Dict[str, str]]:
-    """
-    Extract S-expressions for all root nodes
-    
-    Returns:
-        Dictionary mapping root_name to {"eclass": eclass_id, "sexpr": s_expression}
-    """
-    sexprs = {}
-    
-    # Find all root eclasses (those that have root operators)
-    for eclass_id, node_id in choices.items():
-        if node_id in egraph.enodes:
-            node = egraph.enodes[node_id]
-            # Check if this is a root node
-            if eclass_id != "eclass_root" and eclass_id.endswith("_root"):
-                # Extract <program>_<block> prefix from eclass_id or node_id: {program}_{block_num}_eclass_... or {program}_{block_num}_enode_...
-                prefix = eclass_id.split('_eclass')[0]
-                # Build S-expr for each child of the root
-                for i, child_eclass in enumerate(node.children):
-                    sexpr = build_sexpr(egraph, choices, child_eclass)
-                    root_name = f"{prefix}_root_{i}" if len(node.children) > 1 else f"{prefix}_root"
-                    sexprs[root_name] = {"eclass": child_eclass, "sexpr": sexpr}
-    
-    return sexprs
+# def extract_sexprs(egraph: EGraph, choices: Dict[str, str]) -> Dict[str, Dict[str, str]]:
+#     """
+#     Extract S-expressions for all root nodes
+#     
+#     Returns:
+#         Dictionary mapping root_name to {"eclass": eclass_id, "sexpr": s_expression}
+#     """
+#     sexprs = {}
+#     
+#     # Find all root eclasses (those that have root operators)
+#     for eclass_id, node_id in choices.items():
+#         if node_id in egraph.enodes:
+#             node = egraph.enodes[node_id]
+#             # Check if this is a root node
+#             if eclass_id != "eclass_root" and eclass_id.endswith("_root"):
+#                 # Extract <program>_<block> prefix from eclass_id or node_id: {program}_{block_num}_eclass_... or {program}_{block_num}_enode_...
+#                 prefix = eclass_id.split('_eclass')[0]
+#                 # Build S-expr for each child of the root
+#                 for i, child_eclass in enumerate(node.children):
+#                     sexpr = build_sexpr(egraph, choices, child_eclass)
+#                     root_name = f"{prefix}_root_{i}" if len(node.children) > 1 else f"{prefix}_root"
+#                     sexprs[root_name] = {"eclass": child_eclass, "sexpr": sexpr}
+#     
+#     return sexprs
 
 
 def analyze_solution(egraph: EGraph, choices: Dict[str, str], variables: Dict[str, float]):
@@ -470,7 +493,9 @@ def main():
         print(f"Error: No JSON files found in {program_dir}")
         return 1
     
-    ensure_merged_json(args.program_name, json_files_with_prefixes)
+    # Ensure merged JSON files exist (optional, for debugging/inspection)
+    # If merged files are generated, reuse the EGraph to avoid duplicate loading
+    cached_egraph = ensure_merged_json(args.program_name, json_files_with_prefixes, cost_mode=args.cost_mode)
 
     # Build prefix to file path mapping (for get_original_op)
     global _prefix_to_file_map
@@ -480,13 +505,17 @@ def main():
     
     print(f"Found {len(json_files_with_prefixes)} JSON files")
 
-    # Load e-graph
-    print("Loading e-graph...")
-    start_time = time.time()
-    egraph = EGraph(args.program_name, cost_mode=args.cost_mode)
-    load_time = time.time() - start_time
-    
-    print(f"Loading completed (time: {load_time:.2f}s)")
+    # Load e-graph (reuse cached if available from ensure_merged_json)
+    if cached_egraph is not None:
+        print("Reusing EGraph from merged file generation...")
+        egraph = cached_egraph
+        load_time = 0.0  # Already counted in ensure_merged_json time
+    else:
+        print("Loading e-graph...")
+        start_time = time.time()
+        egraph = EGraph(args.program_name, cost_mode=args.cost_mode)
+        load_time = time.time() - start_time
+        print(f"Loading completed (time: {load_time:.2f}s)")
     print(f"  - EClasses: {len(egraph.eclasses)}")
     print(f"  - ENodes: {len(egraph.enodes)}")
     print(f"  - Operators: {len(egraph.ops)}")
@@ -557,30 +586,31 @@ def main():
         # Analyze solution
         analysis = analyze_solution(egraph, choices, variables)
         
-        # Extract S-expressions
-        print(f"Extracting S-expressions...")
-        sexprs = extract_sexprs(egraph, choices)
-        
-        # Sort sexprs by section (dict order), then block_num, then index
-        def sort_key(name):
-            if '_root' not in name:
-                return ('', 0, 0)
-            prefix = name.split('_root')[0]  # Everything before _root
-            suffix = name.split('_root', 1)[1] if '_root' in name else ''
-            # Extract block_num from prefix (last number before _root)
-            numbers_in_prefix = re.findall(r'\d+', prefix)
-            block_num = int(numbers_in_prefix[-1]) if numbers_in_prefix else 0
-            # Extract section by removing the last "_block_num" part
-            if numbers_in_prefix:
-                # Remove the last number and its preceding underscore from prefix
-                section = re.sub(r'_\d+$', '', prefix) if prefix else ''
-            else:
-                section = prefix
-            # Extract index from suffix (e.g., "_0" -> 0, "" -> -1)
-            index = int(suffix.lstrip('_')) if suffix and suffix.lstrip('_').isdigit() else -1
-            return (section, block_num, index)
-        
-        sexprs_sorted = dict(sorted(sexprs.items(), key=lambda x: sort_key(x[0])))
+        # Extract S-expressions (commented out - not used)
+        # print(f"Extracting S-expressions...")
+        # sexprs = extract_sexprs(egraph, choices)
+        # 
+        # # Sort sexprs by section (dict order), then block_num, then index
+        # def sort_key(name):
+        #     if '_root' not in name:
+        #         return ('', 0, 0)
+        #     prefix = name.split('_root')[0]  # Everything before _root
+        #     suffix = name.split('_root', 1)[1] if '_root' in name else ''
+        #     # Extract block_num from prefix (last number before _root)
+        #     numbers_in_prefix = re.findall(r'\d+', prefix)
+        #     block_num = int(numbers_in_prefix[-1]) if numbers_in_prefix else 0
+        #     # Extract section by removing the last "_block_num" part
+        #     if numbers_in_prefix:
+        #         # Remove the last number and its preceding underscore from prefix
+        #         section = re.sub(r'_\d+$', '', prefix) if prefix else ''
+        #     else:
+        #         section = prefix
+        #     # Extract index from suffix (e.g., "_0" -> 0, "" -> -1)
+        #     index = int(suffix.lstrip('_')) if suffix and suffix.lstrip('_').isdigit() else -1
+        #     return (section, block_num, index)
+        # 
+        # sexprs_sorted = dict(sorted(sexprs.items(), key=lambda x: sort_key(x[0])))
+        sexprs_sorted = {}  # Empty dict since S-expressions are disabled
     
         # Save results for this solution
         if len(solution_files) == 1:
