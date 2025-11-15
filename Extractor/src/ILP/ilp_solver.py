@@ -532,7 +532,7 @@ def main():
         solution_files = []
         for i in range(args.best_k):
             base_name = str(sol_file)
-            dot_pos = base_name.find('.')
+            dot_pos = base_name.rfind('.')  # Use rfind to get the LAST dot (file extension)
             if dot_pos != -1:
                 solution_file = base_name[:dot_pos] + f"_{i}" + base_name[dot_pos:]
             else:
@@ -625,7 +625,7 @@ def main():
     print(f"  - ILP generation: {ilp_time:.2f}s")
     print(f"  - Solving: {solve_time:.2f}s")
     print(f"\nProcessed {len(solution_files)} solution(s)")
-    print(f"Objective value: {analysis['num_op_types_ilp']} operator types (excluding root, ImmVal, RegVal, leaf)")
+    #print(f"Objective value: {analysis['num_op_types_ilp']} operator types (excluding root, ImmVal, RegVal, leaf)")
     print("="*60)
     
     return 0

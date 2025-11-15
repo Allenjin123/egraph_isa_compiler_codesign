@@ -141,75 +141,75 @@
 ;; BYTE LOAD ALIGNMENT (LB, LBU)
 ;; ============================================
 
-(function align-down (i64) i64 :merge (min old new))
-(function byte-offset (i64) i64 :merge (min old new))
+; (function align-down (i64) i64 :merge (min old new))
+; (function byte-offset (i64) i64 :merge (min old new))
 
-;; Compute aligned address: off & ~3
-(rule ((= inst (Lbu base (ImmVal off))))
-      ((set (align-down off) (& off (not-i64 3)))))
-(rule ((= inst (Lb base (ImmVal off))))
-      ((set (align-down off) (& off (not-i64 3)))))
+; ;; Compute aligned address: off & ~3
+; (rule ((= inst (Lbu base (ImmVal off))))
+;       ((set (align-down off) (& off (not-i64 3)))))
+; (rule ((= inst (Lb base (ImmVal off))))
+;       ((set (align-down off) (& off (not-i64 3)))))
 
-;; Compute byte position shift: ((off % 4) + 4) % 4 * 8
-;; CRITICAL: Mathematical modulo for negative offset support
-(rule ((= inst (Lbu base (ImmVal off))))
-      ((set (byte-offset off) (* (% (+ (% off 4) 4) 4) 8))))
-(rule ((= inst (Lb base (ImmVal off))))
-      ((set (byte-offset off) (* (% (+ (% off 4) 4) 4) 8))))
+; ;; Compute byte position shift: ((off % 4) + 4) % 4 * 8
+; ;; CRITICAL: Mathematical modulo for negative offset support
+; (rule ((= inst (Lbu base (ImmVal off))))
+;       ((set (byte-offset off) (* (% (+ (% off 4) 4) 4) 8))))
+; (rule ((= inst (Lb base (ImmVal off))))
+;       ((set (byte-offset off) (* (% (+ (% off 4) 4) 4) 8))))
 
-;; Load Byte Unsigned: LBU = LW + shift + mask
-(rewrite (Lbu base (ImmVal off))
-         (Andi (Srli (Lw base (ImmVal aligned))
-                     (ImmVal shift))
-               (ImmVal 255))
-         :when ((= aligned (align-down off))
-                (= shift (byte-offset off))))
+; ;; Load Byte Unsigned: LBU = LW + shift + mask
+; (rewrite (Lbu base (ImmVal off))
+;          (Andi (Srli (Lw base (ImmVal aligned))
+;                      (ImmVal shift))
+;                (ImmVal 255))
+;          :when ((= aligned (align-down off))
+;                 (= shift (byte-offset off))))
 
-;; Load Byte Signed: LB = LW + shift + sign extension
-(rewrite (Lb base (ImmVal off))
-         (Srai (Slli (Srli (Lw base (ImmVal aligned))
-                           (ImmVal shift))
-                     (ImmVal 24))
-               (ImmVal 24))
-         :when ((= aligned (align-down off))
-                (= shift (byte-offset off))))
+; ;; Load Byte Signed: LB = LW + shift + sign extension
+; (rewrite (Lb base (ImmVal off))
+;          (Srai (Slli (Srli (Lw base (ImmVal aligned))
+;                            (ImmVal shift))
+;                      (ImmVal 24))
+;                (ImmVal 24))
+;          :when ((= aligned (align-down off))
+;                 (= shift (byte-offset off))))
 
-;; ============================================
-;; HALFWORD LOAD ALIGNMENT (LH, LHU)
-;; ============================================
+; ;; ============================================
+; ;; HALFWORD LOAD ALIGNMENT (LH, LHU)
+; ;; ============================================
 
-(function align-down-half (i64) i64 :merge (min old new))
-(function half-offset (i64) i64 :merge (min old new))
+; (function align-down-half (i64) i64 :merge (min old new))
+; (function half-offset (i64) i64 :merge (min old new))
 
-;; Compute aligned address: off & ~3
-(rule ((= inst (Lhu base (ImmVal off))))
-      ((set (align-down-half off) (& off (not-i64 3)))))
-(rule ((= inst (Lh base (ImmVal off))))
-      ((set (align-down-half off) (& off (not-i64 3)))))
+; ;; Compute aligned address: off & ~3
+; (rule ((= inst (Lhu base (ImmVal off))))
+;       ((set (align-down-half off) (& off (not-i64 3)))))
+; (rule ((= inst (Lh base (ImmVal off))))
+;       ((set (align-down-half off) (& off (not-i64 3)))))
 
-;; Compute halfword position shift: ((off/2 % 2) + 2) % 2 * 16
-;; CRITICAL: Mathematical modulo for negative offset support
-(rule ((= inst (Lhu base (ImmVal off))))
-      ((set (half-offset off) (* (% (+ (% (/ off 2) 2) 2) 2) 16))))
-(rule ((= inst (Lh base (ImmVal off))))
-      ((set (half-offset off) (* (% (+ (% (/ off 2) 2) 2) 2) 16))))
+; ;; Compute halfword position shift: ((off/2 % 2) + 2) % 2 * 16
+; ;; CRITICAL: Mathematical modulo for negative offset support
+; (rule ((= inst (Lhu base (ImmVal off))))
+;       ((set (half-offset off) (* (% (+ (% (/ off 2) 2) 2) 2) 16))))
+; (rule ((= inst (Lh base (ImmVal off))))
+;       ((set (half-offset off) (* (% (+ (% (/ off 2) 2) 2) 2) 16))))
 
-;; Load Halfword Unsigned: LHU = LW + shift + mask
-(rewrite (Lhu base (ImmVal off))
-         (Andi (Srli (Lw base (ImmVal aligned))
-                     (ImmVal shift))
-               (ImmVal 65535))
-         :when ((= aligned (align-down-half off))
-                (= shift (half-offset off))))
+; ;; Load Halfword Unsigned: LHU = LW + shift + mask
+; (rewrite (Lhu base (ImmVal off))
+;          (Andi (Srli (Lw base (ImmVal aligned))
+;                      (ImmVal shift))
+;                (ImmVal 65535))
+;          :when ((= aligned (align-down-half off))
+;                 (= shift (half-offset off))))
 
-;; Load Halfword Signed: LH = LW + shift + sign extension
-(rewrite (Lh base (ImmVal off))
-         (Srai (Slli (Srli (Lw base (ImmVal aligned))
-                           (ImmVal shift))
-                     (ImmVal 16))
-               (ImmVal 16))
-         :when ((= aligned (align-down-half off))
-                (= shift (half-offset off))))
+; ;; Load Halfword Signed: LH = LW + shift + sign extension
+; (rewrite (Lh base (ImmVal off))
+;          (Srai (Slli (Srli (Lw base (ImmVal aligned))
+;                            (ImmVal shift))
+;                      (ImmVal 16))
+;                (ImmVal 16))
+;          :when ((= aligned (align-down-half off))
+;                 (= shift (half-offset off))))
 
 
 ;; Store Word decomposition: SW = 4× SB (simpler than RMW approach)

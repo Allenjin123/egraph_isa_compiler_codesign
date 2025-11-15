@@ -11,7 +11,7 @@
 set -e  # Exit on error
 
 # Default configuration
-DEFAULT_SCALES="0 0.0005 0.001 0.002 0.005 0.01 0.1 0.5 1 10"
+DEFAULT_SCALES="0 0.0005 0.001 0.002 0.005 0.01 0.1 0.5 1"
 DEFAULT_K=3
 DEFAULT_TIMEOUT=180
 DEFAULT_PROGRAM_PARALLEL=4     # Number of programs to process in parallel
