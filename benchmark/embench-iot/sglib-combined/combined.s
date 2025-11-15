@@ -1972,545 +1972,21 @@ sglib___rbtree_add_recursive.constprop.0:
 	j	.L427
 	.size	sglib___rbtree_add_recursive.constprop.0, .-sglib___rbtree_add_recursive.constprop.0
 	.align	2
-	.globl	rand_beebs
-	.type	rand_beebs, @function
-rand_beebs:
-	lui	a4,%hi(seed)
-	lw	a0,%lo(seed)(a4)
-	li	a5,1103515648
-	addi	a5,a5,-403
-	mul	a0,a0,a5
-	li	a5,12288
-	addi	a5,a5,57
-	add	a0,a0,a5
-	slli	a0,a0,1
-	srli	a0,a0,1
-	sw	a0,%lo(seed)(a4)
-	srli	a0,a0,16
-	ret
-	.size	rand_beebs, .-rand_beebs
-	.align	2
-	.globl	srand_beebs
-	.type	srand_beebs, @function
-srand_beebs:
-	lui	a5,%hi(seed)
-	sw	a0,%lo(seed)(a5)
-	ret
-	.size	srand_beebs, .-srand_beebs
-	.align	2
-	.globl	init_heap_beebs
-	.type	init_heap_beebs, @function
-init_heap_beebs:
-	add	a1,a0,a1
-	lui	a3,%hi(heap_end)
-	lui	a4,%hi(heap_ptr)
-	lui	a5,%hi(heap_requested)
-	sw	a1,%lo(heap_end)(a3)
-	sw	a0,%lo(heap_ptr)(a4)
-	sw	zero,%lo(heap_requested)(a5)
-	ret
-	.size	init_heap_beebs, .-init_heap_beebs
-	.align	2
-	.globl	check_heap_beebs
-	.type	check_heap_beebs, @function
-check_heap_beebs:
-	lui	a5,%hi(heap_requested)
-	lw	a4,%lo(heap_requested)(a5)
-	lui	a5,%hi(heap_end)
-	lw	a5,%lo(heap_end)(a5)
-	add	a0,a0,a4
-	sltu	a0,a5,a0
-	xori	a0,a0,1
-	ret
-	.size	check_heap_beebs, .-check_heap_beebs
-	.align	2
-	.globl	malloc_beebs
-	.type	malloc_beebs, @function
-malloc_beebs:
-	mv	a5,a0
-	beq	a0,zero,.L603
-	lui	a2,%hi(heap_ptr)
-	lw	a0,%lo(heap_ptr)(a2)
-	lui	a3,%hi(heap_requested)
-	lw	a1,%lo(heap_requested)(a3)
-	add	a4,a0,a5
-	andi	a6,a4,3
-	add	a5,a5,a1
-	bne	a6,zero,.L607
-	lui	a1,%hi(heap_end)
-	lw	a1,%lo(heap_end)(a1)
-	sw	a5,%lo(heap_requested)(a3)
-	bltu	a1,a4,.L603
-.L608:
-	sw	a4,%lo(heap_ptr)(a2)
-	ret
-.L607:
-	li	a1,4
-	sub	a1,a1,a6
-	add	a5,a5,a1
-	add	a4,a4,a1
-	lui	a1,%hi(heap_end)
-	lw	a1,%lo(heap_end)(a1)
-	sw	a5,%lo(heap_requested)(a3)
-	bgeu	a1,a4,.L608
-.L603:
-	li	a0,0
-	ret
-	.size	malloc_beebs, .-malloc_beebs
-	.align	2
-	.globl	calloc_beebs
-	.type	calloc_beebs, @function
-calloc_beebs:
-	mul	a1,a0,a1
-	beq	a1,zero,.L610
-	lui	a2,%hi(heap_ptr)
-	lw	a0,%lo(heap_ptr)(a2)
-	lui	a3,%hi(heap_requested)
-	lw	a5,%lo(heap_requested)(a3)
-	add	a4,a0,a1
-	andi	a6,a4,3
-	add	a5,a1,a5
-	bne	a6,zero,.L635
-.L611:
-	lui	a6,%hi(heap_end)
-	lw	a6,%lo(heap_end)(a6)
-	sw	a5,%lo(heap_requested)(a3)
-	bltu	a6,a4,.L610
-	sw	a4,%lo(heap_ptr)(a2)
-	beq	a0,zero,.L610
-	addi	a5,a1,-1
-	li	a4,5
-	bleu	a5,a4,.L619
-	neg	a4,a0
-	andi	a5,a4,3
-	li	a3,0
-	beq	a5,zero,.L613
-	sb	zero,0(a0)
-	andi	a4,a4,2
-	li	a3,1
-	beq	a4,zero,.L613
-	sb	zero,1(a0)
-	li	a4,3
-	li	a3,2
-	bne	a5,a4,.L613
-	sb	zero,2(a0)
-	mv	a3,a5
-.L613:
-	sub	a6,a1,a5
-	andi	a2,a6,-4
-	add	a5,a0,a5
-	add	a4,a5,a2
-.L615:
-	sw	zero,0(a5)
-	addi	a5,a5,4
-	bne	a5,a4,.L615
-	add	a5,a3,a2
-	beq	a6,a2,.L609
-.L612:
-	add	a4,a0,a5
-	sb	zero,0(a4)
-	addi	a4,a5,1
-	bleu	a1,a4,.L609
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a4,a5,2
-	bleu	a1,a4,.L609
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a4,a5,3
-	bleu	a1,a4,.L609
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a4,a5,4
-	bleu	a1,a4,.L609
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a5,a5,5
-	bleu	a1,a5,.L609
-	add	a5,a0,a5
-	sb	zero,0(a5)
-	ret
-.L610:
-	li	a0,0
-.L609:
-	ret
-.L635:
-	li	a7,4
-	sub	a6,a7,a6
-	add	a4,a4,a6
-	add	a5,a5,a6
-	j	.L611
-.L619:
-	li	a5,0
-	j	.L612
-	.size	calloc_beebs, .-calloc_beebs
-	.align	2
-	.globl	realloc_beebs
-	.type	realloc_beebs, @function
-realloc_beebs:
-	beq	a0,zero,.L637
-	beq	a1,zero,.L637
-	lui	a6,%hi(heap_ptr)
-	lw	a2,%lo(heap_ptr)(a6)
-	lui	a3,%hi(heap_requested)
-	lw	a5,%lo(heap_requested)(a3)
-	add	a4,a2,a1
-	andi	a7,a4,3
-	add	a5,a1,a5
-	bne	a7,zero,.L662
-	lui	a7,%hi(heap_end)
-	lw	a7,%lo(heap_end)(a7)
-	sw	a5,%lo(heap_requested)(a3)
-	bltu	a7,a4,.L637
-.L663:
-	sw	a4,%lo(heap_ptr)(a6)
-	beq	a2,zero,.L637
-	addi	a5,a1,-1
-	li	a4,6
-	bleu	a5,a4,.L647
-	or	a3,a0,a2
-	andi	a3,a3,3
-	mv	a4,a2
-	mv	a5,a0
-	bne	a3,zero,.L647
-	addi	a3,a2,-1
-	sub	a3,a3,a0
-	sltiu	a3,a3,3
-	bne	a3,zero,.L647
-	andi	a7,a1,-4
-	add	a6,a0,a7
-.L640:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L640
-	beq	a1,a7,.L636
-	lbu	a3,0(a6)
-	add	a4,a2,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bleu	a1,a5,.L636
-	add	a4,a0,a5
-	lbu	a4,0(a4)
-	add	a5,a2,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bleu	a1,a7,.L636
-	add	a0,a0,a7
-	lbu	a5,0(a0)
-	add	a7,a2,a7
-	sb	a5,0(a7)
-.L636:
-	mv	a0,a2
-	ret
-.L662:
-	li	t1,4
-	sub	a7,t1,a7
-	add	a5,a5,a7
-	add	a4,a4,a7
-	lui	a7,%hi(heap_end)
-	lw	a7,%lo(heap_end)(a7)
-	sw	a5,%lo(heap_requested)(a3)
-	bgeu	a7,a4,.L663
-.L637:
-	li	a2,0
-	mv	a0,a2
-	ret
-.L647:
-	li	a5,0
-.L644:
-	add	a4,a0,a5
-	lbu	a3,0(a4)
-	add	a4,a2,a5
-	addi	a5,a5,1
-	sb	a3,0(a4)
-	bgtu	a1,a5,.L644
-	mv	a0,a2
-	ret
-	.size	realloc_beebs, .-realloc_beebs
-	.align	2
-	.globl	free_beebs
-	.type	free_beebs, @function
-free_beebs:
-	ret
-	.size	free_beebs, .-free_beebs
-	.align	2
-	.globl	memset
-	.type	memset, @function
-memset:
-	beq	a2,zero,.L678
-	addi	a5,a2,-1
-	li	a4,5
-	andi	a1,a1,0xff
-	bleu	a5,a4,.L674
-	neg	a4,a0
-	andi	a5,a4,3
-	li	a6,0
-	beq	a5,zero,.L668
-	sb	a1,0(a0)
-	andi	a4,a4,2
-	li	a6,1
-	beq	a4,zero,.L668
-	sb	a1,1(a0)
-	li	a4,3
-	li	a6,2
-	bne	a5,a4,.L668
-	sb	a1,2(a0)
-	mv	a6,a5
-.L668:
-	slli	a4,a1,8
-	slli	a3,a1,16
-	sub	t1,a2,a5
-	or	a4,a1,a4
-	or	a4,a4,a3
-	add	a5,a0,a5
-	slli	a3,a1,24
-	andi	a7,t1,-4
-	or	a4,a4,a3
-	add	a3,a5,a7
-.L670:
-	sw	a4,0(a5)
-	addi	a5,a5,4
-	bne	a5,a3,.L670
-	add	a5,a6,a7
-	beq	t1,a7,.L678
-.L667:
-	add	a4,a0,a5
-	sb	a1,0(a4)
-	addi	a4,a5,1
-	bleu	a2,a4,.L678
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,2
-	bleu	a2,a4,.L678
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,3
-	bleu	a2,a4,.L678
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,4
-	bleu	a2,a4,.L678
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a5,a5,5
-	bleu	a2,a5,.L678
-	add	a5,a0,a5
-	sb	a1,0(a5)
-.L678:
-	ret
-.L674:
-	li	a5,0
-	j	.L667
-	.size	memset, .-memset
-	.align	2
-	.globl	memcpy
-	.type	memcpy, @function
-memcpy:
-	beq	a2,zero,.L683
-	addi	a5,a2,-1
-	li	a4,6
-	bleu	a5,a4,.L684
-	or	a3,a0,a1
-	andi	a3,a3,3
-	mv	a4,a0
-	mv	a5,a1
-	bne	a3,zero,.L684
-	sub	a3,a0,a1
-	addi	a3,a3,-1
-	sltiu	a3,a3,3
-	bne	a3,zero,.L684
-	andi	a7,a2,-4
-	add	a6,a1,a7
-.L685:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L685
-	beq	a2,a7,.L683
-	lbu	a3,0(a6)
-	add	a4,a0,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bleu	a2,a5,.L683
-	add	a4,a1,a5
-	lbu	a4,0(a4)
-	add	a5,a0,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bleu	a2,a7,.L683
-	add	a1,a1,a7
-	lbu	a5,0(a1)
-	add	a7,a0,a7
-	sb	a5,0(a7)
-	ret
-.L684:
-	add	a2,a1,a2
-	mv	a5,a0
-.L687:
-	lbu	a4,0(a1)
-	addi	a1,a1,1
-	addi	a5,a5,1
-	sb	a4,-1(a5)
-	bne	a1,a2,.L687
-.L683:
-	ret
-	.size	memcpy, .-memcpy
-	.align	2
-	.globl	memcmp
-	.type	memcmp, @function
-memcmp:
-	beq	a2,zero,.L704
-	add	a2,a0,a2
-	j	.L703
-.L702:
-	beq	a0,a2,.L704
-.L703:
-	lbu	a5,0(a0)
-	lbu	a4,0(a1)
-	addi	a0,a0,1
-	addi	a1,a1,1
-	beq	a5,a4,.L702
-	sub	a0,a5,a4
-	ret
-.L704:
-	li	a0,0
-	ret
-	.size	memcmp, .-memcmp
-	.align	2
-	.globl	memmove
-	.type	memmove, @function
-memmove:
-	bgeu	a0,a1,.L707
-	beq	a2,zero,.L708
-	addi	a5,a2,-1
-	li	a4,6
-	bleu	a5,a4,.L709
-	or	a3,a1,a0
-	andi	a3,a3,3
-	mv	a4,a0
-	mv	a5,a1
-	bne	a3,zero,.L709
-	sub	a3,a0,a1
-	addi	a3,a3,-1
-	sltiu	a3,a3,3
-	bne	a3,zero,.L709
-	andi	a7,a2,-4
-	add	a6,a1,a7
-.L710:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L710
-	beq	a2,a7,.L708
-	lbu	a3,0(a6)
-	add	a4,a0,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bleu	a2,a5,.L708
-	add	a4,a1,a5
-	lbu	a4,0(a4)
-	add	a5,a0,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bleu	a2,a7,.L708
-	add	a1,a1,a7
-	lbu	a5,0(a1)
-	add	a7,a0,a7
-	sb	a5,0(a7)
-	ret
-.L707:
-	bgtu	a0,a1,.L730
-.L708:
-	ret
-.L730:
-	beq	a2,zero,.L708
-	addi	a2,a2,-1
-	add	a5,a1,a2
-	lbu	a4,0(a5)
-	add	a5,a0,a2
-	sb	a4,0(a5)
-	j	.L730
-.L709:
-	add	a2,a1,a2
-	mv	a5,a0
-.L712:
-	lbu	a4,0(a1)
-	addi	a1,a1,1
-	addi	a5,a5,1
-	sb	a4,-1(a5)
-	bne	a1,a2,.L712
-	ret
-	.size	memmove, .-memmove
-	.align	2
-	.globl	strlen
-	.type	strlen, @function
-strlen:
-	lbu	a5,0(a0)
-	beq	a5,zero,.L731
-	li	a5,0
-.L733:
-	addi	a5,a5,1
-	add	a4,a0,a5
-	lbu	a4,0(a4)
-	bne	a4,zero,.L733
-.L731:
-	mv	a0,a5
-	ret
-	.size	strlen, .-strlen
-	.align	2
-	.globl	strchr
-	.type	strchr, @function
-strchr:
-	lbu	a5,0(a0)
-	beq	a5,zero,.L737
-	andi	a4,a1,0xff
-.L739:
-	beq	a4,a5,.L736
-	lbu	a5,1(a0)
-	addi	a0,a0,1
-	bne	a5,zero,.L739
-.L737:
-	seqz	a1,a1
-	neg	a1,a1
-	and	a0,a0,a1
-.L736:
-	ret
-	.size	strchr, .-strchr
-	.align	2
 	.globl	initialise_board
 	.type	initialise_board, @function
 initialise_board:
- #APP
-# 15 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	initialise_board, .-initialise_board
 	.align	2
 	.globl	start_trigger
 	.type	start_trigger, @function
 start_trigger:
- #APP
-# 21 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	start_trigger, .-start_trigger
 	.align	2
 	.globl	stop_trigger
 	.type	stop_trigger, @function
 stop_trigger:
- #APP
-# 27 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	stop_trigger, .-stop_trigger
 	.align	2
@@ -2518,18 +1994,18 @@ stop_trigger:
 	.type	sglib_dllist_add, @function
 sglib_dllist_add:
 	lw	a5,0(a0)
-	beq	a5,zero,.L753
+	beq	a5,zero,.L604
 	lw	a4,8(a5)
 	sw	a5,4(a1)
 	sw	a4,8(a1)
 	lw	a5,0(a0)
 	sw	a1,8(a5)
 	lw	a5,8(a1)
-	beq	a5,zero,.L747
+	beq	a5,zero,.L598
 	sw	a1,4(a5)
-.L747:
+.L598:
 	ret
-.L753:
+.L604:
 	sw	a1,0(a0)
 	sw	zero,8(a1)
 	lw	a5,0(a0)
@@ -2541,18 +2017,18 @@ sglib_dllist_add:
 	.type	sglib_dllist_add_after, @function
 sglib_dllist_add_after:
 	lw	a5,0(a0)
-	beq	a5,zero,.L760
+	beq	a5,zero,.L611
 	lw	a5,4(a5)
 	sw	a5,4(a1)
 	lw	a5,0(a0)
 	sw	a5,8(a1)
 	sw	a1,4(a5)
 	lw	a5,4(a1)
-	beq	a5,zero,.L754
+	beq	a5,zero,.L605
 	sw	a1,8(a5)
-.L754:
+.L605:
 	ret
-.L760:
+.L611:
 	sw	a1,0(a0)
 	sw	zero,8(a1)
 	lw	a5,0(a0)
@@ -2564,18 +2040,18 @@ sglib_dllist_add_after:
 	.type	sglib_dllist_add_before, @function
 sglib_dllist_add_before:
 	lw	a5,0(a0)
-	beq	a5,zero,.L767
+	beq	a5,zero,.L618
 	lw	a4,8(a5)
 	sw	a5,4(a1)
 	sw	a4,8(a1)
 	lw	a5,0(a0)
 	sw	a1,8(a5)
 	lw	a5,8(a1)
-	beq	a5,zero,.L761
+	beq	a5,zero,.L612
 	sw	a1,4(a5)
-.L761:
+.L612:
 	ret
-.L767:
+.L618:
 	sw	a1,0(a0)
 	sw	zero,8(a1)
 	lw	a5,0(a0)
@@ -2587,49 +2063,49 @@ sglib_dllist_add_before:
 	.type	sglib_dllist_add_if_not_member, @function
 sglib_dllist_add_if_not_member:
 	lw	a6,0(a0)
-	beq	a6,zero,.L769
+	beq	a6,zero,.L620
 	lw	a3,0(a1)
 	mv	a5,a6
-	j	.L770
-.L772:
+	j	.L621
+.L623:
 	lw	a5,8(a5)
-	beq	a5,zero,.L771
-.L770:
+	beq	a5,zero,.L622
+.L621:
 	lw	a4,0(a5)
-	bne	a4,a3,.L772
+	bne	a4,a3,.L623
 	sw	a5,0(a2)
 	li	a0,0
 	ret
-.L771:
+.L622:
 	lw	a5,4(a6)
-	bne	a5,zero,.L780
-	j	.L769
-.L774:
+	bne	a5,zero,.L631
+	j	.L620
+.L625:
 	lw	a5,4(a5)
-	beq	a5,zero,.L769
-.L780:
+	beq	a5,zero,.L620
+.L631:
 	lw	a4,0(a5)
-	bne	a3,a4,.L774
+	bne	a3,a4,.L625
 	sw	a5,0(a2)
 	li	a0,0
 	ret
-.L769:
+.L620:
 	sw	zero,0(a2)
 	lw	a5,0(a0)
-	beq	a5,zero,.L791
+	beq	a5,zero,.L642
 	lw	a4,8(a5)
 	sw	a5,4(a1)
 	sw	a4,8(a1)
 	lw	a5,0(a0)
 	sw	a1,8(a5)
 	lw	a5,8(a1)
-	beq	a5,zero,.L790
+	beq	a5,zero,.L641
 	sw	a1,4(a5)
-.L790:
+.L641:
 	lw	a0,0(a2)
 	seqz	a0,a0
 	ret
-.L791:
+.L642:
 	sw	a1,0(a0)
 	sw	zero,8(a1)
 	lw	a5,0(a0)
@@ -2643,49 +2119,49 @@ sglib_dllist_add_if_not_member:
 	.type	sglib_dllist_add_after_if_not_member, @function
 sglib_dllist_add_after_if_not_member:
 	lw	a6,0(a0)
-	beq	a6,zero,.L793
+	beq	a6,zero,.L644
 	lw	a3,0(a1)
 	mv	a5,a6
-	j	.L794
-.L796:
+	j	.L645
+.L647:
 	lw	a5,8(a5)
-	beq	a5,zero,.L795
-.L794:
+	beq	a5,zero,.L646
+.L645:
 	lw	a4,0(a5)
-	bne	a4,a3,.L796
+	bne	a4,a3,.L647
 	sw	a5,0(a2)
 	li	a0,0
 	ret
-.L795:
+.L646:
 	lw	a5,4(a6)
-	bne	a5,zero,.L804
-	j	.L793
-.L798:
+	bne	a5,zero,.L655
+	j	.L644
+.L649:
 	lw	a5,4(a5)
-	beq	a5,zero,.L793
-.L804:
+	beq	a5,zero,.L644
+.L655:
 	lw	a4,0(a5)
-	bne	a3,a4,.L798
+	bne	a3,a4,.L649
 	sw	a5,0(a2)
 	li	a0,0
 	ret
-.L793:
+.L644:
 	sw	zero,0(a2)
 	lw	a5,0(a0)
-	beq	a5,zero,.L815
+	beq	a5,zero,.L666
 	lw	a5,4(a5)
 	sw	a5,4(a1)
 	lw	a5,0(a0)
 	sw	a5,8(a1)
 	sw	a1,4(a5)
 	lw	a5,4(a1)
-	beq	a5,zero,.L814
+	beq	a5,zero,.L665
 	sw	a1,8(a5)
-.L814:
+.L665:
 	lw	a0,0(a2)
 	seqz	a0,a0
 	ret
-.L815:
+.L666:
 	sw	a1,0(a0)
 	sw	zero,8(a1)
 	lw	a5,0(a0)
@@ -2699,49 +2175,49 @@ sglib_dllist_add_after_if_not_member:
 	.type	sglib_dllist_add_before_if_not_member, @function
 sglib_dllist_add_before_if_not_member:
 	lw	a6,0(a0)
-	beq	a6,zero,.L817
+	beq	a6,zero,.L668
 	lw	a3,0(a1)
 	mv	a5,a6
-	j	.L818
-.L820:
+	j	.L669
+.L671:
 	lw	a5,8(a5)
-	beq	a5,zero,.L819
-.L818:
+	beq	a5,zero,.L670
+.L669:
 	lw	a4,0(a5)
-	bne	a4,a3,.L820
+	bne	a4,a3,.L671
 	sw	a5,0(a2)
 	li	a0,0
 	ret
-.L819:
+.L670:
 	lw	a5,4(a6)
-	bne	a5,zero,.L828
-	j	.L817
-.L822:
+	bne	a5,zero,.L679
+	j	.L668
+.L673:
 	lw	a5,4(a5)
-	beq	a5,zero,.L817
-.L828:
+	beq	a5,zero,.L668
+.L679:
 	lw	a4,0(a5)
-	bne	a3,a4,.L822
+	bne	a3,a4,.L673
 	sw	a5,0(a2)
 	li	a0,0
 	ret
-.L817:
+.L668:
 	sw	zero,0(a2)
 	lw	a5,0(a0)
-	beq	a5,zero,.L839
+	beq	a5,zero,.L690
 	lw	a4,8(a5)
 	sw	a5,4(a1)
 	sw	a4,8(a1)
 	lw	a5,0(a0)
 	sw	a1,8(a5)
 	lw	a5,8(a1)
-	beq	a5,zero,.L838
+	beq	a5,zero,.L689
 	sw	a1,4(a5)
-.L838:
+.L689:
 	lw	a0,0(a2)
 	seqz	a0,a0
 	ret
-.L839:
+.L690:
 	sw	a1,0(a0)
 	sw	zero,8(a1)
 	lw	a5,0(a0)
@@ -2755,21 +2231,21 @@ sglib_dllist_add_before_if_not_member:
 	.type	sglib_dllist_concat, @function
 sglib_dllist_concat:
 	lw	a5,0(a0)
-	beq	a5,zero,.L850
-	beq	a1,zero,.L840
-.L843:
+	beq	a5,zero,.L701
+	beq	a1,zero,.L691
+.L694:
 	mv	a4,a5
 	lw	a5,4(a5)
-	bne	a5,zero,.L843
+	bne	a5,zero,.L694
 	sw	zero,4(a1)
 	sw	a4,8(a1)
 	sw	a1,4(a4)
 	lw	a5,4(a1)
-	beq	a5,zero,.L840
+	beq	a5,zero,.L691
 	sw	a1,8(a5)
-.L840:
+.L691:
 	ret
-.L850:
+.L701:
 	sw	a1,0(a0)
 	ret
 	.size	sglib_dllist_concat, .-sglib_dllist_concat
@@ -2780,87 +2256,87 @@ sglib_dllist_delete:
 	lw	a3,0(a0)
 	lw	a5,8(a1)
 	lw	a4,4(a1)
-	beq	a3,a1,.L868
-	beq	a4,zero,.L856
-.L854:
+	beq	a3,a1,.L719
+	beq	a4,zero,.L707
+.L705:
 	sw	a5,8(a4)
 	lw	a5,8(a1)
-.L856:
-	beq	a5,zero,.L855
-.L857:
+.L707:
+	beq	a5,zero,.L706
+.L708:
 	sw	a4,4(a5)
-.L855:
+.L706:
 	sw	a3,0(a0)
 	ret
-.L868:
-	beq	a5,zero,.L869
+.L719:
+	beq	a5,zero,.L720
 	mv	a3,a5
-	beq	a4,zero,.L857
+	beq	a4,zero,.L708
 	sw	a5,8(a4)
 	lw	a5,8(a1)
-	j	.L856
-.L869:
+	j	.L707
+.L720:
 	mv	a3,a4
-	bne	a4,zero,.L854
-	j	.L855
+	bne	a4,zero,.L705
+	j	.L706
 	.size	sglib_dllist_delete, .-sglib_dllist_delete
 	.align	2
 	.globl	sglib_dllist_delete_if_member
 	.type	sglib_dllist_delete_if_member, @function
 sglib_dllist_delete_if_member:
 	lw	a6,0(a0)
-	beq	a6,zero,.L877
+	beq	a6,zero,.L728
 	lw	a3,0(a1)
 	mv	a5,a6
-	j	.L872
-.L875:
+	j	.L723
+.L726:
 	lw	a5,8(a5)
-	beq	a5,zero,.L874
-.L872:
+	beq	a5,zero,.L725
+.L723:
 	lw	a4,0(a5)
-	bne	a4,a3,.L875
-.L876:
+	bne	a4,a3,.L726
+.L727:
 	sw	a5,0(a2)
 	lw	a1,0(a0)
 	lw	a4,8(a5)
 	lw	a3,4(a5)
-	beq	a1,a5,.L900
-	beq	a3,zero,.L883
-.L881:
+	beq	a1,a5,.L751
+	beq	a3,zero,.L734
+.L732:
 	sw	a4,8(a3)
 	lw	a4,8(a5)
-.L883:
-	beq	a4,zero,.L882
-.L884:
+.L734:
+	beq	a4,zero,.L733
+.L735:
 	sw	a3,4(a4)
-.L882:
+.L733:
 	sw	a1,0(a0)
 	lw	a0,0(a2)
 	snez	a0,a0
 	ret
-.L900:
-	beq	a4,zero,.L901
+.L751:
+	beq	a4,zero,.L752
 	mv	a1,a4
-	beq	a3,zero,.L884
+	beq	a3,zero,.L735
 	sw	a4,8(a3)
 	lw	a4,8(a5)
-	j	.L883
-.L874:
+	j	.L734
+.L725:
 	lw	a5,4(a6)
-	bne	a5,zero,.L886
-	j	.L877
-.L878:
+	bne	a5,zero,.L737
+	j	.L728
+.L729:
 	lw	a5,4(a5)
-	beq	a5,zero,.L877
-.L886:
+	beq	a5,zero,.L728
+.L737:
 	lw	a4,0(a5)
-	bne	a3,a4,.L878
-	j	.L876
-.L901:
+	bne	a3,a4,.L729
+	j	.L727
+.L752:
 	mv	a1,a3
-	bne	a3,zero,.L881
-	j	.L882
-.L877:
+	bne	a3,zero,.L732
+	j	.L733
+.L728:
 	sw	zero,0(a2)
 	li	a0,0
 	ret
@@ -2870,78 +2346,78 @@ sglib_dllist_delete_if_member:
 	.type	sglib_dllist_is_member, @function
 sglib_dllist_is_member:
 	mv	a5,a0
-	beq	a0,a1,.L912
-	beq	a0,zero,.L912
-.L904:
+	beq	a0,a1,.L763
+	beq	a0,zero,.L763
+.L755:
 	lw	a5,8(a5)
 	snez	a4,a5
-	beq	a1,a5,.L903
-	bne	a4,zero,.L904
-.L903:
-	bne	a5,zero,.L913
-	beq	a0,zero,.L913
+	beq	a1,a5,.L754
+	bne	a4,zero,.L755
+.L754:
+	bne	a5,zero,.L764
+	beq	a0,zero,.L764
 	lw	a5,4(a0)
 	snez	a0,a5
-	beq	a1,a5,.L902
-.L937:
-	beq	a0,zero,.L902
+	beq	a1,a5,.L753
+.L788:
+	beq	a0,zero,.L753
 	lw	a5,4(a5)
 	snez	a0,a5
-	bne	a1,a5,.L937
-.L902:
+	bne	a1,a5,.L788
+.L753:
 	ret
-.L913:
+.L764:
 	mv	a0,a4
 	ret
-.L912:
+.L763:
 	snez	a4,a0
-	j	.L903
+	j	.L754
 	.size	sglib_dllist_is_member, .-sglib_dllist_is_member
 	.align	2
 	.globl	sglib_dllist_find_member
 	.type	sglib_dllist_find_member, @function
 sglib_dllist_find_member:
-	beq	a0,zero,.L945
+	beq	a0,zero,.L796
 	lw	a3,0(a1)
 	mv	a5,a0
-	j	.L940
-.L942:
+	j	.L791
+.L793:
 	lw	a5,8(a5)
-	beq	a5,zero,.L941
-.L940:
+	beq	a5,zero,.L792
+.L791:
 	lw	a4,0(a5)
-	bne	a4,a3,.L942
-.L938:
+	bne	a4,a3,.L793
+.L789:
 	mv	a0,a5
 	ret
-.L941:
+.L792:
 	lw	a5,4(a0)
-	beq	a5,zero,.L938
+	beq	a5,zero,.L789
 	lw	a4,0(a5)
-	beq	a3,a4,.L938
-.L943:
+	beq	a3,a4,.L789
+.L794:
 	lw	a5,4(a5)
-	beq	a5,zero,.L938
+	beq	a5,zero,.L789
 	lw	a4,0(a5)
-	bne	a3,a4,.L943
+	bne	a3,a4,.L794
 	mv	a0,a5
 	ret
-.L945:
+.L796:
 	li	a5,0
-	j	.L938
+	j	.L789
 	.size	sglib_dllist_find_member, .-sglib_dllist_find_member
 	.align	2
 	.globl	sglib_dllist_get_first
 	.type	sglib_dllist_get_first, @function
 sglib_dllist_get_first:
 	mv	a5,a0
-	beq	a0,zero,.L954
-.L953:
+	beq	a0,zero,.L805
+.L804:
 	mv	a0,a5
 	lw	a5,8(a5)
-	bne	a5,zero,.L953
+	bne	a5,zero,.L804
 	ret
-.L954:
+.L805:
 	li	a0,0
 	ret
 	.size	sglib_dllist_get_first, .-sglib_dllist_get_first
@@ -2950,13 +2426,13 @@ sglib_dllist_get_first:
 	.type	sglib_dllist_get_last, @function
 sglib_dllist_get_last:
 	mv	a5,a0
-	beq	a0,zero,.L959
-.L958:
+	beq	a0,zero,.L810
+.L809:
 	mv	a0,a5
 	lw	a5,4(a5)
-	bne	a5,zero,.L958
+	bne	a5,zero,.L809
 	ret
-.L959:
+.L810:
 	li	a0,0
 	ret
 	.size	sglib_dllist_get_last, .-sglib_dllist_get_last
@@ -2965,146 +2441,146 @@ sglib_dllist_get_last:
 	.type	sglib_dllist_sort, @function
 sglib_dllist_sort:
 	lw	a5,0(a0)
-	beq	a5,zero,.L1021
+	beq	a5,zero,.L872
 	addi	sp,sp,-16
-.L963:
+.L814:
 	mv	a1,a5
 	lw	a5,8(a5)
-	bne	a5,zero,.L963
+	bne	a5,zero,.L814
 	li	a6,1
 	mv	t3,a6
-.L985:
+.L836:
 	sw	zero,12(sp)
 	li	t1,0
 	addi	a3,sp,12
-.L964:
+.L815:
 	mv	a4,a1
 	li	a2,1
-	ble	a6,t3,.L1024
-.L965:
+	ble	a6,t3,.L875
+.L816:
 	lw	a4,4(a4)
 	addi	a2,a2,1
 	slt	a5,a2,a6
 	snez	a7,a4
 	and	a5,a5,a7
-	bne	a5,zero,.L965
-	beq	a4,zero,.L1025
+	bne	a5,zero,.L816
+	beq	a4,zero,.L876
 	lw	a5,4(a4)
 	sw	zero,4(a4)
-	beq	a5,zero,.L992
+	beq	a5,zero,.L843
 	mv	a4,a5
 	li	a2,1
-.L970:
+.L821:
 	addi	a2,a2,1
 	lw	a4,4(a4)
-	bge	a2,a6,.L972
-	bne	a4,zero,.L970
-.L972:
+	bge	a2,a6,.L823
+	bne	a4,zero,.L821
+.L823:
 	li	a7,0
-	beq	a4,zero,.L974
+	beq	a4,zero,.L825
 	lw	a7,4(a4)
 	sw	zero,4(a4)
-.L974:
+.L825:
 	lw	a2,0(a1)
-.L1023:
+.L874:
 	lw	a4,0(a5)
-.L980:
-	blt	a2,a4,.L1026
+.L831:
+	blt	a2,a4,.L877
 	sw	a5,0(a3)
 	addi	a3,a5,4
 	lw	a5,4(a5)
-	bne	a5,zero,.L1023
-.L975:
+	bne	a5,zero,.L874
+.L826:
 	sw	a1,0(a3)
 	mv	a5,a1
 	mv	a1,a7
-.L981:
+.L832:
 	mv	a3,a5
 	lw	a5,4(a5)
-	bne	a5,zero,.L981
+	bne	a5,zero,.L832
 	addi	a3,a3,4
 	li	t1,1
-	bne	a7,zero,.L964
+	bne	a7,zero,.L815
 	lw	a1,12(sp)
 	slli	a6,a6,1
-	bne	a1,zero,.L985
-.L984:
+	bne	a1,zero,.L836
+.L835:
 	sw	a1,0(a0)
 	addi	sp,sp,16
 	jr	ra
-.L1026:
+.L877:
 	sw	a1,0(a3)
 	lw	a2,4(a1)
 	addi	a3,a1,4
-	beq	a2,zero,.L1027
+	beq	a2,zero,.L878
 	mv	a1,a2
 	lw	a2,0(a2)
-	j	.L980
-.L1027:
+	j	.L831
+.L878:
 	sw	a5,4(a1)
 	mv	a1,a7
-	j	.L981
-.L1024:
+	j	.L832
+.L875:
 	lw	a4,4(a1)
 	sw	zero,4(a1)
 	mv	a5,a4
-	beq	a4,zero,.L1028
+	beq	a4,zero,.L879
 	lw	a7,4(a4)
 	sw	zero,4(a4)
-	beq	a4,zero,.L975
+	beq	a4,zero,.L826
 	lw	a2,0(a1)
-	j	.L1023
-.L1025:
+	j	.L874
+.L876:
 	sw	a1,0(a3)
 	lw	a1,12(sp)
-	beq	t1,zero,.L1029
+	beq	t1,zero,.L880
 	slli	a6,a6,1
-	bne	a1,zero,.L985
-	j	.L984
-.L1028:
-	bne	a4,zero,.L1030
-.L992:
+	bne	a1,zero,.L836
+	j	.L835
+.L879:
+	bne	a4,zero,.L881
+.L843:
 	li	a7,0
-	j	.L975
-.L1029:
-	beq	a1,zero,.L984
+	j	.L826
+.L880:
+	beq	a1,zero,.L835
 	mv	a5,a1
-.L988:
+.L839:
 	sw	a4,8(a5)
 	mv	a4,a5
 	lw	a5,4(a5)
-	bne	a5,zero,.L988
+	bne	a5,zero,.L839
 	sw	a1,0(a0)
 	addi	sp,sp,16
 	jr	ra
-.L1021:
+.L872:
 	ret
-.L1030:
+.L881:
 	lw	a2,0(a1)
 	li	a7,0
-	j	.L1023
+	j	.L874
 	.size	sglib_dllist_sort, .-sglib_dllist_sort
 	.align	2
 	.globl	sglib_dllist_len
 	.type	sglib_dllist_len, @function
 sglib_dllist_len:
 	li	a4,0
-	beq	a0,zero,.L1031
+	beq	a0,zero,.L882
 	mv	a5,a0
 	li	a4,0
-.L1033:
+.L884:
 	lw	a5,8(a5)
 	addi	a4,a4,1
-	bne	a5,zero,.L1033
+	bne	a5,zero,.L884
 	lw	a5,4(a0)
-	beq	a5,zero,.L1031
+	beq	a5,zero,.L882
 	li	a3,0
-.L1035:
+.L886:
 	lw	a5,4(a5)
 	addi	a3,a3,1
-	bne	a5,zero,.L1035
+	bne	a5,zero,.L886
 	add	a4,a4,a3
-.L1031:
+.L882:
 	mv	a0,a4
 	ret
 	.size	sglib_dllist_len, .-sglib_dllist_len
@@ -3113,29 +2589,29 @@ sglib_dllist_len:
 	.type	sglib_dllist_reverse, @function
 sglib_dllist_reverse:
 	lw	a3,0(a0)
-	beq	a3,zero,.L1042
+	beq	a3,zero,.L893
 	lw	a4,4(a3)
 	lw	a5,8(a3)
 	sw	a4,8(a3)
 	sw	a5,4(a3)
-	beq	a5,zero,.L1056
-.L1045:
+	beq	a5,zero,.L907
+.L896:
 	lw	a2,4(a5)
 	mv	a3,a5
 	lw	a5,8(a5)
 	sw	a2,8(a3)
 	sw	a5,4(a3)
-	bne	a5,zero,.L1045
-.L1056:
-	beq	a4,zero,.L1042
-.L1047:
+	bne	a5,zero,.L896
+.L907:
+	beq	a4,zero,.L893
+.L898:
 	lw	a3,8(a4)
 	mv	a5,a4
 	lw	a4,4(a4)
 	sw	a3,4(a5)
 	sw	a4,8(a5)
-	bne	a4,zero,.L1047
-.L1042:
+	bne	a4,zero,.L898
+.L893:
 	ret
 	.size	sglib_dllist_reverse, .-sglib_dllist_reverse
 	.align	2
@@ -3158,24 +2634,24 @@ sglib_dllist_it_next:
 	lw	s0,4(a0)
 	sw	zero,4(a0)
 	mv	s2,a0
-	beq	s1,zero,.L1059
+	beq	s1,zero,.L910
 	sw	s3,12(sp)
-	beq	s0,zero,.L1085
+	beq	s0,zero,.L936
 	lw	s3,16(a0)
-	j	.L1062
-.L1064:
+	j	.L913
+.L915:
 	lw	s0,8(s0)
-	beq	s0,zero,.L1063
-.L1062:
+	beq	s0,zero,.L914
+.L913:
 	mv	a1,s0
 	mv	a0,s3
 	jalr	s1
-	bne	a0,zero,.L1064
+	bne	a0,zero,.L915
 	lw	s3,12(sp)
-.L1072:
+.L923:
 	lw	a5,8(s0)
 	sw	a5,4(s2)
-.L1065:
+.L916:
 	sw	s0,0(s2)
 	lw	ra,28(sp)
 	mv	a0,s0
@@ -3184,31 +2660,31 @@ sglib_dllist_it_next:
 	lw	s2,16(sp)
 	addi	sp,sp,32
 	jr	ra
-.L1059:
-	bne	s0,zero,.L1072
+.L910:
+	bne	s0,zero,.L923
 	lw	s0,8(s2)
 	sw	zero,8(s2)
-	bne	s0,zero,.L1069
-	j	.L1065
-.L1063:
+	bne	s0,zero,.L920
+	j	.L916
+.L914:
 	lw	s1,12(s2)
 	lw	s0,8(s2)
 	sw	zero,8(s2)
-	beq	s1,zero,.L1086
-	beq	s0,zero,.L1084
-.L1087:
+	beq	s1,zero,.L937
+	beq	s0,zero,.L935
+.L938:
 	lw	s3,16(s2)
-	j	.L1066
-.L1068:
+	j	.L917
+.L919:
 	lw	s0,4(s0)
-	beq	s0,zero,.L1084
-.L1066:
+	beq	s0,zero,.L935
+.L917:
 	mv	a1,s3
 	mv	a0,s0
 	jalr	s1
-	bne	a0,zero,.L1068
+	bne	a0,zero,.L919
 	lw	s3,12(sp)
-.L1069:
+.L920:
 	lw	a5,4(s0)
 	lw	ra,28(sp)
 	sw	s0,0(s2)
@@ -3219,11 +2695,11 @@ sglib_dllist_it_next:
 	lw	s2,16(sp)
 	addi	sp,sp,32
 	jr	ra
-.L1086:
+.L937:
 	lw	s3,12(sp)
-	bne	s0,zero,.L1069
-	j	.L1065
-.L1084:
+	bne	s0,zero,.L920
+	j	.L916
+.L935:
 	lw	s3,12(sp)
 	lw	ra,28(sp)
 	sw	s0,0(s2)
@@ -3233,11 +2709,11 @@ sglib_dllist_it_next:
 	lw	s2,16(sp)
 	addi	sp,sp,32
 	jr	ra
-.L1085:
+.L936:
 	lw	s0,8(a0)
 	sw	zero,8(a0)
-	bne	s0,zero,.L1087
-	j	.L1084
+	bne	s0,zero,.L938
+	j	.L935
 	.size	sglib_dllist_it_next, .-sglib_dllist_it_next
 	.align	2
 	.globl	sglib_dllist_it_init_on_equal
@@ -3249,10 +2725,10 @@ sglib_dllist_it_init_on_equal:
 	sw	a1,8(a0)
 	sw	a2,12(a0)
 	sw	a3,16(a0)
-	beq	a1,zero,.L1089
+	beq	a1,zero,.L940
 	lw	a5,4(a1)
 	sw	a5,8(a0)
-.L1089:
+.L940:
 	call	sglib_dllist_it_next
 	lw	ra,12(sp)
 	addi	sp,sp,16
@@ -3268,10 +2744,10 @@ sglib_dllist_it_init:
 	sw	zero,16(a0)
 	sw	a1,4(a0)
 	sw	a1,8(a0)
-	beq	a1,zero,.L1095
+	beq	a1,zero,.L946
 	lw	a5,4(a1)
 	sw	a5,8(a0)
-.L1095:
+.L946:
 	call	sglib_dllist_it_next
 	lw	ra,12(sp)
 	addi	sp,sp,16
@@ -3290,29 +2766,29 @@ ilist_hash_function:
 sglib_ilist_is_member:
 	mv	a5,a0
 	snez	a0,a0
-	beq	a5,a1,.L1102
-.L1115:
-	beq	a0,zero,.L1102
+	beq	a5,a1,.L953
+.L966:
+	beq	a0,zero,.L953
 	lw	a5,4(a5)
 	snez	a0,a5
-	bne	a1,a5,.L1115
-.L1102:
+	bne	a1,a5,.L966
+.L953:
 	ret
 	.size	sglib_ilist_is_member, .-sglib_ilist_is_member
 	.align	2
 	.globl	sglib_ilist_find_member
 	.type	sglib_ilist_find_member, @function
 sglib_ilist_find_member:
-	beq	a0,zero,.L1116
+	beq	a0,zero,.L967
 	lw	a4,0(a1)
-	j	.L1118
-.L1119:
+	j	.L969
+.L970:
 	lw	a0,4(a0)
-	beq	a0,zero,.L1116
-.L1118:
+	beq	a0,zero,.L967
+.L969:
 	lw	a5,0(a0)
-	bne	a5,a4,.L1119
-.L1116:
+	bne	a5,a4,.L970
+.L967:
 	ret
 	.size	sglib_ilist_find_member, .-sglib_ilist_find_member
 	.align	2
@@ -3320,19 +2796,19 @@ sglib_ilist_find_member:
 	.type	sglib_ilist_add_if_not_member, @function
 sglib_ilist_add_if_not_member:
 	lw	a5,0(a0)
-	beq	a5,zero,.L1125
+	beq	a5,zero,.L976
 	lw	a3,0(a1)
-	j	.L1126
-.L1127:
+	j	.L977
+.L978:
 	lw	a5,4(a5)
-	beq	a5,zero,.L1125
-.L1126:
+	beq	a5,zero,.L976
+.L977:
 	lw	a4,0(a5)
-	bne	a4,a3,.L1127
+	bne	a4,a3,.L978
 	sw	a5,0(a2)
 	li	a0,0
 	ret
-.L1125:
+.L976:
 	sw	zero,0(a2)
 	lw	a5,0(a0)
 	sw	a5,4(a1)
@@ -3355,14 +2831,14 @@ sglib_ilist_add:
 	.type	sglib_ilist_concat, @function
 sglib_ilist_concat:
 	lw	a5,0(a0)
-	beq	a5,zero,.L1143
-.L1139:
+	beq	a5,zero,.L994
+.L990:
 	mv	a4,a5
 	lw	a5,4(a5)
-	bne	a5,zero,.L1139
+	bne	a5,zero,.L990
 	sw	a1,4(a4)
 	ret
-.L1143:
+.L994:
 	sw	a1,0(a0)
 	ret
 	.size	sglib_ilist_concat, .-sglib_ilist_concat
@@ -3371,16 +2847,16 @@ sglib_ilist_concat:
 	.type	sglib_ilist_delete, @function
 sglib_ilist_delete:
 	lw	a5,0(a0)
-	beq	a5,zero,.L1146
-.L1145:
-	beq	a1,a5,.L1153
+	beq	a5,zero,.L997
+.L996:
+	beq	a1,a5,.L1004
 	addi	a0,a5,4
 	lw	a5,4(a5)
-	bne	a5,zero,.L1145
-.L1146:
+	bne	a5,zero,.L996
+.L997:
 	lw	a5,4(zero)
 	ebreak
-.L1153:
+.L1004:
 	lw	a5,4(a1)
 	sw	a5,0(a0)
 	ret
@@ -3390,23 +2866,23 @@ sglib_ilist_delete:
 	.type	sglib_ilist_delete_if_member, @function
 sglib_ilist_delete_if_member:
 	lw	a5,0(a0)
-	beq	a5,zero,.L1158
+	beq	a5,zero,.L1009
 	lw	a3,0(a1)
-	j	.L1156
-.L1159:
+	j	.L1007
+.L1010:
 	addi	a0,a5,4
 	lw	a5,4(a5)
-	beq	a5,zero,.L1158
-.L1156:
+	beq	a5,zero,.L1009
+.L1007:
 	lw	a4,0(a5)
-	bne	a4,a3,.L1159
+	bne	a4,a3,.L1010
 	sw	a5,0(a2)
 	lw	a5,4(a5)
 	sw	a5,0(a0)
 	lw	a0,0(a2)
 	snez	a0,a0
 	ret
-.L1158:
+.L1009:
 	sw	zero,0(a2)
 	li	a0,0
 	ret
@@ -3419,105 +2895,105 @@ sglib_ilist_sort:
 	li	a6,1
 	addi	sp,sp,-16
 	mv	t3,a6
-.L1184:
+.L1035:
 	sw	zero,12(sp)
-	beq	a1,zero,.L1165
-.L1187:
+	beq	a1,zero,.L1016
+.L1038:
 	li	t1,0
 	addi	a3,sp,12
-.L1164:
+.L1015:
 	mv	a4,a1
 	li	a2,1
-	ble	a6,t3,.L1210
-.L1166:
+	ble	a6,t3,.L1061
+.L1017:
 	lw	a4,4(a4)
 	addi	a2,a2,1
 	slt	a5,a2,a6
 	snez	a7,a4
 	and	a5,a5,a7
-	bne	a5,zero,.L1166
-	beq	a4,zero,.L1211
+	bne	a5,zero,.L1017
+	beq	a4,zero,.L1062
 	lw	a5,4(a4)
 	sw	zero,4(a4)
-	beq	a5,zero,.L1189
+	beq	a5,zero,.L1040
 	mv	a4,a5
 	li	a2,1
-.L1170:
+.L1021:
 	addi	a2,a2,1
 	lw	a4,4(a4)
-	bge	a2,a6,.L1172
-	bne	a4,zero,.L1170
-.L1172:
+	bge	a2,a6,.L1023
+	bne	a4,zero,.L1021
+.L1023:
 	li	a7,0
-	beq	a4,zero,.L1174
+	beq	a4,zero,.L1025
 	lw	a7,4(a4)
 	sw	zero,4(a4)
-.L1174:
+.L1025:
 	lw	a2,0(a1)
-.L1209:
+.L1060:
 	lw	a4,0(a5)
-.L1180:
-	blt	a2,a4,.L1212
+.L1031:
+	blt	a2,a4,.L1063
 	sw	a5,0(a3)
 	addi	a3,a5,4
 	lw	a5,4(a5)
-	bne	a5,zero,.L1209
-.L1175:
+	bne	a5,zero,.L1060
+.L1026:
 	sw	a1,0(a3)
 	mv	a5,a1
 	mv	a1,a7
-.L1181:
+.L1032:
 	mv	a3,a5
 	lw	a5,4(a5)
-	bne	a5,zero,.L1181
+	bne	a5,zero,.L1032
 	addi	a3,a3,4
 	li	t1,1
-	bne	a7,zero,.L1164
+	bne	a7,zero,.L1015
 	lw	a1,12(sp)
 	sw	zero,12(sp)
 	slli	a6,a6,1
-	bne	a1,zero,.L1187
-.L1165:
+	bne	a1,zero,.L1038
+.L1016:
 	sw	a1,0(a0)
 	addi	sp,sp,16
 	jr	ra
-.L1212:
+.L1063:
 	sw	a1,0(a3)
 	lw	a2,4(a1)
 	addi	a3,a1,4
-	beq	a2,zero,.L1213
+	beq	a2,zero,.L1064
 	mv	a1,a2
 	lw	a2,0(a2)
-	j	.L1180
-.L1213:
+	j	.L1031
+.L1064:
 	sw	a5,4(a1)
 	mv	a1,a7
-	j	.L1181
-.L1210:
+	j	.L1032
+.L1061:
 	lw	a4,4(a1)
 	sw	zero,4(a1)
 	mv	a5,a4
-	beq	a4,zero,.L1214
+	beq	a4,zero,.L1065
 	lw	a7,4(a4)
 	sw	zero,4(a4)
-	beq	a4,zero,.L1175
+	beq	a4,zero,.L1026
 	lw	a2,0(a1)
-	j	.L1209
-.L1211:
+	j	.L1060
+.L1062:
 	sw	a1,0(a3)
 	lw	a1,12(sp)
-	beq	t1,zero,.L1165
+	beq	t1,zero,.L1016
 	slli	a6,a6,1
-	j	.L1184
-.L1214:
-	bne	a4,zero,.L1215
-.L1189:
+	j	.L1035
+.L1065:
+	bne	a4,zero,.L1066
+.L1040:
 	li	a7,0
-	j	.L1175
-.L1215:
+	j	.L1026
+.L1066:
 	lw	a2,0(a1)
 	li	a7,0
-	j	.L1209
+	j	.L1060
 	.size	sglib_ilist_sort, .-sglib_ilist_sort
 	.align	2
 	.globl	sglib_ilist_len
@@ -3525,13 +3001,13 @@ sglib_ilist_sort:
 sglib_ilist_len:
 	mv	a5,a0
 	li	a0,0
-	beq	a5,zero,.L1219
-.L1218:
+	beq	a5,zero,.L1070
+.L1069:
 	lw	a5,4(a5)
 	addi	a0,a0,1
-	bne	a5,zero,.L1218
+	bne	a5,zero,.L1069
 	ret
-.L1219:
+.L1070:
 	ret
 	.size	sglib_ilist_len, .-sglib_ilist_len
 	.align	2
@@ -3539,17 +3015,17 @@ sglib_ilist_len:
 	.type	sglib_ilist_reverse, @function
 sglib_ilist_reverse:
 	lw	a5,0(a0)
-	beq	a5,zero,.L1222
+	beq	a5,zero,.L1073
 	li	a3,0
-	j	.L1223
-.L1224:
+	j	.L1074
+.L1075:
 	mv	a5,a4
-.L1223:
+.L1074:
 	lw	a4,4(a5)
 	sw	a3,4(a5)
 	mv	a3,a5
-	bne	a4,zero,.L1224
-.L1222:
+	bne	a4,zero,.L1075
+.L1073:
 	sw	a5,0(a0)
 	ret
 	.size	sglib_ilist_reverse, .-sglib_ilist_reverse
@@ -3566,52 +3042,52 @@ sglib_ilist_it_init_on_equal:
 	sw	a3,12(a0)
 	mv	s3,a0
 	mv	s0,a1
-	beq	a2,zero,.L1229
+	beq	a2,zero,.L1080
 	sw	s1,20(sp)
 	sw	s2,16(sp)
 	mv	s1,a2
 	mv	s2,a3
-	bne	a1,zero,.L1230
-	j	.L1241
-.L1233:
+	bne	a1,zero,.L1081
+	j	.L1092
+.L1084:
 	lw	s0,4(s0)
-	beq	s0,zero,.L1232
-.L1230:
+	beq	s0,zero,.L1083
+.L1081:
 	mv	a1,s2
 	mv	a0,s0
 	jalr	s1
-	bne	a0,zero,.L1233
+	bne	a0,zero,.L1084
 	lw	s1,20(sp)
 	lw	s2,16(sp)
 	sw	s0,0(s3)
-.L1235:
+.L1086:
 	lw	a5,4(s0)
 	sw	a5,4(s3)
-.L1236:
+.L1087:
 	mv	a0,s0
-.L1228:
+.L1079:
 	lw	ra,28(sp)
 	lw	s0,24(sp)
 	lw	s3,12(sp)
 	addi	sp,sp,32
 	jr	ra
-.L1229:
+.L1080:
 	sw	a1,0(a0)
-	bne	a1,zero,.L1235
+	bne	a1,zero,.L1086
 	li	s0,0
-	j	.L1236
-.L1232:
+	j	.L1087
+.L1083:
 	lw	s1,20(sp)
 	lw	s2,16(sp)
 	sw	zero,0(s3)
 	li	s0,0
-	j	.L1236
-.L1241:
+	j	.L1087
+.L1092:
 	sw	zero,0(a0)
 	lw	s1,20(sp)
 	lw	s2,16(sp)
 	li	a0,0
-	j	.L1228
+	j	.L1079
 	.size	sglib_ilist_it_init_on_equal, .-sglib_ilist_it_init_on_equal
 	.align	2
 	.globl	sglib_ilist_it_init
@@ -3621,10 +3097,10 @@ sglib_ilist_it_init:
 	sw	zero,12(a0)
 	sw	zero,4(a0)
 	sw	a1,0(a0)
-	beq	a1,zero,.L1243
+	beq	a1,zero,.L1094
 	lw	a4,4(a1)
 	sw	a4,4(a0)
-.L1243:
+.L1094:
 	mv	a0,a1
 	ret
 	.size	sglib_ilist_it_init, .-sglib_ilist_it_init
@@ -3648,25 +3124,25 @@ sglib_ilist_it_next:
 	lw	s0,4(a0)
 	sw	zero,4(a0)
 	mv	s3,a0
-	beq	s1,zero,.L1249
-	beq	s0,zero,.L1250
+	beq	s1,zero,.L1100
+	beq	s0,zero,.L1101
 	sw	s2,16(sp)
 	lw	s2,12(a0)
-	j	.L1251
-.L1254:
+	j	.L1102
+.L1105:
 	lw	s0,4(s0)
-	beq	s0,zero,.L1253
-.L1251:
+	beq	s0,zero,.L1104
+.L1102:
 	mv	a1,s2
 	mv	a0,s0
 	jalr	s1
-	bne	a0,zero,.L1254
+	bne	a0,zero,.L1105
 	lw	s2,16(sp)
 	sw	s0,0(s3)
-.L1256:
+.L1107:
 	lw	a5,4(s0)
 	sw	a5,4(s3)
-.L1248:
+.L1099:
 	lw	ra,28(sp)
 	mv	a0,s0
 	lw	s0,24(sp)
@@ -3674,11 +3150,11 @@ sglib_ilist_it_next:
 	lw	s3,12(sp)
 	addi	sp,sp,32
 	jr	ra
-.L1249:
+.L1100:
 	sw	s0,0(a0)
-	bne	s0,zero,.L1256
+	bne	s0,zero,.L1107
 	li	s0,0
-.L1261:
+.L1112:
 	lw	ra,28(sp)
 	mv	a0,s0
 	lw	s0,24(sp)
@@ -3686,24 +3162,24 @@ sglib_ilist_it_next:
 	lw	s3,12(sp)
 	addi	sp,sp,32
 	jr	ra
-.L1253:
+.L1104:
 	lw	s2,16(sp)
 	sw	zero,0(s3)
 	li	s0,0
-	j	.L1261
-.L1250:
+	j	.L1112
+.L1101:
 	sw	zero,0(a0)
-	j	.L1248
+	j	.L1099
 	.size	sglib_ilist_it_next, .-sglib_ilist_it_next
 	.align	2
 	.globl	sglib_hashed_ilist_init
 	.type	sglib_hashed_ilist_init, @function
 sglib_hashed_ilist_init:
 	addi	a5,a0,80
-.L1263:
+.L1114:
 	sw	zero,0(a0)
 	addi	a0,a0,4
-	bne	a0,a5,.L1263
+	bne	a0,a5,.L1114
 	ret
 	.size	sglib_hashed_ilist_init, .-sglib_hashed_ilist_init
 	.align	2
@@ -3742,18 +3218,18 @@ sglib_hashed_ilist_add_if_not_member:
 	slli	a5,a5,2
 	add	a0,a0,a5
 	lw	a5,0(a0)
-	bne	a5,zero,.L1267
-	j	.L1268
-.L1269:
+	bne	a5,zero,.L1118
+	j	.L1119
+.L1120:
 	lw	a5,4(a5)
-	beq	a5,zero,.L1268
-.L1267:
+	beq	a5,zero,.L1119
+.L1118:
 	lw	a4,0(a5)
-	bne	a4,a3,.L1269
+	bne	a4,a3,.L1120
 	sw	a5,0(a2)
 	li	a0,0
 	ret
-.L1268:
+.L1119:
 	sw	zero,0(a2)
 	lw	a5,0(a0)
 	sw	a5,4(a1)
@@ -3778,16 +3254,16 @@ sglib_hashed_ilist_delete:
 	slli	a4,a4,2
 	add	a0,a0,a4
 	lw	a5,0(a0)
-	beq	a5,zero,.L1279
-.L1278:
-	beq	a1,a5,.L1286
+	beq	a5,zero,.L1130
+.L1129:
+	beq	a1,a5,.L1137
 	addi	a0,a5,4
 	lw	a5,4(a5)
-	bne	a5,zero,.L1278
-.L1279:
+	bne	a5,zero,.L1129
+.L1130:
 	lw	a5,4(zero)
 	ebreak
-.L1286:
+.L1137:
 	lw	a5,4(a1)
 	sw	a5,0(a0)
 	ret
@@ -3808,22 +3284,22 @@ sglib_hashed_ilist_delete_if_member:
 	slli	a5,a5,2
 	add	a0,a0,a5
 	lw	a5,0(a0)
-	bne	a5,zero,.L1288
-	j	.L1290
-.L1291:
+	bne	a5,zero,.L1139
+	j	.L1141
+.L1142:
 	addi	a0,a5,4
 	lw	a5,4(a5)
-	beq	a5,zero,.L1290
-.L1288:
+	beq	a5,zero,.L1141
+.L1139:
 	lw	a4,0(a5)
-	bne	a4,a3,.L1291
+	bne	a4,a3,.L1142
 	sw	a5,0(a2)
 	lw	a5,4(a5)
 	sw	a5,0(a0)
 	lw	a0,0(a2)
 	snez	a0,a0
 	ret
-.L1290:
+.L1141:
 	sw	zero,0(a2)
 	li	a0,0
 	ret
@@ -3845,13 +3321,13 @@ sglib_hashed_ilist_is_member:
 	add	a0,a0,a4
 	lw	a5,0(a0)
 	snez	a0,a5
-	beq	a5,a1,.L1297
-.L1310:
-	beq	a0,zero,.L1297
+	beq	a5,a1,.L1148
+.L1161:
+	beq	a0,zero,.L1148
 	lw	a5,4(a5)
 	snez	a0,a5
-	bne	a1,a5,.L1310
-.L1297:
+	bne	a1,a5,.L1161
+.L1148:
 	ret
 	.size	sglib_hashed_ilist_is_member, .-sglib_hashed_ilist_is_member
 	.align	2
@@ -3870,15 +3346,15 @@ sglib_hashed_ilist_find_member:
 	slli	a5,a5,2
 	add	a0,a0,a5
 	lw	a0,0(a0)
-	bne	a0,zero,.L1312
+	bne	a0,zero,.L1163
 	ret
-.L1314:
+.L1165:
 	lw	a0,4(a0)
-	beq	a0,zero,.L1311
-.L1312:
+	beq	a0,zero,.L1162
+.L1163:
 	lw	a5,0(a0)
-	bne	a5,a4,.L1314
-.L1311:
+	bne	a5,a4,.L1165
+.L1162:
 	ret
 	.size	sglib_hashed_ilist_find_member, .-sglib_hashed_ilist_find_member
 	.align	2
@@ -3902,23 +3378,23 @@ sglib_hashed_ilist_it_next:
 	lw	s0,4(a0)
 	sw	zero,4(a0)
 	mv	s1,a0
-	beq	s2,zero,.L1321
-	beq	s0,zero,.L1325
+	beq	s2,zero,.L1172
+	beq	s0,zero,.L1176
 	lw	s3,12(a0)
-	j	.L1323
-.L1326:
+	j	.L1174
+.L1177:
 	lw	s0,4(s0)
-	beq	s0,zero,.L1325
-.L1323:
+	beq	s0,zero,.L1176
+.L1174:
 	mv	a1,s3
 	mv	a0,s0
 	jalr	s2
-	bne	a0,zero,.L1326
+	bne	a0,zero,.L1177
 	sw	s0,0(s1)
-.L1338:
+.L1189:
 	lw	a5,4(s0)
 	sw	a5,4(s1)
-.L1320:
+.L1171:
 	lw	ra,28(sp)
 	mv	a0,s0
 	lw	s0,24(sp)
@@ -3927,22 +3403,22 @@ sglib_hashed_ilist_it_next:
 	lw	s3,12(sp)
 	addi	sp,sp,32
 	jr	ra
-.L1321:
+.L1172:
 	sw	s0,0(a0)
-	bne	s0,zero,.L1338
+	bne	s0,zero,.L1189
 	sw	s4,8(sp)
-	j	.L1324
-.L1325:
+	j	.L1175
+.L1176:
 	sw	s4,8(sp)
 	sw	zero,0(s1)
-.L1324:
+.L1175:
 	lw	a5,20(s1)
 	li	s4,19
-.L1329:
+.L1180:
 	addi	a5,a5,1
 	sw	a5,20(s1)
-	bgt	a5,s4,.L1350
-.L1336:
+	bgt	a5,s4,.L1201
+.L1187:
 	lw	a4,16(s1)
 	lw	s2,24(s1)
 	lw	s3,28(s1)
@@ -3952,19 +3428,19 @@ sglib_hashed_ilist_it_next:
 	sw	zero,4(s1)
 	sw	s2,8(s1)
 	sw	s3,12(s1)
-	beq	s2,zero,.L1330
-	bne	s0,zero,.L1331
-	j	.L1351
-.L1334:
+	beq	s2,zero,.L1181
+	bne	s0,zero,.L1182
+	j	.L1202
+.L1185:
 	lw	s0,4(s0)
-	beq	s0,zero,.L1333
-.L1331:
+	beq	s0,zero,.L1184
+.L1182:
 	mv	a1,s3
 	mv	a0,s0
 	jalr	s2
-	bne	a0,zero,.L1334
+	bne	a0,zero,.L1185
 	sw	s0,0(s1)
-.L1337:
+.L1188:
 	lw	a5,4(s0)
 	lw	ra,28(sp)
 	mv	a0,s0
@@ -3976,23 +3452,23 @@ sglib_hashed_ilist_it_next:
 	lw	s3,12(sp)
 	addi	sp,sp,32
 	jr	ra
-.L1330:
+.L1181:
 	sw	s0,0(s1)
-	bne	s0,zero,.L1337
-	j	.L1329
-.L1333:
+	bne	s0,zero,.L1188
+	j	.L1180
+.L1184:
 	lw	a5,20(s1)
 	sw	zero,0(s1)
 	addi	a5,a5,1
 	sw	a5,20(s1)
-	ble	a5,s4,.L1336
-.L1350:
+	ble	a5,s4,.L1187
+.L1201:
 	lw	s4,8(sp)
 	li	s0,0
-	j	.L1320
-.L1351:
+	j	.L1171
+.L1202:
 	sw	zero,0(s1)
-	j	.L1329
+	j	.L1180
 	.size	sglib_hashed_ilist_it_next, .-sglib_hashed_ilist_it_next
 	.align	2
 	.globl	sglib_hashed_ilist_it_init_on_equal
@@ -4011,25 +3487,25 @@ sglib_hashed_ilist_it_init_on_equal:
 	sw	a2,24(a0)
 	sw	a2,8(a0)
 	mv	s2,a0
-	beq	a2,zero,.L1353
+	beq	a2,zero,.L1204
 	sw	s1,20(sp)
 	sw	s3,12(sp)
 	mv	s1,a2
 	mv	s3,a3
-	bne	s0,zero,.L1354
-	j	.L1356
-.L1357:
+	bne	s0,zero,.L1205
+	j	.L1207
+.L1208:
 	lw	s0,4(s0)
-	beq	s0,zero,.L1356
-.L1354:
+	beq	s0,zero,.L1207
+.L1205:
 	mv	a1,s3
 	mv	a0,s0
 	jalr	s1
-	bne	a0,zero,.L1357
+	bne	a0,zero,.L1208
 	lw	s1,20(sp)
 	lw	s3,12(sp)
 	sw	s0,0(s2)
-.L1359:
+.L1210:
 	lw	a5,4(s0)
 	lw	ra,28(sp)
 	mv	a0,s0
@@ -4038,15 +3514,15 @@ sglib_hashed_ilist_it_init_on_equal:
 	lw	s2,16(sp)
 	addi	sp,sp,32
 	jr	ra
-.L1353:
+.L1204:
 	sw	s0,0(a0)
-	bne	s0,zero,.L1359
-	j	.L1355
-.L1356:
+	bne	s0,zero,.L1210
+	j	.L1206
+.L1207:
 	lw	s1,20(sp)
 	lw	s3,12(sp)
 	sw	zero,0(s2)
-.L1355:
+.L1206:
 	mv	a0,s2
 	call	sglib_hashed_ilist_it_next
 	mv	s0,a0
@@ -4070,12 +3546,12 @@ sglib_hashed_ilist_it_init:
 	sw	zero,8(a0)
 	sw	zero,12(a0)
 	sw	zero,4(a0)
-	beq	a5,zero,.L1371
+	beq	a5,zero,.L1222
 	lw	a4,4(a5)
 	sw	a4,4(a0)
 	mv	a0,a5
 	ret
-.L1371:
+.L1222:
 	addi	sp,sp,-16
 	sw	ra,12(sp)
 	call	sglib_hashed_ilist_it_next
@@ -4220,7 +3696,7 @@ sglib_iq_delete:
 	.type	sglib___rbtree_delete_recursive, @function
 sglib___rbtree_delete_recursive:
 	lw	a5,0(a0)
-	beq	a5,zero,.L1490
+	beq	a5,zero,.L1341
 	lw	a3,0(a1)
 	lw	a4,0(a5)
 	addi	sp,sp,-48
@@ -4228,68 +3704,68 @@ sglib___rbtree_delete_recursive:
 	sw	ra,44(sp)
 	sub	a4,a3,a4
 	mv	s0,a0
-	blt	a4,zero,.L1384
-	bne	a4,zero,.L1430
-	bleu	a5,a1,.L1385
-.L1384:
+	blt	a4,zero,.L1235
+	bne	a4,zero,.L1281
+	bleu	a5,a1,.L1236
+.L1235:
 	lw	a4,8(a5)
-	beq	a4,zero,.L1383
+	beq	a4,zero,.L1234
 	lw	a2,0(a4)
 	sw	s1,36(sp)
 	addi	s1,a5,8
 	sub	a2,a3,a2
-	blt	a2,zero,.L1387
-	bne	a2,zero,.L1388
-	bgeu	a1,a4,.L1388
-.L1387:
+	blt	a2,zero,.L1238
+	bne	a2,zero,.L1239
+	bgeu	a1,a4,.L1239
+.L1238:
 	lw	a5,8(a4)
-	beq	a5,zero,.L1504
+	beq	a5,zero,.L1355
 	lw	a2,0(a5)
 	sw	s2,32(sp)
 	addi	s2,a4,8
 	sub	a3,a3,a2
-	blt	a3,zero,.L1391
-	bne	a3,zero,.L1392
-	bgeu	a1,a5,.L1392
-.L1391:
+	blt	a3,zero,.L1242
+	bne	a3,zero,.L1243
+	bgeu	a1,a5,.L1243
+.L1242:
 	addi	a0,a5,8
 	call	sglib___rbtree_delete_recursive
-	bne	a0,zero,.L1505
-.L1497:
+	bne	a0,zero,.L1356
+.L1348:
 	lw	s1,36(sp)
 	lw	s2,32(sp)
-.L1383:
+.L1234:
 	li	a0,0
-.L1381:
+.L1232:
 	lw	ra,44(sp)
 	lw	s0,40(sp)
 	addi	sp,sp,48
 	jr	ra
-.L1490:
+.L1341:
 	li	a0,0
 	ret
-.L1430:
+.L1281:
 	lw	a4,12(a5)
-	beq	a4,zero,.L1383
+	beq	a4,zero,.L1234
 	lw	a2,0(a4)
 	sw	s1,36(sp)
 	addi	s1,a5,12
 	sub	a3,a3,a2
-	blt	a3,zero,.L1414
-	bne	a3,zero,.L1431
-	bgeu	a1,a4,.L1415
-.L1414:
+	blt	a3,zero,.L1265
+	bne	a3,zero,.L1282
+	bgeu	a1,a4,.L1266
+.L1265:
 	addi	a0,a4,8
 	call	sglib___rbtree_delete_recursive
-	bne	a0,zero,.L1506
-.L1504:
+	bne	a0,zero,.L1357
+.L1355:
 	lw	s1,36(sp)
-	j	.L1383
-.L1388:
-	bgtu	a1,a4,.L1429
-	bne	a2,zero,.L1429
+	j	.L1234
+.L1239:
+	bgtu	a1,a4,.L1280
+	bne	a2,zero,.L1280
 	lw	a3,8(a4)
-	beq	a3,zero,.L1507
+	beq	a3,zero,.L1358
 	addi	a1,sp,28
 	addi	a0,a4,8
 	sw	a5,12(sp)
@@ -4305,12 +3781,12 @@ sglib___rbtree_delete_recursive:
 	lbu	a4,4(a4)
 	sb	a4,4(a3)
 	sw	a3,8(a5)
-	beq	a0,zero,.L1504
+	beq	a0,zero,.L1355
 	mv	a0,s1
 	call	sglib___rbtree_fix_left_deletion_discrepancy
-.L1402:
-	beq	a0,zero,.L1504
-.L1408:
+.L1253:
+	beq	a0,zero,.L1355
+.L1259:
 	mv	a0,s0
 	call	sglib___rbtree_fix_left_deletion_discrepancy
 	lw	ra,44(sp)
@@ -4318,18 +3794,18 @@ sglib___rbtree_delete_recursive:
 	lw	s1,36(sp)
 	addi	sp,sp,48
 	jr	ra
-.L1429:
+.L1280:
 	addi	a0,a4,12
 	call	sglib___rbtree_delete_recursive
-	beq	a0,zero,.L1504
+	beq	a0,zero,.L1355
 	mv	a0,s1
 	call	sglib___rbtree_fix_right_deletion_discrepancy
-	j	.L1402
-.L1385:
-	bne	a4,zero,.L1430
-	bltu	a5,a1,.L1430
+	j	.L1253
+.L1236:
+	bne	a4,zero,.L1281
+	bltu	a5,a1,.L1281
 	lw	a4,8(a5)
-	beq	a4,zero,.L1508
+	beq	a4,zero,.L1359
 	addi	a0,a5,8
 	addi	a1,sp,28
 	sw	a5,8(sp)
@@ -4343,15 +3819,15 @@ sglib___rbtree_delete_recursive:
 	lbu	a5,4(a5)
 	sb	a5,4(a4)
 	sw	a4,0(s0)
-	beq	a0,zero,.L1383
+	beq	a0,zero,.L1234
 	mv	a0,s0
 	call	sglib___rbtree_fix_left_deletion_discrepancy
-	j	.L1381
-.L1392:
-	bgtu	a1,a5,.L1428
-	bne	a3,zero,.L1428
+	j	.L1232
+.L1243:
+	bgtu	a1,a5,.L1279
+	bne	a3,zero,.L1279
 	lw	a3,8(a5)
-	beq	a3,zero,.L1509
+	beq	a3,zero,.L1360
 	addi	a1,sp,28
 	addi	a0,a5,8
 	sw	a4,12(sp)
@@ -4367,34 +3843,34 @@ sglib___rbtree_delete_recursive:
 	lbu	a5,4(a5)
 	sb	a5,4(a3)
 	sw	a3,8(a4)
-	beq	a0,zero,.L1497
-.L1505:
+	beq	a0,zero,.L1348
+.L1356:
 	mv	a0,s2
 	call	sglib___rbtree_fix_left_deletion_discrepancy
-.L1394:
-	beq	a0,zero,.L1497
-.L1401:
+.L1245:
+	beq	a0,zero,.L1348
+.L1252:
 	mv	a0,s1
 	call	sglib___rbtree_fix_left_deletion_discrepancy
 	lw	s2,32(sp)
-	j	.L1402
-.L1508:
+	j	.L1253
+.L1359:
 	lw	a4,12(a5)
-	beq	a4,zero,.L1510
+	beq	a4,zero,.L1361
 	lbu	a5,4(a5)
 	li	a0,0
-	bne	a5,zero,.L1426
+	bne	a5,zero,.L1277
 	lbu	a0,4(a4)
 	seqz	a0,a0
-.L1426:
+.L1277:
 	sb	zero,4(a4)
 	sw	a4,0(s0)
-	j	.L1381
-.L1415:
-	bne	a3,zero,.L1431
-	bgtu	a1,a4,.L1431
+	j	.L1232
+.L1266:
+	bne	a3,zero,.L1282
+	bgtu	a1,a4,.L1282
 	lw	a3,8(a4)
-	beq	a3,zero,.L1511
+	beq	a3,zero,.L1362
 	addi	a1,sp,28
 	addi	a0,a4,8
 	sw	a5,12(sp)
@@ -4410,94 +3886,94 @@ sglib___rbtree_delete_recursive:
 	lbu	a4,4(a4)
 	sb	a4,4(a3)
 	sw	a3,12(a5)
-	beq	a0,zero,.L1504
-.L1506:
+	beq	a0,zero,.L1355
+.L1357:
 	mv	a0,s1
 	call	sglib___rbtree_fix_left_deletion_discrepancy
-.L1417:
-	beq	a0,zero,.L1504
-.L1423:
+.L1268:
+	beq	a0,zero,.L1355
+.L1274:
 	mv	a0,s0
 	call	sglib___rbtree_fix_right_deletion_discrepancy
 	lw	s1,36(sp)
-	j	.L1381
-.L1428:
+	j	.L1232
+.L1279:
 	addi	a0,a5,12
 	call	sglib___rbtree_delete_recursive
-	beq	a0,zero,.L1497
+	beq	a0,zero,.L1348
 	mv	a0,s2
 	call	sglib___rbtree_fix_right_deletion_discrepancy
-	j	.L1394
-.L1431:
+	j	.L1245
+.L1282:
 	addi	a0,a4,12
 	call	sglib___rbtree_delete_recursive
-	beq	a0,zero,.L1504
+	beq	a0,zero,.L1355
 	mv	a0,s1
 	call	sglib___rbtree_fix_right_deletion_discrepancy
-	j	.L1417
-.L1507:
+	j	.L1268
+.L1358:
 	lw	a3,12(a4)
-	beq	a3,zero,.L1512
+	beq	a3,zero,.L1363
 	lbu	a4,4(a4)
-	bne	a4,zero,.L1407
+	bne	a4,zero,.L1258
 	lbu	a4,4(a3)
-	bne	a4,zero,.L1407
+	bne	a4,zero,.L1258
 	sw	a3,8(a5)
-	j	.L1408
-.L1510:
+	j	.L1259
+.L1361:
 	sw	zero,0(a0)
 	lbu	a0,4(a5)
 	seqz	a0,a0
-	j	.L1381
-.L1407:
+	j	.L1232
+.L1258:
 	sb	zero,4(a3)
 	lw	s1,36(sp)
 	sw	a3,8(a5)
-	j	.L1383
-.L1509:
+	j	.L1234
+.L1360:
 	lw	a3,12(a5)
-	beq	a3,zero,.L1513
+	beq	a3,zero,.L1364
 	lbu	a5,4(a5)
-	bne	a5,zero,.L1400
+	bne	a5,zero,.L1251
 	lbu	a5,4(a3)
-	bne	a5,zero,.L1400
+	bne	a5,zero,.L1251
 	sw	a3,8(a4)
-	j	.L1401
-.L1511:
+	j	.L1252
+.L1362:
 	lw	a3,12(a4)
-	beq	a3,zero,.L1514
+	beq	a3,zero,.L1365
 	lbu	a4,4(a4)
-	bne	a4,zero,.L1422
+	bne	a4,zero,.L1273
 	lbu	a4,4(a3)
-	bne	a4,zero,.L1422
+	bne	a4,zero,.L1273
 	sw	a3,12(a5)
-	j	.L1423
-.L1512:
+	j	.L1274
+.L1363:
 	sw	zero,8(a5)
 	lbu	a0,4(a4)
 	seqz	a0,a0
-	j	.L1402
-.L1400:
+	j	.L1253
+.L1251:
 	sb	zero,4(a3)
 	lw	s1,36(sp)
 	lw	s2,32(sp)
 	sw	a3,8(a4)
-	j	.L1383
-.L1422:
+	j	.L1234
+.L1273:
 	sb	zero,4(a3)
 	lw	s1,36(sp)
 	sw	a3,12(a5)
-	j	.L1383
-.L1513:
+	j	.L1234
+.L1364:
 	sw	zero,8(a4)
 	lbu	a0,4(a5)
 	seqz	a0,a0
-	j	.L1394
-.L1514:
+	j	.L1245
+.L1365:
 	sw	zero,12(a5)
 	lbu	a0,4(a4)
 	seqz	a0,a0
-	j	.L1417
+	j	.L1268
 	.size	sglib___rbtree_delete_recursive, .-sglib___rbtree_delete_recursive
 	.align	2
 	.globl	sglib_rbtree_add
@@ -4506,25 +3982,25 @@ sglib_rbtree_add:
 	sw	zero,12(a1)
 	sw	zero,8(a1)
 	lw	a5,0(a0)
-	beq	a5,zero,.L1621
+	beq	a5,zero,.L1472
 	lw	a3,0(a1)
 	lw	a4,0(a5)
 	addi	sp,sp,-32
 	sw	ra,28(sp)
 	sub	a4,a3,a4
 	mv	a2,a0
-	blt	a4,zero,.L1518
-	bne	a4,zero,.L1519
-	bgeu	a1,a5,.L1519
-.L1518:
+	blt	a4,zero,.L1369
+	bne	a4,zero,.L1370
+	bgeu	a1,a5,.L1370
+.L1369:
 	lw	a4,8(a5)
-	beq	a4,zero,.L1622
+	beq	a4,zero,.L1473
 	lw	a0,0(a4)
 	sub	a3,a3,a0
-	blt	a3,zero,.L1522
-	bne	a3,zero,.L1523
-	bgeu	a1,a4,.L1523
-.L1522:
+	blt	a3,zero,.L1373
+	bne	a3,zero,.L1374
+	bgeu	a1,a4,.L1374
+.L1373:
 	addi	a0,a4,8
 	sw	a2,12(sp)
 	sw	a5,8(sp)
@@ -4534,48 +4010,48 @@ sglib_rbtree_add:
 	lw	a5,8(sp)
 	lw	a2,12(sp)
 	lbu	a4,4(a4)
-	beq	a4,zero,.L1623
-.L1521:
+	beq	a4,zero,.L1474
+.L1372:
 	lbu	a5,4(a5)
 	lw	a1,0(a2)
-	beq	a5,zero,.L1624
-.L1517:
+	beq	a5,zero,.L1475
+.L1368:
 	sb	zero,4(a1)
 	lw	ra,28(sp)
 	addi	sp,sp,32
 	jr	ra
-.L1621:
+.L1472:
 	sw	a1,0(a0)
 	sb	zero,4(a1)
 	ret
-.L1622:
+.L1473:
 	li	a4,1
 	sb	a4,4(a1)
 	sw	a1,8(a5)
 	lbu	a5,4(a5)
 	lw	a1,0(a2)
-	bne	a5,zero,.L1517
-.L1624:
+	bne	a5,zero,.L1368
+.L1475:
 	lw	a5,8(a1)
 	lw	a4,12(a1)
 	lbu	a3,4(a5)
-	beq	a4,zero,.L1535
+	beq	a4,zero,.L1386
 	lbu	a0,4(a4)
 	li	a6,1
-	beq	a0,a6,.L1625
-.L1535:
+	beq	a0,a6,.L1476
+.L1386:
 	li	a4,1
-	bne	a3,a4,.L1517
+	bne	a3,a4,.L1368
 	lw	a0,8(a5)
 	lw	a4,12(a5)
-	beq	a0,zero,.L1538
+	beq	a0,zero,.L1389
 	lbu	a6,4(a0)
-	beq	a6,a3,.L1626
-.L1538:
-	beq	a4,zero,.L1517
+	beq	a6,a3,.L1477
+.L1389:
+	beq	a4,zero,.L1368
 	lbu	a3,4(a4)
 	li	a0,1
-	bne	a3,a0,.L1517
+	bne	a3,a0,.L1368
 	lw	a6,8(a4)
 	lw	a0,12(a4)
 	sw	a6,12(a5)
@@ -4586,29 +4062,29 @@ sglib_rbtree_add:
 	sb	a3,4(a1)
 	sw	a4,0(a2)
 	mv	a1,a4
-	j	.L1517
-.L1623:
+	j	.L1368
+.L1474:
 	lw	a4,8(a5)
 	lw	a3,8(a4)
 	lw	a1,12(a4)
 	lbu	a0,4(a3)
-	beq	a1,zero,.L1525
+	beq	a1,zero,.L1376
 	lbu	a6,4(a1)
 	li	a7,1
-	beq	a6,a7,.L1627
-.L1525:
+	beq	a6,a7,.L1478
+.L1376:
 	li	a1,1
-	bne	a0,a1,.L1521
+	bne	a0,a1,.L1372
 	lw	a6,8(a3)
 	lw	a1,12(a3)
-	beq	a6,zero,.L1529
+	beq	a6,zero,.L1380
 	lbu	a7,4(a6)
-	beq	a7,a0,.L1628
-.L1529:
-	beq	a1,zero,.L1521
+	beq	a7,a0,.L1479
+.L1380:
+	beq	a1,zero,.L1372
 	lbu	a0,4(a1)
 	li	a6,1
-	bne	a0,a6,.L1521
+	bne	a0,a6,.L1372
 	lw	a7,8(a1)
 	lw	a6,12(a1)
 	sw	a7,12(a3)
@@ -4618,8 +4094,8 @@ sglib_rbtree_add:
 	sb	zero,4(a1)
 	sb	a0,4(a4)
 	sw	a1,8(a5)
-	j	.L1521
-.L1519:
+	j	.L1372
+.L1370:
 	addi	a0,a5,12
 	sw	a2,8(sp)
 	sw	a5,4(sp)
@@ -4628,27 +4104,27 @@ sglib_rbtree_add:
 	lw	a2,8(sp)
 	lbu	a5,4(a5)
 	lw	a1,0(a2)
-	bne	a5,zero,.L1517
+	bne	a5,zero,.L1368
 	lw	a5,12(a1)
 	lw	a4,8(a1)
 	lbu	a3,4(a5)
-	beq	a4,zero,.L1540
+	beq	a4,zero,.L1391
 	lbu	a0,4(a4)
 	li	a6,1
-	beq	a0,a6,.L1629
-.L1540:
+	beq	a0,a6,.L1480
+.L1391:
 	li	a4,1
-	bne	a3,a4,.L1517
+	bne	a3,a4,.L1368
 	lw	a0,12(a5)
 	lw	a4,8(a5)
-	beq	a0,zero,.L1544
+	beq	a0,zero,.L1395
 	lbu	a6,4(a0)
-	beq	a6,a3,.L1630
-.L1544:
-	beq	a4,zero,.L1517
+	beq	a6,a3,.L1481
+.L1395:
+	beq	a4,zero,.L1368
 	lbu	a3,4(a4)
 	li	a0,1
-	bne	a3,a0,.L1517
+	bne	a3,a0,.L1368
 	lw	a6,12(a4)
 	lw	a0,8(a4)
 	sw	a6,8(a5)
@@ -4659,8 +4135,8 @@ sglib_rbtree_add:
 	sb	a3,4(a1)
 	sw	a4,0(a2)
 	mv	a1,a4
-	j	.L1517
-.L1523:
+	j	.L1368
+.L1374:
 	addi	a0,a4,12
 	sw	a2,12(sp)
 	sw	a5,8(sp)
@@ -4670,28 +4146,28 @@ sglib_rbtree_add:
 	lw	a5,8(sp)
 	lw	a2,12(sp)
 	lbu	a4,4(a4)
-	bne	a4,zero,.L1521
+	bne	a4,zero,.L1372
 	lw	a4,8(a5)
 	lw	a3,12(a4)
 	lw	a1,8(a4)
 	lbu	a0,4(a3)
-	beq	a1,zero,.L1530
+	beq	a1,zero,.L1381
 	lbu	a6,4(a1)
 	li	a7,1
-	beq	a6,a7,.L1631
-.L1530:
+	beq	a6,a7,.L1482
+.L1381:
 	li	a1,1
-	bne	a0,a1,.L1521
+	bne	a0,a1,.L1372
 	lw	a6,12(a3)
 	lw	a1,8(a3)
-	beq	a6,zero,.L1533
+	beq	a6,zero,.L1384
 	lbu	a7,4(a6)
-	beq	a7,a0,.L1632
-.L1533:
-	beq	a1,zero,.L1521
+	beq	a7,a0,.L1483
+.L1384:
+	beq	a1,zero,.L1372
 	lbu	a0,4(a1)
 	li	a6,1
-	bne	a0,a6,.L1521
+	bne	a0,a6,.L1372
 	lw	a7,12(a1)
 	lw	a6,8(a1)
 	sw	a7,8(a3)
@@ -4701,27 +4177,27 @@ sglib_rbtree_add:
 	sb	zero,4(a1)
 	sb	a0,4(a4)
 	sw	a1,8(a5)
-	j	.L1521
-.L1627:
-	bne	a0,a6,.L1521
+	j	.L1372
+.L1478:
+	bne	a0,a6,.L1372
 	lw	a6,8(a3)
-	beq	a6,zero,.L1527
+	beq	a6,zero,.L1378
 	lbu	a6,4(a6)
-	beq	a6,a0,.L1532
-.L1527:
+	beq	a6,a0,.L1383
+.L1378:
 	lw	a0,12(a3)
-	beq	a0,zero,.L1521
-.L1618:
+	beq	a0,zero,.L1372
+.L1469:
 	lbu	a6,4(a0)
 	li	a0,1
-	bne	a6,a0,.L1521
-.L1532:
+	bne	a6,a0,.L1372
+.L1383:
 	sb	zero,4(a3)
 	sb	zero,4(a1)
 	li	a3,1
 	sb	a3,4(a4)
-	j	.L1521
-.L1626:
+	j	.L1372
+.L1477:
 	sw	a4,8(a1)
 	sw	a1,12(a5)
 	sw	a0,8(a5)
@@ -4729,16 +4205,16 @@ sglib_rbtree_add:
 	sb	zero,4(a5)
 	sw	a5,0(a2)
 	mv	a1,a5
-	j	.L1517
-.L1628:
+	j	.L1368
+.L1479:
 	sw	a1,8(a4)
 	sw	a6,8(a3)
 	sw	a4,12(a3)
 	sb	a0,4(a4)
 	sb	zero,4(a3)
 	sw	a3,8(a5)
-	j	.L1521
-.L1630:
+	j	.L1372
+.L1481:
 	sw	a4,12(a1)
 	sw	a1,8(a5)
 	sw	a0,12(a5)
@@ -4746,61 +4222,61 @@ sglib_rbtree_add:
 	sb	zero,4(a5)
 	sw	a5,0(a2)
 	mv	a1,a5
-	j	.L1517
-.L1632:
+	j	.L1368
+.L1483:
 	sw	a1,12(a4)
 	sw	a6,12(a3)
 	sw	a4,8(a3)
 	sb	a0,4(a4)
 	sb	zero,4(a3)
 	sw	a3,8(a5)
-	j	.L1521
-.L1625:
-	bne	a3,a0,.L1517
+	j	.L1372
+.L1476:
+	bne	a3,a0,.L1368
 	lw	a2,8(a5)
-	beq	a2,zero,.L1536
+	beq	a2,zero,.L1387
 	lbu	a2,4(a2)
-	beq	a2,a3,.L1542
-.L1536:
+	beq	a2,a3,.L1393
+.L1387:
 	lw	a3,12(a5)
-	beq	a3,zero,.L1517
-.L1620:
+	beq	a3,zero,.L1368
+.L1471:
 	lbu	a2,4(a3)
 	li	a3,1
-	bne	a2,a3,.L1517
-.L1542:
+	bne	a2,a3,.L1368
+.L1393:
 	sb	zero,4(a5)
 	sb	zero,4(a4)
 	li	a5,1
 	sb	a5,4(a1)
-	j	.L1517
-.L1629:
-	bne	a3,a0,.L1517
+	j	.L1368
+.L1480:
+	bne	a3,a0,.L1368
 	lw	a2,12(a5)
-	beq	a2,zero,.L1541
+	beq	a2,zero,.L1392
 	lbu	a2,4(a2)
-	beq	a2,a3,.L1542
-.L1541:
+	beq	a2,a3,.L1393
+.L1392:
 	lw	a3,8(a5)
-	bne	a3,zero,.L1620
-	j	.L1517
-.L1631:
-	bne	a0,a6,.L1521
+	bne	a3,zero,.L1471
+	j	.L1368
+.L1482:
+	bne	a0,a6,.L1372
 	lw	a6,12(a3)
-	beq	a6,zero,.L1531
+	beq	a6,zero,.L1382
 	lbu	a6,4(a6)
-	beq	a6,a0,.L1532
-.L1531:
+	beq	a6,a0,.L1383
+.L1382:
 	lw	a0,8(a3)
-	bne	a0,zero,.L1618
-	j	.L1521
+	bne	a0,zero,.L1469
+	j	.L1372
 	.size	sglib_rbtree_add, .-sglib_rbtree_add
 	.align	2
 	.globl	sglib_rbtree_delete
 	.type	sglib_rbtree_delete, @function
 sglib_rbtree_delete:
 	lw	a5,0(a0)
-	beq	a5,zero,.L1677
+	beq	a5,zero,.L1528
 	lw	a3,0(a1)
 	lw	a4,0(a5)
 	addi	sp,sp,-48
@@ -4808,70 +4284,70 @@ sglib_rbtree_delete:
 	sw	ra,44(sp)
 	sub	a4,a3,a4
 	mv	s0,a0
-	blt	a4,zero,.L1636
-	bne	a4,zero,.L1660
-	bgeu	a1,a5,.L1637
-.L1636:
+	blt	a4,zero,.L1487
+	bne	a4,zero,.L1511
+	bgeu	a1,a5,.L1488
+.L1487:
 	lw	a4,8(a5)
-	beq	a4,zero,.L1639
+	beq	a4,zero,.L1490
 	lw	a2,0(a4)
 	sw	s1,36(sp)
 	addi	s1,a5,8
 	sub	a3,a3,a2
-	blt	a3,zero,.L1640
-	bne	a3,zero,.L1659
-	bgeu	a1,a4,.L1641
-.L1640:
+	blt	a3,zero,.L1491
+	bne	a3,zero,.L1510
+	bgeu	a1,a4,.L1492
+.L1491:
 	addi	a0,a4,8
 	call	sglib___rbtree_delete_recursive
-	bne	a0,zero,.L1652
-.L1681:
+	bne	a0,zero,.L1503
+.L1532:
 	lw	a5,0(s0)
 	lw	s1,36(sp)
-	beq	a5,zero,.L1633
-.L1639:
+	beq	a5,zero,.L1484
+.L1490:
 	sb	zero,4(a5)
-.L1633:
+.L1484:
 	lw	ra,44(sp)
 	lw	s0,40(sp)
 	addi	sp,sp,48
 	jr	ra
-.L1677:
+.L1528:
 	ret
-.L1660:
+.L1511:
 	addi	a0,a5,12
 	call	sglib___rbtree_delete_recursive
-	bne	a0,zero,.L1655
+	bne	a0,zero,.L1506
 	lw	a5,0(s0)
-.L1684:
-	bne	a5,zero,.L1639
-	j	.L1633
-.L1641:
-	bne	a3,zero,.L1659
-	bleu	a1,a4,.L1645
-.L1659:
+.L1535:
+	bne	a5,zero,.L1490
+	j	.L1484
+.L1492:
+	bne	a3,zero,.L1510
+	bleu	a1,a4,.L1496
+.L1510:
 	addi	a0,a4,12
 	call	sglib___rbtree_delete_recursive
-	beq	a0,zero,.L1681
+	beq	a0,zero,.L1532
 	mv	a0,s1
 	call	sglib___rbtree_fix_right_deletion_discrepancy
-.L1644:
-	beq	a0,zero,.L1681
-.L1651:
+.L1495:
+	beq	a0,zero,.L1532
+.L1502:
 	mv	a0,s0
 	call	sglib___rbtree_fix_left_deletion_discrepancy
-	j	.L1681
-.L1655:
+	j	.L1532
+.L1506:
 	mv	a0,s0
 	call	sglib___rbtree_fix_right_deletion_discrepancy
 	lw	a5,0(s0)
-	bne	a5,zero,.L1639
-	j	.L1633
-.L1637:
-	bne	a4,zero,.L1660
-	bgtu	a1,a5,.L1660
+	bne	a5,zero,.L1490
+	j	.L1484
+.L1488:
+	bne	a4,zero,.L1511
+	bgtu	a1,a5,.L1511
 	lw	a4,8(a5)
-	beq	a4,zero,.L1683
+	beq	a4,zero,.L1534
 	addi	a0,a5,8
 	addi	a1,sp,28
 	sw	a5,8(sp)
@@ -4886,14 +4362,14 @@ sglib_rbtree_delete:
 	sb	a5,4(a4)
 	sw	a4,0(s0)
 	mv	a5,a4
-	beq	a0,zero,.L1639
+	beq	a0,zero,.L1490
 	mv	a0,s0
 	call	sglib___rbtree_fix_left_deletion_discrepancy
 	lw	a5,0(s0)
-	j	.L1684
-.L1645:
+	j	.L1535
+.L1496:
 	lw	a3,8(a4)
-	beq	a3,zero,.L1685
+	beq	a3,zero,.L1536
 	addi	a1,sp,28
 	addi	a0,a4,8
 	sw	a5,12(sp)
@@ -4909,88 +4385,88 @@ sglib_rbtree_delete:
 	lbu	a4,4(a4)
 	sb	a4,4(a3)
 	sw	a3,8(a5)
-	beq	a0,zero,.L1681
-.L1652:
+	beq	a0,zero,.L1532
+.L1503:
 	mv	a0,s1
 	call	sglib___rbtree_fix_left_deletion_discrepancy
-	j	.L1644
-.L1683:
+	j	.L1495
+.L1534:
 	lw	a5,12(a5)
-	beq	a5,zero,.L1686
+	beq	a5,zero,.L1537
 	sb	zero,4(a5)
 	sw	a5,0(a0)
-	j	.L1639
-.L1685:
+	j	.L1490
+.L1536:
 	lw	a3,12(a4)
-	beq	a3,zero,.L1687
+	beq	a3,zero,.L1538
 	lbu	a4,4(a4)
-	bne	a4,zero,.L1650
+	bne	a4,zero,.L1501
 	lbu	a4,4(a3)
-	bne	a4,zero,.L1650
+	bne	a4,zero,.L1501
 	sw	a3,8(a5)
-	j	.L1651
-.L1686:
+	j	.L1502
+.L1537:
 	sw	zero,0(a0)
-	j	.L1633
-.L1650:
+	j	.L1484
+.L1501:
 	sb	zero,4(a3)
 	sw	a3,8(a5)
 	lw	a5,0(s0)
 	lw	s1,36(sp)
-	bne	a5,zero,.L1639
-	j	.L1633
-.L1687:
+	bne	a5,zero,.L1490
+	j	.L1484
+.L1538:
 	sw	zero,8(a5)
 	lbu	a0,4(a4)
 	seqz	a0,a0
-	j	.L1644
+	j	.L1495
 	.size	sglib_rbtree_delete, .-sglib_rbtree_delete
 	.align	2
 	.globl	sglib_rbtree_find_member
 	.type	sglib_rbtree_find_member, @function
 sglib_rbtree_find_member:
-	beq	a0,zero,.L1688
+	beq	a0,zero,.L1539
 	lw	a4,0(a1)
-.L1692:
+.L1543:
 	lw	a5,0(a0)
 	sub	a5,a4,a5
-	blt	a5,zero,.L1698
-	beq	a5,zero,.L1688
+	blt	a5,zero,.L1549
+	beq	a5,zero,.L1539
 	lw	a0,12(a0)
-	bne	a0,zero,.L1692
-.L1688:
+	bne	a0,zero,.L1543
+.L1539:
 	ret
-.L1698:
+.L1549:
 	lw	a0,8(a0)
-	bne	a0,zero,.L1692
+	bne	a0,zero,.L1543
 	ret
 	.size	sglib_rbtree_find_member, .-sglib_rbtree_find_member
 	.align	2
 	.globl	sglib_rbtree_is_member
 	.type	sglib_rbtree_is_member, @function
 sglib_rbtree_is_member:
-	beq	a0,zero,.L1699
+	beq	a0,zero,.L1550
 	lw	a4,0(a1)
-.L1705:
+.L1556:
 	lw	a5,0(a0)
 	sub	a5,a4,a5
-	blt	a5,zero,.L1701
-	bne	a5,zero,.L1702
-	bgeu	a1,a0,.L1702
-.L1701:
+	blt	a5,zero,.L1552
+	bne	a5,zero,.L1553
+	bgeu	a1,a0,.L1553
+.L1552:
 	lw	a0,8(a0)
-	bne	a0,zero,.L1705
+	bne	a0,zero,.L1556
 	ret
-.L1702:
-	bgtu	a1,a0,.L1708
-	beq	a5,zero,.L1707
-.L1708:
+.L1553:
+	bgtu	a1,a0,.L1559
+	beq	a5,zero,.L1558
+.L1559:
 	lw	a0,12(a0)
-	bne	a0,zero,.L1705
+	bne	a0,zero,.L1556
 	ret
-.L1707:
+.L1558:
 	li	a0,1
-.L1699:
+.L1550:
 	ret
 	.size	sglib_rbtree_is_member, .-sglib_rbtree_is_member
 	.align	2
@@ -4998,24 +4474,24 @@ sglib_rbtree_is_member:
 	.type	sglib_rbtree_delete_if_member, @function
 sglib_rbtree_delete_if_member:
 	lw	a4,0(a0)
-	beq	a4,zero,.L1717
+	beq	a4,zero,.L1568
 	lw	a3,0(a1)
-.L1721:
+.L1572:
 	lw	a5,0(a4)
 	sub	a5,a3,a5
-	blt	a5,zero,.L1732
-	beq	a5,zero,.L1720
+	blt	a5,zero,.L1583
+	beq	a5,zero,.L1571
 	lw	a4,12(a4)
-	bne	a4,zero,.L1721
-.L1717:
+	bne	a4,zero,.L1572
+.L1568:
 	sw	zero,0(a2)
 	li	a0,0
 	ret
-.L1732:
+.L1583:
 	lw	a4,8(a4)
-	bne	a4,zero,.L1721
-	j	.L1717
-.L1720:
+	bne	a4,zero,.L1572
+	j	.L1568
+.L1571:
 	addi	sp,sp,-32
 	mv	a1,a4
 	sw	a4,0(a2)
@@ -5024,9 +4500,9 @@ sglib_rbtree_delete_if_member:
 	call	sglib___rbtree_delete_recursive
 	lw	a5,12(sp)
 	lw	a5,0(a5)
-	beq	a5,zero,.L1724
+	beq	a5,zero,.L1575
 	sb	zero,4(a5)
-.L1724:
+.L1575:
 	lw	ra,28(sp)
 	li	a0,1
 	addi	sp,sp,32
@@ -5037,16 +4513,16 @@ sglib_rbtree_delete_if_member:
 	.type	sglib_rbtree_add_if_not_member, @function
 sglib_rbtree_add_if_not_member:
 	lw	a4,0(a0)
-	beq	a4,zero,.L1734
+	beq	a4,zero,.L1585
 	lw	a3,0(a1)
-.L1738:
+.L1589:
 	lw	a5,0(a4)
 	sub	a5,a3,a5
-	blt	a5,zero,.L1747
-	beq	a5,zero,.L1737
+	blt	a5,zero,.L1598
+	beq	a5,zero,.L1588
 	lw	a4,12(a4)
-	bne	a4,zero,.L1738
-.L1734:
+	bne	a4,zero,.L1589
+.L1585:
 	addi	sp,sp,-32
 	sw	zero,0(a2)
 	sw	zero,12(a1)
@@ -5062,11 +4538,11 @@ sglib_rbtree_add_if_not_member:
 	lw	ra,28(sp)
 	addi	sp,sp,32
 	jr	ra
-.L1747:
+.L1598:
 	lw	a4,8(a4)
-	bne	a4,zero,.L1738
-	j	.L1734
-.L1737:
+	bne	a4,zero,.L1589
+	j	.L1585
+.L1588:
 	sw	a4,0(a2)
 	mv	a0,a5
 	ret
@@ -5075,7 +4551,7 @@ sglib_rbtree_add_if_not_member:
 	.globl	sglib_rbtree_len
 	.type	sglib_rbtree_len, @function
 sglib_rbtree_len:
-	beq	a0,zero,.L1766
+	beq	a0,zero,.L1617
 	addi	sp,sp,-640
 	li	t3,1
 	mv	a4,a0
@@ -5085,11 +4561,11 @@ sglib_rbtree_len:
 	li	a0,0
 	addi	t1,sp,128
 	addi	t4,sp,124
-.L1749:
+.L1600:
 	slli	a2,a5,2
 	add	a2,t1,a2
 	add	a5,a7,a5
-.L1751:
+.L1602:
 	lw	a3,12(a4)
 	lw	a4,8(a4)
 	sb	zero,0(a5)
@@ -5097,17 +4573,17 @@ sglib_rbtree_len:
 	mv	a3,a5
 	addi	a2,a2,4
 	addi	a5,a5,1
-	bne	a4,zero,.L1751
+	bne	a4,zero,.L1602
 	add	a3,t3,a3
 	slli	a1,a3,2
 	add	a1,t4,a1
 	add	a2,a7,a3
-	j	.L1754
-.L1768:
+	j	.L1605
+.L1619:
 	addi	a2,a2,-1
 	addi	a1,a1,-4
-	bne	a4,zero,.L1767
-.L1754:
+	bne	a4,zero,.L1618
+.L1605:
 	lbu	a4,-1(a2)
 	mv	a5,a3
 	addi	a3,a3,-1
@@ -5116,19 +4592,19 @@ sglib_rbtree_len:
 	seqz	a4,a4
 	add	a0,a0,a4
 	lw	a4,0(a1)
-	bgt	a3,zero,.L1768
+	bgt	a3,zero,.L1619
 	slli	a3,a3,2
 	add	a3,t1,a3
 	sw	zero,0(a3)
-	bne	a4,zero,.L1749
+	bne	a4,zero,.L1600
 	addi	sp,sp,640
 	jr	ra
-.L1767:
+.L1618:
 	slli	a3,a3,2
 	add	a3,t1,a3
 	sw	zero,0(a3)
-	j	.L1749
-.L1766:
+	j	.L1600
+.L1617:
 	li	a0,0
 	ret
 	.size	sglib_rbtree_len, .-sglib_rbtree_len
@@ -5144,7 +4620,7 @@ sglib__rbtree_it_compute_current_elem:
 	sw	zero,0(a0)
 	lw	s2,648(a0)
 	lw	s4,652(a0)
-	ble	a5,zero,.L1769
+	ble	a5,zero,.L1620
 	sw	s1,36(sp)
 	sw	s7,12(sp)
 	sw	s0,40(sp)
@@ -5154,75 +4630,75 @@ sglib__rbtree_it_compute_current_elem:
 	mv	s1,a0
 	addi	a3,a5,-1
 	li	s7,1
-.L1770:
+.L1621:
 	add	s3,s1,a3
 	lbu	a4,4(s3)
 	mv	s5,a5
-	bleu	a4,s7,.L1771
+	bleu	a4,s7,.L1622
 	slli	a5,a3,16
 	srai	a5,a5,16
 	sh	a5,644(s1)
-.L1772:
-	ble	a5,zero,.L1805
+.L1623:
+	ble	a5,zero,.L1656
 	addi	a3,a5,-1
 	add	a4,s1,a3
 	lbu	a4,4(a4)
 	lh	a2,646(s1)
-	bne	a2,a4,.L1790
+	bne	a2,a4,.L1641
 	slli	a4,a5,2
 	add	a4,s1,a4
 	lw	a4,128(a4)
 	sw	a4,0(s1)
-.L1790:
+.L1641:
 	lw	a4,0(s1)
-	beq	a4,zero,.L1770
-.L1805:
+	beq	a4,zero,.L1621
+.L1656:
 	lw	s0,40(sp)
 	lw	s1,36(sp)
 	lw	s3,28(sp)
 	lw	s5,20(sp)
 	lw	s6,16(sp)
 	lw	s7,12(sp)
-.L1769:
+.L1620:
 	lw	ra,44(sp)
 	lw	s2,32(sp)
 	lw	s4,24(sp)
 	addi	sp,sp,48
 	jr	ra
-.L1771:
+.L1622:
 	slli	s6,a5,2
 	add	s6,s1,s6
 	lw	a5,128(s6)
-	bne	a4,zero,.L1773
+	bne	a4,zero,.L1624
 	lw	s0,8(a5)
-.L1774:
-	beq	s2,zero,.L1775
-	beq	s4,zero,.L1776
-	beq	s0,zero,.L1806
-.L1777:
+.L1625:
+	beq	s2,zero,.L1626
+	beq	s4,zero,.L1627
+	beq	s0,zero,.L1657
+.L1628:
 	mv	a1,s0
 	mv	a0,s2
 	jalr	s4
-	blt	a0,zero,.L1809
-	beq	a0,zero,.L1782
+	blt	a0,zero,.L1660
+	beq	a0,zero,.L1633
 	lw	s0,12(s0)
-	bne	s0,zero,.L1777
-.L1784:
+	bne	s0,zero,.L1628
+.L1635:
 	lh	a5,644(s1)
-.L1807:
+.L1658:
 	lbu	a4,4(s3)
-.L1778:
+.L1629:
 	addi	a4,a4,1
 	sb	a4,4(s3)
-	j	.L1772
-.L1809:
+	j	.L1623
+.L1660:
 	lw	s0,8(s0)
-	bne	s0,zero,.L1777
-	j	.L1784
-.L1775:
+	bne	s0,zero,.L1628
+	j	.L1635
+.L1626:
 	lh	a5,644(s1)
-	beq	s0,zero,.L1807
-.L1788:
+	beq	s0,zero,.L1658
+.L1639:
 	addi	a5,a5,1
 	sw	s0,132(s6)
 	slli	a5,a5,16
@@ -5230,41 +4706,41 @@ sglib__rbtree_it_compute_current_elem:
 	srai	a5,a5,16
 	sb	zero,4(s5)
 	sh	a5,644(s1)
-	j	.L1807
-.L1773:
+	j	.L1658
+.L1624:
 	lw	s0,12(a5)
-	j	.L1774
-.L1782:
+	j	.L1625
+.L1633:
 	lh	a5,644(s1)
-	j	.L1788
-.L1776:
-	beq	s0,zero,.L1806
+	j	.L1639
+.L1627:
+	beq	s0,zero,.L1657
 	lw	a4,0(s2)
 	lw	a5,0(s0)
 	sub	a5,a4,a5
-	blt	a5,zero,.L1810
-.L1780:
-	beq	a5,zero,.L1782
+	blt	a5,zero,.L1661
+.L1631:
+	beq	a5,zero,.L1633
 	lw	s0,12(s0)
-	beq	s0,zero,.L1784
-.L1808:
+	beq	s0,zero,.L1635
+.L1659:
 	lw	a5,0(s0)
 	sub	a5,a4,a5
-	bge	a5,zero,.L1780
-.L1810:
+	bge	a5,zero,.L1631
+.L1661:
 	lw	s0,8(s0)
-	bne	s0,zero,.L1808
-	j	.L1784
-.L1806:
+	bne	s0,zero,.L1659
+	j	.L1635
+.L1657:
 	lh	a5,644(s1)
-	j	.L1778
+	j	.L1629
 	.size	sglib__rbtree_it_compute_current_elem, .-sglib__rbtree_it_compute_current_elem
 	.align	2
 	.type	benchmark_body, @function
 benchmark_body:
 	addi	sp,sp,-1152
 	sw	ra,1148(sp)
-	ble	a0,zero,.L1813
+	ble	a0,zero,.L1664
 	sw	s3,1132(sp)
 	lui	s3,%hi(heap)
 	addi	a5,s3,%lo(heap)
@@ -5297,16 +4773,16 @@ benchmark_body:
 	lui	s3,%hi(heap_requested)
 	li	s5,1
 	addi	s0,sp,28
-.L1812:
+.L1663:
 	mv	a2,s2
 	mv	a4,s2
 	mv	a5,s1
-.L1814:
+.L1665:
 	lw	a3,0(a4)
 	addi	a5,a5,4
 	addi	a4,a4,4
 	sw	a3,-4(a5)
-	bne	s10,a5,.L1814
+	bne	s10,a5,.L1665
 	li	a5,100
 	sw	zero,28(sp)
 	sw	a5,432(sp)
@@ -5315,40 +4791,40 @@ benchmark_body:
 	li	t1,0
 	li	t3,2
 	addi	t4,sp,432
-.L1836:
+.L1687:
 	sub	a5,a7,a6
 	mv	t5,t1
-.L1969:
-	ble	a5,t3,.L1815
-.L1974:
+.L1820:
+	ble	a5,t3,.L1666
+.L1825:
 	addi	a3,a7,-1
 	slli	a1,a6,2
 	addi	a5,a6,1
 	slli	t1,a3,2
 	add	t6,s1,a1
-	bge	a5,a3,.L1972
-.L1816:
+	bge	a5,a3,.L1823
+.L1667:
 	lw	a0,0(t6)
-	blt	a3,a5,.L1818
+	blt	a3,a5,.L1669
 	slli	a4,a5,2
 	add	a4,s1,a4
-	j	.L1830
-.L1819:
+	j	.L1681
+.L1670:
 	addi	a5,a5,1
 	addi	a4,a4,4
-	bgt	a5,a3,.L1818
-.L1830:
+	bgt	a5,a3,.L1669
+.L1681:
 	lw	t0,0(a4)
-	ble	t0,a0,.L1819
-	bgt	a5,a3,.L1818
+	ble	t0,a0,.L1670
+	bgt	a5,a3,.L1669
 	add	t1,s1,t1
-.L1820:
+.L1671:
 	lw	a4,0(t1)
-	blt	a4,a0,.L1973
+	blt	a4,a0,.L1824
 	addi	a3,a3,-1
 	addi	t1,t1,-4
-	bge	a3,a5,.L1820
-.L1822:
+	bge	a3,a5,.L1671
+.L1673:
 	slli	a5,a3,2
 	add	a5,s1,a5
 	lw	a4,0(a5)
@@ -5357,13 +4833,13 @@ benchmark_body:
 	sw	a4,0(a1)
 	sub	a5,a3,a6
 	mv	a1,a3
-.L1829:
-	ble	a5,s5,.L1817
+.L1680:
+	ble	a5,s5,.L1668
 	sub	a4,a7,a1
-	ble	a4,s5,.L1902
+	ble	a4,s5,.L1753
 	addi	a4,a4,-1
 	addi	a1,a1,1
-	ble	a4,a5,.L1832
+	ble	a4,a5,.L1683
 	slli	a4,t5,2
 	add	a0,t4,a4
 	add	a4,s0,a4
@@ -5371,20 +4847,20 @@ benchmark_body:
 	sw	a1,0(a4)
 	addi	t5,t5,1
 	mv	a7,a3
-	bgt	a5,t3,.L1974
-.L1815:
-	beq	a5,t3,.L1975
-.L1834:
-	ble	t5,zero,.L1835
-.L1977:
+	bgt	a5,t3,.L1825
+.L1666:
+	beq	a5,t3,.L1826
+.L1685:
+	ble	t5,zero,.L1686
+.L1828:
 	addi	t1,t5,-1
 	slli	a5,t1,2
 	add	a4,s0,a5
 	add	a5,t4,a5
 	lw	a6,0(a4)
 	lw	a7,0(a5)
-	j	.L1836
-.L1818:
+	j	.L1687
+.L1669:
 	add	a4,s1,t1
 	lw	a5,0(a4)
 	add	a1,s1,a1
@@ -5392,10 +4868,10 @@ benchmark_body:
 	sw	a5,0(a1)
 	mv	a1,a3
 	sub	a5,a3,a6
-	j	.L1829
-.L1973:
-	bgt	a5,a3,.L1822
-	bge	a5,a3,.L1900
+	j	.L1680
+.L1824:
+	bgt	a5,a3,.L1673
+	bge	a5,a3,.L1751
 	slli	t1,a3,2
 	add	t0,s1,t1
 	slli	a4,a5,2
@@ -5406,33 +4882,33 @@ benchmark_body:
 	addi	a0,a5,2
 	sw	t2,0(t0)
 	addi	a4,a5,1
-	blt	a0,a3,.L1976
-	bgt	a3,a4,.L1826
+	blt	a0,a3,.L1827
+	bgt	a3,a4,.L1677
 	mv	a4,a5
-.L1826:
+.L1677:
 	mv	a5,a4
-	j	.L1816
-.L1976:
+	j	.L1667
+.L1827:
 	addi	a3,a3,-1
-	ble	a3,a4,.L1958
+	ble	a3,a4,.L1809
 	slli	t1,a3,2
 	mv	a5,a4
-	j	.L1816
-.L1900:
+	j	.L1667
+.L1751:
 	mv	a1,a3
 	mv	a3,a5
 	sub	a5,a3,a6
-	j	.L1829
-.L1972:
+	j	.L1680
+.L1823:
 	mv	a1,a3
-.L1817:
+.L1668:
 	addi	a6,a1,1
 	sub	a5,a7,a6
-	j	.L1969
-.L1902:
+	j	.L1820
+.L1753:
 	mv	a7,a3
-	j	.L1969
-.L1832:
+	j	.L1820
+.L1683:
 	slli	a5,t5,2
 	add	a4,s0,a5
 	add	a5,t4,a5
@@ -5441,8 +4917,8 @@ benchmark_body:
 	addi	t5,t5,1
 	sub	a5,a7,a1
 	mv	a6,a1
-	j	.L1969
-.L1975:
+	j	.L1820
+.L1826:
 	addi	a5,a7,-1
 	slli	a5,a5,2
 	slli	a4,a6,2
@@ -5450,11 +4926,11 @@ benchmark_body:
 	add	a4,s1,a4
 	lw	a1,0(a5)
 	lw	a3,0(a4)
-	ble	a3,a1,.L1834
+	ble	a3,a1,.L1685
 	sw	a1,0(a4)
 	sw	a3,0(a5)
-	bgt	t5,zero,.L1977
-.L1835:
+	bgt	t5,zero,.L1828
+.L1686:
 	lw	a5,4(sp)
 	lw	s11,4(sp)
 	sw	zero,%lo(the_list)(s9)
@@ -5464,35 +4940,35 @@ benchmark_body:
 	mv	a4,s2
 	li	s7,0
 	li	a3,0
-	j	.L1840
-.L1838:
+	j	.L1691
+.L1689:
 	lw	a1,8(a3)
 	sw	a3,4(a5)
 	sw	a1,8(a5)
 	sw	a5,8(a3)
 	lw	a3,8(a5)
-	beq	a3,zero,.L1839
+	beq	a3,zero,.L1690
 	sw	a5,4(a3)
-.L1839:
+.L1690:
 	addi	a4,a4,4
 	li	a3,1
-	beq	s6,a4,.L1978
-.L1840:
+	beq	s6,a4,.L1829
+.L1691:
 	mv	a5,s11
 	addi	s11,s11,12
 	addi	s7,s7,12
-	bgtu	s11,s8,.L1837
+	bgtu	s11,s8,.L1688
 	lw	a1,0(a4)
 	lw	a3,%lo(the_list)(s9)
 	sw	a1,0(a5)
-	bne	a3,zero,.L1838
+	bne	a3,zero,.L1689
 	sw	a5,%lo(the_list)(s9)
 	sw	zero,8(a5)
 	sw	zero,4(a5)
 	addi	a4,a4,4
 	li	a3,1
-	bne	s6,a4,.L1840
-.L1978:
+	bne	s6,a4,.L1691
+.L1829:
 	addi	a0,s9,%lo(the_list)
 	sw	a2,12(sp)
 	sw	s7,%lo(heap_requested)(s3)
@@ -5501,29 +4977,29 @@ benchmark_body:
 	lw	a5,%lo(the_list)(s9)
 	sw	zero,20(sp)
 	lw	a2,12(sp)
-	beq	a5,zero,.L1844
-.L1841:
+	beq	a5,zero,.L1695
+.L1692:
 	mv	a4,a5
 	lw	a5,8(a5)
-	bne	a5,zero,.L1841
-.L1843:
+	bne	a5,zero,.L1692
+.L1694:
 	lw	a5,20(sp)
 	lw	a4,4(a4)
 	addi	a5,a5,1
 	sw	a5,20(sp)
-	bne	a4,zero,.L1843
-.L1844:
+	bne	a4,zero,.L1694
+.L1695:
 	addi	a4,s1,480
 	mv	a5,s10
-.L1842:
+.L1693:
 	sw	zero,0(a5)
 	addi	a5,a5,4
-	bne	a4,a5,.L1842
+	bne	a4,a5,.L1693
 	li	t1,-858992640
 	addi	t1,t1,-819
 	mv	a0,s2
 	li	a7,0
-.L1850:
+.L1701:
 	lw	a1,0(a0)
 	mulhu	a5,a1,t1
 	srli	a5,a5,4
@@ -5535,70 +5011,70 @@ benchmark_body:
 	add	a3,s10,a3
 	lw	a6,0(a3)
 	mv	a5,a6
-	bne	a6,zero,.L1845
-	j	.L1846
-.L1847:
+	bne	a6,zero,.L1696
+	j	.L1697
+.L1698:
 	lw	a5,4(a5)
-	beq	a5,zero,.L1846
-.L1845:
+	beq	a5,zero,.L1697
+.L1696:
 	lw	a4,0(a5)
-	bne	a1,a4,.L1847
+	bne	a1,a4,.L1698
 	addi	a0,a0,4
-	bne	s6,a0,.L1850
-.L1980:
-	beq	a7,zero,.L1851
+	bne	s6,a0,.L1701
+.L1831:
+	beq	a7,zero,.L1702
 	sw	s7,%lo(heap_requested)(s3)
 	sw	s11,%lo(heap_ptr)(s4)
-.L1851:
+.L1702:
 	lw	a5,400(s1)
-	beq	a5,zero,.L1852
+	beq	a5,zero,.L1703
 	lui	a0,%hi(.LANCHOR0+404)
 	lw	a4,4(a5)
 	addi	a0,a0,%lo(.LANCHOR0+404)
 	li	a5,0
-.L1853:
+.L1704:
 	li	a1,19
-.L1860:
+.L1711:
 	lw	a3,20(sp)
 	addi	a3,a3,1
 	sw	a3,20(sp)
-	beq	a4,zero,.L1857
-.L1979:
+	beq	a4,zero,.L1708
+.L1830:
 	lw	a3,20(sp)
 	lw	a4,4(a4)
 	addi	a3,a3,1
 	sw	a3,20(sp)
-	bne	a4,zero,.L1979
-.L1857:
+	bne	a4,zero,.L1830
+.L1708:
 	slli	a4,a5,2
 	add	a4,a0,a4
-.L1859:
+.L1710:
 	addi	a5,a5,1
-	bgt	a5,a1,.L1856
+	bgt	a5,a1,.L1707
 	lw	a3,0(a4)
 	addi	a4,a4,4
-	beq	a3,zero,.L1859
+	beq	a3,zero,.L1710
 	lw	a4,4(a3)
-	j	.L1860
-.L1846:
+	j	.L1711
+.L1697:
 	addi	a5,s11,8
 	addi	s7,s7,8
-	bgtu	a5,s8,.L1849
+	bgtu	a5,s8,.L1700
 	sw	a1,0(s11)
 	sw	a6,4(s11)
 	sw	s11,0(a3)
 	addi	a0,a0,4
 	li	a7,1
 	mv	s11,a5
-	bne	s6,a0,.L1850
-	j	.L1980
-.L1856:
+	bne	s6,a0,.L1701
+	j	.L1831
+.L1707:
 	li	a7,680390656
 	addi	a7,a7,203
 	mv	a4,s2
 	li	a5,0
 	li	t1,101
-.L1861:
+.L1712:
 	addi	a3,a5,1
 	mulh	a1,a3,a7
 	lw	a6,0(a4)
@@ -5611,13 +5087,13 @@ benchmark_body:
 	sub	a5,a5,a0
 	mul	a5,a5,t1
 	sub	a5,a3,a5
-	bne	s6,a4,.L1861
+	bne	s6,a4,.L1712
 	li	a3,680390656
 	addi	a3,a3,203
 	li	a4,0
 	li	a6,101
-	beq	a5,zero,.L1865
-.L1863:
+	beq	a5,zero,.L1716
+.L1714:
 	addi	a1,a4,1
 	mulh	a0,a1,a3
 	slli	a4,a4,2
@@ -5631,48 +5107,48 @@ benchmark_body:
 	sub	a4,a4,a7
 	mul	a4,a4,a6
 	sub	a4,a1,a4
-	bne	a4,a5,.L1863
-.L1865:
+	bne	a4,a5,.L1714
+.L1716:
 	addi	t1,s2,4
 	mv	a7,s0
 	li	a6,0
 	li	a1,14
 	li	t3,99
-.L1864:
+.L1715:
 	sw	a1,0(a7)
 	mv	a5,a6
-	bne	a6,zero,.L1866
-	j	.L1868
-.L1871:
+	bne	a6,zero,.L1717
+	j	.L1719
+.L1722:
 	slli	a5,a5,2
 	add	a5,s0,a5
 	sw	a1,0(a4)
 	sw	a0,0(a5)
-	beq	a3,zero,.L1870
+	beq	a3,zero,.L1721
 	lw	a1,0(a4)
 	mv	a5,a3
-.L1866:
+.L1717:
 	srai	a3,a5,1
 	slli	a4,a3,2
 	add	a4,s0,a4
 	lw	a0,0(a4)
-	blt	a0,a1,.L1871
-.L1870:
-	beq	a6,t3,.L1981
-.L1868:
+	blt	a0,a1,.L1722
+.L1721:
+	beq	a6,t3,.L1832
+.L1719:
 	lw	a1,0(t1)
 	addi	a7,a7,4
 	addi	a6,a6,1
 	addi	t1,t1,4
-	j	.L1864
-.L1981:
+	j	.L1715
+.L1832:
 	addi	a7,s0,396
 	li	a0,100
-	j	.L1877
-.L1872:
+	j	.L1728
+.L1723:
 	addi	a7,a7,-4
-	beq	a0,zero,.L1982
-.L1877:
+	beq	a0,zero,.L1833
+.L1728:
 	lw	a5,20(sp)
 	lw	a4,28(sp)
 	lw	a6,0(a7)
@@ -5681,24 +5157,24 @@ benchmark_body:
 	sw	a5,20(sp)
 	sw	a6,28(sp)
 	li	a5,0
-.L1876:
+.L1727:
 	slli	a4,a5,1
 	addi	a3,a4,1
-	ble	a0,a3,.L1872
+	ble	a0,a3,.L1723
 	slli	a1,a3,2
 	add	a1,s0,a1
 	lw	a1,0(a1)
 	addi	a4,a4,2
-	blt	a6,a1,.L1873
-	ble	a0,a4,.L1872
+	blt	a6,a1,.L1724
+	ble	a0,a4,.L1723
 	slli	a3,a4,2
 	add	a3,s0,a3
 	lw	a1,0(a3)
-	bgt	a6,a1,.L1872
-	bge	a6,a1,.L1872
+	bgt	a6,a1,.L1723
+	bge	a6,a1,.L1723
 	mv	a3,a4
-.L1875:
-	beq	a5,a3,.L1872
+.L1726:
+	beq	a5,a3,.L1723
 	slli	a5,a5,2
 	add	a5,s0,a5
 	slli	a4,a3,2
@@ -5706,35 +5182,35 @@ benchmark_body:
 	add	a5,s0,a4
 	sw	a6,0(a5)
 	mv	a5,a3
-	j	.L1876
-.L1873:
-	ble	a0,a4,.L1875
+	j	.L1727
+.L1724:
+	ble	a0,a4,.L1726
 	slli	t1,a4,2
 	add	t1,s0,t1
 	lw	t1,0(t1)
-	bgt	a1,t1,.L1875
-	bge	a1,t1,.L1875
+	bgt	a1,t1,.L1726
+	bge	a1,t1,.L1726
 	mv	a1,t1
 	mv	a3,a4
-	j	.L1875
-.L1982:
+	j	.L1726
+.L1833:
 	sw	zero,24(sp)
 	li	a3,14
 	li	s11,4
 	mv	s7,a2
-.L1878:
+.L1729:
 	lw	a1,%lo(heap_ptr)(s4)
 	lw	a5,%lo(heap_requested)(s3)
 	andi	a4,a1,3
 	addi	a2,a1,16
 	addi	a5,a5,16
-	beq	a4,zero,.L1883
+	beq	a4,zero,.L1734
 	sub	a4,s11,a4
 	add	a2,a2,a4
 	add	a5,a5,a4
-.L1883:
+.L1734:
 	sw	a5,%lo(heap_requested)(s3)
-	bgtu	a2,s8,.L1884
+	bgtu	a2,s8,.L1735
 	sw	a3,0(a1)
 	sw	zero,12(a1)
 	sw	zero,8(a1)
@@ -5744,29 +5220,29 @@ benchmark_body:
 	lw	a1,24(sp)
 	addi	s7,s7,4
 	sb	zero,4(a1)
-	beq	s6,s7,.L1885
-.L1970:
+	beq	s6,s7,.L1736
+.L1821:
 	mv	a4,a1
 	lw	a3,0(s7)
 	lw	a5,0(a4)
 	sub	a5,a3,a5
-	blt	a5,zero,.L1983
-.L1879:
-	beq	a5,zero,.L1881
+	blt	a5,zero,.L1834
+.L1730:
+	beq	a5,zero,.L1732
 	lw	a4,12(a4)
-	beq	a4,zero,.L1878
-.L1971:
+	beq	a4,zero,.L1729
+.L1822:
 	lw	a5,0(a4)
 	sub	a5,a3,a5
-	bge	a5,zero,.L1879
-.L1983:
+	bge	a5,zero,.L1730
+.L1834:
 	lw	a4,8(a4)
-	bne	a4,zero,.L1971
-	j	.L1878
-.L1881:
+	bne	a4,zero,.L1822
+	j	.L1729
+.L1732:
 	addi	s7,s7,4
-	bne	s6,s7,.L1970
-.L1885:
+	bne	s6,s7,.L1821
+.L1736:
 	li	a5,65536
 	addi	a5,a5,1
 	sw	a5,1076(sp)
@@ -5779,11 +5255,11 @@ benchmark_body:
 	li	a7,0
 	addi	a0,sp,1088
 	addi	a6,sp,436
-.L1887:
+.L1738:
 	lw	a3,8(a1)
 	li	a4,0
-.L1894:
-	beq	a3,zero,.L1889
+.L1745:
+	beq	a3,zero,.L1740
 	slli	a4,a2,2
 	add	a4,a4,a6
 	sw	a3,128(a4)
@@ -5794,31 +5270,31 @@ benchmark_body:
 	slli	a5,a5,16
 	srai	a5,a5,16
 	li	a7,1
-.L1889:
+.L1740:
 	addi	a4,a4,1
 	sb	a4,-652(a0)
-	ble	a5,zero,.L1890
-.L1985:
+	ble	a5,zero,.L1741
+.L1836:
 	addi	a3,a5,-1
 	addi	a4,a3,1072
 	addi	a2,sp,16
 	add	a0,a4,a2
 	lbu	a4,-652(a0)
 	mv	a2,a5
-	beq	a4,s5,.L1891
-	bleu	a4,s5,.L1984
+	beq	a4,s5,.L1742
+	bleu	a4,s5,.L1835
 	slli	a5,a3,16
 	srai	a5,a5,16
 	li	a7,1
-	bgt	a5,zero,.L1985
-.L1890:
+	bgt	a5,zero,.L1836
+.L1741:
 	lw	a5,0(sp)
 	addi	a5,a5,1
 	sw	a5,0(sp)
 	lw	a4,0(sp)
 	lw	a5,8(sp)
-	bne	a5,a4,.L1812
-.L1986:
+	bne	a5,a4,.L1663
+.L1837:
 	lw	s0,1144(sp)
 	lw	s1,1140(sp)
 	lw	s2,1136(sp)
@@ -5831,41 +5307,41 @@ benchmark_body:
 	lw	s9,1108(sp)
 	lw	s10,1104(sp)
 	lw	s11,1100(sp)
-.L1813:
+.L1664:
 	lw	ra,1148(sp)
 	lw	a0,20(sp)
 	addi	sp,sp,1152
 	jr	ra
-.L1984:
+.L1835:
 	slli	a4,a5,2
 	add	a4,a4,sp
 	lw	a1,560(a4)
-	j	.L1887
-.L1891:
+	j	.L1738
+.L1742:
 	slli	a3,a5,2
 	add	a3,a3,a6
 	lw	a3,124(a3)
-	bne	a3,zero,.L1893
+	bne	a3,zero,.L1744
 	lw	a3,12(zero)
-	j	.L1894
-.L1852:
+	j	.L1745
+.L1703:
 	addi	a0,s10,4
 	mv	a4,a0
 	li	a1,20
-.L1854:
+.L1705:
 	addi	a5,a5,1
-	beq	a5,a1,.L1856
+	beq	a5,a1,.L1707
 	lw	a3,0(a4)
 	addi	a4,a4,4
-	beq	a3,zero,.L1854
+	beq	a3,zero,.L1705
 	lw	a4,4(a3)
-	j	.L1853
-.L1893:
-	beq	a7,zero,.L1895
+	j	.L1704
+.L1744:
+	beq	a7,zero,.L1746
 	sh	a5,1076(sp)
-.L1895:
+.L1746:
 	sw	a3,432(sp)
-.L1896:
+.L1747:
 	lw	a4,0(a3)
 	lw	a5,20(sp)
 	addi	a0,sp,432
@@ -5873,31 +5349,31 @@ benchmark_body:
 	sw	a5,20(sp)
 	call	sglib__rbtree_it_compute_current_elem
 	lw	a3,432(sp)
-	bne	a3,zero,.L1896
+	bne	a3,zero,.L1747
 	lw	a5,0(sp)
 	addi	a5,a5,1
 	sw	a5,0(sp)
 	lw	a4,0(sp)
 	lw	a5,8(sp)
-	bne	a5,a4,.L1812
-	j	.L1986
-.L1958:
+	bne	a5,a4,.L1663
+	j	.L1837
+.L1809:
 	mv	a1,a3
 	sub	a5,a4,a6
 	mv	a3,a4
-	j	.L1829
-.L1849:
+	j	.L1680
+.L1700:
 	sw	s7,%lo(heap_requested)(s3)
-	beq	a7,zero,.L1884
+	beq	a7,zero,.L1735
 	sw	s11,%lo(heap_ptr)(s4)
-.L1884:
+.L1735:
 	sw	zero,0(zero)
 	ebreak
-.L1837:
+.L1688:
 	sw	s7,%lo(heap_requested)(s3)
-	beq	a3,zero,.L1884
+	beq	a3,zero,.L1735
 	sw	a5,%lo(heap_ptr)(s4)
-	j	.L1884
+	j	.L1735
 	.size	benchmark_body, .-benchmark_body
 	.align	2
 	.globl	sglib__rbtree_it_init
@@ -5914,26 +5390,26 @@ sglib__rbtree_it_init:
 	mv	s3,a0
 	mv	s4,a2
 	mv	s0,a1
-	beq	a4,zero,.L1988
+	beq	a4,zero,.L1839
 	sw	s1,20(sp)
 	sw	s2,16(sp)
 	mv	s1,a4
 	mv	s2,a3
-	beq	a3,zero,.L1989
-.L1999:
-	beq	s0,zero,.L2018
-.L1990:
+	beq	a3,zero,.L1840
+.L1850:
+	beq	s0,zero,.L1869
+.L1841:
 	mv	a1,s0
 	mv	a0,s1
 	jalr	s2
-	blt	a0,zero,.L2022
-	beq	a0,zero,.L2020
+	blt	a0,zero,.L1873
+	beq	a0,zero,.L1871
 	lw	s0,12(s0)
-	bne	s0,zero,.L1990
-.L2018:
+	bne	s0,zero,.L1841
+.L1869:
 	lw	s1,20(sp)
 	lw	s2,16(sp)
-.L1992:
+.L1843:
 	lw	ra,28(sp)
 	lw	s0,24(sp)
 	sh	zero,644(s3)
@@ -5943,17 +5419,17 @@ sglib__rbtree_it_init:
 	li	a0,0
 	addi	sp,sp,32
 	jr	ra
-.L2022:
+.L1873:
 	lw	s0,8(s0)
-	j	.L1999
-.L1988:
-	beq	a1,zero,.L1992
+	j	.L1850
+.L1839:
+	beq	a1,zero,.L1843
 	li	a5,1
 	sb	zero,4(s3)
 	sw	s0,132(s3)
 	sh	a5,644(s3)
-	bne	s4,zero,.L2000
-.L2024:
+	bne	s4,zero,.L1851
+.L1875:
 	sw	s0,0(s3)
 	lw	ra,28(sp)
 	mv	a0,s0
@@ -5962,7 +5438,7 @@ sglib__rbtree_it_init:
 	lw	s4,8(sp)
 	addi	sp,sp,32
 	jr	ra
-.L2000:
+.L1851:
 	mv	a0,s3
 	call	sglib__rbtree_it_compute_current_elem
 	lw	ra,28(sp)
@@ -5972,33 +5448,33 @@ sglib__rbtree_it_init:
 	lw	s3,12(sp)
 	addi	sp,sp,32
 	jr	ra
-.L1989:
-	beq	a1,zero,.L2018
+.L1840:
+	beq	a1,zero,.L1869
 	lw	a4,0(a4)
 	lw	a5,0(s0)
 	sub	a5,a4,a5
-	blt	a5,zero,.L2023
-.L1993:
-	beq	a5,zero,.L2020
+	blt	a5,zero,.L1874
+.L1844:
+	beq	a5,zero,.L1871
 	lw	s0,12(s0)
-	beq	s0,zero,.L2018
-.L2021:
+	beq	s0,zero,.L1869
+.L1872:
 	lw	a5,0(s0)
 	sub	a5,a4,a5
-	bge	a5,zero,.L1993
-.L2023:
+	bge	a5,zero,.L1844
+.L1874:
 	lw	s0,8(s0)
-	bne	s0,zero,.L2021
-	j	.L2018
-.L2020:
+	bne	s0,zero,.L1872
+	j	.L1869
+.L1871:
 	li	a5,1
 	lw	s1,20(sp)
 	lw	s2,16(sp)
 	sb	zero,4(s3)
 	sw	s0,132(s3)
 	sh	a5,644(s3)
-	beq	s4,zero,.L2024
-	j	.L2000
+	beq	s4,zero,.L1875
+	j	.L1851
 	.size	sglib__rbtree_it_init, .-sglib__rbtree_it_init
 	.align	2
 	.globl	sglib_rbtree_it_init
@@ -6009,7 +5485,7 @@ sglib_rbtree_it_init:
 	sw	zero,652(a0)
 	sh	a7,646(a0)
 	mv	a4,a0
-	beq	a1,zero,.L2043
+	beq	a1,zero,.L1894
 	li	a3,1
 	mv	a5,a3
 	sh	a3,644(a0)
@@ -6019,15 +5495,15 @@ sglib_rbtree_it_init:
 	sw	zero,0(a0)
 	li	a3,0
 	li	a2,0
-.L2028:
-	bgtu	a3,a6,.L2035
+.L1879:
+	bgtu	a3,a6,.L1886
 	slli	a1,a5,2
 	add	a1,a4,a1
 	lw	a0,128(a1)
-	bne	a3,zero,.L2030
+	bne	a3,zero,.L1881
 	lw	a0,8(a0)
-	beq	a0,zero,.L2044
-.L2032:
+	beq	a0,zero,.L1895
+.L1883:
 	addi	t1,a5,1
 	add	a3,a4,a5
 	sw	a0,132(a1)
@@ -6037,41 +5513,41 @@ sglib_rbtree_it_init:
 	add	a2,a4,a2
 	sh	a5,644(a4)
 	lbu	a3,4(a2)
-.L2033:
+.L1884:
 	addi	a3,a3,1
 	sb	a3,4(a2)
-	ble	a5,zero,.L2045
-.L2034:
+	ble	a5,zero,.L1896
+.L1885:
 	addi	a2,a5,-1
 	add	a3,a4,a2
 	lbu	a3,4(a3)
-	bne	a3,a7,.L2028
+	bne	a3,a7,.L1879
 	slli	a5,a5,2
 	add	a5,a4,a5
 	lw	a0,128(a5)
 	sw	a0,0(a4)
-	bne	a0,zero,.L2046
-.L2035:
+	bne	a0,zero,.L1897
+.L1886:
 	slli	a5,a2,16
 	srai	a5,a5,16
 	sh	a5,644(a4)
-	bgt	a5,zero,.L2034
-.L2045:
+	bgt	a5,zero,.L1885
+.L1896:
 	li	a0,0
 	ret
-.L2030:
+.L1881:
 	lw	a0,12(a0)
-	bne	a0,zero,.L2032
-.L2044:
+	bne	a0,zero,.L1883
+.L1895:
 	lh	a5,644(a4)
 	add	a2,a4,a2
-	j	.L2033
-.L2043:
+	j	.L1884
+.L1894:
 	sh	zero,644(a0)
 	sw	zero,0(a0)
 	li	a0,0
 	ret
-.L2046:
+.L1897:
 	ret
 	.size	sglib_rbtree_it_init, .-sglib_rbtree_it_init
 	.align	2
@@ -6082,11 +5558,11 @@ sglib_rbtree_it_init_preorder:
 	sw	zero,648(a0)
 	sw	zero,652(a0)
 	li	a4,0
-	beq	a1,zero,.L2048
+	beq	a1,zero,.L1899
 	sb	zero,4(a0)
 	sw	a1,132(a0)
 	li	a4,1
-.L2048:
+.L1899:
 	sw	a1,0(a0)
 	sh	a4,644(a0)
 	mv	a0,a1
@@ -6101,7 +5577,7 @@ sglib_rbtree_it_init_inorder:
 	sw	zero,652(a0)
 	sh	a3,646(a0)
 	mv	a4,a0
-	beq	a1,zero,.L2065
+	beq	a1,zero,.L1916
 	mv	a5,a3
 	sh	a3,644(a0)
 	mv	a6,a3
@@ -6110,28 +5586,28 @@ sglib_rbtree_it_init_inorder:
 	sw	zero,0(a0)
 	li	a3,0
 	li	a2,0
-.L2054:
-	bleu	a3,a6,.L2066
+.L1905:
+	bleu	a3,a6,.L1917
 	slli	a5,a2,16
 	srai	a5,a5,16
 	sh	a5,644(a4)
-	ble	a5,zero,.L2067
-.L2058:
+	ble	a5,zero,.L1918
+.L1909:
 	addi	a2,a5,-1
 	add	a3,a4,a2
 	lbu	a3,4(a3)
-	bne	a3,a6,.L2054
+	bne	a3,a6,.L1905
 	slli	a1,a5,2
 	add	a1,a4,a1
 	lw	a0,128(a1)
 	sw	a0,0(a4)
-	bne	a0,zero,.L2068
+	bne	a0,zero,.L1919
 	slli	a1,a5,2
 	add	a1,a4,a1
 	lw	a0,128(a1)
 	lw	a0,12(a0)
-	beq	a0,zero,.L2069
-.L2056:
+	beq	a0,zero,.L1920
+.L1907:
 	addi	a7,a5,1
 	add	a3,a4,a5
 	sw	a0,132(a1)
@@ -6141,30 +5617,30 @@ sglib_rbtree_it_init_inorder:
 	add	a2,a4,a2
 	sh	a5,644(a4)
 	lbu	a3,4(a2)
-.L2057:
+.L1908:
 	addi	a3,a3,1
 	sb	a3,4(a2)
-	bgt	a5,zero,.L2058
-.L2067:
+	bgt	a5,zero,.L1909
+.L1918:
 	li	a0,0
 	ret
-.L2066:
+.L1917:
 	slli	a1,a5,2
 	add	a1,a4,a1
 	lw	a0,128(a1)
 	li	a3,0
 	lw	a0,8(a0)
-	bne	a0,zero,.L2056
-.L2069:
+	bne	a0,zero,.L1907
+.L1920:
 	lh	a5,644(a4)
 	add	a2,a4,a2
-	j	.L2057
-.L2065:
+	j	.L1908
+.L1916:
 	sh	zero,644(a0)
 	sw	zero,0(a0)
 	li	a0,0
 	ret
-.L2068:
+.L1919:
 	ret
 	.size	sglib_rbtree_it_init_inorder, .-sglib_rbtree_it_init_inorder
 	.align	2
@@ -6176,7 +5652,7 @@ sglib_rbtree_it_init_postorder:
 	sw	zero,652(a0)
 	sh	a7,646(a0)
 	mv	a4,a0
-	beq	a1,zero,.L2088
+	beq	a1,zero,.L1939
 	li	a3,1
 	mv	a5,a3
 	sh	a3,644(a0)
@@ -6186,15 +5662,15 @@ sglib_rbtree_it_init_postorder:
 	sw	zero,0(a0)
 	li	a3,0
 	li	a2,0
-.L2073:
-	bgtu	a3,a6,.L2080
+.L1924:
+	bgtu	a3,a6,.L1931
 	slli	a1,a5,2
 	add	a1,a4,a1
 	lw	a0,128(a1)
-	bne	a3,zero,.L2075
+	bne	a3,zero,.L1926
 	lw	a0,8(a0)
-	beq	a0,zero,.L2089
-.L2077:
+	beq	a0,zero,.L1940
+.L1928:
 	addi	t1,a5,1
 	add	a3,a4,a5
 	sw	a0,132(a1)
@@ -6204,41 +5680,41 @@ sglib_rbtree_it_init_postorder:
 	add	a2,a4,a2
 	sh	a5,644(a4)
 	lbu	a3,4(a2)
-.L2078:
+.L1929:
 	addi	a3,a3,1
 	sb	a3,4(a2)
-	ble	a5,zero,.L2090
-.L2079:
+	ble	a5,zero,.L1941
+.L1930:
 	addi	a2,a5,-1
 	add	a3,a4,a2
 	lbu	a3,4(a3)
-	bne	a3,a7,.L2073
+	bne	a3,a7,.L1924
 	slli	a5,a5,2
 	add	a5,a4,a5
 	lw	a0,128(a5)
 	sw	a0,0(a4)
-	bne	a0,zero,.L2091
-.L2080:
+	bne	a0,zero,.L1942
+.L1931:
 	slli	a5,a2,16
 	srai	a5,a5,16
 	sh	a5,644(a4)
-	bgt	a5,zero,.L2079
-.L2090:
+	bgt	a5,zero,.L1930
+.L1941:
 	li	a0,0
 	ret
-.L2075:
+.L1926:
 	lw	a0,12(a0)
-	bne	a0,zero,.L2077
-.L2089:
+	bne	a0,zero,.L1928
+.L1940:
 	lh	a5,644(a4)
 	add	a2,a4,a2
-	j	.L2078
-.L2088:
+	j	.L1929
+.L1939:
 	sh	zero,644(a0)
 	sw	zero,0(a0)
 	li	a0,0
 	ret
-.L2091:
+.L1942:
 	ret
 	.size	sglib_rbtree_it_init_postorder, .-sglib_rbtree_it_init_postorder
 	.align	2
@@ -6284,17 +5760,17 @@ sglib___rbtree_consistency_check:
 	li	a5,-1
 	sw	ra,44(sp)
 	sw	a5,28(sp)
-	beq	a0,zero,.L2097
+	beq	a0,zero,.L1948
 	lbu	a2,4(a0)
 	li	a3,1
 	lw	a4,8(a0)
 	mv	a5,a0
-	beq	a2,a3,.L2156
-	beq	a4,zero,.L2109
+	beq	a2,a3,.L2007
+	beq	a4,zero,.L1960
 	sw	s0,40(sp)
 	lbu	a1,4(a4)
 	lw	a6,8(a4)
-	beq	a1,a3,.L2157
+	beq	a1,a3,.L2008
 	addi	s0,sp,28
 	sw	a0,4(sp)
 	mv	a1,s0
@@ -6305,17 +5781,17 @@ sglib___rbtree_consistency_check:
 	lw	a5,4(sp)
 	li	a3,1
 	lw	a4,12(a4)
-	beq	a4,zero,.L2158
+	beq	a4,zero,.L2009
 	lbu	a2,4(a4)
 	lw	a6,8(a4)
-	beq	a2,a3,.L2159
-	beq	a6,zero,.L2160
+	beq	a2,a3,.L2010
+	beq	a6,zero,.L2011
 	lbu	a2,4(a6)
 	sw	a5,8(sp)
 	sw	a6,4(sp)
 	sw	a4,0(sp)
 	lw	a0,8(a6)
-	beq	a2,a3,.L2161
+	beq	a2,a3,.L2012
 	li	a2,4
 	mv	a1,s0
 	call	sglib___rbtree_consistency_check_recursive
@@ -6326,16 +5802,16 @@ sglib___rbtree_consistency_check:
 	call	sglib___rbtree_consistency_check_recursive
 	lw	a5,8(sp)
 	lw	a4,0(sp)
-.L2117:
+.L1968:
 	lw	a4,12(a4)
-	beq	a4,zero,.L2162
-.L2118:
+	beq	a4,zero,.L2013
+.L1969:
 	lbu	a2,4(a4)
 	li	a3,1
 	sw	a5,4(sp)
 	sw	a4,0(sp)
 	lw	a0,8(a4)
-	beq	a2,a3,.L2163
+	beq	a2,a3,.L2014
 	li	a2,4
 	mv	a1,s0
 	call	sglib___rbtree_consistency_check_recursive
@@ -6345,8 +5821,8 @@ sglib___rbtree_consistency_check:
 	lw	a0,12(a4)
 	call	sglib___rbtree_consistency_check_recursive
 	lw	a5,4(sp)
-	j	.L2111
-.L2156:
+	j	.L1962
+.L2007:
 	sw	a0,0(sp)
 	addi	a1,sp,28
 	mv	a0,a4
@@ -6355,23 +5831,23 @@ sglib___rbtree_consistency_check:
 	addi	a1,sp,28
 	lw	a0,12(a5)
 	call	sglib___rbtree_consistency_check_recursive.constprop.0
-.L2097:
+.L1948:
 	lw	ra,44(sp)
 	addi	sp,sp,48
 	jr	ra
-.L2158:
+.L2009:
 	lw	a4,28(sp)
-	blt	a4,zero,.L2164
-.L2151:
+	blt	a4,zero,.L2015
+.L2002:
 	lw	s0,40(sp)
-.L2102:
+.L1953:
 	lw	a5,12(a5)
-	beq	a5,zero,.L2097
+	beq	a5,zero,.L1948
 	lbu	a3,4(a5)
 	li	a2,1
 	lw	a4,8(a5)
-	beq	a3,a2,.L2165
-.L2121:
+	beq	a3,a2,.L2016
+.L1972:
 	mv	a0,a4
 	addi	a1,sp,28
 	sw	a5,0(sp)
@@ -6383,11 +5859,11 @@ sglib___rbtree_consistency_check:
 	lw	ra,44(sp)
 	addi	sp,sp,48
 	jr	ra
-.L2157:
-	beq	a6,zero,.L2166
+.L2008:
+	beq	a6,zero,.L2017
 	lbu	a2,4(a6)
 	lw	a0,8(a6)
-	beq	a2,a1,.L2167
+	beq	a2,a1,.L2018
 	addi	s0,sp,28
 	mv	a1,s0
 	li	a2,2
@@ -6402,17 +5878,17 @@ sglib___rbtree_consistency_check:
 	call	sglib___rbtree_consistency_check_recursive
 	lw	a5,8(sp)
 	lw	a4,0(sp)
-.L2108:
+.L1959:
 	lw	a4,12(a4)
-	beq	a4,zero,.L2168
-.L2106:
+	beq	a4,zero,.L2019
+.L1957:
 	lbu	a2,4(a4)
 	li	a3,1
 	lw	a0,8(a4)
-	beq	a2,a3,.L2169
+	beq	a2,a3,.L2020
 	sw	a5,4(sp)
 	sw	a4,0(sp)
-.L2155:
+.L2006:
 	li	a2,2
 	mv	a1,s0
 	call	sglib___rbtree_consistency_check_recursive
@@ -6422,20 +5898,20 @@ sglib___rbtree_consistency_check:
 	lw	a0,12(a4)
 	call	sglib___rbtree_consistency_check_recursive
 	lw	a5,4(sp)
-.L2111:
+.L1962:
 	lw	a5,12(a5)
 	lw	s0,40(sp)
-	beq	a5,zero,.L2097
+	beq	a5,zero,.L1948
 	lbu	a3,4(a5)
 	li	a2,1
 	lw	a4,8(a5)
-	bne	a3,a2,.L2121
-.L2165:
+	bne	a3,a2,.L1972
+.L2016:
 	sw	s0,40(sp)
-	beq	a4,zero,.L2170
+	beq	a4,zero,.L2021
 	lbu	a2,4(a4)
 	lw	a0,8(a4)
-	beq	a2,a3,.L2171
+	beq	a2,a3,.L2022
 	addi	s0,sp,28
 	mv	a1,s0
 	li	a2,2
@@ -6448,14 +5924,14 @@ sglib___rbtree_consistency_check:
 	lw	a0,12(a4)
 	call	sglib___rbtree_consistency_check_recursive
 	lw	a5,0(sp)
-.L2125:
+.L1976:
 	lw	a5,12(a5)
-	beq	a5,zero,.L2154
-.L2127:
+	beq	a5,zero,.L2005
+.L1978:
 	lbu	a2,4(a5)
 	li	a4,1
 	lw	a0,8(a5)
-	beq	a2,a4,.L2172
+	beq	a2,a4,.L2023
 	mv	a1,s0
 	li	a2,2
 	sw	a5,0(sp)
@@ -6466,26 +5942,26 @@ sglib___rbtree_consistency_check:
 	lw	a0,12(a5)
 	call	sglib___rbtree_consistency_check_recursive
 	lw	s0,40(sp)
-	j	.L2097
-.L2168:
+	j	.L1948
+.L2019:
 	lw	a4,28(sp)
 	lw	s0,40(sp)
-	bge	a4,zero,.L2102
-.L2109:
+	bge	a4,zero,.L1953
+.L1960:
 	li	a4,1
 	sw	a4,28(sp)
-	j	.L2102
-.L2159:
+	j	.L1953
+.L2010:
 	sw	a5,4(sp)
 	sw	a4,0(sp)
 	mv	a0,a6
-	j	.L2155
-.L2164:
+	j	.L2006
+.L2015:
 	li	a4,2
 	lw	s0,40(sp)
 	sw	a4,28(sp)
-	j	.L2102
-.L2161:
+	j	.L1953
+.L2012:
 	li	a2,3
 	mv	a1,s0
 	call	sglib___rbtree_consistency_check_recursive
@@ -6496,28 +5972,28 @@ sglib___rbtree_consistency_check:
 	call	sglib___rbtree_consistency_check_recursive
 	lw	a4,0(sp)
 	lw	a5,8(sp)
-	j	.L2117
-.L2170:
+	j	.L1968
+.L2021:
 	lw	a4,28(sp)
-	bge	a4,zero,.L2123
+	bge	a4,zero,.L1974
 	sw	a3,28(sp)
-.L2123:
+.L1974:
 	lw	a5,12(a5)
 	addi	s0,sp,28
-	bne	a5,zero,.L2127
-.L2154:
+	bne	a5,zero,.L1978
+.L2005:
 	lw	s0,40(sp)
-	j	.L2097
-.L2160:
+	j	.L1948
+.L2011:
 	lw	a3,28(sp)
-	bge	a3,zero,.L2115
+	bge	a3,zero,.L1966
 	li	a3,3
 	sw	a3,28(sp)
-.L2115:
+.L1966:
 	lw	a4,12(a4)
-	bne	a4,zero,.L2118
-	j	.L2151
-.L2167:
+	bne	a4,zero,.L1969
+	j	.L2002
+.L2018:
 	addi	s0,sp,28
 	mv	a1,s0
 	sw	a5,12(sp)
@@ -6532,8 +6008,8 @@ sglib___rbtree_consistency_check:
 	call	sglib___rbtree_consistency_check_recursive
 	lw	a4,4(sp)
 	lw	a5,12(sp)
-	j	.L2108
-.L2169:
+	j	.L1959
+.L2020:
 	mv	a1,s0
 	sw	a5,8(sp)
 	sw	a4,4(sp)
@@ -6545,8 +6021,8 @@ sglib___rbtree_consistency_check:
 	lw	a0,12(a4)
 	call	sglib___rbtree_consistency_check_recursive
 	lw	a5,8(sp)
-	j	.L2111
-.L2172:
+	j	.L1962
+.L2023:
 	mv	a1,s0
 	sw	a5,4(sp)
 	sw	a2,0(sp)
@@ -6557,8 +6033,8 @@ sglib___rbtree_consistency_check:
 	lw	a0,12(a5)
 	call	sglib___rbtree_consistency_check_recursive
 	lw	s0,40(sp)
-	j	.L2097
-.L2171:
+	j	.L1948
+.L2022:
 	addi	s0,sp,28
 	mv	a1,s0
 	sw	a5,4(sp)
@@ -6571,8 +6047,8 @@ sglib___rbtree_consistency_check:
 	lw	a0,12(a4)
 	call	sglib___rbtree_consistency_check_recursive
 	lw	a5,4(sp)
-	j	.L2125
-.L2163:
+	j	.L1976
+.L2014:
 	li	a2,3
 	mv	a1,s0
 	call	sglib___rbtree_consistency_check_recursive
@@ -6582,20 +6058,20 @@ sglib___rbtree_consistency_check:
 	lw	a0,12(a4)
 	call	sglib___rbtree_consistency_check_recursive
 	lw	a5,4(sp)
-	j	.L2111
-.L2162:
+	j	.L1962
+.L2013:
 	lw	a4,28(sp)
-	bge	a4,zero,.L2151
+	bge	a4,zero,.L2002
 	li	a4,3
 	lw	s0,40(sp)
 	sw	a4,28(sp)
-	j	.L2102
-.L2166:
+	j	.L1953
+.L2017:
 	lw	a4,12(a4)
 	sw	a1,28(sp)
 	addi	s0,sp,28
-	bne	a4,zero,.L2106
-	j	.L2151
+	bne	a4,zero,.L1957
+	j	.L2002
 	.size	sglib___rbtree_consistency_check, .-sglib___rbtree_consistency_check
 	.align	2
 	.globl	verify_benchmark
@@ -6603,25 +6079,25 @@ sglib___rbtree_consistency_check:
 verify_benchmark:
 	lui	a5,%hi(the_list)
 	lw	a4,%lo(the_list)(a5)
-	beq	a4,zero,.L2174
-.L2175:
+	beq	a4,zero,.L2025
+.L2026:
 	mv	a5,a4
 	lw	a4,8(a4)
-	bne	a4,zero,.L2175
+	bne	a4,zero,.L2026
 	lw	a3,0(a5)
-	bne	a3,a4,.L2183
-.L2196:
+	bne	a3,a4,.L2034
+.L2047:
 	lw	a5,4(a5)
 	addi	a4,a4,1
-	beq	a5,zero,.L2174
+	beq	a5,zero,.L2025
 	lw	a3,0(a5)
-	beq	a3,a4,.L2196
-.L2183:
+	beq	a3,a4,.L2047
+.L2034:
 	li	a5,0
-.L2173:
+.L2024:
 	mv	a0,a5
 	ret
-.L2174:
+.L2025:
 	lui	a5,%hi(.LANCHOR1)
 	addi	t1,a5,%lo(.LANCHOR1)
 	lui	a1,%hi(.LANCHOR0)
@@ -6630,7 +6106,7 @@ verify_benchmark:
 	addi	a7,t1,400
 	addi	a1,a1,%lo(.LANCHOR0)
 	addi	a6,a6,-819
-.L2180:
+.L2031:
 	lw	a3,0(a2)
 	mulhu	a4,a3,a6
 	srli	a4,a4,4
@@ -6641,20 +6117,20 @@ verify_benchmark:
 	slli	a5,a5,2
 	add	a5,a1,a5
 	lw	a5,400(a5)
-	bne	a5,zero,.L2178
-	j	.L2173
-.L2179:
+	bne	a5,zero,.L2029
+	j	.L2024
+.L2030:
 	lw	a5,4(a5)
-	beq	a5,zero,.L2173
-.L2178:
+	beq	a5,zero,.L2024
+.L2029:
 	lw	a4,0(a5)
-	bne	a3,a4,.L2179
+	bne	a3,a4,.L2030
 	addi	a2,a2,4
-	bne	a7,a2,.L2180
+	bne	a7,a2,.L2031
 	li	a4,16384
 	addi	a4,a4,-1334
 	li	a5,0
-	bne	a0,a4,.L2173
+	bne	a0,a4,.L2024
 	lui	a4,%hi(heap_requested)
 	lw	a4,%lo(heap_requested)(a4)
 	lui	a2,%hi(heap_end)
@@ -6662,21 +6138,21 @@ verify_benchmark:
 	lw	a2,%lo(heap_end)(a2)
 	addi	a3,a3,%lo(heap)
 	add	a4,a4,a3
-	bltu	a2,a4,.L2173
+	bltu	a2,a4,.L2024
 	addi	a5,t1,401
 	addi	a3,a1,400
 	li	a4,0
-	j	.L2182
-.L2197:
+	j	.L2033
+.L2048:
 	lbu	a4,0(a5)
 	addi	a5,a5,1
-.L2182:
+.L2033:
 	lbu	a2,0(a1)
 	addi	a1,a1,1
-	bne	a2,a4,.L2183
-	bne	a3,a1,.L2197
+	bne	a2,a4,.L2034
+	bne	a3,a1,.L2048
 	li	a5,1
-	j	.L2173
+	j	.L2024
 	.size	verify_benchmark, .-verify_benchmark
 	.align	2
 	.globl	initialise_benchmark
@@ -6713,18 +6189,11 @@ benchmark:
 	.type	main, @function
 main:
 	addi	sp,sp,-32
-	sw	ra,28(sp)
- #APP
-# 15 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	li	a0,1
+	sw	ra,28(sp)
 	call	benchmark_body
-	call	start_trigger
 	call	benchmark
 	sw	a0,12(sp)
-	call	stop_trigger
 	lw	a0,12(sp)
 	call	verify_benchmark
 	lw	ra,28(sp)
@@ -6976,10 +6445,6 @@ heap_end:
 	.type	heap_ptr, @object
 	.size	heap_ptr, 4
 heap_ptr:
-	.zero	4
-	.type	seed, @object
-	.size	seed, 4
-seed:
 	.zero	4
 	.ident	"GCC: (g1b306039a) 15.1.0"
 	.section	.note.GNU-stack,"",@progbits
