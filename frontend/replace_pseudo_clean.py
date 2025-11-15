@@ -91,6 +91,13 @@ def replace_pseudo_instructions(asm_content):
                 result.append(f"{indent}jalr\tra, {rs}, 0")
                 replaced = True
         
+        # ebreak -> remove debugging breakpoint instructions
+        elif re.match(r'^\s*ebreak\s*($|#)', line):
+            # Drop the instruction entirely so the cleaned output doesn't trigger
+            # breakpoint exceptions when executed outside of a debugger
+            replaced = True
+            continue
+
         # tail target -> auipc + jalr with zero (tail call, no return address saved)
         elif match := re.match(r'^\s*tail\s+(\S+)\s*($|#)', line):
             target = match.group(1)

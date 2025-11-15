@@ -4817,545 +4817,21 @@ benchmark_body.isra.0:
 	jal	zero, .L65
 	.size	benchmark_body.isra.0, .-benchmark_body.isra.0
 	.align	2
-	.globl	memset
-	.type	memset, @function
-memset:
-	beq	a2,zero,.L271
-	addi	a5,a2,-1
-	addi	a4, zero, 5
-	andi	a1,a1,0xff
-	bgeu	a4, a5, .L267
-	sub	a4, zero, a0
-	andi	a5,a4,3
-	addi	a6, zero, 0
-	beq	a5,zero,.L261
-	sb	a1,0(a0)
-	andi	a4,a4,2
-	addi	a6, zero, 1
-	beq	a4,zero,.L261
-	sb	a1,1(a0)
-	addi	a4, zero, 3
-	addi	a6, zero, 2
-	bne	a5,a4,.L261
-	sb	a1,2(a0)
-	addi	a6, a5, 0
-.L261:
-	slli	a4,a1,8
-	slli	a3,a1,16
-	sub	t1,a2,a5
-	or	a4,a1,a4
-	or	a4,a4,a3
-	add	a5,a0,a5
-	slli	a3,a1,24
-	andi	a7,t1,-4
-	or	a4,a4,a3
-	add	a3,a5,a7
-.L263:
-	sw	a4,0(a5)
-	addi	a5,a5,4
-	bne	a5,a3,.L263
-	add	a5,a6,a7
-	beq	t1,a7,.L271
-.L260:
-	add	a4,a0,a5
-	sb	a1,0(a4)
-	addi	a4,a5,1
-	bgeu	a4, a2, .L271
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,2
-	bgeu	a4, a2, .L271
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,3
-	bgeu	a4, a2, .L271
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,4
-	bgeu	a4, a2, .L271
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a5,a5,5
-	bgeu	a5, a2, .L271
-	add	a5,a0,a5
-	sb	a1,0(a5)
-.L271:
-	jalr	zero, ra, 0
-.L267:
-	addi	a5, zero, 0
-	jal	zero, .L260
-	.size	memset, .-memset
-	.align	2
-	.globl	memcpy
-	.type	memcpy, @function
-memcpy:
-	beq	a2,zero,.L276
-	addi	a5,a2,-1
-	addi	a4, zero, 6
-	bgeu	a4, a5, .L277
-	or	a3,a0,a1
-	andi	a3,a3,3
-	addi	a4, a0, 0
-	addi	a5, a1, 0
-	bne	a3,zero,.L277
-	sub	a3,a0,a1
-	addi	a3,a3,-1
-	sltiu	a3,a3,3
-	bne	a3,zero,.L277
-	andi	a7,a2,-4
-	add	a6,a1,a7
-.L278:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L278
-	beq	a2,a7,.L276
-	lbu	a3,0(a6)
-	add	a4,a0,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bgeu	a5, a2, .L276
-	add	a4,a1,a5
-	lbu	a4,0(a4)
-	add	a5,a0,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bgeu	a7, a2, .L276
-	add	a1,a1,a7
-	lbu	a5,0(a1)
-	add	a7,a0,a7
-	sb	a5,0(a7)
-	jalr	zero, ra, 0
-.L277:
-	add	a2,a1,a2
-	addi	a5, a0, 0
-.L280:
-	lbu	a4,0(a1)
-	addi	a1,a1,1
-	addi	a5,a5,1
-	sb	a4,-1(a5)
-	bne	a1,a2,.L280
-.L276:
-	jalr	zero, ra, 0
-	.size	memcpy, .-memcpy
-	.align	2
-	.globl	memcmp
-	.type	memcmp, @function
-memcmp:
-	beq	a2,zero,.L297
-	add	a2,a0,a2
-	jal	zero, .L296
-.L295:
-	beq	a0,a2,.L297
-.L296:
-	lbu	a5,0(a0)
-	lbu	a4,0(a1)
-	addi	a0,a0,1
-	addi	a1,a1,1
-	beq	a5,a4,.L295
-	sub	a0,a5,a4
-	jalr	zero, ra, 0
-.L297:
-	addi	a0, zero, 0
-	jalr	zero, ra, 0
-	.size	memcmp, .-memcmp
-	.align	2
-	.globl	memmove
-	.type	memmove, @function
-memmove:
-	bgeu	a0,a1,.L300
-	beq	a2,zero,.L301
-	addi	a5,a2,-1
-	addi	a4, zero, 6
-	bgeu	a4, a5, .L302
-	or	a3,a1,a0
-	andi	a3,a3,3
-	addi	a4, a0, 0
-	addi	a5, a1, 0
-	bne	a3,zero,.L302
-	sub	a3,a0,a1
-	addi	a3,a3,-1
-	sltiu	a3,a3,3
-	bne	a3,zero,.L302
-	andi	a7,a2,-4
-	add	a6,a1,a7
-.L303:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L303
-	beq	a2,a7,.L301
-	lbu	a3,0(a6)
-	add	a4,a0,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bgeu	a5, a2, .L301
-	add	a4,a1,a5
-	lbu	a4,0(a4)
-	add	a5,a0,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bgeu	a7, a2, .L301
-	add	a1,a1,a7
-	lbu	a5,0(a1)
-	add	a7,a0,a7
-	sb	a5,0(a7)
-	jalr	zero, ra, 0
-.L300:
-	bltu	a1, a0, .L323
-.L301:
-	jalr	zero, ra, 0
-.L323:
-	beq	a2,zero,.L301
-	addi	a2,a2,-1
-	add	a5,a1,a2
-	lbu	a4,0(a5)
-	add	a5,a0,a2
-	sb	a4,0(a5)
-	jal	zero, .L323
-.L302:
-	add	a2,a1,a2
-	addi	a5, a0, 0
-.L305:
-	lbu	a4,0(a1)
-	addi	a1,a1,1
-	addi	a5,a5,1
-	sb	a4,-1(a5)
-	bne	a1,a2,.L305
-	jalr	zero, ra, 0
-	.size	memmove, .-memmove
-	.align	2
-	.globl	strlen
-	.type	strlen, @function
-strlen:
-	lbu	a5,0(a0)
-	beq	a5,zero,.L324
-	addi	a5, zero, 0
-.L326:
-	addi	a5,a5,1
-	add	a4,a0,a5
-	lbu	a4,0(a4)
-	bne	a4,zero,.L326
-.L324:
-	addi	a0, a5, 0
-	jalr	zero, ra, 0
-	.size	strlen, .-strlen
-	.align	2
-	.globl	strchr
-	.type	strchr, @function
-strchr:
-	lbu	a5,0(a0)
-	beq	a5,zero,.L330
-	andi	a4,a1,0xff
-.L332:
-	beq	a4,a5,.L329
-	lbu	a5,1(a0)
-	addi	a0,a0,1
-	bne	a5,zero,.L332
-.L330:
-	sltiu	a1, a1, 1
-	sub	a1, zero, a1
-	and	a0,a0,a1
-.L329:
-	jalr	zero, ra, 0
-	.size	strchr, .-strchr
-	.align	2
-	.globl	rand_beebs
-	.type	rand_beebs, @function
-rand_beebs:
-	lui	a4,%hi(seed)
-	lw	a0,%lo(seed)(a4)
-	lui	a5, 269413
-	addi	a5,a5,-403
-	mul	a0,a0,a5
-	lui	a5, 3
-	addi	a5,a5,57
-	add	a0,a0,a5
-	slli	a0,a0,1
-	srli	a0,a0,1
-	sw	a0,%lo(seed)(a4)
-	srli	a0,a0,16
-	jalr	zero, ra, 0
-	.size	rand_beebs, .-rand_beebs
-	.align	2
-	.globl	srand_beebs
-	.type	srand_beebs, @function
-srand_beebs:
-	lui	a5,%hi(seed)
-	sw	a0,%lo(seed)(a5)
-	jalr	zero, ra, 0
-	.size	srand_beebs, .-srand_beebs
-	.align	2
-	.globl	init_heap_beebs
-	.type	init_heap_beebs, @function
-init_heap_beebs:
-	add	a1,a0,a1
-	lui	a3,%hi(heap_end)
-	lui	a4,%hi(heap_ptr)
-	lui	a5,%hi(heap_requested)
-	sw	a1,%lo(heap_end)(a3)
-	sw	a0,%lo(heap_ptr)(a4)
-	sw	zero,%lo(heap_requested)(a5)
-	jalr	zero, ra, 0
-	.size	init_heap_beebs, .-init_heap_beebs
-	.align	2
-	.globl	check_heap_beebs
-	.type	check_heap_beebs, @function
-check_heap_beebs:
-	lui	a5,%hi(heap_requested)
-	lw	a4,%lo(heap_requested)(a5)
-	lui	a5,%hi(heap_end)
-	lw	a5,%lo(heap_end)(a5)
-	add	a0,a0,a4
-	sltu	a0,a5,a0
-	xori	a0,a0,1
-	jalr	zero, ra, 0
-	.size	check_heap_beebs, .-check_heap_beebs
-	.align	2
-	.globl	malloc_beebs
-	.type	malloc_beebs, @function
-malloc_beebs:
-	addi	a5, a0, 0
-	beq	a0,zero,.L345
-	lui	a2,%hi(heap_ptr)
-	lw	a0,%lo(heap_ptr)(a2)
-	lui	a3,%hi(heap_requested)
-	lw	a1,%lo(heap_requested)(a3)
-	add	a4,a0,a5
-	andi	a6,a4,3
-	add	a5,a5,a1
-	bne	a6,zero,.L349
-	lui	a1,%hi(heap_end)
-	lw	a1,%lo(heap_end)(a1)
-	sw	a5,%lo(heap_requested)(a3)
-	bltu	a1,a4,.L345
-.L350:
-	sw	a4,%lo(heap_ptr)(a2)
-	jalr	zero, ra, 0
-.L349:
-	addi	a1, zero, 4
-	sub	a1,a1,a6
-	add	a5,a5,a1
-	add	a4,a4,a1
-	lui	a1,%hi(heap_end)
-	lw	a1,%lo(heap_end)(a1)
-	sw	a5,%lo(heap_requested)(a3)
-	bgeu	a1,a4,.L350
-.L345:
-	addi	a0, zero, 0
-	jalr	zero, ra, 0
-	.size	malloc_beebs, .-malloc_beebs
-	.align	2
-	.globl	calloc_beebs
-	.type	calloc_beebs, @function
-calloc_beebs:
-	mul	a1,a0,a1
-	beq	a1,zero,.L352
-	lui	a2,%hi(heap_ptr)
-	lw	a0,%lo(heap_ptr)(a2)
-	lui	a3,%hi(heap_requested)
-	lw	a5,%lo(heap_requested)(a3)
-	add	a4,a0,a1
-	andi	a6,a4,3
-	add	a5,a1,a5
-	bne	a6,zero,.L377
-.L353:
-	lui	a6,%hi(heap_end)
-	lw	a6,%lo(heap_end)(a6)
-	sw	a5,%lo(heap_requested)(a3)
-	bltu	a6,a4,.L352
-	sw	a4,%lo(heap_ptr)(a2)
-	beq	a0,zero,.L352
-	addi	a5,a1,-1
-	addi	a4, zero, 5
-	bgeu	a4, a5, .L361
-	sub	a4, zero, a0
-	andi	a5,a4,3
-	addi	a3, zero, 0
-	beq	a5,zero,.L355
-	sb	zero,0(a0)
-	andi	a4,a4,2
-	addi	a3, zero, 1
-	beq	a4,zero,.L355
-	sb	zero,1(a0)
-	addi	a4, zero, 3
-	addi	a3, zero, 2
-	bne	a5,a4,.L355
-	sb	zero,2(a0)
-	addi	a3, a5, 0
-.L355:
-	sub	a6,a1,a5
-	andi	a2,a6,-4
-	add	a5,a0,a5
-	add	a4,a5,a2
-.L357:
-	sw	zero,0(a5)
-	addi	a5,a5,4
-	bne	a5,a4,.L357
-	add	a5,a3,a2
-	beq	a6,a2,.L351
-.L354:
-	add	a4,a0,a5
-	sb	zero,0(a4)
-	addi	a4,a5,1
-	bgeu	a4, a1, .L351
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a4,a5,2
-	bgeu	a4, a1, .L351
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a4,a5,3
-	bgeu	a4, a1, .L351
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a4,a5,4
-	bgeu	a4, a1, .L351
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a5,a5,5
-	bgeu	a5, a1, .L351
-	add	a5,a0,a5
-	sb	zero,0(a5)
-	jalr	zero, ra, 0
-.L352:
-	addi	a0, zero, 0
-.L351:
-	jalr	zero, ra, 0
-.L377:
-	addi	a7, zero, 4
-	sub	a6,a7,a6
-	add	a4,a4,a6
-	add	a5,a5,a6
-	jal	zero, .L353
-.L361:
-	addi	a5, zero, 0
-	jal	zero, .L354
-	.size	calloc_beebs, .-calloc_beebs
-	.align	2
-	.globl	realloc_beebs
-	.type	realloc_beebs, @function
-realloc_beebs:
-	beq	a0,zero,.L379
-	beq	a1,zero,.L379
-	lui	a6,%hi(heap_ptr)
-	lw	a2,%lo(heap_ptr)(a6)
-	lui	a3,%hi(heap_requested)
-	lw	a5,%lo(heap_requested)(a3)
-	add	a4,a2,a1
-	andi	a7,a4,3
-	add	a5,a1,a5
-	bne	a7,zero,.L404
-	lui	a7,%hi(heap_end)
-	lw	a7,%lo(heap_end)(a7)
-	sw	a5,%lo(heap_requested)(a3)
-	bltu	a7,a4,.L379
-.L405:
-	sw	a4,%lo(heap_ptr)(a6)
-	beq	a2,zero,.L379
-	addi	a5,a1,-1
-	addi	a4, zero, 6
-	bgeu	a4, a5, .L389
-	or	a3,a0,a2
-	andi	a3,a3,3
-	addi	a4, a2, 0
-	addi	a5, a0, 0
-	bne	a3,zero,.L389
-	addi	a3,a2,-1
-	sub	a3,a3,a0
-	sltiu	a3,a3,3
-	bne	a3,zero,.L389
-	andi	a7,a1,-4
-	add	a6,a0,a7
-.L382:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L382
-	beq	a1,a7,.L378
-	lbu	a3,0(a6)
-	add	a4,a2,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bgeu	a5, a1, .L378
-	add	a4,a0,a5
-	lbu	a4,0(a4)
-	add	a5,a2,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bgeu	a7, a1, .L378
-	add	a0,a0,a7
-	lbu	a5,0(a0)
-	add	a7,a2,a7
-	sb	a5,0(a7)
-.L378:
-	addi	a0, a2, 0
-	jalr	zero, ra, 0
-.L404:
-	addi	t1, zero, 4
-	sub	a7,t1,a7
-	add	a5,a5,a7
-	add	a4,a4,a7
-	lui	a7,%hi(heap_end)
-	lw	a7,%lo(heap_end)(a7)
-	sw	a5,%lo(heap_requested)(a3)
-	bgeu	a7,a4,.L405
-.L379:
-	addi	a2, zero, 0
-	addi	a0, a2, 0
-	jalr	zero, ra, 0
-.L389:
-	addi	a5, zero, 0
-.L386:
-	add	a4,a0,a5
-	lbu	a3,0(a4)
-	add	a4,a2,a5
-	addi	a5,a5,1
-	sb	a3,0(a4)
-	bltu	a5, a1, .L386
-	addi	a0, a2, 0
-	jalr	zero, ra, 0
-	.size	realloc_beebs, .-realloc_beebs
-	.align	2
-	.globl	free_beebs
-	.type	free_beebs, @function
-free_beebs:
-	jalr	zero, ra, 0
-	.size	free_beebs, .-free_beebs
-	.align	2
 	.globl	initialise_board
 	.type	initialise_board, @function
 initialise_board:
- #APP
-# 15 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	addi	a0, zero, 0
-# 0 "" 2
- #NO_APP
 	jalr	zero, ra, 0
 	.size	initialise_board, .-initialise_board
 	.align	2
 	.globl	start_trigger
 	.type	start_trigger, @function
 start_trigger:
- #APP
-# 21 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	addi	a0, zero, 0
-# 0 "" 2
- #NO_APP
 	jalr	zero, ra, 0
 	.size	start_trigger, .-start_trigger
 	.align	2
 	.globl	stop_trigger
 	.type	stop_trigger, @function
 stop_trigger:
- #APP
-# 27 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	addi	a0, zero, 0
-# 0 "" 2
- #NO_APP
 	jalr	zero, ra, 0
 	.size	stop_trigger, .-stop_trigger
 	.align	2
@@ -5400,49 +4876,49 @@ verify_benchmark:
 	lw	a4,%lo(P1_is_marked)(a5)
 	addi	a5, zero, 3
 	addi	a0, zero, 0
-	bne	a4,a5,.L415
+	bne	a4,a5,.L266
 	lui	a5,%hi(P2_is_marked)
 	lw	a4,%lo(P2_is_marked)(a5)
 	addi	a5, zero, 5
-	beq	a4,a5,.L427
-.L415:
+	beq	a4,a5,.L278
+.L266:
 	jalr	zero, ra, 0
-.L427:
+.L278:
 	lui	a5,%hi(P3_is_marked)
 	lw	a0,%lo(P3_is_marked)(a5)
-	bne	a0,zero,.L425
+	bne	a0,zero,.L276
 	lui	a5,%hi(.LANCHOR0)
 	addi	a5,a5,%lo(.LANCHOR0)
 	lw	a4,0(a5)
-	bne	a4,zero,.L415
+	bne	a4,zero,.L266
 	lw	a0,36(a5)
-	bne	a0,zero,.L425
+	bne	a0,zero,.L276
 	lw	a4,12(a5)
-	bne	a4,zero,.L415
+	bne	a4,zero,.L266
 	lw	a0,4(a5)
-	bne	a0,zero,.L425
+	bne	a0,zero,.L276
 	lw	a4,40(a5)
-	bne	a4,zero,.L415
+	bne	a4,zero,.L266
 	lw	a0,16(a5)
-	bne	a0,zero,.L425
+	bne	a0,zero,.L276
 	lw	a4,8(a5)
-	bne	a4,zero,.L415
+	bne	a4,zero,.L266
 	lw	a4,44(a5)
-	bne	a4,zero,.L425
+	bne	a4,zero,.L276
 	lw	a0,20(a5)
-	bne	a0,zero,.L425
+	bne	a0,zero,.L276
 	lw	a4,48(a5)
-	bne	a4,zero,.L415
+	bne	a4,zero,.L266
 	lw	a0,24(a5)
-	bne	a0,zero,.L425
+	bne	a0,zero,.L276
 	lw	a4,52(a5)
-	bne	a4,zero,.L415
+	bne	a4,zero,.L266
 	lw	a4,28(a5)
-	bne	a4,zero,.L415
+	bne	a4,zero,.L266
 	lw	a0,32(a5)
 	sltiu	a0, a0, 1
 	jalr	zero, ra, 0
-.L425:
+.L276:
 	addi	a0, zero, 0
 	jalr	zero, ra, 0
 	.size	verify_benchmark, .-verify_benchmark
@@ -5452,30 +4928,19 @@ verify_benchmark:
 	.type	main, @function
 main:
 	addi	sp,sp,-32
-	sw	ra,28(sp)
- #APP
-# 15 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	addi	a0, zero, 0
-# 0 "" 2
- #NO_APP
 	addi	a0, zero, 1
+	sw	ra,28(sp)
 .Lpcrel_3:
 	auipc	ra, %pcrel_hi(benchmark_body.isra.0)
 	jalr	ra, ra, %pcrel_lo(.Lpcrel_3)
 .Lpcrel_4:
-	auipc	ra, %pcrel_hi(start_trigger)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_4)
-.Lpcrel_5:
 	auipc	ra, %pcrel_hi(benchmark)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_5)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_4)
 	sw	zero,12(sp)
-.Lpcrel_6:
-	auipc	ra, %pcrel_hi(stop_trigger)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_6)
 	lw	a0,12(sp)
-.Lpcrel_7:
+.Lpcrel_5:
 	auipc	ra, %pcrel_hi(verify_benchmark)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_7)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_5)
 	lw	ra,28(sp)
 	xori	a0,a0,1
 	addi	sp,sp,32
@@ -5508,22 +4973,6 @@ P2_marking_member_0:
 	.size	P3_is_marked, 4
 P3_is_marked:
 	.zero	4
-	.type	heap_requested, @object
-	.size	heap_requested, 4
-heap_requested:
-	.zero	4
-	.type	heap_end, @object
-	.size	heap_end, 4
-heap_end:
-	.zero	4
-	.type	heap_ptr, @object
-	.size	heap_ptr, 4
-heap_ptr:
-	.zero	4
-	.type	seed, @object
-	.size	seed, 4
-seed:
-	.zero	4
 	.section	.sdata,"aw"
 	.align	2
 	.type	P2_is_marked, @object
@@ -5536,102 +4985,3 @@ P1_is_marked:
 	.word	3
 	.ident	"GCC: (g1b306039a) 15.1.0"
 	.section	.note.GNU-stack,"",@progbits
-
-
-    .text
-    .align 2
-__mul:
-    add    a2, a0, x0
-    addi   a0, x0, 0
-.Mul_loop:
-    andi   a3, a1, 1
-    beq    a3, x0, .Mul_skip
-    add    a0, a0, a2
-.Mul_skip:
-    srli   a1, a1, 1
-    slli   a2, a2, 1
-    bne    a1, x0, .Mul_loop
-    jalr   x0, ra, 0
-
-.text
-.align 2
-
-# Signed 32-bit division: a0 = a0 / a1
-.global __riscv_div_lib_divsi3
-__riscv_div_lib_divsi3:
-    blt   a0, zero, __riscv_div_lib_L10      # bltz a0 -> blt a0, zero
-    blt   a1, zero, __riscv_div_lib_L11      # bltz a1 -> blt a1, zero
-    # Since the quotient is positive, fall into udivsi3
-
-# Unsigned 32-bit division: a0 = a0 / a1
-.global __riscv_div_lib_udivsi3
-__riscv_div_lib_udivsi3:
-    addi  a2, a1, 0                           # mv a2, a1 -> addi a2, a1, 0
-    addi  a1, a0, 0                           # mv a1, a0 -> addi a1, a0, 0
-    addi  a0, zero, -1                        # li a0, -1 -> addi a0, zero, -1
-    beq   a2, zero, __riscv_div_lib_L5       # beqz a2 -> beq a2, zero
-    addi  a3, zero, 1                         # li a3, 1 -> addi a3, zero, 1
-    bgeu  a2, a1, __riscv_div_lib_L2
-__riscv_div_lib_L1:
-    bge   zero, a2, __riscv_div_lib_L2       # blez a2 -> bge zero, a2
-    slli  a2, a2, 1
-    slli  a3, a3, 1
-    bltu  a2, a1, __riscv_div_lib_L1         # bgtu a1, a2 -> bltu a2, a1
-__riscv_div_lib_L2:
-    addi  a0, zero, 0                         # li a0, 0 -> addi a0, zero, 0
-__riscv_div_lib_L3:
-    bltu  a1, a2, __riscv_div_lib_L4
-    sub   a1, a1, a2
-    or    a0, a0, a3
-__riscv_div_lib_L4:
-    srli  a3, a3, 1
-    srli  a2, a2, 1
-    bne   a3, zero, __riscv_div_lib_L3       # bnez a3 -> bne a3, zero
-__riscv_div_lib_L5:
-    jalr  zero, ra, 0                         # ret -> jalr zero, ra, 0
-
-# Unsigned 32-bit remainder: a0 = a0 % a1
-.global __riscv_div_lib_umodsi3
-__riscv_div_lib_umodsi3:
-    # Call udivsi3(a0, a1), then return the remainder, which is in a1
-    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
-    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
-    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
-    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
-
-# Handle negative arguments to divsi3
-__riscv_div_lib_L10:
-    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
-    # Zero is handled as a negative so that the result will not be inverted
-    blt   zero, a1, __riscv_div_lib_L12      # bgtz a1 -> blt zero, a1
-
-    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
-    jal   zero, __riscv_div_lib_udivsi3      # j __riscv_div_lib_udivsi3 -> jal zero
-__riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
-    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
-__riscv_div_lib_L12:
-    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
-    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
-    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
-    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
-
-# Signed 32-bit remainder: a0 = a0 % a1
-.global __riscv_div_lib_modsi3
-__riscv_div_lib_modsi3:
-    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
-    blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
-    blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
-__riscv_div_lib_L30:
-    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
-    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
-    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
-__riscv_div_lib_L31:
-    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
-    bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
-__riscv_div_lib_L32:
-    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
-    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
-    sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
-    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
-
-# end of subrountine

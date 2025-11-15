@@ -28,13 +28,14 @@
 
 #SRCDIRS="consumer/jpeg/jpeg-6a telecomm/adpcm/src security/rijndael security/sha telecomm/fft"
 
-# SRCDIRS="automotive/basicmath
-#          automotive/bitcount
-#          automotive/qsort
-#          network/dijkstra
-#          network/patricia"
-         
-SRCDIRS="security/rijndael"
+SRCDIRS="automotive/basicmath
+         automotive/bitcount
+         automotive/qsort
+         network/dijkstra
+         network/patricia
+         security/rijndael
+         security/sha"
+
 CURRDIR=$(pwd)
 
 # compiler
@@ -59,7 +60,7 @@ fi
 export MIBENCH_RUN="$CURRDIR/$RUNIT"
 
 # optimization flags and binary suffix (first arg overrides default)
-OPTFLAGS="${1:--Oz}"
+OPTFLAGS="${1:--O3}"
 # derive a readable suffix from OPTFLAGS, e.g., -O3 -> _O3, "-O2 -fun" -> _O2_fun
 BIN_SUFFIX="_$(echo "$OPTFLAGS" | tr ' ' '_' | tr -d '-')"
 export OPTFLAGS
@@ -69,10 +70,21 @@ for d in ${SRCDIRS}
 do
     echo ${d}
     cd ${d}
+ 
+    if [[ "$d" == *"rijndael"* ]]; then
+        CURRENT_OPTFLAGS="-Oz"
+        CURRENT_BIN_SUFFIX="_Oz"
+    else
+        CURRENT_OPTFLAGS="$OPTFLAGS"
+        CURRENT_BIN_SUFFIX="$BIN_SUFFIX"
+    fi
+    
     make clean
-    make OPTFLAGS="$OPTFLAGS" BIN_SUFFIX="$BIN_SUFFIX"
-    ./runme_small.sh
-    ./runme_large.sh
+    make OPTFLAGS="$CURRENT_OPTFLAGS" BIN_SUFFIX="$CURRENT_BIN_SUFFIX"
+    
+    # 运行测试时使用对应的 BIN_SUFFIX
+    BIN_SUFFIX="$CURRENT_BIN_SUFFIX" ./runme_small.sh
+    BIN_SUFFIX="$CURRENT_BIN_SUFFIX" ./runme_large.sh
     # make clean
     cd ${CURRDIR}
 done
