@@ -132,9 +132,9 @@ enqueue:
 	sw	ra, 16(sp)
 	add	a0, a5, x0
 	add	a1, t1, x0
-.Lpcrel_callmul_245:
+.Lpcrel_callmul_224:
 	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_245)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_224)
 	add	a5, a0, x0
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
@@ -10585,56 +10585,185 @@ main:
 	.type	rgnNodes, @object
 	.size	rgnNodes, 800
 rgnNodes:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	800
 	.type	AdjMatrix, @object
 	.size	AdjMatrix, 40000
 AdjMatrix:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	40000
 	.type	queue, @object
 	.size	queue, 120000
 queue:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	120000
 	.section	.sbss,"aw",@nobits
 	.align	2
 	.type	result_sink, @object
 	.size	result_sink, 4
 result_sink:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	iDist, @object
 	.size	iDist, 4
 iDist:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	iCost, @object
 	.size	iCost, 4
 iCost:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	i, @object
 	.size	i, 4
 i:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	iNode, @object
 	.size	iNode, 4
 iNode:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	iPrev, @object
 	.size	iPrev, 4
 iPrev:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	ch, @object
 	.size	ch, 4
 ch:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	g_qCount, @object
 	.size	g_qCount, 4
 g_qCount:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	qRear, @object
 	.size	qRear, 4
 qRear:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	qFront, @object
 	.size	qFront, 4
 qFront:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.ident	"GCC: (g1b306039a) 15.1.0"
 	.section	.note.GNU-stack,"",@progbits
+
+
+    .text
+    .align 2
+__mul:
+	add	a2,a0,x0
+	addi	a0,x0,0
+.Mul_loop:
+	andi	a3,a1,1
+	beq	a3,x0,.Mul_skip
+	add	a0,a0,a2
+.Mul_skip:
+	srli	a1,a1,1
+	slli	a2,a2,1
+	bne	a1,x0,.Mul_loop
+	jalr	x0,ra,0
+
+.text
+.align 2
+
+# Signed 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_divsi3
+__riscv_div_lib_divsi3:
+	bge	a0,zero,.+8
+	jal	x0,__riscv_div_lib_L10
+	bge	a1,zero,.+8
+	jal	x0,__riscv_div_lib_L11
+    # Since the quotient is positive, fall into udivsi3
+
+# Unsigned 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_udivsi3
+__riscv_div_lib_udivsi3:
+	addi	a2,a1,0
+	addi	a1,a0,0
+	addi	a0,zero,-1
+	beq	a2,zero,__riscv_div_lib_L5
+	addi	a3,zero,1
+	bltu	a2,a1,.+8
+	jal	x0,__riscv_div_lib_L2
+__riscv_div_lib_L1:
+	bge	zero,a2,__riscv_div_lib_L2
+	addi	a0,x0,1
+	sll	a2,a2,a0
+	slli	a3,a3,1
+	bltu	a2,a1,__riscv_div_lib_L1
+__riscv_div_lib_L2:
+	addi	a0,zero,0
+__riscv_div_lib_L3:
+	bgeu	a1,a2,.+8
+	jal	x0,__riscv_div_lib_L4
+	sub	a1,a1,a2
+	or	a0,a0,a3
+__riscv_div_lib_L4:
+	srli	a3,a3,1
+	srli	a2,a2,1
+	bne	a3,zero,__riscv_div_lib_L3
+__riscv_div_lib_L5:
+	jalr	zero,ra,0
+
+# Unsigned 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_umodsi3
+__riscv_div_lib_umodsi3:
+	addi	t0,ra,0
+	jal	x0,__riscv_div_lib_udivsi3
+	addi	a0,a1,0
+	jalr	zero,t0,0
+
+# Handle negative arguments to divsi3
+__riscv_div_lib_L10:
+	sub	a0,zero,a0
+	bge	zero,a1,.+8
+	jal	x0,__riscv_div_lib_L12
+	sub	a1,zero,a1
+	jal	x0,__riscv_div_lib_udivsi3
+	sub	a1,zero,a1
+__riscv_div_lib_L12:
+	addi	t0,ra,0
+	jal	x0,__riscv_div_lib_udivsi3
+	sub	a0,zero,a0
+	jalr	zero,t0,0
+
+# Signed 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_modsi3
+__riscv_div_lib_modsi3:
+	addi	t0,ra,0
+	bge	a1,zero,.+8
+	jal	x0,__riscv_div_lib_L31
+	bge	a0,zero,.+8
+	jal	x0,__riscv_div_lib_L32
+__riscv_div_lib_L30:
+	jal	x0,__riscv_div_lib_udivsi3
+	addi	a0,a1,0
+	jalr	zero,t0,0
+__riscv_div_lib_L31:
+	sub	a1,zero,a1
+	bge	a0,zero,__riscv_div_lib_L30
+__riscv_div_lib_L32:
+	sub	a0,zero,a0
+	jal	x0,__riscv_div_lib_udivsi3
+	sub	a0,zero,a1
+	jalr	zero,t0,0
+
+# end of subrountine

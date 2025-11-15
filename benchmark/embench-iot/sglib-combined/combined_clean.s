@@ -3395,7 +3395,7 @@ sglib_dllist_it_next:
 .L1062:
 	addi	a1, s0, 0
 	addi	a0, s3, 0
-	jalr	s1
+	jalr	ra, s1, 0
 	bne	a0,zero,.L1064
 	lw	s3,12(sp)
 .L1072:
@@ -3431,7 +3431,7 @@ sglib_dllist_it_next:
 .L1066:
 	addi	a1, s3, 0
 	addi	a0, s0, 0
-	jalr	s1
+	jalr	ra, s1, 0
 	bne	a0,zero,.L1068
 	lw	s3,12(sp)
 .L1069:
@@ -3809,7 +3809,7 @@ sglib_ilist_it_init_on_equal:
 .L1230:
 	addi	a1, s2, 0
 	addi	a0, s0, 0
-	jalr	s1
+	jalr	ra, s1, 0
 	bne	a0,zero,.L1233
 	lw	s1,20(sp)
 	lw	s2,16(sp)
@@ -3889,7 +3889,7 @@ sglib_ilist_it_next:
 .L1251:
 	addi	a1, s2, 0
 	addi	a0, s0, 0
-	jalr	s1
+	jalr	ra, s1, 0
 	bne	a0,zero,.L1254
 	lw	s2,16(sp)
 	sw	s0,0(s3)
@@ -4142,7 +4142,7 @@ sglib_hashed_ilist_it_next:
 .L1323:
 	addi	a1, s3, 0
 	addi	a0, s0, 0
-	jalr	s2
+	jalr	ra, s2, 0
 	bne	a0,zero,.L1326
 	sw	s0,0(s1)
 .L1338:
@@ -4191,7 +4191,7 @@ sglib_hashed_ilist_it_next:
 .L1331:
 	addi	a1, s3, 0
 	addi	a0, s0, 0
-	jalr	s2
+	jalr	ra, s2, 0
 	bne	a0,zero,.L1334
 	sw	s0,0(s1)
 .L1337:
@@ -4254,7 +4254,7 @@ sglib_hashed_ilist_it_init_on_equal:
 .L1354:
 	addi	a1, s3, 0
 	addi	a0, s0, 0
-	jalr	s1
+	jalr	ra, s1, 0
 	bne	a0,zero,.L1357
 	lw	s1,20(sp)
 	lw	s3,12(sp)
@@ -5504,7 +5504,7 @@ sglib__rbtree_it_compute_current_elem:
 .L1777:
 	addi	a1, s0, 0
 	addi	a0, s2, 0
-	jalr	s4
+	jalr	ra, s4, 0
 	blt	a0,zero,.L1809
 	beq	a0,zero,.L1782
 	lw	s0,12(s0)
@@ -6233,7 +6233,7 @@ sglib__rbtree_it_init:
 .L1990:
 	addi	a1, s0, 0
 	addi	a0, s1, 0
-	jalr	s2
+	jalr	ra, s2, 0
 	blt	a0,zero,.L2022
 	beq	a0,zero,.L2020
 	lw	s0,12(s0)

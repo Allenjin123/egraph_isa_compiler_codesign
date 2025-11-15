@@ -288,43 +288,38 @@ if [ "$CLEAN_OUTPUTS" = true ]; then
 fi
 
 # ============================================================================
-# Step 0.4: Run frontend analysis if needed
+# Step 0.4: Run frontend analysis 
 # ============================================================================
 FRONTEND_OUTPUT_DIR="$OUTPUT_BASE/frontend/$PROGRAM_NAME"
 
-if [ ! -d "$FRONTEND_OUTPUT_DIR/basic_blocks_ssa" ]; then
-    echo -e "${BLUE}步骤 0.4: 运行前端分析（生成 SSA 基本块）...${NC}"
-    echo -e "${YELLOW}  前端输出不存在，开始分析...${NC}"
+echo -e "${BLUE}步骤 0.4: 运行前端分析（生成 SSA 基本块）...${NC}"
+echo -e "${YELLOW}  前端输出不存在，开始分析...${NC}"
 
-    FRONTEND_SCRIPT="$FRONTEND_DIR/run_full_analysis.sh"
-    if [ ! -f "$FRONTEND_SCRIPT" ]; then
-        echo -e "${RED}错误: 前端分析脚本未找到: $FRONTEND_SCRIPT${NC}"
+FRONTEND_SCRIPT="$FRONTEND_DIR/run_full_analysis.sh"
+if [ ! -f "$FRONTEND_SCRIPT" ]; then
+    echo -e "${RED}错误: 前端分析脚本未找到: $FRONTEND_SCRIPT${NC}"
+    PROGRAM_FAILED=1
+else
+    echo -e "${CYAN}  运行: cd frontend && ./run_full_analysis.sh $PROGRAM_NAME${NC}"
+
+    # Run frontend analysis
+    if ! (cd "$FRONTEND_DIR" && bash run_full_analysis.sh "$PROGRAM_NAME"); then
+        echo -e "${RED}✗ 程序 ${PROGRAM_NAME} 前端分析失败，跳过此程序${NC}"
         PROGRAM_FAILED=1
     else
-        echo -e "${CYAN}  运行: cd frontend && ./run_full_analysis.sh $PROGRAM_NAME${NC}"
-
-        # Run frontend analysis
-        if ! (cd "$FRONTEND_DIR" && bash run_full_analysis.sh "$PROGRAM_NAME"); then
-            echo -e "${RED}✗ 程序 ${PROGRAM_NAME} 前端分析失败，跳过此程序${NC}"
-            PROGRAM_FAILED=1
-        else
-            echo -e "${GREEN}  ✓ 前端分析完成${NC}"
-        fi
+        echo -e "${GREEN}  ✓ 前端分析完成${NC}"
     fi
-
-    # Check if program failed
-    if [ $PROGRAM_FAILED -eq 1 ]; then
-        echo -e "${RED}程序 ${PROGRAM_NAME} 失败${NC}"
-        # Restore file descriptors before returning
-        exec 1>&3 2>&4
-        exec 3>&- 4>&-
-        return 2  # Return failure status
-    fi
-    echo ""
-else
-    echo -e "${YELLOW}步骤 0.4: 前端输出已存在，跳过前端分析${NC}"
-    echo ""
 fi
+
+# Check if program failed
+if [ $PROGRAM_FAILED -eq 1 ]; then
+    echo -e "${RED}程序 ${PROGRAM_NAME} 失败${NC}"
+    # Restore file descriptors before returning
+    exec 1>&3 2>&4
+    exec 3>&- 4>&-
+    return 2  # Return failure status
+fi
+echo ""
 
 # ============================================================================
 # Step 0.45: Run complete analysis (spike instruction count + block execution)
@@ -642,10 +637,10 @@ if [ -f "$ORIGINAL_ASM" ]; then
         ln -sf "$ORIGINAL_FRONTEND/basic_blocks" "$ORIGINAL_VARIANT_DIR/basic_blocks"
         echo -e "${CYAN}    链接: basic_blocks/${NC}"
     fi
-    if [ -d "$ORIGINAL_FRONTEND/basic_blocks_ssa" ]; then
-        ln -sf "$ORIGINAL_FRONTEND/basic_blocks_ssa" "$ORIGINAL_VARIANT_DIR/basic_blocks_ssa"
-        echo -e "${CYAN}    链接: basic_blocks_ssa/${NC}"
-    fi
+    # if [ -d "$ORIGINAL_FRONTEND/basic_blocks_ssa" ]; then
+    #     ln -sf "$ORIGINAL_FRONTEND/basic_blocks_ssa" "$ORIGINAL_VARIANT_DIR/basic_blocks_ssa"
+    #     echo -e "${CYAN}    链接: basic_blocks_ssa/${NC}"
+    # fi
 
     # Copy metadata files if they exist
     for meta_file in label_to_block.json label_metadata.json; do
@@ -684,10 +679,10 @@ if [ -f "$ORIGINAL_ASM" ]; then
         ln -sf "$ORIGINAL_FRONTEND/basic_blocks" "$GP_VARIANT_DIR/basic_blocks"
         echo -e "${CYAN}    链接: basic_blocks/${NC}"
     fi
-    if [ -d "$ORIGINAL_FRONTEND/basic_blocks_ssa" ]; then
-        ln -sf "$ORIGINAL_FRONTEND/basic_blocks_ssa" "$GP_VARIANT_DIR/basic_blocks_ssa"
-        echo -e "${CYAN}    链接: basic_blocks_ssa/${NC}"
-    fi
+    # if [ -d "$ORIGINAL_FRONTEND/basic_blocks_ssa" ]; then
+    #     ln -sf "$ORIGINAL_FRONTEND/basic_blocks_ssa" "$GP_VARIANT_DIR/basic_blocks_ssa"
+    #     echo -e "${CYAN}    链接: basic_blocks_ssa/${NC}"
+    # fi
 
     # Copy metadata files if they exist
     for meta_file in label_to_block.json label_metadata.json; do
@@ -718,7 +713,7 @@ if [ ! -d "$REWRITE_BASE" ]; then
     exit 1
 fi
 
-SSA_COUNT=0
+#SSA_COUNT=0
 for ((i=0; i<$VARIANT_COUNT; i++)); do
     VARIANT_DIR="$FINAL_OUTPUT/variant_${i}"
     echo -e "${CYAN}  处理变体 ${i}...${NC}"
@@ -752,24 +747,22 @@ for ((i=0; i<$VARIANT_COUNT; i++)); do
     [ -f "$ORIG_META_FILE" ] && cp "$ORIG_META_FILE" "$VARIANT_DIR/"
 
     # Step 5.2: Convert basic blocks to SSA form
-    if [ -d "$DST_BB_DIR" ] && [ "$(ls -A $DST_BB_DIR)" ]; then
-        python3 "$FRONTEND_DIR/convert_to_ssa.py" "$VARIANT_DIR" 2>/dev/null || {
-            echo -e "${YELLOW}    ⚠ SSA 转换失败${NC}"
-            continue
-        }
+    # if [ -d "$DST_BB_DIR" ] && [ "$(ls -A $DST_BB_DIR)" ]; then
+    #     python3 "$FRONTEND_DIR/convert_to_ssa.py" "$VARIANT_DIR" 2>/dev/null || {
+    #         echo -e "${YELLOW}    ⚠ SSA 转换失败${NC}"
+    #         continue
+    #     }
 
-        # Check if SSA was created
-        SSA_DIR="$VARIANT_DIR/basic_blocks_ssa"
-        if [ -d "$SSA_DIR" ] && [ "$(ls -A $SSA_DIR)" ]; then
-            echo -e "${GREEN}    ✓ SSA 生成成功${NC}"
-            SSA_COUNT=$((SSA_COUNT + 1))
-        else
-            echo -e "${YELLOW}    ⚠ SSA 目录为空${NC}"
-        fi
-    fi
+    #     # Check if SSA was created
+    #     SSA_DIR="$VARIANT_DIR/basic_blocks_ssa"
+    #     if [ -d "$SSA_DIR" ] && [ "$(ls -A $SSA_DIR)" ]; then
+    #         echo -e "${GREEN}    ✓ SSA 生成成功${NC}"
+    #         SSA_COUNT=$((SSA_COUNT + 1))
+    #     else
+    #         echo -e "${YELLOW}    ⚠ SSA 目录为空${NC}"
+    #     fi
+    # fi
 done
-
-echo -e "${GREEN}成功处理 ${SSA_COUNT}/${VARIANT_COUNT} 个变体的 SSA 转换${NC}"
 
 # ============================================================================
 # Step 6: Analyze area and latency for all variants + Pareto frontier
@@ -858,9 +851,9 @@ $(for ((i=0; i<$VARIANT_COUNT; i++)); do
         if [ -d "$VARIANT_DIR/basic_blocks" ]; then
             echo "  - basic_blocks/ ($(ls "$VARIANT_DIR/basic_blocks" 2>/dev/null | wc -l) files)"
         fi
-        if [ -d "$VARIANT_DIR/basic_blocks_ssa" ]; then
-            echo "  - basic_blocks_ssa/ ($(ls "$VARIANT_DIR/basic_blocks_ssa" 2>/dev/null | wc -l) files)"
-        fi
+        # if [ -d "$VARIANT_DIR/basic_blocks_ssa" ]; then
+        #     echo "  - basic_blocks_ssa/ ($(ls "$VARIANT_DIR/basic_blocks_ssa" 2>/dev/null | wc -l) files)"
+        # fi
         S_FILES=$(ls "$VARIANT_DIR"/*.s 2>/dev/null)
         if [ -n "$S_FILES" ]; then
             for S_FILE in $S_FILES; do

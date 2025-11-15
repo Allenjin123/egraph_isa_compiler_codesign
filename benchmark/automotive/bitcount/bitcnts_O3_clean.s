@@ -391,7 +391,7 @@ main:
 	add	s1,s8,a5
 .L49:
 	addi	a0, s8, 0
-	jalr	s2
+	jalr	ra, s2, 0
 	addi	s8,s8,13
 	add	s11,s11,a0
 	bne	s8,s1,.L49
