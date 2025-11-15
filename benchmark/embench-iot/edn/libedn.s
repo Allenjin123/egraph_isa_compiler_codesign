@@ -6,281 +6,21 @@
 	.attribute stack_align, 16
 	.text
 	.align	2
-	.globl	memset
-	.type	memset, @function
-memset:
-	beq	a2,zero,.L14
-	addi	a5,a2,-1
-	li	a4,5
-	andi	a1,a1,0xff
-	bleu	a5,a4,.L10
-	neg	a4,a0
-	andi	a5,a4,3
-	li	a6,0
-	beq	a5,zero,.L4
-	sb	a1,0(a0)
-	andi	a4,a4,2
-	li	a6,1
-	beq	a4,zero,.L4
-	sb	a1,1(a0)
-	li	a4,3
-	li	a6,2
-	bne	a5,a4,.L4
-	sb	a1,2(a0)
-	mv	a6,a5
-.L4:
-	slli	a4,a1,8
-	slli	a3,a1,16
-	sub	t1,a2,a5
-	or	a4,a1,a4
-	or	a4,a4,a3
-	add	a5,a0,a5
-	slli	a3,a1,24
-	andi	a7,t1,-4
-	or	a4,a4,a3
-	add	a3,a5,a7
-.L6:
-	sw	a4,0(a5)
-	addi	a5,a5,4
-	bne	a5,a3,.L6
-	add	a5,a6,a7
-	beq	t1,a7,.L14
-.L3:
-	add	a4,a0,a5
-	sb	a1,0(a4)
-	addi	a4,a5,1
-	bleu	a2,a4,.L14
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,2
-	bleu	a2,a4,.L14
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,3
-	bleu	a2,a4,.L14
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,4
-	bleu	a2,a4,.L14
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a5,a5,5
-	bleu	a2,a5,.L14
-	add	a5,a0,a5
-	sb	a1,0(a5)
-.L14:
-	ret
-.L10:
-	li	a5,0
-	j	.L3
-	.size	memset, .-memset
-	.align	2
-	.globl	memcpy
-	.type	memcpy, @function
-memcpy:
-	beq	a2,zero,.L20
-	addi	a5,a2,-1
-	li	a4,6
-	bleu	a5,a4,.L21
-	or	a3,a0,a1
-	andi	a3,a3,3
-	mv	a4,a0
-	mv	a5,a1
-	bne	a3,zero,.L21
-	sub	a3,a0,a1
-	addi	a3,a3,-1
-	sltiu	a3,a3,3
-	bne	a3,zero,.L21
-	andi	a7,a2,-4
-	add	a6,a1,a7
-.L22:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L22
-	beq	a2,a7,.L20
-	lbu	a3,0(a6)
-	add	a4,a0,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bleu	a2,a5,.L20
-	add	a4,a1,a5
-	lbu	a4,0(a4)
-	add	a5,a0,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bleu	a2,a7,.L20
-	add	a1,a1,a7
-	lbu	a5,0(a1)
-	add	a7,a0,a7
-	sb	a5,0(a7)
-	ret
-.L21:
-	add	a2,a1,a2
-	mv	a5,a0
-.L24:
-	lbu	a4,0(a1)
-	addi	a1,a1,1
-	addi	a5,a5,1
-	sb	a4,-1(a5)
-	bne	a1,a2,.L24
-.L20:
-	ret
-	.size	memcpy, .-memcpy
-	.align	2
-	.globl	memcmp
-	.type	memcmp, @function
-memcmp:
-	beq	a2,zero,.L41
-	add	a2,a0,a2
-	j	.L40
-.L39:
-	beq	a0,a2,.L41
-.L40:
-	lbu	a5,0(a0)
-	lbu	a4,0(a1)
-	addi	a0,a0,1
-	addi	a1,a1,1
-	beq	a5,a4,.L39
-	sub	a0,a5,a4
-	ret
-.L41:
-	li	a0,0
-	ret
-	.size	memcmp, .-memcmp
-	.align	2
-	.globl	memmove
-	.type	memmove, @function
-memmove:
-	bgeu	a0,a1,.L44
-	beq	a2,zero,.L45
-	addi	a5,a2,-1
-	li	a4,6
-	bleu	a5,a4,.L46
-	or	a3,a1,a0
-	andi	a3,a3,3
-	mv	a4,a0
-	mv	a5,a1
-	bne	a3,zero,.L46
-	sub	a3,a0,a1
-	addi	a3,a3,-1
-	sltiu	a3,a3,3
-	bne	a3,zero,.L46
-	andi	a7,a2,-4
-	add	a6,a1,a7
-.L47:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L47
-	beq	a2,a7,.L45
-	lbu	a3,0(a6)
-	add	a4,a0,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bleu	a2,a5,.L45
-	add	a4,a1,a5
-	lbu	a4,0(a4)
-	add	a5,a0,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bleu	a2,a7,.L45
-	add	a1,a1,a7
-	lbu	a5,0(a1)
-	add	a7,a0,a7
-	sb	a5,0(a7)
-	ret
-.L44:
-	bgtu	a0,a1,.L67
-.L45:
-	ret
-.L67:
-	beq	a2,zero,.L45
-	addi	a2,a2,-1
-	add	a5,a1,a2
-	lbu	a4,0(a5)
-	add	a5,a0,a2
-	sb	a4,0(a5)
-	j	.L67
-.L46:
-	add	a2,a1,a2
-	mv	a5,a0
-.L49:
-	lbu	a4,0(a1)
-	addi	a1,a1,1
-	addi	a5,a5,1
-	sb	a4,-1(a5)
-	bne	a1,a2,.L49
-	ret
-	.size	memmove, .-memmove
-	.align	2
-	.globl	strlen
-	.type	strlen, @function
-strlen:
-	lbu	a5,0(a0)
-	beq	a5,zero,.L68
-	li	a5,0
-.L70:
-	addi	a5,a5,1
-	add	a4,a0,a5
-	lbu	a4,0(a4)
-	bne	a4,zero,.L70
-.L68:
-	mv	a0,a5
-	ret
-	.size	strlen, .-strlen
-	.align	2
-	.globl	strchr
-	.type	strchr, @function
-strchr:
-	lbu	a5,0(a0)
-	beq	a5,zero,.L74
-	andi	a4,a1,0xff
-.L76:
-	beq	a4,a5,.L73
-	lbu	a5,1(a0)
-	addi	a0,a0,1
-	bne	a5,zero,.L76
-.L74:
-	seqz	a1,a1
-	neg	a1,a1
-	and	a0,a0,a1
-.L73:
-	ret
-	.size	strchr, .-strchr
-	.align	2
 	.globl	initialise_board
 	.type	initialise_board, @function
 initialise_board:
- #APP
-# 15 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	initialise_board, .-initialise_board
 	.align	2
 	.globl	start_trigger
 	.type	start_trigger, @function
 start_trigger:
- #APP
-# 21 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	start_trigger, .-start_trigger
 	.align	2
 	.globl	stop_trigger
 	.type	stop_trigger, @function
 stop_trigger:
- #APP
-# 27 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	stop_trigger, .-stop_trigger
 	.align	2
@@ -288,7 +28,7 @@ stop_trigger:
 	.type	vec_mpy1, @function
 vec_mpy1:
 	addi	a3,a0,300
-.L85:
+.L6:
 	lh	a5,0(a1)
 	lhu	a4,0(a0)
 	addi	a0,a0,2
@@ -297,7 +37,7 @@ vec_mpy1:
 	srai	a5,a5,15
 	add	a5,a5,a4
 	sh	a5,-2(a0)
-	bne	a3,a0,.L85
+	bne	a3,a0,.L6
 	ret
 	.size	vec_mpy1, .-vec_mpy1
 	.align	2
@@ -308,7 +48,7 @@ mac:
 	mv	a6,a0
 	addi	t1,a1,300
 	mv	a0,a2
-.L88:
+.L9:
 	lh	a4,0(a1)
 	lh	a5,0(a6)
 	addi	a1,a1,2
@@ -317,7 +57,7 @@ mac:
 	mul	a5,a5,a4
 	add	a0,a0,a2
 	add	a7,a7,a5
-	bne	t1,a1,.L88
+	bne	t1,a1,.L9
 	sw	a7,0(a3)
 	ret
 	.size	mac, .-mac
@@ -329,24 +69,24 @@ fir:
 	mv	a7,a2
 	li	t1,0
 	li	t3,50
-.L91:
+.L12:
 	addi	a5,a6,-100
 	mv	a3,a1
 	li	a2,0
-.L92:
+.L13:
 	lh	a4,0(a5)
 	lh	a0,0(a3)
 	addi	a5,a5,2
 	addi	a3,a3,2
 	mul	a4,a4,a0
 	add	a2,a2,a4
-	bne	a6,a5,.L92
+	bne	a6,a5,.L13
 	srai	a2,a2,15
 	sw	a2,0(a7)
 	addi	t1,t1,1
 	addi	a7,a7,4
 	addi	a6,a6,2
-	bne	t1,t3,.L91
+	bne	t1,t3,.L12
 	ret
 	.size	fir, .-fir
 	.align	2
@@ -357,13 +97,13 @@ fir_no_red_ld:
 	mv	t5,a2
 	li	t6,0
 	li	t0,100
-.L97:
+.L18:
 	lh	t1,-66(t4)
 	addi	a5,t4,-64
 	mv	a7,a1
 	li	a0,0
 	li	a6,0
-.L96:
+.L17:
 	lh	a2,0(a7)
 	lh	a3,0(a5)
 	lh	a4,2(a7)
@@ -378,7 +118,7 @@ fir_no_red_ld:
 	mul	a4,t1,a4
 	add	a6,a3,a6
 	add	a0,a4,a0
-	bne	t4,a5,.L96
+	bne	t4,a5,.L17
 	srai	a6,a6,15
 	srai	a0,a0,15
 	sw	a6,0(t5)
@@ -386,7 +126,7 @@ fir_no_red_ld:
 	addi	t6,t6,2
 	addi	t5,t5,8
 	addi	t4,t4,4
-	bne	t6,t0,.L97
+	bne	t6,t0,.L18
 	ret
 	.size	fir_no_red_ld, .-fir_no_red_ld
 	.align	2
@@ -402,12 +142,12 @@ latsynth:
 	li	a6,1
 	mul	a5,a5,a7
 	sub	a3,a3,a5
-	ble	a2,a6,.L101
+	ble	a2,a6,.L22
 	addi	a4,a4,2
 	add	a1,a1,a4
 	addi	a7,a0,2
 	add	a4,a0,a4
-.L102:
+.L23:
 	lh	a5,-4(a1)
 	lh	a2,-4(a4)
 	addi	a4,a4,-2
@@ -419,11 +159,11 @@ latsynth:
 	srai	a5,a5,16
 	add	a5,a5,a2
 	sh	a5,0(a4)
-	bne	a7,a4,.L102
+	bne	a7,a4,.L23
 	sh	a6,0(a0)
 	mv	a0,a3
 	ret
-.L101:
+.L22:
 	srai	a6,a3,16
 	sh	a6,0(a0)
 	mv	a0,a3
@@ -435,7 +175,7 @@ latsynth:
 iir1:
 	lh	a1,0(a1)
 	addi	t4,a0,400
-.L106:
+.L27:
 	lw	a7,0(a3)
 	lh	a4,4(a0)
 	lw	t3,4(a3)
@@ -456,7 +196,7 @@ iir1:
 	add	a5,a5,a6
 	srai	a5,a5,15
 	add	a1,a5,a4
-	bne	a0,t4,.L106
+	bne	a0,t4,.L27
 	sw	a1,0(a2)
 	ret
 	.size	iir1, .-iir1
@@ -493,7 +233,7 @@ jpegdct:
 	addi	a7,a0,6
 	addi	a6,a0,8
 	li	a2,8
-.L110:
+.L31:
 	lh	a3,0(t6)
 	lh	s3,0(a6)
 	lh	s2,0(t4)
@@ -587,15 +327,15 @@ jpegdct:
 	slli	a5,a4,16
 	srai	a4,a5,29
 	sh	a4,-16(t5)
-	bne	a2,zero,.L110
+	bne	a2,zero,.L31
 	li	s7,16
 	li	t1,0
 	li	s10,1
 	li	s11,126
 	li	s8,14
 	li	s3,8
-.L112:
-	bne	s3,s10,.L117
+.L33:
+	bne	s3,s10,.L38
 	lw	s0,60(sp)
 	lw	s1,56(sp)
 	lw	s2,52(sp)
@@ -610,7 +350,7 @@ jpegdct:
 	lw	s11,16(sp)
 	addi	sp,sp,64
 	jr	ra
-.L117:
+.L38:
 	add	s5,s5,s7
 	sub	t3,s11,s8
 	add	t3,t3,s5
@@ -632,7 +372,7 @@ jpegdct:
 	sw	s8,4(sp)
 	sw	s7,8(sp)
 	sw	s3,12(sp)
-.L111:
+.L32:
 	lh	t1,0(s1)
 	lh	a0,0(t3)
 	lh	a3,0(s2)
@@ -732,12 +472,12 @@ jpegdct:
 	srai	a0,a0,16
 	sra	a0,a0,a7
 	sh	a0,-2(s0)
-	bne	t4,zero,.L111
+	bne	t4,zero,.L32
 	lw	s8,4(sp)
 	lw	s7,8(sp)
 	lw	s3,12(sp)
 	mv	t1,s6
-	j	.L112
+	j	.L33
 	.size	jpegdct, .-jpegdct
 	.align	2
 	.type	benchmark_body.constprop.0.isra.0, @function
@@ -779,10 +519,10 @@ benchmark_body.constprop.0.isra.0:
 	addi	s3,s3,-1366
 	li	s5,87
 	li	s4,50
-.L129:
+.L50:
 	mv	a5,s2
 	mv	a4,sp
-.L119:
+.L40:
 	lw	a6,0(a5)
 	lw	a0,4(a5)
 	lw	a1,8(a5)
@@ -793,9 +533,9 @@ benchmark_body.constprop.0.isra.0:
 	sw	a3,12(a4)
 	addi	a5,a5,16
 	addi	a4,a4,16
-	bne	a5,s1,.L119
+	bne	a5,s1,.L40
 	addi	a4,sp,400
-.L120:
+.L41:
 	lw	a3,12(a5)
 	lw	a6,0(a5)
 	lw	a0,4(a5)
@@ -808,12 +548,12 @@ benchmark_body.constprop.0.isra.0:
 	addi	a5,a5,16
 	addi	a3,a3,%lo(.LANCHOR1+800)
 	addi	a4,a4,16
-	bne	a5,a3,.L120
+	bne	a5,a3,.L41
 	addi	a1,sp,400
 	mv	a3,sp
 	mv	a4,s7
 	mv	a5,s9
-.L121:
+.L42:
 	lw	a6,0(a3)
 	lw	a0,0(a1)
 	addi	a5,a5,4
@@ -822,10 +562,10 @@ benchmark_body.constprop.0.isra.0:
 	addi	a3,a3,4
 	addi	a4,a4,4
 	addi	a1,a1,4
-	bne	s8,a5,.L121
+	bne	s8,a5,.L42
 	mv	a3,s9
 	mv	a4,s7
-.L122:
+.L43:
 	lh	a1,0(a3)
 	lhu	a0,0(a4)
 	addi	a4,a4,2
@@ -835,12 +575,12 @@ benchmark_body.constprop.0.isra.0:
 	add	a5,a5,a0
 	sh	a5,-2(a4)
 	addi	a3,a3,2
-	bne	s11,a4,.L122
+	bne	s11,a4,.L43
 	lw	a6,0(a2)
 	mv	a1,s7
 	mv	a5,s9
 	li	a0,3
-.L123:
+.L44:
 	lh	a3,0(a5)
 	lh	a4,0(a1)
 	addi	a5,a5,2
@@ -849,31 +589,31 @@ benchmark_body.constprop.0.isra.0:
 	mul	a4,a4,a3
 	add	a0,a0,a7
 	add	a6,a6,a4
-	bne	s10,a5,.L123
+	bne	s10,a5,.L44
 	lui	a5,%hi(c)
 	sw	a6,0(a2)
 	sh	a0,%lo(c)(a5)
 	mv	t1,a2
 	mv	a7,s7
 	li	a6,0
-.L124:
+.L45:
 	mv	a5,s9
 	mv	a3,a7
 	li	a1,0
-.L125:
+.L46:
 	lh	a4,0(a3)
 	lh	a0,0(a5)
 	addi	a5,a5,2
 	addi	a3,a3,2
 	mul	a4,a4,a0
 	add	a1,a1,a4
-	bne	s0,a5,.L125
+	bne	s0,a5,.L46
 	srai	a1,a1,15
 	sw	a1,0(t1)
 	addi	a6,a6,1
 	addi	t1,t1,4
 	addi	a7,a7,2
-	bne	a6,s4,.L124
+	bne	a6,s4,.L45
 	mv	a1,s9
 	mv	a0,s7
 	call	fir_no_red_ld
@@ -887,7 +627,7 @@ benchmark_body.constprop.0.isra.0:
 	addi	a4,a4,%lo(.LANCHOR0+996)
 	addi	a1,a1,%lo(.LANCHOR0+1396)
 	sub	a3,s3,a3
-.L127:
+.L48:
 	lh	a0,0(a4)
 	lh	a5,0(a1)
 	addi	a4,a4,-2
@@ -899,14 +639,14 @@ benchmark_body.constprop.0.isra.0:
 	srai	a5,a5,16
 	add	a5,a5,a0
 	sh	a5,4(a4)
-	bne	s6,a4,.L127
+	bne	s6,a4,.L48
 	lh	t1,1200(a2)
 	lui	a4,%hi(d)
 	sh	a6,800(a2)
 	sw	a3,%lo(d)(a4)
 	mv	a0,a2
 	mv	a1,s7
-.L128:
+.L49:
 	lw	a6,0(a0)
 	lh	a5,4(a1)
 	lh	a4,0(a1)
@@ -927,7 +667,7 @@ benchmark_body.constprop.0.isra.0:
 	add	a4,a4,a6
 	srai	a4,a4,15
 	add	t1,a4,a5
-	bne	a1,s9,.L128
+	bne	a1,s9,.L49
 	lui	a5,%hi(e)
 	mv	a0,s7
 	sw	t1,400(a2)
@@ -936,7 +676,7 @@ benchmark_body.constprop.0.isra.0:
 	lui	a5,%hi(.LANCHOR0)
 	addi	s5,s5,-1
 	addi	a2,a5,%lo(.LANCHOR0)
-	bne	s5,zero,.L129
+	bne	s5,zero,.L50
 	lw	ra,860(sp)
 	lw	s0,856(sp)
 	lw	s1,852(sp)
@@ -956,7 +696,7 @@ benchmark_body.constprop.0.isra.0:
 	.align	2
 	.type	benchmark_body.isra.0, @function
 benchmark_body.isra.0:
-	ble	a0,zero,.L163
+	ble	a0,zero,.L84
 	addi	sp,sp,-880
 	lui	a2,%hi(.LANCHOR0)
 	sw	s0,872(sp)
@@ -995,10 +735,10 @@ benchmark_body.isra.0:
 	addi	s4,s4,-1366
 	li	s5,0
 	li	s3,50
-.L152:
+.L73:
 	mv	a5,s2
 	addi	a4,sp,16
-.L142:
+.L63:
 	lw	a6,0(a5)
 	lw	a0,4(a5)
 	lw	a1,8(a5)
@@ -1009,9 +749,9 @@ benchmark_body.isra.0:
 	sw	a3,12(a4)
 	addi	a5,a5,16
 	addi	a4,a4,16
-	bne	a5,s1,.L142
+	bne	a5,s1,.L63
 	addi	a4,sp,416
-.L143:
+.L64:
 	lw	a3,12(a5)
 	lw	a6,0(a5)
 	lw	a0,4(a5)
@@ -1024,12 +764,12 @@ benchmark_body.isra.0:
 	addi	a5,a5,16
 	addi	a3,a3,%lo(.LANCHOR1+800)
 	addi	a4,a4,16
-	bne	a5,a3,.L143
+	bne	a5,a3,.L64
 	addi	a1,sp,416
 	addi	a3,sp,16
 	mv	a4,s7
 	mv	a5,s9
-.L144:
+.L65:
 	lw	a6,0(a3)
 	lw	a0,0(a1)
 	addi	a5,a5,4
@@ -1038,10 +778,10 @@ benchmark_body.isra.0:
 	addi	a3,a3,4
 	addi	a4,a4,4
 	addi	a1,a1,4
-	bne	s8,a5,.L144
+	bne	s8,a5,.L65
 	mv	a3,s9
 	mv	a4,s7
-.L145:
+.L66:
 	lh	a1,0(a3)
 	lhu	a0,0(a4)
 	addi	a4,a4,2
@@ -1051,12 +791,12 @@ benchmark_body.isra.0:
 	add	a5,a5,a0
 	sh	a5,-2(a4)
 	addi	a3,a3,2
-	bne	s11,a4,.L145
+	bne	s11,a4,.L66
 	lw	a6,0(a2)
 	mv	a1,s7
 	mv	a4,s9
 	li	a0,3
-.L146:
+.L67:
 	lh	a5,0(a4)
 	lh	a3,0(a1)
 	addi	a4,a4,2
@@ -1065,31 +805,31 @@ benchmark_body.isra.0:
 	mul	a5,a5,a5
 	add	a6,a6,a3
 	add	a0,a0,a5
-	bne	s10,a4,.L146
+	bne	s10,a4,.L67
 	lui	a5,%hi(c)
 	sw	a6,0(a2)
 	sh	a0,%lo(c)(a5)
 	mv	a7,a2
 	mv	a6,s7
 	li	a0,0
-.L147:
+.L68:
 	mv	a5,s9
 	mv	a3,a6
 	li	a1,0
-.L148:
+.L69:
 	lh	a4,0(a3)
 	lh	t1,0(a5)
 	addi	a5,a5,2
 	addi	a3,a3,2
 	mul	a4,a4,t1
 	add	a1,a1,a4
-	bne	s0,a5,.L148
+	bne	s0,a5,.L69
 	srai	a1,a1,15
 	sw	a1,0(a7)
 	addi	a0,a0,1
 	addi	a7,a7,4
 	addi	a6,a6,2
-	bne	a0,s3,.L147
+	bne	a0,s3,.L68
 	mv	a1,s9
 	mv	a0,s7
 	call	fir_no_red_ld
@@ -1103,7 +843,7 @@ benchmark_body.isra.0:
 	addi	a4,a4,%lo(.LANCHOR0+996)
 	addi	a1,a1,%lo(.LANCHOR0+1396)
 	sub	a3,s4,a3
-.L150:
+.L71:
 	lh	a0,0(a4)
 	lh	a5,0(a1)
 	addi	a4,a4,-2
@@ -1115,14 +855,14 @@ benchmark_body.isra.0:
 	srai	a5,a5,16
 	add	a5,a5,a0
 	sh	a5,4(a4)
-	bne	s6,a4,.L150
+	bne	s6,a4,.L71
 	lh	t1,1200(a2)
 	lui	a4,%hi(d)
 	sh	a6,800(a2)
 	sw	a3,%lo(d)(a4)
 	mv	a0,a2
 	mv	a1,s7
-.L151:
+.L72:
 	lw	a6,0(a0)
 	lh	a5,4(a1)
 	lh	a4,0(a1)
@@ -1143,7 +883,7 @@ benchmark_body.isra.0:
 	add	a4,a4,a6
 	srai	a4,a4,15
 	add	t1,a4,a5
-	bne	a1,s9,.L151
+	bne	a1,s9,.L72
 	lui	a5,%hi(e)
 	mv	a0,s7
 	sw	t1,400(a2)
@@ -1153,7 +893,7 @@ benchmark_body.isra.0:
 	lui	a4,%hi(.LANCHOR0)
 	addi	s5,s5,1
 	addi	a2,a4,%lo(.LANCHOR0)
-	bne	s5,a5,.L152
+	bne	s5,a5,.L73
 	lw	ra,876(sp)
 	lw	s0,872(sp)
 	lw	s1,868(sp)
@@ -1169,7 +909,7 @@ benchmark_body.isra.0:
 	lw	s11,828(sp)
 	addi	sp,sp,880
 	jr	ra
-.L163:
+.L84:
 	ret
 	.size	benchmark_body.isra.0, .-benchmark_body.isra.0
 	.align	2
@@ -1211,7 +951,7 @@ verify_benchmark:
 	addi	a5,a4,800
 	addi	a3,a4,1600
 	mv	a4,sp
-.L172:
+.L93:
 	lw	a6,0(a5)
 	lw	a0,4(a5)
 	lw	a1,8(a5)
@@ -1222,44 +962,44 @@ verify_benchmark:
 	sw	a2,12(a4)
 	addi	a5,a5,16
 	addi	a4,a4,16
-	bne	a5,a3,.L172
+	bne	a5,a3,.L93
 	lui	a5,%hi(.LANCHOR0)
 	addi	a5,a5,%lo(.LANCHOR0)
 	addi	a1,a5,800
 	mv	a4,sp
-.L176:
+.L97:
 	lbu	a2,0(a5)
 	lbu	a3,0(a4)
 	addi	a5,a5,1
 	addi	a4,a4,1
-	bne	a2,a3,.L182
-	bne	a5,a1,.L176
+	bne	a2,a3,.L103
+	bne	a5,a1,.L97
 	lui	a5,%hi(c)
 	lh	a4,%lo(c)(a5)
 	li	a5,12288
 	addi	a5,a5,-2045
 	li	a0,0
-	beq	a4,a5,.L183
-.L171:
+	beq	a4,a5,.L104
+.L92:
 	addi	sp,sp,800
 	jr	ra
-.L182:
+.L103:
 	li	a0,0
 	addi	sp,sp,800
 	jr	ra
-.L183:
+.L104:
 	lui	a5,%hi(d)
 	lw	a4,%lo(d)(a5)
 	li	a5,-441884672
 	addi	a5,a5,-1558
-	bne	a4,a5,.L171
+	bne	a4,a5,.L92
 	lui	a5,%hi(e)
 	lw	a0,%lo(e)(a5)
 	li	a5,441884672
 	addi	a5,a5,1558
 	add	a0,a0,a5
 	seqz	a0,a0
-	j	.L171
+	j	.L92
 	.size	verify_benchmark, .-verify_benchmark
 	.section	.text.startup,"ax",@progbits
 	.align	2
@@ -1267,18 +1007,11 @@ verify_benchmark:
 	.type	main, @function
 main:
 	addi	sp,sp,-32
-	sw	ra,28(sp)
- #APP
-# 15 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	li	a0,1
+	sw	ra,28(sp)
 	call	benchmark_body.isra.0
-	call	start_trigger
 	call	benchmark
 	sw	zero,12(sp)
-	call	stop_trigger
 	lw	a0,12(sp)
 	call	verify_benchmark
 	lw	ra,28(sp)

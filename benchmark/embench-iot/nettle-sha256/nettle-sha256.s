@@ -60,545 +60,21 @@ sha256_init:
 	ret
 	.size	sha256_init, .-sha256_init
 	.align	2
-	.globl	memset
-	.type	memset, @function
-memset:
-	beq	a2,zero,.L20
-	addi	a5,a2,-1
-	li	a4,5
-	andi	a1,a1,0xff
-	bleu	a5,a4,.L16
-	neg	a4,a0
-	andi	a5,a4,3
-	li	a6,0
-	beq	a5,zero,.L10
-	sb	a1,0(a0)
-	andi	a4,a4,2
-	li	a6,1
-	beq	a4,zero,.L10
-	sb	a1,1(a0)
-	li	a4,3
-	li	a6,2
-	bne	a5,a4,.L10
-	sb	a1,2(a0)
-	mv	a6,a5
-.L10:
-	slli	a4,a1,8
-	slli	a3,a1,16
-	sub	t1,a2,a5
-	or	a4,a1,a4
-	or	a4,a4,a3
-	add	a5,a0,a5
-	slli	a3,a1,24
-	andi	a7,t1,-4
-	or	a4,a4,a3
-	add	a3,a5,a7
-.L12:
-	sw	a4,0(a5)
-	addi	a5,a5,4
-	bne	a5,a3,.L12
-	add	a5,a6,a7
-	beq	t1,a7,.L20
-.L9:
-	add	a4,a0,a5
-	sb	a1,0(a4)
-	addi	a4,a5,1
-	bleu	a2,a4,.L20
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,2
-	bleu	a2,a4,.L20
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,3
-	bleu	a2,a4,.L20
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,4
-	bleu	a2,a4,.L20
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a5,a5,5
-	bleu	a2,a5,.L20
-	add	a5,a0,a5
-	sb	a1,0(a5)
-.L20:
-	ret
-.L16:
-	li	a5,0
-	j	.L9
-	.size	memset, .-memset
-	.align	2
-	.globl	memcpy
-	.type	memcpy, @function
-memcpy:
-	beq	a2,zero,.L25
-	addi	a5,a2,-1
-	li	a4,6
-	bleu	a5,a4,.L26
-	or	a3,a0,a1
-	andi	a3,a3,3
-	mv	a4,a0
-	mv	a5,a1
-	bne	a3,zero,.L26
-	sub	a3,a0,a1
-	addi	a3,a3,-1
-	sltiu	a3,a3,3
-	bne	a3,zero,.L26
-	andi	a7,a2,-4
-	add	a6,a1,a7
-.L27:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L27
-	beq	a2,a7,.L25
-	lbu	a3,0(a6)
-	add	a4,a0,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bleu	a2,a5,.L25
-	add	a4,a1,a5
-	lbu	a4,0(a4)
-	add	a5,a0,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bleu	a2,a7,.L25
-	add	a1,a1,a7
-	lbu	a5,0(a1)
-	add	a7,a0,a7
-	sb	a5,0(a7)
-	ret
-.L26:
-	add	a2,a1,a2
-	mv	a5,a0
-.L29:
-	lbu	a4,0(a1)
-	addi	a1,a1,1
-	addi	a5,a5,1
-	sb	a4,-1(a5)
-	bne	a1,a2,.L29
-.L25:
-	ret
-	.size	memcpy, .-memcpy
-	.align	2
-	.globl	memcmp
-	.type	memcmp, @function
-memcmp:
-	beq	a2,zero,.L46
-	add	a2,a0,a2
-	j	.L45
-.L44:
-	beq	a0,a2,.L46
-.L45:
-	lbu	a5,0(a0)
-	lbu	a4,0(a1)
-	addi	a0,a0,1
-	addi	a1,a1,1
-	beq	a5,a4,.L44
-	sub	a0,a5,a4
-	ret
-.L46:
-	li	a0,0
-	ret
-	.size	memcmp, .-memcmp
-	.align	2
-	.globl	memmove
-	.type	memmove, @function
-memmove:
-	bgeu	a0,a1,.L49
-	beq	a2,zero,.L50
-	addi	a5,a2,-1
-	li	a4,6
-	bleu	a5,a4,.L51
-	or	a3,a1,a0
-	andi	a3,a3,3
-	mv	a4,a0
-	mv	a5,a1
-	bne	a3,zero,.L51
-	sub	a3,a0,a1
-	addi	a3,a3,-1
-	sltiu	a3,a3,3
-	bne	a3,zero,.L51
-	andi	a7,a2,-4
-	add	a6,a1,a7
-.L52:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L52
-	beq	a2,a7,.L50
-	lbu	a3,0(a6)
-	add	a4,a0,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bleu	a2,a5,.L50
-	add	a4,a1,a5
-	lbu	a4,0(a4)
-	add	a5,a0,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bleu	a2,a7,.L50
-	add	a1,a1,a7
-	lbu	a5,0(a1)
-	add	a7,a0,a7
-	sb	a5,0(a7)
-	ret
-.L49:
-	bgtu	a0,a1,.L72
-.L50:
-	ret
-.L72:
-	beq	a2,zero,.L50
-	addi	a2,a2,-1
-	add	a5,a1,a2
-	lbu	a4,0(a5)
-	add	a5,a0,a2
-	sb	a4,0(a5)
-	j	.L72
-.L51:
-	add	a2,a1,a2
-	mv	a5,a0
-.L54:
-	lbu	a4,0(a1)
-	addi	a1,a1,1
-	addi	a5,a5,1
-	sb	a4,-1(a5)
-	bne	a1,a2,.L54
-	ret
-	.size	memmove, .-memmove
-	.align	2
-	.globl	strlen
-	.type	strlen, @function
-strlen:
-	lbu	a5,0(a0)
-	beq	a5,zero,.L73
-	li	a5,0
-.L75:
-	addi	a5,a5,1
-	add	a4,a0,a5
-	lbu	a4,0(a4)
-	bne	a4,zero,.L75
-.L73:
-	mv	a0,a5
-	ret
-	.size	strlen, .-strlen
-	.align	2
-	.globl	strchr
-	.type	strchr, @function
-strchr:
-	lbu	a5,0(a0)
-	beq	a5,zero,.L79
-	andi	a4,a1,0xff
-.L81:
-	beq	a4,a5,.L78
-	lbu	a5,1(a0)
-	addi	a0,a0,1
-	bne	a5,zero,.L81
-.L79:
-	seqz	a1,a1
-	neg	a1,a1
-	and	a0,a0,a1
-.L78:
-	ret
-	.size	strchr, .-strchr
-	.align	2
-	.globl	rand_beebs
-	.type	rand_beebs, @function
-rand_beebs:
-	lui	a4,%hi(seed)
-	lw	a0,%lo(seed)(a4)
-	li	a5,1103515648
-	addi	a5,a5,-403
-	mul	a0,a0,a5
-	li	a5,12288
-	addi	a5,a5,57
-	add	a0,a0,a5
-	slli	a0,a0,1
-	srli	a0,a0,1
-	sw	a0,%lo(seed)(a4)
-	srli	a0,a0,16
-	ret
-	.size	rand_beebs, .-rand_beebs
-	.align	2
-	.globl	srand_beebs
-	.type	srand_beebs, @function
-srand_beebs:
-	lui	a5,%hi(seed)
-	sw	a0,%lo(seed)(a5)
-	ret
-	.size	srand_beebs, .-srand_beebs
-	.align	2
-	.globl	init_heap_beebs
-	.type	init_heap_beebs, @function
-init_heap_beebs:
-	add	a1,a0,a1
-	lui	a3,%hi(heap_end)
-	lui	a4,%hi(heap_ptr)
-	lui	a5,%hi(heap_requested)
-	sw	a1,%lo(heap_end)(a3)
-	sw	a0,%lo(heap_ptr)(a4)
-	sw	zero,%lo(heap_requested)(a5)
-	ret
-	.size	init_heap_beebs, .-init_heap_beebs
-	.align	2
-	.globl	check_heap_beebs
-	.type	check_heap_beebs, @function
-check_heap_beebs:
-	lui	a5,%hi(heap_requested)
-	lw	a4,%lo(heap_requested)(a5)
-	lui	a5,%hi(heap_end)
-	lw	a5,%lo(heap_end)(a5)
-	add	a0,a0,a4
-	sltu	a0,a5,a0
-	xori	a0,a0,1
-	ret
-	.size	check_heap_beebs, .-check_heap_beebs
-	.align	2
-	.globl	malloc_beebs
-	.type	malloc_beebs, @function
-malloc_beebs:
-	mv	a5,a0
-	beq	a0,zero,.L94
-	lui	a2,%hi(heap_ptr)
-	lw	a0,%lo(heap_ptr)(a2)
-	lui	a3,%hi(heap_requested)
-	lw	a1,%lo(heap_requested)(a3)
-	add	a4,a0,a5
-	andi	a6,a4,3
-	add	a5,a5,a1
-	bne	a6,zero,.L98
-	lui	a1,%hi(heap_end)
-	lw	a1,%lo(heap_end)(a1)
-	sw	a5,%lo(heap_requested)(a3)
-	bltu	a1,a4,.L94
-.L99:
-	sw	a4,%lo(heap_ptr)(a2)
-	ret
-.L98:
-	li	a1,4
-	sub	a1,a1,a6
-	add	a5,a5,a1
-	add	a4,a4,a1
-	lui	a1,%hi(heap_end)
-	lw	a1,%lo(heap_end)(a1)
-	sw	a5,%lo(heap_requested)(a3)
-	bgeu	a1,a4,.L99
-.L94:
-	li	a0,0
-	ret
-	.size	malloc_beebs, .-malloc_beebs
-	.align	2
-	.globl	calloc_beebs
-	.type	calloc_beebs, @function
-calloc_beebs:
-	mul	a1,a0,a1
-	beq	a1,zero,.L101
-	lui	a2,%hi(heap_ptr)
-	lw	a0,%lo(heap_ptr)(a2)
-	lui	a3,%hi(heap_requested)
-	lw	a5,%lo(heap_requested)(a3)
-	add	a4,a0,a1
-	andi	a6,a4,3
-	add	a5,a1,a5
-	bne	a6,zero,.L126
-.L102:
-	lui	a6,%hi(heap_end)
-	lw	a6,%lo(heap_end)(a6)
-	sw	a5,%lo(heap_requested)(a3)
-	bltu	a6,a4,.L101
-	sw	a4,%lo(heap_ptr)(a2)
-	beq	a0,zero,.L101
-	addi	a5,a1,-1
-	li	a4,5
-	bleu	a5,a4,.L110
-	neg	a4,a0
-	andi	a5,a4,3
-	li	a3,0
-	beq	a5,zero,.L104
-	sb	zero,0(a0)
-	andi	a4,a4,2
-	li	a3,1
-	beq	a4,zero,.L104
-	sb	zero,1(a0)
-	li	a4,3
-	li	a3,2
-	bne	a5,a4,.L104
-	sb	zero,2(a0)
-	mv	a3,a5
-.L104:
-	sub	a6,a1,a5
-	andi	a2,a6,-4
-	add	a5,a0,a5
-	add	a4,a5,a2
-.L106:
-	sw	zero,0(a5)
-	addi	a5,a5,4
-	bne	a5,a4,.L106
-	add	a5,a3,a2
-	beq	a6,a2,.L100
-.L103:
-	add	a4,a0,a5
-	sb	zero,0(a4)
-	addi	a4,a5,1
-	bleu	a1,a4,.L100
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a4,a5,2
-	bleu	a1,a4,.L100
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a4,a5,3
-	bleu	a1,a4,.L100
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a4,a5,4
-	bleu	a1,a4,.L100
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a5,a5,5
-	bleu	a1,a5,.L100
-	add	a5,a0,a5
-	sb	zero,0(a5)
-	ret
-.L101:
-	li	a0,0
-.L100:
-	ret
-.L126:
-	li	a7,4
-	sub	a6,a7,a6
-	add	a4,a4,a6
-	add	a5,a5,a6
-	j	.L102
-.L110:
-	li	a5,0
-	j	.L103
-	.size	calloc_beebs, .-calloc_beebs
-	.align	2
-	.globl	realloc_beebs
-	.type	realloc_beebs, @function
-realloc_beebs:
-	beq	a0,zero,.L128
-	beq	a1,zero,.L128
-	lui	a6,%hi(heap_ptr)
-	lw	a2,%lo(heap_ptr)(a6)
-	lui	a3,%hi(heap_requested)
-	lw	a5,%lo(heap_requested)(a3)
-	add	a4,a2,a1
-	andi	a7,a4,3
-	add	a5,a1,a5
-	bne	a7,zero,.L153
-	lui	a7,%hi(heap_end)
-	lw	a7,%lo(heap_end)(a7)
-	sw	a5,%lo(heap_requested)(a3)
-	bltu	a7,a4,.L128
-.L154:
-	sw	a4,%lo(heap_ptr)(a6)
-	beq	a2,zero,.L128
-	addi	a5,a1,-1
-	li	a4,6
-	bleu	a5,a4,.L138
-	or	a3,a0,a2
-	andi	a3,a3,3
-	mv	a4,a2
-	mv	a5,a0
-	bne	a3,zero,.L138
-	addi	a3,a2,-1
-	sub	a3,a3,a0
-	sltiu	a3,a3,3
-	bne	a3,zero,.L138
-	andi	a7,a1,-4
-	add	a6,a0,a7
-.L131:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L131
-	beq	a1,a7,.L127
-	lbu	a3,0(a6)
-	add	a4,a2,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bleu	a1,a5,.L127
-	add	a4,a0,a5
-	lbu	a4,0(a4)
-	add	a5,a2,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bleu	a1,a7,.L127
-	add	a0,a0,a7
-	lbu	a5,0(a0)
-	add	a7,a2,a7
-	sb	a5,0(a7)
-.L127:
-	mv	a0,a2
-	ret
-.L153:
-	li	t1,4
-	sub	a7,t1,a7
-	add	a5,a5,a7
-	add	a4,a4,a7
-	lui	a7,%hi(heap_end)
-	lw	a7,%lo(heap_end)(a7)
-	sw	a5,%lo(heap_requested)(a3)
-	bgeu	a7,a4,.L154
-.L128:
-	li	a2,0
-	mv	a0,a2
-	ret
-.L138:
-	li	a5,0
-.L135:
-	add	a4,a0,a5
-	lbu	a3,0(a4)
-	add	a4,a2,a5
-	addi	a5,a5,1
-	sb	a3,0(a4)
-	bgtu	a1,a5,.L135
-	mv	a0,a2
-	ret
-	.size	realloc_beebs, .-realloc_beebs
-	.align	2
-	.globl	free_beebs
-	.type	free_beebs, @function
-free_beebs:
-	ret
-	.size	free_beebs, .-free_beebs
-	.align	2
 	.globl	initialise_board
 	.type	initialise_board, @function
 initialise_board:
- #APP
-# 15 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	initialise_board, .-initialise_board
 	.align	2
 	.globl	start_trigger
 	.type	start_trigger, @function
 start_trigger:
- #APP
-# 21 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	start_trigger, .-start_trigger
 	.align	2
 	.globl	stop_trigger
 	.type	stop_trigger, @function
 stop_trigger:
- #APP
-# 27 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	stop_trigger, .-stop_trigger
 	.align	2
@@ -607,12 +83,12 @@ stop_trigger:
 _nettle_write_be32:
 	srli	a7,a0,2
 	andi	a0,a0,3
-	beq	a7,zero,.L160
+	beq	a7,zero,.L11
 	slli	a6,a7,2
 	add	a6,a1,a6
 	mv	a4,a2
 	mv	a5,a1
-.L161:
+.L12:
 	lbu	a3,3(a4)
 	addi	a5,a5,4
 	addi	a4,a4,4
@@ -624,26 +100,26 @@ _nettle_write_be32:
 	sb	a3,-2(a5)
 	lw	a3,-4(a4)
 	sb	a3,-1(a5)
-	bne	a5,a6,.L161
+	bne	a5,a6,.L12
 	slli	a5,a7,2
 	add	a1,a5,a1
-.L160:
-	beq	a0,zero,.L159
+.L11:
+	beq	a0,zero,.L10
 	slli	a7,a7,2
 	add	a2,a2,a7
 	li	a4,2
 	lw	a5,0(a2)
-	beq	a0,a4,.L163
+	beq	a0,a4,.L14
 	li	a4,3
-	beq	a0,a4,.L172
+	beq	a0,a4,.L23
 	srli	a5,a5,24
 	sb	a5,0(a1)
-.L159:
+.L10:
 	ret
-.L172:
+.L23:
 	srli	a4,a5,8
 	sb	a4,2(a1)
-.L163:
+.L14:
 	srli	a4,a5,16
 	srli	a5,a5,24
 	sb	a4,1(a1)
@@ -888,7 +364,7 @@ _nettle_sha256_compress:
 	sw	s8,52(sp)
 	sw	s7,56(sp)
 	sw	s11,60(sp)
-.L174:
+.L25:
 	slli	s8,t1,26
 	srli	s7,t1,6
 	add	s7,s7,s8
@@ -1195,7 +671,7 @@ _nettle_sha256_compress:
 	add	t1,a0,s8
 	addi	s1,s1,32
 	add	a0,s7,s8
-	bne	s0,t0,.L174
+	bne	s0,t0,.L25
 	lw	s0,16(sp)
 	lw	s10,20(sp)
 	lw	s11,60(sp)
@@ -1208,7 +684,7 @@ _nettle_sha256_compress:
 	lw	s4,24(sp)
 	sw	s6,52(sp)
 	sw	s5,24(sp)
-.L175:
+.L26:
 	slli	s0,s8,15
 	srli	s6,s8,17
 	slli	s1,s8,13
@@ -2180,7 +1656,7 @@ _nettle_sha256_compress:
 	add	t1,a0,s1
 	add	a0,s0,s1
 	lw	s0,20(sp)
-	bne	t0,s0,.L175
+	bne	t0,s0,.L26
 	lw	a3,28(sp)
 	lw	s4,56(sp)
 	lw	s6,52(sp)
@@ -2236,51 +1712,51 @@ sha256_update:
 	mv	s0,a0
 	mv	s3,a1
 	mv	s2,a2
-	beq	s1,zero,.L180
+	beq	s1,zero,.L31
 	li	a5,64
 	sub	s4,a5,s1
-	bltu	a1,s4,.L244
+	bltu	a1,s4,.L95
 	addi	a1,a0,40
-	beq	s1,a5,.L193
+	beq	s1,a5,.L44
 	addi	a5,s1,-57
 	li	a4,6
-	bleu	a5,a4,.L207
+	bleu	a5,a4,.L58
 	addi	a4,s1,40
 	add	a4,a0,a4
 	or	a3,a4,a2
 	andi	a3,a3,3
 	mv	a5,a2
-	bne	a3,zero,.L207
+	bne	a3,zero,.L58
 	sub	a3,a4,a2
 	addi	a3,a3,-1
 	sltiu	a3,a3,3
-	bne	a3,zero,.L207
+	bne	a3,zero,.L58
 	andi	a0,s4,-4
 	add	a2,a2,a0
-.L191:
+.L42:
 	lw	a3,0(a5)
 	addi	a5,a5,4
 	addi	a4,a4,4
 	sw	a3,-4(a4)
-	bne	a2,a5,.L191
-	beq	s4,a0,.L193
+	bne	a2,a5,.L42
+	beq	s4,a0,.L44
 	lbu	a3,0(a2)
 	add	a4,a1,s1
 	add	a5,a4,a0
 	sb	a3,0(a5)
 	addi	a5,a0,1
-	bleu	s4,a5,.L193
+	bleu	s4,a5,.L44
 	add	a3,s2,a5
 	lbu	a3,0(a3)
 	add	a5,a4,a5
 	addi	a0,a0,2
 	sb	a3,0(a5)
-	bleu	s4,a0,.L193
+	bleu	s4,a0,.L44
 	add	a5,s2,a0
 	lbu	a5,0(a5)
 	add	a4,a4,a0
 	sb	a5,0(a4)
-.L193:
+.L44:
 	lui	a2,%hi(.LANCHOR0+32)
 	addi	a2,a2,%lo(.LANCHOR0+32)
 	mv	a0,s0
@@ -2295,9 +1771,9 @@ sha256_update:
 	add	s2,s2,s4
 	sw	a4,32(s0)
 	sw	a5,36(s0)
-.L180:
+.L31:
 	li	a5,63
-	bleu	s3,a5,.L197
+	bleu	s3,a5,.L48
 	srli	a5,s3,6
 	sw	s5,4(sp)
 	lui	s4,%hi(.LANCHOR0+32)
@@ -2307,7 +1783,7 @@ sha256_update:
 	addi	s6,a5,-1
 	addi	s4,s4,%lo(.LANCHOR0+32)
 	mv	s1,s2
-.L198:
+.L49:
 	mv	a1,s1
 	mv	a2,s4
 	mv	a0,s0
@@ -2320,103 +1796,103 @@ sha256_update:
 	add	a5,a5,a3
 	sw	a4,32(s0)
 	sw	a5,36(s0)
-	bne	s1,s5,.L198
+	bne	s1,s5,.L49
 	slli	a5,s6,6
 	lw	s5,4(sp)
 	lw	s6,0(sp)
 	addi	s2,s2,64
 	add	s2,a5,s2
 	andi	s3,s3,63
-.L197:
-	beq	s3,zero,.L188
+.L48:
+	beq	s3,zero,.L39
 	addi	a5,s3,-1
 	li	a4,6
 	addi	a1,s0,40
-	bleu	a5,a4,.L200
+	bleu	a5,a4,.L51
 	or	a5,s2,a1
 	andi	a5,a5,3
-	bne	a5,zero,.L200
+	bne	a5,zero,.L51
 	addi	a5,s0,39
 	sub	a5,a5,s2
 	sltiu	a5,a5,3
-	bne	a5,zero,.L200
+	bne	a5,zero,.L51
 	lw	a2,0(s2)
 	srli	a5,s3,2
 	li	a3,2
 	sw	a2,40(s0)
 	lw	a2,4(s2)
 	sw	a2,44(s0)
-	beq	a5,a3,.L201
+	beq	a5,a3,.L52
 	lw	a2,8(s2)
 	li	a3,3
 	sw	a2,48(s0)
-	beq	a5,a3,.L201
+	beq	a5,a3,.L52
 	lw	a2,12(s2)
 	li	a3,4
 	sw	a2,52(s0)
-	beq	a5,a3,.L201
+	beq	a5,a3,.L52
 	lw	a2,16(s2)
 	li	a3,5
 	sw	a2,56(s0)
-	beq	a5,a3,.L201
+	beq	a5,a3,.L52
 	lw	a3,20(s2)
 	sw	a3,60(s0)
-	beq	a5,a4,.L201
+	beq	a5,a4,.L52
 	lw	a3,24(s2)
 	li	a4,7
 	sw	a3,64(s0)
-	beq	a5,a4,.L201
+	beq	a5,a4,.L52
 	lw	a3,28(s2)
 	li	a4,8
 	sw	a3,68(s0)
-	beq	a5,a4,.L201
+	beq	a5,a4,.L52
 	lw	a3,32(s2)
 	li	a4,9
 	sw	a3,72(s0)
-	beq	a5,a4,.L201
+	beq	a5,a4,.L52
 	lw	a3,36(s2)
 	li	a4,10
 	sw	a3,76(s0)
-	beq	a5,a4,.L201
+	beq	a5,a4,.L52
 	lw	a3,40(s2)
 	li	a4,11
 	sw	a3,80(s0)
-	beq	a5,a4,.L201
+	beq	a5,a4,.L52
 	lw	a3,44(s2)
 	li	a4,12
 	sw	a3,84(s0)
-	beq	a5,a4,.L201
+	beq	a5,a4,.L52
 	lw	a3,48(s2)
 	li	a4,13
 	sw	a3,88(s0)
-	beq	a5,a4,.L201
+	beq	a5,a4,.L52
 	lw	a3,52(s2)
 	li	a4,15
 	sw	a3,92(s0)
-	bne	a5,a4,.L201
+	bne	a5,a4,.L52
 	lw	a5,56(s2)
 	sw	a5,96(s0)
-.L201:
+.L52:
 	andi	a5,s3,3
-	beq	a5,zero,.L188
+	beq	a5,zero,.L39
 	andi	a5,s3,-4
 	add	a4,s2,a5
 	lbu	a2,0(a4)
 	add	a3,a1,a5
 	addi	a4,a5,1
 	sb	a2,0(a3)
-	bgeu	a4,s3,.L188
+	bgeu	a4,s3,.L39
 	add	a3,s2,a4
 	lbu	a3,0(a3)
 	add	a4,a1,a4
 	addi	a5,a5,2
 	sb	a3,0(a4)
-	bleu	s3,a5,.L188
+	bleu	s3,a5,.L39
 	add	s2,s2,a5
 	lbu	a4,0(s2)
 	add	a5,a1,a5
 	sb	a4,0(a5)
-.L188:
+.L39:
 	sw	s3,104(s0)
 	lw	ra,28(sp)
 	lw	s0,24(sp)
@@ -2426,105 +1902,105 @@ sha256_update:
 	lw	s4,8(sp)
 	addi	sp,sp,32
 	jr	ra
-.L244:
-	beq	a1,zero,.L182
+.L95:
+	beq	a1,zero,.L33
 	addi	a5,a1,-1
 	li	a4,6
-	bleu	a5,a4,.L183
+	bleu	a5,a4,.L34
 	addi	a4,s1,40
 	add	a4,a0,a4
 	or	a3,a4,a2
 	andi	a3,a3,3
 	mv	a5,a2
-	bne	a3,zero,.L183
+	bne	a3,zero,.L34
 	sub	a3,a4,a2
 	addi	a3,a3,-1
 	sltiu	a3,a3,3
-	bne	a3,zero,.L183
+	bne	a3,zero,.L34
 	andi	a1,a1,-4
 	add	a2,a2,a1
-.L184:
+.L35:
 	lw	a3,0(a5)
 	addi	a5,a5,4
 	addi	a4,a4,4
 	sw	a3,-4(a4)
-	bne	a2,a5,.L184
-	beq	s3,a1,.L187
+	bne	a2,a5,.L35
+	beq	s3,a1,.L38
 	lbu	a3,0(a2)
 	addi	a4,s0,40
 	add	a5,a4,s1
 	add	a5,a5,a1
 	sb	a3,0(a5)
 	addi	a5,a1,1
-	bleu	s3,a5,.L187
+	bleu	s3,a5,.L38
 	add	a3,s2,a5
 	lbu	a3,0(a3)
 	add	a5,a4,a5
 	add	a5,a5,s1
 	addi	a1,a1,2
 	sb	a3,0(a5)
-	bleu	s3,a1,.L187
+	bleu	s3,a1,.L38
 	add	s2,s2,a1
 	lbu	a3,0(s2)
 	add	a5,a4,a1
 	add	a5,a5,s1
 	sb	a3,0(a5)
-.L187:
+.L38:
 	lw	s1,104(s0)
-.L182:
+.L33:
 	add	s3,s3,s1
-	j	.L188
-.L200:
+	j	.L39
+.L51:
 	add	a4,s2,s3
-.L204:
+.L55:
 	lbu	a5,0(s2)
 	addi	s2,s2,1
 	addi	a1,a1,1
 	sb	a5,-1(a1)
-	bne	s2,a4,.L204
-	j	.L188
-.L207:
+	bne	s2,a4,.L55
+	j	.L39
+.L58:
 	li	a5,0
-.L195:
+.L46:
 	add	a4,s2,a5
 	lbu	a3,0(a4)
 	add	a4,s1,a5
 	add	a4,s0,a4
 	sb	a3,40(a4)
 	addi	a5,a5,1
-	bgtu	s4,a5,.L195
-	j	.L193
-.L183:
+	bgtu	s4,a5,.L46
+	j	.L44
+.L34:
 	add	a5,s0,s1
 	addi	a5,a5,40
 	add	a3,s2,s3
-.L186:
+.L37:
 	lbu	a4,0(s2)
 	addi	s2,s2,1
 	addi	a5,a5,1
 	sb	a4,-1(a5)
-	bne	s2,a3,.L186
+	bne	s2,a3,.L37
 	lw	s1,104(s0)
-	j	.L182
+	j	.L33
 	.size	sha256_update, .-sha256_update
 	.align	2
 	.type	sha256_update.constprop.0, @function
 sha256_update.constprop.0:
 	lw	a4,104(a0)
 	mv	a3,a0
-	beq	a4,zero,.L324
+	beq	a4,zero,.L175
 	addi	a6,a4,-8
 	li	t1,56
-	bgtu	a6,t1,.L325
+	bgtu	a6,t1,.L176
 	addi	sp,sp,-48
 	sw	ra,44(sp)
 	li	a7,64
 	addi	a1,a0,40
-	beq	a4,a7,.L253
+	beq	a4,a7,.L104
 	addi	a5,a4,-58
 	li	t1,5
 	sub	a7,a7,a4
-	bleu	a5,t1,.L326
+	bleu	a5,t1,.L177
 	addi	a2,a4,40
 	lui	a5,%hi(.LANCHOR1)
 	add	a2,a0,a2
@@ -2532,65 +2008,65 @@ sha256_update.constprop.0:
 	sub	a0,a2,a5
 	addi	a0,a0,-1
 	sltiu	a0,a0,3
-	bne	a0,zero,.L254
+	bne	a0,zero,.L105
 	andi	a0,a2,3
-	bne	a0,zero,.L254
+	bne	a0,zero,.L105
 	lw	t4,0(a5)
 	srli	a0,a7,2
 	li	t3,1
 	sw	t4,0(a2)
-	beq	a0,t3,.L255
+	beq	a0,t3,.L106
 	lw	t3,4(a5)
 	li	t1,2
 	sw	t3,4(a2)
-	beq	a0,t1,.L256
+	beq	a0,t1,.L107
 	lw	t3,8(a5)
 	li	t1,3
 	sw	t3,8(a2)
-	beq	a0,t1,.L256
+	beq	a0,t1,.L107
 	lw	t3,12(a5)
 	li	t1,4
 	sw	t3,12(a2)
-	beq	a0,t1,.L256
+	beq	a0,t1,.L107
 	lw	t3,16(a5)
 	li	t1,5
 	sw	t3,16(a2)
-	beq	a0,t1,.L256
+	beq	a0,t1,.L107
 	lw	t3,20(a5)
 	li	t1,6
 	sw	t3,20(a2)
-	beq	a0,t1,.L256
+	beq	a0,t1,.L107
 	lw	t3,24(a5)
 	li	t1,7
 	sw	t3,24(a2)
-	beq	a0,t1,.L256
+	beq	a0,t1,.L107
 	lw	t3,28(a5)
 	li	t1,8
 	sw	t3,28(a2)
-	beq	a0,t1,.L256
+	beq	a0,t1,.L107
 	lw	t3,32(a5)
 	li	t1,9
 	sw	t3,32(a2)
-	beq	a0,t1,.L256
+	beq	a0,t1,.L107
 	lw	t3,36(a5)
 	li	t1,10
 	sw	t3,36(a2)
-	beq	a0,t1,.L256
+	beq	a0,t1,.L107
 	lw	t3,40(a5)
 	li	t1,11
 	sw	t3,40(a2)
-	beq	a0,t1,.L256
+	beq	a0,t1,.L107
 	lw	t3,44(a5)
 	li	t1,12
 	sw	t3,44(a2)
-	beq	a0,t1,.L256
+	beq	a0,t1,.L107
 	lw	t3,48(a5)
 	li	t1,14
 	sw	t3,48(a2)
-	bne	a0,t1,.L256
+	bne	a0,t1,.L107
 	lw	a0,52(a5)
 	sw	a0,52(a2)
-.L259:
+.L110:
 	lui	a2,%hi(.LANCHOR0+32)
 	mv	a0,a3
 	addi	a2,a2,%lo(.LANCHOR0+32)
@@ -2610,7 +2086,7 @@ sha256_update.constprop.0:
 	add	a2,a2,t1
 	sw	a0,32(a3)
 	sw	a2,36(a3)
-	beq	a6,zero,.L252
+	beq	a6,zero,.L103
 	lw	a4,20(sp)
 	lw	a7,24(sp)
 	lw	a5,28(sp)
@@ -2618,140 +2094,140 @@ sha256_update.constprop.0:
 	li	a2,6
 	lw	a1,16(sp)
 	add	a5,a5,a7
-	bleu	a4,a2,.L261
-.L247:
+	bleu	a4,a2,.L112
+.L98:
 	or	a4,a5,a1
 	andi	a4,a4,3
-	bne	a4,zero,.L261
+	bne	a4,zero,.L112
 	addi	a4,a3,39
 	sub	a4,a4,a5
 	sltiu	a4,a4,3
-	bne	a4,zero,.L261
+	bne	a4,zero,.L112
 	lw	a0,0(a5)
 	srli	a4,a6,2
 	li	a2,2
 	sw	a0,0(a1)
 	lw	a0,4(a5)
 	sw	a0,4(a1)
-	beq	a4,a2,.L262
+	beq	a4,a2,.L113
 	lw	a0,8(a5)
 	li	a2,3
 	sw	a0,8(a1)
-	beq	a4,a2,.L262
+	beq	a4,a2,.L113
 	lw	a0,12(a5)
 	li	a2,4
 	sw	a0,12(a1)
-	beq	a4,a2,.L262
+	beq	a4,a2,.L113
 	lw	a0,16(a5)
 	li	a2,5
 	sw	a0,16(a1)
-	beq	a4,a2,.L262
+	beq	a4,a2,.L113
 	lw	a0,20(a5)
 	li	a2,6
 	sw	a0,20(a1)
-	beq	a4,a2,.L262
+	beq	a4,a2,.L113
 	lw	a0,24(a5)
 	li	a2,7
 	sw	a0,24(a1)
-	beq	a4,a2,.L262
+	beq	a4,a2,.L113
 	lw	a0,28(a5)
 	li	a2,8
 	sw	a0,28(a1)
-	beq	a4,a2,.L262
+	beq	a4,a2,.L113
 	lw	a0,32(a5)
 	li	a2,9
 	sw	a0,32(a1)
-	beq	a4,a2,.L262
+	beq	a4,a2,.L113
 	lw	a0,36(a5)
 	li	a2,10
 	sw	a0,36(a1)
-	beq	a4,a2,.L262
+	beq	a4,a2,.L113
 	lw	a0,40(a5)
 	li	a2,11
 	sw	a0,40(a1)
-	beq	a4,a2,.L262
+	beq	a4,a2,.L113
 	lw	a0,44(a5)
 	li	a2,12
 	sw	a0,44(a1)
-	beq	a4,a2,.L262
+	beq	a4,a2,.L113
 	lw	a0,48(a5)
 	li	a2,14
 	sw	a0,48(a1)
-	bne	a4,a2,.L262
+	bne	a4,a2,.L113
 	lw	a5,52(a5)
 	sw	a5,52(a1)
-.L252:
+.L103:
 	lw	ra,44(sp)
 	sw	a6,104(a3)
 	addi	sp,sp,48
 	jr	ra
-.L324:
+.L175:
 	lui	a5,%hi(.LANCHOR1)
 	addi	a5,a5,%lo(.LANCHOR1)
 	addi	a1,a0,40
 	or	a4,a5,a1
 	andi	a4,a4,3
 	li	a6,56
-	bne	a4,zero,.L303
+	bne	a4,zero,.L154
 	addi	a4,a0,39
 	sub	a4,a4,a5
 	sltiu	a4,a4,3
-	bne	a4,zero,.L303
+	bne	a4,zero,.L154
 	lw	a0,0(a5)
 	srli	a4,a6,2
 	li	a2,2
 	sw	a0,0(a1)
 	lw	a0,4(a5)
 	sw	a0,4(a1)
-	beq	a4,a2,.L307
+	beq	a4,a2,.L158
 	lw	a0,8(a5)
 	li	a2,3
 	sw	a0,8(a1)
-	beq	a4,a2,.L307
+	beq	a4,a2,.L158
 	lw	a0,12(a5)
 	li	a2,4
 	sw	a0,12(a1)
-	beq	a4,a2,.L307
+	beq	a4,a2,.L158
 	lw	a0,16(a5)
 	li	a2,5
 	sw	a0,16(a1)
-	beq	a4,a2,.L307
+	beq	a4,a2,.L158
 	lw	a0,20(a5)
 	li	a2,6
 	sw	a0,20(a1)
-	beq	a4,a2,.L307
+	beq	a4,a2,.L158
 	lw	a0,24(a5)
 	li	a2,7
 	sw	a0,24(a1)
-	beq	a4,a2,.L307
+	beq	a4,a2,.L158
 	lw	a0,28(a5)
 	li	a2,8
 	sw	a0,28(a1)
-	beq	a4,a2,.L307
+	beq	a4,a2,.L158
 	lw	a0,32(a5)
 	li	a2,9
 	sw	a0,32(a1)
-	beq	a4,a2,.L307
+	beq	a4,a2,.L158
 	lw	a0,36(a5)
 	li	a2,10
 	sw	a0,36(a1)
-	beq	a4,a2,.L307
+	beq	a4,a2,.L158
 	lw	a0,40(a5)
 	li	a2,11
 	sw	a0,40(a1)
-	beq	a4,a2,.L307
+	beq	a4,a2,.L158
 	lw	a0,44(a5)
 	li	a2,12
 	sw	a0,44(a1)
-	beq	a4,a2,.L307
+	beq	a4,a2,.L158
 	lw	a0,48(a5)
 	li	a2,14
 	sw	a0,48(a1)
-	bne	a4,a2,.L307
+	bne	a4,a2,.L158
 	lw	a5,52(a5)
 	sw	a5,52(a1)
-	j	.L302
-.L325:
+	j	.L153
+.L176:
 	addi	a2,a4,40
 	lui	a5,%hi(.LANCHOR1)
 	addi	a5,a5,%lo(.LANCHOR1)
@@ -2760,9 +2236,9 @@ sha256_update.constprop.0:
 	addi	a0,a0,-1
 	sltiu	a0,a0,3
 	mv	a1,a5
-	bne	a0,zero,.L249
+	bne	a0,zero,.L100
 	andi	a0,a2,3
-	bne	a0,zero,.L249
+	bne	a0,zero,.L100
 	lw	a4,0(a5)
 	sw	a4,0(a2)
 	lw	a4,4(a5)
@@ -2791,24 +2267,24 @@ sha256_update.constprop.0:
 	sw	a4,48(a2)
 	lw	a5,52(a5)
 	sw	a5,52(a2)
-.L250:
+.L101:
 	lw	a6,104(a3)
 	addi	a6,a6,56
-.L302:
+.L153:
 	sw	a6,104(a3)
 	ret
-.L303:
+.L154:
 	add	a2,a5,a6
-.L322:
+.L173:
 	lbu	a4,0(a5)
 	addi	a5,a5,1
 	addi	a1,a1,1
 	sb	a4,-1(a1)
-	bne	a5,a2,.L322
-	j	.L302
-.L256:
+	bne	a5,a2,.L173
+	j	.L153
+.L107:
 	andi	a2,a7,3
-	beq	a2,zero,.L259
+	beq	a2,zero,.L110
 	andi	a2,a7,-4
 	add	a0,a5,a2
 	lbu	t3,0(a0)
@@ -2816,56 +2292,56 @@ sha256_update.constprop.0:
 	add	t1,a0,a2
 	sb	t3,0(t1)
 	addi	t1,a2,1
-	bleu	a7,t1,.L259
-.L266:
+	bleu	a7,t1,.L110
+.L117:
 	add	t3,a5,t1
 	lbu	t3,0(t3)
 	add	t1,a0,t1
 	addi	a2,a2,2
 	sb	t3,0(t1)
-	bleu	a7,a2,.L259
+	bleu	a7,a2,.L110
 	add	t1,a5,a2
 	lbu	t1,0(t1)
 	add	a0,a0,a2
 	sb	t1,0(a0)
-	j	.L259
-.L307:
+	j	.L110
+.L158:
 	andi	a4,a6,3
-	beq	a4,zero,.L302
+	beq	a4,zero,.L153
 	andi	a4,a6,-4
 	add	a2,a5,a4
 	lbu	a7,0(a2)
 	add	a0,a1,a4
 	addi	a2,a4,1
 	sb	a7,0(a0)
-	bgeu	a2,a6,.L302
+	bgeu	a2,a6,.L153
 	add	a0,a5,a2
 	lbu	a0,0(a0)
 	add	a2,a1,a2
 	addi	a4,a4,2
 	sb	a0,0(a2)
-	bgeu	a4,a6,.L302
+	bgeu	a4,a6,.L153
 	add	a5,a5,a4
 	lbu	a5,0(a5)
 	add	a4,a1,a4
 	sb	a5,0(a4)
-	j	.L302
-.L262:
+	j	.L153
+.L113:
 	andi	a4,a6,3
-	beq	a4,zero,.L252
+	beq	a4,zero,.L103
 	andi	a4,a6,-4
 	add	a2,a5,a4
 	lbu	a7,0(a2)
 	add	a0,a1,a4
 	addi	a2,a4,1
 	sb	a7,0(a0)
-	bgeu	a2,a6,.L252
+	bgeu	a2,a6,.L103
 	add	a0,a5,a2
 	lbu	a0,0(a0)
 	add	a2,a1,a2
 	addi	a4,a4,2
 	sb	a0,0(a2)
-	bgeu	a4,a6,.L252
+	bgeu	a4,a6,.L103
 	add	a5,a5,a4
 	lbu	a5,0(a5)
 	add	a4,a1,a4
@@ -2874,31 +2350,31 @@ sha256_update.constprop.0:
 	sw	a6,104(a3)
 	addi	sp,sp,48
 	jr	ra
-.L261:
+.L112:
 	add	a2,a5,a6
-.L264:
+.L115:
 	lbu	a4,0(a5)
 	addi	a5,a5,1
 	addi	a1,a1,1
 	sb	a4,-1(a1)
-	bne	a5,a2,.L264
-	j	.L252
-.L326:
+	bne	a5,a2,.L115
+	j	.L103
+.L177:
 	lui	a5,%hi(.LANCHOR1)
 	addi	a5,a5,%lo(.LANCHOR1)
-.L254:
+.L105:
 	mv	t1,a5
 	li	a2,0
-.L258:
+.L109:
 	lbu	t3,0(t1)
 	add	a0,a4,a2
 	add	a0,a3,a0
 	addi	a2,a2,1
 	sb	t3,40(a0)
 	addi	t1,t1,1
-	bgtu	a7,a2,.L258
-	j	.L259
-.L253:
+	bgtu	a7,a2,.L109
+	j	.L110
+.L104:
 	lui	a2,%hi(.LANCHOR0+32)
 	addi	a2,a2,%lo(.LANCHOR0+32)
 	sw	a0,12(sp)
@@ -2916,24 +2392,24 @@ sha256_update.constprop.0:
 	sw	a2,32(a3)
 	sw	a4,36(a3)
 	addi	a5,a5,%lo(.LANCHOR1)
-	j	.L247
-.L249:
+	j	.L98
+.L100:
 	add	a4,a3,a4
 	addi	a4,a4,40
 	addi	a5,a5,56
-.L251:
+.L102:
 	lbu	a2,0(a1)
 	addi	a1,a1,1
 	addi	a4,a4,1
 	sb	a2,-1(a4)
-	bne	a5,a1,.L251
-	j	.L250
-.L255:
+	bne	a5,a1,.L102
+	j	.L101
+.L106:
 	lbu	a2,4(a5)
 	add	a0,a1,a4
 	sb	a2,4(a0)
 	li	a2,4
-	j	.L266
+	j	.L117
 	.size	sha256_update.constprop.0, .-sha256_update.constprop.0
 	.align	2
 	.type	sha256_write_digest.constprop.0, @function
@@ -2946,70 +2422,70 @@ sha256_write_digest.constprop.0:
 	sb	a4,40(a5)
 	li	a7,56
 	addi	a4,a3,1
-	bleu	a4,a7,.L328
+	bleu	a4,a7,.L179
 	li	a6,64
 	addi	a1,a0,40
-	beq	a4,a6,.L336
+	beq	a4,a6,.L187
 	addi	a5,a3,-57
 	li	a2,5
 	sub	a6,a6,a4
-	bleu	a5,a2,.L350
+	bleu	a5,a2,.L201
 	addi	a5,a3,41
 	add	t1,a0,a5
 	neg	t1,t1
 	andi	a7,t1,3
 	li	a2,0
-	beq	a7,zero,.L332
+	beq	a7,zero,.L183
 	add	a2,a1,a4
 	sb	zero,0(a2)
 	andi	t1,t1,2
 	li	a2,1
-	beq	t1,zero,.L332
+	beq	t1,zero,.L183
 	add	a3,a1,a3
 	sb	zero,2(a3)
 	li	t1,3
 	li	a2,2
-	bne	a7,t1,.L332
+	bne	a7,t1,.L183
 	sb	zero,3(a3)
 	mv	a2,a7
-.L332:
+.L183:
 	add	a5,a5,a7
 	sub	a7,a6,a7
 	add	a5,a0,a5
 	andi	t1,a7,-4
 	add	a3,a5,t1
-.L334:
+.L185:
 	sw	zero,0(a5)
 	addi	a5,a5,4
-	bne	a5,a3,.L334
+	bne	a5,a3,.L185
 	add	a5,a2,t1
-	beq	a7,t1,.L336
-.L331:
+	beq	a7,t1,.L187
+.L182:
 	add	a3,a1,a5
 	add	a3,a3,a4
 	sb	zero,0(a3)
 	addi	a3,a5,1
-	bleu	a6,a3,.L336
+	bleu	a6,a3,.L187
 	add	a4,a1,a4
 	add	a3,a4,a3
 	sb	zero,0(a3)
 	addi	a3,a5,2
-	bleu	a6,a3,.L336
+	bleu	a6,a3,.L187
 	add	a3,a4,a3
 	sb	zero,0(a3)
 	addi	a3,a5,3
-	bleu	a6,a3,.L336
+	bleu	a6,a3,.L187
 	add	a3,a4,a3
 	sb	zero,0(a3)
 	addi	a3,a5,4
-	bleu	a6,a3,.L336
+	bleu	a6,a3,.L187
 	add	a3,a4,a3
 	sb	zero,0(a3)
 	addi	a5,a5,5
-	bleu	a6,a5,.L336
+	bleu	a6,a5,.L187
 	add	a4,a4,a5
 	sb	zero,0(a4)
-.L336:
+.L187:
 	lui	a2,%hi(.LANCHOR0+32)
 	addi	a2,a2,%lo(.LANCHOR0+32)
 	sw	a2,12(sp)
@@ -3025,69 +2501,69 @@ sha256_write_digest.constprop.0:
 	mv	a6,a1
 	mv	a7,t1
 	li	a4,0
-	beq	a5,zero,.L340
-.L365:
+	beq	a5,zero,.L191
+.L216:
 	sb	zero,0(a6)
 	andi	a3,a3,2
 	li	a6,1
-	beq	a3,zero,.L341
+	beq	a3,zero,.L192
 	add	a3,a1,a4
 	sb	zero,1(a3)
 	li	t3,3
 	li	a6,2
-	bne	a5,t3,.L341
+	bne	a5,t3,.L192
 	sb	zero,2(a3)
 	mv	a6,a5
-.L341:
+.L192:
 	add	a3,a5,a4
 	sub	t1,t1,a5
 	add	a3,a1,a3
 	sw	zero,0(a3)
 	srli	a5,t1,2
 	li	t3,1
-	beq	a5,t3,.L342
+	beq	a5,t3,.L193
 	addi	t3,a3,4
-.L349:
+.L200:
 	sw	zero,0(t3)
 	li	t3,2
-	beq	a5,t3,.L342
+	beq	a5,t3,.L193
 	sw	zero,8(a3)
 	li	t3,3
-	beq	a5,t3,.L342
+	beq	a5,t3,.L193
 	sw	zero,12(a3)
 	li	t3,4
-	beq	a5,t3,.L342
+	beq	a5,t3,.L193
 	sw	zero,16(a3)
 	li	t3,5
-	beq	a5,t3,.L342
+	beq	a5,t3,.L193
 	sw	zero,20(a3)
 	li	t3,6
-	beq	a5,t3,.L342
+	beq	a5,t3,.L193
 	sw	zero,24(a3)
 	li	t3,7
-	beq	a5,t3,.L342
+	beq	a5,t3,.L193
 	sw	zero,28(a3)
 	li	t3,8
-	beq	a5,t3,.L342
+	beq	a5,t3,.L193
 	sw	zero,32(a3)
 	li	t3,9
-	beq	a5,t3,.L342
+	beq	a5,t3,.L193
 	sw	zero,36(a3)
 	li	t3,10
-	beq	a5,t3,.L342
+	beq	a5,t3,.L193
 	sw	zero,40(a3)
 	li	t3,11
-	beq	a5,t3,.L342
+	beq	a5,t3,.L193
 	sw	zero,44(a3)
 	li	t3,12
-	beq	a5,t3,.L342
+	beq	a5,t3,.L193
 	sw	zero,48(a3)
 	li	t3,14
-	bne	a5,t3,.L358
+	bne	a5,t3,.L209
 	sw	zero,52(a3)
-.L345:
+.L196:
 	lw	a6,104(a0)
-.L338:
+.L189:
 	lw	a3,32(a0)
 	lw	a4,36(a0)
 	slli	a6,a6,3
@@ -3192,89 +2668,89 @@ sha256_write_digest.constprop.0:
 	lw	ra,28(sp)
 	addi	sp,sp,32
 	jr	ra
-.L358:
+.L209:
 	li	a5,13
-.L342:
+.L193:
 	slli	a5,a5,2
 	add	a3,a5,a6
-	beq	a5,t1,.L345
-.L339:
+	beq	a5,t1,.L196
+.L190:
 	add	a5,a1,a3
 	add	a5,a5,a4
 	sb	zero,0(a5)
 	addi	a5,a3,1
-	bgeu	a5,a7,.L345
-.L347:
+	bgeu	a5,a7,.L196
+.L198:
 	add	a5,a1,a5
 	add	a5,a5,a4
 	sb	zero,0(a5)
 	addi	a5,a3,2
-	bgeu	a5,a7,.L345
+	bgeu	a5,a7,.L196
 	add	a5,a1,a5
 	add	a5,a5,a4
 	sb	zero,0(a5)
 	addi	a5,a3,3
-	bgeu	a5,a7,.L345
+	bgeu	a5,a7,.L196
 	add	a5,a1,a5
 	add	a5,a5,a4
 	sb	zero,0(a5)
 	addi	a5,a3,4
-	bgeu	a5,a7,.L345
+	bgeu	a5,a7,.L196
 	add	a5,a1,a5
 	add	a5,a5,a4
 	sb	zero,0(a5)
 	addi	a3,a3,5
-	bgeu	a3,a7,.L345
+	bgeu	a3,a7,.L196
 	add	a3,a1,a3
 	add	a3,a3,a4
 	sb	zero,0(a3)
-	j	.L345
-.L328:
+	j	.L196
+.L179:
 	addi	a1,a0,40
-	beq	a4,a7,.L354
+	beq	a4,a7,.L205
 	addi	a3,a3,-49
 	li	a5,5
 	sub	a7,a7,a4
-	bleu	a3,a5,.L355
+	bleu	a3,a5,.L206
 	add	a6,a1,a4
 	neg	a3,a6
 	lui	a2,%hi(.LANCHOR0+32)
 	andi	a5,a3,3
 	addi	a2,a2,%lo(.LANCHOR0+32)
 	mv	t1,a7
-	bne	a5,zero,.L365
-.L340:
+	bne	a5,zero,.L216
+.L191:
 	add	a3,a1,a4
 	sw	zero,0(a3)
 	srli	a5,t1,2
 	li	a6,1
-	beq	a5,a6,.L348
+	beq	a5,a6,.L199
 	addi	t3,a3,4
 	li	a6,0
-	j	.L349
-.L354:
+	j	.L200
+.L205:
 	lui	a2,%hi(.LANCHOR0+32)
 	addi	a2,a2,%lo(.LANCHOR0+32)
 	li	a6,55
-	j	.L338
-.L355:
+	j	.L189
+.L206:
 	lui	a2,%hi(.LANCHOR0+32)
 	addi	a2,a2,%lo(.LANCHOR0+32)
 	li	a3,0
-	j	.L339
-.L348:
+	j	.L190
+.L199:
 	sb	zero,4(a3)
 	li	a5,5
 	li	a3,4
-	j	.L347
-.L350:
+	j	.L198
+.L201:
 	li	a5,0
-	j	.L331
+	j	.L182
 	.size	sha256_write_digest.constprop.0, .-sha256_write_digest.constprop.0
 	.align	2
 	.type	benchmark_body.isra.0, @function
 benchmark_body.isra.0:
-	ble	a0,zero,.L371
+	ble	a0,zero,.L222
 	addi	sp,sp,-160
 	sw	s0,152(sp)
 	sw	s3,140(sp)
@@ -3305,7 +2781,7 @@ benchmark_body.isra.0:
 	addi	s4,s4,-1908
 	addi	s3,s3,-1621
 	li	s1,0
-.L368:
+.L219:
 	li	a5,1541459968
 	addi	a5,a5,-743
 	li	a3,0
@@ -3334,7 +2810,7 @@ benchmark_body.isra.0:
 	mv	a0,sp
 	addi	s1,s1,1
 	call	sha256_write_digest.constprop.0
-	bne	s1,s2,.L368
+	bne	s1,s2,.L219
 	lw	ra,156(sp)
 	lw	s0,152(sp)
 	lw	s1,148(sp)
@@ -3348,7 +2824,7 @@ benchmark_body.isra.0:
 	lw	s9,116(sp)
 	addi	sp,sp,160
 	jr	ra
-.L371:
+.L222:
 	ret
 	.size	benchmark_body.isra.0, .-benchmark_body.isra.0
 	.align	2
@@ -3382,7 +2858,7 @@ benchmark_body.constprop.0.isra.0:
 	addi	s3,s3,-1908
 	addi	s2,s2,-1621
 	li	s1,475
-.L375:
+.L226:
 	li	a5,1541459968
 	addi	a5,a5,-743
 	li	a3,0
@@ -3411,7 +2887,7 @@ benchmark_body.constprop.0.isra.0:
 	mv	a0,sp
 	addi	s1,s1,-1
 	call	sha256_write_digest.constprop.0
-	bne	s1,zero,.L375
+	bne	s1,zero,.L226
 	lw	ra,156(sp)
 	lw	s0,152(sp)
 	lw	s1,148(sp)
@@ -3445,69 +2921,69 @@ sha256_digest:
 	addi	a4,a3,1
 	mv	s2,a1
 	mv	s3,a2
-	bleu	a4,a5,.L379
+	bleu	a4,a5,.L230
 	li	a7,64
 	addi	a6,s0,40
-	beq	a4,a7,.L387
+	beq	a4,a7,.L238
 	addi	a5,a3,-57
 	li	a2,5
 	sub	a7,a7,a4
-	bleu	a5,a2,.L404
+	bleu	a5,a2,.L255
 	addi	a5,a3,41
 	add	a1,s0,a5
 	neg	a1,a1
 	andi	a0,a1,3
 	li	a2,0
-	beq	a0,zero,.L383
+	beq	a0,zero,.L234
 	add	a2,a6,a4
 	sb	zero,0(a2)
 	andi	a1,a1,2
 	li	a2,1
-	beq	a1,zero,.L383
+	beq	a1,zero,.L234
 	add	a3,a6,a3
 	sb	zero,2(a3)
 	li	a1,3
 	li	a2,2
-	bne	a0,a1,.L383
+	bne	a0,a1,.L234
 	sb	zero,3(a3)
 	mv	a2,a0
-.L383:
+.L234:
 	add	a5,a5,a0
 	sub	a0,a7,a0
 	add	a5,s0,a5
 	andi	a1,a0,-4
 	add	a3,a5,a1
-.L385:
+.L236:
 	sw	zero,0(a5)
 	addi	a5,a5,4
-	bne	a5,a3,.L385
+	bne	a5,a3,.L236
 	add	a5,a2,a1
-	beq	a0,a1,.L387
-.L382:
+	beq	a0,a1,.L238
+.L233:
 	add	a4,a6,a4
 	add	a3,a4,a5
 	sb	zero,0(a3)
 	addi	a3,a5,1
-	bleu	a7,a3,.L387
+	bleu	a7,a3,.L238
 	add	a3,a4,a3
 	sb	zero,0(a3)
 	addi	a3,a5,2
-	bleu	a7,a3,.L387
+	bleu	a7,a3,.L238
 	add	a3,a4,a3
 	sb	zero,0(a3)
 	addi	a3,a5,3
-	bleu	a7,a3,.L387
+	bleu	a7,a3,.L238
 	add	a3,a4,a3
 	sb	zero,0(a3)
 	addi	a3,a5,4
-	bleu	a7,a3,.L387
+	bleu	a7,a3,.L238
 	add	a3,a4,a3
 	sb	zero,0(a3)
 	addi	a5,a5,5
-	bleu	a7,a5,.L387
+	bleu	a7,a5,.L238
 	add	a4,a4,a5
 	sb	zero,0(a4)
-.L387:
+.L238:
 	lui	a5,%hi(.LANCHOR0)
 	addi	a5,a5,%lo(.LANCHOR0)
 	addi	s1,a5,32
@@ -3524,69 +3000,69 @@ sha256_digest:
 	andi	a0,a3,3
 	mv	a1,a6
 	li	a4,0
-	beq	a0,zero,.L391
-.L420:
+	beq	a0,zero,.L242
+.L271:
 	andi	a5,a3,2
 	sb	zero,0(a6)
 	li	a3,1
-	beq	a5,zero,.L392
+	beq	a5,zero,.L243
 	add	a2,a1,a4
 	sb	zero,1(a2)
 	li	a5,3
 	li	a3,2
-	bne	a0,a5,.L392
+	bne	a0,a5,.L243
 	sb	zero,2(a2)
 	mv	a3,a0
-.L392:
+.L243:
 	add	a5,a0,a4
 	sub	t1,t1,a0
 	add	a0,a1,a5
 	sw	zero,0(a0)
 	srli	a5,t1,2
 	li	a2,1
-	beq	a5,a2,.L393
+	beq	a5,a2,.L244
 	addi	a2,a0,4
-.L403:
+.L254:
 	sw	zero,0(a2)
 	li	a2,2
-	beq	a5,a2,.L393
+	beq	a5,a2,.L244
 	sw	zero,8(a0)
 	li	a2,3
-	beq	a5,a2,.L393
+	beq	a5,a2,.L244
 	sw	zero,12(a0)
 	li	a2,4
-	beq	a5,a2,.L393
+	beq	a5,a2,.L244
 	sw	zero,16(a0)
 	li	a2,5
-	beq	a5,a2,.L393
+	beq	a5,a2,.L244
 	sw	zero,20(a0)
 	li	a2,6
-	beq	a5,a2,.L393
+	beq	a5,a2,.L244
 	sw	zero,24(a0)
 	li	a2,7
-	beq	a5,a2,.L393
+	beq	a5,a2,.L244
 	sw	zero,28(a0)
 	li	a2,8
-	beq	a5,a2,.L393
+	beq	a5,a2,.L244
 	sw	zero,32(a0)
 	li	a2,9
-	beq	a5,a2,.L393
+	beq	a5,a2,.L244
 	sw	zero,36(a0)
 	li	a2,10
-	beq	a5,a2,.L393
+	beq	a5,a2,.L244
 	sw	zero,40(a0)
 	li	a2,11
-	beq	a5,a2,.L393
+	beq	a5,a2,.L244
 	sw	zero,44(a0)
 	li	a2,12
-	beq	a5,a2,.L393
+	beq	a5,a2,.L244
 	sw	zero,48(a0)
 	li	a2,14
-	bne	a5,a2,.L412
+	bne	a5,a2,.L263
 	sw	zero,52(a0)
-.L396:
+.L247:
 	lw	a2,104(s0)
-.L389:
+.L240:
 	lw	a3,32(s0)
 	lw	a4,36(s0)
 	slli	a2,a2,3
@@ -3619,7 +3095,7 @@ sha256_digest:
 	mv	a0,s2
 	call	_nettle_write_be32
 	andi	a5,s0,3
-	bne	a5,zero,.L398
+	bne	a5,zero,.L249
 	li	a7,1779032064
 	li	a6,-1150832640
 	li	a0,1013903360
@@ -3644,7 +3120,7 @@ sha256_digest:
 	sw	a3,20(s0)
 	sw	a4,24(s0)
 	sw	a5,28(s0)
-.L399:
+.L250:
 	li	a5,0
 	li	a6,0
 	lw	ra,44(sp)
@@ -3658,46 +3134,46 @@ sha256_digest:
 	lw	s4,24(sp)
 	addi	sp,sp,48
 	jr	ra
-.L412:
+.L263:
 	li	a5,13
-.L393:
+.L244:
 	slli	a5,a5,2
 	add	a3,a5,a3
-	beq	a5,t1,.L396
-.L390:
+	beq	a5,t1,.L247
+.L241:
 	add	a2,a1,a3
 	add	a2,a2,a4
 	sb	zero,0(a2)
 	addi	a5,a3,1
-	bgeu	a5,a7,.L396
+	bgeu	a5,a7,.L247
 	add	a2,a1,a4
-.L401:
+.L252:
 	add	a5,a2,a5
 	sb	zero,0(a5)
 	addi	a4,a3,2
-	bgeu	a4,a7,.L396
+	bgeu	a4,a7,.L247
 	add	a4,a2,a4
 	sb	zero,0(a4)
 	addi	a4,a3,3
-	bgeu	a4,a7,.L396
+	bgeu	a4,a7,.L247
 	add	a4,a2,a4
 	sb	zero,0(a4)
 	addi	a5,a3,4
-	bgeu	a5,a7,.L396
+	bgeu	a5,a7,.L247
 	add	a5,a2,a5
 	sb	zero,0(a5)
 	addi	a3,a3,5
-	bgeu	a3,a7,.L396
+	bgeu	a3,a7,.L247
 	add	a2,a2,a3
 	sb	zero,0(a2)
-	j	.L396
-.L379:
+	j	.L247
+.L230:
 	addi	a1,s0,40
-	beq	a4,a5,.L408
+	beq	a4,a5,.L259
 	addi	a3,a3,-49
 	li	a2,5
 	sub	a7,a5,a4
-	bleu	a3,a2,.L409
+	bleu	a3,a2,.L260
 	add	a6,a1,a4
 	neg	a3,a6
 	lui	a5,%hi(.LANCHOR0)
@@ -3706,49 +3182,49 @@ sha256_digest:
 	addi	s4,a5,%lo(.LANCHOR0)
 	addi	s1,s1,%lo(.LANCHOR0+32)
 	mv	t1,a7
-	bne	a0,zero,.L420
-.L391:
+	bne	a0,zero,.L271
+.L242:
 	add	a0,a1,a4
 	sw	zero,0(a0)
 	srli	a5,t1,2
 	li	a3,1
 	mv	a2,a0
-	beq	a5,a3,.L402
+	beq	a5,a3,.L253
 	addi	a2,a0,4
 	li	a3,0
-	j	.L403
-.L408:
+	j	.L254
+.L259:
 	lui	a5,%hi(.LANCHOR0)
 	lui	s1,%hi(.LANCHOR0+32)
 	addi	s4,a5,%lo(.LANCHOR0)
 	addi	s1,s1,%lo(.LANCHOR0+32)
 	li	a2,55
-	j	.L389
-.L398:
+	j	.L240
+.L249:
 	mv	a5,s4
 	mv	a4,s0
-.L400:
+.L251:
 	lbu	a3,0(a5)
 	addi	a5,a5,1
 	addi	a4,a4,1
 	sb	a3,-1(a4)
-	bne	s1,a5,.L400
-	j	.L399
-.L409:
+	bne	s1,a5,.L251
+	j	.L250
+.L260:
 	lui	a5,%hi(.LANCHOR0)
 	lui	s1,%hi(.LANCHOR0+32)
 	addi	s4,a5,%lo(.LANCHOR0)
 	addi	s1,s1,%lo(.LANCHOR0+32)
 	li	a3,0
-	j	.L390
-.L402:
+	j	.L241
+.L253:
 	sb	zero,4(a2)
 	li	a5,5
 	li	a3,4
-	j	.L401
-.L404:
+	j	.L252
+.L255:
 	li	a5,0
-	j	.L382
+	j	.L233
 	.size	sha256_digest, .-sha256_digest
 	.align	2
 	.globl	verify_benchmark
@@ -3834,18 +3310,10 @@ benchmark:
 	.type	main, @function
 main:
 	addi	sp,sp,-32
-	sw	ra,28(sp)
- #APP
-# 15 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	li	a0,1
+	sw	ra,28(sp)
 	call	benchmark_body.isra.0
-	call	start_trigger
 	call	benchmark
-	sw	zero,12(sp)
-	call	stop_trigger
 	lui	a5,%hi(.LANCHOR2)
 	lui	a4,%hi(.LANCHOR1)
 	addi	a5,a5,%lo(.LANCHOR2)
@@ -3874,8 +3342,8 @@ main:
 	seqz	a7,a7
 	and	a7,a7,a0
 	sub	a1,a1,t1
-	lbu	a0,63(a4)
-	lbu	t1,7(a5)
+	lbu	a0,7(a5)
+	lbu	t1,63(a4)
 	seqz	a6,a6
 	seqz	a5,a1
 	sub	a4,a2,t4
@@ -3889,6 +3357,7 @@ main:
 	sub	a0,a0,t1
 	and	a5,a5,a4
 	seqz	a0,a0
+	sw	zero,12(sp)
 	and	a0,a0,a5
 	xori	a0,a0,1
 	lw	a5,12(sp)
@@ -4012,23 +3481,5 @@ hash:
 	.size	buffer, 32
 buffer:
 	.zero	32
-	.section	.sbss,"aw",@nobits
-	.align	2
-	.type	heap_requested, @object
-	.size	heap_requested, 4
-heap_requested:
-	.zero	4
-	.type	heap_end, @object
-	.size	heap_end, 4
-heap_end:
-	.zero	4
-	.type	heap_ptr, @object
-	.size	heap_ptr, 4
-heap_ptr:
-	.zero	4
-	.type	seed, @object
-	.size	seed, 4
-seed:
-	.zero	4
 	.ident	"GCC: (g1b306039a) 15.1.0"
 	.section	.note.GNU-stack,"",@progbits

@@ -9,33 +9,18 @@
 	.globl	initialise_board
 	.type	initialise_board, @function
 initialise_board:
- #APP
-# 15 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	initialise_board, .-initialise_board
 	.align	2
 	.globl	start_trigger
 	.type	start_trigger, @function
 start_trigger:
- #APP
-# 21 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	start_trigger, .-start_trigger
 	.align	2
 	.globl	stop_trigger
 	.type	stop_trigger, @function
 stop_trigger:
- #APP
-# 27 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	stop_trigger, .-stop_trigger
 	.align	2
@@ -856,13 +841,6 @@ benchmark:
 	.globl	main
 	.type	main, @function
 main:
-	addi	sp,sp,-32
-	sw	ra,28(sp)
- #APP
-# 15 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	lui	a3,%hi(.LC0)
 	lui	a4,%hi(.LC1)
 	lui	a5,%hi(.LC2)
@@ -872,10 +850,12 @@ main:
 	lw	a7,%lo(.LC1+4)(a4)
 	lw	a2,%lo(.LC2)(a5)
 	lw	a3,%lo(.LC2+4)(a5)
+	addi	sp,sp,-32
 	lui	a1,%hi(in_m)
 	lui	a4,%hi(in_b)
 	lui	a5,%hi(in_a)
 	li	a0,1
+	sw	ra,28(sp)
 	sw	t1,%lo(in_m)(a1)
 	sw	t2,%lo(in_m+4)(a1)
 	sw	a6,%lo(in_b)(a4)
@@ -883,10 +863,8 @@ main:
 	sw	a2,%lo(in_a)(a5)
 	sw	a3,%lo(in_a+4)(a5)
 	call	benchmark_body.isra.0
-	call	start_trigger
 	call	benchmark
 	sw	a0,12(sp)
-	call	stop_trigger
 	lw	a0,12(sp)
 	lw	ra,28(sp)
 	snez	a0,a0

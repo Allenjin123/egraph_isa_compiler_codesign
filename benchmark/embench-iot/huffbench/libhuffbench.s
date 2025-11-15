@@ -756,547 +756,23 @@ benchmark_body.isra.0:
 	ret
 	.size	benchmark_body.isra.0, .-benchmark_body.isra.0
 	.align	2
-	.globl	rand_beebs
-	.type	rand_beebs, @function
-rand_beebs:
-	lui	a4,%hi(seed)
-	lw	a0,%lo(seed)(a4)
-	li	a5,1103515648
-	addi	a5,a5,-403
-	mul	a0,a0,a5
-	li	a5,12288
-	addi	a5,a5,57
-	add	a0,a0,a5
-	slli	a0,a0,1
-	srli	a0,a0,1
-	sw	a0,%lo(seed)(a4)
-	srli	a0,a0,16
-	ret
-	.size	rand_beebs, .-rand_beebs
-	.align	2
-	.globl	srand_beebs
-	.type	srand_beebs, @function
-srand_beebs:
-	lui	a5,%hi(seed)
-	sw	a0,%lo(seed)(a5)
-	ret
-	.size	srand_beebs, .-srand_beebs
-	.align	2
-	.globl	init_heap_beebs
-	.type	init_heap_beebs, @function
-init_heap_beebs:
-	add	a1,a0,a1
-	lui	a3,%hi(heap_end)
-	lui	a4,%hi(heap_ptr)
-	lui	a5,%hi(heap_requested)
-	sw	a1,%lo(heap_end)(a3)
-	sw	a0,%lo(heap_ptr)(a4)
-	sw	zero,%lo(heap_requested)(a5)
-	ret
-	.size	init_heap_beebs, .-init_heap_beebs
-	.align	2
-	.globl	check_heap_beebs
-	.type	check_heap_beebs, @function
-check_heap_beebs:
-	lui	a5,%hi(heap_requested)
-	lw	a4,%lo(heap_requested)(a5)
-	lui	a5,%hi(heap_end)
-	lw	a5,%lo(heap_end)(a5)
-	add	a0,a0,a4
-	sltu	a0,a5,a0
-	xori	a0,a0,1
-	ret
-	.size	check_heap_beebs, .-check_heap_beebs
-	.align	2
-	.globl	malloc_beebs
-	.type	malloc_beebs, @function
-malloc_beebs:
-	mv	a5,a0
-	beq	a0,zero,.L168
-	lui	a2,%hi(heap_ptr)
-	lw	a0,%lo(heap_ptr)(a2)
-	lui	a3,%hi(heap_requested)
-	lw	a1,%lo(heap_requested)(a3)
-	add	a4,a0,a5
-	andi	a6,a4,3
-	add	a5,a5,a1
-	bne	a6,zero,.L172
-	lui	a1,%hi(heap_end)
-	lw	a1,%lo(heap_end)(a1)
-	sw	a5,%lo(heap_requested)(a3)
-	bltu	a1,a4,.L168
-.L173:
-	sw	a4,%lo(heap_ptr)(a2)
-	ret
-.L172:
-	li	a1,4
-	sub	a1,a1,a6
-	add	a5,a5,a1
-	add	a4,a4,a1
-	lui	a1,%hi(heap_end)
-	lw	a1,%lo(heap_end)(a1)
-	sw	a5,%lo(heap_requested)(a3)
-	bgeu	a1,a4,.L173
-.L168:
-	li	a0,0
-	ret
-	.size	malloc_beebs, .-malloc_beebs
-	.align	2
-	.globl	calloc_beebs
-	.type	calloc_beebs, @function
-calloc_beebs:
-	mul	a1,a0,a1
-	beq	a1,zero,.L175
-	lui	a2,%hi(heap_ptr)
-	lw	a0,%lo(heap_ptr)(a2)
-	lui	a3,%hi(heap_requested)
-	lw	a5,%lo(heap_requested)(a3)
-	add	a4,a0,a1
-	andi	a6,a4,3
-	add	a5,a1,a5
-	bne	a6,zero,.L200
-.L176:
-	lui	a6,%hi(heap_end)
-	lw	a6,%lo(heap_end)(a6)
-	sw	a5,%lo(heap_requested)(a3)
-	bltu	a6,a4,.L175
-	sw	a4,%lo(heap_ptr)(a2)
-	beq	a0,zero,.L175
-	addi	a5,a1,-1
-	li	a4,5
-	bleu	a5,a4,.L184
-	neg	a4,a0
-	andi	a5,a4,3
-	li	a3,0
-	beq	a5,zero,.L178
-	sb	zero,0(a0)
-	andi	a4,a4,2
-	li	a3,1
-	beq	a4,zero,.L178
-	sb	zero,1(a0)
-	li	a4,3
-	li	a3,2
-	bne	a5,a4,.L178
-	sb	zero,2(a0)
-	mv	a3,a5
-.L178:
-	sub	a6,a1,a5
-	andi	a2,a6,-4
-	add	a5,a0,a5
-	add	a4,a5,a2
-.L180:
-	sw	zero,0(a5)
-	addi	a5,a5,4
-	bne	a5,a4,.L180
-	add	a5,a3,a2
-	beq	a6,a2,.L174
-.L177:
-	add	a4,a0,a5
-	sb	zero,0(a4)
-	addi	a4,a5,1
-	bleu	a1,a4,.L174
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a4,a5,2
-	bleu	a1,a4,.L174
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a4,a5,3
-	bleu	a1,a4,.L174
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a4,a5,4
-	bleu	a1,a4,.L174
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a5,a5,5
-	bleu	a1,a5,.L174
-	add	a5,a0,a5
-	sb	zero,0(a5)
-	ret
-.L175:
-	li	a0,0
-.L174:
-	ret
-.L200:
-	li	a7,4
-	sub	a6,a7,a6
-	add	a4,a4,a6
-	add	a5,a5,a6
-	j	.L176
-.L184:
-	li	a5,0
-	j	.L177
-	.size	calloc_beebs, .-calloc_beebs
-	.align	2
-	.globl	realloc_beebs
-	.type	realloc_beebs, @function
-realloc_beebs:
-	beq	a0,zero,.L202
-	beq	a1,zero,.L202
-	lui	a6,%hi(heap_ptr)
-	lw	a2,%lo(heap_ptr)(a6)
-	lui	a3,%hi(heap_requested)
-	lw	a5,%lo(heap_requested)(a3)
-	add	a4,a2,a1
-	andi	a7,a4,3
-	add	a5,a1,a5
-	bne	a7,zero,.L227
-	lui	a7,%hi(heap_end)
-	lw	a7,%lo(heap_end)(a7)
-	sw	a5,%lo(heap_requested)(a3)
-	bltu	a7,a4,.L202
-.L228:
-	sw	a4,%lo(heap_ptr)(a6)
-	beq	a2,zero,.L202
-	addi	a5,a1,-1
-	li	a4,6
-	bleu	a5,a4,.L212
-	or	a3,a0,a2
-	andi	a3,a3,3
-	mv	a4,a2
-	mv	a5,a0
-	bne	a3,zero,.L212
-	addi	a3,a2,-1
-	sub	a3,a3,a0
-	sltiu	a3,a3,3
-	bne	a3,zero,.L212
-	andi	a7,a1,-4
-	add	a6,a0,a7
-.L205:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L205
-	beq	a1,a7,.L201
-	lbu	a3,0(a6)
-	add	a4,a2,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bleu	a1,a5,.L201
-	add	a4,a0,a5
-	lbu	a4,0(a4)
-	add	a5,a2,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bleu	a1,a7,.L201
-	add	a0,a0,a7
-	lbu	a5,0(a0)
-	add	a7,a2,a7
-	sb	a5,0(a7)
-.L201:
-	mv	a0,a2
-	ret
-.L227:
-	li	t1,4
-	sub	a7,t1,a7
-	add	a5,a5,a7
-	add	a4,a4,a7
-	lui	a7,%hi(heap_end)
-	lw	a7,%lo(heap_end)(a7)
-	sw	a5,%lo(heap_requested)(a3)
-	bgeu	a7,a4,.L228
-.L202:
-	li	a2,0
-	mv	a0,a2
-	ret
-.L212:
-	li	a5,0
-.L209:
-	add	a4,a0,a5
-	lbu	a3,0(a4)
-	add	a4,a2,a5
-	addi	a5,a5,1
-	sb	a3,0(a4)
-	bgtu	a1,a5,.L209
-	mv	a0,a2
-	ret
-	.size	realloc_beebs, .-realloc_beebs
-	.align	2
-	.globl	free_beebs
-	.type	free_beebs, @function
-free_beebs:
-	ret
-	.size	free_beebs, .-free_beebs
-	.align	2
 	.globl	initialise_board
 	.type	initialise_board, @function
 initialise_board:
- #APP
-# 15 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	initialise_board, .-initialise_board
 	.align	2
 	.globl	start_trigger
 	.type	start_trigger, @function
 start_trigger:
- #APP
-# 21 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	start_trigger, .-start_trigger
 	.align	2
 	.globl	stop_trigger
 	.type	stop_trigger, @function
 stop_trigger:
- #APP
-# 27 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	stop_trigger, .-stop_trigger
-	.align	2
-	.globl	memset
-	.type	memset, @function
-memset:
-	beq	a2,zero,.L246
-	addi	a5,a2,-1
-	li	a4,5
-	andi	a1,a1,0xff
-	bleu	a5,a4,.L242
-	neg	a4,a0
-	andi	a5,a4,3
-	li	a6,0
-	beq	a5,zero,.L236
-	sb	a1,0(a0)
-	andi	a4,a4,2
-	li	a6,1
-	beq	a4,zero,.L236
-	sb	a1,1(a0)
-	li	a4,3
-	li	a6,2
-	bne	a5,a4,.L236
-	sb	a1,2(a0)
-	mv	a6,a5
-.L236:
-	slli	a4,a1,8
-	slli	a3,a1,16
-	sub	t1,a2,a5
-	or	a4,a1,a4
-	or	a4,a4,a3
-	add	a5,a0,a5
-	slli	a3,a1,24
-	andi	a7,t1,-4
-	or	a4,a4,a3
-	add	a3,a5,a7
-.L238:
-	sw	a4,0(a5)
-	addi	a5,a5,4
-	bne	a5,a3,.L238
-	add	a5,a6,a7
-	beq	t1,a7,.L246
-.L235:
-	add	a4,a0,a5
-	sb	a1,0(a4)
-	addi	a4,a5,1
-	bleu	a2,a4,.L246
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,2
-	bleu	a2,a4,.L246
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,3
-	bleu	a2,a4,.L246
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,4
-	bleu	a2,a4,.L246
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a5,a5,5
-	bleu	a2,a5,.L246
-	add	a5,a0,a5
-	sb	a1,0(a5)
-.L246:
-	ret
-.L242:
-	li	a5,0
-	j	.L235
-	.size	memset, .-memset
-	.align	2
-	.globl	memcpy
-	.type	memcpy, @function
-memcpy:
-	beq	a2,zero,.L251
-	addi	a5,a2,-1
-	li	a4,6
-	bleu	a5,a4,.L252
-	or	a3,a0,a1
-	andi	a3,a3,3
-	mv	a4,a0
-	mv	a5,a1
-	bne	a3,zero,.L252
-	sub	a3,a0,a1
-	addi	a3,a3,-1
-	sltiu	a3,a3,3
-	bne	a3,zero,.L252
-	andi	a7,a2,-4
-	add	a6,a1,a7
-.L253:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L253
-	beq	a2,a7,.L251
-	lbu	a3,0(a6)
-	add	a4,a0,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bleu	a2,a5,.L251
-	add	a4,a1,a5
-	lbu	a4,0(a4)
-	add	a5,a0,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bleu	a2,a7,.L251
-	add	a1,a1,a7
-	lbu	a5,0(a1)
-	add	a7,a0,a7
-	sb	a5,0(a7)
-	ret
-.L252:
-	add	a2,a1,a2
-	mv	a5,a0
-.L255:
-	lbu	a4,0(a1)
-	addi	a1,a1,1
-	addi	a5,a5,1
-	sb	a4,-1(a5)
-	bne	a1,a2,.L255
-.L251:
-	ret
-	.size	memcpy, .-memcpy
-	.align	2
-	.globl	memcmp
-	.type	memcmp, @function
-memcmp:
-	beq	a2,zero,.L272
-	add	a2,a0,a2
-	j	.L271
-.L270:
-	beq	a0,a2,.L272
-.L271:
-	lbu	a5,0(a0)
-	lbu	a4,0(a1)
-	addi	a0,a0,1
-	addi	a1,a1,1
-	beq	a5,a4,.L270
-	sub	a0,a5,a4
-	ret
-.L272:
-	li	a0,0
-	ret
-	.size	memcmp, .-memcmp
-	.align	2
-	.globl	memmove
-	.type	memmove, @function
-memmove:
-	bgeu	a0,a1,.L275
-	beq	a2,zero,.L276
-	addi	a5,a2,-1
-	li	a4,6
-	bleu	a5,a4,.L277
-	or	a3,a1,a0
-	andi	a3,a3,3
-	mv	a4,a0
-	mv	a5,a1
-	bne	a3,zero,.L277
-	sub	a3,a0,a1
-	addi	a3,a3,-1
-	sltiu	a3,a3,3
-	bne	a3,zero,.L277
-	andi	a7,a2,-4
-	add	a6,a1,a7
-.L278:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L278
-	beq	a2,a7,.L276
-	lbu	a3,0(a6)
-	add	a4,a0,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bleu	a2,a5,.L276
-	add	a4,a1,a5
-	lbu	a4,0(a4)
-	add	a5,a0,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bleu	a2,a7,.L276
-	add	a1,a1,a7
-	lbu	a5,0(a1)
-	add	a7,a0,a7
-	sb	a5,0(a7)
-	ret
-.L275:
-	bgtu	a0,a1,.L298
-.L276:
-	ret
-.L298:
-	beq	a2,zero,.L276
-	addi	a2,a2,-1
-	add	a5,a1,a2
-	lbu	a4,0(a5)
-	add	a5,a0,a2
-	sb	a4,0(a5)
-	j	.L298
-.L277:
-	add	a2,a1,a2
-	mv	a5,a0
-.L280:
-	lbu	a4,0(a1)
-	addi	a1,a1,1
-	addi	a5,a5,1
-	sb	a4,-1(a5)
-	bne	a1,a2,.L280
-	ret
-	.size	memmove, .-memmove
-	.align	2
-	.globl	strlen
-	.type	strlen, @function
-strlen:
-	lbu	a5,0(a0)
-	beq	a5,zero,.L299
-	li	a5,0
-.L301:
-	addi	a5,a5,1
-	add	a4,a0,a5
-	lbu	a4,0(a4)
-	bne	a4,zero,.L301
-.L299:
-	mv	a0,a5
-	ret
-	.size	strlen, .-strlen
-	.align	2
-	.globl	strchr
-	.type	strchr, @function
-strchr:
-	lbu	a5,0(a0)
-	beq	a5,zero,.L305
-	andi	a4,a1,0xff
-.L307:
-	beq	a4,a5,.L304
-	lbu	a5,1(a0)
-	addi	a0,a0,1
-	bne	a5,zero,.L307
-.L305:
-	seqz	a1,a1
-	neg	a1,a1
-	and	a0,a0,a1
-.L304:
-	ret
-	.size	strchr, .-strchr
 	.align	2
 	.globl	compdecomp
 	.type	compdecomp, @function
@@ -1321,7 +797,7 @@ compdecomp:
 	sw	a1,8(sp)
 	addi	a2,a1,1
 	sw	a0,12(sp)
-	beq	a2,zero,.L375
+	beq	a2,zero,.L226
 	lui	a1,%hi(heap_ptr)
 	lw	a5,%lo(heap_ptr)(a1)
 	lui	a3,%hi(heap_requested)
@@ -1331,71 +807,71 @@ compdecomp:
 	add	a4,a4,a2
 	andi	a0,a4,3
 	add	a5,a2,a5
-	bne	a0,zero,.L442
+	bne	a0,zero,.L293
 	lui	a0,%hi(heap_end)
 	lw	a0,%lo(heap_end)(a0)
 	sw	a5,%lo(heap_requested)(a3)
-	bltu	a0,a4,.L443
-.L315:
+	bltu	a0,a4,.L294
+.L166:
 	sw	a4,%lo(heap_ptr)(a1)
 	lw	a4,8(sp)
 	li	a5,5
-	bleu	a4,a5,.L377
+	bleu	a4,a5,.L228
 	lw	a5,4(sp)
 	neg	a4,a5
 	andi	a5,a4,3
-	beq	a5,zero,.L378
+	beq	a5,zero,.L229
 	lw	a3,4(sp)
 	andi	a4,a4,2
 	sb	zero,0(a3)
 	li	a3,1
-	beq	a4,zero,.L317
+	beq	a4,zero,.L168
 	lw	a4,4(sp)
 	li	a3,2
 	sb	zero,1(a4)
 	li	a4,3
-	bne	a5,a4,.L317
+	bne	a5,a4,.L168
 	lw	a4,4(sp)
 	mv	a3,a5
 	sb	zero,2(a4)
-.L317:
+.L168:
 	lw	a4,4(sp)
 	sub	a0,a2,a5
 	andi	a1,a0,-4
 	add	a5,a4,a5
 	add	a4,a5,a1
-.L319:
+.L170:
 	sw	zero,0(a5)
 	addi	a5,a5,4
-	bne	a5,a4,.L319
+	bne	a5,a4,.L170
 	add	a5,a3,a1
-	beq	a0,a1,.L313
-.L316:
+	beq	a0,a1,.L164
+.L167:
 	lw	a4,4(sp)
 	add	a4,a4,a5
 	sb	zero,0(a4)
 	addi	a4,a5,1
-	bleu	a2,a4,.L313
+	bleu	a2,a4,.L164
 	lw	a3,4(sp)
 	add	a4,a3,a4
 	sb	zero,0(a4)
 	addi	a4,a5,2
-	bleu	a2,a4,.L313
+	bleu	a2,a4,.L164
 	add	a4,a3,a4
 	sb	zero,0(a4)
 	addi	a4,a5,3
-	bleu	a2,a4,.L313
+	bleu	a2,a4,.L164
 	add	a4,a3,a4
 	sb	zero,0(a4)
 	addi	a4,a5,4
-	bleu	a2,a4,.L313
+	bleu	a2,a4,.L164
 	add	a4,a3,a4
 	sb	zero,0(a4)
 	addi	a5,a5,5
-	bleu	a2,a5,.L313
+	bleu	a2,a5,.L164
 	add	a5,a3,a5
 	sb	zero,0(a5)
-.L313:
+.L164:
 	li	a5,4096
 	addi	a5,a5,1552
 	add	s9,a5,sp
@@ -1405,47 +881,47 @@ compdecomp:
 	mv	s6,s9
 	mv	a5,s9
 	add	s5,a4,sp
-.L322:
+.L173:
 	sw	zero,0(a5)
 	addi	a5,a5,4
-	bne	s5,a5,.L322
+	bne	s5,a5,.L173
 	addi	a4,sp,1552
 	addi	a5,sp,528
-.L323:
+.L174:
 	sw	zero,0(a5)
 	addi	a5,a5,4
-	bne	a5,a4,.L323
+	bne	a5,a4,.L174
 	mv	s7,s5
 	mv	a5,s5
-.L324:
+.L175:
 	li	a4,8192
 	addi	a4,a4,-512
 	addi	a3,sp,16
 	sw	zero,0(a5)
 	add	a4,a4,a3
 	addi	a5,a5,4
-	bne	a5,a4,.L324
+	bne	a5,a4,.L175
 	addi	s0,sp,1552
 	addi	a4,s0,1024
 	mv	a5,s0
-.L325:
+.L176:
 	sw	zero,0(a5)
 	addi	a5,a5,4
-	bne	a5,a4,.L325
+	bne	a5,a4,.L176
 	addi	s1,sp,16
 	addi	a4,s1,256
 	mv	a5,s1
-.L326:
+.L177:
 	sw	zero,0(a5)
 	addi	a5,a5,4
-	bne	a5,a4,.L326
+	bne	a5,a4,.L177
 	lw	a5,12(sp)
 	lw	a4,8(sp)
 	add	a2,a5,a4
 	mv	a4,a5
 	lw	a5,8(sp)
-	beq	a5,zero,.L330
-.L329:
+	beq	a5,zero,.L181
+.L180:
 	lbu	a5,0(a4)
 	addi	a4,a4,1
 	slli	a5,a5,2
@@ -1453,43 +929,43 @@ compdecomp:
 	lw	a3,0(a5)
 	addi	a3,a3,1
 	sw	a3,0(a5)
-	bne	a2,a4,.L329
-.L330:
+	bne	a2,a4,.L180
+.L181:
 	addi	a1,sp,-496
 	mv	a3,s9
 	li	s10,0
 	li	a5,0
 	li	a0,256
-.L328:
+.L179:
 	lw	a2,0(a3)
 	slli	a4,s10,2
 	add	a4,a1,a4
-	beq	a2,zero,.L331
+	beq	a2,zero,.L182
 	sw	a5,1024(a4)
 	addi	s10,s10,1
-.L331:
+.L182:
 	addi	a5,a5,1
 	addi	a3,a3,4
-	bne	a5,a0,.L328
-	beq	s10,zero,.L332
+	bne	a5,a0,.L179
+	beq	s10,zero,.L183
 	mv	s3,s10
-.L333:
+.L184:
 	mv	a3,s3
 	mv	a2,s10
 	addi	a1,sp,528
 	mv	a0,s9
 	addi	s3,s3,-1
 	call	heap_adjust
-	bne	s3,zero,.L333
+	bne	s3,zero,.L184
 	li	a5,1
-	beq	s10,a5,.L334
+	beq	s10,a5,.L185
 	slli	a4,s10,2
 	addi	a7,sp,524
 	addi	s8,s9,1020
 	add	s3,a7,a4
 	addi	s10,s10,255
 	add	s8,s8,a4
-.L335:
+.L186:
 	lw	a4,0(s3)
 	addi	a2,s10,-256
 	addi	a1,sp,528
@@ -1521,10 +997,10 @@ compdecomp:
 	li	a5,256
 	addi	s3,s3,-4
 	addi	s8,s8,-4
-	bne	s10,a5,.L335
-.L334:
+	bne	s10,a5,.L186
+.L185:
 	li	a5,257
-.L332:
+.L183:
 	slli	a5,a5,2
 	add	a5,s5,a5
 	sw	zero,0(a5)
@@ -1533,39 +1009,39 @@ compdecomp:
 	mv	a7,s0
 	li	t3,0
 	li	t4,0
-	j	.L344
-.L336:
+	j	.L195
+.L187:
 	sw	a2,0(a7)
 	sb	a4,0(a0)
 	addi	s6,s6,4
 	addi	a7,a7,4
 	addi	a0,a0,1
 	addi	s7,s7,4
-	beq	t1,s6,.L444
-.L344:
+	beq	t1,s6,.L295
+.L195:
 	lw	a2,0(s6)
 	li	a4,0
-	beq	a2,zero,.L336
+	beq	a2,zero,.L187
 	lw	a5,0(s7)
 	li	a2,0
-	beq	a5,zero,.L336
+	beq	a5,zero,.L187
 	li	a1,1
 	li	a6,0
-.L341:
+.L192:
 	slli	a4,a5,2
 	sub	a3,s5,a4
 	add	a4,s5,a4
-	blt	a5,zero,.L445
+	blt	a5,zero,.L296
 	lw	a5,0(a4)
 	addi	a6,a6,1
 	slli	a1,a1,1
-	bne	a5,zero,.L341
-.L339:
-	bgeu	t4,a2,.L342
+	bne	a5,zero,.L192
+.L190:
+	bgeu	t4,a2,.L193
 	mv	t4,a2
-.L342:
+.L193:
 	mv	a4,a6
-	bgeu	t3,a6,.L336
+	bgeu	t3,a6,.L187
 	sw	a2,0(a7)
 	sb	a4,0(a0)
 	addi	s6,s6,4
@@ -1573,13 +1049,13 @@ compdecomp:
 	addi	a7,a7,4
 	addi	a0,a0,1
 	addi	s7,s7,4
-	bne	t1,s6,.L344
-.L444:
+	bne	t1,s6,.L195
+.L295:
 	sltiu	t3,t3,33
-	beq	t3,zero,.L312
-	beq	t4,zero,.L312
+	beq	t3,zero,.L163
+	beq	t4,zero,.L163
 	lw	a5,8(sp)
-	beq	a5,zero,.L383
+	beq	a5,zero,.L234
 	mv	a4,a5
 	lw	a5,12(sp)
 	addi	t4,sp,-496
@@ -1590,115 +1066,115 @@ compdecomp:
 	li	a7,0
 	li	t5,1
 	li	t1,7
-.L352:
+.L203:
 	lbu	a0,0(t3)
 	add	a5,t4,a0
 	lbu	a6,512(a5)
-	beq	a6,zero,.L347
+	beq	a6,zero,.L198
 	addi	a4,a6,-1
 	sll	a4,t5,a4
 	li	a2,0
-.L351:
-	beq	a1,t1,.L446
+.L202:
+	beq	a1,t1,.L297
 	addi	a1,a1,1
 	slli	a3,a3,1
-.L349:
+.L200:
 	slli	a5,a0,2
 	add	a5,s9,a5
 	lw	a5,-2048(a5)
 	addi	a2,a2,1
 	and	a5,a4,a5
-	beq	a5,zero,.L350
+	beq	a5,zero,.L201
 	ori	a3,a3,1
-.L350:
+.L201:
 	srli	a4,a4,1
-	bgtu	a6,a2,.L351
-.L347:
+	bgtu	a6,a2,.L202
+.L198:
 	addi	t3,t3,1
-	bne	t3,t6,.L352
+	bne	t3,t6,.L203
 	lw	a4,4(sp)
 	li	a5,7
 	sub	a5,a5,a1
 	add	a7,a4,a7
 	sll	a3,a3,a5
-.L346:
+.L197:
 	addi	t5,sp,2047
 	addi	t5,t5,529
 	sb	a3,0(a7)
 	addi	a4,t5,1024
 	mv	a5,t5
-.L353:
+.L204:
 	sw	zero,0(a5)
 	addi	a5,a5,4
-	bne	a5,a4,.L353
+	bne	a5,a4,.L204
 	addi	t1,sp,272
 	mv	t3,t5
 	li	a6,0
 	li	t6,1
 	li	t4,256
-	j	.L359
-.L354:
+	j	.L210
+.L205:
 	addi	a6,a6,1
 	addi	s0,s0,4
 	addi	s1,s1,1
 	addi	t3,t3,4
-	beq	a6,t4,.L447
-.L359:
+	beq	a6,t4,.L298
+.L210:
 	lw	a0,0(s0)
 	lbu	a1,0(s1)
 	sb	a6,0(t1)
 	addi	t1,t1,1
 	or	a5,a0,a1
-	beq	a5,zero,.L354
-	beq	a1,zero,.L384
+	beq	a5,zero,.L205
+	beq	a1,zero,.L235
 	addi	a3,a1,-1
 	sll	a3,t6,a3
 	li	a5,0
 	li	a2,0
-.L358:
+.L209:
 	addi	a7,a5,1
 	and	a4,a0,a3
 	slli	a5,a5,1
 	addi	a5,a5,1
-	beq	a4,zero,.L357
+	beq	a4,zero,.L208
 	slli	a5,a7,1
-.L357:
+.L208:
 	addi	a2,a2,1
 	srli	a3,a3,1
-	bne	a1,a2,.L358
+	bne	a1,a2,.L209
 	sw	a5,0(t3)
-	j	.L354
-.L445:
+	j	.L205
+.L296:
 	lw	a5,0(a3)
 	add	a2,a2,a1
 	addi	a6,a6,1
-	beq	a5,zero,.L339
+	beq	a5,zero,.L190
 	slli	a1,a1,1
-	j	.L341
-.L447:
+	j	.L192
+.L298:
 	addi	t5,t5,4
 	addi	a6,sp,273
 	mv	t1,t5
 	addi	t4,sp,-496
 	li	a7,1
 	li	t6,256
-.L363:
+.L214:
 	lw	a0,0(t1)
 	lbu	t3,0(a6)
 	mv	a4,a6
 	mv	a5,t1
 	mv	a3,a7
-.L360:
+.L211:
 	lw	a2,-4(a5)
-	bleu	a2,a0,.L361
+	bleu	a2,a0,.L212
 	lbu	a1,-1(a4)
 	sw	a2,0(a5)
 	addi	a3,a3,-1
 	sb	a1,0(a4)
 	addi	a5,a5,-4
 	addi	a4,a4,-1
-	bne	a3,zero,.L360
-.L361:
+	bne	a3,zero,.L211
+.L212:
 	slli	a5,a3,2
 	add	a5,s9,a5
 	add	a3,t4,a3
@@ -1707,18 +1183,18 @@ compdecomp:
 	sb	t3,768(a3)
 	addi	t1,t1,4
 	addi	a6,a6,1
-	bne	a7,t6,.L363
+	bne	a7,t6,.L214
 	lw	a1,-1024(s9)
-	bne	a1,zero,.L385
+	bne	a1,zero,.L236
 	mv	a5,t5
-.L365:
+.L216:
 	lw	a6,0(a5)
 	addi	a5,a5,4
 	addi	a1,a1,1
-	beq	a6,zero,.L365
-.L364:
+	beq	a6,zero,.L216
+.L215:
 	lw	a5,8(sp)
-	beq	a5,zero,.L312
+	beq	a5,zero,.L163
 	addi	t1,sp,-496
 	mv	a3,a6
 	mv	a4,a1
@@ -1726,31 +1202,31 @@ compdecomp:
 	li	a0,128
 	li	a7,0
 	li	t3,1
-.L374:
+.L225:
 	lw	a5,4(sp)
 	lbu	a5,0(a5)
 	and	a5,a5,a0
-	beq	a5,zero,.L366
+	beq	a5,zero,.L217
 	addi	a2,a2,1
 	slli	a2,a2,1
-.L367:
+.L218:
 	slli	a5,a4,2
 	add	a5,a5,t5
-	bleu	a2,a3,.L369
-.L368:
+	bleu	a2,a3,.L220
+.L219:
 	lw	a3,0(a5)
 	addi	a5,a5,4
 	addi	a4,a4,1
-	bltu	a3,a2,.L368
-.L369:
-	beq	a2,a3,.L448
-	beq	a0,t3,.L372
-.L449:
+	bltu	a3,a2,.L219
+.L220:
+	beq	a2,a3,.L299
+	beq	a0,t3,.L223
+.L300:
 	srli	a0,a0,1
-.L373:
+.L224:
 	lw	a5,8(sp)
-	bltu	a7,a5,.L374
-.L312:
+	bltu	a7,a5,.L225
+.L163:
 	li	t0,4096
 	addi	t0,t0,1632
 	add	sp,sp,t0
@@ -1769,7 +1245,7 @@ compdecomp:
 	lw	s11,1980(sp)
 	addi	sp,sp,2032
 	jr	ra
-.L442:
+.L293:
 	li	a6,4
 	sub	a0,a6,a0
 	add	a5,a5,a0
@@ -1777,36 +1253,36 @@ compdecomp:
 	lui	a0,%hi(heap_end)
 	lw	a0,%lo(heap_end)(a0)
 	sw	a5,%lo(heap_requested)(a3)
-	bgeu	a0,a4,.L315
-.L443:
+	bgeu	a0,a4,.L166
+.L294:
 	lw	a4,8(sp)
 	li	a5,5
 	sw	zero,4(sp)
-	bleu	a4,a5,.L377
+	bleu	a4,a5,.L228
 	li	a5,0
 	li	a3,0
-	j	.L317
-.L446:
+	j	.L168
+.L297:
 	lw	a5,4(sp)
 	add	a5,a5,a7
 	sb	a3,0(a5)
 	lw	a5,8(sp)
 	addi	a7,a7,1
-	beq	a5,a7,.L312
+	beq	a5,a7,.L163
 	lbu	a0,0(t3)
 	li	a3,0
 	li	a1,0
 	add	a5,t4,a0
 	lbu	a6,512(a5)
-	j	.L349
-.L384:
+	j	.L200
+.L235:
 	li	a5,0
 	sw	a5,0(t3)
-	j	.L354
-.L375:
+	j	.L205
+.L226:
 	sw	zero,4(sp)
-	j	.L313
-.L448:
+	j	.L164
+.L299:
 	add	a4,t1,a4
 	lbu	a5,768(a4)
 	lw	a4,12(sp)
@@ -1818,31 +1294,31 @@ compdecomp:
 	li	a2,0
 	addi	a5,a5,1
 	sw	a5,12(sp)
-	bne	a0,t3,.L449
-.L372:
+	bne	a0,t3,.L300
+.L223:
 	lw	a5,4(sp)
 	li	a0,128
 	addi	a5,a5,1
 	sw	a5,4(sp)
-	j	.L373
-.L366:
+	j	.L224
+.L217:
 	slli	a2,a2,1
 	addi	a2,a2,1
-	j	.L367
-.L377:
+	j	.L218
+.L228:
 	li	a5,0
-	j	.L316
-.L378:
+	j	.L167
+.L229:
 	li	a3,0
-	j	.L317
-.L383:
+	j	.L168
+.L234:
 	lw	a7,4(sp)
 	li	a3,0
-	j	.L346
-.L385:
+	j	.L197
+.L236:
 	mv	a6,a1
 	li	a1,0
-	j	.L364
+	j	.L215
 	.size	compdecomp, .-compdecomp
 	.align	2
 	.globl	verify_benchmark
@@ -1854,18 +1330,18 @@ verify_benchmark:
 	addi	a1,a5,500
 	addi	a4,a4,%lo(.LANCHOR1+1)
 	li	a3,74
-	j	.L452
-.L455:
+	j	.L303
+.L306:
 	lbu	a3,0(a4)
 	addi	a4,a4,1
-.L452:
+.L303:
 	lbu	a2,0(a5)
 	addi	a5,a5,1
-	bne	a2,a3,.L453
-	bne	a1,a5,.L455
+	bne	a2,a3,.L304
+	bne	a1,a5,.L306
 	li	a0,1
 	ret
-.L453:
+.L304:
 	li	a0,0
 	ret
 	.size	verify_benchmark, .-verify_benchmark
@@ -1904,40 +1380,33 @@ benchmark:
 	.type	main, @function
 main:
 	addi	sp,sp,-32
-	sw	ra,28(sp)
- #APP
-# 15 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	li	a0,1
+	sw	ra,28(sp)
 	call	benchmark_body.isra.0
-	call	start_trigger
 	call	benchmark
 	sw	zero,12(sp)
-	call	stop_trigger
 	lw	a5,12(sp)
 	lui	a4,%hi(.LANCHOR1)
 	lui	a5,%hi(.LANCHOR0)
 	addi	a5,a5,%lo(.LANCHOR0)
 	addi	a2,a5,500
 	addi	a4,a4,%lo(.LANCHOR1)
-.L464:
+.L315:
 	lbu	a0,0(a5)
 	lbu	a3,0(a4)
 	addi	a5,a5,1
 	addi	a4,a4,1
-	bne	a0,a3,.L467
-	bne	a5,a2,.L464
+	bne	a3,a0,.L318
+	bne	a5,a2,.L315
 	li	a0,0
-.L463:
+.L314:
 	lw	ra,28(sp)
 	snez	a0,a0
 	addi	sp,sp,32
 	jr	ra
-.L467:
+.L318:
 	sub	a0,a0,a3
-	j	.L463
+	j	.L314
 	.size	main, .-main
 	.section	.rodata
 	.align	2
@@ -1979,10 +1448,6 @@ heap_end:
 	.type	heap_ptr, @object
 	.size	heap_ptr, 4
 heap_ptr:
-	.zero	4
-	.type	seed, @object
-	.size	seed, 4
-seed:
 	.zero	4
 	.ident	"GCC: (g1b306039a) 15.1.0"
 	.section	.note.GNU-stack,"",@progbits

@@ -6,12 +6,202 @@
 	.attribute stack_align, 16
 	.text
 	.align	2
+	.type	appendrs, @function
+appendrs:
+	beq	a3,zero,.L10
+	addi	a5,a3,-1
+	li	a6,5
+	bleu	a5,a6,.L31
+	neg	a6,a2
+	andi	a5,a6,3
+	li	a7,0
+	beq	a5,zero,.L6
+	sb	zero,0(a2)
+	andi	a6,a6,2
+	li	a7,1
+	beq	a6,zero,.L6
+	sb	zero,1(a2)
+	li	a6,3
+	li	a7,2
+	bne	a5,a6,.L6
+	sb	zero,2(a2)
+	mv	a7,a5
+.L6:
+	sub	t3,a3,a5
+	andi	t1,t3,-4
+	add	a5,a2,a5
+	add	a6,a5,t1
+.L8:
+	sw	zero,0(a5)
+	addi	a5,a5,4
+	bne	a5,a6,.L8
+	add	a5,a7,t1
+	beq	t3,t1,.L10
+.L5:
+	add	a6,a2,a5
+	sb	zero,0(a6)
+	addi	a6,a5,1
+	bleu	a3,a6,.L10
+	add	a6,a2,a6
+	sb	zero,0(a6)
+	addi	a6,a5,2
+	bleu	a3,a6,.L10
+	add	a6,a2,a6
+	sb	zero,0(a6)
+	addi	a6,a5,3
+	bleu	a3,a6,.L10
+	add	a6,a2,a6
+	sb	zero,0(a6)
+	addi	a6,a5,4
+	bleu	a3,a6,.L10
+	add	a6,a2,a6
+	sb	zero,0(a6)
+	addi	a5,a5,5
+	bleu	a3,a5,.L10
+	add	a5,a2,a5
+	sb	zero,0(a5)
+.L10:
+	beq	a1,zero,.L50
+	addi	sp,sp,-64
+	addi	a7,a3,-1
+	sw	s3,48(sp)
+	sw	s5,40(sp)
+	andi	s3,a7,-4
+	sw	s7,32(sp)
+	addi	s5,a3,-2
+	addi	s7,a2,1
+	sw	s4,44(sp)
+	sw	s9,24(sp)
+	sw	s10,20(sp)
+	addi	s9,s3,1
+	addi	s10,s3,2
+	andi	t6,s5,0xff
+	or	s4,a2,s7
+	lui	t4,%hi(.LANCHOR0)
+	sw	s0,60(sp)
+	sw	s1,56(sp)
+	sw	s2,52(sp)
+	sw	s6,36(sp)
+	sw	s8,28(sp)
+	sw	s11,16(sp)
+	add	t2,a0,a1
+	add	s8,a2,s9
+	add	s11,a2,s10
+	add	t0,a2,s3
+	add	t6,t6,s7
+	andi	s4,s4,3
+	add	s1,a2,a7
+	addi	t4,t4,%lo(.LANCHOR0)
+	li	s0,255
+	li	s6,5
+	li	s2,1
+	li	t5,254
+	mv	t1,s7
+	sw	a4,12(sp)
+.L29:
+	lbu	a5,0(a0)
+	lbu	a1,0(a2)
+	xor	a5,a5,a1
+	add	a5,t4,a5
+	lbu	s7,0(a5)
+	beq	s7,s0,.L12
+	lw	a5,12(sp)
+	mv	a1,a2
+	add	a6,a5,a3
+	bgtu	a3,s2,.L19
+	j	.L30
+.L51:
+	lbu	a5,1(t3)
+	addi	a1,a1,1
+	addi	a6,a6,-1
+	xor	a5,a4,a5
+	sb	a5,-1(a1)
+	beq	t6,a1,.L30
+.L19:
+	lbu	a5,-1(a6)
+	lbu	a4,1(a1)
+	add	a5,a5,s7
+	add	t3,t4,a5
+	bgt	a5,t5,.L51
+	add	a5,t4,a5
+	lbu	a5,256(a5)
+	addi	a1,a1,1
+	addi	a6,a6,-1
+	xor	a5,a4,a5
+	sb	a5,-1(a1)
+	bne	t6,a1,.L19
+.L30:
+	lw	a5,12(sp)
+	lbu	a5,0(a5)
+	add	a5,a5,s7
+	ble	a5,t5,.L15
+	addi	a5,a5,-255
+.L15:
+	add	a5,t4,a5
+	lbu	a5,256(a5)
+.L21:
+	sb	a5,0(s1)
+	addi	a0,a0,1
+	bne	a0,t2,.L29
+	lw	s0,60(sp)
+	lw	s1,56(sp)
+	lw	s2,52(sp)
+	lw	s3,48(sp)
+	lw	s4,44(sp)
+	lw	s5,40(sp)
+	lw	s6,36(sp)
+	lw	s7,32(sp)
+	lw	s8,28(sp)
+	lw	s9,24(sp)
+	lw	s10,20(sp)
+	lw	s11,16(sp)
+	addi	sp,sp,64
+	jr	ra
+.L12:
+	beq	a7,zero,.L25
+	bleu	s5,s6,.L22
+	bne	s4,zero,.L22
+	mv	a5,a2
+.L23:
+	lw	a1,1(a5)
+	addi	a5,a5,4
+	sw	a1,-4(a5)
+	bne	t0,a5,.L23
+	beq	a7,s3,.L25
+	lbu	a5,0(s8)
+	sb	a5,0(t0)
+	bgeu	s9,a7,.L25
+	lbu	a5,0(s11)
+	sb	a5,0(s8)
+	bgeu	s10,a7,.L25
+	lbu	a5,3(t0)
+	sb	a5,0(s11)
+.L25:
+	li	a5,0
+	j	.L21
+.L22:
+	mv	a5,t1
+	add	a6,a2,a3
+.L27:
+	lbu	a1,0(a5)
+	addi	a5,a5,1
+	sb	a1,-2(a5)
+	bne	a5,a6,.L27
+	li	a5,0
+	j	.L21
+.L50:
+	ret
+.L31:
+	li	a5,0
+	j	.L5
+	.size	appendrs, .-appendrs
+	.align	2
 	.type	applymask, @function
 applymask:
 	li	a5,7
-	bgtu	a0,a5,.L118
-	lui	a4,%hi(.L4)
-	addi	a4,a4,%lo(.L4)
+	bgtu	a0,a5,.L169
+	lui	a4,%hi(.L55)
+	addi	a4,a4,%lo(.L55)
 	slli	a5,a0,2
 	add	a5,a5,a4
 	lw	a5,0(a5)
@@ -21,48 +211,48 @@ applymask:
 	.section	.rodata
 	.align	2
 	.align	2
-.L4:
-	.word	.L11
-	.word	.L10
-	.word	.L9
-	.word	.L8
-	.word	.L7
-	.word	.L6
-	.word	.L5
-	.word	.L3
+.L55:
+	.word	.L62
+	.word	.L61
+	.word	.L60
+	.word	.L59
+	.word	.L58
+	.word	.L57
+	.word	.L56
+	.word	.L54
 	.text
-.L5:
+.L56:
 	lbu	a6,%lo(WD)(a2)
 	li	a0,0
 	li	t3,0
 	li	a7,0
-	beq	a6,zero,.L1
+	beq	a6,zero,.L52
 	sw	s0,12(sp)
 	li	t1,3
 	lui	t4,%hi(framask)
 	lui	t0,%hi(qrframe)
 	lui	t6,%hi(WDB)
 	li	t5,128
-.L13:
+.L64:
 	li	a3,0
 	li	a5,0
-.L59:
-	beq	a3,t1,.L87
+.L110:
+	beq	a3,t1,.L138
 	sub	a4,a3,a7
 	snez	a1,a3
 	seqz	a4,a4
 	addi	a3,a3,1
 	and	a1,a1,a4
 	andi	a3,a3,0xff
-.L56:
+.L107:
 	and	a4,a5,a0
 	add	a4,a4,a1
 	andi	a4,a4,1
-	bne	a4,zero,.L57
-	bgtu	a5,a0,.L88
+	bne	a4,zero,.L108
+	bgtu	a5,a0,.L139
 	mv	s0,a0
 	mv	a4,a5
-.L58:
+.L109:
 	mul	a1,s0,s0
 	lw	t2,%lo(framask)(t4)
 	add	a1,a1,s0
@@ -75,7 +265,7 @@ applymask:
 	andi	a4,a4,7
 	sra	a4,a1,a4
 	andi	a4,a4,1
-	bne	a4,zero,.L57
+	bne	a4,zero,.L108
 	lbu	a1,%lo(WDB)(t6)
 	lw	a6,%lo(qrframe)(t0)
 	srli	t2,a5,3
@@ -88,50 +278,50 @@ applymask:
 	xor	a4,a4,a6
 	sb	a4,0(a1)
 	lbu	a6,%lo(WD)(a2)
-.L57:
+.L108:
 	addi	a5,a5,1
 	andi	a5,a5,0xff
-	bltu	a5,a6,.L59
+	bltu	a5,a6,.L110
 	addi	t3,t3,1
 	addi	a7,a7,1
 	andi	a0,t3,0xff
 	andi	a7,a7,0xff
-	bleu	a6,a0,.L123
-	bne	a7,t1,.L13
+	bleu	a6,a0,.L174
+	bne	a7,t1,.L64
 	li	a7,0
-	j	.L13
-.L3:
+	j	.L64
+.L54:
 	lbu	a6,%lo(WD)(a2)
 	li	a0,0
 	li	t3,0
 	li	a7,0
-	beq	a6,zero,.L1
+	beq	a6,zero,.L52
 	sw	s0,12(sp)
 	li	t1,3
 	lui	t4,%hi(framask)
 	lui	t0,%hi(qrframe)
 	lui	t6,%hi(WDB)
 	li	t5,128
-.L12:
+.L63:
 	li	a3,0
 	li	a5,0
-.L64:
-	beq	a3,t1,.L90
+.L115:
+	beq	a3,t1,.L141
 	sub	a4,a3,a7
 	snez	a1,a3
 	seqz	a4,a4
 	addi	a3,a3,1
 	and	a1,a1,a4
 	andi	a3,a3,0xff
-.L61:
+.L112:
 	add	a4,a5,a0
 	add	a4,a4,a1
 	andi	a4,a4,1
-	bne	a4,zero,.L62
-	bgtu	a5,a0,.L91
+	bne	a4,zero,.L113
+	bgtu	a5,a0,.L142
 	mv	s0,a0
 	mv	a4,a5
-.L63:
+.L114:
 	mul	a1,s0,s0
 	lw	t2,%lo(framask)(t4)
 	add	a1,a1,s0
@@ -144,7 +334,7 @@ applymask:
 	andi	a4,a4,7
 	sra	a4,a1,a4
 	andi	a4,a4,1
-	bne	a4,zero,.L62
+	bne	a4,zero,.L113
 	lbu	a1,%lo(WDB)(t6)
 	lw	a6,%lo(qrframe)(t0)
 	srli	t2,a5,3
@@ -157,34 +347,34 @@ applymask:
 	xor	a4,a4,a6
 	sb	a4,0(a1)
 	lbu	a6,%lo(WD)(a2)
-.L62:
+.L113:
 	addi	a5,a5,1
 	andi	a5,a5,0xff
-	bltu	a5,a6,.L64
+	bltu	a5,a6,.L115
 	addi	t3,t3,1
 	addi	a7,a7,1
 	andi	a0,t3,0xff
 	andi	a7,a7,0xff
-	bleu	a6,a0,.L123
-	bne	a7,t1,.L12
+	bleu	a6,a0,.L174
+	bne	a7,t1,.L63
 	li	a7,0
-	j	.L12
-.L11:
+	j	.L63
+.L62:
 	lbu	t0,%lo(WD)(a2)
-	beq	t0,zero,.L1
+	beq	t0,zero,.L52
 	mv	a1,a0
 	li	t1,0
 	lui	t3,%hi(framask)
 	lui	t6,%hi(qrframe)
 	lui	t5,%hi(WDB)
 	li	t4,128
-.L23:
+.L74:
 	mv	a5,a0
-	j	.L22
-.L132:
+	j	.L73
+.L182:
 	mv	a7,a1
 	mv	a4,a5
-.L21:
+.L72:
 	mul	a3,a7,a7
 	lw	a6,%lo(framask)(t3)
 	add	a3,a3,a7
@@ -197,7 +387,7 @@ applymask:
 	andi	a4,a4,7
 	sra	a4,a3,a4
 	andi	a4,a4,1
-	bne	a4,zero,.L20
+	bne	a4,zero,.L71
 	lbu	a3,%lo(WDB)(t5)
 	lw	a6,%lo(qrframe)(t6)
 	srli	a7,a5,3
@@ -210,41 +400,41 @@ applymask:
 	xor	a4,a4,a6
 	sb	a4,0(a3)
 	lbu	t0,%lo(WD)(a2)
-.L20:
+.L71:
 	addi	a5,a5,1
 	andi	a5,a5,0xff
-	bgeu	a5,t0,.L131
-.L22:
+	bgeu	a5,t0,.L181
+.L73:
 	add	a4,a5,a1
 	andi	a4,a4,1
-	bne	a4,zero,.L20
-	bleu	a5,a1,.L132
+	bne	a4,zero,.L71
+	bleu	a5,a1,.L182
 	mv	a7,a5
 	mv	a4,a1
-	j	.L21
-.L10:
+	j	.L72
+.L61:
 	lbu	a6,%lo(WD)(a2)
 	li	a7,0
 	li	t1,0
-	beq	a6,zero,.L1
+	beq	a6,zero,.L52
 	lui	t3,%hi(framask)
 	lui	t6,%hi(qrframe)
 	lui	t5,%hi(WDB)
 	li	t4,128
-	j	.L19
-.L24:
+	j	.L70
+.L75:
 	addi	t1,t1,1
 	andi	a7,t1,0xff
-	bgeu	a7,a6,.L1
-.L19:
+	bgeu	a7,a6,.L52
+.L70:
 	andi	a5,a7,1
-	bne	a5,zero,.L24
-.L28:
-	bgtu	a5,a7,.L74
-.L133:
+	bne	a5,zero,.L75
+.L79:
+	bgtu	a5,a7,.L125
+.L183:
 	mv	a1,a7
 	mv	a4,a5
-.L25:
+.L76:
 	mul	a3,a1,a1
 	lw	a0,%lo(framask)(t3)
 	add	a3,a3,a1
@@ -257,7 +447,7 @@ applymask:
 	andi	a4,a4,7
 	sra	a4,a3,a4
 	andi	a4,a4,1
-	bne	a4,zero,.L26
+	bne	a4,zero,.L77
 	lbu	a3,%lo(WDB)(t5)
 	lw	a1,%lo(qrframe)(t6)
 	srli	a0,a5,3
@@ -272,33 +462,33 @@ applymask:
 	xor	a4,a4,a1
 	sb	a4,0(a3)
 	lbu	a6,%lo(WD)(a2)
-	bgeu	a5,a6,.L24
-	bleu	a5,a7,.L133
-.L74:
+	bgeu	a5,a6,.L75
+	bleu	a5,a7,.L183
+.L125:
 	mv	a1,a5
 	mv	a4,a7
-	j	.L25
-.L9:
+	j	.L76
+.L60:
 	lbu	t0,%lo(WD)(a2)
 	li	a7,0
 	li	t3,0
-	beq	t0,zero,.L1
+	beq	t0,zero,.L52
 	lui	t1,%hi(framask)
 	lui	t6,%hi(qrframe)
 	lui	t5,%hi(WDB)
 	li	t4,128
-.L18:
+.L69:
 	li	a5,0
 	li	a4,0
-.L30:
-	beq	a5,zero,.L29
+.L81:
+	beq	a5,zero,.L80
 	addi	a3,a5,-3
-	bne	a3,zero,.L34
-.L29:
-	bgtu	a4,a7,.L75
+	bne	a3,zero,.L85
+.L80:
+	bgtu	a4,a7,.L126
 	mv	a6,a7
 	mv	a5,a4
-.L32:
+.L83:
 	mul	a3,a6,a6
 	lw	a1,%lo(framask)(t1)
 	add	a3,a3,a6
@@ -311,45 +501,45 @@ applymask:
 	andi	a5,a5,7
 	sra	a5,a3,a5
 	andi	a5,a5,1
-	beq	a5,zero,.L33
+	beq	a5,zero,.L84
 	addi	a5,a4,1
 	andi	a5,a5,0xff
-	bgeu	a5,t0,.L31
-.L125:
+	bgeu	a5,t0,.L82
+.L176:
 	addi	a4,a4,2
 	andi	a4,a4,0xff
-	bgeu	a4,t0,.L31
+	bgeu	a4,t0,.L82
 	mv	a5,a0
-.L34:
+.L85:
 	addi	a4,a4,1
 	addi	a5,a5,1
 	andi	a4,a4,0xff
 	andi	a5,a5,0xff
-	bltu	a4,t0,.L30
-	j	.L31
-.L8:
+	bltu	a4,t0,.L81
+	j	.L82
+.L59:
 	lbu	t2,%lo(WD)(a2)
 	li	a6,0
 	li	t3,0
 	li	a7,0
-	beq	t2,zero,.L1
+	beq	t2,zero,.L52
 	lui	t1,%hi(framask)
 	lui	t6,%hi(qrframe)
 	lui	t5,%hi(WDB)
 	li	t4,128
 	li	t0,3
-.L17:
+.L68:
 	mv	a5,a7
 	li	a4,0
-.L36:
+.L87:
 	addi	a3,a5,-3
-	beq	a3,zero,.L35
-	bne	a5,zero,.L40
-.L35:
-	bgtu	a4,a6,.L78
+	beq	a3,zero,.L86
+	bne	a5,zero,.L91
+.L86:
+	bgtu	a4,a6,.L129
 	mv	a0,a6
 	mv	a5,a4
-.L38:
+.L89:
 	mul	a3,a0,a0
 	lw	a1,%lo(framask)(t1)
 	add	a3,a3,a0
@@ -362,47 +552,47 @@ applymask:
 	andi	a5,a5,7
 	sra	a5,a3,a5
 	andi	a5,a5,1
-	beq	a5,zero,.L39
+	beq	a5,zero,.L90
 	addi	a5,a4,1
 	andi	a5,a5,0xff
-	bgeu	a5,t2,.L37
-.L127:
+	bgeu	a5,t2,.L88
+.L178:
 	addi	a4,a4,2
 	andi	a4,a4,0xff
-	bgeu	a4,t2,.L37
+	bgeu	a4,t2,.L88
 	li	a5,2
-.L40:
+.L91:
 	addi	a4,a4,1
 	addi	a5,a5,1
 	andi	a4,a4,0xff
 	andi	a5,a5,0xff
-	bltu	a4,t2,.L36
-	j	.L37
-.L7:
+	bltu	a4,t2,.L87
+	j	.L88
+.L58:
 	lbu	t2,%lo(WD)(a2)
 	li	a7,0
 	li	t1,0
-	beq	t2,zero,.L1
+	beq	t2,zero,.L52
 	lui	t3,%hi(framask)
 	lui	t6,%hi(qrframe)
 	lui	t5,%hi(WDB)
 	li	t4,128
 	li	t0,3
-.L16:
+.L67:
 	srli	a5,a7,1
 	andi	a5,a5,1
 	li	a0,0
 	li	a1,0
-.L47:
+.L98:
 	addi	a0,a0,1
 	andi	a0,a0,0xff
-	bne	a5,zero,.L43
-.L48:
-	bltu	a7,a1,.L83
-.L135:
+	bne	a5,zero,.L94
+.L99:
+	bltu	a7,a1,.L134
+.L185:
 	mv	a6,a7
 	mv	a5,a1
-.L49:
+.L100:
 	mul	a4,a6,a6
 	lw	a3,%lo(framask)(t3)
 	add	a4,a4,a6
@@ -415,64 +605,64 @@ applymask:
 	andi	a5,a5,7
 	sra	a5,a4,a5
 	andi	a5,a5,1
-	beq	a5,zero,.L134
+	beq	a5,zero,.L184
 	addi	a1,a1,1
 	andi	a1,a1,0xff
-	bleu	t2,a1,.L44
+	bleu	t2,a1,.L95
 	li	a5,3
-	bne	a0,a5,.L128
-.L45:
+	bne	a0,a5,.L179
+.L96:
 	addi	a5,a1,1
 	andi	a5,a5,0xff
-	bleu	t2,a5,.L44
+	bleu	t2,a5,.L95
 	addi	a1,a1,2
 	andi	a1,a1,0xff
-	bgeu	a1,t2,.L44
+	bgeu	a1,t2,.L95
 	li	a0,3
-.L43:
+.L94:
 	addi	a1,a1,1
 	andi	a1,a1,0xff
-	bleu	t2,a1,.L44
+	bleu	t2,a1,.L95
 	li	a4,3
 	li	a5,1
-	bne	a0,a4,.L47
+	bne	a0,a4,.L98
 	mv	a0,a5
-	bgeu	a7,a1,.L135
-.L83:
+	bgeu	a7,a1,.L185
+.L134:
 	mv	a6,a1
 	mv	a5,a7
-	j	.L49
-.L6:
+	j	.L100
+.L57:
 	lbu	a6,%lo(WD)(a2)
 	li	a0,0
 	li	t4,0
 	li	t3,0
-	beq	a6,zero,.L1
+	beq	a6,zero,.L52
 	sw	s0,12(sp)
 	li	a7,3
 	lui	t5,%hi(framask)
 	lui	t2,%hi(qrframe)
 	lui	t0,%hi(WDB)
 	li	t6,128
-.L15:
+.L66:
 	snez	t1,t3
 	li	a3,0
 	li	a5,0
-.L54:
-	beq	a3,a7,.L84
+.L105:
+	beq	a3,a7,.L135
 	snez	a1,a3
 	addi	a3,a3,1
 	and	a1,t1,a1
 	andi	a3,a3,0xff
-.L51:
+.L102:
 	and	a4,a5,a0
 	andi	a4,a4,1
 	add	a4,a4,a1
-	bne	a4,zero,.L52
-	bgtu	a5,a0,.L85
+	bne	a4,zero,.L103
+	bgtu	a5,a0,.L136
 	mv	s0,a0
 	mv	a4,a5
-.L53:
+.L104:
 	mul	a1,s0,s0
 	add	a1,a1,s0
 	srli	a1,a1,1
@@ -485,7 +675,7 @@ applymask:
 	andi	a4,a4,7
 	sra	a4,a1,a4
 	andi	a4,a4,1
-	bne	a4,zero,.L52
+	bne	a4,zero,.L103
 	lbu	a1,%lo(WDB)(t0)
 	lw	a6,%lo(qrframe)(t2)
 	srli	s0,a5,3
@@ -498,36 +688,36 @@ applymask:
 	xor	a4,a4,a6
 	sb	a4,0(a1)
 	lbu	a6,%lo(WD)(a2)
-.L52:
+.L103:
 	addi	a5,a5,1
 	andi	a5,a5,0xff
-	bltu	a5,a6,.L54
+	bltu	a5,a6,.L105
 	addi	t4,t4,1
 	addi	t3,t3,1
 	andi	a0,t4,0xff
 	andi	t3,t3,0xff
-	bgeu	a0,a6,.L123
-	bne	t3,a7,.L15
+	bgeu	a0,a6,.L174
+	bne	t3,a7,.L66
 	li	t3,0
-	j	.L15
-.L26:
+	j	.L66
+.L77:
 	addi	a5,a5,1
 	andi	a5,a5,0xff
-	bltu	a5,a6,.L28
-	j	.L24
-.L87:
+	bltu	a5,a6,.L79
+	j	.L75
+.L138:
 	li	a3,1
 	li	a1,0
-	j	.L56
-.L84:
+	j	.L107
+.L135:
 	li	a3,1
 	li	a1,0
-	j	.L51
+	j	.L102
+.L141:
+	li	a3,1
+	li	a1,0
+	j	.L112
 .L90:
-	li	a3,1
-	li	a1,0
-	j	.L61
-.L39:
 	lbu	a3,%lo(WDB)(t5)
 	lw	a1,%lo(qrframe)(t6)
 	srli	t2,a4,3
@@ -542,21 +732,21 @@ applymask:
 	xor	a5,a5,a1
 	sb	a5,0(a3)
 	lbu	t2,%lo(WD)(a2)
-	bltu	a0,t2,.L127
-.L37:
+	bltu	a0,t2,.L178
+.L88:
 	addi	t3,t3,1
 	addi	a7,a7,1
 	andi	a6,t3,0xff
 	andi	a7,a7,0xff
-	bgeu	a6,t2,.L1
-	bne	a7,t0,.L17
+	bgeu	a6,t2,.L52
+	bne	a7,t0,.L68
 	li	a7,0
-	j	.L17
-.L78:
+	j	.L68
+.L129:
 	mv	a0,a4
 	mv	a5,a6
-	j	.L38
-.L33:
+	j	.L89
+.L84:
 	lbu	a3,%lo(WDB)(t5)
 	lw	a1,%lo(qrframe)(t6)
 	srli	t0,a4,3
@@ -571,31 +761,31 @@ applymask:
 	xor	a5,a5,a1
 	sb	a5,0(a3)
 	lbu	t0,%lo(WD)(a2)
-	bltu	a6,t0,.L125
-.L31:
+	bltu	a6,t0,.L176
+.L82:
 	addi	t3,t3,1
 	andi	a7,t3,0xff
-	bltu	a7,t0,.L18
-.L1:
+	bltu	a7,t0,.L69
+.L52:
 	addi	sp,sp,16
 	jr	ra
-.L75:
+.L126:
 	mv	a6,a4
 	mv	a5,a7
-	j	.L32
-.L85:
+	j	.L83
+.L136:
 	mv	s0,a5
 	mv	a4,a0
-	j	.L53
-.L91:
+	j	.L104
+.L142:
 	mv	s0,a5
 	mv	a4,a0
-	j	.L63
-.L88:
+	j	.L114
+.L139:
 	mv	s0,a5
 	mv	a4,a0
-	j	.L58
-.L134:
+	j	.L109
+.L184:
 	lbu	a4,%lo(WDB)(t5)
 	lw	a3,%lo(qrframe)(t6)
 	srli	a6,a1,3
@@ -610,26 +800,26 @@ applymask:
 	xor	a5,a5,a3
 	sb	a5,0(a4)
 	lbu	t2,%lo(WD)(a2)
-	bleu	t2,a1,.L44
-	beq	a0,t0,.L45
-.L128:
+	bleu	t2,a1,.L95
+	beq	a0,t0,.L96
+.L179:
 	addi	a0,a0,1
 	andi	a0,a0,0xff
-	j	.L48
-.L131:
+	j	.L99
+.L181:
 	addi	t1,t1,1
 	andi	a1,t1,0xff
-	bltu	a1,t0,.L23
-	j	.L1
-.L44:
+	bltu	a1,t0,.L74
+	j	.L52
+.L95:
 	addi	t1,t1,1
 	andi	a7,t1,0xff
-	bltu	a7,t2,.L16
-	j	.L1
-.L123:
+	bltu	a7,t2,.L67
+	j	.L52
+.L174:
 	lw	s0,12(sp)
-	j	.L1
-.L118:
+	j	.L52
+.L169:
 	ret
 	.size	applymask, .-applymask
 	.align	2
@@ -641,792 +831,78 @@ badruns:
 	li	a4,0
 	li	a0,0
 	li	a1,4
-.L138:
+.L188:
 	add	a3,a5,a4
 	lbu	a3,0(a3)
 	addi	a4,a4,1
 	andi	a4,a4,0xff
 	addi	a2,a0,-2
-	bleu	a3,a1,.L137
+	bleu	a3,a1,.L187
 	add	a0,a3,a2
-.L137:
-	bgeu	a6,a4,.L138
+.L187:
+	bgeu	a6,a4,.L188
 	li	a4,4
-	ble	a6,a4,.L136
+	ble	a6,a4,.L186
 	li	a7,5
 	sub	a7,a7,a5
 	addi	t1,a6,-1
 	li	a3,3
-	j	.L142
-.L140:
+	j	.L192
+.L190:
 	andi	a3,a2,0xff
 	addi	a5,a5,2
-	bge	a3,t1,.L136
-.L142:
+	bge	a3,t1,.L186
+.L192:
 	lbu	a1,5(a5)
 	lbu	a4,1(a5)
 	add	a2,a7,a5
-	bne	a4,a1,.L140
+	bne	a4,a1,.L190
 	lbu	a1,2(a5)
-	bne	a4,a1,.L140
+	bne	a4,a1,.L190
 	lbu	a1,4(a5)
-	bne	a1,a4,.L140
+	bne	a1,a4,.L190
 	lbu	t3,3(a5)
 	slli	a4,a1,1
 	add	a4,a4,a1
-	bne	a4,t3,.L140
+	bne	a4,t3,.L190
 	lbu	a1,0(a5)
 	addi	a3,a3,2
-	beq	a1,zero,.L141
+	beq	a1,zero,.L191
 	slli	t3,a1,1
 	slli	a4,a4,2
 	add	t3,t3,a1
-	bge	a3,a6,.L141
-	bge	t3,a4,.L141
+	bge	a3,a6,.L191
+	bge	t3,a4,.L191
 	lbu	a1,6(a5)
 	slli	a3,a1,1
 	add	a3,a3,a1
-	bgt	a4,a3,.L140
-.L141:
+	bgt	a4,a3,.L190
+.L191:
 	andi	a3,a2,0xff
 	addi	a0,a0,40
 	addi	a5,a5,2
-	blt	a3,t1,.L142
-.L136:
+	blt	a3,t1,.L192
+.L186:
 	ret
 	.size	badruns, .-badruns
-	.align	2
-	.type	appendrs, @function
-appendrs:
-	addi	sp,sp,-64
-	sw	s1,56(sp)
-	mv	s1,a4
-	beq	a3,zero,.L157
-	addi	a5,a3,-1
-	li	a4,5
-	bleu	a5,a4,.L178
-	neg	a4,a2
-	andi	a5,a4,3
-	li	a6,0
-	beq	a5,zero,.L153
-	sb	zero,0(a2)
-	andi	a4,a4,2
-	li	a6,1
-	beq	a4,zero,.L153
-	sb	zero,1(a2)
-	li	a4,3
-	li	a6,2
-	bne	a5,a4,.L153
-	sb	zero,2(a2)
-	mv	a6,a5
-.L153:
-	sub	t1,a3,a5
-	andi	a7,t1,-4
-	add	a5,a2,a5
-	add	a4,a5,a7
-.L155:
-	sw	zero,0(a5)
-	addi	a5,a5,4
-	bne	a5,a4,.L155
-	add	a5,a6,a7
-	beq	t1,a7,.L157
-.L152:
-	add	a4,a2,a5
-	sb	zero,0(a4)
-	addi	a4,a5,1
-	bleu	a3,a4,.L157
-	add	a4,a2,a4
-	sb	zero,0(a4)
-	addi	a4,a5,2
-	bleu	a3,a4,.L157
-	add	a4,a2,a4
-	sb	zero,0(a4)
-	addi	a4,a5,3
-	bleu	a3,a4,.L157
-	add	a4,a2,a4
-	sb	zero,0(a4)
-	addi	a4,a5,4
-	bleu	a3,a4,.L157
-	add	a4,a2,a4
-	sb	zero,0(a4)
-	addi	a5,a5,5
-	bleu	a3,a5,.L157
-	add	a5,a2,a5
-	sb	zero,0(a5)
-.L157:
-	beq	a1,zero,.L148
-	addi	a7,a3,-1
-	sw	s4,44(sp)
-	sw	s5,40(sp)
-	sw	s11,16(sp)
-	andi	s5,a7,-4
-	addi	s11,a2,1
-	addi	s4,a3,-2
-	sw	s3,48(sp)
-	sw	s9,24(sp)
-	sw	s10,20(sp)
-	addi	s9,s5,1
-	addi	s10,s5,2
-	andi	t6,s4,0xff
-	or	s3,a2,s11
-	lui	t4,%hi(.LANCHOR0)
-	sw	s0,60(sp)
-	sw	s2,52(sp)
-	sw	s6,36(sp)
-	sw	s7,32(sp)
-	sw	s8,28(sp)
-	add	t2,a0,a1
-	add	s6,a2,s9
-	add	s8,a2,s10
-	add	t0,a2,s5
-	add	t6,t6,s11
-	andi	s3,s3,3
-	add	s0,a2,a7
-	addi	t4,t4,%lo(.LANCHOR0)
-	li	a4,255
-	li	s7,5
-	li	s2,1
-	li	t5,254
-	mv	t1,s11
-	sw	a3,12(sp)
-.L176:
-	lbu	a5,0(a0)
-	lbu	a1,0(a2)
-	xor	a5,a5,a1
-	add	a5,t4,a5
-	lbu	s11,0(a5)
-	beq	s11,a4,.L159
-	lw	a5,12(sp)
-	mv	a1,a2
-	add	a6,s1,a5
-	bgtu	a5,s2,.L166
-	j	.L177
-.L194:
-	lbu	a5,1(t3)
-	addi	a1,a1,1
-	addi	a6,a6,-1
-	xor	a5,a3,a5
-	sb	a5,-1(a1)
-	beq	t6,a1,.L177
-.L166:
-	lbu	a5,-1(a6)
-	lbu	a3,1(a1)
-	add	a5,a5,s11
-	add	t3,t4,a5
-	bgt	a5,t5,.L194
-	add	a5,t4,a5
-	lbu	a5,256(a5)
-	addi	a1,a1,1
-	addi	a6,a6,-1
-	xor	a5,a3,a5
-	sb	a5,-1(a1)
-	bne	t6,a1,.L166
-.L177:
-	lbu	a5,0(s1)
-	add	a5,a5,s11
-	ble	a5,t5,.L162
-	addi	a5,a5,-255
-.L162:
-	add	a5,t4,a5
-	lbu	a5,256(a5)
-.L168:
-	sb	a5,0(s0)
-	addi	a0,a0,1
-	bne	a0,t2,.L176
-	lw	s0,60(sp)
-	lw	s2,52(sp)
-	lw	s3,48(sp)
-	lw	s4,44(sp)
-	lw	s5,40(sp)
-	lw	s6,36(sp)
-	lw	s7,32(sp)
-	lw	s8,28(sp)
-	lw	s9,24(sp)
-	lw	s10,20(sp)
-	lw	s11,16(sp)
-.L148:
-	lw	s1,56(sp)
-	addi	sp,sp,64
-	jr	ra
-.L159:
-	beq	a7,zero,.L172
-	bleu	s4,s7,.L169
-	bne	s3,zero,.L169
-	mv	a5,a2
-.L170:
-	lw	a1,1(a5)
-	addi	a5,a5,4
-	sw	a1,-4(a5)
-	bne	t0,a5,.L170
-	beq	a7,s5,.L172
-	lbu	a5,0(s6)
-	sb	a5,0(t0)
-	bgeu	s9,a7,.L172
-	lbu	a5,0(s8)
-	sb	a5,0(s6)
-	bgeu	s10,a7,.L172
-	lbu	a5,3(t0)
-	sb	a5,0(s8)
-.L172:
-	li	a5,0
-	j	.L168
-.L169:
-	lw	a3,12(sp)
-	mv	a5,t1
-	add	a6,a2,a3
-.L174:
-	lbu	a1,0(a5)
-	addi	a5,a5,1
-	sb	a1,-2(a5)
-	bne	a5,a6,.L174
-	li	a5,0
-	j	.L168
-.L178:
-	li	a5,0
-	j	.L152
-	.size	appendrs, .-appendrs
-	.align	2
-	.globl	rand_beebs
-	.type	rand_beebs, @function
-rand_beebs:
-	lui	a4,%hi(seed)
-	lw	a0,%lo(seed)(a4)
-	li	a5,1103515648
-	addi	a5,a5,-403
-	mul	a0,a0,a5
-	li	a5,12288
-	addi	a5,a5,57
-	add	a0,a0,a5
-	slli	a0,a0,1
-	srli	a0,a0,1
-	sw	a0,%lo(seed)(a4)
-	srli	a0,a0,16
-	ret
-	.size	rand_beebs, .-rand_beebs
-	.align	2
-	.globl	srand_beebs
-	.type	srand_beebs, @function
-srand_beebs:
-	lui	a5,%hi(seed)
-	sw	a0,%lo(seed)(a5)
-	ret
-	.size	srand_beebs, .-srand_beebs
-	.align	2
-	.globl	init_heap_beebs
-	.type	init_heap_beebs, @function
-init_heap_beebs:
-	add	a1,a0,a1
-	lui	a3,%hi(heap_end)
-	lui	a4,%hi(heap_ptr)
-	lui	a5,%hi(heap_requested)
-	sw	a1,%lo(heap_end)(a3)
-	sw	a0,%lo(heap_ptr)(a4)
-	sw	zero,%lo(heap_requested)(a5)
-	ret
-	.size	init_heap_beebs, .-init_heap_beebs
-	.align	2
-	.globl	check_heap_beebs
-	.type	check_heap_beebs, @function
-check_heap_beebs:
-	lui	a5,%hi(heap_requested)
-	lw	a4,%lo(heap_requested)(a5)
-	lui	a5,%hi(heap_end)
-	lw	a5,%lo(heap_end)(a5)
-	add	a0,a0,a4
-	sltu	a0,a5,a0
-	xori	a0,a0,1
-	ret
-	.size	check_heap_beebs, .-check_heap_beebs
-	.align	2
-	.globl	malloc_beebs
-	.type	malloc_beebs, @function
-malloc_beebs:
-	mv	a5,a0
-	beq	a0,zero,.L203
-	lui	a2,%hi(heap_ptr)
-	lw	a0,%lo(heap_ptr)(a2)
-	lui	a3,%hi(heap_requested)
-	lw	a1,%lo(heap_requested)(a3)
-	add	a4,a0,a5
-	andi	a6,a4,3
-	add	a5,a5,a1
-	bne	a6,zero,.L207
-	lui	a1,%hi(heap_end)
-	lw	a1,%lo(heap_end)(a1)
-	sw	a5,%lo(heap_requested)(a3)
-	bltu	a1,a4,.L203
-.L208:
-	sw	a4,%lo(heap_ptr)(a2)
-	ret
-.L207:
-	li	a1,4
-	sub	a1,a1,a6
-	add	a5,a5,a1
-	add	a4,a4,a1
-	lui	a1,%hi(heap_end)
-	lw	a1,%lo(heap_end)(a1)
-	sw	a5,%lo(heap_requested)(a3)
-	bgeu	a1,a4,.L208
-.L203:
-	li	a0,0
-	ret
-	.size	malloc_beebs, .-malloc_beebs
-	.align	2
-	.globl	calloc_beebs
-	.type	calloc_beebs, @function
-calloc_beebs:
-	mul	a1,a0,a1
-	beq	a1,zero,.L210
-	lui	a2,%hi(heap_ptr)
-	lw	a0,%lo(heap_ptr)(a2)
-	lui	a3,%hi(heap_requested)
-	lw	a5,%lo(heap_requested)(a3)
-	add	a4,a0,a1
-	andi	a6,a4,3
-	add	a5,a1,a5
-	bne	a6,zero,.L235
-.L211:
-	lui	a6,%hi(heap_end)
-	lw	a6,%lo(heap_end)(a6)
-	sw	a5,%lo(heap_requested)(a3)
-	bltu	a6,a4,.L210
-	sw	a4,%lo(heap_ptr)(a2)
-	beq	a0,zero,.L210
-	addi	a5,a1,-1
-	li	a4,5
-	bleu	a5,a4,.L219
-	neg	a4,a0
-	andi	a5,a4,3
-	li	a3,0
-	beq	a5,zero,.L213
-	sb	zero,0(a0)
-	andi	a4,a4,2
-	li	a3,1
-	beq	a4,zero,.L213
-	sb	zero,1(a0)
-	li	a4,3
-	li	a3,2
-	bne	a5,a4,.L213
-	sb	zero,2(a0)
-	mv	a3,a5
-.L213:
-	sub	a6,a1,a5
-	andi	a2,a6,-4
-	add	a5,a0,a5
-	add	a4,a5,a2
-.L215:
-	sw	zero,0(a5)
-	addi	a5,a5,4
-	bne	a5,a4,.L215
-	add	a5,a3,a2
-	beq	a6,a2,.L209
-.L212:
-	add	a4,a0,a5
-	sb	zero,0(a4)
-	addi	a4,a5,1
-	bleu	a1,a4,.L209
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a4,a5,2
-	bleu	a1,a4,.L209
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a4,a5,3
-	bleu	a1,a4,.L209
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a4,a5,4
-	bleu	a1,a4,.L209
-	add	a4,a0,a4
-	sb	zero,0(a4)
-	addi	a5,a5,5
-	bleu	a1,a5,.L209
-	add	a5,a0,a5
-	sb	zero,0(a5)
-	ret
-.L210:
-	li	a0,0
-.L209:
-	ret
-.L235:
-	li	a7,4
-	sub	a6,a7,a6
-	add	a4,a4,a6
-	add	a5,a5,a6
-	j	.L211
-.L219:
-	li	a5,0
-	j	.L212
-	.size	calloc_beebs, .-calloc_beebs
-	.align	2
-	.globl	realloc_beebs
-	.type	realloc_beebs, @function
-realloc_beebs:
-	beq	a0,zero,.L237
-	beq	a1,zero,.L237
-	lui	a6,%hi(heap_ptr)
-	lw	a2,%lo(heap_ptr)(a6)
-	lui	a3,%hi(heap_requested)
-	lw	a5,%lo(heap_requested)(a3)
-	add	a4,a2,a1
-	andi	a7,a4,3
-	add	a5,a1,a5
-	bne	a7,zero,.L262
-	lui	a7,%hi(heap_end)
-	lw	a7,%lo(heap_end)(a7)
-	sw	a5,%lo(heap_requested)(a3)
-	bltu	a7,a4,.L237
-.L263:
-	sw	a4,%lo(heap_ptr)(a6)
-	beq	a2,zero,.L237
-	addi	a5,a1,-1
-	li	a4,6
-	bleu	a5,a4,.L247
-	or	a3,a0,a2
-	andi	a3,a3,3
-	mv	a4,a2
-	mv	a5,a0
-	bne	a3,zero,.L247
-	addi	a3,a2,-1
-	sub	a3,a3,a0
-	sltiu	a3,a3,3
-	bne	a3,zero,.L247
-	andi	a7,a1,-4
-	add	a6,a0,a7
-.L240:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L240
-	beq	a1,a7,.L236
-	lbu	a3,0(a6)
-	add	a4,a2,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bleu	a1,a5,.L236
-	add	a4,a0,a5
-	lbu	a4,0(a4)
-	add	a5,a2,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bleu	a1,a7,.L236
-	add	a0,a0,a7
-	lbu	a5,0(a0)
-	add	a7,a2,a7
-	sb	a5,0(a7)
-.L236:
-	mv	a0,a2
-	ret
-.L262:
-	li	t1,4
-	sub	a7,t1,a7
-	add	a5,a5,a7
-	add	a4,a4,a7
-	lui	a7,%hi(heap_end)
-	lw	a7,%lo(heap_end)(a7)
-	sw	a5,%lo(heap_requested)(a3)
-	bgeu	a7,a4,.L263
-.L237:
-	li	a2,0
-	mv	a0,a2
-	ret
-.L247:
-	li	a5,0
-.L244:
-	add	a4,a0,a5
-	lbu	a3,0(a4)
-	add	a4,a2,a5
-	addi	a5,a5,1
-	sb	a3,0(a4)
-	bgtu	a1,a5,.L244
-	mv	a0,a2
-	ret
-	.size	realloc_beebs, .-realloc_beebs
-	.align	2
-	.globl	free_beebs
-	.type	free_beebs, @function
-free_beebs:
-	ret
-	.size	free_beebs, .-free_beebs
 	.align	2
 	.globl	initialise_board
 	.type	initialise_board, @function
 initialise_board:
- #APP
-# 15 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	initialise_board, .-initialise_board
 	.align	2
 	.globl	start_trigger
 	.type	start_trigger, @function
 start_trigger:
- #APP
-# 21 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	start_trigger, .-start_trigger
 	.align	2
 	.globl	stop_trigger
 	.type	stop_trigger, @function
 stop_trigger:
- #APP
-# 27 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	stop_trigger, .-stop_trigger
-	.align	2
-	.globl	memset
-	.type	memset, @function
-memset:
-	beq	a2,zero,.L281
-	addi	a5,a2,-1
-	li	a4,5
-	andi	a1,a1,0xff
-	bleu	a5,a4,.L277
-	neg	a4,a0
-	andi	a5,a4,3
-	li	a6,0
-	beq	a5,zero,.L271
-	sb	a1,0(a0)
-	andi	a4,a4,2
-	li	a6,1
-	beq	a4,zero,.L271
-	sb	a1,1(a0)
-	li	a4,3
-	li	a6,2
-	bne	a5,a4,.L271
-	sb	a1,2(a0)
-	mv	a6,a5
-.L271:
-	slli	a4,a1,8
-	slli	a3,a1,16
-	sub	t1,a2,a5
-	or	a4,a1,a4
-	or	a4,a4,a3
-	add	a5,a0,a5
-	slli	a3,a1,24
-	andi	a7,t1,-4
-	or	a4,a4,a3
-	add	a3,a5,a7
-.L273:
-	sw	a4,0(a5)
-	addi	a5,a5,4
-	bne	a5,a3,.L273
-	add	a5,a6,a7
-	beq	t1,a7,.L281
-.L270:
-	add	a4,a0,a5
-	sb	a1,0(a4)
-	addi	a4,a5,1
-	bleu	a2,a4,.L281
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,2
-	bleu	a2,a4,.L281
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,3
-	bleu	a2,a4,.L281
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,4
-	bleu	a2,a4,.L281
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a5,a5,5
-	bleu	a2,a5,.L281
-	add	a5,a0,a5
-	sb	a1,0(a5)
-.L281:
-	ret
-.L277:
-	li	a5,0
-	j	.L270
-	.size	memset, .-memset
-	.align	2
-	.globl	memcpy
-	.type	memcpy, @function
-memcpy:
-	beq	a2,zero,.L286
-	addi	a5,a2,-1
-	li	a4,6
-	bleu	a5,a4,.L287
-	or	a3,a0,a1
-	andi	a3,a3,3
-	mv	a4,a0
-	mv	a5,a1
-	bne	a3,zero,.L287
-	sub	a3,a0,a1
-	addi	a3,a3,-1
-	sltiu	a3,a3,3
-	bne	a3,zero,.L287
-	andi	a7,a2,-4
-	add	a6,a1,a7
-.L288:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L288
-	beq	a2,a7,.L286
-	lbu	a3,0(a6)
-	add	a4,a0,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bleu	a2,a5,.L286
-	add	a4,a1,a5
-	lbu	a4,0(a4)
-	add	a5,a0,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bleu	a2,a7,.L286
-	add	a1,a1,a7
-	lbu	a5,0(a1)
-	add	a7,a0,a7
-	sb	a5,0(a7)
-	ret
-.L287:
-	add	a2,a1,a2
-	mv	a5,a0
-.L290:
-	lbu	a4,0(a1)
-	addi	a1,a1,1
-	addi	a5,a5,1
-	sb	a4,-1(a5)
-	bne	a1,a2,.L290
-.L286:
-	ret
-	.size	memcpy, .-memcpy
-	.align	2
-	.globl	memcmp
-	.type	memcmp, @function
-memcmp:
-	beq	a2,zero,.L307
-	add	a2,a0,a2
-	j	.L306
-.L305:
-	beq	a0,a2,.L307
-.L306:
-	lbu	a5,0(a0)
-	lbu	a4,0(a1)
-	addi	a0,a0,1
-	addi	a1,a1,1
-	beq	a5,a4,.L305
-	sub	a0,a5,a4
-	ret
-.L307:
-	li	a0,0
-	ret
-	.size	memcmp, .-memcmp
-	.align	2
-	.globl	memmove
-	.type	memmove, @function
-memmove:
-	bgeu	a0,a1,.L310
-	beq	a2,zero,.L311
-	addi	a5,a2,-1
-	li	a4,6
-	bleu	a5,a4,.L312
-	or	a3,a1,a0
-	andi	a3,a3,3
-	mv	a4,a0
-	mv	a5,a1
-	bne	a3,zero,.L312
-	sub	a3,a0,a1
-	addi	a3,a3,-1
-	sltiu	a3,a3,3
-	bne	a3,zero,.L312
-	andi	a7,a2,-4
-	add	a6,a1,a7
-.L313:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L313
-	beq	a2,a7,.L311
-	lbu	a3,0(a6)
-	add	a4,a0,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bleu	a2,a5,.L311
-	add	a4,a1,a5
-	lbu	a4,0(a4)
-	add	a5,a0,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bleu	a2,a7,.L311
-	add	a1,a1,a7
-	lbu	a5,0(a1)
-	add	a7,a0,a7
-	sb	a5,0(a7)
-	ret
-.L310:
-	bgtu	a0,a1,.L333
-.L311:
-	ret
-.L333:
-	beq	a2,zero,.L311
-	addi	a2,a2,-1
-	add	a5,a1,a2
-	lbu	a4,0(a5)
-	add	a5,a0,a2
-	sb	a4,0(a5)
-	j	.L333
-.L312:
-	add	a2,a1,a2
-	mv	a5,a0
-.L315:
-	lbu	a4,0(a1)
-	addi	a1,a1,1
-	addi	a5,a5,1
-	sb	a4,-1(a5)
-	bne	a1,a2,.L315
-	ret
-	.size	memmove, .-memmove
-	.align	2
-	.globl	strlen
-	.type	strlen, @function
-strlen:
-	lbu	a5,0(a0)
-	beq	a5,zero,.L334
-	li	a5,0
-.L336:
-	addi	a5,a5,1
-	add	a4,a0,a5
-	lbu	a4,0(a4)
-	bne	a4,zero,.L336
-.L334:
-	mv	a0,a5
-	ret
-	.size	strlen, .-strlen
-	.align	2
-	.globl	strchr
-	.type	strchr, @function
-strchr:
-	lbu	a5,0(a0)
-	beq	a5,zero,.L340
-	andi	a4,a1,0xff
-.L342:
-	beq	a4,a5,.L339
-	lbu	a5,1(a0)
-	addi	a0,a0,1
-	bne	a5,zero,.L342
-.L340:
-	seqz	a1,a1
-	neg	a1,a1
-	and	a0,a0,a1
-.L339:
-	ret
-	.size	strchr, .-strchr
 	.align	2
 	.globl	qrencode
 	.type	qrencode, @function
@@ -1448,15 +924,15 @@ qrencode:
 	sw	s10,32(sp)
 	sw	s11,28(sp)
 	lbu	a5,0(a2)
-	beq	a5,zero,.L487
+	beq	a5,zero,.L341
 	li	a5,0
-.L349:
+.L203:
 	mv	a4,a5
 	addi	a5,a5,1
 	add	a3,a2,a5
 	lbu	a3,0(a3)
-	bne	a3,zero,.L349
-.L348:
+	bne	a3,zero,.L203
+.L202:
 	lui	s3,%hi(neccblk2)
 	lui	s1,%hi(neccblk1)
 	lbu	a3,%lo(neccblk2)(s3)
@@ -1469,19 +945,19 @@ qrencode:
 	lbu	a0,%lo(VERSION)(a1)
 	add	s0,s0,a3
 	addi	a3,s0,-2
-	bgtu	a3,a5,.L350
+	bgtu	a3,a5,.L204
 	li	a5,9
 	addi	a4,s0,-3
-	bleu	a0,a5,.L488
+	bleu	a0,a5,.L342
 	mv	a5,a4
 	addi	a4,s0,-4
-.L352:
+.L206:
 	add	a2,a2,a5
 	sb	zero,2(a2)
 	mv	a0,a5
 	li	a7,-1
-	beq	a5,zero,.L355
-.L353:
+	beq	a5,zero,.L209
+.L207:
 	lw	a3,%lo(strinbuf)(s8)
 	add	a2,a3,a4
 	lbu	a2,0(a2)
@@ -1498,8 +974,8 @@ qrencode:
 	srli	a2,a2,4
 	sb	a2,1(a3)
 	addi	a4,a4,-1
-	bne	a4,a7,.L353
-.L355:
+	bne	a4,a7,.L207
+.L209:
 	lw	a6,%lo(strinbuf)(s8)
 	slli	a0,a5,4
 	srli	a3,a5,4
@@ -1518,8 +994,8 @@ qrencode:
 	sltiu	a4,a4,10
 	sub	a5,a5,a4
 	addi	a5,a5,3
-	bgtu	s0,a5,.L358
-.L361:
+	bgtu	s0,a5,.L212
+.L215:
 	lui	s2,%hi(qrframe)
 	lw	a1,%lo(qrframe)(s2)
 	lui	s6,%hi(eccblkwid)
@@ -1528,61 +1004,61 @@ qrencode:
 	li	a7,1
 	sb	a7,0(a1)
 	add	s7,s5,s0
-	beq	a0,zero,.L639
+	beq	a0,zero,.L493
 	sb	a7,1(a1)
 	lui	s9,%hi(.LANCHOR0)
-	beq	a0,a7,.L640
+	beq	a0,a7,.L494
 	mv	t4,a7
 	addi	s9,s9,%lo(.LANCHOR0)
 	addi	t1,a1,1
 	li	t3,254
-.L368:
+.L222:
 	lbu	a4,0(t1)
 	sb	t4,1(t1)
 	sub	a6,t1,a7
 	mv	a5,t1
-	j	.L366
-.L363:
+	j	.L220
+.L217:
 	sb	a3,0(a5)
 	addi	a5,a5,-1
-	beq	a5,a6,.L641
-.L366:
+	beq	a5,a6,.L495
+.L220:
 	mv	a2,a4
 	lbu	a4,-1(a5)
 	mv	a3,a4
-	beq	a2,zero,.L363
+	beq	a2,zero,.L217
 	add	a2,s9,a2
 	lbu	a3,0(a2)
 	add	a3,a3,a7
-	ble	a3,t3,.L365
+	ble	a3,t3,.L219
 	addi	a3,a3,-255
-.L365:
+.L219:
 	add	a3,s9,a3
 	lbu	a3,256(a3)
 	addi	a5,a5,-1
 	xor	a3,a4,a3
 	sb	a3,1(a5)
-	bne	a5,a6,.L366
-.L641:
+	bne	a5,a6,.L220
+.L495:
 	lbu	a5,0(a1)
 	add	a5,s9,a5
 	lbu	a5,0(a5)
 	add	a5,a5,a7
-	ble	a5,t3,.L367
+	ble	a5,t3,.L221
 	addi	a5,a5,-255
-.L367:
+.L221:
 	add	a5,s9,a5
 	lbu	a5,256(a5)
 	addi	a7,a7,1
 	andi	a4,a7,0xff
 	sb	a5,0(a1)
 	addi	t1,t1,1
-	bgtu	a0,a4,.L368
+	bgtu	a0,a4,.L222
 	add	a5,s9,a5
 	lbu	a4,0(a5)
 	li	a5,1
 	sb	a4,0(a1)
-.L369:
+.L223:
 	add	a3,a1,a5
 	lbu	a4,0(a3)
 	addi	a5,a5,1
@@ -1590,14 +1066,14 @@ qrencode:
 	add	a4,s9,a4
 	lbu	a4,0(a4)
 	sb	a4,0(a3)
-	bgeu	a0,a5,.L369
-.L360:
+	bgeu	a0,a5,.L223
+.L214:
 	lbu	a6,%lo(neccblk1)(s1)
 	lbu	a1,%lo(datablkw)(s4)
-	beq	a6,zero,.L370
+	beq	a6,zero,.L224
 	lbu	a3,%lo(eccblkwid)(s6)
 	li	s10,0
-.L371:
+.L225:
 	lw	a4,%lo(qrframe)(s2)
 	mv	a2,s7
 	mv	a0,s5
@@ -1608,14 +1084,14 @@ qrencode:
 	addi	s10,s10,1
 	add	s5,s5,a1
 	add	s7,s7,a3
-	bltu	s10,a6,.L371
-.L370:
+	bltu	s10,a6,.L225
+.L224:
 	lbu	a5,%lo(neccblk2)(s3)
-	beq	a5,zero,.L372
+	beq	a5,zero,.L226
 	lbu	a3,%lo(eccblkwid)(s6)
 	addi	a2,a1,1
 	li	s10,0
-.L373:
+.L227:
 	lw	a4,%lo(qrframe)(s2)
 	andi	a1,a2,0xff
 	mv	a0,s5
@@ -1628,16 +1104,16 @@ qrencode:
 	addi	s10,s10,1
 	add	s5,s5,a2
 	add	s7,s7,a3
-	bltu	s10,a5,.L373
+	bltu	s10,a5,.L227
 	lw	a4,%lo(qrframe)(s2)
 	lbu	a6,%lo(neccblk1)(s1)
-	beq	a1,zero,.L492
-.L486:
+	beq	a1,zero,.L346
+.L340:
 	li	a0,0
-.L375:
+.L229:
 	li	a3,0
-	beq	a6,zero,.L379
-.L376:
+	beq	a6,zero,.L233
+.L230:
 	mul	a1,a1,a3
 	lw	a5,%lo(strinbuf)(s8)
 	addi	a4,a4,1
@@ -1648,12 +1124,12 @@ qrencode:
 	sb	a5,-1(a4)
 	lbu	a6,%lo(neccblk1)(s1)
 	lbu	a1,%lo(datablkw)(s4)
-	bltu	a3,a6,.L376
-.L379:
+	bltu	a3,a6,.L230
+.L233:
 	lbu	a5,%lo(neccblk2)(s3)
-	beq	a5,zero,.L377
+	beq	a5,zero,.L231
 	li	a3,0
-.L378:
+.L232:
 	addi	a2,a1,1
 	mul	a2,a2,a3
 	lw	a5,%lo(strinbuf)(s8)
@@ -1668,12 +1144,12 @@ qrencode:
 	lbu	a5,%lo(neccblk2)(s3)
 	lbu	a1,%lo(datablkw)(s4)
 	lbu	a6,%lo(neccblk1)(s1)
-	bltu	a3,a5,.L378
-.L377:
+	bltu	a3,a5,.L232
+.L231:
 	addi	a0,a0,1
-	bltu	a0,a1,.L375
-.L374:
-	beq	a5,zero,.L494
+	bltu	a0,a1,.L229
+.L228:
+	beq	a5,zero,.L348
 	mul	a1,a1,a6
 	lw	a5,%lo(strinbuf)(s8)
 	li	a3,1
@@ -1684,8 +1160,8 @@ qrencode:
 	sb	a5,0(a4)
 	lbu	a5,%lo(neccblk2)(s3)
 	lbu	a6,%lo(neccblk1)(s1)
-	bleu	a5,a3,.L380
-.L381:
+	bleu	a5,a3,.L234
+.L235:
 	lbu	a1,%lo(datablkw)(s4)
 	lw	a5,%lo(strinbuf)(s8)
 	addi	a2,a2,1
@@ -1700,17 +1176,17 @@ qrencode:
 	sb	a5,-1(a2)
 	lbu	a5,%lo(neccblk2)(s3)
 	lbu	a6,%lo(neccblk1)(s1)
-	bltu	a3,a5,.L381
-.L380:
+	bltu	a3,a5,.L235
+.L234:
 	lbu	a4,%lo(eccblkwid)(s6)
 	add	a5,a6,a5
 	li	a6,0
-	beq	a4,zero,.L384
-.L383:
-	beq	a5,zero,.L387
+	beq	a4,zero,.L238
+.L237:
+	beq	a5,zero,.L241
 	add	a0,s0,a6
 	li	a3,0
-.L385:
+.L239:
 	mul	a4,a4,a3
 	lw	a5,%lo(strinbuf)(s8)
 	addi	a2,a2,1
@@ -1723,105 +1199,105 @@ qrencode:
 	lbu	a1,%lo(neccblk2)(s3)
 	lbu	a4,%lo(eccblkwid)(s6)
 	add	a5,a5,a1
-	bltu	a3,a5,.L385
+	bltu	a3,a5,.L239
 	addi	a6,a6,1
-	bltu	a6,a4,.L383
-.L387:
+	bltu	a6,a4,.L237
+.L241:
 	mul	a4,a4,a5
 	add	s0,s0,a4
-.L384:
+.L238:
 	lw	a0,%lo(qrframe)(s2)
-	beq	s0,zero,.L388
+	beq	s0,zero,.L242
 	addi	a5,s0,-1
 	li	a4,6
 	lw	a2,%lo(strinbuf)(s8)
-	bleu	a5,a4,.L389
+	bleu	a5,a4,.L243
 	addi	a3,a2,-1
 	sub	a3,a3,a0
 	sltiu	a3,a3,3
 	mv	a5,a2
 	mv	a4,a0
-	bne	a3,zero,.L389
+	bne	a3,zero,.L243
 	or	a3,a0,a2
 	andi	a3,a3,3
-	bne	a3,zero,.L389
+	bne	a3,zero,.L243
 	andi	a6,s0,-4
 	add	a1,a6,a2
-.L390:
+.L244:
 	lw	a3,0(a4)
 	addi	a5,a5,4
 	addi	a4,a4,4
 	sw	a3,-4(a5)
-	bne	a1,a5,.L390
-	beq	a6,s0,.L393
+	bne	a1,a5,.L244
+	beq	a6,s0,.L247
 	add	a5,a0,a6
 	lbu	a4,0(a5)
 	addi	a5,a6,1
 	sb	a4,0(a1)
-	bgeu	a5,s0,.L393
+	bgeu	a5,s0,.L247
 	add	a4,a0,a5
 	lbu	a4,0(a4)
 	add	a5,a2,a5
 	addi	a6,a6,2
 	sb	a4,0(a5)
-	bgeu	a6,s0,.L393
+	bgeu	a6,s0,.L247
 	add	a0,a0,a6
 	lbu	a5,0(a0)
 	add	a6,a2,a6
 	sb	a5,0(a6)
-.L393:
+.L247:
 	lw	a0,%lo(qrframe)(s2)
-.L388:
+.L242:
 	lui	s5,%hi(WDB)
 	lui	s0,%hi(WD)
 	lbu	t0,%lo(WDB)(s5)
 	lbu	a5,%lo(WD)(s0)
 	mul	a7,a5,t0
-	beq	a7,zero,.L394
+	beq	a7,zero,.L248
 	lui	a3,%hi(framebase)
 	addi	a5,a7,-1
 	li	a4,6
 	lw	a6,%lo(framebase)(a3)
-	bleu	a5,a4,.L395
+	bleu	a5,a4,.L249
 	sub	a3,a0,a6
 	addi	a3,a3,-1
 	sltiu	a3,a3,3
 	mv	a5,a0
 	mv	a4,a6
-	bne	a3,zero,.L395
+	bne	a3,zero,.L249
 	or	a3,a0,a6
 	andi	a3,a3,3
-	bne	a3,zero,.L395
+	bne	a3,zero,.L249
 	srli	a2,a7,2
 	slli	a2,a2,2
 	add	a1,a2,a0
-.L396:
+.L250:
 	lw	a3,0(a4)
 	addi	a5,a5,4
 	addi	a4,a4,4
 	sw	a3,-4(a5)
-	bne	a1,a5,.L396
-	beq	a7,a2,.L399
+	bne	a1,a5,.L250
+	beq	a7,a2,.L253
 	add	a5,a6,a2
 	lbu	a4,0(a5)
 	addi	a5,a2,1
 	sb	a4,0(a1)
-	bleu	a7,a5,.L399
+	bleu	a7,a5,.L253
 	add	a4,a6,a5
 	lbu	a4,0(a4)
 	add	a5,a0,a5
 	addi	a2,a2,2
 	sb	a4,0(a5)
-	bleu	a7,a2,.L399
+	bleu	a7,a2,.L253
 	add	a5,a6,a2
 	lbu	a5,0(a5)
 	add	a2,a0,a2
 	sb	a5,0(a2)
-.L399:
+.L253:
 	lbu	a5,%lo(WD)(s0)
 	lw	a0,%lo(qrframe)(s2)
 	lbu	t0,%lo(WDB)(s5)
-.L394:
+.L248:
 	lbu	a2,%lo(neccblk2)(s3)
 	lbu	a3,%lo(neccblk1)(s1)
 	lbu	a4,%lo(eccblkwid)(s6)
@@ -1830,7 +1306,7 @@ qrencode:
 	add	a4,a4,a1
 	mul	a4,a4,a3
 	add	a4,a4,a2
-	beq	a4,zero,.L416
+	beq	a4,zero,.L270
 	addi	a5,a5,-1
 	andi	a4,a5,0xff
 	li	a3,1
@@ -1840,15 +1316,15 @@ qrencode:
 	lui	t2,%hi(framask)
 	li	s10,128
 	li	t6,6
-.L415:
+.L269:
 	lw	a5,%lo(strinbuf)(s8)
 	li	t4,8
 	add	a5,a5,s7
 	lbu	t3,0(a5)
-.L414:
+.L268:
 	slli	a5,t3,24
 	srai	a5,a5,24
-	bge	a5,zero,.L401
+	bge	a5,zero,.L255
 	mul	t0,a2,t0
 	srli	a5,a4,3
 	andi	a6,a4,7
@@ -1860,21 +1336,21 @@ qrencode:
 	sb	a0,0(a5)
 	lw	a0,%lo(qrframe)(s2)
 	lbu	t0,%lo(WDB)(s5)
-.L401:
+.L255:
 	lbu	a6,%lo(WD)(s0)
 	lw	t1,%lo(framask)(t2)
 	addi	t5,a6,-1
-.L413:
-	beq	a3,zero,.L402
+.L267:
+	beq	a3,zero,.L256
 	addi	a4,a4,-1
 	andi	a4,a4,0xff
 	mv	s11,a4
 	mv	a7,a2
-.L403:
+.L257:
 	xori	a3,a3,1
 	andi	a3,a3,0xff
-	bleu	a4,a2,.L407
-.L411:
+	bleu	a4,a2,.L261
+.L265:
 	mul	a5,a4,a4
 	add	a5,a5,s11
 	srli	a5,a5,1
@@ -1882,18 +1358,18 @@ qrencode:
 	not	a7,a5
 	andi	a7,a7,7
 	srli	a5,a5,3
-.L412:
+.L266:
 	add	a5,t1,a5
 	lbu	a5,0(a5)
 	sra	a5,a5,a7
 	andi	a5,a5,1
-	bne	a5,zero,.L413
+	bne	a5,zero,.L267
 	addi	t4,t4,-1
 	slli	t3,t3,1
 	andi	t4,t4,0xff
 	andi	t3,t3,0xff
-	bne	t4,zero,.L414
-.L648:
+	bne	t4,zero,.L268
+.L502:
 	lbu	t1,%lo(neccblk2)(s3)
 	lbu	a7,%lo(neccblk1)(s1)
 	lbu	a5,%lo(datablkw)(s4)
@@ -1903,49 +1379,49 @@ qrencode:
 	add	a5,a5,t3
 	mul	a5,a5,a7
 	add	a5,a5,t1
-	blt	s7,a5,.L415
+	blt	s7,a5,.L269
 	mv	a5,a6
-.L416:
+.L270:
 	mul	a5,a5,t0
-	beq	a5,zero,.L422
+	beq	a5,zero,.L276
 	addi	a4,a5,-1
 	li	a3,6
 	lw	a7,%lo(strinbuf)(s8)
-	bleu	a4,a3,.L419
+	bleu	a4,a3,.L273
 	or	a2,a0,a7
 	andi	a2,a2,3
 	mv	a4,a7
 	mv	a3,a0
-	bne	a2,zero,.L419
+	bne	a2,zero,.L273
 	addi	a2,a7,-1
 	sub	a2,a2,a0
 	sltiu	a2,a2,3
-	bne	a2,zero,.L419
+	bne	a2,zero,.L273
 	andi	a6,a5,-4
 	add	a1,a6,a7
-.L420:
+.L274:
 	lw	a2,0(a3)
 	addi	a4,a4,4
 	addi	a3,a3,4
 	sw	a2,-4(a4)
-	bne	a1,a4,.L420
-	beq	a5,a6,.L422
+	bne	a1,a4,.L274
+	beq	a5,a6,.L276
 	add	a4,a0,a6
 	lbu	a3,0(a4)
 	addi	a4,a6,1
 	sb	a3,0(a1)
-	bleu	a5,a4,.L422
+	bleu	a5,a4,.L276
 	add	a3,a0,a4
 	lbu	a3,0(a3)
 	add	a4,a7,a4
 	addi	a6,a6,2
 	sb	a3,0(a4)
-	bleu	a5,a6,.L422
+	bleu	a5,a6,.L276
 	add	a0,a0,a6
 	lbu	a5,0(a0)
 	add	a6,a7,a6
 	sb	a5,0(a6)
-.L422:
+.L276:
 	li	s4,28672
 	addi	s4,s4,1328
 	li	s3,0
@@ -1953,12 +1429,12 @@ qrencode:
 	li	s6,1
 	lui	s1,%hi(rlens)
 	sw	s9,12(sp)
-.L418:
+.L272:
 	mv	a0,s3
 	call	applymask
 	lbu	t5,%lo(WD)(s0)
-	bleu	t5,s6,.L426
-.L647:
+	bleu	t5,s6,.L280
+.L501:
 	lbu	s10,%lo(WDB)(s5)
 	lw	t1,%lo(qrframe)(s2)
 	addi	t5,t5,-1
@@ -1968,11 +1444,11 @@ qrencode:
 	li	s7,0
 	li	t0,0
 	li	t6,-2
-.L427:
+.L281:
 	li	a4,0
 	add	t4,t1,t3
 	add	t2,t1,a7
-.L431:
+.L285:
 	andi	a5,a4,0xff
 	srli	a5,a5,3
 	add	a5,t1,a5
@@ -1991,39 +1467,39 @@ qrencode:
 	andi	a2,a2,1
 	andi	a1,a1,1
 	add	a5,a5,a7
-	beq	a2,zero,.L428
-	beq	a1,zero,.L429
+	beq	a2,zero,.L282
+	beq	a1,zero,.L283
 	lbu	a5,0(a5)
 	add	a6,t2,a6
 	sra	a5,a5,a0
 	andi	a5,a5,1
-	beq	a5,zero,.L429
+	beq	a5,zero,.L283
 	lbu	a5,0(a6)
 	sra	a5,a5,a3
 	andi	a5,a5,1
-	beq	a5,zero,.L429
+	beq	a5,zero,.L283
 	addi	s7,s7,3
-.L429:
-	bne	a4,t5,.L431
+.L283:
+	bne	a4,t5,.L285
 	addi	t0,t0,1
 	andi	t0,t0,0xff
 	add	a7,a7,s10
 	add	t3,t3,s10
-	bne	t0,s11,.L427
-.L432:
+	bne	t0,s11,.L281
+.L286:
 	li	s11,0
 	li	s10,0
-.L439:
+.L293:
 	lw	a5,%lo(rlens)(s1)
 	sb	zero,0(a5)
 	lbu	a5,%lo(WD)(s0)
-	beq	a5,zero,.L434
+	beq	a5,zero,.L288
 	li	a1,0
 	li	a0,0
 	li	a5,0
 	li	a3,0
-	j	.L438
-.L435:
+	j	.L292
+.L289:
 	andi	a0,t3,0xff
 	add	a2,a2,a0
 	sb	s6,0(a2)
@@ -2033,8 +1509,8 @@ qrencode:
 	ori	a4,a4,1
 	andi	a3,a1,0xff
 	add	s10,s10,a4
-	bgeu	a3,s9,.L642
-.L438:
+	bgeu	a3,s9,.L496
+.L292:
 	lbu	a7,%lo(WDB)(s5)
 	lw	a4,%lo(qrframe)(s2)
 	srli	a3,a3,3
@@ -2049,7 +1525,7 @@ qrencode:
 	lbu	a5,0(a4)
 	sra	a5,a5,a6
 	andi	a5,a5,1
-	bne	a5,t1,.L435
+	bne	a5,t1,.L289
 	add	a2,a2,a0
 	lbu	a4,0(a2)
 	addi	a1,a1,1
@@ -2060,13 +1536,13 @@ qrencode:
 	addi	a4,a5,-1
 	ori	a4,a4,1
 	add	s10,s10,a4
-	bltu	a3,s9,.L438
-.L642:
+	bltu	a3,s9,.L292
+.L496:
 	call	badruns
 	addi	s11,s11,1
 	andi	a5,s11,0xff
 	add	s7,s7,a0
-	bltu	a5,s9,.L439
+	bltu	a5,s9,.L293
 	srai	a4,s10,31
 	xor	a5,a4,s10
 	sub	a5,a5,a4
@@ -2074,15 +1550,15 @@ qrencode:
 	mul	a5,a5,a4
 	mul	a3,s9,s9
 	slli	a5,a5,1
-	bgtu	a5,a3,.L485
-	beq	s9,zero,.L638
-.L442:
+	bgtu	a5,a3,.L339
+	beq	s9,zero,.L492
+.L296:
 	li	s11,0
-.L448:
+.L302:
 	lw	a5,%lo(rlens)(s1)
 	sb	zero,0(a5)
 	lbu	a5,%lo(WD)(s0)
-	beq	a5,zero,.L443
+	beq	a5,zero,.L297
 	andi	a7,s11,0xff
 	not	a6,s11
 	srli	a7,a7,3
@@ -2090,7 +1566,7 @@ qrencode:
 	li	a3,0
 	li	a0,0
 	li	a1,0
-.L447:
+.L301:
 	lbu	a2,%lo(WDB)(s5)
 	lw	a5,%lo(qrframe)(s2)
 	lw	a4,%lo(rlens)(s1)
@@ -2101,27 +1577,27 @@ qrencode:
 	lbu	a5,0(a5)
 	sra	a5,a5,a6
 	andi	a5,a5,1
-	beq	a5,a1,.L643
+	beq	a5,a1,.L497
 	andi	a0,t1,0xff
 	add	a4,a4,a0
 	sb	s6,0(a4)
 	lbu	s10,%lo(WD)(s0)
 	addi	a3,a3,1
 	andi	a4,a3,0xff
-	bgeu	a4,s10,.L446
-.L445:
+	bgeu	a4,s10,.L300
+.L299:
 	mv	a1,a5
-	j	.L447
-.L350:
+	j	.L301
+.L204:
 	li	a3,9
-	bgtu	a0,a3,.L352
-.L351:
+	bgtu	a0,a3,.L206
+.L205:
 	add	a2,a2,a5
 	sb	zero,1(a2)
 	mv	a0,a5
 	li	a7,-1
-	beq	a5,zero,.L357
-.L356:
+	beq	a5,zero,.L211
+.L210:
 	lw	a3,%lo(strinbuf)(s8)
 	add	a2,a3,a4
 	lbu	a2,0(a2)
@@ -2138,8 +1614,8 @@ qrencode:
 	srli	a2,a2,4
 	sb	a2,0(a3)
 	addi	a4,a4,-1
-	bne	a4,a7,.L356
-.L357:
+	bne	a4,a7,.L210
+.L211:
 	lw	a0,%lo(strinbuf)(s8)
 	slli	a2,a5,4
 	srli	a4,a5,4
@@ -2155,8 +1631,8 @@ qrencode:
 	sltiu	a4,a4,10
 	sub	a5,a5,a4
 	addi	a5,a5,3
-	bleu	s0,a5,.L361
-.L358:
+	bleu	s0,a5,.L215
+.L212:
 	lw	a4,%lo(strinbuf)(s8)
 	mv	a3,a5
 	add	a4,a4,a5
@@ -2165,15 +1641,15 @@ qrencode:
 	addi	a5,a5,2
 	add	a4,a4,a3
 	sb	a2,1(a4)
-	bgtu	s0,a5,.L358
-	j	.L361
-.L488:
+	bgtu	s0,a5,.L212
+	j	.L215
+.L342:
 	mv	a5,a3
-	j	.L351
-.L402:
+	j	.L205
+.L256:
 	addi	s11,a4,1
-	beq	a1,zero,.L404
-	beq	a2,zero,.L405
+	beq	a1,zero,.L258
+	beq	a2,zero,.L259
 	addi	a2,a2,-1
 	andi	s11,s11,0xff
 	andi	a2,a2,0xff
@@ -2181,8 +1657,8 @@ qrencode:
 	mv	a4,s11
 	mv	a7,a2
 	andi	a3,a3,0xff
-	bgtu	a4,a2,.L411
-.L407:
+	bgtu	a4,a2,.L265
+.L261:
 	mul	a5,a2,a2
 	add	a5,a5,a7
 	srli	a5,a5,1
@@ -2190,50 +1666,50 @@ qrencode:
 	not	a7,a5
 	andi	a7,a7,7
 	srli	a5,a5,3
-	j	.L412
-.L428:
-	bne	a1,zero,.L429
+	j	.L266
+.L282:
+	bne	a1,zero,.L283
 	lbu	a5,0(a5)
 	add	a2,t1,a7
 	add	a2,a2,a6
 	sra	a5,a5,a0
 	andi	a5,a5,1
-	bne	a5,zero,.L429
+	bne	a5,zero,.L283
 	lbu	a5,0(a2)
 	sra	a5,a5,a3
 	andi	a5,a5,1
-	bne	a5,zero,.L429
+	bne	a5,zero,.L283
 	addi	s7,s7,3
-	j	.L429
-.L404:
-	beq	a2,t5,.L409
+	j	.L283
+.L258:
+	beq	a2,t5,.L263
 	addi	a2,a2,1
 	andi	a2,a2,0xff
 	andi	s11,s11,0xff
 	mv	a7,a2
 	mv	a4,s11
-	j	.L403
-.L405:
+	j	.L257
+.L259:
 	addi	a4,a4,-1
 	andi	a4,a4,0xff
-	beq	a4,t6,.L644
+	beq	a4,t6,.L498
 	mv	s11,a4
 	li	a1,0
 	li	a7,0
-	j	.L403
-.L409:
+	j	.L257
+.L263:
 	addi	a4,a4,-1
 	andi	a4,a4,0xff
-	beq	a4,t6,.L410
+	beq	a4,t6,.L264
 	mv	s11,a4
 	mv	a7,a2
 	li	a1,1
-	j	.L403
-.L644:
+	j	.L257
+.L498:
 	lbu	a5,6(t1)
 	srai	a5,a5,5
 	andi	a5,a5,1
-	beq	a5,zero,.L645
+	beq	a5,zero,.L499
 	li	a7,9
 	mv	a2,a7
 	mul	a5,a2,a2
@@ -2246,16 +1722,16 @@ qrencode:
 	not	a7,a5
 	andi	a7,a7,7
 	srli	a5,a5,3
-	j	.L412
-.L410:
+	j	.L266
+.L264:
 	addi	a2,a2,-8
 	andi	a2,a2,0xff
 	li	s11,5
 	mv	a7,a2
 	mv	a4,s11
 	li	a1,1
-	j	.L403
-.L434:
+	j	.L257
+.L288:
 	li	a0,0
 	call	badruns
 	srai	a4,s10,31
@@ -2266,19 +1742,19 @@ qrencode:
 	slli	a5,a5,1
 	add	s7,s7,a0
 	li	a3,0
-	beq	a5,zero,.L638
-.L485:
+	beq	a5,zero,.L492
+.L339:
 	li	a4,0
-.L441:
+.L295:
 	sub	a5,a5,a3
 	addi	a4,a4,1
-	bgtu	a5,a3,.L441
+	bgtu	a5,a3,.L295
 	slli	a5,a4,2
 	add	a5,a5,a4
 	slli	a5,a5,1
 	add	s7,s7,a5
-	j	.L442
-.L643:
+	j	.L296
+.L497:
 	add	a4,a4,a0
 	lbu	a2,0(a4)
 	addi	a3,a3,1
@@ -2286,68 +1762,68 @@ qrencode:
 	addi	a2,a2,1
 	sb	a2,0(a4)
 	lbu	s10,%lo(WD)(s0)
-	bltu	a1,s10,.L445
-.L446:
+	bltu	a1,s10,.L299
+.L300:
 	call	badruns
 	addi	s11,s11,1
 	andi	a5,s11,0xff
 	add	s7,s7,a0
-	bltu	a5,s10,.L448
-	bltu	s7,s4,.L646
+	bltu	a5,s10,.L302
+	bltu	s7,s4,.L500
 	lbu	a5,%lo(WDB)(s5)
 	lw	a0,%lo(qrframe)(s2)
 	lw	a1,%lo(strinbuf)(s8)
 	mul	s10,a5,s10
-	beq	s10,zero,.L451
-.L455:
+	beq	s10,zero,.L305
+.L309:
 	addi	a5,s10,-1
 	li	a4,6
-	bleu	a5,a4,.L458
+	bleu	a5,a4,.L312
 	or	a3,a0,a1
 	andi	a3,a3,3
 	mv	a4,a0
 	mv	a5,a1
-	bne	a3,zero,.L458
+	bne	a3,zero,.L312
 	addi	a3,a0,-1
 	sub	a3,a3,a1
 	sltiu	a3,a3,3
-	bne	a3,zero,.L458
+	bne	a3,zero,.L312
 	andi	a6,s10,-4
 	add	a2,a6,a1
-.L459:
+.L313:
 	lw	a3,0(a5)
 	addi	a5,a5,4
 	addi	a4,a4,4
 	sw	a3,-4(a4)
-	bne	a2,a5,.L459
-	beq	a6,s10,.L451
+	bne	a2,a5,.L313
+	beq	a6,s10,.L305
 	lbu	a3,0(a2)
 	add	a4,a0,a6
 	addi	a5,a6,1
 	sb	a3,0(a4)
-	bgeu	a5,s10,.L451
+	bgeu	a5,s10,.L305
 	add	a4,a1,a5
 	lbu	a4,0(a4)
 	add	a5,a0,a5
 	addi	a6,a6,2
 	sb	a4,0(a5)
-	bgeu	a6,s10,.L451
+	bgeu	a6,s10,.L305
 	add	a5,a1,a6
 	lbu	a5,0(a5)
 	add	a6,a0,a6
 	sb	a5,0(a6)
-.L451:
+.L305:
 	addi	s3,s3,1
 	andi	s3,s3,0xff
 	li	a5,8
-	bne	s3,a5,.L418
-.L649:
+	bne	s3,a5,.L272
+.L503:
 	lw	s1,8(sp)
 	lw	s9,12(sp)
-	beq	s1,s3,.L454
+	beq	s1,s3,.L308
 	mv	a0,s1
 	call	applymask
-.L454:
+.L308:
 	lui	a5,%hi(ECCLEVEL)
 	lbu	a5,%lo(ECCLEVEL)(a5)
 	addi	a5,a5,-1
@@ -2358,7 +1834,7 @@ qrencode:
 	add	a5,s9,a5
 	lw	a5,512(a5)
 	andi	a4,a5,1
-	beq	a4,zero,.L465
+	beq	a4,zero,.L319
 	lbu	a4,%lo(WD)(s0)
 	lbu	a3,%lo(WDB)(s5)
 	lw	a2,%lo(qrframe)(s2)
@@ -2377,10 +1853,10 @@ qrencode:
 	lbu	a4,1(a3)
 	ori	a4,a4,-128
 	sb	a4,1(a3)
-.L465:
+.L319:
 	srli	a4,a5,1
 	andi	a4,a4,1
-	beq	a4,zero,.L466
+	beq	a4,zero,.L320
 	lbu	a4,%lo(WD)(s0)
 	lbu	a3,%lo(WDB)(s5)
 	lw	a2,%lo(qrframe)(s2)
@@ -2401,10 +1877,10 @@ qrencode:
 	lbu	a3,1(a4)
 	ori	a3,a3,-128
 	sb	a3,1(a4)
-.L466:
+.L320:
 	srli	a4,a5,2
 	andi	a4,a4,1
-	beq	a4,zero,.L467
+	beq	a4,zero,.L321
 	lbu	a4,%lo(WD)(s0)
 	lbu	a3,%lo(WDB)(s5)
 	lw	a2,%lo(qrframe)(s2)
@@ -2426,10 +1902,10 @@ qrencode:
 	lbu	a3,1(a4)
 	ori	a3,a3,-128
 	sb	a3,1(a4)
-.L467:
+.L321:
 	srli	a4,a5,3
 	andi	a4,a4,1
-	beq	a4,zero,.L468
+	beq	a4,zero,.L322
 	lbu	a4,%lo(WD)(s0)
 	lbu	a3,%lo(WDB)(s5)
 	lw	a2,%lo(qrframe)(s2)
@@ -2452,10 +1928,10 @@ qrencode:
 	lbu	a3,1(a4)
 	ori	a3,a3,-128
 	sb	a3,1(a4)
-.L468:
+.L322:
 	srli	a4,a5,4
 	andi	a4,a4,1
-	beq	a4,zero,.L469
+	beq	a4,zero,.L323
 	lbu	a4,%lo(WD)(s0)
 	lbu	a3,%lo(WDB)(s5)
 	lw	a2,%lo(qrframe)(s2)
@@ -2477,10 +1953,10 @@ qrencode:
 	lbu	a3,1(a4)
 	ori	a3,a3,-128
 	sb	a3,1(a4)
-.L469:
+.L323:
 	srli	a4,a5,5
 	andi	a4,a4,1
-	beq	a4,zero,.L470
+	beq	a4,zero,.L324
 	lbu	a4,%lo(WD)(s0)
 	lbu	a3,%lo(WDB)(s5)
 	lw	a2,%lo(qrframe)(s2)
@@ -2503,10 +1979,10 @@ qrencode:
 	lbu	a3,1(a4)
 	ori	a3,a3,-128
 	sb	a3,1(a4)
-.L470:
+.L324:
 	srli	a4,a5,6
 	andi	a4,a4,1
-	beq	a4,zero,.L472
+	beq	a4,zero,.L326
 	lbu	a4,%lo(WD)(s0)
 	lbu	a3,%lo(WDB)(s5)
 	lw	a2,%lo(qrframe)(s2)
@@ -2529,10 +2005,10 @@ qrencode:
 	lbu	a3,1(a4)
 	ori	a3,a3,-128
 	sb	a3,1(a4)
-.L472:
+.L326:
 	srli	a4,a5,7
 	andi	a4,a4,1
-	beq	a4,zero,.L476
+	beq	a4,zero,.L330
 	lbu	a4,%lo(WD)(s0)
 	lbu	a3,%lo(WDB)(s5)
 	lw	a2,%lo(qrframe)(s2)
@@ -2554,10 +2030,10 @@ qrencode:
 	lbu	a3,1(a4)
 	ori	a3,a3,-128
 	sb	a3,1(a4)
-.L476:
+.L330:
 	srli	a4,a5,8
 	andi	a4,a4,1
-	beq	a4,zero,.L474
+	beq	a4,zero,.L328
 	lbu	a4,%lo(WD)(s0)
 	lbu	a2,%lo(WDB)(s5)
 	lw	a3,%lo(qrframe)(s2)
@@ -2574,10 +2050,10 @@ qrencode:
 	lbu	a3,0(a4)
 	ori	a3,a3,1
 	sb	a3,0(a4)
-.L474:
+.L328:
 	srli	a4,a5,9
 	andi	a4,a4,1
-	beq	a4,zero,.L477
+	beq	a4,zero,.L331
 	lbu	a4,%lo(WD)(s0)
 	lbu	a2,%lo(WDB)(s5)
 	lw	a3,%lo(qrframe)(s2)
@@ -2594,10 +2070,10 @@ qrencode:
 	lbu	a3,0(a4)
 	ori	a3,a3,4
 	sb	a3,0(a4)
-.L477:
+.L331:
 	srli	a4,a5,10
 	andi	a4,a4,1
-	beq	a4,zero,.L478
+	beq	a4,zero,.L332
 	lbu	a4,%lo(WD)(s0)
 	lbu	a2,%lo(WDB)(s5)
 	lw	a3,%lo(qrframe)(s2)
@@ -2614,9 +2090,9 @@ qrencode:
 	lbu	a3,0(a4)
 	ori	a3,a3,8
 	sb	a3,0(a4)
-.L478:
+.L332:
 	slli	a4,a5,20
-	bge	a4,zero,.L479
+	bge	a4,zero,.L333
 	lbu	a4,%lo(WD)(s0)
 	lbu	a2,%lo(WDB)(s5)
 	lw	a3,%lo(qrframe)(s2)
@@ -2633,9 +2109,9 @@ qrencode:
 	lbu	a3,0(a4)
 	ori	a3,a3,16
 	sb	a3,0(a4)
-.L479:
+.L333:
 	slli	a4,a5,19
-	bge	a4,zero,.L480
+	bge	a4,zero,.L334
 	lbu	a4,%lo(WD)(s0)
 	lbu	a2,%lo(WDB)(s5)
 	lw	a3,%lo(qrframe)(s2)
@@ -2652,10 +2128,10 @@ qrencode:
 	lbu	a3,0(a4)
 	ori	a3,a3,32
 	sb	a3,0(a4)
-.L480:
+.L334:
 	slli	a3,a5,18
 	srli	a4,a5,13
-	bge	a3,zero,.L481
+	bge	a3,zero,.L335
 	lbu	a5,%lo(WD)(s0)
 	lbu	a2,%lo(WDB)(s5)
 	lw	a3,%lo(qrframe)(s2)
@@ -2672,9 +2148,9 @@ qrencode:
 	lbu	a3,0(a5)
 	ori	a3,a3,64
 	sb	a3,0(a5)
-.L481:
+.L335:
 	andi	a5,a4,2
-	beq	a5,zero,.L347
+	beq	a5,zero,.L201
 	lbu	a5,%lo(WD)(s0)
 	lbu	a3,%lo(WDB)(s5)
 	lw	a4,%lo(qrframe)(s2)
@@ -2691,7 +2167,7 @@ qrencode:
 	lbu	a4,0(a5)
 	ori	a4,a4,-128
 	sb	a4,0(a5)
-.L347:
+.L201:
 	lw	ra,76(sp)
 	lw	s0,72(sp)
 	lw	s1,68(sp)
@@ -2707,15 +2183,15 @@ qrencode:
 	lw	s11,28(sp)
 	addi	sp,sp,80
 	jr	ra
-.L443:
+.L297:
 	li	a0,0
 	call	badruns
 	add	s7,s7,a0
-.L638:
-	bgeu	s7,s4,.L451
+.L492:
+	bgeu	s7,s4,.L305
 	li	a5,7
-	beq	s3,a5,.L635
-.L637:
+	beq	s3,a5,.L489
+.L491:
 	addi	a5,s3,1
 	sw	s3,8(sp)
 	andi	s3,a5,0xff
@@ -2723,12 +2199,12 @@ qrencode:
 	call	applymask
 	lbu	t5,%lo(WD)(s0)
 	mv	s4,s7
-	bgtu	t5,s6,.L647
-.L426:
+	bgtu	t5,s6,.L501
+.L280:
 	li	s7,0
-	beq	t5,zero,.L638
-	j	.L432
-.L645:
+	beq	t5,zero,.L492
+	j	.L286
+.L499:
 	addi	t4,t4,-1
 	slli	t3,t3,1
 	andi	t4,t4,0xff
@@ -2737,94 +2213,94 @@ qrencode:
 	li	a1,0
 	li	a4,5
 	andi	t3,t3,0xff
-	bne	t4,zero,.L414
-	j	.L648
-.L635:
+	bne	t4,zero,.L268
+	j	.L502
+.L489:
 	lw	s9,12(sp)
 	li	s1,7
-	j	.L454
-.L492:
+	j	.L308
+.L346:
 	li	a0,0
-	j	.L374
-.L419:
+	j	.L228
+.L273:
 	add	a5,a0,a5
 	mv	a4,a7
-.L424:
+.L278:
 	lbu	a3,0(a0)
 	addi	a0,a0,1
 	addi	a4,a4,1
 	sb	a3,-1(a4)
-	bne	a0,a5,.L424
-	j	.L422
-.L395:
+	bne	a0,a5,.L278
+	j	.L276
+.L249:
 	mv	a5,a6
 	add	a7,a6,a7
-.L398:
+.L252:
 	lbu	a4,0(a5)
 	addi	a5,a5,1
 	addi	a0,a0,1
 	sb	a4,-1(a0)
-	bne	a5,a7,.L398
-	j	.L399
-.L389:
+	bne	a5,a7,.L252
+	j	.L253
+.L243:
 	add	s0,a0,s0
-.L392:
+.L246:
 	lbu	a5,0(a0)
 	addi	a0,a0,1
 	addi	a2,a2,1
 	sb	a5,-1(a2)
-	bne	a0,s0,.L392
-	j	.L393
-.L372:
+	bne	a0,s0,.L246
+	j	.L247
+.L226:
 	lw	a4,%lo(qrframe)(s2)
-	bne	a1,zero,.L486
-.L494:
+	bne	a1,zero,.L340
+.L348:
 	mv	a2,a4
 	lbu	a4,%lo(eccblkwid)(s6)
 	add	a5,a6,a5
 	li	a6,0
-	bne	a4,zero,.L383
-	j	.L384
-.L639:
+	bne	a4,zero,.L237
+	j	.L238
+.L493:
 	lui	s9,%hi(.LANCHOR0)
 	sb	zero,0(a1)
 	addi	s9,s9,%lo(.LANCHOR0)
-	j	.L360
-.L487:
+	j	.L214
+.L341:
 	li	a4,-1
-	j	.L348
-.L640:
+	j	.L202
+.L494:
 	addi	s9,s9,%lo(.LANCHOR0)
 	lbu	a5,1(s9)
 	sb	zero,0(a1)
 	sb	a5,1(a1)
-	j	.L360
-.L458:
+	j	.L214
+.L312:
 	mv	a5,a1
 	add	s10,a1,s10
 	mv	a4,a0
-.L463:
+.L317:
 	lbu	a3,0(a5)
 	addi	a5,a5,1
 	addi	a4,a4,1
 	sb	a3,-1(a4)
-	bne	s10,a5,.L463
+	bne	s10,a5,.L317
 	addi	s3,s3,1
 	andi	s3,s3,0xff
 	li	a5,8
-	bne	s3,a5,.L418
-	j	.L649
-.L646:
+	bne	s3,a5,.L272
+	j	.L503
+.L500:
 	li	a5,7
-	beq	s3,a5,.L635
+	beq	s3,a5,.L489
 	lbu	a5,%lo(WDB)(s5)
 	sw	s3,8(sp)
 	lw	a0,%lo(qrframe)(s2)
 	mul	s10,a5,s10
 	lw	a1,%lo(strinbuf)(s8)
 	mv	s4,s7
-	bne	s10,zero,.L455
-	j	.L637
+	bne	s10,zero,.L309
+	j	.L491
 	.size	qrencode, .-qrencode
 	.align	2
 	.globl	initframe
@@ -2854,71 +2330,71 @@ initframe:
 	lw	a0,%lo(heap_ptr)(t1)
 	lw	a6,%lo(heap_requested)(t3)
 	lw	t4,%lo(heap_end)(a2)
-	beq	a3,zero,.L816
+	beq	a3,zero,.L670
 	add	a1,a0,a3
 	andi	a7,a1,3
 	add	a6,a6,a3
-	bne	a7,zero,.L933
+	bne	a7,zero,.L787
 	sw	a6,%lo(heap_requested)(t3)
-	bgtu	a1,t4,.L653
-.L940:
+	bgtu	a1,t4,.L507
+.L794:
 	sw	a1,%lo(heap_ptr)(t1)
-	beq	a0,zero,.L818
+	beq	a0,zero,.L672
 	addi	a5,a3,-1
 	li	a2,5
-	bleu	a5,a2,.L819
+	bleu	a5,a2,.L673
 	neg	a2,a0
 	andi	a5,a2,3
 	li	t5,0
-	beq	a5,zero,.L655
+	beq	a5,zero,.L509
 	sb	zero,0(a0)
 	andi	a2,a2,2
 	li	t5,1
-	beq	a2,zero,.L655
+	beq	a2,zero,.L509
 	sb	zero,1(a0)
 	li	a2,3
 	li	t5,2
-	bne	a5,a2,.L655
+	bne	a5,a2,.L509
 	sb	zero,2(a0)
 	mv	t5,a5
-.L655:
+.L509:
 	sub	t6,a3,a5
 	andi	a7,t6,-4
 	add	a5,a0,a5
 	add	a2,a7,a5
-.L657:
+.L511:
 	sw	zero,0(a5)
 	addi	a5,a5,4
-	bne	a2,a5,.L657
+	bne	a2,a5,.L511
 	add	a5,a7,t5
-	beq	a7,t6,.L658
-.L654:
+	beq	a7,t6,.L512
+.L508:
 	add	a2,a0,a5
 	sb	zero,0(a2)
 	addi	a2,a5,1
-	bleu	a3,a2,.L658
+	bleu	a3,a2,.L512
 	add	a2,a0,a2
 	sb	zero,0(a2)
 	addi	a2,a5,2
-	bleu	a3,a2,.L658
+	bleu	a3,a2,.L512
 	add	a2,a0,a2
 	sb	zero,0(a2)
 	addi	a2,a5,3
-	bleu	a3,a2,.L658
+	bleu	a3,a2,.L512
 	add	a2,a0,a2
 	sb	zero,0(a2)
 	addi	a2,a5,4
-	bleu	a3,a2,.L658
+	bleu	a3,a2,.L512
 	add	a2,a0,a2
 	sb	zero,0(a2)
 	addi	a5,a5,5
-	bleu	a3,a5,.L658
+	bleu	a3,a5,.L512
 	add	a5,a0,a5
 	sb	zero,0(a5)
-.L658:
+.L512:
 	lui	a5,%hi(WD)
 	lbu	a5,%lo(WD)(a5)
-.L651:
+.L505:
 	addi	a3,a5,1
 	mul	a2,a3,a5
 	lui	a5,%hi(framebase)
@@ -2926,88 +2402,88 @@ initframe:
 	srai	a2,a2,1
 	addi	a2,a2,7
 	srai	a2,a2,3
-	beq	a2,zero,.L824
+	beq	a2,zero,.L678
 	add	t5,a1,a2
 	andi	t6,t5,3
 	add	a6,a6,a2
-	bne	t6,zero,.L934
-.L660:
-	bgtu	t5,t4,.L824
-.L941:
+	bne	t6,zero,.L788
+.L514:
+	bgtu	t5,t4,.L678
+.L795:
 	sw	t5,%lo(heap_ptr)(t1)
-	beq	a1,zero,.L659
+	beq	a1,zero,.L513
 	addi	a3,a2,-1
 	li	a0,5
-	bleu	a3,a0,.L825
+	bleu	a3,a0,.L679
 	neg	a0,a1
 	andi	a3,a0,3
 	li	a7,0
-	beq	a3,zero,.L662
+	beq	a3,zero,.L516
 	sb	zero,0(a1)
 	andi	a0,a0,2
 	li	a7,1
-	beq	a0,zero,.L662
+	beq	a0,zero,.L516
 	sb	zero,1(a1)
 	li	a0,3
 	li	a7,2
-	bne	a3,a0,.L662
+	bne	a3,a0,.L516
 	sb	zero,2(a1)
 	mv	a7,a3
-.L662:
+.L516:
 	sub	t0,a2,a3
 	andi	t6,t0,-4
 	add	a3,a1,a3
 	add	a0,t6,a3
-.L664:
+.L518:
 	sw	zero,0(a3)
 	addi	a3,a3,4
-	bne	a0,a3,.L664
+	bne	a0,a3,.L518
 	add	a3,a7,t6
-	beq	t0,t6,.L665
-.L661:
+	beq	t0,t6,.L519
+.L515:
 	add	a0,a1,a3
 	sb	zero,0(a0)
 	addi	a0,a3,1
-	bleu	a2,a0,.L665
+	bleu	a2,a0,.L519
 	add	a0,a1,a0
 	sb	zero,0(a0)
 	addi	a0,a3,2
-	bleu	a2,a0,.L665
+	bleu	a2,a0,.L519
 	add	a0,a1,a0
 	sb	zero,0(a0)
 	addi	a0,a3,3
-	bleu	a2,a0,.L665
+	bleu	a2,a0,.L519
 	add	a0,a1,a0
 	sb	zero,0(a0)
 	addi	a0,a3,4
-	bleu	a2,a0,.L665
+	bleu	a2,a0,.L519
 	add	a0,a1,a0
 	sb	zero,0(a0)
 	addi	a3,a3,5
-	bleu	a2,a3,.L665
+	bleu	a2,a3,.L519
 	add	a3,a1,a3
 	sb	zero,0(a3)
-.L665:
+.L519:
 	lui	a3,%hi(WD)
 	lbu	a3,%lo(WD)(a3)
 	lw	a0,%lo(framebase)(a5)
 	addi	a3,a3,1
-.L659:
+.L513:
 	add	a2,t5,a3
 	andi	a7,a2,3
 	add	a3,a3,a6
-	beq	a7,zero,.L666
+	beq	a7,zero,.L520
 	li	a6,4
 	sub	a6,a6,a7
 	add	a2,a2,a6
 	add	a3,a3,a6
-.L666:
+.L520:
 	lui	a7,%hi(framask)
 	sw	a3,%lo(heap_requested)(t3)
 	sw	a1,%lo(framask)(a7)
-	bgtu	a2,t4,.L829
+	bgtu	a2,t4,.L683
 	sw	a2,%lo(heap_ptr)(t1)
-.L667:
+.L521:
 	lui	a3,%hi(rlens)
 	sw	t5,%lo(rlens)(a3)
 	li	t4,2
@@ -3027,7 +2503,7 @@ initframe:
 	li	a6,0
 	li	t6,0
 	li	a3,128
-.L668:
+.L522:
 	lbu	s10,%lo(WDB)(a4)
 	addi	s9,a6,1
 	addi	s8,a6,2
@@ -3208,10 +2684,10 @@ initframe:
 	lbu	a6,0(a0)
 	ori	a6,a6,2
 	sb	a6,0(a0)
-	beq	a2,zero,.L830
+	beq	a2,zero,.L684
 	mv	a6,a2
 	li	a0,1
-.L669:
+.L523:
 	addi	t1,a6,1
 	mul	a6,a6,t1
 	lw	s1,%lo(framask)(a7)
@@ -3225,7 +2701,7 @@ initframe:
 	sra	a0,a3,a0
 	or	a0,a0,s1
 	sb	a0,0(a6)
-	beq	t1,zero,.L670
+	beq	t1,zero,.L524
 	addi	a0,t1,1
 	mul	a0,a0,t1
 	lw	s3,%lo(framask)(a7)
@@ -3242,8 +2718,8 @@ initframe:
 	sra	a0,a3,a0
 	or	a0,a0,s6
 	sb	a0,0(s3)
-	bgtu	a6,s1,.L935
-.L671:
+	bgtu	a6,s1,.L789
+.L525:
 	addi	a0,t1,1
 	mul	a0,a0,t1
 	lw	t1,%lo(framask)(a7)
@@ -3256,10 +2732,10 @@ initframe:
 	sra	a0,a3,a0
 	or	a0,a0,t1
 	sb	a0,0(a6)
-	bleu	t2,s2,.L832
+	bleu	t2,s2,.L686
 	mv	t1,a1
 	li	a0,2
-.L672:
+.L526:
 	addi	a6,t1,1
 	mul	a6,a6,t1
 	lw	t1,%lo(framask)(a7)
@@ -3272,10 +2748,10 @@ initframe:
 	sra	a0,a3,a0
 	or	a0,a0,t1
 	sb	a0,0(a6)
-	bleu	a2,s2,.L833
+	bleu	a2,s2,.L687
 	mv	a6,a2
 	li	a0,2
-.L673:
+.L527:
 	addi	t1,a6,1
 	mul	a6,a6,t1
 	lw	s1,%lo(framask)(a7)
@@ -3289,7 +2765,7 @@ initframe:
 	sra	a0,a3,a0
 	or	a0,a0,s1
 	sb	a0,0(a6)
-	beq	t1,zero,.L674
+	beq	t1,zero,.L528
 	addi	a0,t1,1
 	mul	a0,a0,t1
 	lw	t1,%lo(framask)(a7)
@@ -3305,8 +2781,8 @@ initframe:
 	sra	a0,a3,a0
 	or	a0,a0,s3
 	sb	a0,0(t1)
-	bgtu	s11,s1,.L936
-.L675:
+	bgtu	s11,s1,.L790
+.L529:
 	addi	a0,a6,1
 	mul	a0,a0,a6
 	lw	a6,%lo(framask)(a7)
@@ -3319,10 +2795,10 @@ initframe:
 	sra	a0,a3,a0
 	or	a0,a0,t1
 	sb	a0,0(a6)
-	bleu	t2,s5,.L835
+	bleu	t2,s5,.L689
 	mv	t1,a1
 	li	a0,3
-.L676:
+.L530:
 	addi	a6,t1,1
 	mul	a6,a6,t1
 	lw	t1,%lo(framask)(a7)
@@ -3335,10 +2811,10 @@ initframe:
 	sra	a0,a3,a0
 	or	a0,a0,t1
 	sb	a0,0(a6)
-	bleu	a2,s5,.L836
+	bleu	a2,s5,.L690
 	mv	a6,a2
 	li	a0,3
-.L677:
+.L531:
 	addi	t1,a6,1
 	mul	a6,a6,t1
 	lw	s1,%lo(framask)(a7)
@@ -3352,7 +2828,7 @@ initframe:
 	sra	a0,a3,a0
 	or	a0,a0,s1
 	sb	a0,0(a6)
-	beq	t1,zero,.L678
+	beq	t1,zero,.L532
 	addi	a0,t1,1
 	mul	a0,a0,t1
 	lw	s1,%lo(framask)(a7)
@@ -3368,8 +2844,8 @@ initframe:
 	sra	a0,a3,a0
 	or	a0,a0,s6
 	sb	a0,0(s1)
-	bgtu	t1,s3,.L937
-.L679:
+	bgtu	t1,s3,.L791
+.L533:
 	addi	a0,a6,1
 	mul	a0,a0,a6
 	lw	a6,%lo(framask)(a7)
@@ -3382,10 +2858,10 @@ initframe:
 	sra	a0,a3,a0
 	or	a0,a0,t1
 	sb	a0,0(a6)
-	bleu	t2,s4,.L838
+	bleu	t2,s4,.L692
 	mv	t1,a1
 	li	a0,4
-.L680:
+.L534:
 	addi	a6,t1,1
 	mul	a6,a6,t1
 	lw	t1,%lo(framask)(a7)
@@ -3399,10 +2875,10 @@ initframe:
 	sra	a0,a3,a0
 	or	a0,a0,t1
 	sb	a0,0(a6)
-	bleu	a2,s4,.L681
+	bleu	a2,s4,.L535
 	mv	s1,a2
 	li	a2,4
-.L681:
+.L535:
 	addi	a0,s1,1
 	mul	a0,a0,s1
 	lw	a6,%lo(framask)(a7)
@@ -3417,7 +2893,7 @@ initframe:
 	sra	a2,a3,a2
 	or	a2,a2,a6
 	sb	a2,0(a0)
-	beq	t1,zero,.L682
+	beq	t1,zero,.L536
 	addi	a2,t1,1
 	mul	a2,a2,t1
 	lw	a6,%lo(framask)(a7)
@@ -3433,8 +2909,8 @@ initframe:
 	sra	a2,a3,a2
 	or	a2,a2,t6
 	sb	a2,0(a6)
-	bgtu	s0,t1,.L938
-.L683:
+	bgtu	s0,t1,.L792
+.L537:
 	addi	a2,a0,1
 	mul	a2,a2,a0
 	lw	a0,%lo(framask)(a7)
@@ -3449,10 +2925,10 @@ initframe:
 	or	a2,a2,t1
 	sb	a2,0(a0)
 	li	a2,4
-	bleu	t2,a2,.L684
+	bleu	t2,a2,.L538
 	mv	a6,a1
 	li	a1,5
-.L684:
+.L538:
 	addi	a2,a6,1
 	mul	a2,a2,a6
 	lw	a0,%lo(framask)(a7)
@@ -3522,7 +2998,7 @@ initframe:
 	ori	a1,a1,8
 	sb	a1,0(a2)
 	lw	a0,%lo(framebase)(a5)
-	beq	t0,s2,.L939
+	beq	t0,s2,.L793
 	lui	a2,%hi(WD)
 	lbu	a2,%lo(WD)(a2)
 	li	t0,1
@@ -3541,19 +3017,19 @@ initframe:
 	addi	t1,t6,6
 	andi	a2,a2,0xff
 	mv	a1,t2
-	j	.L668
-.L830:
+	j	.L522
+.L684:
 	li	a0,0
 	li	a6,1
-	j	.L669
-.L933:
+	j	.L523
+.L787:
 	li	a2,4
 	sub	a2,a2,a7
 	add	a6,a6,a2
 	add	a1,a1,a2
 	sw	a6,%lo(heap_requested)(t3)
-	bleu	a1,t4,.L940
-.L653:
+	bleu	a1,t4,.L794
+.L507:
 	addi	a3,a5,1
 	mul	a2,a5,a3
 	mv	a1,a0
@@ -3566,18 +3042,18 @@ initframe:
 	add	t5,a1,a2
 	andi	t6,t5,3
 	add	a6,a6,a2
-	beq	t6,zero,.L660
-.L934:
+	beq	t6,zero,.L514
+.L788:
 	li	a7,4
 	sub	a7,a7,t6
 	add	t5,t5,a7
 	add	a6,a6,a7
-	bleu	t5,t4,.L941
-.L824:
+	bleu	t5,t4,.L795
+.L678:
 	mv	t5,a1
 	li	a1,0
-	j	.L659
-.L939:
+	j	.L513
+.L793:
 	lui	a2,%hi(WD)
 	lbu	t1,%lo(WD)(a2)
 	lbu	t3,%lo(WDB)(a4)
@@ -3831,7 +3307,7 @@ initframe:
 	lbu	a2,0(s10)
 	or	a1,a1,a2
 	sb	a1,0(s10)
-	bleu	a0,t0,.L942
+	bleu	a0,t0,.L796
 	addi	a2,a0,1
 	mul	a2,a2,a0
 	lw	s10,%lo(framask)(a7)
@@ -3845,7 +3321,7 @@ initframe:
 	sra	a1,a3,a1
 	or	a1,a1,s10
 	sb	a1,0(a6)
-	beq	a0,t2,.L687
+	beq	a0,t2,.L541
 	lw	a1,%lo(framask)(a7)
 	add	a2,a2,t2
 	srli	a6,a2,3
@@ -3855,14 +3331,14 @@ initframe:
 	sra	a2,a3,a2
 	or	a2,a2,a6
 	sb	a2,0(a1)
-	bgtu	t1,t0,.L814
+	bgtu	t1,t0,.L668
 	lw	a1,%lo(framask)(a7)
 	addi	a2,t1,1
 	sra	a3,a3,a2
 	lbu	a6,0(a1)
 	or	a3,a3,a6
 	sb	a3,0(a1)
-.L689:
+.L543:
 	addi	a1,t6,1
 	mul	a1,a1,t6
 	lw	t2,%lo(framask)(a7)
@@ -3876,11 +3352,11 @@ initframe:
 	lbu	a1,0(a6)
 	or	a3,a3,a1
 	sb	a3,0(a6)
-.L813:
+.L667:
 	mv	a3,t6
 	mv	t6,t0
 	mv	t0,a3
-.L690:
+.L544:
 	addi	a3,t0,1
 	mul	a3,t0,a3
 	lw	t0,%lo(framask)(a7)
@@ -3895,7 +3371,7 @@ initframe:
 	sra	a3,a1,a3
 	or	a3,a3,t0
 	sb	a3,0(t6)
-	bleu	a0,a6,.L691
+	bleu	a0,a6,.L545
 	addi	a3,a0,1
 	mul	a3,a3,a0
 	lw	t6,%lo(framask)(a7)
@@ -3910,8 +3386,8 @@ initframe:
 	lbu	a1,0(t6)
 	or	a3,a3,a1
 	sb	a3,0(t6)
-	bgtu	t1,a6,.L812
-.L692:
+	bgtu	t1,a6,.L666
+.L546:
 	addi	a3,a6,1
 	mul	a3,a3,a6
 	lw	a6,%lo(framask)(a7)
@@ -3926,7 +3402,7 @@ initframe:
 	sra	a3,a1,a3
 	or	a3,a3,t0
 	sb	a3,0(a6)
-	bgtu	s0,t6,.L693
+	bgtu	s0,t6,.L547
 	lw	a6,%lo(framask)(a7)
 	addi	a3,s0,15
 	srli	t6,a3,3
@@ -3937,13 +3413,13 @@ initframe:
 	or	a3,a3,t6
 	sb	a3,0(a6)
 	li	a3,1
-	bgtu	s0,a3,.L943
+	bgtu	s0,a3,.L797
 	sra	a3,a1,s9
 	lw	a1,%lo(framask)(a7)
 	lbu	a6,0(a1)
 	or	a3,a3,a6
 	sb	a3,0(a1)
-.L810:
+.L664:
 	addi	a3,a0,1
 	mul	a3,a3,a0
 	lw	t0,%lo(framask)(a7)
@@ -3959,8 +3435,8 @@ initframe:
 	lbu	a6,0(t0)
 	or	a3,a3,a6
 	sb	a3,0(t0)
-	bgtu	t1,a1,.L809
-.L696:
+	bgtu	t1,a1,.L663
+.L550:
 	addi	a3,a1,1
 	mul	a3,a3,a1
 	lw	t0,%lo(framask)(a7)
@@ -3975,7 +3451,7 @@ initframe:
 	sra	a3,a1,a3
 	or	a3,a3,t0
 	sb	a3,0(t6)
-	bgtu	s1,a6,.L697
+	bgtu	s1,a6,.L551
 	lw	a6,%lo(framask)(a7)
 	addi	a3,s1,15
 	srli	t6,a3,3
@@ -3986,16 +3462,16 @@ initframe:
 	or	a3,a3,t6
 	sb	a3,0(a6)
 	li	a3,1
-	bgtu	s1,a3,.L944
+	bgtu	s1,a3,.L798
 	sra	a3,a1,s11
 	lw	a1,%lo(framask)(a7)
 	lbu	a6,0(a1)
 	or	a3,a3,a6
 	sb	a3,0(a1)
-.L807:
+.L661:
 	mv	a6,a0
 	li	s5,5
-.L699:
+.L553:
 	addi	a3,a6,1
 	mul	a3,a3,a6
 	lw	a0,%lo(framask)(a7)
@@ -4010,7 +3486,7 @@ initframe:
 	sra	a3,a1,a3
 	or	a3,a3,t6
 	sb	a3,0(a0)
-	bleu	t1,a6,.L700
+	bleu	t1,a6,.L554
 	mul	a3,a2,t1
 	lw	a2,%lo(framask)(a7)
 	li	a0,5
@@ -4023,8 +3499,8 @@ initframe:
 	lbu	a1,0(a2)
 	or	a3,a3,a1
 	sb	a3,0(a2)
-	beq	t1,a0,.L945
-.L701:
+	beq	t1,a0,.L799
+.L555:
 	addi	a3,s8,1
 	mul	a3,a3,s8
 	lw	a6,%lo(framask)(a7)
@@ -4107,7 +3583,7 @@ initframe:
 	sb	a0,0(a3)
 	lui	a3,%hi(VERSION)
 	lbu	a0,%lo(VERSION)(a3)
-	bleu	a0,a1,.L702
+	bleu	a0,a1,.L556
 	lui	a1,%hi(WD)
 	lui	a3,%hi(.LANCHOR0)
 	lbu	t1,%lo(WD)(a1)
@@ -4128,10 +3604,10 @@ initframe:
 	sw	a1,0(sp)
 	andi	t5,a3,0xff
 	sw	s11,12(sp)
-.L735:
+.L589:
 	lw	a1,0(sp)
 	andi	a3,a3,0xff
-	bleu	a3,a1,.L716
+	bleu	a3,a1,.L570
 	addi	t3,t1,-8
 	addi	t1,t1,-6
 	andi	t3,t3,0xff
@@ -4142,11 +3618,11 @@ initframe:
 	addi	s7,t5,1
 	sw	s1,4(sp)
 	sw	s2,8(sp)
-	j	.L717
-.L946:
+	j	.L571
+.L800:
 	mv	a0,t5
 	mv	a1,t3
-.L708:
+.L562:
 	addi	a6,a0,1
 	mul	a0,a0,a6
 	lw	a6,%lo(framask)(a7)
@@ -4159,10 +3635,10 @@ initframe:
 	sra	a1,a2,a1
 	or	a1,a1,a6
 	sb	a1,0(a0)
-	bltu	t5,t1,.L848
+	bltu	t5,t1,.L702
 	mv	a0,t5
 	mv	a1,t1
-.L709:
+.L563:
 	addi	a6,a0,1
 	mul	a0,a0,a6
 	lw	a6,%lo(framask)(a7)
@@ -4175,10 +3651,10 @@ initframe:
 	sra	a1,a2,a1
 	or	a1,a1,a6
 	sb	a1,0(a0)
-	bgtu	a3,t2,.L849
+	bgtu	a3,t2,.L703
 	mv	a0,t2
 	mv	a1,a3
-.L710:
+.L564:
 	addi	a6,a0,1
 	mul	a0,a0,a6
 	lw	a6,%lo(framask)(a7)
@@ -4191,10 +3667,10 @@ initframe:
 	sra	a1,a2,a1
 	or	a1,a1,a6
 	sb	a1,0(a0)
-	bgtu	a3,s0,.L850
+	bgtu	a3,s0,.L704
 	mv	a0,s0
 	mv	a1,a3
-.L711:
+.L565:
 	addi	a6,a0,1
 	mul	a0,a0,a6
 	lw	a6,%lo(framask)(a7)
@@ -4207,10 +3683,10 @@ initframe:
 	sra	a1,a2,a1
 	or	a1,a1,a6
 	sb	a1,0(a0)
-	bltu	s0,t3,.L851
+	bltu	s0,t3,.L705
 	mv	a0,s0
 	mv	a1,t3
-.L712:
+.L566:
 	addi	a6,a0,1
 	mul	a0,a0,a6
 	lw	a6,%lo(framask)(a7)
@@ -4223,10 +3699,10 @@ initframe:
 	sra	a1,a2,a1
 	or	a1,a1,a6
 	sb	a1,0(a0)
-	bltu	t2,t1,.L852
+	bltu	t2,t1,.L706
 	mv	a0,t2
 	mv	a1,t1
-.L713:
+.L567:
 	addi	a6,a0,1
 	mul	a0,a0,a6
 	lw	a6,%lo(framask)(a7)
@@ -4239,10 +3715,10 @@ initframe:
 	sra	a1,a2,a1
 	or	a1,a1,a6
 	sb	a1,0(a0)
-	bltu	t2,t3,.L853
+	bltu	t2,t3,.L707
 	mv	a0,t2
 	mv	a1,t3
-.L714:
+.L568:
 	addi	a6,a0,1
 	mul	a0,a0,a6
 	lw	a6,%lo(framask)(a7)
@@ -4255,10 +3731,10 @@ initframe:
 	sra	a1,a2,a1
 	or	a1,a1,a6
 	sb	a1,0(a0)
-	bltu	s0,t1,.L854
+	bltu	s0,t1,.L708
 	mv	a0,s0
 	mv	a1,t1
-.L715:
+.L569:
 	addi	a6,a0,1
 	mul	a0,a0,a6
 	lw	a6,%lo(framask)(a7)
@@ -4271,7 +3747,7 @@ initframe:
 	sra	a1,a2,a1
 	or	a1,a1,a6
 	sb	a1,0(a0)
-	bgtu	s6,a3,.L930
+	bgtu	s6,a3,.L784
 	lw	a1,0(sp)
 	sub	a3,a3,s6
 	sub	t3,t3,s6
@@ -4279,8 +3755,8 @@ initframe:
 	andi	a3,a3,0xff
 	andi	t3,t3,0xff
 	andi	t1,t1,0xff
-	bleu	a3,a1,.L930
-.L717:
+	bleu	a3,a1,.L784
+.L571:
 	lbu	a6,%lo(WDB)(a4)
 	lw	t4,%lo(framebase)(a5)
 	srai	s3,a3,3
@@ -4436,44 +3912,44 @@ initframe:
 	lbu	a6,0(a0)
 	or	a1,a1,a6
 	sb	a1,0(a0)
-	bgeu	t5,t3,.L946
+	bgeu	t5,t3,.L800
 	mv	a0,t3
 	mv	a1,t5
-	j	.L708
-.L854:
+	j	.L562
+.L708:
 	mv	a0,t1
 	mv	a1,s0
-	j	.L715
-.L853:
+	j	.L569
+.L707:
 	mv	a0,t3
 	mv	a1,t2
-	j	.L714
-.L852:
+	j	.L568
+.L706:
 	mv	a0,t1
 	mv	a1,t2
-	j	.L713
-.L851:
+	j	.L567
+.L705:
 	mv	a0,t3
 	mv	a1,s0
-	j	.L712
-.L850:
+	j	.L566
+.L704:
 	mv	a0,a3
 	mv	a1,s0
-	j	.L711
-.L849:
+	j	.L565
+.L703:
 	mv	a0,a3
 	mv	a1,t2
-	j	.L710
-.L848:
+	j	.L564
+.L702:
 	mv	a0,t1
 	mv	a1,t5
-	j	.L709
-.L930:
+	j	.L563
+.L784:
 	lw	s1,4(sp)
 	lw	s2,8(sp)
-.L716:
+.L570:
 	lw	a3,12(sp)
-	bleu	t5,a3,.L702
+	bleu	t5,a3,.L556
 	lbu	a6,%lo(WDB)(a4)
 	sub	t5,t5,s6
 	andi	t5,t5,0xff
@@ -4602,7 +4078,7 @@ initframe:
 	sb	a6,1(a0)
 	li	a0,4
 	lw	a6,%lo(framask)(a7)
-	bleu	t5,a0,.L718
+	bleu	t5,a0,.L572
 	mul	a0,s7,t5
 	li	t3,7
 	srli	a0,a0,1
@@ -4615,8 +4091,8 @@ initframe:
 	or	t1,t1,t4
 	sb	t1,0(a6)
 	li	a6,6
-	bleu	t5,a6,.L806
-.L719:
+	bleu	t5,a6,.L660
+.L573:
 	lw	a6,%lo(framask)(a7)
 	add	a0,a0,t3
 	srli	t1,a0,3
@@ -4628,12 +4104,12 @@ initframe:
 	sb	a0,0(a6)
 	li	a0,5
 	mv	s5,s1
-	bleu	s1,a0,.L856
+	bleu	s1,a0,.L710
 	addi	a0,s1,1
 	mul	a0,a0,s1
 	li	a6,6
 	srli	a0,a0,1
-.L720:
+.L574:
 	add	a0,a0,a6
 	lw	a6,%lo(framask)(a7)
 	srli	t1,a0,3
@@ -4646,7 +4122,7 @@ initframe:
 	sb	a0,0(a6)
 	li	a0,5
 	lw	t1,%lo(framask)(a7)
-	bgtu	s2,a0,.L721
+	bgtu	s2,a0,.L575
 	addi	a0,s2,21
 	srli	a6,a0,3
 	add	a6,t1,a6
@@ -4657,7 +4133,7 @@ initframe:
 	sb	a0,0(a6)
 	mv	t3,s2
 	li	a0,15
-.L722:
+.L576:
 	lw	a6,%lo(framask)(a7)
 	add	a0,a0,t3
 	srli	t1,a0,3
@@ -4669,7 +4145,7 @@ initframe:
 	sb	a0,0(a6)
 	li	a0,6
 	lw	a6,%lo(framask)(a7)
-	bgtu	s1,a0,.L723
+	bgtu	s1,a0,.L577
 	addi	a0,s1,28
 	srli	t1,a0,3
 	add	a6,a6,t1
@@ -4680,7 +4156,7 @@ initframe:
 	sb	a0,0(a6)
 	li	a0,4
 	lw	a6,%lo(framask)(a7)
-	bgtu	s1,a0,.L947
+	bgtu	s1,a0,.L801
 	addi	a0,s1,15
 	srli	t1,a0,3
 	add	a6,a6,t1
@@ -4689,10 +4165,10 @@ initframe:
 	sra	a0,a2,a0
 	or	a0,a0,t1
 	sb	a0,0(a6)
-.L804:
+.L658:
 	mv	a6,s2
 	li	a0,28
-.L726:
+.L580:
 	add	a0,a0,a6
 	lw	a6,%lo(framask)(a7)
 	srli	t1,a0,3
@@ -4864,12 +4340,12 @@ initframe:
 	or	a3,a3,a0
 	sb	a3,0(a1)
 	li	a3,6
-	bleu	s1,a3,.L858
+	bleu	s1,a3,.L712
 	addi	a3,s1,1
 	mul	a3,a3,s1
 	li	a1,6
 	srli	a3,a3,1
-.L727:
+.L581:
 	add	a3,a3,a1
 	lw	a1,%lo(framask)(a7)
 	srli	a0,a3,3
@@ -4881,7 +4357,7 @@ initframe:
 	sb	a3,0(a1)
 	li	a3,6
 	lw	a1,%lo(framask)(a7)
-	bgtu	s2,a3,.L728
+	bgtu	s2,a3,.L582
 	addi	a3,s2,21
 	srli	a0,a3,3
 	add	a1,a1,a0
@@ -4892,7 +4368,7 @@ initframe:
 	sb	a3,0(a1)
 	li	a3,5
 	lw	a1,%lo(framask)(a7)
-	bgtu	t5,a3,.L803
+	bgtu	t5,a3,.L657
 	addi	a3,t5,15
 	srli	a0,a3,3
 	add	a1,a1,a0
@@ -4901,9 +4377,9 @@ initframe:
 	sra	a3,a2,a3
 	or	a3,a3,a0
 	sb	a3,0(a1)
-.L802:
+.L656:
 	li	s7,28
-.L730:
+.L584:
 	lw	a3,%lo(framask)(a7)
 	add	s7,s7,s4
 	srli	a1,s7,3
@@ -4914,12 +4390,12 @@ initframe:
 	or	s7,s7,a1
 	sb	s7,0(a3)
 	li	a3,7
-	bleu	s1,a3,.L860
+	bleu	s1,a3,.L714
 	addi	a3,s1,1
 	mul	a3,a3,s1
 	li	a1,7
 	srli	a3,a3,1
-.L731:
+.L585:
 	add	a3,a3,a1
 	lw	a1,%lo(framask)(a7)
 	srli	a0,a3,3
@@ -4930,12 +4406,12 @@ initframe:
 	or	a3,a3,a0
 	sb	a3,0(a1)
 	li	a3,5
-	bleu	s2,a3,.L861
+	bleu	s2,a3,.L715
 	addi	a3,s2,1
 	mul	a3,a3,s2
 	li	a1,5
 	srli	a3,a3,1
-.L732:
+.L586:
 	lw	a0,%lo(framask)(a7)
 	add	a3,a3,a1
 	srli	a6,a3,3
@@ -4947,12 +4423,12 @@ initframe:
 	sb	a1,0(a0)
 	li	a1,5
 	li	a3,15
-	bleu	s1,a1,.L733
+	bleu	s1,a1,.L587
 	addi	a3,s1,1
 	mul	a3,a3,s1
 	mv	s5,a1
 	srli	a3,a3,1
-.L733:
+.L587:
 	lw	a0,%lo(framask)(a7)
 	add	a3,a3,s5
 	srli	a6,a3,3
@@ -4964,12 +4440,12 @@ initframe:
 	sb	a1,0(a0)
 	li	a1,7
 	li	a3,28
-	bleu	s2,a1,.L734
+	bleu	s2,a1,.L588
 	addi	a3,s2,1
 	mul	a3,a3,s2
 	mv	s9,a1
 	srli	a3,a3,1
-.L734:
+.L588:
 	lw	a1,%lo(framask)(a7)
 	add	a3,a3,s9
 	srli	a0,a3,3
@@ -4990,12 +4466,12 @@ initframe:
 	andi	s0,s0,0xff
 	andi	t2,t2,0xff
 	addi	a3,t1,-7
-	j	.L735
-.L860:
+	j	.L589
+.L714:
 	mv	a1,s1
 	li	a3,28
-	j	.L731
-.L728:
+	j	.L585
+.L582:
 	addi	a3,s2,1
 	mul	a3,a3,s2
 	srli	a3,a3,1
@@ -5007,7 +4483,7 @@ initframe:
 	sra	a3,a2,a3
 	or	a3,a3,a0
 	sb	a3,0(a1)
-.L803:
+.L657:
 	mul	s7,s7,t5
 	lw	a1,%lo(framask)(a7)
 	srli	s7,s7,1
@@ -5020,18 +4496,18 @@ initframe:
 	or	a3,a3,a0
 	sb	a3,0(a1)
 	li	a3,7
-	bleu	t5,a3,.L802
+	bleu	t5,a3,.L656
 	li	s4,7
-	j	.L730
-.L858:
+	j	.L584
+.L712:
 	mv	a1,s1
 	li	a3,21
-	j	.L727
-.L861:
+	j	.L581
+.L715:
 	mv	a1,s2
 	li	a3,15
-	j	.L732
-.L718:
+	j	.L586
+.L572:
 	addi	a0,t5,15
 	srli	t1,a0,3
 	add	a6,a6,t1
@@ -5040,11 +4516,11 @@ initframe:
 	sra	a0,a2,a0
 	or	a0,a0,t1
 	sb	a0,0(a6)
-.L806:
+.L660:
 	mv	t3,t5
 	li	a0,28
-	j	.L719
-.L723:
+	j	.L573
+.L577:
 	addi	a0,s1,1
 	mul	a0,a0,s1
 	srli	a0,a0,1
@@ -5056,7 +4532,7 @@ initframe:
 	sra	t1,a2,t1
 	or	t1,t1,t3
 	sb	t1,0(a6)
-.L805:
+.L659:
 	lw	a6,%lo(framask)(a7)
 	addi	a0,a0,5
 	srli	t1,a0,3
@@ -5067,17 +4543,17 @@ initframe:
 	or	a0,a0,t1
 	sb	a0,0(a6)
 	li	a0,6
-	bleu	s2,a0,.L804
+	bleu	s2,a0,.L658
 	addi	a0,s2,1
 	mul	a0,a0,s2
 	li	a6,7
 	srli	a0,a0,1
-	j	.L726
-.L856:
+	j	.L580
+.L710:
 	mv	a6,s1
 	li	a0,21
-	j	.L720
-.L721:
+	j	.L574
+.L575:
 	addi	a0,s2,1
 	mul	a0,a0,s2
 	li	t3,5
@@ -5090,8 +4566,8 @@ initframe:
 	sra	a6,a2,a6
 	or	a6,a6,t4
 	sb	a6,0(t1)
-	j	.L722
-.L702:
+	j	.L576
+.L556:
 	lui	t3,%hi(WD)
 	lbu	a3,%lo(WD)(t3)
 	lbu	a1,%lo(WDB)(a4)
@@ -5126,12 +4602,12 @@ initframe:
 	lbu	a3,%lo(WD)(t3)
 	addi	a3,a3,-7
 	andi	a3,a3,0xff
-	bleu	a3,a0,.L736
+	bleu	a3,a0,.L590
 	addi	a1,a3,1
 	mul	a1,a1,a3
 	li	a3,7
 	srli	a1,a1,1
-.L736:
+.L590:
 	add	a3,a3,a1
 	lw	a1,%lo(framask)(a7)
 	srli	a2,a3,3
@@ -5152,10 +4628,10 @@ initframe:
 	sb	a3,3(a1)
 	andi	a2,a2,0xff
 	mv	a3,a0
-	bgtu	a2,a0,.L737
+	bgtu	a2,a0,.L591
 	mv	a0,a2
 	mv	a2,a3
-.L737:
+.L591:
 	addi	a3,a2,1
 	mul	a3,a3,a2
 	lw	a1,%lo(framask)(a7)
@@ -5175,12 +4651,12 @@ initframe:
 	lbu	a3,%lo(WD)(a3)
 	addi	a3,a3,-6
 	andi	a3,a3,0xff
-	bleu	a3,t1,.L738
+	bleu	a3,t1,.L592
 	addi	a6,a3,1
 	mul	a6,a6,a3
 	li	a3,7
 	srli	a6,a6,1
-.L738:
+.L592:
 	lw	a1,%lo(framask)(a7)
 	add	a3,a3,a6
 	srli	a2,a3,3
@@ -5201,10 +4677,10 @@ initframe:
 	sb	a3,3(a1)
 	andi	a2,a2,0xff
 	mv	a3,a0
-	bgtu	a2,a0,.L739
+	bgtu	a2,a0,.L593
 	mv	a0,a2
 	mv	a2,a3
-.L739:
+.L593:
 	addi	a3,a2,1
 	mul	a3,a3,a2
 	lw	a1,%lo(framask)(a7)
@@ -5224,12 +4700,12 @@ initframe:
 	lbu	a3,%lo(WD)(a3)
 	addi	a3,a3,-5
 	andi	a3,a3,0xff
-	bleu	a3,t1,.L740
+	bleu	a3,t1,.L594
 	addi	a6,a3,1
 	mul	a6,a6,a3
 	li	a3,7
 	srli	a6,a6,1
-.L740:
+.L594:
 	lw	a1,%lo(framask)(a7)
 	add	a3,a3,a6
 	srli	a2,a3,3
@@ -5250,10 +4726,10 @@ initframe:
 	sb	a3,3(a1)
 	andi	a2,a2,0xff
 	mv	a3,a0
-	bgtu	a2,a0,.L741
+	bgtu	a2,a0,.L595
 	mv	a0,a2
 	mv	a2,a3
-.L741:
+.L595:
 	addi	a3,a2,1
 	mul	a3,a3,a2
 	lw	a1,%lo(framask)(a7)
@@ -5273,12 +4749,12 @@ initframe:
 	lbu	a3,%lo(WD)(a3)
 	addi	a3,a3,-4
 	andi	a3,a3,0xff
-	bleu	a3,t1,.L742
+	bleu	a3,t1,.L596
 	addi	a6,a3,1
 	mul	a6,a6,a3
 	li	a3,7
 	srli	a6,a6,1
-.L742:
+.L596:
 	lw	a1,%lo(framask)(a7)
 	add	a3,a3,a6
 	srli	a2,a3,3
@@ -5299,10 +4775,10 @@ initframe:
 	sb	a3,4(a1)
 	andi	a2,a2,0xff
 	mv	a3,a0
-	bgtu	a2,a0,.L743
+	bgtu	a2,a0,.L597
 	mv	a0,a2
 	mv	a2,a3
-.L743:
+.L597:
 	addi	a3,a2,1
 	mul	a3,a3,a2
 	li	a2,128
@@ -5321,12 +4797,12 @@ initframe:
 	lbu	a3,%lo(WD)(a3)
 	addi	a3,a3,-3
 	andi	a3,a3,0xff
-	bleu	a3,t1,.L744
+	bleu	a3,t1,.L598
 	addi	a6,a3,1
 	mul	a6,a6,a3
 	li	a3,7
 	srli	a6,a6,1
-.L744:
+.L598:
 	lw	a1,%lo(framask)(a7)
 	add	a3,a3,a6
 	srli	a2,a3,3
@@ -5347,10 +4823,10 @@ initframe:
 	sb	a3,4(a1)
 	andi	a2,a2,0xff
 	mv	a3,a0
-	bgtu	a2,a0,.L745
+	bgtu	a2,a0,.L599
 	mv	a0,a2
 	mv	a2,a3
-.L745:
+.L599:
 	addi	a3,a2,1
 	mul	a3,a3,a2
 	li	a2,128
@@ -5369,12 +4845,12 @@ initframe:
 	lbu	a3,%lo(WD)(a3)
 	addi	a3,a3,-2
 	andi	a3,a3,0xff
-	bleu	a3,t1,.L746
+	bleu	a3,t1,.L600
 	addi	a6,a3,1
 	mul	a6,a6,a3
 	li	a3,7
 	srli	a6,a6,1
-.L746:
+.L600:
 	lw	a1,%lo(framask)(a7)
 	add	a3,a3,a6
 	srli	a2,a3,3
@@ -5395,10 +4871,10 @@ initframe:
 	sb	a3,4(a1)
 	andi	a2,a2,0xff
 	mv	a3,a0
-	bgtu	a2,a0,.L747
+	bgtu	a2,a0,.L601
 	mv	a0,a2
 	mv	a2,a3
-.L747:
+.L601:
 	addi	a3,a2,1
 	mul	a3,a3,a2
 	li	a2,128
@@ -5417,12 +4893,12 @@ initframe:
 	lbu	a3,%lo(WD)(a3)
 	addi	a3,a3,-1
 	andi	a3,a3,0xff
-	bleu	a3,t1,.L748
+	bleu	a3,t1,.L602
 	addi	a6,a3,1
 	mul	a6,a6,a3
 	li	a3,7
 	srli	a6,a6,1
-.L748:
+.L602:
 	lw	a2,%lo(framask)(a7)
 	add	a3,a3,a6
 	srli	a1,a3,3
@@ -5436,7 +4912,7 @@ initframe:
 	li	a6,7
 	li	a2,0
 	li	a0,8
-.L751:
+.L605:
 	lw	t1,%lo(framask)(a7)
 	addi	a3,a2,28
 	srli	t3,a3,3
@@ -5455,11 +4931,11 @@ initframe:
 	andi	a3,a3,0xff
 	li	t3,28
 	addi	t4,a3,1
-	bleu	a3,a6,.L749
+	bleu	a3,a6,.L603
 	mul	t4,t4,a3
 	li	a3,7
 	srli	t3,t4,1
-.L749:
+.L603:
 	add	a3,a3,t3
 	srli	t3,a3,3
 	add	t1,t1,t3
@@ -5474,10 +4950,10 @@ initframe:
 	mv	t4,a2
 	addi	t1,t1,-8
 	andi	t1,t1,0xff
-	bltu	t1,t5,.L750
+	bltu	t1,t5,.L604
 	mv	t4,t1
 	mv	t1,a2
-.L750:
+.L604:
 	addi	a3,t4,1
 	mul	a3,a3,t4
 	addi	a2,a2,1
@@ -5490,7 +4966,7 @@ initframe:
 	sra	a3,a1,a3
 	or	a3,a3,t3
 	sb	a3,0(t1)
-	bne	a2,a0,.L751
+	bne	a2,a0,.L605
 	lw	a1,%lo(framask)(a7)
 	lui	a3,%hi(WD)
 	lbu	a3,%lo(WD)(a3)
@@ -5503,12 +4979,12 @@ initframe:
 	sb	a6,5(a1)
 	andi	a3,a3,0xff
 	li	a0,36
-	bleu	a3,a2,.L752
+	bleu	a3,a2,.L606
 	addi	a0,a3,1
 	mul	a0,a0,a3
 	mv	a3,a2
 	srli	a0,a0,1
-.L752:
+.L606:
 	add	a3,a3,a0
 	srli	a0,a3,3
 	add	a1,a1,a0
@@ -5528,12 +5004,12 @@ initframe:
 	sb	a3,4(a0)
 	andi	a1,a1,0xff
 	li	a3,36
-	bleu	a1,a6,.L753
+	bleu	a1,a6,.L607
 	addi	a3,a1,1
 	mul	a3,a3,a1
 	mv	a1,a2
 	srli	a3,a3,1
-.L753:
+.L607:
 	add	a3,a3,a1
 	srli	a1,a3,3
 	add	a0,a0,a1
@@ -5553,12 +5029,12 @@ initframe:
 	sb	a3,4(a0)
 	andi	a1,a1,0xff
 	li	a3,36
-	bleu	a1,a6,.L754
+	bleu	a1,a6,.L608
 	addi	a3,a1,1
 	mul	a3,a3,a1
 	mv	a1,a2
 	srli	a3,a3,1
-.L754:
+.L608:
 	add	a3,a3,a1
 	srli	a1,a3,3
 	add	a0,a0,a1
@@ -5578,12 +5054,12 @@ initframe:
 	sb	a3,4(a0)
 	andi	a1,a1,0xff
 	li	a3,36
-	bleu	a1,a6,.L755
+	bleu	a1,a6,.L609
 	addi	a3,a1,1
 	mul	a3,a3,a1
 	mv	a1,a2
 	srli	a3,a3,1
-.L755:
+.L609:
 	add	a3,a3,a1
 	srli	a1,a3,3
 	add	a0,a0,a1
@@ -5603,12 +5079,12 @@ initframe:
 	sb	a3,4(a0)
 	andi	a1,a1,0xff
 	li	a3,36
-	bleu	a1,a6,.L756
+	bleu	a1,a6,.L610
 	addi	a3,a1,1
 	mul	a3,a3,a1
 	mv	a1,a2
 	srli	a3,a3,1
-.L756:
+.L610:
 	add	a3,a3,a1
 	srli	a1,a3,3
 	add	a0,a0,a1
@@ -5628,12 +5104,12 @@ initframe:
 	sb	a3,5(a0)
 	andi	a1,a1,0xff
 	li	a3,36
-	bleu	a1,a6,.L757
+	bleu	a1,a6,.L611
 	addi	a3,a1,1
 	mul	a3,a3,a1
 	mv	a1,a2
 	srli	a3,a3,1
-.L757:
+.L611:
 	add	a3,a3,a1
 	srli	a1,a3,3
 	add	a0,a0,a1
@@ -5653,12 +5129,12 @@ initframe:
 	sb	a3,5(a0)
 	andi	a1,a1,0xff
 	li	a3,36
-	bleu	a1,a6,.L758
+	bleu	a1,a6,.L612
 	addi	a3,a1,1
 	mul	a3,a3,a1
 	mv	a1,a2
 	srli	a3,a3,1
-.L758:
+.L612:
 	add	a3,a3,a1
 	srli	a1,a3,3
 	add	a0,a0,a1
@@ -5678,12 +5154,12 @@ initframe:
 	sb	a3,5(a0)
 	andi	a1,a1,0xff
 	li	a3,36
-	bleu	a1,a6,.L759
+	bleu	a1,a6,.L613
 	addi	a3,a1,1
 	mul	a3,a3,a1
 	mv	a1,a2
 	srli	a3,a3,1
-.L759:
+.L613:
 	add	a3,a3,a1
 	srli	a1,a3,3
 	add	a0,a0,a1
@@ -5703,12 +5179,12 @@ initframe:
 	sb	a3,5(a0)
 	andi	a1,a1,0xff
 	li	a3,36
-	bleu	a1,a6,.L760
+	bleu	a1,a6,.L614
 	addi	a3,a1,1
 	mul	a3,a3,a1
 	mv	a1,a2
 	srli	a3,a3,1
-.L760:
+.L614:
 	add	a3,a3,a1
 	srli	a1,a3,3
 	add	a0,a0,a1
@@ -5724,12 +5200,12 @@ initframe:
 	li	a3,36
 	addi	a1,a1,-6
 	andi	a1,a1,0xff
-	bleu	a1,a0,.L761
+	bleu	a1,a0,.L615
 	addi	a3,a1,1
 	mul	a3,a3,a1
 	mv	a1,a2
 	srli	a3,a3,1
-.L761:
+.L615:
 	lw	a0,%lo(framask)(a7)
 	add	a3,a3,a1
 	srli	a1,a3,3
@@ -5746,12 +5222,12 @@ initframe:
 	li	a1,36
 	addi	a3,a3,-5
 	andi	a3,a3,0xff
-	bleu	a3,a0,.L762
+	bleu	a3,a0,.L616
 	addi	a1,a3,1
 	mul	a1,a1,a3
 	mv	a3,a2
 	srli	a1,a1,1
-.L762:
+.L616:
 	lw	a0,%lo(framask)(a7)
 	add	a3,a3,a1
 	srli	a1,a3,3
@@ -5768,12 +5244,12 @@ initframe:
 	li	a3,36
 	addi	a1,a1,-4
 	andi	a1,a1,0xff
-	bleu	a1,a0,.L763
+	bleu	a1,a0,.L617
 	addi	a3,a1,1
 	mul	a3,a3,a1
 	mv	a1,a2
 	srli	a3,a3,1
-.L763:
+.L617:
 	lw	a0,%lo(framask)(a7)
 	add	a3,a3,a1
 	srli	a1,a3,3
@@ -5790,12 +5266,12 @@ initframe:
 	li	a1,36
 	addi	a3,a3,-3
 	andi	a3,a3,0xff
-	bleu	a3,a0,.L764
+	bleu	a3,a0,.L618
 	addi	a1,a3,1
 	mul	a1,a1,a3
 	mv	a3,a2
 	srli	a1,a1,1
-.L764:
+.L618:
 	lw	a0,%lo(framask)(a7)
 	add	a3,a3,a1
 	srli	a1,a3,3
@@ -5812,12 +5288,12 @@ initframe:
 	li	a3,36
 	addi	a1,a1,-2
 	andi	a1,a1,0xff
-	bleu	a1,a0,.L765
+	bleu	a1,a0,.L619
 	addi	a3,a1,1
 	mul	a3,a3,a1
 	mv	a1,a2
 	srli	a3,a3,1
-.L765:
+.L619:
 	lw	a0,%lo(framask)(a7)
 	add	a3,a3,a1
 	srli	a1,a3,3
@@ -5834,12 +5310,12 @@ initframe:
 	li	a3,36
 	addi	a1,a1,-1
 	andi	a1,a1,0xff
-	bleu	a1,a0,.L766
+	bleu	a1,a0,.L620
 	addi	a3,a1,1
 	mul	a3,a3,a1
 	mv	a1,a2
 	srli	a3,a3,1
-.L766:
+.L620:
 	add	a3,a3,a1
 	lw	a1,%lo(framask)(a7)
 	srli	a0,a3,3
@@ -5853,11 +5329,11 @@ initframe:
 	lui	a3,%hi(WD)
 	lbu	a3,%lo(WD)(a3)
 	li	a1,14
-	beq	a3,a1,.L767
+	beq	a3,a1,.L621
 	li	a0,0
 	li	t1,6
-	j	.L771
-.L949:
+	j	.L625
+.L803:
 	andi	t5,a2,255
 	lw	t4,%lo(framask)(a7)
 	addi	a3,t5,21
@@ -5866,11 +5342,11 @@ initframe:
 	addi	a1,t5,1
 	add	t0,t4,t3
 	sra	a3,a6,a3
-	bgtu	t6,t1,.L769
+	bgtu	t6,t1,.L623
 	lbu	a1,0(t0)
 	or	a1,a3,a1
 	sb	a1,0(t0)
-.L801:
+.L655:
 	lw	a1,%lo(framask)(a7)
 	addi	a0,a0,1
 	addi	a2,a2,1
@@ -5881,14 +5357,14 @@ initframe:
 	lui	a3,%hi(WD)
 	lbu	a3,%lo(WD)(a3)
 	addi	a1,a3,-14
-	bleu	a1,a0,.L948
-.L771:
+	bleu	a1,a0,.L802
+.L625:
 	andi	a3,a0,7
 	andi	a1,a0,1
 	srli	t4,a2,3
 	sra	a3,a6,a3
 	andi	t6,a2,0xff
-	bne	a1,zero,.L949
+	bne	a1,zero,.L803
 	lbu	t5,%lo(WDB)(a4)
 	lw	t3,%lo(framebase)(a5)
 	addi	a0,a0,1
@@ -5911,13 +5387,13 @@ initframe:
 	lui	a3,%hi(WD)
 	lbu	a3,%lo(WD)(a3)
 	addi	a1,a3,-14
-	bgtu	a1,a0,.L771
-.L948:
+	bgtu	a1,a0,.L625
+.L802:
 	lui	a2,%hi(VERSION)
 	lbu	t4,%lo(VERSION)(a2)
 	li	a2,6
-	bleu	t4,a2,.L783
-.L774:
+	bleu	t4,a2,.L637
+.L628:
 	lui	a2,%hi(.LANCHOR0)
 	slli	a1,t4,2
 	addi	a2,a2,%lo(.LANCHOR0)
@@ -5930,16 +5406,16 @@ initframe:
 	li	t3,11
 	li	a0,128
 	li	t6,255
-	j	.L777
-.L951:
+	j	.L631
+.L805:
 	addi	a3,a3,-9
 	andi	t0,a1,0xff
 	andi	a3,a3,0xff
 	mv	s0,t0
-	bltu	a3,t0,.L787
+	bltu	a3,t0,.L641
 	mv	s0,a3
 	mv	a3,t0
-.L787:
+.L641:
 	addi	t2,s0,1
 	mul	t2,t2,s0
 	lw	s0,%lo(framask)(a7)
@@ -5956,11 +5432,11 @@ initframe:
 	lbu	a3,%lo(WD)(a3)
 	addi	a3,a3,-9
 	andi	a3,a3,0xff
-	bgtu	a3,t0,.L788
+	bgtu	a3,t0,.L642
 	mv	t2,t0
 	mv	t0,a3
 	mv	a3,t2
-.L788:
+.L642:
 	addi	t2,a3,1
 	mul	a3,t2,a3
 	lw	t2,%lo(framask)(a7)
@@ -5973,24 +5449,24 @@ initframe:
 	sra	a3,a0,t0
 	or	a3,a3,s0
 	sb	a3,0(t2)
-.L789:
+.L643:
 	lui	a3,%hi(WD)
 	lbu	a3,%lo(WD)(a3)
 	srl	t0,t5,t1
-	bleu	t1,t3,.L791
+	bleu	t1,t3,.L645
 	addi	t0,t1,-12
 	srl	t0,t4,t0
-.L791:
+.L645:
 	andi	t0,t0,1
-	bne	t0,zero,.L792
+	bne	t0,zero,.L646
 	addi	a3,a3,-10
 	andi	t0,a1,0xff
 	andi	a3,a3,0xff
 	mv	t2,t0
-	bltu	a3,t0,.L793
+	bltu	a3,t0,.L647
 	mv	t2,a3
 	mv	a3,t0
-.L793:
+.L647:
 	addi	s0,t2,1
 	mul	t2,t2,s0
 	lw	s0,%lo(framask)(a7)
@@ -6007,11 +5483,11 @@ initframe:
 	lbu	a3,%lo(WD)(a3)
 	addi	a3,a3,-10
 	andi	a3,a3,0xff
-	bgtu	a3,t0,.L794
+	bgtu	a3,t0,.L648
 	mv	t2,t0
 	mv	t0,a3
 	mv	a3,t2
-.L794:
+.L648:
 	addi	t2,a3,1
 	mul	a3,a3,t2
 	lw	t2,%lo(framask)(a7)
@@ -6024,15 +5500,15 @@ initframe:
 	sra	a3,a0,t0
 	or	a3,a3,s0
 	sb	a3,0(t2)
-.L795:
+.L649:
 	lui	a3,%hi(WD)
 	lbu	a3,%lo(WD)(a3)
-	bleu	a6,t3,.L950
+	bleu	a6,t3,.L804
 	addi	t0,a6,-12
 	srl	t0,t4,t0
-.L778:
+.L632:
 	andi	t0,t0,1
-	beq	t0,zero,.L779
+	beq	t0,zero,.L633
 	lbu	t2,%lo(WDB)(a4)
 	addi	a3,a3,-11
 	lw	t0,%lo(framebase)(a5)
@@ -6056,7 +5532,7 @@ initframe:
 	lbu	t2,0(t0)
 	or	a3,a3,t2
 	sb	a3,0(t0)
-.L780:
+.L634:
 	addi	a2,a2,-3
 	addi	a6,a6,-3
 	addi	t1,t1,-3
@@ -6066,15 +5542,15 @@ initframe:
 	andi	a6,a6,0xff
 	andi	t1,t1,0xff
 	addi	a1,a1,-1
-	beq	a2,t6,.L783
-.L777:
+	beq	a2,t6,.L637
+.L631:
 	srl	t0,t5,a2
-	bleu	a2,t3,.L785
+	bleu	a2,t3,.L639
 	addi	t0,a2,-12
 	srl	t0,t4,t0
-.L785:
+.L639:
 	andi	t0,t0,1
-	beq	t0,zero,.L951
+	beq	t0,zero,.L805
 	lbu	t2,%lo(WDB)(a4)
 	addi	a3,a3,-9
 	lw	t0,%lo(framebase)(a5)
@@ -6098,8 +5574,8 @@ initframe:
 	lbu	t2,0(t0)
 	or	a3,a3,t2
 	sb	a3,0(t0)
-	j	.L789
-.L769:
+	j	.L643
+.L623:
 	mul	a3,a1,t5
 	srli	a3,a3,1
 	addi	a3,a3,6
@@ -6110,16 +5586,16 @@ initframe:
 	sra	a3,a6,a3
 	or	a1,a3,a1
 	sb	a1,0(t4)
-	j	.L801
-.L779:
+	j	.L655
+.L633:
 	addi	a3,a3,-11
 	andi	t0,a1,0xff
 	andi	a3,a3,0xff
 	mv	t2,t0
-	bltu	a3,t0,.L781
+	bltu	a3,t0,.L635
 	mv	t2,a3
 	mv	a3,t0
-.L781:
+.L635:
 	addi	s0,t2,1
 	mul	t2,t2,s0
 	lw	s0,%lo(framask)(a7)
@@ -6136,11 +5612,11 @@ initframe:
 	lbu	a3,%lo(WD)(a3)
 	addi	a3,a3,-11
 	andi	a3,a3,0xff
-	bgtu	a3,t0,.L782
+	bgtu	a3,t0,.L636
 	mv	t2,t0
 	mv	t0,a3
 	mv	a3,t2
-.L782:
+.L636:
 	addi	t2,a3,1
 	mul	a3,a3,t2
 	lw	t2,%lo(framask)(a7)
@@ -6153,11 +5629,11 @@ initframe:
 	sra	a3,a0,t0
 	or	a3,a3,s0
 	sb	a3,0(t2)
-	j	.L780
-.L950:
+	j	.L634
+.L804:
 	srl	t0,t5,a6
-	j	.L778
-.L792:
+	j	.L632
+.L646:
 	lbu	t2,%lo(WDB)(a4)
 	addi	a3,a3,-10
 	lw	t0,%lo(framebase)(a5)
@@ -6181,21 +5657,21 @@ initframe:
 	lbu	t2,0(t0)
 	or	a3,a3,t2
 	sb	a3,0(t0)
-	j	.L795
-.L783:
-	beq	a3,zero,.L650
-.L773:
+	j	.L649
+.L637:
+	beq	a3,zero,.L504
+.L627:
 	li	t3,1
 	li	t1,0
 	li	t5,128
-.L776:
+.L630:
 	li	a2,0
 	andi	t4,t1,0xff
-	j	.L800
-.L953:
+	j	.L654
+.L807:
 	mv	a0,a2
 	mv	a1,t1
-.L799:
+.L653:
 	addi	a3,a1,1
 	mul	a3,a3,a1
 	lw	a1,%lo(framask)(a7)
@@ -6208,10 +5684,10 @@ initframe:
 	sra	a3,t5,a3
 	or	a3,a3,a0
 	sb	a3,0(a1)
-.L798:
+.L652:
 	addi	a2,a2,1
-	beq	a2,t3,.L952
-.L800:
+	beq	a2,t3,.L806
+.L654:
 	lbu	a6,%lo(WDB)(a4)
 	lw	a3,%lo(framebase)(a5)
 	srli	a0,a2,3
@@ -6224,18 +5700,18 @@ initframe:
 	lbu	a3,0(a3)
 	sra	a3,a3,a1
 	andi	a3,a3,1
-	beq	a3,zero,.L798
-	bgeu	t4,t6,.L953
+	beq	a3,zero,.L652
+	bgeu	t4,t6,.L807
 	mv	a0,t1
 	mv	a1,a2
-	j	.L799
-.L952:
+	j	.L653
+.L806:
 	lui	a3,%hi(WD)
 	lbu	a3,%lo(WD)(a3)
 	addi	t1,t1,1
 	addi	t3,t3,1
-	bgtu	a3,t1,.L776
-.L650:
+	bgtu	a3,t1,.L630
+.L504:
 	lw	s0,60(sp)
 	lw	s1,56(sp)
 	lw	s2,52(sp)
@@ -6250,7 +5726,7 @@ initframe:
 	lw	s11,16(sp)
 	addi	sp,sp,64
 	jr	ra
-.L700:
+.L554:
 	lw	a2,%lo(framask)(a7)
 	addi	a3,t1,10
 	andi	a3,a3,7
@@ -6260,8 +5736,8 @@ initframe:
 	li	s8,5
 	or	a3,a3,a1
 	sb	a3,1(a2)
-	j	.L701
-.L697:
+	j	.L555
+.L551:
 	addi	a6,s1,1
 	mul	a3,a6,s1
 	lw	t6,%lo(framask)(a7)
@@ -6274,7 +5750,7 @@ initframe:
 	lbu	a1,0(t6)
 	or	a3,a3,a1
 	sb	a3,0(t6)
-.L808:
+.L662:
 	mul	a3,a6,s1
 	lw	t6,%lo(framask)(a7)
 	li	a1,128
@@ -6288,9 +5764,9 @@ initframe:
 	lbu	a1,0(t6)
 	or	a3,a3,a1
 	sb	a3,0(t6)
-	bleu	a0,a6,.L699
-	j	.L807
-.L693:
+	bleu	a0,a6,.L553
+	j	.L661
+.L547:
 	addi	a3,s0,1
 	mul	a6,a3,s0
 	lw	t6,%lo(framask)(a7)
@@ -6303,7 +5779,7 @@ initframe:
 	lbu	a6,0(t6)
 	or	a1,a1,a6
 	sb	a1,0(t6)
-.L811:
+.L665:
 	mul	a3,a3,s0
 	lw	t6,%lo(framask)(a7)
 	li	a1,128
@@ -6317,7 +5793,7 @@ initframe:
 	sra	a3,a1,a3
 	or	a3,a3,t0
 	sb	a3,0(t6)
-	bgtu	a0,a6,.L810
+	bgtu	a0,a6,.L664
 	lw	a6,%lo(framask)(a7)
 	addi	a3,a0,10
 	andi	a3,a3,7
@@ -6325,11 +5801,11 @@ initframe:
 	lbu	a1,1(a6)
 	or	a3,a3,a1
 	sb	a3,1(a6)
-.L809:
+.L663:
 	mv	a1,t1
 	li	t6,3
-	j	.L696
-.L691:
+	j	.L550
+.L545:
 	addi	a3,a0,6
 	srli	a6,a3,3
 	andi	a3,a3,7
@@ -6339,17 +5815,17 @@ initframe:
 	lbu	a6,0(a1)
 	or	a3,a3,a6
 	sb	a3,0(a1)
-.L812:
+.L666:
 	mv	a6,t1
 	li	t0,2
-	j	.L692
-.L942:
+	j	.L546
+.L796:
 	lw	a2,%lo(framask)(a7)
 	sra	a3,a3,t6
 	lbu	a1,0(a2)
 	or	a3,a3,a1
 	sb	a3,0(a2)
-.L687:
+.L541:
 	lw	a2,%lo(framask)(a7)
 	addi	a6,a0,3
 	li	a3,128
@@ -6357,7 +5833,7 @@ initframe:
 	sra	a3,a3,a6
 	or	a3,a3,a1
 	sb	a3,0(a2)
-.L814:
+.L668:
 	addi	a2,t1,1
 	mul	a3,a2,t1
 	lw	s10,%lo(framask)(a7)
@@ -6372,7 +5848,7 @@ initframe:
 	sra	a3,a6,a3
 	or	a3,a3,s10
 	sb	a3,0(a1)
-	bgtu	t6,t2,.L689
+	bgtu	t6,t2,.L543
 	addi	a3,t6,15
 	srli	t2,a3,3
 	andi	a3,a3,7
@@ -6383,112 +5859,112 @@ initframe:
 	lbu	t2,0(a3)
 	or	a1,a1,t2
 	sb	a1,0(a3)
-	bleu	t6,a6,.L690
-	j	.L813
-.L682:
+	bleu	t6,a6,.L544
+	j	.L667
+.L536:
 	lw	a6,%lo(framask)(a7)
 	li	s0,5
 	li	a0,255
 	lbu	a2,0(a6)
 	ori	a2,a2,64
 	sb	a2,0(a6)
-	j	.L683
-.L838:
+	j	.L537
+.L692:
 	mv	a0,a1
 	li	t1,4
-	j	.L680
-.L678:
+	j	.L534
+.L532:
 	lw	s1,%lo(framask)(a7)
 	li	t1,5
 	li	a6,255
 	lbu	a0,0(s1)
 	ori	a0,a0,64
 	sb	a0,0(s1)
-	j	.L679
-.L836:
+	j	.L533
+.L690:
 	mv	a0,a2
 	li	a6,3
-	j	.L677
-.L835:
+	j	.L531
+.L689:
 	mv	a0,a1
 	li	t1,3
-	j	.L676
-.L674:
+	j	.L530
+.L528:
 	lw	t1,%lo(framask)(a7)
 	li	s11,5
 	li	a6,255
 	lbu	a0,0(t1)
 	ori	a0,a0,64
 	sb	a0,0(t1)
-	j	.L675
-.L833:
+	j	.L529
+.L687:
 	mv	a0,a2
 	li	a6,2
-	j	.L673
-.L832:
+	j	.L527
+.L686:
 	mv	a0,a1
 	li	t1,2
-	j	.L672
-.L670:
+	j	.L526
+.L524:
 	lw	s1,%lo(framask)(a7)
 	li	a6,5
 	li	t1,255
 	lbu	a0,0(s1)
 	ori	a0,a0,64
 	sb	a0,0(s1)
-	j	.L671
-.L829:
+	j	.L525
+.L683:
 	li	t5,0
-	j	.L667
-.L816:
+	j	.L521
+.L670:
 	mv	a1,a0
 	li	a0,0
-	j	.L651
-.L767:
+	j	.L505
+.L621:
 	lui	a2,%hi(VERSION)
 	lbu	t4,%lo(VERSION)(a2)
 	li	a2,6
-	bgtu	t4,a2,.L774
-	j	.L773
-.L825:
+	bgtu	t4,a2,.L628
+	j	.L627
+.L679:
 	li	a3,0
-	j	.L661
-.L819:
+	j	.L515
+.L673:
 	li	a5,0
-	j	.L654
-.L818:
+	j	.L508
+.L672:
 	mv	a0,a1
-	j	.L653
-.L935:
+	j	.L507
+.L789:
 	mv	t1,a6
 	li	a6,5
-	j	.L671
-.L936:
+	j	.L525
+.L790:
 	mv	a6,s11
 	li	s11,5
-	j	.L675
-.L937:
+	j	.L529
+.L791:
 	mv	a6,t1
 	li	t1,5
-	j	.L679
-.L938:
+	j	.L533
+.L792:
 	mv	a0,s0
 	li	s0,5
-	j	.L683
-.L943:
+	j	.L537
+.L797:
 	add	a3,s0,a3
-	j	.L811
-.L947:
+	j	.L665
+.L801:
 	addi	a0,s1,1
 	mul	a0,a0,s1
 	srli	a0,a0,1
-	j	.L805
-.L944:
+	j	.L659
+.L798:
 	add	a6,s1,a3
-	j	.L808
-.L945:
+	j	.L662
+.L799:
 	mv	s8,a0
-	j	.L701
+	j	.L555
 	.size	initframe, .-initframe
 	.align	2
 	.globl	freeframe
@@ -6513,9 +5989,9 @@ initecc:
 	sb	a1,%lo(VERSION)(a7)
 	sb	a4,%lo(WDB)(a3)
 	li	a5,768
-	bge	a2,a5,.L956
+	bge	a2,a5,.L810
 	mv	a2,a5
-.L956:
+.L810:
 	lui	a7,%hi(heap_ptr)
 	lw	t1,%lo(heap_ptr)(a7)
 	lui	t6,%hi(heap_requested)
@@ -6523,17 +5999,17 @@ initecc:
 	add	a3,t1,a2
 	andi	a4,a3,3
 	add	a6,a2,a6
-	beq	a4,zero,.L957
+	beq	a4,zero,.L811
 	li	a5,4
 	sub	a5,a5,a4
 	add	a3,a3,a5
 	add	a6,a6,a5
-.L957:
+.L811:
 	lui	a5,%hi(heap_end)
 	lw	t4,%lo(heap_end)(a5)
-	bltu	t4,a3,.L962
+	bltu	t4,a3,.L816
 	sw	a3,%lo(heap_ptr)(a7)
-.L958:
+.L812:
 	slli	a1,a1,2
 	add	a1,a1,a0
 	lui	a5,%hi(.LANCHOR0)
@@ -6559,22 +6035,22 @@ initecc:
 	sb	a0,%lo(ECCLEVEL)(t1)
 	add	a5,a5,a4
 	add	a5,a5,a1
-	bgeu	a5,a2,.L959
+	bgeu	a5,a2,.L813
 	mv	a5,a2
-.L959:
+.L813:
 	add	a2,a3,a5
 	andi	t1,a2,3
 	add	a5,a5,a6
-	beq	t1,zero,.L960
+	beq	t1,zero,.L814
 	li	a0,4
 	sub	a0,a0,t1
 	add	a2,a2,a0
 	add	a5,a5,a0
-.L960:
+.L814:
 	lui	a0,%hi(eccblkwid)
 	sw	a5,%lo(heap_requested)(t6)
 	sb	t5,%lo(eccblkwid)(a0)
-	bgtu	a2,t4,.L963
+	bgtu	a2,t4,.L817
 	mul	a0,a4,t3
 	lui	a5,%hi(strinbuf)
 	sw	a2,%lo(heap_ptr)(a7)
@@ -6582,11 +6058,11 @@ initecc:
 	add	a0,a0,a1
 	addi	a0,a0,-3
 	ret
-.L962:
+.L816:
 	mv	a3,t1
 	li	t1,0
-	j	.L958
-.L963:
+	j	.L812
+.L817:
 	mul	a0,a4,t3
 	li	a3,0
 	lui	a5,%hi(strinbuf)
@@ -6603,7 +6079,7 @@ initecc:
 	.align	2
 	.type	benchmark_body.isra.0, @function
 benchmark_body.isra.0:
-	ble	a0,zero,.L989
+	ble	a0,zero,.L843
 	addi	sp,sp,-80
 	sw	s0,72(sp)
 	li	a4,1886679040
@@ -6640,7 +6116,7 @@ benchmark_body.isra.0:
 	lui	s7,%hi(heap_requested)
 	li	s6,22
 	li	s3,40
-.L971:
+.L825:
 	lui	a5,%hi(.LANCHOR0+820)
 	sw	s0,%lo(encode)(s11)
 	sw	s6,%lo(size)(s10)
@@ -6649,11 +6125,11 @@ benchmark_body.isra.0:
 	sw	zero,%lo(heap_requested)(s7)
 	addi	a4,a5,%lo(.LANCHOR0+820)
 	li	a1,1
-	j	.L973
-.L993:
+	j	.L827
+.L847:
 	andi	a1,a0,0xff
-	beq	a1,s3,.L972
-.L973:
+	beq	a1,s3,.L826
+.L827:
 	lbu	a3,1(a4)
 	lbu	a6,0(a4)
 	lbu	a2,2(a4)
@@ -6663,8 +6139,8 @@ benchmark_body.isra.0:
 	addi	a4,a4,16
 	add	a5,a5,a3
 	addi	a5,a5,-3
-	bleu	a5,s6,.L993
-.L972:
+	bleu	a5,s6,.L847
+.L826:
 	lui	a5,%hi(neccblk1)
 	sb	a6,%lo(neccblk1)(a5)
 	lui	a5,%hi(neccblk2)
@@ -6680,9 +6156,9 @@ benchmark_body.isra.0:
 	addi	a3,a3,-1
 	sltiu	a3,a3,3
 	mv	a2,a5
-	bne	a3,zero,.L976
+	bne	a3,zero,.L830
 	andi	a3,a5,3
-	bne	a3,zero,.L976
+	bne	a3,zero,.L830
 	lw	a0,8(sp)
 	li	a2,1831759872
 	li	a3,1701142528
@@ -6698,12 +6174,12 @@ benchmark_body.isra.0:
 	sw	a3,12(a5)
 	sw	a4,16(a5)
 	sh	a1,20(a5)
-.L975:
+.L829:
 	call	initframe
 	call	qrencode
 	lw	a5,4(sp)
 	addi	s1,s1,1
-	bne	s1,a5,.L971
+	bne	s1,a5,.L825
 	lw	ra,76(sp)
 	lw	s0,72(sp)
 	lw	s1,68(sp)
@@ -6719,19 +6195,19 @@ benchmark_body.isra.0:
 	lw	s11,28(sp)
 	addi	sp,sp,80
 	jr	ra
-.L976:
+.L830:
 	lbu	a5,0(a4)
 	addi	a4,a4,1
 	addi	a2,a2,1
 	sb	a5,-1(a2)
-	beq	s2,a4,.L975
+	beq	s2,a4,.L829
 	lbu	a5,0(a4)
 	addi	a4,a4,1
 	addi	a2,a2,1
 	sb	a5,-1(a2)
-	bne	s2,a4,.L976
-	j	.L975
-.L989:
+	bne	s2,a4,.L830
+	j	.L829
+.L843:
 	ret
 	.size	benchmark_body.isra.0, .-benchmark_body.isra.0
 	.align	2
@@ -6772,7 +6248,7 @@ benchmark_body.constprop.0.isra.0:
 	lui	s7,%hi(heap_requested)
 	li	s6,22
 	li	s5,40
-.L1000:
+.L854:
 	lui	a5,%hi(.LANCHOR0+820)
 	sw	s0,%lo(encode)(s11)
 	sw	s6,%lo(size)(s10)
@@ -6781,11 +6257,11 @@ benchmark_body.constprop.0.isra.0:
 	sw	zero,%lo(heap_requested)(s7)
 	addi	a4,a5,%lo(.LANCHOR0+820)
 	li	a1,1
-	j	.L996
-.L1012:
+	j	.L850
+.L866:
 	andi	a1,a0,0xff
-	beq	a1,s5,.L995
-.L996:
+	beq	a1,s5,.L849
+.L850:
 	lbu	a3,1(a4)
 	lbu	a6,0(a4)
 	lbu	a2,2(a4)
@@ -6795,8 +6271,8 @@ benchmark_body.constprop.0.isra.0:
 	addi	a4,a4,16
 	add	a5,a5,a3
 	addi	a5,a5,-3
-	bleu	a5,s6,.L1012
-.L995:
+	bleu	a5,s6,.L866
+.L849:
 	lui	a5,%hi(neccblk1)
 	sb	a6,%lo(neccblk1)(a5)
 	lui	a5,%hi(neccblk2)
@@ -6812,9 +6288,9 @@ benchmark_body.constprop.0.isra.0:
 	addi	a3,a3,-1
 	sltiu	a3,a3,3
 	mv	a2,a5
-	bne	a3,zero,.L999
+	bne	a3,zero,.L853
 	andi	a3,a5,3
-	bne	a3,zero,.L999
+	bne	a3,zero,.L853
 	lw	a0,8(sp)
 	li	a2,1831759872
 	li	a3,1701142528
@@ -6830,11 +6306,11 @@ benchmark_body.constprop.0.isra.0:
 	sw	a3,12(a5)
 	sw	a4,16(a5)
 	sh	a1,20(a5)
-.L998:
+.L852:
 	addi	s1,s1,-1
 	call	initframe
 	call	qrencode
-	bne	s1,zero,.L1000
+	bne	s1,zero,.L854
 	lw	ra,76(sp)
 	lw	s0,72(sp)
 	lw	s1,68(sp)
@@ -6850,18 +6326,18 @@ benchmark_body.constprop.0.isra.0:
 	lw	s11,28(sp)
 	addi	sp,sp,80
 	jr	ra
-.L999:
+.L853:
 	lbu	a5,0(a4)
 	addi	a4,a4,1
 	addi	a2,a2,1
 	sb	a5,-1(a2)
-	beq	s2,a4,.L998
+	beq	s2,a4,.L852
 	lbu	a5,0(a4)
 	addi	a4,a4,1
 	addi	a2,a2,1
 	sb	a5,-1(a2)
-	bne	s2,a4,.L999
-	j	.L998
+	bne	s2,a4,.L853
+	j	.L852
 	.size	benchmark_body.constprop.0.isra.0, .-benchmark_body.constprop.0.isra.0
 	.align	2
 	.globl	initeccsize
@@ -6875,11 +6351,11 @@ initeccsize:
 	add	a4,a4,a5
 	li	a2,1
 	li	t3,40
-	j	.L1015
-.L1018:
+	j	.L869
+.L872:
 	andi	a2,t1,0xff
-	beq	a2,t3,.L1014
-.L1015:
+	beq	a2,t3,.L868
+.L869:
 	lbu	a3,-3(a4)
 	lbu	a7,-4(a4)
 	lbu	a6,-2(a4)
@@ -6889,8 +6365,8 @@ initeccsize:
 	addi	a4,a4,16
 	add	a5,a5,a3
 	addi	a5,a5,-3
-	bleu	a5,a1,.L1018
-.L1014:
+	bleu	a5,a1,.L872
+.L868:
 	mv	a1,a2
 	lui	a4,%hi(neccblk2)
 	lui	a2,%hi(neccblk1)
@@ -6966,13 +6442,13 @@ verify_benchmark:
 	sw	a3,24(sp)
 	addi	a5,sp,8
 	addi	a1,sp,30
-.L1029:
+.L883:
 	lbu	a2,0(a4)
 	lbu	a3,0(a5)
 	addi	a4,a4,1
 	addi	a5,a5,1
-	bne	a2,a3,.L1032
-	bne	a5,a1,.L1029
+	bne	a2,a3,.L886
+	bne	a5,a1,.L883
 	lui	a5,%hi(heap_requested)
 	lw	a5,%lo(heap_requested)(a5)
 	lui	a3,%hi(heap_end)
@@ -6984,7 +6460,7 @@ verify_benchmark:
 	seqz	a0,a0
 	addi	sp,sp,32
 	jr	ra
-.L1032:
+.L886:
 	li	a0,0
 	addi	sp,sp,32
 	jr	ra
@@ -6995,18 +6471,11 @@ verify_benchmark:
 	.type	main, @function
 main:
 	addi	sp,sp,-32
-	sw	ra,28(sp)
- #APP
-# 15 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	li	a0,1
+	sw	ra,28(sp)
 	call	benchmark_body.isra.0
-	call	start_trigger
 	call	benchmark
 	sw	zero,12(sp)
-	call	stop_trigger
 	lw	a0,12(sp)
 	call	verify_benchmark
 	lw	ra,28(sp)
@@ -7204,10 +6673,6 @@ heap_end:
 	.type	heap_ptr, @object
 	.size	heap_ptr, 4
 heap_ptr:
-	.zero	4
-	.type	seed, @object
-	.size	seed, 4
-seed:
 	.zero	4
 	.ident	"GCC: (g1b306039a) 15.1.0"
 	.section	.note.GNU-stack,"",@progbits
