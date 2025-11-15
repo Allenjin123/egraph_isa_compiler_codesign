@@ -15,15 +15,14 @@ fi
 PROGRAM="$1"
 BEST_K="${2:-1}"  # 默认 best_k=1
 
-# 第一步: 生成 merged.json
-echo "步骤 1: 生成 merged.json..."
-python3 "$SCRIPT_DIR/src/egraph.py" "$PROGRAM"
-if [ $? -ne 0 ]; then
-    echo "错误: 生成 merged.json 失败"
-    exit 1
-fi
+# # 第一步: 生成 merged.json
+# echo "步骤 1: 生成 merged.json..."
+# python3 "$SCRIPT_DIR/src/egraph.py" "$PROGRAM"
+# if [ $? -ne 0 ]; then
+#     echo "错误: 生成 merged.json 失败"
+#     exit 1
+# fi
 
-# 第二步: 运行 ILP 提取器
-echo "步骤 2: 运行 ILP 提取器: $PROGRAM (best_k=$BEST_K)"
+echo "运行 ILP 提取器: $PROGRAM (best_k=$BEST_K)"
 python3 "$SCRIPT_DIR/src/ILP/ilp_solver.py" "$PROGRAM" --best_k "$BEST_K" --timeout 180
 

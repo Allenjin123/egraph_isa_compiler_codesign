@@ -32,7 +32,7 @@ def run_egglog_on_file(egg_file: Path, egglog_path: str, verbose: bool = False) 
         egg_name = egg_file.name
 
         # Use the provided egglog path
-        cmd = [egglog_path, '--to-json', '--max-functions', '20000', '--max-calls-per-function', '20000', egg_name]
+        cmd = [egglog_path, '--to-json', '--max-functions', '50000', '--max-calls-per-function', '20000', egg_name]
 
         if verbose:
             print(f"  Running: {' '.join(cmd)} (in {egg_dir})")

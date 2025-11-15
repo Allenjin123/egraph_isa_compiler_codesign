@@ -246,6 +246,12 @@ int main(int argc, char* argv[]) {
             std::cout << "Using all available cores (default)" << std::endl;
         }
         model.set(GRB_IntParam_Threads, threads);
+        
+        // Tighten tolerances to enforce strict integer constraints
+        // This prevents cycles in the e-graph extraction
+        model.set(GRB_DoubleParam_IntFeasTol, 1e-9);  // Integer feasibility tolerance (default 1e-5)
+        model.set(GRB_DoubleParam_FeasibilityTol, 1e-9);  // Constraint feasibility tolerance (default 1e-6)
+        std::cout << "Tightened tolerances: IntFeasTol=1e-9, FeasibilityTol=1e-9" << std::endl;
 
         // Make sure we capture all incumbent solutions
         model.set(GRB_IntParam_OutputFlag, 1);
