@@ -1239,7 +1239,7 @@ getChar:
 	sw	a5,12(sp)
 	sw	a7,8(sp)
 	sb	zero,%lo(gInBufLeft)(a6)
-	jalr	a4
+	jalr	ra, a4, 0
 	lw	a7,8(sp)
 	lw	a5,12(sp)
 	lui	a6,%hi(gInBufLeft)

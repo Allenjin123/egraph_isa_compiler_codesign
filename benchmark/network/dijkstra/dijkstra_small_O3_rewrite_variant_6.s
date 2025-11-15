@@ -114,7 +114,24 @@ enqueue:
 	addi	a3,a4,1
 	srai	a6,a3,16
 	srai	a7,a5,16
-	mul	a6,a6,a7
+	addi	sp, sp, -32
+	sw	a0, 0(sp)
+	sw	a1, 4(sp)
+	sw	a2, 8(sp)
+	sw	a3, 12(sp)
+	sw	ra, 16(sp)
+	add	a0, a6, x0
+	add	a1, a7, x0
+.Lpcrel_callmul_160:
+	auipc	ra, %pcrel_hi(__mul)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_160)
+	add	a6, a0, x0
+	lw	a0, 0(sp)
+	lw	a1, 4(sp)
+	lw	a2, 8(sp)
+	lw	a3, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	srai	a7,a3,16
 	lui	t0,16
 	addi	t0,t0,-1
@@ -126,7 +143,24 @@ enqueue:
 	lui	t1,16
 	addi	t1,t1,-1
 	and	t1,a5,t1
-	mul	t0,t0,t1
+	addi	sp, sp, -32
+	sw	a0, 0(sp)
+	sw	a1, 4(sp)
+	sw	a2, 8(sp)
+	sw	a3, 12(sp)
+	sw	ra, 16(sp)
+	add	a0, t0, x0
+	add	a1, t1, x0
+.Lpcrel_callmul_161:
+	auipc	ra, %pcrel_hi(__mul)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_161)
+	add	t0, a0, x0
+	lw	a0, 0(sp)
+	lw	a1, 4(sp)
+	lw	a2, 8(sp)
+	lw	a3, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	srli	t0,t0,16
 	add	a7,a7,t0
 	srai	a7,a7,16
@@ -142,7 +176,24 @@ enqueue:
 	lui	t1,16
 	addi	t1,t1,-1
 	and	t1,a5,t1
-	mul	t0,t0,t1
+	addi	sp, sp, -32
+	sw	a0, 0(sp)
+	sw	a1, 4(sp)
+	sw	a2, 8(sp)
+	sw	a3, 12(sp)
+	sw	ra, 16(sp)
+	add	a0, t0, x0
+	add	a1, t1, x0
+.Lpcrel_callmul_162:
+	auipc	ra, %pcrel_hi(__mul)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_162)
+	add	t0, a0, x0
+	lw	a0, 0(sp)
+	lw	a1, 4(sp)
+	lw	a2, 8(sp)
+	lw	a3, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	srli	t0,t0,16
 	add	a7,a7,t0
 	lui	t0,16
@@ -152,7 +203,24 @@ enqueue:
 	addi	t0,t0,-1
 	and	t0,a3,t0
 	srai	t1,a5,16
-	mul	a5,t0,t1
+	addi	sp, sp, -32
+	sw	a0, 0(sp)
+	sw	a1, 4(sp)
+	sw	a2, 8(sp)
+	sw	a3, 12(sp)
+	sw	ra, 16(sp)
+	add	a0, t0, x0
+	add	a1, t1, x0
+.Lpcrel_callmul_163:
+	auipc	ra, %pcrel_hi(__mul)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_163)
+	add	a5, a0, x0
+	lw	a0, 0(sp)
+	lw	a1, 4(sp)
+	lw	a2, 8(sp)
+	lw	a3, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	add	a5,a7,a5
 	srai	a5,a5,16
 	add	a5,a6,a5
@@ -175,9 +243,9 @@ enqueue:
 	sw	ra, 16(sp)
 	add	a0, a5, x0
 	add	a1, t1, x0
-.Lpcrel_callmul_212:
+.Lpcrel_callmul_164:
 	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_212)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_164)
 	add	a5, a0, x0
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
@@ -202,7 +270,9 @@ enqueue:
 dequeue:
 	lui	a7,%hi(g_qCount)
 	lw	a5,%lo(g_qCount)(a7)
-	bge	zero,a5,.L17
+	bge	zero,a5,.+8
+	jal	x0,8
+	jal	x0,.L17
 	lui	a6,%hi(qFront)
 	lw	a3,%lo(qFront)(a6)
 	lui	a4,%hi(queue)
@@ -235,49 +305,84 @@ dequeue:
 	lw	a3,%lo(g_qCount)(a7)
 	addi	a4,a4,1
 	srai	a2,a4,16
-	srai	t0,a5,16
-	mul	a2,a2,t0
-	srai	t0,a4,16
-	lui	t1,16
-	addi	t1,t1,-1
-	and	t1,a5,t1
-	mul	t0,t0,t1
-	lui	t1,16
-	addi	t1,t1,-1
-	and	t1,a4,t1
-	lui	t2,16
-	addi	t2,t2,-1
-	and	t2,a5,t2
+	lui	t0,16
+	addi	t0,t0,-1
+	and	t0,a5,t0
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	ra, 16(sp)
-	add	a0, t1, x0
-	add	a1, t2, x0
-.Lpcrel_callmul_213:
+	add	a0, a2, x0
+	add	a1, t0, x0
+.Lpcrel_callmul_165:
 	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_213)
-	add	t1, a0, x0
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_165)
+	add	a2, a0, x0
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
-	add	t0,t0,t1
-	srai	t0,t0,16
+	lui	t0,16
+	addi	t0,t0,-1
+	and	t0,a4,t0
+	lui	t1,16
+	addi	t1,t1,-1
+	and	t1,a5,t1
+	mul	t0,t0,t1
+	srli	t0,t0,16
 	add	a2,a2,t0
+	lui	t0,16
+	addi	t0,t0,-1
+	and	a2,a2,t0
+	lui	t0,16
+	addi	t0,t0,-1
+	and	t0,a4,t0
+	srai	t1,a5,16
+	addi	sp, sp, -32
+	sw	a0, 0(sp)
+	sw	a1, 4(sp)
+	sw	a2, 8(sp)
+	sw	a3, 12(sp)
+	sw	ra, 16(sp)
+	add	a0, t0, x0
+	add	a1, t1, x0
+.Lpcrel_callmul_166:
+	auipc	ra, %pcrel_hi(__mul)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_166)
+	add	t0, a0, x0
+	lw	a0, 0(sp)
+	lw	a1, 4(sp)
+	lw	a2, 8(sp)
+	lw	a3, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
+	add	a2,a2,t0
+	srai	a2,a2,16
 	srai	t0,a4,16
-	lui	t1,16
-	addi	t1,t1,-1
-	and	t1,a5,t1
-	mul	t0,t0,t1
-	lui	t1,16
-	addi	t1,t1,-1
-	and	t1,a4,t1
+	srai	t1,a5,16
+	addi	sp, sp, -32
+	sw	a0, 0(sp)
+	sw	a1, 4(sp)
+	sw	a2, 8(sp)
+	sw	a3, 12(sp)
+	sw	ra, 16(sp)
+	add	a0, t0, x0
+	add	a1, t1, x0
+.Lpcrel_callmul_167:
+	auipc	ra, %pcrel_hi(__mul)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_167)
+	add	t0, a0, x0
+	lw	a0, 0(sp)
+	lw	a1, 4(sp)
+	lw	a2, 8(sp)
+	lw	a3, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
+	srai	t1,a4,16
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a5,t2
@@ -289,9 +394,9 @@ dequeue:
 	sw	ra, 16(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
-.Lpcrel_callmul_214:
+.Lpcrel_callmul_168:
 	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_214)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_168)
 	add	t1, a0, x0
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
@@ -299,19 +404,19 @@ dequeue:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
-	add	t0,t0,t1
-	lui	t1,16
-	addi	t1,t1,-1
-	and	t0,t0,t1
-	lui	t1,16
-	addi	t1,t1,-1
-	and	t1,a4,t1
-	srai	t2,a5,16
-	mul	a5,t1,t2
-	add	a5,t0,a5
+	lui	t2,16
+	addi	t2,t2,-1
+	and	t2,a4,t2
+	lui	t3,16
+	addi	t3,t3,-1
+	and	t3,a5,t3
+	mul	a5,t2,t3
+	srli	a5,a5,16
+	add	a5,t1,a5
 	srai	a5,a5,16
-	add	a5,a2,a5
+	add	a5,t0,a5
+	sub	a5,x0,a5
+	sub	a5,a2,a5
 	srai	a2,a4,31
 	addi	a3,a3,-1
 	sw	a3,%lo(g_qCount)(a7)
@@ -10881,56 +10986,191 @@ main:
 	.type	rgnNodes, @object
 	.size	rgnNodes, 800
 rgnNodes:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	800
 	.type	AdjMatrix, @object
 	.size	AdjMatrix, 40000
 AdjMatrix:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	40000
 	.type	queue, @object
 	.size	queue, 120000
 queue:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	120000
 	.section	.sbss,"aw",@nobits
 	.align	2
 	.type	result_sink, @object
 	.size	result_sink, 4
 result_sink:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	iDist, @object
 	.size	iDist, 4
 iDist:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	iCost, @object
 	.size	iCost, 4
 iCost:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	i, @object
 	.size	i, 4
 i:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	iNode, @object
 	.size	iNode, 4
 iNode:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	iPrev, @object
 	.size	iPrev, 4
 iPrev:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	ch, @object
 	.size	ch, 4
 ch:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	g_qCount, @object
 	.size	g_qCount, 4
 g_qCount:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	qRear, @object
 	.size	qRear, 4
 qRear:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.type	qFront, @object
 	.size	qFront, 4
 qFront:
+	add	a2,a0,x0
+	addi	a0,x0,0
 	.zero	4
 	.ident	"GCC: (g1b306039a) 15.1.0"
 	.section	.note.GNU-stack,"",@progbits
+
+
+    .text
+    .align 2
+__mul:
+	add	a2,a0,x0
+	addi	a0,x0,0
+.Mul_loop:
+	addi	a3,x0,1
+	and	a3,a1,a3
+	bne	a3,x0,.+8
+	jal	x0,.Mul_skip
+	add	a0,a0,a2
+.Mul_skip:
+	srli	a1,a1,1
+	slli	a2,a2,1
+	bne	a1,x0,.Mul_loop
+	jalr	x0,ra,0
+
+.text
+.align 2
+
+# Signed 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_divsi3
+__riscv_div_lib_divsi3:
+	bge	a0,zero,.+8
+	jal	x0,__riscv_div_lib_L10
+	bge	a1,zero,.+8
+	jal	x0,__riscv_div_lib_L11
+    # Since the quotient is positive, fall into udivsi3
+
+# Unsigned 32-bit division: a0 = a0 / a1
+.global __riscv_div_lib_udivsi3
+__riscv_div_lib_udivsi3:
+	addi	a2,a1,0
+	addi	a1,a0,0
+	addi	a0,zero,-1
+	beq	a2,zero,__riscv_div_lib_L5
+	addi	a3,zero,1
+	bltu	a2,a1,.+8
+	jal	x0,__riscv_div_lib_L2
+__riscv_div_lib_L1:
+	bge	zero,a2,__riscv_div_lib_L2
+	slli	a2,a2,1
+	slli	a3,a3,1
+	bltu	a2,a1,.+8
+	jal	x0,8
+	jal	x0,__riscv_div_lib_L1
+__riscv_div_lib_L2:
+	addi	a0,zero,0
+__riscv_div_lib_L3:
+	bltu	a1,a2,__riscv_div_lib_L4
+	sub	a1,a1,a2
+	and	a4,a0,a3
+	sub	a4,a4,a3
+	sub	a0,a0,a4
+__riscv_div_lib_L4:
+	srli	a3,a3,1
+	srli	a2,a2,1
+	bne	a3,zero,.+8
+	jal	x0,8
+	jal	x0,__riscv_div_lib_L3
+__riscv_div_lib_L5:
+	jalr	zero,ra,0
+
+# Unsigned 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_umodsi3
+__riscv_div_lib_umodsi3:
+	addi	t0,ra,0
+	jal	x0,__riscv_div_lib_udivsi3
+	addi	a0,a1,0
+	jalr	zero,t0,0
+
+# Handle negative arguments to divsi3
+__riscv_div_lib_L10:
+	sub	a0,zero,a0
+	bge	zero,a1,.+8
+	jal	x0,__riscv_div_lib_L12
+	sub	a1,zero,a1
+	jal	x0,__riscv_div_lib_udivsi3
+	sub	a1,zero,a1
+__riscv_div_lib_L12:
+	addi	t0,ra,0
+	jal	x0,__riscv_div_lib_udivsi3
+	sub	a0,zero,a0
+	jalr	zero,t0,0
+
+# Signed 32-bit remainder: a0 = a0 % a1
+.global __riscv_div_lib_modsi3
+__riscv_div_lib_modsi3:
+	addi	t0,ra,0
+	bge	a1,zero,.+8
+	jal	x0,__riscv_div_lib_L31
+	bge	a0,zero,.+8
+	jal	x0,__riscv_div_lib_L32
+__riscv_div_lib_L30:
+	jal	x0,__riscv_div_lib_udivsi3
+	addi	a0,a1,0
+	jalr	zero,t0,0
+__riscv_div_lib_L31:
+	sub	a1,zero,a1
+	bge	a0,zero,__riscv_div_lib_L30
+__riscv_div_lib_L32:
+	sub	a0,zero,a0
+	jal	x0,__riscv_div_lib_udivsi3
+	sub	a0,zero,a1
+	jalr	zero,t0,0
+
+# end of subrountine
