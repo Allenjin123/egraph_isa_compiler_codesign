@@ -19,27 +19,17 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(os.path.dirname(script_dir))
 DATA_DIR = os.path.join(project_root, "output", "frontend")
 
-# RISC-V 寄存器定义（从 frontend/util.py 复制）
-SPECIAL_REGS = ['x0', 'zero', 'ra', 'sp', 'gp', 'tp', 'fp']
-T_REGS = ['t0', 't1', 't2', 't3', 't4', 't5', 't6']
-S_REGS = ['s0', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11']
-A_REGS = ['a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7']
-ALL_ABI_REGS = set(SPECIAL_REGS + T_REGS + S_REGS + A_REGS)
+# Import frontend utilities
+frontend_dir = os.path.join(project_root, "frontend")
+if frontend_dir not in sys.path:
+    sys.path.insert(0, frontend_dir)
 
-# 不产生 rd 写回的指令集合（从 frontend/util.py 复制）
-INSTRUCTIONS_WITHOUT_RD = {
-    # RV32I_STORE
-    'sb', 'sh', 'sw',
-    # RV32I_BRANCH
-    'beq', 'bne', 'blt', 'bge', 'bltu', 'bgeu',
-    # RV32I_SYSTEM
-    'ecall', 'ebreak',
-    # RV32I_FENCE
-    'fence',
-    # ZIFENCEI_INSTRUCTIONS
-    'fence.i',
-    # ZICSR_INSTRUCTIONS (if any)
-}
+try:
+    from util import parse_instruction, analyze_instruction
+except ImportError:
+    logging.warning("Cannot import frontend.util, orphan detection may fail")
+    parse_instruction = None
+    analyze_instruction = None
    
 def get_file_name(path):
     return os.path.basename(path)
@@ -432,81 +422,10 @@ class EGraph:
         Returns:
             Dict[prefix, List[eclass_id]] - 每个 basic block 的孤儿 eclass 列表
         """
-        if not self.program_name:
+        if not self.program_name or not parse_instruction or not analyze_instruction:
+            raise ValueError("Program name and frontend.util functions are required for orphan detection")
             return {}
         
-        def extract_reg_name(reg_str: str) -> Optional[str]:
-            """从 'a5_0' 提取 'a5'，忽略立即数和特殊符号
-            
-            处理不同格式：
-            - "a5_0" → "a5"
-            - "4(sp_0)" → "sp"
-            - "%lo(symbol)(a0)" → "a0"  (两个括号，取最后一个)
-            - "%hi(symbol)" → None  (只有符号，没有寄存器)
-            - ".LC0" → None  (标签)
-            - "qFront" → None  (不是寄存器)
-            """
-            reg_str = reg_str.rstrip(',')
-            if not reg_str or reg_str.isdigit() or reg_str in ['(', ')', '%hi', '%lo']:
-                return None
-            
-            # 跳过以特殊字符开头的标签/符号（如 .LC0, .L9）
-            if reg_str.startswith('.'):
-                return None
-            
-            # 查找所有括号内的内容
-            matches = re.findall(r'\((\w+)', reg_str)
-            
-            if matches:
-                # 如果只有一个括号，且字符串包含 %hi 或 %lo，
-                # 说明是符号引用（如 %hi(symbol)），没有实际寄存器
-                if len(matches) == 1 and ('%hi' in reg_str or '%lo' in reg_str):
-                    return None
-                
-                # 有括号时取最后一个（处理 %lo(symbol)(reg) 和 offset(reg) 两种情况）
-                reg_str = matches[-1]
-            
-            # 去除版本号后缀
-            reg_name = reg_str.split('_')[0] if '_' in reg_str else reg_str
-            
-            # 最终验证：必须是合法的 RISC-V 寄存器
-            return reg_name if reg_name in ALL_ABI_REGS else None
-        
-        def parse_instruction(line: str, prefix: str) -> Optional[Tuple[str, str, Optional[str], Set[str]]]:
-            """解析一条指令，返回 (eclass_id, inst_name, rd, used_regs)"""
-            if not line.strip() or ';' not in line:
-                return None
-            
-            inst_part, eclass_short = line.split(';')[0].strip(), line.split(';')[-1].strip()
-            parts = inst_part.split()
-            if not parts:
-                return None
-            
-            inst_name = parts[0].lower()
-            eclass_id = f"{prefix}_eclass_{eclass_short.replace('-', '_')}"
-            
-            # 解析寄存器
-            rd = None
-            used_regs = set()
-            
-            if inst_name in INSTRUCTIONS_WITHOUT_RD:
-                # 所有操作数都是源寄存器
-                for operand in parts[1:]:
-                    reg = extract_reg_name(operand)
-                    if reg:
-                        used_regs.add(reg)
-            else:
-                # 第一个操作数是目标寄存器 rd，其余是源寄存器
-                if len(parts) >= 2:
-                    rd = extract_reg_name(parts[1])
-                for operand in parts[2:]:
-                    reg = extract_reg_name(operand)
-                    if reg:
-                        used_regs.add(reg)
-            
-            return eclass_id, inst_name, rd, used_regs
-        
-        # 主逻辑：遍历每个 basic block
         orphans = defaultdict(list)
         eclass_dir = os.path.join(DATA_DIR, self.program_name, "basic_blocks_eclass")
         
@@ -523,29 +442,46 @@ class EGraph:
             
             try:
                 with open(filepath, 'r') as f:
-                    instructions = [parse_instruction(line, prefix) 
-                                  for line in f if parse_instruction(line.strip(), prefix)]
-                
-                # 追踪寄存器的定义和使用
-                live_defs = {}  # reg_name -> eclass_id (最新定义)
-                
-                for eclass_id, inst_name, rd, used_regs in instructions:
-                    # 使用寄存器会使其定义不再是孤儿
-                    for reg in used_regs:
-                        live_defs.pop(reg, None)
+                    # 追踪寄存器的定义（reg_name -> eclass_id）
+                    live_defs = {}
                     
-                    # INSTRUCTIONS_WITHOUT_RD 的指令是孤儿（无结果值）
-                    if inst_name in INSTRUCTIONS_WITHOUT_RD:
+                    for line in f:
+                        line = line.strip()
+                        if not line or ';' not in line:
+                            continue
+                        
+                        # 分离指令和 eclass
+                        inst_part, eclass_short = line.split(';')[0].strip(), line.split(';')[-1].strip()
+                        eclass_id = f"{prefix}_eclass_{eclass_short.replace('-', '_')}"
+                        
+                        # 使用 frontend/util.py 的函数解析指令
+                        mnemonic, operands = parse_instruction(inst_part)
+                        if not mnemonic:
+                            continue
+                        
+                        # 分析使用和定义的寄存器
+                        use_regs, def_regs = analyze_instruction(mnemonic, operands)
+                        
+                        # 使用寄存器会清除其定义（不再是孤儿）
+                        for reg in use_regs:
+                            live_defs.pop(reg, None)
+                        
+                        # 记录定义的寄存器
+                        for reg in def_regs:
+                            # 如果该寄存器已有旧定义未被使用，先标记为孤儿
+                            if reg in live_defs and live_defs[reg] in self.eclasses:
+                                orphans[prefix].append(live_defs[reg])
+                            # 记录新定义
+                            live_defs[reg] = eclass_id
+                        
+                        # 无定义的指令（INSTRUCTIONS_WITHOUT_RD）是孤儿
+                        if not def_regs and eclass_id in self.eclasses:
+                            orphans[prefix].append(eclass_id)
+                    
+                    # 剩余未使用的定义也是孤儿
+                    for eclass_id in live_defs.values():
                         if eclass_id in self.eclasses:
                             orphans[prefix].append(eclass_id)
-                    # 记录新的寄存器定义
-                    elif rd:
-                        live_defs[rd] = eclass_id
-                
-                # 剩余未使用的定义也是孤儿
-                for eclass_id in live_defs.values():
-                    if eclass_id in self.eclasses:
-                        orphans[prefix].append(eclass_id)
                         
             except Exception as e:
                 print(f"Error processing {filepath}: {e}")
