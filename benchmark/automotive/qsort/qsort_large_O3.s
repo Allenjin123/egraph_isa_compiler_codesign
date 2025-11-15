@@ -8,160 +8,143 @@
 	.align	2
 	.type	quicksort_range, @function
 quicksort_range:
-	addi	sp,sp,-112
-	sw	ra,108(sp)
-	sw	a2,12(sp)
-	bge	a1,a2,.L1
-	sw	s7,76(sp)
-	sw	s8,72(sp)
-	sw	s9,68(sp)
-	sw	s10,64(sp)
-	sw	s0,104(sp)
-	sw	s1,100(sp)
-	sw	s2,96(sp)
-	sw	s3,92(sp)
-	sw	s4,88(sp)
-	sw	s5,84(sp)
-	sw	s6,80(sp)
-	sw	s11,60(sp)
-	mv	s10,a1
-	mv	s7,a0
-	addi	s8,a0,24
-	addi	s9,a0,-24
+	bge	a1,a2,.L33
+	addi	sp,sp,-80
+	sw	s1,68(sp)
+	sw	s2,64(sp)
+	sw	s3,60(sp)
+	sw	ra,76(sp)
+	sw	s0,72(sp)
+	mv	s3,a2
+	addi	s2,a0,-24
+	addi	s1,a0,24
 .L2:
-	lw	a5,12(sp)
-	lw	s2,12(sp)
-	mv	s1,s10
-	add	a4,a5,s10
+	add	a4,s3,a1
 	srli	a5,a4,31
 	add	a5,a5,a4
 	srai	a4,a5,1
 	andi	a5,a5,-2
 	add	a5,a5,a4
 	slli	a5,a5,3
-	add	a5,s7,a5
-	lw	s4,16(a5)
-	lw	s5,20(a5)
-.L8:
-	bgt	s1,s2,.L9
-.L27:
-	slli	a5,s1,1
-	add	a5,a5,s1
-	slli	s11,a5,3
-	add	s3,s7,s11
-	lw	a2,16(s3)
-	lw	a3,20(s3)
-	slli	s0,s2,1
-	mv	a0,s4
-	mv	a1,s5
-	add	s0,s0,s2
-	slli	s0,s0,3
-	call	__gtdf2
-	add	s6,s7,s0
-	add	s11,s8,s11
-	ble	a0,zero,.L26
-.L4:
-	mv	s3,s11
-	lw	a0,16(s11)
-	lw	a1,20(s11)
-	mv	a2,s4
-	mv	a3,s5
-	addi	s11,s11,24
-	addi	s1,s1,1
-	call	__ltdf2
-	blt	a0,zero,.L4
-	lw	a2,16(s6)
-	lw	a3,20(s6)
-	mv	a0,s4
-	mv	a1,s5
-	call	__ltdf2
-	bge	a0,zero,.L5
-.L14:
-	add	s0,s9,s0
-.L7:
-	mv	s6,s0
-	lw	a0,16(s0)
-	lw	a1,20(s0)
-	mv	a2,s4
-	mv	a3,s5
-	addi	s0,s0,-24
-	addi	s2,s2,-1
-	call	__gtdf2
-	bgt	a0,zero,.L7
-.L5:
-	blt	s2,s1,.L8
-.L15:
-	lw	a1,0(s6)
-	lw	a2,4(s6)
-	lw	a3,8(s6)
-	lw	a4,12(s6)
-	lw	a5,16(s6)
-	lw	a0,0(s3)
-	sw	a1,0(s3)
-	lw	a1,4(s3)
-	sw	a2,4(s3)
-	lw	a2,8(s3)
-	sw	a3,8(s3)
-	lw	a3,12(s3)
-	sw	a4,12(s3)
-	lw	a4,16(s3)
-	sw	a5,16(s3)
-	lw	a6,20(s6)
-	lw	a5,20(s3)
-	addi	s1,s1,1
-	sw	a6,20(s3)
-	addi	s2,s2,-1
-	sw	a0,24(sp)
-	sw	a1,28(sp)
-	sw	a2,32(sp)
-	sw	a3,36(sp)
-	sw	a4,40(sp)
-	sw	a0,0(s6)
-	sw	a5,44(sp)
-	sw	a1,4(s6)
-	sw	a2,8(s6)
-	sw	a3,12(s6)
-	sw	a4,16(s6)
-	sw	a5,20(s6)
-	ble	s1,s2,.L27
-.L9:
-	bgt	s2,s10,.L28
+	add	a5,a0,a5
+	lw	t3,16(a5)
+	lw	a3,20(a5)
+	mv	a2,s3
+	mv	s0,a1
+.L10:
+	bgt	s0,a2,.L11
+.L36:
+	slli	a4,s0,1
+	add	a4,a4,s0
+	slli	a4,a4,3
+	add	t1,a0,a4
+	slli	a5,a2,1
+	lw	a6,20(t1)
+	add	a5,a5,a2
+	slli	a5,a5,3
+	add	a7,a0,a5
+	bgeu	a6,a3,.L34
 .L12:
-	lw	a5,12(sp)
-	bge	s1,a5,.L29
-	mv	s10,s1
-	j	.L2
+	add	a4,s1,a4
+.L25:
+	mv	t1,a4
+	lw	a6,20(a4)
+	addi	a4,a4,24
+	addi	s0,s0,1
+	bltu	a6,a3,.L25
+	bne	a6,a3,.L21
+	lw	a6,-8(a4)
+	bltu	a6,t3,.L25
+.L21:
+	lw	a4,20(a7)
+	bleu	a4,a3,.L35
+.L17:
+	add	a5,s2,a5
 .L26:
-	lw	a2,16(s6)
-	lw	a3,20(s6)
-	mv	a0,s4
-	mv	a1,s5
-	call	__ltdf2
-	blt	a0,zero,.L14
-	j	.L15
-.L29:
-	lw	s0,104(sp)
-	lw	s1,100(sp)
-	lw	s2,96(sp)
-	lw	s3,92(sp)
-	lw	s4,88(sp)
-	lw	s5,84(sp)
-	lw	s6,80(sp)
-	lw	s7,76(sp)
-	lw	s8,72(sp)
-	lw	s9,68(sp)
-	lw	s10,64(sp)
-	lw	s11,60(sp)
-.L1:
-	lw	ra,108(sp)
-	addi	sp,sp,112
-	jr	ra
-.L28:
-	mv	a2,s2
-	mv	a1,s10
-	mv	a0,s7
+	mv	a6,a5
+	lw	a4,20(a5)
+	addi	a5,a5,-24
+	addi	a2,a2,-1
+	bgtu	a4,a3,.L26
+	bne	a4,a3,.L22
+	lw	a4,40(a5)
+	bgtu	a4,t3,.L26
+.L22:
+	mv	a7,a6
+.L6:
+	blt	a2,s0,.L10
+.L19:
+	lw	t5,0(a7)
+	lw	t4,4(a7)
+	lw	a6,8(a7)
+	lw	a4,12(a7)
+	lw	a5,16(a7)
+	lw	t6,0(t1)
+	sw	t5,0(t1)
+	lw	t5,4(t1)
+	sw	t4,4(t1)
+	lw	t4,8(t1)
+	sw	a6,8(t1)
+	lw	a6,12(t1)
+	sw	a4,12(t1)
+	lw	a4,16(t1)
+	sw	a5,16(t1)
+	lw	t0,20(a7)
+	lw	a5,20(t1)
+	addi	s0,s0,1
+	sw	t0,20(t1)
+	addi	a2,a2,-1
+	sw	t6,24(sp)
+	sw	t5,28(sp)
+	sw	t4,32(sp)
+	sw	a6,36(sp)
+	sw	a4,40(sp)
+	sw	t6,0(a7)
+	sw	a5,44(sp)
+	sw	t5,4(a7)
+	sw	t4,8(a7)
+	sw	a6,12(a7)
+	sw	a4,16(a7)
+	sw	a5,20(a7)
+	ble	s0,a2,.L36
+.L11:
+	bgt	a2,a1,.L37
+	bge	s0,s3,.L38
+.L20:
+	mv	a1,s0
+	j	.L2
+.L34:
+	bne	a6,a3,.L14
+	lw	a6,16(t1)
+	bltu	a6,t3,.L12
+.L14:
+	lw	a4,20(a7)
+	bgtu	a4,a3,.L17
+	bne	a4,a3,.L19
+	lw	a4,16(a7)
+	bgtu	a4,t3,.L17
+	j	.L19
+.L35:
+	bne	a4,a3,.L6
+	lw	a4,16(a7)
+	bgtu	a4,t3,.L17
+	blt	a2,s0,.L10
+	j	.L19
+.L37:
+	sw	a0,12(sp)
 	call	quicksort_range
-	j	.L12
+	lw	a0,12(sp)
+	blt	s0,s3,.L20
+.L38:
+	lw	ra,76(sp)
+	lw	s0,72(sp)
+	lw	s1,68(sp)
+	lw	s2,64(sp)
+	lw	s3,60(sp)
+	addi	sp,sp,80
+	jr	ra
+.L33:
+	ret
 	.size	quicksort_range, .-quicksort_range
 	.section	.rodata.str1.4,"aMS",@progbits,1
 	.align	2
@@ -177,77 +160,46 @@ quicksort_range:
 main:
 	li	t0,-1196032
 	addi	sp,sp,-2032
-	addi	t0,t0,-1984
-	sw	s0,2024(sp)
+	addi	t0,t0,-1968
 	sw	s1,2020(sp)
-	sw	s8,1992(sp)
 	sw	ra,2028(sp)
+	sw	s0,2024(sp)
 	sw	s2,2016(sp)
 	sw	s3,2012(sp)
-	sw	s4,2008(sp)
-	sw	s5,2004(sp)
-	sw	s6,2000(sp)
-	sw	s7,1996(sp)
-	lui	s8,%hi(input_data)
+	lui	a6,%hi(input_data)
 	add	sp,sp,t0
 	mv	s1,sp
-	mv	s0,sp
-	addi	s8,s8,%lo(input_data)
-.L31:
-	lw	s3,4(s8)
-	lw	s2,8(s8)
-	lw	a0,0(s8)
-	sw	s3,4(s0)
-	sw	s2,8(s0)
-	sw	a0,0(s0)
-	call	__floatsidf
-	mv	s4,a0
-	mv	a0,s3
-	mv	s5,a1
-	call	__floatsidf
-	mv	s6,a0
-	mv	a0,s2
-	mv	s7,a1
-	call	__floatsidf
-	mv	s2,a0
-	mv	s3,a1
-	mv	a2,s4
-	mv	a3,s5
-	mv	a0,s4
-	mv	a1,s5
-	call	__muldf3
-	mv	s4,a0
-	mv	s5,a1
-	mv	a2,s6
-	mv	a3,s7
-	mv	a0,s6
-	mv	a1,s7
-	call	__muldf3
-	mv	a2,a0
-	mv	a3,a1
-	mv	a0,s4
-	mv	a1,s5
-	call	__adddf3
-	mv	s4,a0
-	mv	s5,a1
-	mv	a2,s2
-	mv	a3,s3
-	mv	a0,s2
-	mv	a1,s3
-	call	__muldf3
-	mv	a2,a0
-	mv	a3,a1
-	mv	a0,s4
-	mv	a1,s5
-	call	__adddf3
+	mv	a2,sp
+	addi	a6,a6,%lo(input_data)
+.L40:
+	lw	a4,0(a6)
+	lw	a0,4(a6)
+	lw	a1,8(a6)
+	mul	a3,a4,a4
+	sw	a4,0(a2)
+	sw	a0,4(a2)
+	sw	a1,8(a2)
+	addi	a2,a2,24
+	addi	a6,a6,12
+	mul	a5,a0,a0
+	mulh	a4,a4,a4
+	add	a5,a3,a5
+	sltu	a3,a5,a3
+	mulh	a0,a0,a0
+	mul	a7,a1,a1
+	add	a4,a4,a0
+	add	a3,a3,a4
+	mulh	a1,a1,a1
+	add	a4,a5,a7
+	sltu	a5,a4,a5
+	sw	a4,-8(a2)
+	add	a3,a3,a1
+	add	a5,a5,a3
+	sw	a5,-4(a2)
 	li	a5,1200128
 	addi	a5,a5,-128
-	sw	a0,16(s0)
-	sw	a1,20(s0)
 	add	a5,a5,sp
-	addi	s0,s0,24
-	addi	s8,s8,12
-	bne	a5,s0,.L31
+	bne	a5,a2,.L40
 	li	a2,49152
 	mv	a0,sp
 	addi	a2,a2,847
@@ -256,7 +208,7 @@ main:
 	mv	a5,s1
 	li	a4,0
 	li	a3,0
-.L32:
+.L41:
 	lw	s0,0(a5)
 	lw	a1,4(a5)
 	lw	a2,8(a5)
@@ -273,7 +225,7 @@ main:
 	add	a2,a2,sp
 	mv	a3,s2
 	mv	a4,s0
-	bne	a2,a5,.L32
+	bne	a2,a5,.L41
 	lui	a0,%hi(.LC0)
 	li	a1,49152
 	addi	a1,a1,848
@@ -281,7 +233,7 @@ main:
 	lui	s3,%hi(.LC1)
 	call	printf
 	addi	s3,s3,%lo(.LC1)
-.L33:
+.L42:
 	lw	a3,8(s1)
 	lw	a2,4(s1)
 	lw	a1,0(s1)
@@ -291,9 +243,9 @@ main:
 	li	a5,1200128
 	addi	a5,a5,-128
 	add	a5,a5,sp
-	bne	a5,s1,.L33
+	bne	a5,s1,.L42
 	li	t0,1196032
-	addi	t0,t0,1984
+	addi	t0,t0,1968
 	add	sp,sp,t0
 	lw	ra,2028(sp)
 	or	a0,s0,s2
@@ -301,15 +253,11 @@ main:
 	lw	s0,2024(sp)
 	lw	s2,2016(sp)
 	lw	s3,2012(sp)
-	lw	s4,2008(sp)
-	lw	s5,2004(sp)
-	lw	s6,2000(sp)
-	lw	s7,1996(sp)
-	lw	s8,1992(sp)
 	seqz	a0,a0
 	addi	sp,sp,2032
 	jr	ra
 	.size	main, .-main
+	.globl	input_data
 	.section	.rodata
 	.align	2
 	.type	input_data, @object
@@ -150315,10 +150263,5 @@ input_data:
 	.word	1442762849
 	.word	1943919920
 	.word	1798816776
-	.globl	__adddf3
-	.globl	__muldf3
-	.globl	__floatsidf
-	.globl	__gtdf2
-	.globl	__ltdf2
 	.ident	"GCC: (g1b306039a) 15.1.0"
 	.section	.note.GNU-stack,"",@progbits
