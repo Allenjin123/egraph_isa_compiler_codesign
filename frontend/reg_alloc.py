@@ -163,6 +163,17 @@ def allocate_compact_mapping(
 
     # 判断某真实寄存器是否能容纳 [s,e)（不与固有 busy 段/已分配段重叠）
     def real_can_hold(r: str, s: int, e: int) -> bool:
+        # 特殊优化：检测"最后使用后立即重定义"模式
+        # 如果 SSA 区间是 [s, s+1]，且寄存器 r 在 line s 使用、line s+1 重定义
+        # 则允许复用（因为 r 在 line s 读取后立即死亡，line s+1 重生）
+        if e == s + 1:  # 短生命周期：只跨越两条指令
+            uses_at_s = s in real_uses.get(r, [])
+            defs_at_e = e in real_defs.get(r, [])
+            if uses_at_s and defs_at_e:
+                # 模式匹配：line s 使用，line e 重定义
+                # 这种情况下，r 在 line s 读取后立即无效，可以复用
+                return True
+        
         for (rs, re) in real_busy[r]:
             if overlaps(rs, re, s, e):
                 return False
@@ -283,5 +294,208 @@ def test_mulh():
     for line in result:
         print(line)
 
+def test_xor_s3_issue():
+    """
+    测试 XOR 实现是否会错误覆盖 s3
+    原始 placeholder 代码：
+        or	op_0,s3,a2
+        or	op_3,s3,a2
+        sub	op_2,op_3,a2
+        sub	op_1,s3,op_2
+        sub	a2,op_0,op_1
+    这段代码实现了 xor a2, a2, s3
+    问题：如果 op_3 被分配到 s3，会导致 s3 被覆盖
+    """
+    code = [
+        "or op_0, s3, a2",
+        "or op_3, s3, a2",
+        "sub op_2, op_3, a2",
+        "sub op_1, s3, op_2",
+        "sub a2, op_0, op_1",
+    ]
+    
+    # s3 在后续还会被使用（live_out），所以不应该被覆盖
+    live_out = ["a2"]
+    
+    print("=" * 60)
+    print("测试 XOR 实现（s3 覆盖问题）")
+    print("=" * 60)
+    print("\n输入代码（placeholder 形式）：")
+    for i, line in enumerate(code, 1):
+        print(f"  {i}: {line}")
+    
+    print(f"\nLive-out: {live_out}")
+    print("\n运行寄存器分配...")
+    
+    mapping, m = allocate_compact_mapping(code, live_out)
+    
+    print("\n分配结果：")
+    print(f"Mapping: {mapping}")
+    print(f"Max op_ index used: {m}")
+    
+    # 应用映射，生成分配后的代码
+    result = []
+    for line in code:
+        mnem, ops = parse_instruction(line, op_reg="op_")
+        if mnem:
+            new_ops = [mapping.get(op.strip(), op.strip()) for op in ops]
+            result.append(f"{mnem} {', '.join(new_ops)}")
+        else:
+            result.append(line)
+    
+    print("\n分配后的代码：")
+    for i, line in enumerate(result, 1):
+        print(f"  {i}: {line}")
+    
+    # 检查是否有问题：op_3 是否被分配到 s3
+    if mapping.get("op_3") == "s3":
+        print("\n" + "=" * 60)
+        print("❌ 问题发现：op_3 被分配到 s3，会导致 s3 被覆盖！")
+        print("=" * 60)
+        print("\n问题分析：")
+        print("  在分配后的代码中，第2行 'or s3, s3, a2' 会覆盖 s3 的原始值")
+        print("  但第4行 'sub op_1, s3, op_2' 需要用到 s3 的原始值")
+        print("  这会导致计算结果错误！")
+        return False
+    else:
+        print("\n" + "=" * 60)
+        print("✓ 测试通过：op_3 没有被分配到 s3")
+        print("=" * 60)
+        if mapping.get("op_3"):
+            print(f"  op_3 被分配到: {mapping.get('op_3')}")
+        return True
+
+
+def test_double_sub_pattern():
+    """
+    测试双减法模式的寄存器分配优化
+    模式: sub op_0, x0, a0
+          sub a0, a2, op_0
+    
+    这个模式计算 a0 = a2 + a0 (通过两次减法)
+    优化后应该复用 a0:
+          sub a0, x0, a0    # a0 = -a0
+          sub a0, a2, a0    # a0 = a2 + a0
+    """
+    code = [
+        "sub op_0, x0, a0",
+        "sub a0, a2, op_0",
+    ]
+    
+    live_out = ["a0"]
+    
+    print("=" * 60)
+    print("测试双减法模式（a0 复用优化）")
+    print("=" * 60)
+    print("\n输入代码（placeholder 形式）：")
+    for i, line in enumerate(code, 1):
+        print(f"  {i}: {line}")
+    
+    print(f"\nLive-out: {live_out}")
+    print("\n运行寄存器分配...")
+    
+    mapping, m = allocate_compact_mapping(code, live_out)
+    
+    print("\n分配结果：")
+    print(f"Mapping: {mapping}")
+    print(f"Max op_ index used: {m}")
+    
+    # 应用映射，生成分配后的代码
+    result = []
+    for line in code:
+        mnem, ops = parse_instruction(line, op_reg="op_")
+        if mnem:
+            new_ops = [mapping.get(op.strip(), op.strip()) for op in ops]
+            result.append(f"{mnem} {', '.join(new_ops)}")
+        else:
+            result.append(line)
+    
+    print("\n分配后的代码：")
+    for i, line in enumerate(result, 1):
+        print(f"  {i}: {line}")
+    
+    # 检查优化结果
+    if mapping.get("op_0") == "a0":
+        print("\n" + "=" * 60)
+        print("✓ 优化成功：op_0 被分配到 a0，节省了临时寄存器！")
+        print("=" * 60)
+        print("\n优化说明：")
+        print("  算法识别出 a0 在第1行读取后立即死亡，第2行重生")
+        print("  因此可以安全地复用 a0 作为 op_0 的寄存器")
+        print("  第1行 'sub a0, x0, a0' 计算 a0 = -a0")
+        print("  第2行 'sub a0, a2, a0' 计算 a0 = a2 + a0")
+        return True
+    else:
+        print("\n" + "=" * 60)
+        print(f"❌ 未能优化：op_0 被分配到 {mapping.get('op_0')}")
+        print("=" * 60)
+        return False
+
+
+def test_double_sub_in_loop():
+    """
+    测试在循环中的双减法模式（mul 函数真实场景）
+    """
+    code = [
+        "sub op_0, x0, a0",      # line 0: a0 使用，op_0 定义
+        "sub a2, x0, op_0",      # line 1: op_0 使用，a2 定义
+        "addi a0, x0, 0",        # line 2: a0 定义
+        "addi op_0, x0, 1",      # line 3: op_0 定义
+        "and a3, a1, op_0",      # line 4: op_0 使用
+        "beq a3, x0, .Mul_skip", # line 5
+        "sub op_0, x0, a0",      # line 6: a0 使用，op_0 定义
+        "sub a0, a2, op_0",      # line 7: op_0 使用，a0 定义
+    ]
+    
+    live_out = ["a0", "a2"]
+    
+    print("=" * 60)
+    print("测试循环中的双减法模式（mul 函数场景）")
+    print("=" * 60)
+    print("\n输入代码（placeholder 形式）：")
+    for i, line in enumerate(code, 1):
+        print(f"  {i}: {line}")
+    
+    print(f"\nLive-out: {live_out}")
+    print("\n运行寄存器分配...")
+    
+    mapping, m = allocate_compact_mapping(code, live_out)
+    
+    print("\n分配结果：")
+    print(f"Mapping: {mapping}")
+    print(f"Max op_ index used: {m}")
+    
+    # 应用映射，生成分配后的代码
+    result = []
+    for line in code:
+        mnem, ops = parse_instruction(line, op_reg="op_")
+        if mnem:
+            new_ops = [mapping.get(op.strip(), op.strip()) for op in ops]
+            result.append(f"{mnem} {', '.join(new_ops)}")
+        else:
+            result.append(line)
+    
+    print("\n分配后的代码：")
+    for i, line in enumerate(result, 1):
+        print(f"  {i}: {line}")
+    
+    # 统计优化效果
+    optimized_count = 0
+    if mapping.get("op_0") in ["a0", "a2", "a3"]:
+        optimized_count += 1
+    
+    print(f"\n使用的 op_ 数量: {m + 1 if m >= 0 else 0}")
+    if m < 0:
+        print("\n✓ 完全优化：所有临时变量都被分配到真实寄存器！")
+    elif m == 0:
+        print("\n✓ 部分优化：只需要1个 op_ 临时变量")
+
+
 if __name__ == "__main__":
     test_mulh()
+    print("\n" + "=" * 60 + "\n")
+    test_xor_s3_issue()
+    print("\n" + "=" * 60 + "\n")
+    test_double_sub_pattern()
+    print("\n" + "=" * 60 + "\n")
+    test_double_sub_in_loop()
