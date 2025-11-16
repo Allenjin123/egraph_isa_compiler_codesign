@@ -413,7 +413,7 @@ def main():
     parser.add_argument(
         "--timeout",
         type=int,
-        default=180,
+        default=300,
         help="Solver timeout (seconds, default: 180)"
     )
     parser.add_argument(
@@ -430,7 +430,7 @@ def main():
     parser.add_argument(
         "--node-cost-scale",
         type=float,
-        default=0.1,
+        default=0,
         help="Scaling factor for node costs in objective function. "
              "0=ignore node costs (only operator diversity), "
              "1=default balance, "
