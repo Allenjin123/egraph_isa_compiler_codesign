@@ -101,6 +101,9 @@ parse_program_name() {
     # Remove optimization flags like _O3, _O2, etc
     name="${name%_O[0-3]}"
     name="${name%_O[0-3]s}"
+    # Also handle Oz variants
+    name="${name%_Oz}"
+    name="${name%_Ozs}"
     
     echo "$name|$size_type"
 }
@@ -119,7 +122,7 @@ find_mibench_dir() {
     esac
     
     # Search in network and automotive directories
-    for category in network automotive; do
+    for category in network automotive security; do
         for subdir in "$MIBENCH_DIR/$category"/*; do
             if [ -d "$subdir" ]; then
                 local dir_name=$(basename "$subdir")
