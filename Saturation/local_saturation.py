@@ -269,7 +269,7 @@ def process_basic_block_to_egglog(block: text_basic_block, program_name: str = "
     egglog_lines.append("; ============================================")
     egglog_lines.append("; Run saturation to apply rewrite rules")
     egglog_lines.append("; ============================================")
-    egglog_lines.append("(run 6)")
+    egglog_lines.append("(run 3)")
     egglog_lines.append("")
 
     # Add print-eclass-id commands for each instruction
