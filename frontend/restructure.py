@@ -421,8 +421,12 @@ class RewriteBlock:
             if not allocated.startswith('op_'):
                 used_real_regs.add(allocated)
         
+        # 获取当前行的 def 和 use 寄存器，这些不能被借用
+        current_defs, current_uses = self.defs_uses_per_line[line_idx]
+        cannot_borrow = used_real_regs | current_defs | current_uses
+        
         # 从 free_regs 中排除已被直接使用的寄存器
-        available_free_regs = [r for r in self.free_regs if r not in used_real_regs]
+        available_free_regs = [r for r in self.free_regs if r not in cannot_borrow]
         
         # 计算需要借用的寄存器数量（虚拟寄存器的数量）
         num_virtual = m + 1 if m >= 0 else 0
@@ -432,7 +436,7 @@ class RewriteBlock:
         # 借用寄存器（如需要），并记录栈操作
         borrowed_regs, push_stack, pop_stack = [], [], []
         if num_needed > 0:
-            borrowed_regs, push_stack, pop_stack = self.allocate_registers(num_needed, used_real_regs)
+            borrowed_regs, push_stack, pop_stack = self.allocate_registers(num_needed, cannot_borrow)
             self.stack_per_line[line_idx]["push"] = push_stack
             self.stack_per_line[line_idx]["pop"] = pop_stack
 
