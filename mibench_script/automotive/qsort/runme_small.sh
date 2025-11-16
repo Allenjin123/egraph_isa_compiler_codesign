@@ -1,6 +1,6 @@
 #!/bin/sh
 $RISCV/bin/true >/dev/null 2>&1 || true
-export BENCH_DIR="../../../benchmark/automotive/qsort"
+export BENCH_DIR="../../../benchmark/automotive/qsort_small"
 BIN_SUFFIX="${BIN_SUFFIX}"
 mkdir -p "$BENCH_DIR"
 if [ -f ./qsort_small$BIN_SUFFIX ]; then

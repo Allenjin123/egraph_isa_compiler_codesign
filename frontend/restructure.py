@@ -173,7 +173,7 @@ class GraphNode:
 
 
 class BlockGraph:
-    def __init__(self, program_name: str, block_num: int, egraph: EGraph, choices: Dict[str, str], print_graph: bool = False):
+    def __init__(self, program_name: str, block_num: int, egraph: EGraph, choices: Dict[str, str], merged_data: Dict = None, print_graph: bool = False):
         self.program_name = program_name
         self.block_num = block_num
         self.egraph = egraph
@@ -181,16 +181,18 @@ class BlockGraph:
         self.root_eclass_id = []
         # self.nodes: List[GraphNode] = [] 
         self.eclasses_to_nodes: Dict[str, GraphNode] = {} 
-        self.merged_data: Dict = {}  # merged.json 数据
+        self.merged_data: Dict = merged_data if merged_data is not None else {}  # merged.json 数据
         self.print_graph = print_graph
         
     def load_merged_json(self):
-        """加载 merged.json"""
-        json_file = FRONTEND_OUTPUT_DIR / self.program_name / "merged.json"
-        if json_file.exists():
-            with open(json_file, 'r') as f:
-                data = json.load(f)
-                self.merged_data = data.get('nodes', {})
+        """加载 merged.json (已废弃，现在通过构造函数传入)"""
+        # 为了向后兼容保留此方法，但实际上不再使用
+        if not self.merged_data:
+            json_file = FRONTEND_OUTPUT_DIR / self.program_name / "merged.json"
+            if json_file.exists():
+                with open(json_file, 'r') as f:
+                    data = json.load(f)
+                    self.merged_data = data.get('nodes', {})
     
     def get_leaf_value(self, enode_id: str) -> str:
         """获取 leaf 节点的实际值"""
@@ -215,7 +217,7 @@ class BlockGraph:
     
     def build_graph(self):
         """构建图：从 root 开始递归添加所有依赖节点"""
-        self.load_merged_json()
+        # merged_data 现在通过构造函数传入，不再需要调用 load_merged_json()
         self.load_root_eclass()
         visited = set()
         for eclass_id in self.root_eclass_id:
@@ -284,10 +286,10 @@ class BlockGraph:
             self._add_node_recursive(child_eclass, visited)
 
 class RewriteBlock:
-    def __init__(self, program_name: str, block_num: int, egraph: EGraph, choices: Dict[str, str], print_graph: bool = False):
+    def __init__(self, program_name: str, block_num: int, egraph: EGraph, choices: Dict[str, str], merged_data: Dict = None, print_graph: bool = False):
         self.program_name = program_name
         self.block_num = block_num
-        self.block_graph = BlockGraph(program_name, block_num, egraph, choices, print_graph=print_graph)
+        self.block_graph = BlockGraph(program_name, block_num, egraph, choices, merged_data=merged_data, print_graph=print_graph)
         self.block_graph.build_graph()
         self.lines: List[str] = []
         self.eclass_to_rd_list: List[Tuple[str, str]] = get_eclass_to_rd(program_name, block_num)
@@ -296,9 +298,10 @@ class RewriteBlock:
         self.placeholder_lines: List[str] = []
         self.eclass_to_rd_map: Dict[str, str] = {}  # 初始化为空，走一行更新一行
         self.stack_per_line: List[Dict[str, List[str]]] = [{"push": [], "pop": []} for _ in range(len(self.block_lines))]
-        # 计算每行可用的 free_regs
-        self.free_regs_per_line: List[List[str]] = compute_free_regs_per_line(program_name, block_num)['free_regs_per_line']
-        self.defs_uses_per_line: List[Tuple[Set[str], Set[str]]] = compute_free_regs_per_line(program_name, block_num)['defs_uses_per_line']
+        # 计算每行可用的 free_regs (只调用一次)
+        free_regs_data = compute_free_regs_per_line(program_name, block_num)
+        self.free_regs_per_line: List[List[str]] = free_regs_data['free_regs_per_line']
+        self.defs_uses_per_line: List[Tuple[Set[str], Set[str]]] = free_regs_data['defs_uses_per_line']
         self.free_regs: List[str] = []
         self.temp_counter: int = 0  # 临时寄存器计数器
         self.current_line_idx: int = 0  # 当前处理的行索引
@@ -586,12 +589,22 @@ def rewrite_program(program_name: str, solution_file: str = None, output_dir: st
     choices = extract_solution(egraph, variables)
     print(f"  - 提取选择完成，共 {len(choices)} 个 eclass 选择")
     
-    # 3. 获取所有 block 编号
+    # 3. 加载 merged.json（只读取一次）
+    print(f"\n正在加载 merged.json...")
+    merged_data = {}
+    json_file = FRONTEND_OUTPUT_DIR / program_name / "merged.json"
+    if json_file.exists():
+        with open(json_file, 'r') as f:
+            data = json.load(f)
+            merged_data = data.get('nodes', {})
+    print(f"  - 加载完成，共 {len(merged_data)} 个节点")
+    
+    # 4. 获取所有 block 编号
     print(f"\n正在获取所有 blocks...")
     block_nums = get_all_blocks(program_name)
     print(f"  - 找到 {len(block_nums)} 个 blocks: {block_nums}")
     
-    # 4. 设置输出目录
+    # 5. 设置输出目录
     if output_dir is None:
         output_dir = FRONTEND_OUTPUT_DIR / program_name / "basic_blocks_rewrite"
     else:
@@ -607,7 +620,7 @@ def rewrite_program(program_name: str, solution_file: str = None, output_dir: st
     placeholder_dir.mkdir(parents=True, exist_ok=True)
     print(f"\n输出目录: {output_dir}")
     
-    # 5. 处理每个 block
+    # 6. 处理每个 block
     print(f"\n开始重写 blocks...")
     stats = {
         'total_blocks': len(block_nums),
@@ -621,8 +634,8 @@ def rewrite_program(program_name: str, solution_file: str = None, output_dir: st
         try:
             print(f"\n处理 block {block_num}...", end=" ")
             
-            # 创建 RewriteBlock 实例
-            rewriter = RewriteBlock(program_name, block_num, egraph, choices, print_graph=print_graph)
+            # 创建 RewriteBlock 实例（传入 merged_data）
+            rewriter = RewriteBlock(program_name, block_num, egraph, choices, merged_data=merged_data, print_graph=print_graph)
             
             # 重写 block
             rewriter.rewrite_block()
@@ -655,7 +668,7 @@ def rewrite_program(program_name: str, solution_file: str = None, output_dir: st
             stats['errors'].append(error_msg)
             print(f"✗ 错误: {str(e)}")
     
-    # 6. 输出统计信息
+    # 7. 输出统计信息
     print(f"\n" + "=" * 60)
     print(f"重写完成统计")
     print(f"=" * 60)
@@ -797,7 +810,16 @@ def debug_print_block_graph(program_name: str, block_num: int, solution_file: st
         solution_file = str(ILP_OUTPUT_DIR / program_name / "sol" / "solution.sol")
     variables = parse_solution_file(solution_file)
     choices = extract_solution(egraph, variables)
-    block_graph = BlockGraph(program_name, block_num, egraph, choices, print_graph=True)
+    
+    # 加载 merged.json
+    merged_data = {}
+    json_file = FRONTEND_OUTPUT_DIR / program_name / "merged.json"
+    if json_file.exists():
+        with open(json_file, 'r') as f:
+            data = json.load(f)
+            merged_data = data.get('nodes', {})
+    
+    block_graph = BlockGraph(program_name, block_num, egraph, choices, merged_data=merged_data, print_graph=True)
     block_graph.build_graph()
 
 
