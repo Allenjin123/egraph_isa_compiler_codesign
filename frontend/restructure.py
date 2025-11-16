@@ -827,5 +827,5 @@ def main():
 
 
 if __name__ == "__main__":
-    #main()
-    debug_print_block_graph("md5", 19) 
+    main()
+    #debug_print_block_graph("md5", 19) 

@@ -54,6 +54,7 @@
     "__riscv_div_lib_L5": 74,
     "__riscv_div_lib_umodsi3": 75,
     "__riscv_div_lib_L10": 77,
+    "__riscv_div_lib_L11": 79,
     "__riscv_div_lib_L12": 80,
     "__riscv_div_lib_modsi3": 82,
     "__riscv_div_lib_L30": 84,
@@ -728,6 +729,7 @@
       "terminator_type": "conditional",
       "jump_target": "__riscv_div_lib_L11",
       "successors": [
+        79,
         66
       ],
       "predecessors": [
@@ -837,7 +839,7 @@
     },
     "75": {
       "terminator_type": "call",
-      "jump_target": "__riscv_div_lib_udivsi3",
+      "jump_target": null,
       "successors": [
         76
       ],
@@ -878,11 +880,13 @@
       "successors": [
         80
       ],
-      "predecessors": []
+      "predecessors": [
+        65
+      ]
     },
     "80": {
       "terminator_type": "call",
-      "jump_target": "__riscv_div_lib_udivsi3",
+      "jump_target": null,
       "successors": [
         81
       ],
@@ -921,7 +925,7 @@
     },
     "84": {
       "terminator_type": "call",
-      "jump_target": "__riscv_div_lib_udivsi3",
+      "jump_target": null,
       "successors": [
         85
       ],
@@ -951,7 +955,7 @@
     },
     "87": {
       "terminator_type": "call",
-      "jump_target": "__riscv_div_lib_udivsi3",
+      "jump_target": null,
       "successors": [
         88
       ],

@@ -64,7 +64,7 @@ def generate_ilp_file(
     #root_eclasses: List[str],
     file_path: str,
     zero_nodes: Optional[Set[str]] = None,
-    node_cost_scale: float = 1.0
+    node_cost_scale: float = 0
 ):
     """
     Generate ILP file (LP format) with objective to minimize operator types

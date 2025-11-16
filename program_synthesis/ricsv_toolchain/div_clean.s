@@ -40,7 +40,9 @@ __riscv_div_lib_L5:
 __riscv_div_lib_umodsi3:
     # Call udivsi3(a0, a1), then return the remainder, which is in a1
     addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
-    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+.Lpcrel_div1:
+    auipc ra, %pcrel_hi(__riscv_div_lib_udivsi3)
+    jalr  ra, ra, %pcrel_lo(.Lpcrel_div1)
     addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
     jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
 
@@ -56,7 +58,9 @@ __riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then ne
     sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
 __riscv_div_lib_L12:
     addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
-    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+.Lpcrel_div2:
+    auipc ra, %pcrel_hi(__riscv_div_lib_udivsi3)
+    jalr  ra, ra, %pcrel_lo(.Lpcrel_div2)
     sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
     jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
 
@@ -67,7 +71,9 @@ __riscv_div_lib_modsi3:
     blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
     blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
 __riscv_div_lib_L30:
-    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+.Lpcrel_div3:
+    auipc ra, %pcrel_hi(__riscv_div_lib_udivsi3)
+    jalr  ra, ra, %pcrel_lo(.Lpcrel_div3)
     addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
     jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
 __riscv_div_lib_L31:
@@ -75,7 +81,9 @@ __riscv_div_lib_L31:
     bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
 __riscv_div_lib_L32:
     sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
-    jal   ra, __riscv_div_lib_udivsi3        # jal __riscv_div_lib_udivsi3
+.Lpcrel_div4:
+    auipc ra, %pcrel_hi(__riscv_div_lib_udivsi3)
+    jalr  ra, ra, %pcrel_lo(.Lpcrel_div4)
     sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
     jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
 

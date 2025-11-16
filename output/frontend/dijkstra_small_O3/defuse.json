@@ -1910,7 +1910,9 @@
     "KILL": [
       "ra"
     ],
-    "USE_all": [],
+    "USE_all": [
+      "ra"
+    ],
     "DEF_all": [
       "ra"
     ]
@@ -1962,6 +1964,7 @@
     ],
     "USE_all": [
       "a0",
+      "ra",
       "zero"
     ],
     "DEF_all": [

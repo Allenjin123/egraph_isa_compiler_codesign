@@ -237,3 +237,50 @@ def allocate_compact_mapping(
 
     m = max(-1, next_id - 1)  # 若一个 op_k 都没用过，m = -1；否则是最大编号
     return mapping, m
+
+
+
+def test_mulh():
+    code = [
+        "lui op_20, 16",
+        "addi op_20, op_20, -1",
+        "and op_4, op_2, op_20",
+        "srai op_5, op_2, 16",
+        "and op_6, op_3, op_20",
+        "srai op_7, op_3, 16",
+        "mul op_8, op_4, op_6",
+        "mul op_9, op_5, op_6",
+        "srli op_10, op_8, 16",
+        "add op_9, op_9, op_10",
+        "and op_11, op_9, op_20",
+        "srai op_12, op_9, 16",
+        "mul op_13, op_4, op_7",
+        "add op_11, op_11, op_13",
+        "mul op_1, op_5, op_7",
+        "add op_1, op_1, op_12",
+        "srai op_13, op_11, 16",
+        "add op_1, op_1, op_13",
+    ]
+    #mulh op_1 op2 op3
+    live_out = ["op_1"]  # 假设最终结果 op_1 是 live-out
+    mapping, m = allocate_compact_mapping(code, live_out)
+    
+    print("Mapping:", mapping)
+    print(f"Max op_ index used: {m}")
+    
+    # 应用映射，生成分配后的代码
+    result = []
+    for line in code:
+        mnem, ops = parse_instruction(line, op_reg="op_")
+        if mnem:
+            new_ops = [mapping.get(op.strip(), op.strip()) for op in ops]
+            result.append(f"{mnem} {', '.join(new_ops)}")
+        else:
+            result.append(line)
+    
+    print("\nAllocated code:")
+    for line in result:
+        print(line)
+
+if __name__ == "__main__":
+    test_mulh()

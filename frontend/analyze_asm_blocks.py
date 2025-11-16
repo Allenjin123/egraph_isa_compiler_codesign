@@ -26,6 +26,10 @@ class AsmBlockAnalyzer:
         self.verbose = verbose
         self.branch_instructions = BRANCH_INSTRUCTIONS
     
+    def _strip_inline_comment(self, line: str) -> str:
+        """Return line content before the first inline comment marker (#)"""
+        return line.split('#', 1)[0]
+    
     def is_label_line(self, line: str) -> bool:
         """Check if line is a label (starts at column 0 and ends with ':')
         Examples:
@@ -34,10 +38,16 @@ class AsmBlockAnalyzer:
             '  100b4:' -> False (instruction address, has leading spaces)
             '    mov x0, x1' -> False (instruction, indented)
         """
-        if not line or line.startswith('#'):
+        if not line:
             return False
+        
+        line_no_comment = self._strip_inline_comment(line)
+        stripped = line_no_comment.rstrip()
+        if not stripped:
+            return False
+        
         # Label must start at column 0 (no leading whitespace) and end with ':'
-        if line[0] != ' ' and line[0] != '\t' and line.rstrip().endswith(':'):
+        if stripped[0] not in (' ', '\t') and stripped.endswith(':'):
             return True
         return False
     
@@ -85,7 +95,7 @@ class AsmBlockAnalyzer:
         """Extract label name from label line
         Example: 'main:' -> 'main', '.L1:' -> '.L1'
         """
-        stripped = line.strip()
+        stripped = self._strip_inline_comment(line).strip()
         if stripped.endswith(':'):
             return stripped[:-1].strip()
         return None

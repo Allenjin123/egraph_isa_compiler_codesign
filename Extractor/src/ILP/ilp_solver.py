@@ -40,11 +40,11 @@ def ensure_merged_json(program_name: str, json_files_with_prefixes: list, cost_m
     data directly from individual block JSON files, not from these merged files.
     
     Logic:
-    - If merged_with_roots.json already exists → skip (assume both files are up-to-date), return None
-    - Otherwise: Generate merged.json (if missing) and merged_with_roots.json, return the EGraph
+    - Always regenerate merged.json and merged_with_roots.json to ensure they are up-to-date
+    - Return the EGraph object for reuse by the caller
     
     Returns:
-        EGraph object if it was created for generating merged files, None if files already exist.
+        EGraph object created for generating merged files.
         The caller can reuse this EGraph to avoid duplicate initialization.
     
     Note: This function is for convenience only. Skipping it doesn't affect ILP solving.
@@ -56,18 +56,13 @@ def ensure_merged_json(program_name: str, json_files_with_prefixes: list, cost_m
     if not target_dir.exists():
         return None
 
-    # If merged_with_roots.json exists, assume all merged files are up-to-date
-    if merged_roots_path.exists():
-        return None
-
-    # Generate missing merged files
+    # Always regenerate merged files
     try:
-        # Generate merged.json if needed
-        if not merged_path.exists():
-            print(f"Generating {merged_path}...")
-            merged_data = merge_json(json_files_with_prefixes)
-            with open(merged_path, 'w') as f:
-                json.dump(merged_data, f, indent=2)
+        # Generate merged.json
+        print(f"Generating {merged_path}...")
+        merged_data = merge_json(json_files_with_prefixes)
+        with open(merged_path, 'w') as f:
+            json.dump(merged_data, f, indent=2)
         
         # Generate merged_with_roots.json
         print(f"Generating {merged_roots_path}...")
@@ -435,7 +430,7 @@ def main():
     parser.add_argument(
         "--node-cost-scale",
         type=float,
-        default=1.0,
+        default=0.1,
         help="Scaling factor for node costs in objective function. "
              "0=ignore node costs (only operator diversity), "
              "1=default balance, "
