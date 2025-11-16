@@ -77,9 +77,7 @@ countPrimes:
 	addi	a6,a6,1
 	addi	a1,a1,4
 	addi	a2,a2,4
-	bne	t1,a6,.+8
-	jal	x0,.+8
-	jal	x0,.L14
+	bne	t1,a6,.L14
 	addi	sp,sp,336
 	jalr	zero,ra,0
 .L7:
@@ -104,7 +102,8 @@ countPrimes:
 	lw	a2, 8(sp)
 	lw	ra, 12(sp)
 	addi	sp, sp, 16
-	slli	a5,t1,2
+	addi	a5,x0,2
+	sll	a5,t1,a5
 	sub	a2,x0,sp
 	sub	a2,a5,a2
 	sub	t0,x0,sp
@@ -199,7 +198,8 @@ main:
 	lw	ra,28(sp)
 	addi	a0,a0,-2048
 	addi	a0,a0,-1464
-	bgeu	zero,a0,.+8
+	bltu	zero,a0,.+8
+	jal	x0,.+8
 	jal	x0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
@@ -221,8 +221,7 @@ verify_benchmark:
 	addi	a0,a0,-2048
 	addi	a0,a0,-1464
 	addi	t0,x0,1
-	bgeu	a0,t0,.+8
-	jal	x0,.+12
+	bltu	a0,t0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
@@ -242,15 +241,17 @@ __mul:
 	addi	a3,x0,1
 	or	a3,a1,a3
 	addi	t0,x0,1
-	sub	x0,a3,t0
-	sub	a3,a1,x0
+	sub	a3,a3,t0
+	sub	a3,a1,a3
 	bne	a3,x0,.+8
 	jal	x0,.Mul_skip
 	sub	t0,x0,a0
 	sub	a0,a2,t0
 .Mul_skip:
-	srli	a1,a1,1
-	slli	a2,a2,1
+	addi	t0,x0,1
+	srl	a1,a1,t0
+	addi	t0,x0,1
+	sll	a2,a2,t0
 	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
 
@@ -273,24 +274,27 @@ __riscv_div_lib_udivsi3:
 	bne	a2,zero,.+8
 	jal	x0,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bgeu	a2,a1,__riscv_div_lib_L2
+	bltu	a2,a1,.+8
+	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	blt	zero,a2,.+8
 	jal	x0,__riscv_div_lib_L2
-	slli	a2,a2,1
-	slli	a3,a3,1
-	bgeu	a2,a1,.+8
-	jal	x0,__riscv_div_lib_L1
+	addi	t0,x0,1
+	sll	a2,a2,t0
+	addi	t0,x0,1
+	sll	a3,a3,t0
+	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bgeu	a1,a2,.+8
-	jal	x0,__riscv_div_lib_L4
+	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	or	a0,a0,a3
 __riscv_div_lib_L4:
-	srli	a3,a3,1
-	srli	a2,a2,1
+	addi	t0,x0,1
+	srl	a3,a3,t0
+	addi	t0,x0,1
+	srl	a2,a2,t0
 	bne	a3,zero,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0

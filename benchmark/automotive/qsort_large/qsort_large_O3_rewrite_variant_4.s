@@ -20,11 +20,13 @@ quicksort_range:
 	addi	s1,a0,24
 .L2:
 	add	a4,s3,a1
-	srli	a5,a4,31
+	addi	a5,x0,31
+	srl	a5,a4,a5
 	add	a5,a5,a4
-	srai	a4,a5,1
+	addi	a4,x0,1
+	sra	a4,a5,a4
 	addi	t0,x0,-2
-	and	a5,a5,t0
+	and	a5,t0,a5
 	add	a5,a5,a4
 	slli	a5,a5,3
 	add	a5,a0,a5
@@ -185,10 +187,13 @@ main:
 	addi	a2,a2,24
 	addi	a6,a6,12
 	mul	a5,a0,a0
-	srai	t0,a4,16
-	srai	t1,a4,16
+	addi	t0,x0,16
+	sra	t0,a4,t0
+	addi	t1,x0,16
+	sra	t1,a4,t1
 	mul	t0,t0,t1
-	srai	t1,a4,16
+	addi	t1,x0,16
+	sra	t1,a4,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a4,t2
@@ -200,11 +205,14 @@ main:
 	addi	t3,t3,-1
 	and	t3,a4,t3
 	mul	t2,t2,t3
-	srli	t2,t2,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
 	add	t1,t1,t2
-	srai	t1,t1,16
+	addi	t2,x0,16
+	sra	t1,t1,t2
 	add	t0,t0,t1
-	srai	t1,a4,16
+	addi	t1,x0,16
+	sra	t1,a4,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a4,t2
@@ -216,7 +224,8 @@ main:
 	addi	t3,t3,-1
 	and	t3,a4,t3
 	mul	t2,t2,t3
-	srli	t2,t2,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
 	add	t1,t1,t2
 	lui	t2,16
 	addi	t2,t2,-1
@@ -224,17 +233,22 @@ main:
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a4,t2
-	srai	t3,a4,16
+	addi	t3,x0,16
+	sra	t3,a4,t3
 	mul	a4,t2,t3
 	add	a4,t1,a4
-	srai	a4,a4,16
+	addi	t1,x0,16
+	sra	a4,a4,t1
 	add	a4,t0,a4
 	add	a5,a3,a5
 	sltu	a3,a5,a3
-	srai	t0,a0,16
-	srai	t1,a0,16
+	addi	t0,x0,16
+	sra	t0,a0,t0
+	addi	t1,x0,16
+	sra	t1,a0,t1
 	mul	t0,t0,t1
-	srai	t1,a0,16
+	addi	t1,x0,16
+	sra	t1,a0,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a0,t2
@@ -246,11 +260,14 @@ main:
 	addi	t3,t3,-1
 	and	t3,a0,t3
 	mul	t2,t2,t3
-	srli	t2,t2,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
 	add	t1,t1,t2
-	srai	t1,t1,16
+	addi	t2,x0,16
+	sra	t1,t1,t2
 	add	t0,t0,t1
-	srai	t1,a0,16
+	addi	t1,x0,16
+	sra	t1,a0,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a0,t2
@@ -262,7 +279,8 @@ main:
 	addi	t3,t3,-1
 	and	t3,a0,t3
 	mul	t2,t2,t3
-	srli	t2,t2,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
 	add	t1,t1,t2
 	lui	t2,16
 	addi	t2,t2,-1
@@ -270,18 +288,23 @@ main:
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a0,t2
-	srai	t3,a0,16
+	addi	t3,x0,16
+	sra	t3,a0,t3
 	mul	a0,t2,t3
 	add	a0,t1,a0
-	srai	a0,a0,16
+	addi	t1,x0,16
+	sra	a0,a0,t1
 	add	a0,t0,a0
 	mul	a7,a1,a1
 	add	a4,a4,a0
 	add	a3,a3,a4
-	srai	t0,a1,16
-	srai	t1,a1,16
+	addi	t0,x0,16
+	sra	t0,a1,t0
+	addi	t1,x0,16
+	sra	t1,a1,t1
 	mul	t0,t0,t1
-	srai	t1,a1,16
+	addi	t1,x0,16
+	sra	t1,a1,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a1,t2
@@ -293,11 +316,14 @@ main:
 	addi	t3,t3,-1
 	and	t3,a1,t3
 	mul	t2,t2,t3
-	srli	t2,t2,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
 	add	t1,t1,t2
-	srai	t1,t1,16
+	addi	t2,x0,16
+	sra	t1,t1,t2
 	add	t0,t0,t1
-	srai	t1,a1,16
+	addi	t1,x0,16
+	sra	t1,a1,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a1,t2
@@ -309,7 +335,8 @@ main:
 	addi	t3,t3,-1
 	and	t3,a1,t3
 	mul	t2,t2,t3
-	srli	t2,t2,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
 	add	t1,t1,t2
 	lui	t2,16
 	addi	t2,t2,-1
@@ -317,10 +344,12 @@ main:
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a1,t2
-	srai	t3,a1,16
+	addi	t3,x0,16
+	sra	t3,a1,t3
 	mul	a1,t2,t3
 	add	a1,t1,a1
-	srai	a1,a1,16
+	addi	t1,x0,16
+	sra	a1,a1,t1
 	add	a1,t0,a1
 	add	a4,a5,a7
 	sltu	a5,a4,a5
@@ -349,7 +378,8 @@ main:
 	addi	a5,a5,24
 	add	s0,s0,a1
 	add	s0,s0,a2
-	srai	a2,s0,31
+	addi	a2,x0,31
+	sra	a2,s0,a2
 	add	a3,a3,a2
 	add	s0,a4,s0
 	lui	a2,293
@@ -150420,7 +150450,8 @@ __mul:
 	jal	x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
-	srli	a1,a1,1
+	addi	t0,x0,1
+	srl	a1,a1,t0
 	slli	a2,a2,1
 	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
@@ -150431,7 +150462,8 @@ __mul:
 # Signed 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
-	blt	a0,zero,__riscv_div_lib_L10
+	bge	a0,zero,.+8
+	jal	x0,__riscv_div_lib_L10
 	blt	a1,zero,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
@@ -150444,7 +150476,8 @@ __riscv_div_lib_udivsi3:
 	bne	a2,zero,.+8
 	jal	x0,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bgeu	a2,a1,__riscv_div_lib_L2
+	bltu	a2,a1,.+8
+	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	bge	zero,a2,__riscv_div_lib_L2
 	slli	a2,a2,1
@@ -150459,8 +150492,10 @@ __riscv_div_lib_L3:
 	sub	t0,t0,a3
 	sub	a0,a0,t0
 __riscv_div_lib_L4:
-	srli	a3,a3,1
-	srli	a2,a2,1
+	addi	t0,x0,1
+	srl	a3,a3,t0
+	addi	t0,x0,1
+	srl	a2,a2,t0
 	bne	a3,zero,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0

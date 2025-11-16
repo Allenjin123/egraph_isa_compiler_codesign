@@ -106,8 +106,7 @@ quicksort_range:
 	addi	a3,zero,0
 	sltu	a5,a5,a4
 	sub	a5,a3,a5
-	bne	a5,s1,.+8
-	jal	x0,.L17
+	beq	a5,s1,.L17
 .L69:
 	bge	a2,s0,.L70
 .L31:
@@ -209,7 +208,8 @@ quicksort_range:
 	addi	a3,a3,1
 	sb	a6,-1(a4)
 	addi	a6,sp,272
-	bne	a4,a6,.L22
+	beq	a4,a6,.+8
+	jal	x0,.L22
 	jal	x0,.L21
 .L60:
 	jalr	zero,ra,0
@@ -11390,7 +11390,11 @@ __mul:
 	add	a2,a0,x0
 	addi	a0,x0,0
 .Mul_loop:
-	andi	a3,a1,1
+	addi	a3,x0,1
+	or	a3,a1,a3
+	addi	t0,x0,1
+	sub	a3,a3,t0
+	sub	a3,a1,a3
 	beq	a3,x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
@@ -11417,17 +11421,18 @@ __riscv_div_lib_udivsi3:
 	addi	a0,zero,-1
 	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bltu	a2,a1,.+8
-	jal	x0,__riscv_div_lib_L2
+	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	bge	zero,a2,__riscv_div_lib_L2
 	slli	a2,a2,1
 	slli	a3,a3,1
-	bltu	a2,a1,__riscv_div_lib_L1
+	bgeu	a2,a1,.+8
+	jal	x0,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bltu	a1,a2,__riscv_div_lib_L4
+	bgeu	a1,a2,.+8
+	jal	x0,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	or	a0,a0,a3
 __riscv_div_lib_L4:

@@ -78,7 +78,8 @@ my_cos:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
 	addi	t2,x0,16
 	sra	t2,a3,t2
 	lui	t4,16
@@ -135,7 +136,8 @@ my_cos:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
 	addi	t2,x0,16
 	sra	t2,a3,t2
 	lui	t4,16
@@ -219,8 +221,10 @@ my_cos:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
-	srli	t2,a5,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
+	addi	t2,x0,16
+	srl	t2,a5,t2
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t2,t2,t4
@@ -251,7 +255,8 @@ my_cos:
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t4,a5,t4
-	srli	t5,a1,16
+	addi	t5,x0,16
+	srl	t5,a1,t5
 	lui	t6,16
 	addi	t6,t6,-1
 	and	t5,t5,t6
@@ -280,8 +285,10 @@ my_cos:
 	sub	t2,t2,t4
 	sub	t2,x0,t2
 	sub	t0,t0,t2
-	srli	t0,t0,16
-	srli	t2,a5,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
+	addi	t2,x0,16
+	srl	t2,a5,t2
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t2,t2,t4
@@ -306,11 +313,13 @@ my_cos:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
+	addi	t4,x0,16
+	srl	t2,t2,t4
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t4,a5,t4
-	srli	t5,a1,16
+	addi	t5,x0,16
+	srl	t5,a1,t5
 	lui	t6,16
 	addi	t6,t6,-1
 	and	t5,t5,t6
@@ -332,12 +341,15 @@ my_cos:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t4,t4,16
-	srli	t5,a5,16
+	addi	t5,x0,16
+	srl	t4,t4,t5
+	addi	t5,x0,16
+	srl	t5,a5,t5
 	lui	a5,16
 	addi	a5,a5,-1
 	and	a5,t5,a5
-	srli	t5,a1,16
+	addi	t5,x0,16
+	srl	t5,a1,t5
 	lui	t6,16
 	addi	t6,t6,-1
 	and	t5,t5,t6
@@ -365,7 +377,8 @@ my_cos:
 	sub	a5,t2,a5
 	sub	a5,x0,a5
 	sub	a5,t0,a5
-	srli	a5,a5,6
+	addi	t0,x0,6
+	srl	a5,a5,t0
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -385,7 +398,7 @@ my_cos:
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
 	addi	t0,x0,3
-	and	a5,a5,t0
+	and	a5,t0,a5
 	sub	t0,x0,a4
 	sub	a0,a0,t0
 	addi	sp, sp, -32
@@ -429,8 +442,10 @@ my_cos:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	a4,a4,16
-	srli	t0,a6,16
+	addi	t0,x0,16
+	srl	a4,a4,t0
+	addi	t0,x0,16
+	srl	t0,a6,t0
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t0,t0,t2
@@ -461,7 +476,8 @@ my_cos:
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a6,t2
-	srli	t4,a1,16
+	addi	t4,x0,16
+	srl	t4,a1,t4
 	lui	t5,16
 	addi	t5,t5,-1
 	and	t4,t4,t5
@@ -490,8 +506,10 @@ my_cos:
 	sub	t0,t0,t2
 	sub	t0,x0,t0
 	sub	a4,a4,t0
-	srli	a4,a4,16
-	srli	t0,a6,16
+	addi	t0,x0,16
+	srl	a4,a4,t0
+	addi	t0,x0,16
+	srl	t0,a6,t0
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t0,t0,t2
@@ -516,11 +534,13 @@ my_cos:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a6,t2
-	srli	t4,a1,16
+	addi	t4,x0,16
+	srl	t4,a1,t4
 	lui	t5,16
 	addi	t5,t5,-1
 	and	t4,t4,t5
@@ -542,12 +562,15 @@ my_cos:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
-	srli	t4,a6,16
+	addi	t4,x0,16
+	srl	t2,t2,t4
+	addi	t4,x0,16
+	srl	t4,a6,t4
 	lui	t5,16
 	addi	t5,t5,-1
 	and	t4,t4,t5
-	srli	t5,a1,16
+	addi	t5,x0,16
+	srl	t5,a1,t5
 	lui	t6,16
 	addi	t6,t6,-1
 	and	t5,t5,t6
@@ -575,7 +598,8 @@ my_cos:
 	sub	t0,t0,t2
 	sub	t0,x0,t0
 	sub	a4,a4,t0
-	srli	a4,a4,6
+	addi	t0,x0,6
+	srl	a4,a4,t0
 	addi	sp, sp, -16
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -652,7 +676,8 @@ my_cos:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
 	addi	t2,x0,16
 	sra	t2,a2,t2
 	lui	t3,16
@@ -709,7 +734,8 @@ my_cos:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
 	addi	t2,x0,16
 	sra	t2,a2,t2
 	lui	t3,16
@@ -770,8 +796,7 @@ my_cos:
 	sub	a3,a3,a2
 	sub	t0,x0,a3
 	sub	a3,a0,t0
-	bne	a5,t1,.+8
-	jal	x0,.L2
+	beq	a5,t1,.L2
 	addi	sp, sp, -16
 	sw	a1, 0(sp)
 	sw	a2, 4(sp)
@@ -854,7 +879,8 @@ my_cos:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
 	addi	t2,x0,16
 	sra	t2,a6,t2
 	lui	t3,16
@@ -911,7 +937,8 @@ my_cos:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
 	addi	t2,x0,16
 	sra	t2,a6,t2
 	lui	t3,16
@@ -989,8 +1016,10 @@ my_cos:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
-	srli	t1,a0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
+	addi	t1,x0,16
+	srl	t1,a0,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t1,t1,t2
@@ -1021,7 +1050,8 @@ my_cos:
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a0,t2
-	srli	t3,a7,16
+	addi	t3,x0,16
+	srl	t3,a7,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -1050,8 +1080,10 @@ my_cos:
 	sub	t1,t1,t2
 	sub	t1,x0,t1
 	sub	t0,t0,t1
-	srli	t0,t0,16
-	srli	t1,a0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
+	addi	t1,x0,16
+	srl	t1,a0,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t1,t1,t2
@@ -1076,11 +1108,13 @@ my_cos:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a0,t2
-	srli	t3,a7,16
+	addi	t3,x0,16
+	srl	t3,a7,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -1102,12 +1136,15 @@ my_cos:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
-	srli	t3,a0,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
+	addi	t3,x0,16
+	srl	t3,a0,t3
 	lui	a0,16
 	addi	a0,a0,-1
 	and	a0,t3,a0
-	srli	t3,a7,16
+	addi	t3,x0,16
+	srl	t3,a7,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -1136,13 +1173,12 @@ my_cos:
 	sra	a6,a6,t0
 	sub	a4,a4,a6
 	addi	a4,a4,1000
-	srli	a0,a0,18
+	addi	t0,x0,18
+	srl	a0,a0,t0
 	sub	t0,x0,a0
 	sub	a0,a4,t0
-	bne	a5,a2,.+8
-	jal	x0,.L3
-	bne	a5,zero,.+8
-	jal	x0,.L1
+	beq	a5,a2,.L3
+	beq	a5,zero,.L1
 	addi	a0,a3,0
 	jalr	zero,ra,0
 .L3:
@@ -1257,7 +1293,8 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	ra, 12(sp)
 	addi	sp, sp, 16
-	slli	s2,a2,2
+	addi	s2,x0,2
+	sll	s2,a2,s2
 	sub	s2,a2,s2
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
@@ -1318,8 +1355,10 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
-	srli	t2,a5,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
+	addi	t2,x0,16
+	srl	t2,a5,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
@@ -1350,7 +1389,8 @@ SolveCubic:
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t3,a5,t3
-	srli	t4,t1,16
+	addi	t4,x0,16
+	srl	t4,t1,t4
 	lui	t6,16
 	addi	t6,t6,-1
 	and	t4,t4,t6
@@ -1379,8 +1419,10 @@ SolveCubic:
 	sub	t2,t2,t3
 	sub	t2,x0,t2
 	sub	t0,t0,t2
-	srli	t0,t0,16
-	srli	t2,a5,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
+	addi	t2,x0,16
+	srl	t2,a5,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
@@ -1405,11 +1447,13 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t3,a5,t3
-	srli	t4,t1,16
+	addi	t4,x0,16
+	srl	t4,t1,t4
 	lui	t6,16
 	addi	t6,t6,-1
 	and	t4,t4,t6
@@ -1431,12 +1475,15 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t3,t3,16
-	srli	t4,a5,16
+	addi	t4,x0,16
+	srl	t3,t3,t4
+	addi	t4,x0,16
+	srl	t4,a5,t4
 	lui	a5,16
 	addi	a5,a5,-1
 	and	a5,t4,a5
-	srli	t4,t1,16
+	addi	t4,x0,16
+	srl	t4,t1,t4
 	lui	t6,16
 	addi	t6,t6,-1
 	and	t4,t4,t6
@@ -1464,11 +1511,14 @@ SolveCubic:
 	sub	a5,t2,a5
 	sub	a5,x0,a5
 	sub	a5,t0,a5
-	slli	t3,a0,3
+	addi	t3,x0,3
+	sll	t3,a0,t3
 	sub	t3,t3,a0
-	slli	t3,t3,2
+	addi	t0,x0,2
+	sll	t3,t3,t0
 	sub	t3,t3,a0
-	srli	a5,a5,6
+	addi	t0,x0,6
+	srl	a5,a5,t0
 	sub	t0,x0,s2
 	sub	s2,a5,t0
 	addi	sp, sp, -32
@@ -1554,7 +1604,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
+	addi	t6,x0,16
+	srl	t2,t2,t6
 	addi	t6,x0,16
 	sra	t6,s2,t6
 	lui	a0,16
@@ -1610,7 +1661,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
+	addi	t6,x0,16
+	srl	t2,t2,t6
 	addi	t6,x0,16
 	sra	t6,s2,t6
 	lui	a0,16
@@ -1662,7 +1714,8 @@ SolveCubic:
 	sub	t5,t2,t5
 	sub	t5,x0,t5
 	sub	t5,t0,t5
-	slli	a4,a2,3
+	addi	a4,x0,3
+	sll	a4,a2,a4
 	sub	t0,x0,a4
 	sub	a4,a2,t0
 	addi	a0,x0,31
@@ -1712,7 +1765,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
 	addi	t2,x0,16
 	sra	t2,a5,t2
 	lui	t6,16
@@ -1769,7 +1823,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
 	addi	t2,x0,16
 	sra	t2,a5,t2
 	lui	t6,16
@@ -1875,7 +1930,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
+	addi	t4,x0,16
+	srl	t2,t2,t4
 	addi	t4,x0,16
 	sra	t4,a4,t4
 	lui	t6,16
@@ -1932,7 +1988,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
+	addi	t4,x0,16
+	srl	t2,t2,t4
 	addi	t4,x0,16
 	sra	t4,a4,t4
 	lui	t6,16
@@ -2061,7 +2118,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
 	addi	t2,x0,16
 	sra	t2,a0,t2
 	lui	t3,16
@@ -2118,7 +2176,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
 	addi	t2,x0,16
 	sra	t2,a0,t2
 	lui	t3,16
@@ -2196,8 +2255,10 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
-	srli	t2,a3,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
+	addi	t2,x0,16
+	srl	t2,a3,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
@@ -2228,7 +2289,8 @@ SolveCubic:
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t3,a3,t3
-	srli	t4,t1,16
+	addi	t4,x0,16
+	srl	t4,t1,t4
 	lui	t6,16
 	addi	t6,t6,-1
 	and	t4,t4,t6
@@ -2257,8 +2319,10 @@ SolveCubic:
 	sub	t2,t2,t3
 	sub	t2,x0,t2
 	sub	t0,t0,t2
-	srli	t0,t0,16
-	srli	t2,a3,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
+	addi	t2,x0,16
+	srl	t2,a3,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
@@ -2283,11 +2347,13 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t3,a3,t3
-	srli	t4,t1,16
+	addi	t4,x0,16
+	srl	t4,t1,t4
 	lui	t6,16
 	addi	t6,t6,-1
 	and	t4,t4,t6
@@ -2309,12 +2375,15 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t3,t3,16
-	srli	t4,a3,16
+	addi	t4,x0,16
+	srl	t3,t3,t4
+	addi	t4,x0,16
+	srl	t4,a3,t4
 	lui	a3,16
 	addi	a3,a3,-1
 	and	a3,t4,a3
-	srli	t4,t1,16
+	addi	t4,x0,16
+	srl	t4,t1,t4
 	lui	t6,16
 	addi	t6,t6,-1
 	and	t4,t4,t6
@@ -2340,10 +2409,13 @@ SolveCubic:
 	sub	a3,t2,a3
 	sub	a3,x0,a3
 	sub	a3,t0,a3
-	addi	t0,x0,4
-	sra	a4,a4,t0
+	addi	t0,x0,2
+	sra	t0,a4,t0
+	addi	a4,x0,2
+	sra	a4,t0,a4
 	sub	a4,a4,a5
-	srli	a3,a3,6
+	addi	t0,x0,6
+	srl	a3,a3,t0
 	addi	sp, sp, -16
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -2427,7 +2499,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
 	addi	t2,x0,16
 	sra	t2,a3,t2
 	lui	t3,16
@@ -2484,7 +2557,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
 	addi	t2,x0,16
 	sra	t2,a3,t2
 	lui	t3,16
@@ -2562,8 +2636,10 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
-	srli	t2,a5,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
+	addi	t2,x0,16
+	srl	t2,a5,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
@@ -2594,7 +2670,8 @@ SolveCubic:
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t3,a5,t3
-	srli	t4,t1,16
+	addi	t4,x0,16
+	srl	t4,t1,t4
 	lui	t6,16
 	addi	t6,t6,-1
 	and	t4,t4,t6
@@ -2623,8 +2700,10 @@ SolveCubic:
 	sub	t2,t2,t3
 	sub	t2,x0,t2
 	sub	t0,t0,t2
-	srli	t0,t0,16
-	srli	t2,a5,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
+	addi	t2,x0,16
+	srl	t2,a5,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
@@ -2649,11 +2728,13 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t3,a5,t3
-	srli	t4,t1,16
+	addi	t4,x0,16
+	srl	t4,t1,t4
 	lui	t6,16
 	addi	t6,t6,-1
 	and	t4,t4,t6
@@ -2675,12 +2756,15 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t3,t3,16
-	srli	t4,a5,16
+	addi	t4,x0,16
+	srl	t3,t3,t4
+	addi	t4,x0,16
+	srl	t4,a5,t4
 	lui	a5,16
 	addi	a5,a5,-1
 	and	a5,t4,a5
-	srli	t4,t1,16
+	addi	t4,x0,16
+	srl	t4,t1,t4
 	lui	t6,16
 	addi	t6,t6,-1
 	and	t4,t4,t6
@@ -2711,18 +2795,20 @@ SolveCubic:
 	addi	t0,x0,6
 	sra	a6,a6,t0
 	sub	a2,a2,a6
-	srli	a5,a5,6
+	addi	t0,x0,6
+	srl	a5,a5,t0
 	sub	t0,x0,a5
 	sub	a5,a2,t0
-	blt	a1,a3,.L10
-	blt	zero,a5,.+8
-	jal	x0,.L52
+	bge	a1,a3,.+8
+	jal	x0,.L10
+	bge	zero,a5,.L52
 .L12:
 	addi	a3,zero,1
 	sw	a3,0(s8)
 	addi	a2,zero,1000
 	addi	a3,a5,0
-	blt	a5,a2,.L53
+	bge	a5,a2,.+8
+	jal	x0,.L53
 .L24:
 	addi	a1,zero,1000
 	addi	sp, sp, -32
@@ -3030,10 +3116,10 @@ SolveCubic:
 	sra	a5,a5,t0
 	sub	t0,x0,a2
 	sub	a2,a5,t0
-	bne	a2,zero,.+8
-	jal	x0,.L25
+	beq	a2,zero,.L25
 	addi	a3,a2,0
-	blt	a2,a1,.L54
+	bge	a2,a1,.+8
+	jal	x0,.L54
 .L26:
 	addi	a5,zero,1000
 	addi	sp, sp, -16
@@ -3058,7 +3144,8 @@ SolveCubic:
 	addi	a7,a7,1366
 	addi	a1,zero,18
 .L28:
-	slli	a4,a3,1
+	addi	a4,x0,1
+	sll	a4,a3,a4
 	addi	a1,a1,-1
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
@@ -3102,8 +3189,10 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
-	srli	t1,a5,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
+	addi	t1,x0,16
+	srl	t1,a5,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t1,t1,t2
@@ -3134,7 +3223,8 @@ SolveCubic:
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a5,t2
-	srli	t3,a6,16
+	addi	t3,x0,16
+	srl	t3,a6,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -3163,8 +3253,10 @@ SolveCubic:
 	sub	t1,t1,t2
 	sub	t1,x0,t1
 	sub	t0,t0,t1
-	srli	t0,t0,16
-	srli	t1,a5,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
+	addi	t1,x0,16
+	srl	t1,a5,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t1,t1,t2
@@ -3189,11 +3281,13 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a5,t2
-	srli	t3,a6,16
+	addi	t3,x0,16
+	srl	t3,a6,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -3215,12 +3309,15 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
-	srli	t3,a5,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
+	addi	t3,x0,16
+	srl	t3,a5,t3
 	lui	a5,16
 	addi	a5,a5,-1
 	and	a5,t3,a5
-	srli	t3,a6,16
+	addi	t3,x0,16
+	srl	t3,a6,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -3248,9 +3345,9 @@ SolveCubic:
 	sub	a5,t1,a5
 	sub	a5,x0,a5
 	sub	a5,t0,a5
-	srli	a5,a5,6
-	bne	a5,zero,.+8
-	jal	x0,.L27
+	addi	t0,x0,6
+	srl	a5,a5,t0
+	beq	a5,zero,.L27
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -3318,7 +3415,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a5,t1
 	lui	t2,16
@@ -3375,7 +3473,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a5,t1
 	lui	t2,16
@@ -3432,11 +3531,11 @@ SolveCubic:
 	addi	t0,x0,31
 	sra	a5,a5,t0
 	sub	a3,a3,a5
-	bne	a1,zero,.L28
+	beq	a1,zero,.+8
+	jal	x0,.L28
 .L27:
 	addi	a2,zero,0
-	bne	a3,zero,.+8
-	jal	x0,.L25
+	beq	a3,zero,.L25
 	addi	a5,zero,1000
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
@@ -3481,7 +3580,8 @@ SolveCubic:
 .L25:
 	addi	a4,zero,-53
 	addi	a5,zero,-1000
-	blt	a0,a4,.L55
+	bge	a0,a4,.+8
+	jal	x0,.L55
 .L29:
 	addi	sp, sp, -16
 	sw	a0, 0(sp)
@@ -3555,7 +3655,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
 	addi	t2,x0,16
 	sra	t2,a2,t2
 	lui	t3,16
@@ -3612,7 +3713,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
 	addi	t2,x0,16
 	sra	t2,a2,t2
 	lui	t3,16
@@ -3715,7 +3817,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
 	addi	t2,x0,16
 	sra	t2,s0,t2
 	lui	t3,16
@@ -3772,7 +3875,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
 	addi	t2,x0,16
 	sra	t2,s0,t2
 	lui	t3,16
@@ -3838,13 +3942,15 @@ SolveCubic:
 	addi	sp,sp,48
 	jalr	zero,ra,0
 .L10:
-	blt	zero,a5,.L12
+	bge	zero,a5,.+8
+	jal	x0,.L12
 	sw	s1,36(sp)
 	sw	s3,28(sp)
 	sw	s4,24(sp)
 	sw	s5,20(sp)
 	sub	a1,zero,a2
-	blt	a1,a7,.L56
+	bge	a1,a7,.+8
+	jal	x0,.L56
 .L13:
 	addi	a5,zero,-1000
 	addi	sp, sp, -32
@@ -4129,8 +4235,7 @@ SolveCubic:
 	addi	sp, sp, 32
 	sub	t0,x0,a5
 	sub	a5,a3,t0
-	blt	t6,a5,.+8
-	jal	x0,.L11
+	bge	t6,a5,.L11
 	addi	t4,zero,1000
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
@@ -4173,11 +4278,13 @@ SolveCubic:
 	lw	t0, 16(sp)
 	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	blt	a4,t4,.L30
+	bge	a4,t4,.+8
+	jal	x0,.L30
 	sw	s6,16(sp)
 	sw	s7,12(sp)
 	addi	a5,zero,-999
-	blt	t4,a5,.L32
+	bge	t4,a5,.+8
+	jal	x0,.L32
 	lui	t3,1
 	lui	a0,67109
 	lui	a7,274878
@@ -4194,7 +4301,8 @@ SolveCubic:
 .L20:
 	sub	a3,x0,t1
 	sub	a3,t3,a3
-	srli	a1,a3,31
+	addi	a1,x0,31
+	srl	a1,a3,a1
 	sub	a2,x0,a1
 	sub	a1,a3,a2
 	addi	a2,x0,1
@@ -4259,7 +4367,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	s3,s3,16
+	addi	s4,x0,16
+	srl	s3,s3,s4
 	addi	s4,x0,16
 	sra	s4,a2,s4
 	lui	s5,16
@@ -4316,7 +4425,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	s3,s3,16
+	addi	s4,x0,16
+	srl	s3,s3,s4
 	addi	s4,x0,16
 	sra	s4,a2,s4
 	lui	s5,16
@@ -4398,8 +4508,10 @@ SolveCubic:
 	lw	a3, 8(sp)
 	lw	ra, 12(sp)
 	addi	sp, sp, 16
-	srli	a2,a2,16
-	srli	s3,a3,16
+	addi	s3,x0,16
+	srl	a2,a2,s3
+	addi	s3,x0,16
+	srl	s3,a3,s3
 	lui	s4,16
 	addi	s4,s4,-1
 	and	s3,s3,s4
@@ -4430,7 +4542,8 @@ SolveCubic:
 	lui	s4,16
 	addi	s4,s4,-1
 	and	s4,a3,s4
-	srli	s5,a0,16
+	addi	s5,x0,16
+	srl	s5,a0,s5
 	lui	s6,16
 	addi	s6,s6,-1
 	and	s5,s5,s6
@@ -4459,8 +4572,10 @@ SolveCubic:
 	sub	s3,s3,s4
 	sub	s3,x0,s3
 	sub	a2,a2,s3
-	srli	a2,a2,16
-	srli	s3,a3,16
+	addi	s3,x0,16
+	srl	a2,a2,s3
+	addi	s3,x0,16
+	srl	s3,a3,s3
 	lui	s4,16
 	addi	s4,s4,-1
 	and	s3,s3,s4
@@ -4485,11 +4600,13 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	s3,s3,16
+	addi	s4,x0,16
+	srl	s3,s3,s4
 	lui	s4,16
 	addi	s4,s4,-1
 	and	s4,a3,s4
-	srli	s5,a0,16
+	addi	s5,x0,16
+	srl	s5,a0,s5
 	lui	s6,16
 	addi	s6,s6,-1
 	and	s5,s5,s6
@@ -4511,12 +4628,15 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	s4,s4,16
-	srli	s5,a3,16
+	addi	s5,x0,16
+	srl	s4,s4,s5
+	addi	s5,x0,16
+	srl	s5,a3,s5
 	lui	a3,16
 	addi	a3,a3,-1
 	and	a3,s5,a3
-	srli	s5,a0,16
+	addi	s5,x0,16
+	srl	s5,a0,s5
 	lui	s6,16
 	addi	s6,s6,-1
 	and	s5,s5,s6
@@ -4542,7 +4662,8 @@ SolveCubic:
 	sub	a3,s3,a3
 	sub	a3,x0,a3
 	sub	a3,a2,a3
-	srli	a3,a3,6
+	addi	a2,x0,6
+	srl	a3,a3,a2
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -4608,8 +4729,10 @@ SolveCubic:
 	lw	a3, 8(sp)
 	lw	ra, 12(sp)
 	addi	sp, sp, 16
-	srli	a2,a2,16
-	srli	s2,s6,16
+	addi	s2,x0,16
+	srl	a2,a2,s2
+	addi	s2,x0,16
+	srl	s2,s6,s2
 	lui	s3,16
 	addi	s3,s3,-1
 	and	s2,s2,s3
@@ -4640,7 +4763,8 @@ SolveCubic:
 	lui	s3,16
 	addi	s3,s3,-1
 	and	s3,s6,s3
-	srli	s4,a0,16
+	addi	s4,x0,16
+	srl	s4,a0,s4
 	lui	s5,16
 	addi	s5,s5,-1
 	and	s4,s4,s5
@@ -4669,8 +4793,10 @@ SolveCubic:
 	sub	s2,s2,s3
 	sub	s2,x0,s2
 	sub	a2,a2,s2
-	srli	a2,a2,16
-	srli	s2,s6,16
+	addi	s2,x0,16
+	srl	a2,a2,s2
+	addi	s2,x0,16
+	srl	s2,s6,s2
 	lui	s3,16
 	addi	s3,s3,-1
 	and	s2,s2,s3
@@ -4695,11 +4821,13 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	s2,s2,16
+	addi	s3,x0,16
+	srl	s2,s2,s3
 	lui	s3,16
 	addi	s3,s3,-1
 	and	s3,s6,s3
-	srli	s4,a0,16
+	addi	s4,x0,16
+	srl	s4,a0,s4
 	lui	s5,16
 	addi	s5,s5,-1
 	and	s4,s4,s5
@@ -4721,12 +4849,15 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	s3,s3,16
-	srli	s4,s6,16
+	addi	s4,x0,16
+	srl	s3,s3,s4
+	addi	s4,x0,16
+	srl	s4,s6,s4
 	lui	s5,16
 	addi	s5,s5,-1
 	and	s4,s4,s5
-	srli	s5,a0,16
+	addi	s5,x0,16
+	srl	s5,a0,s5
 	lui	s7,16
 	addi	s7,s7,-1
 	and	s5,s5,s7
@@ -4759,7 +4890,8 @@ SolveCubic:
 	addi	sp,sp,16
 	addi	s5,x0,31
 	sra	s5,s6,s5
-	srli	a2,a2,6
+	addi	s4,x0,6
+	srl	a2,a2,s4
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -4847,7 +4979,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	s2,s2,16
+	addi	s3,x0,16
+	srl	s2,s2,s3
 	addi	s3,x0,16
 	sra	s3,s4,s3
 	lui	s4,16
@@ -4904,7 +5037,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	s2,s2,16
+	addi	s3,x0,16
+	srl	s2,s2,s3
 	addi	s3,x0,16
 	sra	s3,s4,s3
 	lui	s4,16
@@ -4982,8 +5116,7 @@ SolveCubic:
 	lw	s2,0(sp)
 	addi	sp,sp,16
 	sub	s4,zero,s3
-	bne	a3,t6,.+8
-	jal	x0,.L18
+	beq	a3,t6,.L18
 	addi	sp, sp, -16
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -5067,7 +5200,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	s3,s3,16
+	addi	s4,x0,16
+	srl	s3,s3,s4
 	addi	s4,x0,16
 	sra	s4,s6,s4
 	lui	s5,16
@@ -5124,7 +5258,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	s3,s3,16
+	addi	s4,x0,16
+	srl	s3,s3,s4
 	addi	s4,x0,16
 	sra	s4,s6,s4
 	lui	s5,16
@@ -5211,8 +5346,10 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	s2,s2,16
-	srli	s3,a2,16
+	addi	s3,x0,16
+	srl	s2,s2,s3
+	addi	s3,x0,16
+	srl	s3,a2,s3
 	lui	s4,16
 	addi	s4,s4,-1
 	and	s3,s3,s4
@@ -5243,7 +5380,8 @@ SolveCubic:
 	lui	s4,16
 	addi	s4,s4,-1
 	and	s4,a2,s4
-	srli	s5,a7,16
+	addi	s5,x0,16
+	srl	s5,a7,s5
 	lui	s6,16
 	addi	s6,s6,-1
 	and	s5,s5,s6
@@ -5272,8 +5410,10 @@ SolveCubic:
 	sub	s3,s3,s4
 	sub	s3,x0,s3
 	sub	s2,s2,s3
-	srli	s2,s2,16
-	srli	s3,a2,16
+	addi	s3,x0,16
+	srl	s2,s2,s3
+	addi	s3,x0,16
+	srl	s3,a2,s3
 	lui	s4,16
 	addi	s4,s4,-1
 	and	s3,s3,s4
@@ -5298,11 +5438,13 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	s3,s3,16
+	addi	s4,x0,16
+	srl	s3,s3,s4
 	lui	s4,16
 	addi	s4,s4,-1
 	and	s4,a2,s4
-	srli	s5,a7,16
+	addi	s5,x0,16
+	srl	s5,a7,s5
 	lui	s6,16
 	addi	s6,s6,-1
 	and	s5,s5,s6
@@ -5324,12 +5466,15 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	s4,s4,16
-	srli	s5,a2,16
+	addi	s5,x0,16
+	srl	s4,s4,s5
+	addi	s5,x0,16
+	srl	s5,a2,s5
 	lui	a2,16
 	addi	a2,a2,-1
 	and	a2,s5,a2
-	srli	s5,a7,16
+	addi	s5,x0,16
+	srl	s5,a7,s5
 	lui	s6,16
 	addi	s6,s6,-1
 	and	s5,s5,s6
@@ -5364,24 +5509,24 @@ SolveCubic:
 	sra	s6,s6,s4
 	sub	s5,s5,s6
 	addi	s5,s5,1000
-	srli	a2,a2,18
+	addi	s4,x0,18
+	srl	a2,a2,s4
 	sub	s4,x0,a2
 	sub	s4,s5,s4
-	bne	a3,a5,.+8
-	jal	x0,.L17
-	bne	a3,zero,.+8
-	jal	x0,.L18
+	beq	a3,a5,.L17
+	beq	a3,zero,.L18
 	addi	s4,s3,0
 .L18:
-	blt	t4,s4,.+8
-	jal	x0,.L33
+	bge	t4,s4,.L33
 	addi	t1,a1,0
 .L19:
 	addi	a6,a6,-1
-	bne	a6,zero,.L20
+	beq	a6,zero,.+8
+	jal	x0,.L20
 	sub	t0,x0,t1
 	sub	t1,t3,t0
-	srli	s3,t1,31
+	addi	s3,x0,31
+	srl	s3,t1,s3
 	sub	t0,x0,s3
 	sub	s3,t1,t0
 	lui	a5,2
@@ -5445,7 +5590,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
 	addi	t2,x0,16
 	sra	t2,a5,t2
 	lui	t3,16
@@ -5502,7 +5648,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t2,x0,16
+	srl	t0,t0,t2
 	addi	t2,x0,16
 	sra	t2,a5,t2
 	lui	t3,16
@@ -5611,7 +5758,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
 	addi	t3,x0,16
 	sra	t3,s3,t3
 	lui	t4,16
@@ -5668,7 +5816,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
 	addi	t3,x0,16
 	sra	t3,s3,t3
 	lui	t4,16
@@ -5770,7 +5919,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
 	addi	t3,x0,16
 	sra	t3,t1,t3
 	lui	t4,16
@@ -5827,7 +5977,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
 	addi	t3,x0,16
 	sra	t3,t1,t3
 	lui	t4,16
@@ -5888,12 +6039,10 @@ SolveCubic:
 	sw	a5,0(s8)
 	addi	a5,zero,8
 	addi	s4,zero,0
-	blt	a5,s2,.+8
-	jal	x0,.L21
+	bge	a5,s2,.L21
 	addi	a5,zero,1000
 	addi	a3,t5,0
-	blt	t5,a5,.+8
-	jal	x0,.L22
+	bge	t5,a5,.L22
 	addi	a3,a5,0
 .L22:
 	addi	a5,zero,1000
@@ -6244,7 +6393,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
 	addi	t2,x0,16
 	sra	t2,s0,t2
 	lui	t3,16
@@ -6301,7 +6451,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
 	addi	t2,x0,16
 	sra	t2,s0,t2
 	lui	t3,16
@@ -6428,7 +6579,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a4,t1
 	lui	t2,16
@@ -6485,7 +6637,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a4,t1
 	lui	t2,16
@@ -6614,7 +6767,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a4,t1
 	lui	t2,16
@@ -6671,7 +6825,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a4,t1
 	lui	t2,16
@@ -6803,7 +6958,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a0,t1
 	lui	t2,16
@@ -6860,7 +7016,8 @@ SolveCubic:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a0,t1
 	lui	t2,16
@@ -6940,7 +7097,8 @@ SolveCubic:
 .L11:
 	addi	a5,zero,-53
 	lui	s3,1
-	blt	a0,a5,.L57
+	bge	a0,a5,.+8
+	jal	x0,.L57
 	lui	s1,1
 	addi	s3,s3,93
 	addi	s1,s1,-2002
@@ -7052,8 +7210,7 @@ main:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_6)
 	lw	s5,16(sp)
 	addi	s0,zero,0
-	blt	zero,s5,.+8
-	jal	x0,.L59
+	bge	zero,s5,.L59
 	lui	a5,%hi(.LC2)
 	lui	s4,67109
 	addi	s1,a5,%lo(.LC2)
@@ -7109,7 +7266,8 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a5,t1
 	lui	t2,16
@@ -7166,7 +7324,8 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a5,t1
 	lui	t2,16
@@ -7257,7 +7416,8 @@ main:
 .Lpcrel_7:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_7)
-	bne	s2,s5,.L60
+	beq	s2,s5,.+8
+	jal	x0,.L60
 .L59:
 	addi	a0,zero,10
 .Lpcrel_8:
@@ -7281,8 +7441,7 @@ main:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_10)
 	lw	s5,16(sp)
-	blt	zero,s5,.+8
-	jal	x0,.L61
+	bge	zero,s5,.L61
 	lui	a5,%hi(.LC2)
 	lui	s4,67109
 	addi	s1,a5,%lo(.LC2)
@@ -7338,7 +7497,8 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a5,t1
 	lui	t2,16
@@ -7395,7 +7555,8 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a5,t1
 	lui	t2,16
@@ -7486,7 +7647,8 @@ main:
 .Lpcrel_11:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_11)
-	bne	s2,s5,.L62
+	beq	s2,s5,.+8
+	jal	x0,.L62
 .L61:
 	addi	a0,zero,10
 .Lpcrel_12:
@@ -7510,8 +7672,7 @@ main:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_14)
 	lw	s5,16(sp)
-	blt	zero,s5,.+8
-	jal	x0,.L63
+	bge	zero,s5,.L63
 	lui	a5,%hi(.LC2)
 	lui	s4,67109
 	addi	s1,a5,%lo(.LC2)
@@ -7567,7 +7728,8 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a5,t1
 	lui	t2,16
@@ -7624,7 +7786,8 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a5,t1
 	lui	t2,16
@@ -7715,7 +7878,8 @@ main:
 .Lpcrel_15:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_15)
-	bne	s2,s5,.L64
+	beq	s2,s5,.+8
+	jal	x0,.L64
 .L63:
 	addi	a0,zero,10
 .Lpcrel_16:
@@ -7738,8 +7902,7 @@ main:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_18)
 	lw	s5,16(sp)
-	blt	zero,s5,.+8
-	jal	x0,.L65
+	bge	zero,s5,.L65
 	lui	a5,%hi(.LC2)
 	lui	s4,67109
 	addi	s1,a5,%lo(.LC2)
@@ -7795,7 +7958,8 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a5,t1
 	lui	t2,16
@@ -7852,7 +8016,8 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a5,t1
 	lui	t2,16
@@ -7943,7 +8108,8 @@ main:
 .Lpcrel_19:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_19)
-	bne	s2,s5,.L66
+	beq	s2,s5,.+8
+	jal	x0,.L66
 .L65:
 	addi	a0,zero,10
 .Lpcrel_20:
@@ -7983,8 +8149,7 @@ main:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_22)
 	lw	s1,16(sp)
-	blt	zero,s1,.+8
-	jal	x0,.L68
+	bge	zero,s1,.L68
 	addi	s10,sp,20
 	addi	s11,zero,0
 .L69:
@@ -8035,7 +8200,8 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a2,t1
 	lui	t2,16
@@ -8092,7 +8258,8 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	addi	t1,x0,16
 	sra	t1,a2,t1
 	lui	t2,16
@@ -8181,26 +8348,31 @@ main:
 .Lpcrel_23:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_23)
-	bne	s11,s1,.L69
+	beq	s11,s1,.+8
+	jal	x0,.L69
 .L68:
 	addi	a0,zero,10
 	addi	s2,s2,-1000
 .Lpcrel_24:
 	auipc	ra,%pcrel_hi(putchar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_24)
-	bne	s2,s7,.L70
+	beq	s2,s7,.+8
+	jal	x0,.L70
 	lui	a5,4
 	addi	s6,s6,500
 	addi	a5,a5,-1384
-	bne	s6,a5,.L73
+	beq	s6,a5,.+8
+	jal	x0,.L73
 	addi	s9,s9,-1000
-	bne	s9,zero,.L75
+	beq	s9,zero,.+8
+	jal	x0,.L75
 	lw	a4,12(sp)
 	lui	a5,2
 	addi	a5,a5,1808
 	addi	a4,a4,1000
 	sw	a4,12(sp)
-	bne	a4,a5,.L67
+	beq	a4,a5,.+8
+	jal	x0,.L67
 	lui	a0,%hi(.LC3)
 	addi	a0,a0,%lo(.LC3)
 	lui	s3,%hi(.LC4)
@@ -8216,20 +8388,26 @@ main:
 	addi	a2,zero,0
 	addi	a5,zero,0
 .L77:
-	srli	a0,a3,30
-	slli	a4,a2,2
-	slli	a5,a5,2
+	addi	a0,x0,30
+	srl	a0,a3,a0
+	addi	a4,x0,2
+	sll	a4,a2,a4
+	addi	t0,x0,2
+	sll	a5,a5,t0
 	sub	t0,x0,a0
 	sub	a5,a5,t0
 	addi	a4,a4,1
 	addi	s1,s1,-1
-	slli	a3,a3,2
-	slli	a2,a2,1
+	addi	t0,x0,2
+	sll	a3,a3,t0
+	addi	t0,x0,1
+	sll	a2,a2,t0
 	bltu	a5,a4,.L76
 	sub	a5,a5,a4
 	addi	a2,a2,1
 .L76:
-	bne	s1,zero,.L77
+	beq	s1,zero,.+8
+	jal	x0,.L77
 	addi	a1,s2,0
 	addi	a0,s3,0
 	addi	s2,s2,1
@@ -8238,26 +8416,33 @@ main:
 .Lpcrel_26:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_26)
-	bne	s2,s4,.L78
+	beq	s2,s4,.+8
+	jal	x0,.L78
 	lui	a5,261840
 	addi	a5,a5,361
 	addi	a2,zero,0
 	addi	s2,zero,32
 .L80:
-	srli	a3,a5,30
-	slli	a4,a2,2
-	slli	s1,s1,2
+	addi	a3,x0,30
+	srl	a3,a5,a3
+	addi	a4,x0,2
+	sll	a4,a2,a4
+	addi	t0,x0,2
+	sll	s1,s1,t0
 	sub	t0,x0,a3
 	sub	s1,s1,t0
 	addi	a4,a4,1
 	addi	s2,s2,-1
-	slli	a5,a5,2
-	slli	a2,a2,1
+	addi	t0,x0,2
+	sll	a5,a5,t0
+	addi	t0,x0,1
+	sll	a2,a2,t0
 	bltu	s1,a4,.L79
 	sub	s1,s1,a4
 	addi	a2,a2,1
 .L79:
-	bne	s2,zero,.L80
+	beq	s2,zero,.+8
+	jal	x0,.L80
 	lui	a0,%hi(.LC5)
 	lui	a1,261840
 	addi	a1,a1,361
@@ -8288,7 +8473,8 @@ main:
 	addi	s1,zero,0
 	addi	s11,zero,1000
 .L81:
-	srli	a5,s3,2
+	addi	a5,x0,2
+	srl	a5,s3,a5
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a5,t0
@@ -8313,8 +8499,10 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
-	srli	t1,a5,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
+	addi	t1,x0,16
+	srl	t1,a5,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t1,t1,t2
@@ -8345,7 +8533,8 @@ main:
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a5,t2
-	srli	t3,s10,16
+	addi	t3,x0,16
+	srl	t3,s10,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -8374,8 +8563,10 @@ main:
 	sub	t1,t1,t2
 	sub	t1,x0,t1
 	sub	t0,t0,t1
-	srli	t0,t0,16
-	srli	t1,a5,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
+	addi	t1,x0,16
+	srl	t1,a5,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t1,t1,t2
@@ -8400,11 +8591,13 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a5,t2
-	srli	t3,s10,16
+	addi	t3,x0,16
+	srl	t3,s10,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -8426,12 +8619,15 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
-	srli	t3,a5,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
+	addi	t3,x0,16
+	srl	t3,a5,t3
 	lui	a5,16
 	addi	a5,a5,-1
 	and	a5,t3,a5
-	srli	t3,s10,16
+	addi	t3,x0,16
+	srl	t3,s10,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -8459,11 +8655,13 @@ main:
 	sub	a5,t1,a5
 	sub	a5,x0,a5
 	sub	a5,t0,a5
-	srli	a2,s3,5
+	addi	a2,x0,5
+	srl	a2,s3,a2
 	addi	a0,s4,0
 	sub	t0,x0,s3
 	sub	s3,s7,t0
-	srli	a5,a5,2
+	addi	t0,x0,2
+	srl	a5,a5,t0
 	lui	a3,16
 	addi	a3,a3,-1
 	and	a3,a5,a3
@@ -8486,8 +8684,10 @@ main:
 	lw	a2, 8(sp)
 	lw	ra, 12(sp)
 	addi	sp, sp, 16
-	srli	a3,a3,16
-	srli	t0,a5,16
+	addi	t0,x0,16
+	srl	a3,a3,t0
+	addi	t0,x0,16
+	srl	t0,a5,t0
 	lui	t1,16
 	addi	t1,t1,-1
 	and	t0,t0,t1
@@ -8518,7 +8718,8 @@ main:
 	lui	t1,16
 	addi	t1,t1,-1
 	and	t1,a5,t1
-	srli	t2,s5,16
+	addi	t2,x0,16
+	srl	t2,s5,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
@@ -8547,8 +8748,10 @@ main:
 	sub	t0,t0,t1
 	sub	t0,x0,t0
 	sub	a3,a3,t0
-	srli	a3,a3,16
-	srli	t0,a5,16
+	addi	t0,x0,16
+	srl	a3,a3,t0
+	addi	t0,x0,16
+	srl	t0,a5,t0
 	lui	t1,16
 	addi	t1,t1,-1
 	and	t0,t0,t1
@@ -8573,11 +8776,13 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	lui	t1,16
 	addi	t1,t1,-1
 	and	t1,a5,t1
-	srli	t2,s5,16
+	addi	t2,x0,16
+	srl	t2,s5,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
@@ -8599,12 +8804,15 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
-	srli	t2,a5,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
+	addi	t2,x0,16
+	srl	t2,a5,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
-	srli	t3,s5,16
+	addi	t3,x0,16
+	srl	t3,s5,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -8634,7 +8842,8 @@ main:
 	sub	a3,a3,t0
 	sub	t0,x0,s0
 	sub	s0,a5,t0
-	srli	a3,a3,6
+	addi	t0,x0,6
+	srl	a3,a3,t0
 	lui	a1,16
 	addi	a1,a1,-1
 	and	a1,s1,a1
@@ -8656,8 +8865,10 @@ main:
 	lw	a3, 8(sp)
 	lw	ra, 12(sp)
 	addi	sp, sp, 16
-	srli	a1,a1,16
-	srli	t0,s1,16
+	addi	t0,x0,16
+	srl	a1,a1,t0
+	addi	t0,x0,16
+	srl	t0,s1,t0
 	lui	t1,16
 	addi	t1,t1,-1
 	and	t0,t0,t1
@@ -8688,7 +8899,8 @@ main:
 	lui	t1,16
 	addi	t1,t1,-1
 	and	t1,s1,t1
-	srli	t2,s5,16
+	addi	t2,x0,16
+	srl	t2,s5,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
@@ -8717,8 +8929,10 @@ main:
 	sub	t0,t0,t1
 	sub	t0,x0,t0
 	sub	a1,a1,t0
-	srli	a1,a1,16
-	srli	t0,s1,16
+	addi	t0,x0,16
+	srl	a1,a1,t0
+	addi	t0,x0,16
+	srl	t0,s1,t0
 	lui	t1,16
 	addi	t1,t1,-1
 	and	t0,t0,t1
@@ -8743,11 +8957,13 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	lui	t1,16
 	addi	t1,t1,-1
 	and	t1,s1,t1
-	srli	t2,s5,16
+	addi	t2,x0,16
+	srl	t2,s5,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
@@ -8769,12 +8985,15 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
-	srli	t2,s1,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
+	addi	t2,x0,16
+	srl	t2,s1,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
-	srli	t3,s5,16
+	addi	t3,x0,16
+	srl	t3,s5,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -8819,7 +9038,8 @@ main:
 	lw	a2, 8(sp)
 	lw	ra, 12(sp)
 	addi	sp, sp, 16
-	srli	a1,a1,6
+	addi	t0,x0,6
+	srl	a1,a1,t0
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a2,t0
@@ -8844,8 +9064,10 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
-	srli	t1,a2,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
+	addi	t1,x0,16
+	srl	t1,a2,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t1,t1,t2
@@ -8876,7 +9098,8 @@ main:
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a2,t2
-	srli	t3,s8,16
+	addi	t3,x0,16
+	srl	t3,s8,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -8905,8 +9128,10 @@ main:
 	sub	t1,t1,t2
 	sub	t1,x0,t1
 	sub	t0,t0,t1
-	srli	t0,t0,16
-	srli	t1,a2,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
+	addi	t1,x0,16
+	srl	t1,a2,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t1,t1,t2
@@ -8931,11 +9156,13 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a2,t2
-	srli	t3,s8,16
+	addi	t3,x0,16
+	srl	t3,s8,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -8957,12 +9184,15 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
-	srli	t3,a2,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
+	addi	t3,x0,16
+	srl	t3,a2,t3
 	lui	a2,16
 	addi	a2,a2,-1
 	and	a2,t3,a2
-	srli	t3,s8,16
+	addi	t3,x0,16
+	srl	t3,s8,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -8989,11 +9219,13 @@ main:
 	sub	a2,x0,a2
 	sub	a2,t0,a2
 	sub	a3,a5,a3
-	srli	a2,a2,7
+	addi	t0,x0,7
+	srl	a2,a2,t0
 .Lpcrel_29:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_29)
-	bne	s1,s6,.L81
+	beq	s1,s6,.+8
+	jal	x0,.L81
 	addi	a0,zero,10
 	lui	s4,%hi(.LC8)
 	lui	s7,683477
@@ -9033,8 +9265,10 @@ main:
 	lw	a3, 8(sp)
 	lw	ra, 12(sp)
 	addi	sp, sp, 16
-	srli	a1,a1,16
-	srli	t0,s9,16
+	addi	t0,x0,16
+	srl	a1,a1,t0
+	addi	t0,x0,16
+	srl	t0,s9,t0
 	lui	t1,16
 	addi	t1,t1,-1
 	and	t0,t0,t1
@@ -9065,7 +9299,8 @@ main:
 	lui	t1,16
 	addi	t1,t1,-1
 	and	t1,s9,t1
-	srli	t2,s5,16
+	addi	t2,x0,16
+	srl	t2,s5,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
@@ -9094,8 +9329,10 @@ main:
 	sub	t0,t0,t1
 	sub	t0,x0,t0
 	sub	a1,a1,t0
-	srli	a1,a1,16
-	srli	t0,s9,16
+	addi	t0,x0,16
+	srl	a1,a1,t0
+	addi	t0,x0,16
+	srl	t0,s9,t0
 	lui	t1,16
 	addi	t1,t1,-1
 	and	t0,t0,t1
@@ -9120,11 +9357,13 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
 	lui	t1,16
 	addi	t1,t1,-1
 	and	t1,s9,t1
-	srli	t2,s5,16
+	addi	t2,x0,16
+	srl	t2,s5,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
@@ -9146,12 +9385,15 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
-	srli	t2,s9,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
+	addi	t2,x0,16
+	srl	t2,s9,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
-	srli	t3,s5,16
+	addi	t3,x0,16
+	srl	t3,s5,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -9179,12 +9421,15 @@ main:
 	sub	t0,t0,t1
 	sub	t0,x0,t0
 	sub	a1,a1,t0
-	srli	a5,s2,1
-	srli	a4,s2,4
+	addi	a5,x0,1
+	srl	a5,s2,a5
+	addi	a4,x0,4
+	srl	a4,s2,a4
 	addi	a0,s4,0
 	sub	t0,x0,s2
 	sub	s2,s3,t0
-	srli	a1,a1,6
+	addi	t0,x0,6
+	srl	a1,a1,t0
 	addi	sp, sp, -16
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -9224,8 +9469,10 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
-	srli	t1,a4,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
+	addi	t1,x0,16
+	srl	t1,a4,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t1,t1,t2
@@ -9256,7 +9503,8 @@ main:
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a4,t2
-	srli	t3,s6,16
+	addi	t3,x0,16
+	srl	t3,s6,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -9285,8 +9533,10 @@ main:
 	sub	t1,t1,t2
 	sub	t1,x0,t1
 	sub	t0,t0,t1
-	srli	t0,t0,16
-	srli	t1,a4,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
+	addi	t1,x0,16
+	srl	t1,a4,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t1,t1,t2
@@ -9311,11 +9561,13 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a4,t2
-	srli	t3,s6,16
+	addi	t3,x0,16
+	srl	t3,s6,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -9337,12 +9589,15 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
-	srli	t3,a4,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
+	addi	t3,x0,16
+	srl	t3,a4,t3
 	lui	a4,16
 	addi	a4,a4,-1
 	and	a4,t3,a4
-	srli	t3,s6,16
+	addi	t3,x0,16
+	srl	t3,s6,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -9396,8 +9651,10 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
-	srli	t1,a5,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
+	addi	t1,x0,16
+	srl	t1,a5,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t1,t1,t2
@@ -9428,7 +9685,8 @@ main:
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a5,t2
-	srli	t3,s7,16
+	addi	t3,x0,16
+	srl	t3,s7,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -9457,8 +9715,10 @@ main:
 	sub	t1,t1,t2
 	sub	t1,x0,t1
 	sub	t0,t0,t1
-	srli	t0,t0,16
-	srli	t1,a5,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
+	addi	t1,x0,16
+	srl	t1,a5,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t1,t1,t2
@@ -9483,11 +9743,13 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a5,t2
-	srli	t3,s7,16
+	addi	t3,x0,16
+	srl	t3,s7,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -9509,12 +9771,15 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t2,t2,16
-	srli	t3,a5,16
+	addi	t3,x0,16
+	srl	t2,t2,t3
+	addi	t3,x0,16
+	srl	t3,a5,t3
 	lui	a5,16
 	addi	a5,a5,-1
 	and	a5,t3,a5
-	srli	t3,s7,16
+	addi	t3,x0,16
+	srl	t3,s7,t3
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
@@ -9542,14 +9807,17 @@ main:
 	sub	a5,t1,a5
 	sub	a5,x0,a5
 	sub	a5,t0,a5
-	srli	a3,a4,14
-	srli	a5,a5,10
+	addi	a3,x0,14
+	srl	a3,a4,a3
+	addi	t0,x0,10
+	srl	a5,a5,t0
 	sub	t0,x0,s0
 	sub	s0,a5,t0
 .Lpcrel_31:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_31)
-	bne	s9,s1,.L82
+	beq	s9,s1,.+8
+	jal	x0,.L82
 	lw	ra,92(sp)
 	addi	a0,x0,1
 	bltu	s0,a0,.+12
@@ -9583,15 +9851,17 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	a3,x0,1
-	and	a3,a1,a3
-	bne	a3,x0,.+8
-	jal	x0,.Mul_skip
+	and	a3,a3,a1
+	beq	a3,x0,.Mul_skip
 	sub	t0,x0,a0
 	sub	a0,a2,t0
 .Mul_skip:
-	srli	a1,a1,1
-	slli	a2,a2,1
-	bne	a1,x0,.Mul_loop
+	addi	t0,x0,1
+	srl	a1,a1,t0
+	addi	t0,x0,1
+	sll	a2,a2,t0
+	beq	a1,x0,.+8
+	jal	x0,.Mul_loop
 	jalr	x0,ra,0
 
 .text
@@ -9600,8 +9870,10 @@ __mul:
 # Signed 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
-	blt	a0,zero,__riscv_div_lib_L10
-	blt	a1,zero,__riscv_div_lib_L11
+	bge	a0,zero,.+8
+	jal	x0,__riscv_div_lib_L10
+	bge	a1,zero,.+8
+	jal	x0,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
 # Unsigned 32-bit division: a0 = a0 / a1
@@ -9610,16 +9882,16 @@ __riscv_div_lib_udivsi3:
 	addi	a2,a1,0
 	addi	a1,a0,0
 	addi	a0,zero,-1
-	bne	a2,zero,.+8
-	jal	x0,__riscv_div_lib_L5
+	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
-	blt	zero,a2,.+8
-	jal	x0,__riscv_div_lib_L2
-	slli	a2,a2,1
-	slli	a3,a3,1
+	bge	zero,a2,__riscv_div_lib_L2
+	addi	t0,x0,1
+	sll	a2,a2,t0
+	addi	t0,x0,1
+	sll	a3,a3,t0
 	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
@@ -9630,9 +9902,12 @@ __riscv_div_lib_L3:
 	sub	t0,t0,a3
 	sub	a0,a0,t0
 __riscv_div_lib_L4:
-	srli	a3,a3,1
-	srli	a2,a2,1
-	bne	a3,zero,__riscv_div_lib_L3
+	addi	t0,x0,1
+	srl	a3,a3,t0
+	addi	t0,x0,1
+	srl	a2,a2,t0
+	beq	a3,zero,.+8
+	jal	x0,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
 
@@ -9649,7 +9924,8 @@ __riscv_div_lib_umodsi3:
 # Handle negative arguments to divsi3
 __riscv_div_lib_L10:
 	sub	a0,zero,a0
-	blt	zero,a1,__riscv_div_lib_L12
+	bge	zero,a1,.+8
+	jal	x0,__riscv_div_lib_L12
 	sub	a1,zero,a1
 	jal	x0,__riscv_div_lib_udivsi3
 __riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
@@ -9666,8 +9942,10 @@ __riscv_div_lib_L12:
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
 	addi	t0,ra,0
-	blt	a1,zero,__riscv_div_lib_L31
-	blt	a0,zero,__riscv_div_lib_L32
+	bge	a1,zero,.+8
+	jal	x0,__riscv_div_lib_L31
+	bge	a0,zero,.+8
+	jal	x0,__riscv_div_lib_L32
 __riscv_div_lib_L30:
 .Lpcrel_div3:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
@@ -9676,7 +9954,8 @@ __riscv_div_lib_L30:
 	jalr	zero,t0,0
 __riscv_div_lib_L31:
 	sub	a1,zero,a1
-	blt	a0,zero,.+8
+	bge	a0,zero,.+8
+	jal	x0,.+8
 	jal	x0,__riscv_div_lib_L30
 __riscv_div_lib_L32:
 	sub	a0,zero,a0

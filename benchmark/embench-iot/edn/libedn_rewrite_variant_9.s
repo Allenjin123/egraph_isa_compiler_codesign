@@ -32,26 +32,10 @@ vec_mpy1:
 	lh	a5,0(a1)
 	lhu	a4,0(a0)
 	addi	a0,a0,2
-	addi	sp, sp, -32
-	sw	a0, 0(sp)
-	sw	a1, 4(sp)
-	sw	a2, 8(sp)
-	sw	a3, 12(sp)
-	sw	ra, 16(sp)
-	add	a0, a5, x0
-	add	a1, a2, x0
-.Lpcrel_callmul_226:
-	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_226)
-	add	a5, a0, x0
-	lw	a0, 0(sp)
-	lw	a1, 4(sp)
-	lw	a2, 8(sp)
-	lw	a3, 12(sp)
-	lw	ra, 16(sp)
-	addi	sp, sp, 32
+	mul	a5,a5,a2
 	addi	a1,a1,2
-	srai	a5,a5,15
+	addi	t0,x0,15
+	sra	a5,a5,t0
 	add	a5,a5,a4
 	sh	a5,-2(a0)
 	bne	a3,a0,.L6
@@ -71,7 +55,24 @@ mac:
 	addi	a1,a1,2
 	mul	a2,a4,a4
 	addi	a6,a6,2
-	mul	a5,a5,a4
+	addi	sp, sp, -32
+	sw	a0, 0(sp)
+	sw	a1, 4(sp)
+	sw	a2, 8(sp)
+	sw	a3, 12(sp)
+	sw	ra, 16(sp)
+	add	a0, a5, x0
+	add	a1, a4, x0
+.Lpcrel_callmul_244:
+	auipc	ra, %pcrel_hi(__mul)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_244)
+	add	a5, a0, x0
+	lw	a0, 0(sp)
+	lw	a1, 4(sp)
+	lw	a2, 8(sp)
+	lw	a3, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	add	a0,a0,a2
 	add	a7,a7,a5
 	bne	t1,a1,.L9
@@ -95,26 +96,11 @@ fir:
 	lh	a0,0(a3)
 	addi	a5,a5,2
 	addi	a3,a3,2
-	addi	sp, sp, -32
-	sw	a0, 0(sp)
-	sw	a1, 4(sp)
-	sw	a2, 8(sp)
-	sw	a3, 12(sp)
-	sw	ra, 16(sp)
-	add	a1, a4, x0
-.Lpcrel_callmul_227:
-	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_227)
-	add	a4, a0, x0
-	lw	a0, 0(sp)
-	lw	a1, 4(sp)
-	lw	a2, 8(sp)
-	lw	a3, 12(sp)
-	lw	ra, 16(sp)
-	addi	sp, sp, 32
+	mul	a4,a4,a0
 	add	a2,a2,a4
 	bne	a6,a5,.L13
-	srai	a2,a2,15
+	addi	t0,x0,15
+	sra	a2,a2,t0
 	sw	a2,0(a7)
 	addi	t1,t1,1
 	addi	a7,a7,4
@@ -152,8 +138,10 @@ fir_no_red_ld:
 	add	a6,a3,a6
 	add	a0,a4,a0
 	bne	t4,a5,.L17
-	srai	a6,a6,15
-	srai	a0,a0,15
+	addi	t1,x0,15
+	sra	a6,a6,t1
+	addi	t1,x0,15
+	sra	a0,a0,t1
 	sw	a6,0(t5)
 	sw	a0,4(t5)
 	addi	t6,t6,2
@@ -166,7 +154,8 @@ fir_no_red_ld:
 	.globl	latsynth
 	.type	latsynth, @function
 latsynth:
-	slli	a4,a2,1
+	addi	a4,x0,1
+	sll	a4,a2,a4
 	addi	a4,a4,-2
 	add	a6,a1,a4
 	add	a5,a0,a4
@@ -181,9 +170,9 @@ latsynth:
 	sw	ra, 16(sp)
 	add	a0, a5, x0
 	add	a1, a7, x0
-.Lpcrel_callmul_228:
+.Lpcrel_callmul_245:
 	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_228)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_245)
 	add	a5, a0, x0
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
@@ -203,28 +192,30 @@ latsynth:
 	lh	a2,-4(a4)
 	addi	a4,a4,-2
 	addi	a1,a1,-2
-	mul	a6,a2,a5
-	sub	a3,a3,a6
-	srai	a6,a3,16
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	ra, 16(sp)
-	add	a0, a5, x0
-	add	a1, a6, x0
-.Lpcrel_callmul_229:
+	add	a0, a2, x0
+	add	a1, a5, x0
+.Lpcrel_callmul_246:
 	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_229)
-	add	a5, a0, x0
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_246)
+	add	a6, a0, x0
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srai	a5,a5,16
+	sub	a3,a3,a6
+	addi	a6,x0,16
+	sra	a6,a3,a6
+	mul	a5,a5,a6
+	addi	t0,x0,16
+	sra	a5,a5,t0
 	add	a5,a5,a2
 	sh	a5,0(a4)
 	bne	a7,a4,.L23
@@ -232,7 +223,8 @@ latsynth:
 	addi	a0,a3,0
 	jalr	zero,ra,0
 .L22:
-	srai	a6,a3,16
+	addi	a6,x0,16
+	sra	a6,a3,a6
 	sh	a6,0(a0)
 	addi	a0,a3,0
 	jalr	zero,ra,0
@@ -263,9 +255,9 @@ iir1:
 	sw	ra, 16(sp)
 	add	a0, a6, x0
 	add	a1, t3, x0
-.Lpcrel_callmul_230:
+.Lpcrel_callmul_247:
 	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_230)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_247)
 	add	a6, a0, x0
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
@@ -274,27 +266,11 @@ iir1:
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
 	add	a4,a4,t1
-	srai	a4,a4,15
+	addi	t0,x0,15
+	sra	a4,a4,t0
 	add	a4,a4,a1
 	sw	a4,-8(a3)
-	addi	sp, sp, -32
-	sw	a0, 0(sp)
-	sw	a1, 4(sp)
-	sw	a2, 8(sp)
-	sw	a3, 12(sp)
-	sw	ra, 16(sp)
-	add	a0, a5, x0
-	add	a1, a7, x0
-.Lpcrel_callmul_231:
-	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_231)
-	add	a5, a0, x0
-	lw	a0, 0(sp)
-	lw	a1, 4(sp)
-	lw	a2, 8(sp)
-	lw	a3, 12(sp)
-	lw	ra, 16(sp)
-	addi	sp, sp, 32
+	mul	a5,a5,a7
 	add	a5,a5,a6
 	addi	t0,x0,15
 	sra	a5,a5,t0
@@ -372,9 +348,12 @@ jpegdct:
 	add	s2,a5,s0
 	addi	a2,a2,-1
 	mul	s6,s6,s8
-	srai	a3,a3,13
-	slli	a2,a2,16
-	srli	a2,a2,16
+	addi	s8,x0,13
+	sra	a3,a3,s8
+	addi	s8,x0,16
+	sll	a2,a2,s8
+	addi	s8,x0,16
+	srl	a2,a2,s8
 	addi	a0,a0,16
 	addi	a6,a6,16
 	addi	t3,t3,16
@@ -387,7 +366,8 @@ jpegdct:
 	addi	a7,a7,16
 	addi	t5,t5,16
 	mul	a3,a3,s7
-	srai	a3,a3,13
+	addi	s7,x0,13
+	sra	a3,a3,s7
 	add	s6,s6,a3
 	sh	s6,-16(t4)
 	lh	s6,16(a1)
@@ -403,8 +383,10 @@ jpegdct:
 	mul	a4,a4,s7
 	add	a4,t2,a4
 	add	a4,a3,a4
-	slli	s7,a4,16
-	srai	a4,s7,29
+	addi	s7,x0,16
+	sll	s7,a4,s7
+	addi	a4,x0,29
+	sra	a4,s7,a4
 	sh	a4,-16(t6)
 	lhu	s7,12(a1)
 	mul	a4,s6,s1
@@ -413,22 +395,28 @@ jpegdct:
 	mul	s1,s2,s3
 	add	a5,s1,a5
 	add	a5,a4,a5
-	slli	s2,a5,16
-	srai	a5,s2,29
+	addi	s2,x0,16
+	sll	s2,a5,s2
+	addi	a5,x0,29
+	sra	a5,s2,a5
 	sh	a5,-16(t1)
 	lhu	a5,10(a1)
 	mul	s0,s0,a5
 	add	s1,s1,s0
 	add	a3,a3,s1
-	slli	a5,a3,16
-	srai	a3,a5,29
+	addi	a5,x0,16
+	sll	a5,a3,a5
+	addi	a3,x0,29
+	sra	a3,a5,a3
 	sh	a3,-16(a7)
 	lhu	a5,14(a1)
 	mul	t0,t0,a5
 	add	t2,t2,t0
 	add	a4,a4,t2
-	slli	a5,a4,16
-	srai	a4,a5,29
+	addi	a5,x0,16
+	sll	a5,a4,a5
+	addi	a4,x0,29
+	sra	a4,a5,a4
 	sh	a4,-16(t5)
 	bne	a2,zero,.L31
 	addi	s7,zero,16
@@ -511,8 +499,18 @@ jpegdct:
 	add	s9,s3,s4
 	add	s8,a3,a4
 	addi	t4,t4,-1
-	slli	t4,t4,16
-	srli	t4,t4,16
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	addi	s2,x0,16
+	sll	t4,t4,s2
+	lw	s2,0(sp)
+	addi	sp,sp,16
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	addi	s2,x0,16
+	srl	t4,t4,s2
+	lw	s2,0(sp)
+	addi	sp,sp,16
 	addi	s2,s2,2
 	addi	t3,t3,2
 	mul	a6,a6,s7
@@ -546,8 +544,18 @@ jpegdct:
 	mul	a4,a4,s4
 	add	a4,s3,a4
 	add	a4,t1,a4
-	slli	a4,a4,16
-	srai	a4,a4,16
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	addi	s2,x0,16
+	sll	a4,a4,s2
+	lw	s2,0(sp)
+	addi	sp,sp,16
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	addi	s2,x0,16
+	sra	a4,a4,s2
+	lw	s2,0(sp)
+	addi	sp,sp,16
 	sra	a4,a4,a7
 	sh	a4,-2(s1)
 	lhu	a4,12(a1)
@@ -555,24 +563,30 @@ jpegdct:
 	mul	a5,a5,a4
 	add	a5,a6,a5
 	add	a5,a0,a5
-	slli	a5,a5,16
-	srai	a5,a5,16
+	addi	a4,x0,16
+	sll	a5,a5,a4
+	addi	a4,x0,16
+	sra	a5,a5,a4
 	sra	a5,a5,a7
 	sh	a5,-2(t6)
 	lhu	a5,10(a1)
 	mul	a2,a2,a5
 	add	a6,a6,a2
 	add	t1,t1,a6
-	slli	t1,t1,16
-	srai	t1,t1,16
+	addi	a2,x0,16
+	sll	t1,t1,a2
+	addi	a2,x0,16
+	sra	t1,t1,a2
 	sra	t1,t1,a7
 	sh	t1,-2(t5)
 	lhu	a5,14(a1)
 	mul	a3,a3,a5
 	add	s3,s3,a3
 	add	a0,a0,s3
-	slli	a0,a0,16
-	srai	a0,a0,16
+	addi	t1,x0,16
+	sll	a0,a0,t1
+	addi	t1,x0,16
+	sra	a0,a0,t1
 	sra	a0,a0,a7
 	sh	a0,-2(s0)
 	bne	t4,zero,.L32
@@ -672,9 +686,11 @@ benchmark_body.constprop.0.isra.0:
 	lh	a1,0(a3)
 	lhu	a0,0(a4)
 	addi	a4,a4,2
-	slli	a5,a1,1
+	addi	a5,x0,1
+	sll	a5,a1,a5
 	add	a5,a5,a1
-	srai	a5,a5,15
+	addi	t0,x0,15
+	sra	a5,a5,t0
 	add	a5,a5,a0
 	sh	a5,-2(a4)
 	addi	a3,a3,2
@@ -711,7 +727,8 @@ benchmark_body.constprop.0.isra.0:
 	mul	a4,a4,a0
 	add	a1,a1,a4
 	bne	s0,a5,.L46
-	srai	a1,a1,15
+	addi	t0,x0,15
+	sra	a1,a1,t0
 	sw	a1,0(t1)
 	addi	a6,a6,1
 	addi	t1,t1,4
@@ -739,9 +756,11 @@ benchmark_body.constprop.0.isra.0:
 	addi	a1,a1,-2
 	mul	a6,a0,a5
 	sub	a3,a3,a6
-	srai	a6,a3,16
+	addi	a6,x0,16
+	sra	a6,a3,a6
 	mul	a5,a5,a6
-	srai	a5,a5,16
+	addi	t0,x0,16
+	sra	a5,a5,t0
 	add	a5,a5,a0
 	sh	a5,4(a4)
 	bne	s6,a4,.L48
@@ -766,11 +785,13 @@ benchmark_body.constprop.0.isra.0:
 	mul	a7,a7,t3
 	mul	a6,a6,t3
 	add	a5,a5,a7
-	srai	a5,a5,15
+	addi	t0,x0,15
+	sra	a5,a5,t0
 	add	a5,a5,t1
 	sw	a5,-8(a0)
 	add	a4,a4,a6
-	srai	a4,a4,15
+	addi	t0,x0,15
+	sra	a4,a4,t0
 	add	t1,a4,a5
 	bne	a1,s9,.L49
 	lui	a5,%hi(e)
@@ -893,9 +914,11 @@ benchmark_body.isra.0:
 	lh	a1,0(a3)
 	lhu	a0,0(a4)
 	addi	a4,a4,2
-	slli	a5,a1,1
+	addi	a5,x0,1
+	sll	a5,a1,a5
 	add	a5,a5,a1
-	srai	a5,a5,15
+	addi	t0,x0,15
+	sra	a5,a5,t0
 	add	a5,a5,a0
 	sh	a5,-2(a4)
 	addi	a3,a3,2
@@ -932,7 +955,8 @@ benchmark_body.isra.0:
 	mul	a4,a4,t1
 	add	a1,a1,a4
 	bne	s0,a5,.L69
-	srai	a1,a1,15
+	addi	t0,x0,15
+	sra	a1,a1,t0
 	sw	a1,0(a7)
 	addi	a0,a0,1
 	addi	a7,a7,4
@@ -960,9 +984,11 @@ benchmark_body.isra.0:
 	addi	a1,a1,-2
 	mul	a6,a0,a5
 	sub	a3,a3,a6
-	srai	a6,a3,16
+	addi	a6,x0,16
+	sra	a6,a3,a6
 	mul	a5,a5,a6
-	srai	a5,a5,16
+	addi	t0,x0,16
+	sra	a5,a5,t0
 	add	a5,a5,a0
 	sh	a5,4(a4)
 	bne	s6,a4,.L71
@@ -987,11 +1013,13 @@ benchmark_body.isra.0:
 	mul	a7,a7,t3
 	mul	a6,a6,t3
 	add	a5,a5,a7
-	srai	a5,a5,15
+	addi	t0,x0,15
+	sra	a5,a5,t0
 	add	a5,a5,t1
 	sw	a5,-8(a0)
 	add	a4,a4,a6
-	srai	a4,a4,15
+	addi	t0,x0,15
+	sra	a4,a4,t0
 	add	t1,a4,a5
 	bne	a1,s9,.L72
 	lui	a5,%hi(e)
@@ -1143,13 +1171,13 @@ main:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_9)
 	lw	ra,28(sp)
 	addi	t0,x0,1
-	or	t0,t0,a0
 	addi	t1,x0,1
-	addi	t2,x0,1
-	or	x0,t2,a0
-	sub	x0,x0,a0
-	sub	x0,t1,x0
-	sub	a0,t0,x0
+	and	t1,t1,a0
+	sub	t1,t1,a0
+	sub	t0,t0,t1
+	addi	t1,x0,1
+	and	t1,t1,a0
+	sub	a0,t0,t1
 	addi	sp,sp,32
 	jalr	zero,ra,0
 	.size	main, .-main
@@ -1799,16 +1827,15 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	a3,x0,1
-	or	a3,a1,a3
-	addi	t0,x0,1
-	sub	x0,a3,t0
-	sub	a3,a1,x0
+	and	a3,a1,a3
 	bne	a3,x0,.+8
 	jal	x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
-	srli	a1,a1,1
-	slli	a2,a2,1
+	addi	t0,x0,1
+	srl	a1,a1,t0
+	addi	t0,x0,1
+	sll	a2,a2,t0
 	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
 
@@ -1836,18 +1863,24 @@ __riscv_div_lib_udivsi3:
 __riscv_div_lib_L1:
 	blt	zero,a2,.+8
 	jal	x0,__riscv_div_lib_L2
-	slli	a2,a2,1
-	slli	a3,a3,1
+	addi	t0,x0,1
+	sll	a2,a2,t0
+	addi	t0,x0,1
+	sll	a3,a3,t0
 	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	or	a0,a0,a3
+	and	t0,a0,a3
+	sub	t0,t0,a3
+	sub	a0,a0,t0
 __riscv_div_lib_L4:
-	srli	a3,a3,1
-	srli	a2,a2,1
+	addi	t0,x0,1
+	srl	a3,a3,t0
+	addi	t0,x0,1
+	srl	a2,a2,t0
 	bne	a3,zero,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0

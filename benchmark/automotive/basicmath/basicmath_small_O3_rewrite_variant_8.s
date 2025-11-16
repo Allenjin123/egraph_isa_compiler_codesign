@@ -25,7 +25,8 @@ my_cos:
 	mulhu	a5,a5,a1
 	srli	a5,a5,6
 	mul	a4,a5,a4
-	andi	a5,a5,3
+	addi	t0,x0,3
+	and	a5,t0,a5
 	add	a0,a4,a0
 	mul	a6,a0,a0
 	mulhu	a4,a6,a1
@@ -324,7 +325,8 @@ SolveCubic:
 	mulhu	a3,a3,a0
 	srli	a3,a3,6
 	mul	s3,a3,t2
-	andi	a3,a3,3
+	addi	a2,x0,3
+	and	a3,a3,a2
 	add	s3,s3,a1
 	mul	s6,s3,s3
 	mulhu	a2,s6,a0
@@ -430,7 +432,8 @@ SolveCubic:
 	srai	a4,a4,1
 	div	a5,a5,a4
 	add	a5,a5,a4
-	andi	a5,a5,-2
+	addi	t0,x0,-2
+	and	a5,a5,t0
 	sub	s4,zero,a5
 .L21:
 	lui	s5,349525
@@ -1035,7 +1038,8 @@ __mul:
 	add	a2,a0,x0
 	addi	a0,x0,0
 .Mul_loop:
-	andi	a3,a1,1
+	addi	a3,x0,1
+	and	a3,a1,a3
 	beq	a3,x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
@@ -1060,9 +1064,7 @@ __riscv_div_lib_udivsi3:
 	addi	a2,a1,0
 	addi	a1,a0,0
 	addi	a0,zero,-1
-	beq	a2,zero,.+8
-	jal	x0,.+8
-	jal	x0,__riscv_div_lib_L5
+	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
@@ -1076,7 +1078,9 @@ __riscv_div_lib_L2:
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	or	a0,a0,a3
+	xor	t0,a0,a3
+	and	t1,a0,a3
+	xor	a0,t0,t1
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1

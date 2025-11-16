@@ -150320,9 +150320,7 @@ __riscv_div_lib_L1:
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bltu	a1,a2,.+8
-	jal	x0,.+8
-	jal	x0,__riscv_div_lib_L4
+	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	or	a0,a0,a3
 __riscv_div_lib_L4:

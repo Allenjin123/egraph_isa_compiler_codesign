@@ -27,7 +27,23 @@ stop_trigger:
 	.globl	mulul64
 	.type	mulul64, @function
 mulul64:
-	mul	a6,a1,a2
+	addi	sp, sp, -32
+	sw	a0, 0(sp)
+	sw	a1, 4(sp)
+	sw	a2, 8(sp)
+	sw	a3, 12(sp)
+	sw	ra, 16(sp)
+	add	a0, a2, x0
+.Lpcrel_callmul_813:
+	auipc	ra, %pcrel_hi(__mul)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_813)
+	add	a6, a0, x0
+	lw	a0, 0(sp)
+	lw	a1, 4(sp)
+	lw	a2, 8(sp)
+	lw	a3, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	mulhu	t1,a0,a2
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
@@ -36,9 +52,9 @@ mulul64:
 	sw	a3, 12(sp)
 	sw	ra, 16(sp)
 	add	a1, a3, x0
-.Lpcrel_callmul_794:
+.Lpcrel_callmul_814:
 	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_794)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_814)
 	add	a7, a0, x0
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
@@ -54,30 +70,28 @@ mulul64:
 	sltu	a7,t1,a7
 	mulhu	t3,a0,a3
 	add	a6,a6,t4
-	addi	sp, sp, -32
-	sw	a0, 0(sp)
-	sw	a1, 4(sp)
-	sw	a2, 8(sp)
-	sw	a3, 12(sp)
-	sw	ra, 16(sp)
-	add	a0, a3, x0
-.Lpcrel_callmul_795:
-	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_795)
-	add	t1, a0, x0
-	lw	a0, 0(sp)
-	lw	a1, 4(sp)
-	lw	a2, 8(sp)
-	lw	a3, 12(sp)
-	lw	ra, 16(sp)
-	addi	sp, sp, 32
+	mul	t1,a1,a3
 	add	a7,a7,t3
 	mulhu	a1,a1,a3
 	add	a6,t1,a6
 	add	a7,a6,a7
 	sltu	t1,a6,t1
 	sltu	a6,a7,a6
-	mul	a0,a0,a2
+	addi	sp, sp, -16
+	sw	a1, 0(sp)
+	sw	a2, 4(sp)
+	sw	a3, 8(sp)
+	sw	ra, 12(sp)
+	add	a1, a2, x0
+.Lpcrel_callmul_815:
+	auipc	ra, %pcrel_hi(__mul)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_815)
+	add	a0, a0, x0
+	lw	a1, 0(sp)
+	lw	a2, 4(sp)
+	lw	a3, 8(sp)
+	lw	ra, 12(sp)
+	addi	sp, sp, 16
 	add	t1,t1,a1
 	add	a6,a6,t1
 	sw	a0,0(a5)
@@ -91,26 +105,16 @@ mulul64:
 modul64:
 	addi	sp,sp,-16
 	sw	s0,12(sp)
-	addi	t3,x0,0
-	and	t3,x0,t3
-	addi	t0,x0,0
-	sub	t3,t3,t0
-	sub	t3,x0,t3
-	add	t3,zero,t3
-	addi	s0,x0,0
-	and	s0,x0,s0
-	addi	t0,x0,0
-	sub	s0,s0,t0
-	sub	s0,x0,s0
-	add	s0,a4,s0
+	addi	t3,zero,0
+	addi	s0,a4,0
 	addi	t0,x0,64
 	or	t0,x0,t0
-	add	t0,zero,t0
+	sub	t1,x0,zero
+	sub	t0,t0,t1
 .L9:
 	srli	a7,a0,31
 	slli	a6,a1,1
-	sub	t1,x0,a7
-	sub	a6,a6,t1
+	add	a6,a7,a6
 	srai	t1,a1,31
 	slli	a7,a3,1
 	srli	a1,a3,31
@@ -120,11 +124,15 @@ modul64:
 	sub	t2,x0,a3
 	sub	a7,a7,t2
 	or	t4,t1,a6
-	addi	a1,a6,0
+	addi	a1,x0,0
+	or	a1,x0,a1
+	add	a1,a6,a1
 	addi	t3,t3,1
 	slli	a2,a2,1
 	or	t1,t1,a0
-	addi	a3,a7,0
+	addi	a3,x0,0
+	or	a3,x0,a3
+	add	a3,a7,a3
 	bltu	t4,a5,.L7
 	sub	t6,a0,s0
 	addi	t5,a2,1
@@ -782,9 +790,13 @@ xbinGCD:
 	sw	s0,44(sp)
 	sw	s1,40(sp)
 	sw	s2,36(sp)
-	addi	s0,a1,0
+	addi	s0,x0,0
+	or	s0,x0,s0
+	add	s0,a1,s0
 	or	a1,a0,a1
-	addi	s2,a4,0
+	addi	s2,x0,0
+	or	s2,x0,s2
+	add	s2,a4,s2
 	addi	s1,x0,0
 	or	s1,x0,s1
 	add	s1,a5,s1
@@ -793,20 +805,24 @@ xbinGCD:
 	sw	s4,28(sp)
 	addi	s3,x0,0
 	or	s3,x0,s3
-	add	s3,a2,s3
+	sub	t0,x0,a2
+	sub	s3,s3,t0
 	sw	s5,24(sp)
 	sw	s6,20(sp)
 	sw	s7,16(sp)
 	sw	s8,12(sp)
 	addi	s4,x0,0
 	or	s4,x0,s4
-	add	s4,a3,s4
+	sub	t0,x0,a3
+	sub	s4,s4,t0
 	addi	a4,x0,0
 	or	a4,x0,a4
-	add	a4,a0,a4
+	sub	t0,x0,a0
+	sub	a4,a4,t0
 	addi	a2,x0,0
 	or	a2,x0,a2
-	add	a2,s0,a2
+	sub	t0,x0,s0
+	sub	a2,a2,t0
 	addi	t1,x0,0
 	or	t1,x0,t1
 	add	t1,zero,t1
@@ -821,7 +837,9 @@ xbinGCD:
 	add	a7,zero,a7
 	jal	x0,.L88
 .L93:
-	or	t3,t4,t0
+	and	t3,t4,t0
+	sub	t3,t3,t0
+	sub	t3,t4,t3
 	add	a6,s8,s7
 	addi	a7,s6,0
 	beq	t3,zero,.L92
@@ -840,12 +858,8 @@ xbinGCD:
 	add	t4,a5,t4
 	and	t6,s3,a6
 	srli	a5,t2,1
-	addi	a4,x0,-1
-	xor	a4,s4,a4
-	and	a4,a7,a4
-	sub	a4,x0,a4
-	sub	x0,s4,a4
-	xor	a4,x0,t5
+	or	a4,s4,a7
+	xor	a4,a4,t5
 	addi	t2,a5,0
 	add	t6,t3,t6
 	srli	t5,t5,1
@@ -855,25 +869,16 @@ xbinGCD:
 	srli	s6,a7,1
 	slli	s8,a7,31
 	srli	s7,a6,1
-	bltu	a5,t1,.+8
-	jal	x0,.+8
-	jal	x0,.+12
-	addi	s5,x0,0
-	jal	x0,.+8
-	addi	s5,x0,1
+	sltu	s5,a5,t1
 	add	a1,s0,t2
 	sltu	t3,t6,t3
-	addi	a4,x0,0
-	or	a4,x0,a4
-	sub	a2,x0,t4
-	sub	a4,a4,a2
-	addi	a2,x0,0
-	or	a2,x0,a2
-	sub	a6,x0,t0
-	sub	a2,a2,a6
+	addi	a4,t4,0
+	addi	a2,t0,0
 	beq	a3,zero,.L93
 	add	a7,t3,t5
-	or	t3,t4,t0
+	and	t3,t4,t0
+	sub	t3,t3,t0
+	sub	t3,t4,t3
 	addi	a6,x0,0
 	or	a6,x0,a6
 	add	a6,t6,a6
@@ -881,7 +886,8 @@ xbinGCD:
 	or	t1,x0,t1
 	add	t1,a5,t1
 	add	t2,s5,a1
-	bne	t3,zero,.L88
+	beq	t3,zero,.+8
+	jal	x0,.L88
 .L92:
 	lw	s3,32(sp)
 	lw	s4,28(sp)
@@ -905,7 +911,8 @@ xbinGCD:
 	add	t1,a0,t1
 	addi	t2,x0,0
 	or	t2,x0,t2
-	add	t2,s0,t2
+	sub	t0,x0,s0
+	sub	t2,t2,t0
 	addi	a6,zero,1
 	addi	a7,x0,0
 	or	a7,x0,a7
@@ -916,9 +923,7 @@ xbinGCD:
 	.globl	warm_caches
 	.type	warm_caches, @function
 warm_caches:
-	addi	t0,x0,-16
-	or	t0,x0,t0
-	add	sp,sp,t0
+	addi	sp,sp,-16
 	sw	ra,12(sp)
 .Lpcrel_4:
 	auipc	ra,%pcrel_hi(benchmark_body.isra.0)
@@ -1080,23 +1085,18 @@ __riscv_div_lib_udivsi3:
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
-	bge	zero,a2,__riscv_div_lib_L2
+	bge	zero,a2,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L2
 	slli	a2,a2,1
 	slli	a3,a3,1
 	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
-	addi	a0,x0,0
-	and	a0,x0,a0
-	addi	t0,x0,0
-	sub	a0,a0,t0
-	sub	a0,x0,a0
-	add	a0,zero,a0
+	addi	a0,zero,0
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	and	t0,a0,a3
-	sub	t0,t0,a3
-	sub	a0,a0,t0
+	or	a0,a0,a3
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1
@@ -1107,12 +1107,7 @@ __riscv_div_lib_L5:
 # Unsigned 32-bit remainder: a0 = a0 % a1
 .global __riscv_div_lib_umodsi3
 __riscv_div_lib_umodsi3:
-	addi	t0,x0,0
-	and	t0,x0,t0
-	addi	t1,x0,0
-	sub	t0,t0,t1
-	sub	t0,x0,t0
-	add	t0,ra,t0
+	addi	t0,ra,0
 .Lpcrel_div1:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_div1)

@@ -8,7 +8,8 @@
 	.align	2
 	.type	heap_adjust, @function
 heap_adjust:
-	srli	t5,a2,31
+	addi	op_0,x0,31
+	srl	t5,a2,op_0
 	addi	a1,a1,-4
 	addi	op_0,x0,2
 	sll	a5,a3,op_0
@@ -19,8 +20,7 @@ heap_adjust:
 	addi	op_0,x0,1
 	sra	t5,t5,op_0
 	lw	t2,0(a5)
-	bge	t5,a3,.+8
-	jal	x0,.L2
+	blt	t5,a3,.L2
 	addi	op_0,x0,2
 	sll	t6,t2,op_0
 	sub	op_0,x0,a0
@@ -38,8 +38,7 @@ heap_adjust:
 	bltu	t3,a6,.L2
 .L11:
 	sw	a7,0(a5)
-	bge	t5,a4,.+8
-	jal	x0,.L9
+	blt	t5,a4,.L9
 	addi	a3,a4,0
 .L4:
 	addi	op_0,x0,3
@@ -58,7 +57,8 @@ heap_adjust:
 	addi	op_0,x0,2
 	sll	t4,t3,op_0
 	addi	t1,a5,0
-	bge	a4,a2,.L3
+	blt	a4,a2,.+8
+	jal	x0,.L3
 	sub	op_0,x0,a1
 	sub	t1,t4,op_0
 	lw	t0,0(t1)
@@ -88,7 +88,8 @@ heap_adjust:
 heap_adjust.constprop.0:
 	addi	a5,zero,1
 	lw	t2,0(a1)
-	bge	a5,a2,.L13
+	blt	a5,a2,.+8
+	jal	x0,.L13
 	addi	op_0,x0,2
 	sll	t5,t2,op_0
 	addi	t4,a1,-4
@@ -109,8 +110,7 @@ heap_adjust.constprop.0:
 	bltu	t1,a3,.L13
 .L21:
 	sw	a6,0(a1)
-	bge	t0,a4,.+8
-	jal	x0,.L19
+	blt	t0,a4,.L19
 	addi	a5,a4,0
 .L15:
 	addi	op_0,x0,3
@@ -129,7 +129,8 @@ heap_adjust.constprop.0:
 	addi	op_0,x0,2
 	sll	t3,t1,op_0
 	addi	a7,a1,0
-	bge	a4,a2,.L14
+	blt	a4,a2,.+8
+	jal	x0,.L14
 	sub	op_0,x0,t4
 	sub	a7,t3,op_0
 	lw	t6,0(a7)
@@ -183,7 +184,7 @@ compdecomp.constprop.0:
 	lw	a5,%lo(heap_requested)(a3)
 	addi	a4,a4,501
 	addi	op_0,x0,3
-	and	a0,op_0,a4
+	and	a0,a4,op_0
 	addi	a5,a5,501
 	beq	a0,zero,.L23
 	addi	a1,zero,4
@@ -205,7 +206,7 @@ compdecomp.constprop.0:
 	beq	a5,zero,.L82
 	lw	a4,8(sp)
 	addi	op_0,x0,2
-	and	a3,op_0,a3
+	and	a3,a3,op_0
 	sb	zero,0(a4)
 	beq	a3,zero,.L83
 	sb	zero,1(a4)
@@ -440,8 +441,7 @@ compdecomp.constprop.0:
 	sub	a3,s5,a4
 	sub	op_0,x0,s5
 	sub	a4,a4,op_0
-	bge	a5,zero,.+8
-	jal	x0,.L140
+	blt	a5,zero,.L140
 	lw	a5,0(a4)
 	addi	a6,a6,1
 	addi	op_0,x0,1
@@ -511,7 +511,8 @@ compdecomp.constprop.0:
 	sub	op_0,op_1,op_3
 	sub	a3,a3,op_0
 .L53:
-	srli	a4,a4,1
+	addi	op_0,x0,1
+	srl	a4,a4,op_0
 	bltu	a2,a6,.L54
 .L50:
 	lw	a5,12(sp)
@@ -571,7 +572,8 @@ compdecomp.constprop.0:
 	sll	a5,a7,op_0
 .L60:
 	addi	a2,a2,1
-	srli	a3,a3,1
+	addi	op_0,x0,1
+	srl	a3,a3,op_0
 	beq	a1,a2,.+8
 	jal	x0,.L61
 	sw	a5,0(t3)
@@ -727,7 +729,8 @@ compdecomp.constprop.0:
 .L72:
 	beq	a2,a3,.L74
 	beq	a1,t4,.L75
-	srli	a1,a1,1
+	addi	op_0,x0,1
+	srl	a1,a1,op_0
 	and	a5,a7,a1
 	beq	a5,zero,.+8
 	jal	x0,.L143
@@ -743,7 +746,8 @@ compdecomp.constprop.0:
 	addi	t1,t1,1
 	sb	a5,0(s4)
 	beq	a1,t4,.L77
-	srli	a1,a1,1
+	addi	op_0,x0,1
+	srl	a1,a1,op_0
 .L78:
 	beq	t1,t6,.L22
 	lw	a5,8(sp)
@@ -832,8 +836,7 @@ benchmark_body.constprop.0.isra.0:
 	.align	2
 	.type	benchmark_body.isra.0, @function
 benchmark_body.isra.0:
-	bge	zero,a0,.+8
-	jal	x0,.+8
+	blt	zero,a0,.+8
 	jal	x0,.L157
 	addi	sp,sp,-48
 	sw	s0,40(sp)
@@ -948,7 +951,7 @@ compdecomp:
 	sub	op_0,x0,a4
 	sub	a4,a2,op_0
 	addi	op_0,x0,3
-	and	a0,op_0,a4
+	and	a0,a4,op_0
 	sub	op_0,x0,a2
 	sub	a5,a5,op_0
 	beq	a0,zero,.+8
@@ -970,7 +973,7 @@ compdecomp:
 	beq	a5,zero,.L229
 	lw	a3,4(sp)
 	addi	op_0,x0,2
-	and	a4,a4,op_0
+	and	a4,op_0,a4
 	sb	zero,0(a3)
 	addi	a3,zero,1
 	beq	a4,zero,.L168
@@ -1233,8 +1236,7 @@ compdecomp:
 	sub	a3,s5,a4
 	sub	op_0,x0,s5
 	sub	a4,a4,op_0
-	bge	a5,zero,.+8
-	jal	x0,.L296
+	blt	a5,zero,.L296
 	lw	a5,0(a4)
 	addi	a6,a6,1
 	addi	op_0,x0,1
@@ -1308,7 +1310,8 @@ compdecomp:
 	sub	op_0,op_1,op_3
 	sub	a3,a3,op_0
 .L201:
-	srli	a4,a4,1
+	addi	op_0,x0,1
+	srl	a4,a4,op_0
 	bltu	a2,a6,.L202
 .L198:
 	addi	t3,t3,1
@@ -1368,7 +1371,8 @@ compdecomp:
 	sll	a5,a7,op_0
 .L208:
 	addi	a2,a2,1
-	srli	a3,a3,1
+	addi	op_0,x0,1
+	srl	a3,a3,op_0
 	beq	a1,a2,.+8
 	jal	x0,.L209
 	sw	a5,0(t3)
@@ -1464,7 +1468,8 @@ compdecomp:
 	beq	a2,a3,.L299
 	beq	a0,t3,.L223
 .L300:
-	srli	a0,a0,1
+	addi	op_0,x0,1
+	srl	a0,a0,op_0
 .L224:
 	lw	a5,8(sp)
 	bltu	a7,a5,.L225
@@ -1728,12 +1733,13 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	op_0,x0,1
-	and	a3,op_0,a1
+	and	a3,a1,op_0
 	beq	a3,x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
 .Mul_skip:
-	srli	a1,a1,1
+	addi	op_0,x0,1
+	srl	a1,a1,op_0
 	addi	op_0,x0,1
 	sll	a2,a2,op_0
 	beq	a1,x0,.+8
@@ -1746,10 +1752,8 @@ __mul:
 # Signed 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
-	bge	a0,zero,.+8
-	jal	x0,__riscv_div_lib_L10
-	bge	a1,zero,.+8
-	jal	x0,__riscv_div_lib_L11
+	blt	a0,zero,__riscv_div_lib_L10
+	blt	a1,zero,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
 # Unsigned 32-bit division: a0 = a0 / a1
@@ -1763,7 +1767,8 @@ __riscv_div_lib_udivsi3:
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
-	bge	zero,a2,__riscv_div_lib_L2
+	blt	zero,a2,.+8
+	jal	x0,__riscv_div_lib_L2
 	addi	op_0,x0,1
 	sll	a2,a2,op_0
 	addi	op_0,x0,1
@@ -1778,8 +1783,10 @@ __riscv_div_lib_L3:
 	sub	op_0,op_1,a3
 	sub	a0,a0,op_0
 __riscv_div_lib_L4:
-	srli	a3,a3,1
-	srli	a2,a2,1
+	addi	op_0,x0,1
+	srl	a3,a3,op_0
+	addi	op_0,x0,1
+	srl	a2,a2,op_0
 	beq	a3,zero,.+8
 	jal	x0,__riscv_div_lib_L3
 __riscv_div_lib_L5:
@@ -1798,8 +1805,7 @@ __riscv_div_lib_umodsi3:
 # Handle negative arguments to divsi3
 __riscv_div_lib_L10:
 	sub	a0,zero,a0
-	bge	zero,a1,.+8
-	jal	x0,__riscv_div_lib_L12
+	blt	zero,a1,__riscv_div_lib_L12
 	sub	a1,zero,a1
 	jal	x0,__riscv_div_lib_udivsi3
 __riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
@@ -1816,10 +1822,8 @@ __riscv_div_lib_L12:
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
 	addi	t0,ra,0
-	bge	a1,zero,.+8
-	jal	x0,__riscv_div_lib_L31
-	bge	a0,zero,.+8
-	jal	x0,__riscv_div_lib_L32
+	blt	a1,zero,__riscv_div_lib_L31
+	blt	a0,zero,__riscv_div_lib_L32
 __riscv_div_lib_L30:
 .Lpcrel_div3:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
@@ -1828,7 +1832,8 @@ __riscv_div_lib_L30:
 	jalr	zero,t0,0
 __riscv_div_lib_L31:
 	sub	a1,zero,a1
-	bge	a0,zero,__riscv_div_lib_L30
+	blt	a0,zero,.+8
+	jal	x0,__riscv_div_lib_L30
 __riscv_div_lib_L32:
 	sub	a0,zero,a0
 .Lpcrel_div4:

@@ -23,10 +23,13 @@ quicksort_range:
 	addi	s1,zero,-1
 .L2:
 	add	a5,s3,a1
-	srli	a2,a5,31
+	addi	a2,x0,31
+	srl	a2,a5,a2
 	add	a2,a2,a5
-	srai	a2,a2,1
-	slli	a2,a2,7
+	addi	t0,x0,1
+	sra	a2,a2,t0
+	addi	t0,x0,7
+	sll	a2,a2,t0
 	addi	a3,sp,16
 	addi	a5,zero,0
 .L3:
@@ -45,7 +48,8 @@ quicksort_range:
 	addi	s0,a1,0
 .L6:
 	blt	a2,s0,.L31
-	slli	t1,s0,7
+	addi	t1,x0,7
+	sll	t1,s0,t1
 	add	t1,a0,t1
 	lbu	a4,0(t1)
 	addi	a6,t1,0
@@ -73,7 +77,8 @@ quicksort_range:
 	addi	a6,t1,0
 	bne	a4,zero,.L36
 .L8:
-	slli	a7,a2,7
+	addi	a7,x0,7
+	sll	a7,a2,a7
 	add	a7,a0,a7
 	lbu	a5,0(a7)
 	addi	a3,a7,0
@@ -123,7 +128,8 @@ quicksort_range:
 	addi	a3,zero,0
 	jal	x0,.L14
 .L70:
-	andi	a5,t1,3
+	addi	a5,x0,3
+	and	a5,a5,t1
 	bne	a5,zero,.L19
 	addi	a5,sp,144
 	addi	a4,a5,0
@@ -136,8 +142,11 @@ quicksort_range:
 	addi	a6,sp,272
 	bne	a4,a6,.L20
 .L21:
-	or	a4,a7,t1
-	andi	a4,a4,3
+	and	a4,a7,t1
+	sub	a4,a4,t1
+	sub	a4,a7,a4
+	addi	t0,x0,3
+	and	a4,t0,a4
 	bne	a4,zero,.L23
 	addi	a6,t1,128
 	addi	a4,a7,0
@@ -148,7 +157,8 @@ quicksort_range:
 	sw	a3,-4(t1)
 	bne	t1,a6,.L24
 .L25:
-	andi	a4,a7,3
+	addi	a4,x0,3
+	and	a4,a4,a7
 	bne	a4,zero,.L30
 .L28:
 	lw	a4,0(a5)
@@ -321,12 +331,14 @@ main:
 	add	sp,sp,t0
 	lw	ra,2028(sp)
 	addi	a0,a0,1808
-	or	t0,a0,a4
-	or	t1,a0,a4
-	sub	t1,t1,a4
-	sub	t1,a0,t1
+	and	t0,a0,a4
+	sub	t0,t0,a4
+	sub	t0,a0,t0
+	and	t1,a0,a4
 	sub	a0,t0,t1
-	or	a0,a0,a5
+	and	t0,a0,a5
+	sub	t0,t0,a5
+	sub	a0,a0,t0
 	lw	s0,2024(sp)
 	lw	s1,2020(sp)
 	lw	s2,2016(sp)
@@ -11392,14 +11404,16 @@ __mul:
 	add	a2,a0,x0
 	addi	a0,x0,0
 .Mul_loop:
-	andi	a3,a1,1
+	addi	a3,x0,1
+	and	a3,a1,a3
 	beq	a3,x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
-	srli	a1,a1,1
-	slli	a2,a2,1
-	beq	a1,x0,.+8
-	jal	x0,.Mul_loop
+	addi	t0,x0,1
+	srl	a1,a1,t0
+	addi	t0,x0,1
+	sll	a2,a2,t0
+	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
 
 .text
@@ -11408,9 +11422,7 @@ __mul:
 # Signed 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
-	blt	a0,zero,.+8
-	jal	x0,.+8
-	jal	x0,__riscv_div_lib_L10
+	blt	a0,zero,__riscv_div_lib_L10
 	blt	a1,zero,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
@@ -11427,18 +11439,24 @@ __riscv_div_lib_udivsi3:
 __riscv_div_lib_L1:
 	blt	zero,a2,.+8
 	jal	x0,__riscv_div_lib_L2
-	slli	a2,a2,1
-	slli	a3,a3,1
+	addi	t0,x0,1
+	sll	a2,a2,t0
+	addi	t0,x0,1
+	sll	a3,a3,t0
 	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	or	a0,a0,a3
+	and	t0,a0,a3
+	sub	t0,t0,a3
+	sub	a0,a0,t0
 __riscv_div_lib_L4:
-	srli	a3,a3,1
-	srli	a2,a2,1
+	addi	t0,x0,1
+	srl	a3,a3,t0
+	addi	t0,x0,1
+	srl	a2,a2,t0
 	bne	a3,zero,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0

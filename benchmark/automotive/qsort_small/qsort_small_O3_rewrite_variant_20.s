@@ -318,11 +318,7 @@ main:
 	add	sp,sp,t0
 	lw	ra,2028(sp)
 	addi	a0,a0,1808
-	or	t0,a0,a4
-	or	t1,a0,a4
-	sub	t1,t1,a4
-	sub	t1,a0,t1
-	sub	a0,t0,t1
+	xor	a0,a4,a0
 	or	a0,a0,a5
 	lw	s0,2024(sp)
 	lw	s1,2020(sp)
@@ -11389,11 +11385,7 @@ __mul:
 	add	a2,a0,x0
 	addi	a0,x0,0
 .Mul_loop:
-	addi	a3,x0,1
-	or	a3,a1,a3
-	addi	t0,x0,1
-	sub	x0,a3,t0
-	sub	a3,a1,x0
+	andi	a3,a1,1
 	beq	a3,x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
@@ -11423,17 +11415,14 @@ __riscv_div_lib_udivsi3:
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
-	blt	zero,a2,.+8
-	jal	x0,__riscv_div_lib_L2
+	bge	zero,a2,__riscv_div_lib_L2
 	slli	a2,a2,1
 	slli	a3,a3,1
 	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bltu	a1,a2,.+8
-	jal	x0,.+8
-	jal	x0,__riscv_div_lib_L4
+	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	or	a0,a0,a3
 __riscv_div_lib_L4:

@@ -95,16 +95,16 @@ benchmark_body.constprop.0:
 benchmark_body.isra.0:
 	blt	zero,a0,.+8
 	jal	x0,.L29
-	addi	t0,x0,-16
-	or	t0,x0,t0
+	ori	t0,x0,-16
 	add	sp,sp,t0
 	sw	s0,8(sp)
 	sw	s1,4(sp)
 	sw	ra,12(sp)
-	addi	s1,a0,0
-	addi	s0,x0,0
-	or	s0,x0,s0
-	add	s0,zero,s0
+	ori	s1,x0,0
+	add	s1,a0,s1
+	ori	s0,x0,0
+	sub	t0,x0,zero
+	sub	s0,s0,t0
 .L26:
 	addi	s0,s0,1
 .Lpcrel_2:
@@ -123,9 +123,7 @@ benchmark_body.isra.0:
 	.globl	warm_caches
 	.type	warm_caches, @function
 warm_caches:
-	ori	t0,x0,-16
-	sub	t1,x0,sp
-	sub	sp,t0,t1
+	addi	sp,sp,-16
 	sw	ra,12(sp)
 .Lpcrel_3:
 	auipc	ra,%pcrel_hi(benchmark_body.isra.0)
@@ -202,8 +200,7 @@ __mul:
 	addi	t0,x0,1
 	srl	a1,a1,t0
 	slli	a2,a2,1
-	beq	a1,x0,.+8
-	jal	x0,.Mul_loop
+	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
 
 .text
@@ -219,7 +216,8 @@ __riscv_div_lib_divsi3:
 # Unsigned 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_udivsi3
 __riscv_div_lib_udivsi3:
-	addi	a2,a1,0
+	ori	a2,x0,0
+	add	a2,a1,a2
 	addi	a1,a0,0
 	addi	a0,zero,-1
 	beq	a2,zero,__riscv_div_lib_L5
@@ -237,8 +235,7 @@ __riscv_div_lib_L3:
 	sub	a1,a1,a2
 	or	a0,a0,a3
 __riscv_div_lib_L4:
-	addi	t0,x0,1
-	srl	a3,a3,t0
+	srli	a3,a3,1
 	srli	a2,a2,1
 	bne	a3,zero,__riscv_div_lib_L3
 __riscv_div_lib_L5:

@@ -106,8 +106,7 @@ quicksort_range:
 	addi	a3,zero,0
 	sltu	a5,a5,a4
 	sub	a5,a3,a5
-	bne	a5,s1,.+8
-	jal	x0,.L17
+	beq	a5,s1,.L17
 .L69:
 	bge	a2,s0,.L70
 .L31:
@@ -167,8 +166,18 @@ quicksort_range:
 	addi	a4,sp,272
 	beq	a4,a5,.L29
 	lbu	a4,0(a5)
-	addi	a5,a5,1
-	addi	a7,a7,1
+	addi	t0,x0,1
+	and	t0,x0,t0
+	addi	t1,x0,1
+	sub	t0,t0,t1
+	sub	t0,x0,t0
+	add	a5,a5,t0
+	addi	t0,x0,1
+	and	t0,x0,t0
+	addi	t1,x0,1
+	sub	t0,t0,t1
+	sub	t0,x0,t0
+	add	a7,a7,t0
 	sb	a4,-1(a7)
 	addi	a4,sp,272
 	bne	a4,a5,.L30
@@ -194,21 +203,16 @@ quicksort_range:
 	addi	a4,a7,0
 .L26:
 	lbu	a3,0(a4)
-	addi	t0,x0,1
-	or	t0,x0,t0
-	add	a4,a4,t0
-	addi	t0,x0,1
-	or	t0,x0,t0
-	sub	t2,x0,t1
-	sub	t1,t0,t2
+	addi	a4,a4,1
+	addi	t1,t1,1
 	sb	a3,-1(t1)
 	bne	a4,a6,.L26
 	jal	x0,.L25
 .L19:
 	addi	a5,sp,144
-	addi	a4,a5,0
-	addi	a3,x0,0
-	or	a3,x0,a3
+	ori	a4,x0,0
+	add	a4,a5,a4
+	ori	a3,x0,0
 	add	a3,t1,a3
 .L22:
 	lbu	a6,0(a3)
@@ -11392,14 +11396,13 @@ __mul:
 	add	a2,a0,x0
 	addi	a0,x0,0
 .Mul_loop:
-	andi	a3,a1,1
+	ori	a3,x0,1
+	add	a3,x0,a3
+	and	a3,a3,a1
 	beq	a3,x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
-	ori	t0,x0,1
-	sub	t1,x0,x0
-	sub	x0,t0,t1
-	srl	a1,a1,x0
+	srli	a1,a1,1
 	slli	a2,a2,1
 	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
@@ -11419,16 +11422,17 @@ __riscv_div_lib_divsi3:
 __riscv_div_lib_udivsi3:
 	ori	a2,x0,0
 	add	a2,a1,a2
-	addi	a1,a0,0
+	ori	a1,x0,0
+	add	a1,a0,a1
 	addi	a0,zero,-1
 	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
 	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	bge	zero,a2,__riscv_div_lib_L2
-	slli	a2,a2,1
 	addi	t0,x0,1
-	sll	a3,a3,t0
+	sll	a2,a2,t0
+	slli	a3,a3,1
 	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
@@ -11472,7 +11476,9 @@ __riscv_div_lib_L12:
 # Signed 32-bit remainder: a0 = a0 % a1
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
-	addi	t0,ra,0
+	addi	t0,x0,0
+	or	t0,x0,t0
+	add	t0,ra,t0
 	blt	a1,zero,__riscv_div_lib_L31
 	blt	a0,zero,__riscv_div_lib_L32
 __riscv_div_lib_L30:

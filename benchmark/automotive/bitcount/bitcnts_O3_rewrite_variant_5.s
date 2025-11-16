@@ -23,7 +23,8 @@ bitcount:
 	add	a5,a5,a4
 	lui	a3,61681
 	addi	a3,a3,-241
-	srli	a4,a5,4
+	srli	a4,a5,2
+	srli	a4,a4,2
 	and	a4,a4,a3
 	and	a5,a5,a3
 	add	a4,a4,a5
@@ -33,7 +34,8 @@ bitcount:
 	and	a5,a5,a3
 	and	a4,a4,a3
 	add	a5,a5,a4
-	slli	a0,a5,16
+	addi	a0,x0,16
+	sll	a0,a5,a0
 	srli	a0,a0,16
 	srli	a5,a5,16
 	add	a0,a5,a0
@@ -344,13 +346,13 @@ rand:
 	sub	t1,t1,t2
 	sub	t1,x0,t1
 	sub	t0,t0,t1
-	srli	t1,a3,16
-	lui	t2,16
-	addi	t2,t2,-1
-	and	t1,t1,t2
-	lui	t2,16
-	addi	t2,t2,-1
-	and	t2,a2,t2
+	lui	t1,16
+	addi	t1,t1,-1
+	and	t1,a3,t1
+	srli	t2,a2,16
+	lui	t3,16
+	addi	t3,t3,-1
+	and	t2,t2,t3
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -372,13 +374,13 @@ rand:
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t1,t1,t2
-	lui	t2,16
-	addi	t2,t2,-1
-	and	t2,a3,t2
-	srli	t3,a2,16
-	lui	t4,16
-	addi	t4,t4,-1
-	and	t3,t3,t4
+	srli	t2,a3,16
+	lui	t3,16
+	addi	t3,t3,-1
+	and	t2,t2,t3
+	lui	t3,16
+	addi	t3,t3,-1
+	and	t3,a2,t3
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -400,11 +402,10 @@ rand:
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
-	sub	t2,x0,t2
-	sub	x0,t1,t2
-	lui	t1,16
-	addi	t1,t1,-1
-	and	t1,a3,t1
+	add	t1,t1,t2
+	lui	t2,16
+	addi	t2,t2,-1
+	and	t2,a3,t2
 	lui	a3,16
 	addi	a3,a3,-1
 	and	a3,a2,a3
@@ -413,7 +414,7 @@ rand:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	ra, 12(sp)
-	add	a0, t1, x0
+	add	a0, t2, x0
 	add	a1, a3, x0
 .Lpcrel_callmul_179:
 	auipc	ra, %pcrel_hi(__mul)
@@ -425,22 +426,20 @@ rand:
 	lw	ra, 12(sp)
 	addi	sp, sp, 16
 	srli	a3,a3,16
-	add	x0,x0,a3
-	srli	x0,x0,16
-	add	a3,t0,x0
+	add	a3,t1,a3
+	srli	a3,a3,16
+	add	a3,t0,a3
 	add	a4,a4,a1
 	addi	a2,a5,1
-	bltu	a2,a5,.+8
-	jal	x0,.+8
-	jal	x0,.+12
+	bltu	a2,a5,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
 	sw	a2,%lo(bitcnts_rand_state)(a6)
-	sub	t0,x0,a4
-	sub	a4,a3,t0
+	add	a4,a4,a3
 	add	a5,a5,a4
-	slli	a0,a5,1
+	addi	a0,x0,1
+	sll	a0,a5,a0
 	sw	a5,%lo(bitcnts_rand_state+4)(a6)
 	srli	a0,a0,1
 	jalr	zero,ra,0
@@ -462,12 +461,19 @@ atoi:
 	addi	a4,zero,0
 	bltu	a1,a5,.L42
 .L34:
-	slli	a5,a4,2
+	addi	a5,x0,2
+	sll	a5,a4,a5
 	lbu	a2,1(a0)
 	add	a5,a5,a4
-	slli	a5,a5,1
+	addi	t0,x0,1
+	sll	a5,a5,t0
 	add	a4,a3,a5
-	addi	a3,a2,-48
+	addi	a3,x0,-48
+	and	a3,x0,a3
+	addi	t0,x0,-48
+	sub	a3,a3,t0
+	sub	a3,x0,a3
+	add	a3,a2,a3
 	andi	a5,a3,255
 	addi	a0,a0,1
 	bltu	a1,a5,.+8
@@ -556,10 +562,12 @@ main:
 	andi	a5,a2,255
 	bltu	a0,a5,.L47
 .L46:
-	slli	a5,a3,2
+	addi	a5,x0,2
+	sll	a5,a3,a5
 	lbu	a1,1(a4)
 	add	a5,a5,a3
-	slli	a5,a5,1
+	addi	t0,x0,1
+	sll	a5,a5,t0
 	add	a3,a2,a5
 	addi	a2,a1,-48
 	andi	a5,a2,255
@@ -602,9 +610,11 @@ main:
 	lw	a5,16(sp)
 	lw	a2,16(sp)
 	sw	zero,20(sp)
-	slli	a5,a2,1
+	addi	a5,x0,1
+	sll	a5,a2,a5
 	add	a5,a5,a2
-	slli	a5,a5,2
+	addi	t0,x0,2
+	sll	a5,a5,t0
 	add	a5,a5,a2
 	sw	a5,40(sp)
 	lui	a5,361759
@@ -851,7 +861,8 @@ main:
 	sw	a5,%lo(bitcnts_rand_state+4)(s4)
 	bge	zero,a4,.L55
 	lui	a3,%hi(.LANCHOR0+284)
-	slli	a4,s3,2
+	addi	a4,x0,2
+	sll	a4,s3,a4
 	addi	a3,a3,%lo(.LANCHOR0+284)
 	add	a4,a3,a4
 	lw	s2,0(a4)
@@ -1309,7 +1320,8 @@ main:
 	lw	a3,44(sp)
 	add	a5,a4,a5
 	lw	a4,24(sp)
-	slli	a4,a4,2
+	addi	t0,x0,2
+	sll	a4,a4,t0
 	add	a4,a3,a4
 	lw	a3,28(sp)
 	lw	a1,256(a4)
@@ -1338,7 +1350,8 @@ main:
 	lw	a5,28(sp)
 	lw	a4,44(sp)
 	lui	a0,%hi(.LC2)
-	slli	a5,a5,2
+	addi	t0,x0,2
+	sll	a5,a5,t0
 	add	a5,a4,a5
 	lw	a1,256(a5)
 	addi	a0,a0,%lo(.LC2)
@@ -1458,7 +1471,8 @@ __mul:
 	add	a0,a0,a2
 .Mul_skip:
 	srli	a1,a1,1
-	slli	a2,a2,1
+	addi	t0,x0,1
+	sll	a2,a2,t0
 	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
 
@@ -1486,11 +1500,11 @@ __riscv_div_lib_udivsi3:
 	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	bge	zero,a2,__riscv_div_lib_L2
-	slli	a2,a2,1
-	slli	a3,a3,1
-	bltu	a2,a1,.+8
-	jal	x0,.+8
-	jal	x0,__riscv_div_lib_L1
+	addi	t0,x0,1
+	sll	a2,a2,t0
+	addi	t0,x0,1
+	sll	a3,a3,t0
+	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:

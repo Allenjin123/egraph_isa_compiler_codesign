@@ -1080,8 +1080,7 @@ __riscv_div_lib_L3:
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1
-	beq	a3,zero,.+8
-	jal	x0,__riscv_div_lib_L3
+	bne	a3,zero,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
 

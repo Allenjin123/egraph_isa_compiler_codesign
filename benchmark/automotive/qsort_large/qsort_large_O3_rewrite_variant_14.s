@@ -150311,17 +150311,20 @@ __riscv_div_lib_udivsi3:
 	bne	a2,zero,.+8
 	jal	x0,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bgeu	a2,a1,__riscv_div_lib_L2
+	bgeu	a2,a1,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	bge	zero,a2,__riscv_div_lib_L2
 	slli	a2,a2,1
 	slli	a3,a3,1
-	bltu	a2,a1,__riscv_div_lib_L1
+	bltu	a2,a1,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bltu	a1,a2,.+8
-	jal	x0,.+8
+	bgeu	a1,a2,.+8
 	jal	x0,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	or	a0,a0,a3
@@ -150362,7 +150365,8 @@ __riscv_div_lib_L12:
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
 	addi	t0,ra,0
-	blt	a1,zero,__riscv_div_lib_L31
+	bge	a1,zero,.+8
+	jal	x0,__riscv_div_lib_L31
 	blt	a0,zero,__riscv_div_lib_L32
 __riscv_div_lib_L30:
 .Lpcrel_div3:

@@ -150320,9 +150320,7 @@ __riscv_div_lib_L1:
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bltu	a1,a2,.+8
-	jal	x0,.+8
-	jal	x0,__riscv_div_lib_L4
+	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	or	a0,a0,a3
 __riscv_div_lib_L4:
@@ -150363,7 +150361,9 @@ __riscv_div_lib_L12:
 __riscv_div_lib_modsi3:
 	addi	t0,ra,0
 	blt	a1,zero,__riscv_div_lib_L31
-	blt	a0,zero,__riscv_div_lib_L32
+	blt	a0,zero,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L32
 __riscv_div_lib_L30:
 .Lpcrel_div3:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)

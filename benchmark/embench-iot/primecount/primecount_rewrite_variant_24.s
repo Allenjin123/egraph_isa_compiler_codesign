@@ -93,19 +93,15 @@ benchmark_body.constprop.0:
 	.align	2
 	.type	benchmark_body.isra.0, @function
 benchmark_body.isra.0:
-	bge	zero,a0,.L29
-	addi	t0,x0,-16
-	or	t0,x0,t0
-	add	sp,sp,t0
+	bge	zero,a0,.+8
+	jal	x0,.+8
+	jal	x0,.L29
+	addi	sp,sp,-16
 	sw	s0,8(sp)
 	sw	s1,4(sp)
 	sw	ra,12(sp)
-	addi	s1,x0,0
-	or	s1,x0,s1
-	add	s1,a0,s1
-	addi	s0,x0,0
-	or	s0,x0,s0
-	add	s0,zero,s0
+	addi	s1,a0,0
+	addi	s0,zero,0
 .L26:
 	addi	s0,s0,1
 .Lpcrel_2:
@@ -179,10 +175,8 @@ initialise_benchmark:
 	.globl	verify_benchmark
 	.type	verify_benchmark, @function
 verify_benchmark:
-	ori	t0,x0,-2048
-	add	a0,a0,t0
-	ori	t0,x0,-1464
-	add	a0,a0,t0
+	addi	a0,a0,-2048
+	addi	a0,a0,-1464
 	sltiu	a0,a0,1
 	jalr	zero,ra,0
 	.size	verify_benchmark, .-verify_benchmark
@@ -218,19 +212,16 @@ __riscv_div_lib_divsi3:
 # Unsigned 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_udivsi3
 __riscv_div_lib_udivsi3:
-	addi	a2,x0,0
-	or	a2,x0,a2
-	add	a2,a1,a2
-	addi	a1,x0,0
-	or	a1,x0,a1
-	add	a1,a0,a1
+	addi	a2,a1,0
+	addi	a1,a0,0
 	addi	a0,zero,-1
 	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
 	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	bge	zero,a2,__riscv_div_lib_L2
-	slli	a2,a2,1
+	addi	t0,x0,1
+	sll	a2,a2,t0
 	slli	a3,a3,1
 	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
@@ -238,9 +229,7 @@ __riscv_div_lib_L2:
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	xor	t0,a0,a3
-	and	t1,a0,a3
-	xor	a0,t0,t1
+	or	a0,a0,a3
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1
@@ -251,7 +240,9 @@ __riscv_div_lib_L5:
 # Unsigned 32-bit remainder: a0 = a0 % a1
 .global __riscv_div_lib_umodsi3
 __riscv_div_lib_umodsi3:
-	addi	t0,ra,0
+	ori	t0,x0,0
+	sub	t1,x0,ra
+	sub	t0,t0,t1
 .Lpcrel_div1:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_div1)
@@ -278,7 +269,8 @@ __riscv_div_lib_L12:
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
 	ori	t0,x0,0
-	add	t0,ra,t0
+	sub	t1,x0,ra
+	sub	t0,t0,t1
 	blt	a1,zero,__riscv_div_lib_L31
 	blt	a0,zero,__riscv_div_lib_L32
 __riscv_div_lib_L30:

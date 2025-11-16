@@ -27,25 +27,25 @@ stop_trigger:
 	.globl	mulul64
 	.type	mulul64, @function
 mulul64:
-	mul	a6,a1,a2
-	mulhu	t1,a0,a2
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	ra, 16(sp)
-	add	a1, a3, x0
-.Lpcrel_callmul_802:
+	add	a0, a2, x0
+.Lpcrel_callmul_824:
 	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_802)
-	add	a7, a0, x0
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_824)
+	add	a6, a0, x0
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
+	mulhu	t1,a0,a2
+	mul	a7,a0,a3
 	add	t1,a6,t1
 	sltu	a6,t1,a6
 	mulhu	t4,a1,a2
@@ -53,26 +53,10 @@ mulul64:
 	sw	t1,4(a5)
 	sltu	a7,t1,a7
 	mulhu	t3,a0,a3
-	add	a6,a6,t4
-	addi	sp, sp, -32
-	sw	a0, 0(sp)
-	sw	a1, 4(sp)
-	sw	a2, 8(sp)
-	sw	a3, 12(sp)
-	sw	ra, 16(sp)
-	add	a0, a3, x0
-.Lpcrel_callmul_803:
-	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_803)
-	add	t1, a0, x0
-	lw	a0, 0(sp)
-	lw	a1, 4(sp)
-	lw	a2, 8(sp)
-	lw	a3, 12(sp)
-	lw	ra, 16(sp)
-	addi	sp, sp, 32
-	sub	t0,x0,a7
-	sub	a7,t3,t0
+	sub	t0,x0,a6
+	sub	a6,t4,t0
+	mul	t1,a1,a3
+	add	a7,a7,t3
 	mulhu	a1,a1,a3
 	add	a6,t1,a6
 	add	a7,a6,a7
@@ -90,7 +74,12 @@ mulul64:
 	.globl	modul64
 	.type	modul64, @function
 modul64:
-	addi	sp,sp,-16
+	addi	t0,x0,-16
+	and	t0,x0,t0
+	addi	t1,x0,-16
+	sub	t0,t0,t1
+	sub	t0,x0,t0
+	add	sp,sp,t0
 	sw	s0,12(sp)
 	addi	t3,zero,0
 	addi	s0,a4,0
@@ -127,8 +116,7 @@ modul64:
 	sub	a1,a6,a4
 	addi	a2,x0,0
 	or	a2,x0,a2
-	sub	t1,x0,t5
-	sub	a2,a2,t1
+	add	a2,t5,a2
 	add	a3,t2,a7
 .L7:
 	bne	t3,t0,.L9
@@ -206,9 +194,7 @@ montmul:
 	addi	a2,zero,1
 	bltu	a6,t3,.L16
 	beq	t3,a6,.L24
-	addi	a2,x0,0
-	or	a2,x0,a2
-	add	a2,zero,a2
+	addi	a2,zero,0
 .L16:
 	and	a3,a3,a2
 	addi	a2,zero,1
@@ -813,8 +799,7 @@ xbinGCD:
 	add	t2,zero,t2
 	addi	a6,x0,1
 	or	a6,x0,a6
-	sub	t0,x0,zero
-	sub	a6,a6,t0
+	add	a6,zero,a6
 	addi	a7,x0,0
 	or	a7,x0,a7
 	add	a7,zero,a7
@@ -823,8 +808,7 @@ xbinGCD:
 	or	t3,t4,t0
 	add	a6,s8,s7
 	addi	a7,s6,0
-	bne	t3,zero,.+8
-	jal	x0,.L92
+	beq	t3,zero,.L92
 .L88:
 	xor	t5,s4,a7
 	xor	t3,s3,a6
@@ -836,18 +820,16 @@ xbinGCD:
 	srli	t4,a4,1
 	srli	t0,a2,1
 	srli	a2,t1,1
-	sub	t1,x0,a1
-	sub	t1,a2,t1
+	add	t1,a1,a2
 	add	t4,a5,t4
 	and	t6,s3,a6
 	srli	a5,t2,1
 	and	a4,s4,a7
-	addi	t2,x0,0
-	or	t2,x0,t2
-	add	t2,a5,t2
+	addi	t2,a5,0
 	add	t6,t3,t6
 	srli	t5,t5,1
-	add	a5,a0,t1
+	sub	a5,x0,a0
+	sub	a5,t1,a5
 	andi	a3,a6,1
 	add	t5,t5,a4
 	srli	s6,a7,1
@@ -858,26 +840,14 @@ xbinGCD:
 	sltu	t3,t6,t3
 	addi	a4,x0,0
 	or	a4,x0,a4
-	add	a4,t4,a4
-	addi	a2,x0,0
-	or	a2,x0,a2
-	sub	a6,x0,t0
-	sub	a2,a2,a6
+	sub	a2,x0,t4
+	sub	a4,a4,a2
+	addi	a2,t0,0
 	beq	a3,zero,.L93
 	add	a7,t3,t5
 	or	t3,t4,t0
-	addi	a6,x0,0
-	and	a6,x0,a6
-	addi	t0,x0,0
-	sub	a6,a6,t0
-	sub	a6,x0,a6
-	add	a6,t6,a6
-	addi	t1,x0,0
-	and	t1,x0,t1
-	addi	t0,x0,0
-	sub	t1,t1,t0
-	sub	t1,x0,t1
-	add	t1,a5,t1
+	addi	a6,t6,0
+	addi	t1,a5,0
 	add	t2,s5,a1
 	bne	t3,zero,.L88
 .L92:
@@ -898,16 +868,10 @@ xbinGCD:
 	addi	sp,sp,48
 	jalr	zero,ra,0
 .L89:
-	addi	t1,x0,0
-	or	t1,x0,t1
-	add	t1,a0,t1
-	addi	t2,x0,0
-	or	t2,x0,t2
-	add	t2,s0,t2
+	addi	t1,a0,0
+	addi	t2,s0,0
 	addi	a6,zero,1
-	addi	a7,x0,0
-	or	a7,x0,a7
-	add	a7,zero,a7
+	addi	a7,zero,0
 	jal	x0,.L84
 	.size	xbinGCD, .-xbinGCD
 	.align	2
@@ -1004,8 +968,7 @@ initialise_benchmark:
 	.globl	verify_benchmark
 	.type	verify_benchmark, @function
 verify_benchmark:
-	addi	t0,x0,1
-	sltu	a0,a0,t0
+	sltiu	a0,a0,1
 	jalr	zero,ra,0
 	.size	verify_benchmark, .-verify_benchmark
 	.section	.srodata.cst8,"aM",@progbits,8
@@ -1060,38 +1023,36 @@ __mul:
 # Signed 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
-	blt	a0,zero,__riscv_div_lib_L10
-	blt	a1,zero,__riscv_div_lib_L11
+	blt	a0,zero,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L10
+	blt	a1,zero,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
 # Unsigned 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_udivsi3
 __riscv_div_lib_udivsi3:
-	addi	a2,x0,0
-	or	a2,x0,a2
-	sub	t0,x0,a1
-	sub	a2,a2,t0
-	addi	a1,x0,0
-	or	a1,x0,a1
-	add	a1,a0,a1
+	addi	a2,a1,0
+	addi	a1,a0,0
 	addi	a0,zero,-1
 	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
-	bge	zero,a2,.+8
-	jal	x0,.+8
+	blt	zero,a2,.+8
 	jal	x0,__riscv_div_lib_L2
 	slli	a2,a2,1
 	slli	a3,a3,1
 	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
-	addi	a0,zero,0
+	addi	a0,x0,0
+	or	a0,x0,a0
+	add	a0,zero,a0
 __riscv_div_lib_L3:
-	bltu	a1,a2,.+8
-	jal	x0,.+8
-	jal	x0,__riscv_div_lib_L4
+	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	or	a0,a0,a3
 __riscv_div_lib_L4:
@@ -1114,7 +1075,9 @@ __riscv_div_lib_umodsi3:
 # Handle negative arguments to divsi3
 __riscv_div_lib_L10:
 	sub	a0,zero,a0
-	blt	zero,a1,__riscv_div_lib_L12
+	blt	zero,a1,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L12
 	sub	a1,zero,a1
 	jal	x0,__riscv_div_lib_udivsi3
 __riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
@@ -1130,9 +1093,15 @@ __riscv_div_lib_L12:
 # Signed 32-bit remainder: a0 = a0 % a1
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
-	addi	t0,ra,0
-	blt	a1,zero,__riscv_div_lib_L31
-	bge	a0,zero,.+8
+	addi	t0,x0,0
+	or	t0,x0,t0
+	sub	t1,x0,ra
+	sub	t0,t0,t1
+	blt	a1,zero,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L31
+	blt	a0,zero,.+8
+	jal	x0,.+8
 	jal	x0,__riscv_div_lib_L32
 __riscv_div_lib_L30:
 .Lpcrel_div3:
@@ -1142,7 +1111,8 @@ __riscv_div_lib_L30:
 	jalr	zero,t0,0
 __riscv_div_lib_L31:
 	sub	a1,zero,a1
-	blt	a0,zero,.+8
+	bge	a0,zero,.+8
+	jal	x0,.+8
 	jal	x0,__riscv_div_lib_L30
 __riscv_div_lib_L32:
 	sub	a0,zero,a0

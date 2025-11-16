@@ -26,7 +26,7 @@ my_cos:
 	srli	a5,a5,6
 	mul	a4,a5,a4
 	addi	t0,x0,3
-	and	a5,a5,t0
+	and	a5,t0,a5
 	add	a0,a4,a0
 	mul	a6,a0,a0
 	mulhu	a4,a6,a1
@@ -1072,7 +1072,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	a3,x0,1
-	and	a3,a3,a1
+	and	a3,a1,a3
 	beq	a3,x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
@@ -1099,8 +1099,7 @@ __riscv_div_lib_udivsi3:
 	addi	a2,a1,0
 	addi	a1,a0,0
 	addi	a0,zero,-1
-	bne	a2,zero,.+8
-	jal	x0,__riscv_div_lib_L5
+	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
@@ -1112,7 +1111,9 @@ __riscv_div_lib_L1:
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bltu	a1,a2,__riscv_div_lib_L4
+	bltu	a1,a2,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	and	t0,a0,a3
 	sub	t0,t0,a3

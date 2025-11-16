@@ -256,7 +256,9 @@ main:
 	addi	t0,t0,1968
 	add	sp,sp,t0
 	lw	ra,2028(sp)
-	or	a0,s0,s2
+	and	a0,s0,s2
+	sub	a0,a0,s2
+	sub	a0,s0,a0
 	lw	s1,2020(sp)
 	lw	s0,2024(sp)
 	lw	s2,2016(sp)
@@ -150297,7 +150299,9 @@ __mul:
 # Signed 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
-	blt	a0,zero,__riscv_div_lib_L10
+	blt	a0,zero,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L10
 	blt	a1,zero,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
@@ -150312,7 +150316,9 @@ __riscv_div_lib_udivsi3:
 	addi	a3,zero,1
 	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
-	bge	zero,a2,__riscv_div_lib_L2
+	bge	zero,a2,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L2
 	slli	a2,a2,1
 	slli	a3,a3,1
 	bltu	a2,a1,__riscv_div_lib_L1
@@ -150325,7 +150331,9 @@ __riscv_div_lib_L3:
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1
-	bne	a3,zero,__riscv_div_lib_L3
+	bne	a3,zero,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
 
