@@ -464,7 +464,7 @@ if [ \$? -eq 0 ]; then
         DST_SOL="$OUTPUT_BASE/ilp/$PROGRAM_NAME/sol/solution_\${VARIANT_ID}.sol"
 
         if [ -f "\$SRC_SOL" ]; then
-            mkdir -p "$(dirname "\$DST_SOL")"
+            mkdir -p "\$(dirname "\$DST_SOL")"
             cp "\$SRC_SOL" "\$DST_SOL"
             echo "  复制: \$(basename \$SRC_SOL) -> solution_\${VARIANT_ID}.sol"
         fi
