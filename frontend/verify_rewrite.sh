@@ -277,7 +277,7 @@ echo -e "${GREEN}✓ Compilation succeeded${NC}"
 CLEAN_ASM_DIR=$(dirname "$CLEAN_ASM")
 CLEAN_DISASM="$CLEAN_ASM_DIR/${PROGRAM_NAME}_clean.dis"
 echo "Disassembling clean executable..."
-riscv32-unknown-elf-objdump -d -M no-aliases -l "$CLEAN_EXE" > "$CLEAN_DISASM" 2>&1
+#riscv32-unknown-elf-objdump -d -M no-aliases -l "$CLEAN_EXE" > "$CLEAN_DISASM" 2>&1
 echo -e "${GREEN}✓ Disassembly saved to: $CLEAN_DISASM${NC}"
 
 echo "Running with spike..."
@@ -338,7 +338,7 @@ echo -e "${GREEN}✓ Compilation succeeded${NC}"
 REWRITE_ASM_DIR=$(dirname "$REWRITE_ASM")
 REWRITE_DISASM="$REWRITE_ASM_DIR/${PROGRAM_NAME}_rewrite_variant_0.dis"
 echo "Disassembling rewrite executable..."
-riscv32-unknown-elf-objdump -d -M no-aliases -l "$REWRITE_EXE" > "$REWRITE_DISASM" 2>&1
+#riscv32-unknown-elf-objdump -d -M no-aliases -l "$REWRITE_EXE" > "$REWRITE_DISASM" 2>&1
 echo -e "${GREEN}✓ Disassembly saved to: $REWRITE_DISASM${NC}"
 
 echo "Running with spike..."
