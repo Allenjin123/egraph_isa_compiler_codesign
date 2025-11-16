@@ -53,6 +53,7 @@
   "__riscv_div_lib_L5": 74,
   "__riscv_div_lib_umodsi3": 75,
   "__riscv_div_lib_L10": 77,
+  "__riscv_div_lib_L11": 79,
   "__riscv_div_lib_L12": 80,
   "__riscv_div_lib_modsi3": 82,
   "__riscv_div_lib_L30": 84,

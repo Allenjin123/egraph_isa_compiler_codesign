@@ -147,13 +147,13 @@ echo "Searching for: ${PROGRAM_NAME}_rewrite.s and ${PROGRAM_NAME}_clean.s"
 echo ""
 
 # Find rewrite file
-REWRITE_FILES=($(find "$BENCHMARK_DIR" -name "${PROGRAM_NAME}_rewrite.s" -type f))
+REWRITE_FILES=($(find "$BENCHMARK_DIR" -name "${PROGRAM_NAME}_rewrite_variant_0.s" -type f))
 
 if [ ${#REWRITE_FILES[@]} -eq 0 ]; then
-    echo -e "${RED}Error: No ${PROGRAM_NAME}_rewrite.s found in benchmark directory${NC}"
+    echo -e "${RED}Error: No ${PROGRAM_NAME}_rewrite_variant_0.s found in benchmark directory${NC}"
     exit 1
 elif [ ${#REWRITE_FILES[@]} -gt 1 ]; then
-    echo -e "${RED}Error: Multiple ${PROGRAM_NAME}_rewrite.s files found:${NC}"
+    echo -e "${RED}Error: Multiple ${PROGRAM_NAME}_rewrite_variant_0.s files found:${NC}"
     for f in "${REWRITE_FILES[@]}"; do
         echo "  - $f"
     done

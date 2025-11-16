@@ -64,7 +64,7 @@ class AsmReconstructor:
         pcrel_labels = set()
         for line in lines:
             # 查找 %pcrel_lo(.Lpcrel_X) 或 %pcrel_hi(.Lpcrel_X)
-            matches = re.findall(r'%pcrel_(?:lo|hi)\((\.Lpcrel_\d+)\)', line)
+            matches = re.findall(r'%pcrel_(?:lo|hi)\((\.Lpcrel_[\w]+)\)', line)
             pcrel_labels.update(matches)
         return pcrel_labels
     
@@ -79,8 +79,14 @@ class AsmReconstructor:
         while i < len(block_lines):
             line = block_lines[i]
             
+            # 跳过 block_lines 中已存在的 .Lpcrel 标签行（会从 %pcrel_lo 引用中自动插入）
+            stripped = line.strip()
+            if stripped.startswith('.Lpcrel_') and stripped.endswith(':'):
+                i += 1
+                continue
+            
             # 检查当前行是否有 %pcrel_lo 引用
-            match = re.search(r'%pcrel_lo\((\.Lpcrel_\d+)\)', line)
+            match = re.search(r'%pcrel_lo\((\.Lpcrel_[\w]+)\)', line)
             if match and i > 0:
                 pcrel_label = match.group(1)
                 # 在前一行（auipc）之前插入标签
@@ -175,9 +181,16 @@ class AsmReconstructor:
                         continue
                     if label and label in label_metadata:
                         metadata = label_metadata[label]
+                        label_line_count = metadata['label_line_count']
+                        
+                        # 跳过 label_line_count 为 0 的标签（通常是数据段标签，不应该有代码）
+                        if label_line_count == 0:
+                            output_lines.append(line)
+                            i += 1
+                            continue
+                        
                         output_lines.append(line)
                         i += 1
-                        label_line_count = metadata['label_line_count']
                         deleted = 0
                         while i < len(lines) and deleted < label_line_count:
                             next_line = lines[i]
