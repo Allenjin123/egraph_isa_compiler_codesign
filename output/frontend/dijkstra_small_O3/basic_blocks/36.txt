@@ -1,4 +1,0 @@
-	lw	s2,4(s2)
-	lui	a5, 2
-	addi	a5,a5,1807
-	bne	s2,a5,.L41
