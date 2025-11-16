@@ -59,8 +59,14 @@ class CFGBuilder:
             "a5,zero,.L1" -> ".L1"
             "zero,.L2" -> ".L2"
             "ra,printf" -> "printf"
+            "ra, ra, %pcrel_lo(.Lpcrel_17)" -> ".Lpcrel_17"（从 pcrel_lo 中提取）
         """
-        # 移除伪指令标记如 %pcrel_lo, %hi, %lo
+        # 先尝试从 %pcrel_hi() 或 %pcrel_lo() 中提取标签
+        pcrel_match = re.search(r'%pcrel_(?:hi|lo)\(([^)]+)\)', operands)
+        if pcrel_match:
+            return pcrel_match.group(1)
+        
+        # 移除其他伪指令标记如 %hi, %lo
         clean = re.sub(r'%\w+\([^)]*\)', '', operands).strip()
         
         # 用逗号分割，取最后一个操作数
@@ -87,7 +93,7 @@ class CFGBuilder:
         if not lines:
             return 'fallthrough', None
         
-        # 只分析最后一条指令
+        # 分析最后一条指令
         last_line = lines[-1]
         
         parsed = self.extract_mnemonic_and_operands(last_line)
@@ -96,17 +102,62 @@ class CFGBuilder:
         
         mnemonic, operands = parsed
         
+        # 如果最后一条是 jalr，检查前一条是否是 auipc（用于提取真正的跳转目标）
+        prev_line = lines[-2] if len(lines) >= 2 else None
+        prev_parsed = self.extract_mnemonic_and_operands(prev_line) if prev_line else None
+        
         # jalr可以是返回或间接跳转/调用
         if mnemonic == 'jalr':
-            # jalr zero,0(ra) 或 jalr ra - 这是返回
-            if 'zero' in operands:
-                if 'ra' in operands or operands.startswith('0(ra)'):
-                    return 'return', None
-                else:  # jalr zero,0(a5) - 间接跳转
-                    return 'unconditional', None
-            # jalr ra,... - 间接调用（会返回）
-            elif operands.startswith('ra,'):
-                return 'call', None
+            # 提取 jalr 的目标寄存器（第一个操作数）
+            operand_parts = operands.split(',', 1)
+            if not operand_parts:
+                return 'fallthrough', None
+            
+            rd = operand_parts[0].strip()  # 目标寄存器（保存返回地址）
+            
+            # jalr zero, ... - 不保存返回地址（返回或尾调用）
+            if rd in ['zero', 'x0']:
+                # jalr zero, 0(ra) 或 jalr zero, ra - 这是返回
+                if len(operand_parts) > 1:
+                    rest = operand_parts[1].strip()
+                    if 'ra' in rest or rest.startswith('0(ra)'):
+                        return 'return', None
+                
+                # jalr zero, t1, ... - 尾调用（无条件跳转）
+                # 检查是否是 auipc + jalr 组合
+                target = None
+                if prev_parsed:
+                    prev_mnem, prev_ops = prev_parsed
+                    if prev_mnem == 'auipc':
+                        # 从 auipc 中提取函数名
+                        target = self.extract_jump_target(prev_ops)
+                
+                # 如果不是 auipc+jalr 组合，尝试从 jalr 本身提取
+                if not target:
+                    target = self.extract_jump_target(operands)
+                
+                return 'unconditional', target
+            
+            # jalr ra, ... - 间接调用（会返回）
+            elif rd == 'ra':
+                target = None
+                # 检查是否是 auipc + jalr 组合
+                if prev_parsed:
+                    prev_mnem, prev_ops = prev_parsed
+                    if prev_mnem == 'auipc':
+                        # 从 auipc 中提取真正的函数名
+                        target = self.extract_jump_target(prev_ops)
+                
+                # 如果不是 auipc+jalr 组合，或者没有提取到目标
+                # 尝试从 jalr 本身提取（例如直接的标签跳转）
+                if not target:
+                    target = self.extract_jump_target(operands)
+                
+                return 'call', target
+            
+            # jalr 其他寄存器 - 间接跳转
+            else:
+                return 'unconditional', None
         
         if mnemonic == 'jal':
             # 检查目标寄存器是否为zero/x0（无条件跳转）
@@ -194,7 +245,11 @@ class CFGBuilder:
                     successors.append(label_to_block[jump_target])
             
             elif terminator_type == 'call':
-                # 函数调用：顺序执行到下一个块
+                # 函数调用：添加到被调用函数入口的边 + 返回后的下一个块
+                # 1. 如果有跳转目标（被调用函数），添加边
+                if jump_target and jump_target in label_to_block:
+                    successors.append(label_to_block[jump_target])
+                # 2. 返回后顺序执行到下一个块
                 if block_id + 1 < len(block_files):
                     successors.append(block_id + 1)
             

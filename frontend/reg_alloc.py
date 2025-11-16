@@ -2,7 +2,7 @@ import re
 import heapq
 from typing import Dict, Iterable, List, Optional, Set, Tuple
 
-from util import INSTRUCTIONS_WITHOUT_RD, parse_instruction, is_register
+from util import INSTRUCTIONS_WITHOUT_RD, parse_instruction, is_register, SPECIAL_REGS
 
 def allocate_compact_mapping(
     lines: List[str], live_out: Optional[Iterable[str]] = None
@@ -42,7 +42,7 @@ def allocate_compact_mapping(
             if u.startswith("op_"):
                 def_line.setdefault(u, 0)
                 end_line[u] = idx
-            elif is_register(u):
+            elif is_register(u) and u not in SPECIAL_REGS:  # 排除特殊寄存器
                 real_regs.add(u)
                 if u not in real_uses:
                     real_uses[u] = []
@@ -53,7 +53,7 @@ def allocate_compact_mapping(
             if rd.startswith("op_"):
                 def_line.setdefault(rd, idx)
                 end_line.setdefault(rd, idx)
-            elif is_register(rd):
+            elif is_register(rd) and rd not in SPECIAL_REGS:  # 排除特殊寄存器
                 real_regs.add(rd)
                 if rd not in real_defs:
                     real_defs[rd] = []
@@ -67,7 +67,7 @@ def allocate_compact_mapping(
             if sym.startswith("op_"):
                 def_line.setdefault(sym, 0)
                 end_line[sym] = block_end
-            elif is_register(sym):
+            elif is_register(sym) and sym not in SPECIAL_REGS:  # 排除特殊寄存器
                 # live_out 中的真实寄存器，视为在块尾有一次"虚拟使用"
                 if sym not in real_uses:
                     real_uses[sym] = []
@@ -188,7 +188,8 @@ def allocate_compact_mapping(
         chosen_real = None
         best_next_busy = -1  # 记录最优寄存器的下一个 busy 开始时间
         
-        for r in sorted(real_regs):  # 排序保证稳定性
+        # 优先使用 t 开头的寄存器（临时寄存器），再使用 a 开头的寄存器（参数寄存器）
+        for r in sorted(real_regs, key=lambda x: (0 if x.startswith('t') else 1, x)):
             if real_can_hold(r, s, e):
                 # 找到该寄存器在当前分配之后的下一个 busy 开始时间
                 next_busy_start = float('inf')
