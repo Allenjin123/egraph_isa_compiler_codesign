@@ -22,9 +22,7 @@ insertR:
 	addi	sp,sp,-32
 	srl	a3,a0,a6
 	sw	ra,28(sp)
-	or	op_1,a3,a7
-	sub	op_0,op_1,a7
-	sub	a3,a3,op_0
+	and	a3,a3,a7
 	beq	a3,zero,.L6
 	lw	a3,16(t1)
 	lbu	t3,9(a3)
@@ -33,9 +31,7 @@ insertR:
 	bltu	a6,t3,.+8
 	jal	x0,.L23
 	srl	a0,a0,t3
-	or	op_1,a0,a7
-	sub	op_0,op_1,a7
-	sub	a0,a0,op_0
+	and	a0,a0,a7
 	sw	t1,12(sp)
 	beq	a0,zero,.L11
 	lw	a0,16(a3)
@@ -58,9 +54,7 @@ insertR:
 	lui	a3,524288
 	srl	a3,a3,a4
 	sb	a4,9(a5)
-	or	op_1,a3,a7
-	sub	op_0,op_1,a7
-	sub	a4,a3,op_0
+	and	a4,a3,a7
 	addi	a3,a5,0
 	beq	a4,zero,.L4
 	addi	a3,t1,0
@@ -78,9 +72,7 @@ insertR:
 	bltu	a6,t3,.+8
 	jal	x0,.L24
 	srl	a0,a0,t3
-	or	op_1,a0,a7
-	sub	op_0,op_1,a7
-	sub	a0,a0,op_0
+	and	a0,a0,a7
 	sw	t1,12(sp)
 	beq	a0,zero,.L17
 	lw	a0,16(a3)
@@ -102,9 +94,7 @@ insertR:
 	lui	a2,524288
 	srl	a2,a2,a4
 	sb	a4,9(a5)
-	or	op_1,a2,a7
-	sub	op_0,op_1,a7
-	sub	a4,a2,op_0
+	and	a4,a2,a7
 	addi	a2,a5,0
 	beq	a4,zero,.+8
 	jal	x0,.L15
@@ -118,9 +108,7 @@ insertR:
 	lui	a2,524288
 	srl	a2,a2,a4
 	sb	a4,9(a5)
-	or	op_1,a2,a7
-	sub	op_0,op_1,a7
-	sub	a4,a2,op_0
+	and	a4,a2,a7
 	addi	a2,a5,0
 	beq	a4,zero,.+8
 	jal	x0,.L9
@@ -166,16 +154,12 @@ pat_insert:
 	lw	t1,0(a0)
 	lui	a6,524288
 	addi	a4,a1,0
-	or	op_1,a7,t1
-	sub	op_0,op_1,t1
-	sub	t1,a7,op_0
+	and	t1,a7,t1
 	sw	t1,0(a0)
 	lbu	t3,9(a1)
 	addi	a3,t3,0
 	srl	a5,a6,a3
-	or	op_1,a5,t1
-	sub	op_0,op_1,t1
-	sub	a5,a5,op_0
+	and	a5,a5,t1
 	beq	a5,zero,.L33
 .L120:
 	lw	a4,16(a4)
@@ -185,9 +169,7 @@ pat_insert:
 .L34:
 	addi	a3,a5,0
 	srl	a5,a6,a3
-	or	op_1,a5,t1
-	sub	op_0,op_1,t1
-	sub	a5,a5,op_0
+	and	a5,a5,t1
 	beq	a5,zero,.+8
 	jal	x0,.L120
 .L33:
@@ -198,11 +180,11 @@ pat_insert:
 	lw	a3,0(a4)
 	beq	t1,a3,.L37
 	addi	sp,sp,-32
-	or	op_0,a3,t1
-	or	op_3,a3,t1
-	sub	op_2,op_3,t1
-	sub	op_1,a3,op_2
-	sub	a3,op_0,op_1
+	and	op_2,a3,t1
+	sub	op_1,op_2,t1
+	sub	op_0,a3,op_1
+	and	op_3,a3,t1
+	sub	a3,op_0,op_3
 	sw	ra,28(sp)
 	slli	a5,a3,1
 	addi	a2,zero,1
@@ -212,18 +194,14 @@ pat_insert:
 .L38:
 	addi	a2,a2,1
 	srl	a5,a7,a2
-	or	op_1,a5,a3
-	sub	op_0,op_1,a3
-	sub	a4,a5,op_0
+	and	a4,a5,a3
 	beq	a2,a6,.L89
 	beq	a4,zero,.L38
 .L39:
 	addi	a4,a1,0
 	lui	a1,524288
 	srl	a3,a1,t3
-	or	op_1,a3,t1
-	sub	op_0,op_1,t1
-	sub	a3,a3,op_0
+	and	a3,a3,t1
 	addi	a6,a0,0
 	beq	a3,zero,.L53
 .L124:
@@ -234,9 +212,7 @@ pat_insert:
 	bltu	t3,a0,.+8
 	jal	x0,.L96
 	srl	a3,a1,a0
-	or	op_1,a3,t1
-	sub	op_0,op_1,t1
-	sub	a3,a3,op_0
+	and	a3,a3,t1
 	beq	a3,zero,.L58
 	lw	a3,16(a7)
 	lbu	t3,9(a3)
@@ -245,9 +221,7 @@ pat_insert:
 	bltu	a0,t3,.+8
 	jal	x0,.L97
 	srl	a5,a1,t3
-	or	op_1,a5,t1
-	sub	op_0,op_1,t1
-	sub	a5,a5,op_0
+	and	a5,a5,t1
 	sw	a4,12(sp)
 	sw	a7,8(sp)
 	beq	a5,zero,.L63
@@ -278,9 +252,7 @@ pat_insert:
 	bltu	t3,a0,.+8
 	jal	x0,.L98
 	srl	a3,a1,a0
-	or	op_1,a3,t1
-	sub	op_0,op_1,t1
-	sub	a3,a3,op_0
+	and	a3,a3,t1
 	beq	a3,zero,.L70
 	lw	a3,16(a7)
 	lbu	t3,9(a3)
@@ -289,9 +261,7 @@ pat_insert:
 	bltu	a0,t3,.+8
 	jal	x0,.L99
 	srl	a5,a1,t3
-	or	op_1,a5,t1
-	sub	op_0,op_1,t1
-	sub	a5,a5,op_0
+	and	a5,a5,t1
 	sw	a4,12(sp)
 	sw	a7,8(sp)
 	beq	a5,zero,.L75
@@ -343,9 +313,7 @@ pat_insert:
 	jalr	zero,ra,0
 .L96:
 	sb	a2,9(a6)
-	or	op_1,t1,a5
-	sub	op_0,op_1,a5
-	sub	a5,t1,op_0
+	and	a5,t1,a5
 	addi	a3,a6,0
 	beq	a5,zero,.L56
 	addi	a3,a7,0
@@ -357,9 +325,7 @@ pat_insert:
 	jal	x0,.L57
 .L98:
 	sb	a2,9(a6)
-	or	op_1,t1,a5
-	sub	op_0,op_1,a5
-	sub	a5,t1,op_0
+	and	a5,t1,a5
 	addi	a3,a6,0
 	beq	a5,zero,.+8
 	jal	x0,.L68
@@ -375,9 +341,7 @@ pat_insert:
 	addi	a4,a1,0
 	lui	a1,524288
 	srl	a3,a1,t3
-	or	op_1,a3,t1
-	sub	op_0,op_1,t1
-	sub	a3,a3,op_0
+	and	a3,a3,t1
 	addi	a5,zero,0
 	addi	a6,a0,0
 	beq	a3,zero,.L53
@@ -476,10 +440,7 @@ pat_insert:
 	beq	a3,zero,.+8
 	jal	x0,.L51
 	addi	op_0,x0,3
-	addi	op_3,x0,3
-	or	op_2,op_3,a2
-	sub	op_1,op_2,a2
-	sub	a3,op_0,op_1
+	and	a3,a2,op_0
 	beq	a3,zero,.+8
 	jal	x0,.L51
 	lw	a3,0(a2)
@@ -501,9 +462,7 @@ pat_insert:
 	bltu	a0,t3,.+8
 	jal	x0,.L100
 	srl	a5,a1,t3
-	or	op_1,a5,t1
-	sub	op_0,op_1,t1
-	sub	a5,a5,op_0
+	and	a5,a5,t1
 	sw	a4,12(sp)
 	sw	a7,8(sp)
 	beq	a5,zero,.L82
@@ -543,9 +502,7 @@ pat_insert:
 	jal	x0,.L39
 .L99:
 	sb	a2,9(a6)
-	or	op_1,t1,a5
-	sub	op_0,op_1,a5
-	sub	a5,t1,op_0
+	and	a5,t1,a5
 	addi	a2,a6,0
 	beq	a5,zero,.+8
 	jal	x0,.L73
@@ -559,9 +516,7 @@ pat_insert:
 	jal	x0,.L69
 .L97:
 	sb	a2,9(a6)
-	or	op_1,t1,a5
-	sub	op_0,op_1,a5
-	sub	a5,t1,op_0
+	and	a5,t1,a5
 	addi	a2,a6,0
 	beq	a5,zero,.+8
 	jal	x0,.L61
@@ -575,9 +530,7 @@ pat_insert:
 	jal	x0,.L57
 .L100:
 	sb	a2,9(a6)
-	or	op_1,t1,a5
-	sub	op_0,op_1,a5
-	sub	a5,t1,op_0
+	and	a5,t1,a5
 	addi	a2,a6,0
 	beq	a5,zero,.+8
 	jal	x0,.L80
@@ -697,13 +650,9 @@ pat_search:
 	lw	a4,0(a4)
 	lui	a7,524288
 	srl	a5,a7,a3
-	or	op_1,a2,a4
-	sub	op_0,op_1,a4
-	sub	a4,a2,op_0
+	and	a4,a2,a4
 	addi	a0,zero,0
-	or	op_1,a5,a2
-	sub	op_0,op_1,a2
-	sub	a5,a5,op_0
+	and	a5,a5,a2
 	beq	a4,a6,.L175
 .L169:
 	beq	a5,zero,.L170
@@ -718,12 +667,8 @@ pat_search:
 	addi	a3,a5,0
 	lw	a4,0(a4)
 	srl	a5,a7,a3
-	or	op_1,a5,a2
-	sub	op_0,op_1,a2
-	sub	a5,a5,op_0
-	or	op_1,a2,a4
-	sub	op_0,op_1,a4
-	sub	a4,a2,op_0
+	and	a5,a5,a2
+	and	a4,a2,a4
 	beq	a4,a6,.+8
 	jal	x0,.L169
 .L175:
@@ -738,9 +683,7 @@ pat_search:
 	lw	a4,4(a1)
 	lw	a5,0(a1)
 	lw	a4,0(a4)
-	or	op_1,a2,a4
-	sub	op_0,op_1,a4
-	sub	a2,a2,op_0
+	and	a2,a2,a4
 	beq	a5,a2,.L177
 	jalr	zero,ra,0
 .L177:
@@ -851,7 +794,29 @@ main:
 	addi	a4,x0,0
 	jal	x0,.+8
 	addi	a4,x0,1
-	or	t5,t5,a4
+	and	op_1,t5,a4
+	and	op_4,t5,a4
+	and	op_8,a4,t5
+	sub	op_7,op_8,t5
+	sub	op_6,a4,op_7
+	and	op_9,a4,t5
+	sub	op_5,op_6,op_9
+	and	op_3,op_4,op_5
+	and	op_13,a4,t5
+	sub	op_12,op_13,t5
+	sub	op_11,a4,op_12
+	and	op_14,a4,t5
+	sub	op_10,op_11,op_14
+	sub	op_2,op_3,op_10
+	sub	op_0,op_1,op_2
+	and	op_16,t5,a4
+	and	op_20,a4,t5
+	sub	op_19,op_20,t5
+	sub	op_18,a4,op_19
+	and	op_21,a4,t5
+	sub	op_17,op_18,op_21
+	and	op_15,op_16,op_17
+	sub	t5,op_0,op_15
 	beq	t5,zero,.L224
 	addi	a3,a5,0
 .L245:
@@ -895,11 +860,8 @@ main:
 	beq	a4,zero,.L192
 .L193:
 	addi	a1,a4,-48
-	addi	op_2,x0,255
-	or	op_1,a1,op_2
-	addi	op_3,x0,255
-	sub	op_0,op_1,op_3
-	sub	t0,a1,op_0
+	addi	op_0,x0,255
+	and	t0,op_0,a1
 	bltu	a0,t0,.+8
 	jal	x0,.L258
 	addi	a1,a4,-32
@@ -912,12 +874,16 @@ main:
 	blt	s5,t1,.L195
 	beq	t1,s5,.L259
 	addi	a4,zero,4
-	beq	t1,a4,.L260
+	beq	t1,a4,.+8
+	jal	x0,.+8
+	jal	x0,.L260
 	addi	a4,zero,3
 	beq	t1,a4,.L261
 .L194:
 	addi	a4,zero,2
-	beq	t1,a4,.L262
+	beq	t1,a4,.+8
+	jal	x0,.+8
+	jal	x0,.L262
 	beq	t1,zero,.+8
 	jal	x0,.L263
 	lui	a4,244
@@ -925,10 +891,7 @@ main:
 	callmul	a2,a2,a4
 .L195:
 	addi	op_0,x0,223
-	addi	op_3,x0,223
-	or	op_2,op_3,t4
-	sub	op_1,op_2,t4
-	sub	t4,op_0,op_1
+	and	t4,op_0,t4
 	beq	t4,zero,.L201
 	beq	t6,zero,.+8
 	jal	x0,.L202
@@ -939,16 +902,15 @@ main:
 	lbu	a4,1(a5)
 	addi	a5,a5,1
 	addi	op_0,x0,223
-	addi	op_3,x0,223
-	or	op_2,op_3,a4
-	sub	op_1,op_2,a4
-	sub	a3,op_0,op_1
+	and	a3,a4,op_0
 	addi	a1,a4,-9
 	beq	a3,zero,.+8
 	jal	x0,.L264
 .L204:
 	addi	a3,a4,-32
-	beq	a3,zero,.L246
+	beq	a3,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L246
 	addi	a4,a4,-9
 	beq	a4,zero,.+8
 	jal	x0,.L228
@@ -969,11 +931,8 @@ main:
 	addi	a5,a0,2
 .L210:
 	addi	a1,a3,-48
-	addi	op_2,x0,255
-	or	op_1,a1,op_2
-	addi	op_3,x0,255
-	sub	op_0,op_1,op_3
-	sub	a4,a1,op_0
+	addi	op_0,x0,255
+	and	a4,op_0,a1
 	addi	a0,zero,9
 	addi	t1,zero,0
 	bltu	a0,a4,.L206
@@ -987,10 +946,7 @@ main:
 	sub	t1,a4,op_0
 	addi	a1,a3,-48
 	addi	op_0,x0,255
-	addi	op_3,x0,255
-	or	op_2,op_3,a1
-	sub	op_1,op_2,a1
-	sub	a4,op_0,op_1
+	and	a4,a1,op_0
 	addi	a5,a5,1
 	bltu	a0,a4,.+8
 	jal	x0,.L211
@@ -1042,13 +998,9 @@ main:
 	lw	t5,0(a4)
 	lui	t3,524288
 	srl	a5,t3,t1
-	or	op_1,a3,a1
-	sub	op_0,op_1,a1
-	sub	a1,a3,op_0
+	and	a1,a3,a1
 	addi	t4,zero,0
-	or	op_1,a5,a3
-	sub	op_0,op_1,a3
-	sub	a5,a5,op_0
+	and	a5,a5,a3
 	beq	t5,a1,.L266
 .L217:
 	beq	a5,zero,.L218
@@ -1063,12 +1015,8 @@ main:
 	addi	t1,a5,0
 	lw	a1,0(a1)
 	srl	a5,t3,t1
-	or	op_1,a5,a3
-	sub	op_0,op_1,a3
-	sub	a5,a5,op_0
-	or	op_1,a3,a1
-	sub	op_0,op_1,a1
-	sub	a1,a3,op_0
+	and	a5,a5,a3
+	and	a1,a3,a1
 	beq	t5,a1,.+8
 	jal	x0,.L217
 .L266:
@@ -1083,9 +1031,7 @@ main:
 	lw	a5,4(a4)
 	lw	a1,0(a4)
 	lw	a5,0(a5)
-	or	op_1,a3,a5
-	sub	op_0,op_1,a5
-	sub	a5,a3,op_0
+	and	a5,a3,a5
 	beq	a1,a5,.+8
 	jal	x0,.L221
 	addi	t4,a4,0
@@ -1188,11 +1134,11 @@ main:
 	callrem	a4,a6,a1
 	calldiv	a1,a6,a1
 	srai	a2,a4,31
-	or	op_0,a4,a2
-	or	op_3,a4,a2
-	sub	op_2,op_3,a2
-	sub	op_1,a4,op_2
-	sub	a4,op_0,op_1
+	and	op_2,a4,a2
+	sub	op_1,op_2,a2
+	sub	op_0,a4,op_1
+	and	op_3,a4,a2
+	sub	a4,op_0,op_3
 	sub	a2,a4,a2
 .Lpcrel_13:
 	auipc	ra,%pcrel_hi(printf)
@@ -44869,10 +44815,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	op_0,x0,1
-	addi	op_3,x0,1
-	or	op_2,op_3,a1
-	sub	op_1,op_2,a1
-	sub	a3,op_0,op_1
+	and	a3,a1,op_0
 	beq	a3,x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
@@ -44915,7 +44858,9 @@ __riscv_div_lib_L2:
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	or	a0,a0,a3
+	and	op_1,a0,a3
+	sub	op_0,op_1,a3
+	sub	a0,a0,op_0
 __riscv_div_lib_L4:
 	addi	op_0,x0,1
 	srl	a3,a3,op_0

@@ -1,3 +1,0 @@
-	lw	t6,0(a3)
-	add	a6,a7,s1
-	beq	t6,t5,.L26
