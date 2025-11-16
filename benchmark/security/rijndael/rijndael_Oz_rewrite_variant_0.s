@@ -9,74 +9,186 @@
 	.type	gmul, @function
 gmul:
 	srli	a3,a0,7
-	sub	a3, zero, a3
+	sub	a3,zero,a3
 	slli	a5,a0,1
-	andi	a3,a3,27
-	xor	a3,a3,a5
+	addi	t0,x0,27
+	addi	t1,x0,27
+	or	t1,t1,a3
+	sub	t1,t1,a3
+	sub	a3,t0,t1
+	or	t0,a5,a3
+	or	t1,a5,a3
+	sub	t1,t1,a3
+	sub	a3,a5,t1
+	sub	a3,t0,a3
 	slli	a5,a3,24
 	srai	a4,a5,31
-	andi	a4,a4,27
+	addi	t0,x0,27
+	addi	t1,x0,27
+	or	t1,t1,a4
+	sub	t1,t1,a4
+	sub	a4,t0,t1
 	slli	a5,a3,1
-	xor	a4,a4,a5
+	or	t0,a5,a4
+	or	t1,a5,a4
+	sub	t1,t1,a4
+	sub	a4,a5,t1
+	sub	a4,t0,a4
 	srli	a5,a1,1
-	andi	a5,a5,1
-	mul	a5,a5,a3
-	andi	a3,a1,1
+	addi	t0,x0,1
+	or	t0,a5,t0
+	addi	t1,x0,1
+	sub	t0,t0,t1
+	sub	a5,a5,t0
+	addi	sp, sp, -32
+	sw	a0, 0(sp)
+	sw	a1, 4(sp)
+	sw	a2, 8(sp)
+	sw	a3, 12(sp)
+	sw	ra, 16(sp)
+	add	a0, a5, x0
+	add	a1, a3, x0
+.Lpcrel_callmul_1:
+	auipc	ra, %pcrel_hi(__mul)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_1)
+	add	a5, a0, x0
+	lw	a0, 0(sp)
+	lw	a1, 4(sp)
+	lw	a2, 8(sp)
+	lw	a3, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
+	addi	a3,x0,1
+	or	a3,a1,a3
+	addi	t0,x0,1
+	sub	a3,a3,t0
+	sub	a3,a1,a3
 	srli	a1,a1,2
-	andi	a1,a1,1
+	addi	t0,x0,1
+	or	t0,a1,t0
+	addi	t1,x0,1
+	sub	t0,t0,t1
+	sub	a1,a1,t0
 	slli	a2,a4,24
-	mul	a0,a0,a3
+	addi	sp, sp, -16
+	sw	a1, 0(sp)
+	sw	a2, 4(sp)
+	sw	a3, 8(sp)
+	sw	ra, 12(sp)
+	add	a1, a3, x0
+.Lpcrel_callmul_2:
+	auipc	ra, %pcrel_hi(__mul)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_2)
+	add	a0, a0, x0
+	lw	a1, 0(sp)
+	lw	a2, 4(sp)
+	lw	a3, 8(sp)
+	lw	ra, 12(sp)
+	addi	sp, sp, 16
 	srai	a3,a2,31
-	andi	a3,a3,27
-	mul	a1,a1,a4
-	xor	a5,a5,a0
+	addi	t0,x0,27
+	or	t0,a3,t0
+	addi	t1,x0,27
+	sub	t0,t0,t1
+	sub	a3,a3,t0
+	addi	sp, sp, -16
+	sw	a0, 0(sp)
+	sw	a2, 4(sp)
+	sw	a3, 8(sp)
+	sw	ra, 12(sp)
+	add	a0, a4, x0
+.Lpcrel_callmul_3:
+	auipc	ra, %pcrel_hi(__mul)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_3)
+	add	a1, a0, x0
+	lw	a0, 0(sp)
+	lw	a2, 4(sp)
+	lw	a3, 8(sp)
+	lw	ra, 12(sp)
+	addi	sp, sp, 16
+	or	t0,a0,a5
+	or	t1,a0,a5
+	sub	t1,t1,a5
+	sub	a5,a0,t1
+	sub	a5,t0,a5
 	slli	a4,a4,1
-	xor	a4,a3,a4
-	xor	a5,a5,a1
-	xor	a0,a5,a4
-	andi	a0,a0,0xff
-	jalr	zero, ra, 0
+	or	t0,a4,a3
+	or	t1,a4,a3
+	sub	t1,t1,a3
+	sub	t1,a4,t1
+	sub	a4,t0,t1
+	or	t0,a1,a5
+	or	t1,a1,a5
+	sub	t1,t1,a5
+	sub	a5,a1,t1
+	sub	a5,t0,a5
+	or	a0,a4,a5
+	or	t0,a4,a5
+	sub	t0,t0,a5
+	sub	t0,a4,t0
+	sub	a0,a0,t0
+	addi	t0,x0,255
+	addi	t1,x0,255
+	or	t1,t1,a0
+	sub	t1,t1,a0
+	sub	a0,t0,t1
+	jalr	zero,ra,0
 	.size	gmul, .-gmul
 	.align	2
 	.type	hex_value, @function
 hex_value:
 	addi	a5,a0,-48
-	andi	a2,a5,0xff
-	addi	a3, zero, 9
-	addi	a4, a0, 0
-	bltu	a3, a2, .L3
-	addi	a0, a5, 0
-	jalr	zero, ra, 0
+	addi	a2,x0,255
+	or	a2,a5,a2
+	addi	t0,x0,255
+	sub	a2,a2,t0
+	sub	a2,a5,a2
+	addi	a3,zero,9
+	addi	a4,a0,0
+	bltu	a3,a2,.L3
+	addi	a0,a5,0
+	jalr	zero,ra,0
 .L3:
 	addi	a5,a0,-65
-	andi	a5,a5,0xff
-	addi	a3, zero, 5
-	bltu	a3, a5, .L5
+	addi	t0,x0,255
+	addi	t1,x0,255
+	or	t1,t1,a5
+	sub	t1,t1,a5
+	sub	a5,t0,t1
+	addi	a3,zero,5
+	bltu	a3,a5,.L5
 	addi	a0,a0,-55
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L5:
 	addi	a5,a0,-97
-	andi	a5,a5,0xff
-	addi	a0, zero, -1
-	bltu	a3, a5, .L2
+	addi	t0,x0,255
+	or	t0,a5,t0
+	addi	t1,x0,255
+	sub	t0,t0,t1
+	sub	a5,a5,t0
+	addi	a0,zero,-1
+	bltu	a3,a5,.L2
 	addi	a0,a4,-87
 .L2:
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 	.size	hex_value, .-hex_value
 	.align	2
 	.type	my_memcpy.isra.0, @function
 my_memcpy.isra.0:
-	addi	a5, zero, 0
+	addi	a5,zero,0
 .L8:
-	bne	a2,a5,.L9
-	jalr	zero, ra, 0
+	beq	a2,a5,.+8
+	jal	x0,.L9
+	jalr	zero,ra,0
 .L9:
-	add	a4,a1,a5
+	sub	a4,x0,a1
+	sub	a4,a5,a4
 	lbu	a3,0(a4)
-	add	a4,a0,a5
+	sub	a4,x0,a0
+	sub	a4,a5,a4
 	addi	a5,a5,1
 	sb	a3,0(a4)
-	jal	zero, .L8
+	jal	x0,.L8
 	.size	my_memcpy.isra.0, .-my_memcpy.isra.0
 	.align	2
 	.globl	set_key
@@ -102,186 +214,294 @@ set_key:
 	sw	a5,4(a3)
 	sb	a2,488(a3)
 	slli	a6,s3,2
-	addi	s2, zero, 0
+	addi	s2,zero,0
 .L11:
-	bne	a6,s2,.L12
-	sltiu	t1,s3,7
+	beq	a6,s2,.+8
+	jal	x0,.L12
+	addi	t1,x0,7
+	bltu	s3,t1,.+12
+	addi	t1,x0,0
+	jal	x0,.+8
+	addi	t1,x0,1
 	addi	s7,a3,8
 	lui	a0,%hi(.LANCHOR0)
 	addi	t3,s2,28
-	addi	a5, zero, 0
-	xori	t1,t1,1
-	add	a7,s7,s2
-	sub	t4, zero, s2
-	addi	a6, s3, 0
+	addi	a5,zero,0
+	addi	t0,x0,1
+	or	t0,t0,t1
+	addi	t2,x0,1
+	addi	t4,x0,1
+	or	t4,t4,t1
+	sub	t4,t4,t1
+	sub	t1,t2,t4
+	sub	t1,t0,t1
+	sub	a7,x0,s7
+	sub	a7,s2,a7
+	sub	t4,zero,s2
+	addi	a6,s3,0
 	addi	a0,a0,%lo(.LANCHOR0)
 .L13:
-	bltu	a6, t3, .L16
-	andi	a2,a2,2
-	addi	s0, a5, 0
+	bltu	a6,t3,.L16
+	addi	t0,x0,2
+	addi	t1,x0,2
+	or	t1,t1,a2
+	sub	t1,t1,a2
+	sub	a2,t0,t1
+	addi	s0,a5,0
 	beq	a2,zero,.L33
 	addi	a5,a3,248
 	addi	a4,a3,264
 	slli	s3,s3,4
 .L18:
-	add	a2,a5,s3
+	sub	a2,x0,a5
+	sub	a2,s3,a2
 	lw	a2,-144(a2)
 	addi	a5,a5,4
 	sw	a2,-4(a5)
-	bne	a4,a5,.L18
-	lui	s5, 1048560
-	lui	s6, 1044496
-	addi	s1, a3, 0
+	beq	a4,a5,.+8
+	jal	x0,.L18
+	lui	s5,1048560
+	lui	s6,1044496
+	addi	s1,a3,0
 	addi	s2,s2,20
-	addi	s10, zero, 4
+	addi	s10,zero,4
 	addi	s5,s5,255
 	addi	s6,s6,-1
 .L19:
 	slli	s9,s2,2
 	slli	s8,s10,2
-	add	s9,s1,s9
-	add	s8,s1,s8
-	addi	s11, zero, 0
+	sub	t0,x0,s1
+	sub	s9,s9,t0
+	sub	t0,x0,s1
+	sub	s8,s8,t0
+	addi	s11,zero,0
 .L20:
 	lw	a5,8(s9)
-	addi	a1, zero, 14
+	addi	a1,zero,14
 	addi	s11,s11,1
-	andi	a4,a5,0xff
+	addi	a4,x0,255
+	or	a4,a5,a4
+	addi	t0,x0,255
+	sub	a4,a4,t0
+	sub	a4,a5,a4
 	sw	a4,12(sp)
 	srli	a2,a5,8
 	lw	a0,12(sp)
-	andi	a4,a2,0xff
+	addi	a4,x0,255
+	or	a4,a2,a4
+	addi	t0,x0,255
+	sub	a4,a4,t0
+	sub	a4,a2,a4
 	srli	a2,a5,16
 	sw	a4,8(sp)
 	srli	a5,a5,24
-	andi	a4,a2,0xff
+	addi	a4,x0,255
+	or	a4,a2,a4
+	addi	t0,x0,255
+	sub	a4,a4,t0
+	sub	a4,a2,a4
 	sw	a4,4(sp)
 	sw	a5,0(sp)
 .Lpcrel_1:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_1)
-	addi	s4, a0, 0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_1)
+	addi	s4,a0,0
 	lw	a0,8(sp)
-	addi	a1, zero, 11
+	addi	a1,zero,11
 	addi	s9,s9,4
 .Lpcrel_2:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_2)
-	xor	s4,s4,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_2)
+	or	t0,a0,s4
+	or	t1,a0,s4
+	sub	t1,t1,s4
+	sub	s4,a0,t1
+	sub	s4,t0,s4
 	lw	a0,4(sp)
-	addi	a1, zero, 13
+	addi	a1,zero,13
 	addi	s8,s8,4
 .Lpcrel_3:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_3)
-	xor	s4,s4,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_3)
+	or	t0,a0,s4
+	or	t1,a0,s4
+	sub	t1,t1,s4
+	sub	s4,a0,t1
+	sub	s4,t0,s4
 	lw	a0,0(sp)
-	addi	a1, zero, 9
+	addi	a1,zero,9
 .Lpcrel_4:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_4)
-	xor	s4,s4,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_4)
+	or	t0,a0,s4
+	or	t1,a0,s4
+	sub	t1,t1,s4
+	sub	s4,a0,t1
+	sub	s4,t0,s4
 	lw	a0,12(sp)
-	andi	a5,s0,-256
-	andi	s4,s4,0xff
-	addi	a1, zero, 9
+	addi	a5,x0,-256
+	addi	t0,x0,-256
+	or	t0,t0,s0
+	sub	t0,t0,s0
+	sub	a5,a5,t0
+	addi	t0,x0,255
+	addi	t1,x0,255
+	or	t1,t1,s4
+	sub	t1,t1,s4
+	sub	s4,t0,t1
+	addi	a1,zero,9
 	or	s0,a5,s4
 .Lpcrel_5:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_5)
-	addi	s4, a0, 0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_5)
+	addi	s4,a0,0
 	lw	a0,8(sp)
-	addi	a1, zero, 14
+	addi	a1,zero,14
 .Lpcrel_6:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_6)
-	xor	s4,s4,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_6)
+	or	t0,a0,s4
+	or	t1,a0,s4
+	sub	t1,t1,s4
+	sub	s4,a0,t1
+	sub	s4,t0,s4
 	lw	a0,4(sp)
-	addi	a1, zero, 11
+	addi	a1,zero,11
 .Lpcrel_7:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_7)
-	xor	s4,s4,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_7)
+	or	t0,a0,s4
+	or	t1,a0,s4
+	sub	t1,t1,s4
+	sub	s4,a0,t1
+	sub	s4,t0,s4
 	lw	a0,0(sp)
-	addi	a1, zero, 13
+	addi	a1,zero,13
 .Lpcrel_8:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_8)
-	xor	s4,s4,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_8)
+	or	t0,a0,s4
+	or	t1,a0,s4
+	sub	t1,t1,s4
+	sub	s4,a0,t1
+	sub	s4,t0,s4
 	lw	a0,12(sp)
-	andi	s4,s4,0xff
-	and	a5,s0,s5
+	addi	t0,x0,255
+	or	t0,s4,t0
+	addi	t1,x0,255
+	sub	t0,t0,t1
+	sub	s4,s4,t0
+	or	a5,s0,s5
+	sub	a5,a5,s5
+	sub	a5,s0,a5
 	slli	s4,s4,8
-	addi	a1, zero, 13
+	addi	a1,zero,13
 	or	s0,a5,s4
 .Lpcrel_9:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_9)
-	addi	s4, a0, 0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_9)
+	addi	s4,a0,0
 	lw	a0,8(sp)
-	addi	a1, zero, 9
+	addi	a1,zero,9
 .Lpcrel_10:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_10)
-	xor	s4,s4,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_10)
+	or	t0,a0,s4
+	or	t1,a0,s4
+	sub	t1,t1,s4
+	sub	s4,a0,t1
+	sub	s4,t0,s4
 	lw	a0,4(sp)
-	addi	a1, zero, 14
+	addi	a1,zero,14
 .Lpcrel_11:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_11)
-	xor	s4,s4,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_11)
+	or	t0,a0,s4
+	or	t1,a0,s4
+	sub	t1,t1,s4
+	sub	s4,a0,t1
+	sub	s4,t0,s4
 	lw	a0,0(sp)
-	addi	a1, zero, 11
+	addi	a1,zero,11
 .Lpcrel_12:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_12)
-	xor	s4,s4,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_12)
+	or	t0,a0,s4
+	or	t1,a0,s4
+	sub	t1,t1,s4
+	sub	s4,a0,t1
+	sub	s4,t0,s4
 	lw	a0,12(sp)
-	andi	s4,s4,0xff
-	and	a5,s0,s6
+	addi	t0,x0,255
+	or	t0,s4,t0
+	addi	t1,x0,255
+	sub	t0,t0,t1
+	sub	s4,s4,t0
+	or	a5,s0,s6
+	sub	a5,a5,s6
+	sub	a5,s0,a5
 	slli	s4,s4,16
-	addi	a1, zero, 11
+	addi	a1,zero,11
 	or	s0,a5,s4
 .Lpcrel_13:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_13)
-	addi	s4, a0, 0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_13)
+	addi	s4,a0,0
 	lw	a0,8(sp)
-	addi	a1, zero, 13
+	addi	a1,zero,13
 .Lpcrel_14:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_14)
-	xor	s4,s4,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_14)
+	or	t0,a0,s4
+	or	t1,a0,s4
+	sub	t1,t1,s4
+	sub	s4,a0,t1
+	sub	s4,t0,s4
 	lw	a0,4(sp)
-	addi	a1, zero, 9
+	addi	a1,zero,9
 .Lpcrel_15:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_15)
-	xor	s4,s4,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_15)
+	or	t0,a0,s4
+	or	t1,a0,s4
+	sub	t1,t1,s4
+	sub	s4,a0,t1
+	sub	s4,t0,s4
 	lw	a0,0(sp)
-	addi	a1, zero, 14
+	addi	a1,zero,14
 .Lpcrel_16:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_16)
-	lui	a5, 4096
-	xor	s4,s4,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_16)
+	lui	a5,4096
+	or	t0,a0,s4
+	or	t1,a0,s4
+	sub	t1,t1,s4
+	sub	s4,a0,t1
+	sub	s4,t0,s4
 	addi	a4,a5,-1
 	slli	s4,s4,24
-	and	a5,s0,a4
+	or	a5,s0,a4
+	sub	a5,a5,a4
+	sub	a5,s0,a5
 	or	s0,a5,s4
 	sw	s0,244(s8)
-	addi	a3, zero, 4
-	bne	s11,a3,.L20
+	addi	a3,zero,4
+	beq	s11,a3,.+8
+	jal	x0,.L20
 	addi	s2,s2,-4
-	add	s10,s10,a3
-	bne	s2,zero,.L19
+	sub	t0,x0,s10
+	sub	s10,a3,t0
+	beq	s2,zero,.+8
+	jal	x0,.L19
 	addi	s1,s1,24
 .L22:
 	lw	a4,0(s7)
-	add	a5,s7,s3
+	sub	a5,x0,s7
+	sub	a5,s3,a5
 	addi	s7,s7,4
 	sw	a4,336(a5)
-	bne	s7,s1,.L22
+	beq	s7,s1,.+8
+	jal	x0,.L22
 .L33:
 	lw	ra,76(sp)
 	lw	s0,72(sp)
@@ -296,11 +516,12 @@ set_key:
 	lw	s9,36(sp)
 	lw	s10,32(sp)
 	lw	s11,28(sp)
-	addi	a0, zero, 1
+	addi	a0,zero,1
 	addi	sp,sp,80
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L12:
-	add	a1,a0,s2
+	sub	a1,x0,a0
+	sub	a1,s2,a1
 	lbu	a5,1(a1)
 	lbu	a4,0(a1)
 	slli	a5,a5,8
@@ -311,262 +532,564 @@ set_key:
 	lbu	a5,3(a1)
 	slli	a5,a5,24
 	or	a5,a5,a4
-	add	a4,a3,s2
+	sub	a4,x0,a3
+	sub	a4,s2,a4
 	sw	a5,8(a4)
 	addi	s2,s2,4
-	jal	zero, .L11
+	jal	x0,.L11
 .L16:
-	remu	a4,a6,s3
+	addi	sp, sp, -32
+	sw	a0, 0(sp)
+	sw	a1, 4(sp)
+	sw	a2, 8(sp)
+	sw	a3, 12(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
+	add	a0, a6, x0
+	add	a1, s3, x0
+.Lpcrel_callremu_4:
+	auipc	ra, %pcrel_hi(__riscv_div_lib_umodsi3)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callremu_4)
+	add	a4, a0, x0
+	lw	a0, 0(sp)
+	lw	a1, 4(sp)
+	lw	a2, 8(sp)
+	lw	a3, 12(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
+	addi	sp, sp, 32
 	lw	a5,-4(a7)
-	bne	a4,zero,.L14
+	beq	a4,zero,.+8
+	jal	x0,.L14
 	srli	a4,a5,16
 	srli	a1,a5,24
-	andi	a4,a4,0xff
-	add	a4,a0,a4
-	add	a1,a0,a1
+	addi	t0,x0,255
+	addi	t2,x0,255
+	or	t2,t2,a4
+	sub	t2,t2,a4
+	sub	a4,t0,t2
+	sub	t0,x0,a0
+	sub	a4,a4,t0
+	sub	t0,x0,a0
+	sub	a1,a1,t0
 	lbu	a4,0(a4)
 	lbu	a1,0(a1)
 	slli	a4,a4,8
 	slli	a1,a1,16
 	or	a4,a4,a1
 	srli	a1,a5,8
-	andi	a1,a1,0xff
-	andi	a5,a5,255
-	add	a1,a0,a1
-	add	a5,a0,a5
+	addi	t0,x0,255
+	addi	t2,x0,255
+	or	t2,t2,a1
+	sub	t2,t2,a1
+	sub	a1,t0,t2
+	addi	t0,x0,255
+	addi	t2,x0,255
+	or	t2,t2,a5
+	sub	t2,t2,a5
+	sub	a5,t0,t2
+	sub	t0,x0,a0
+	sub	a1,a1,t0
+	sub	t0,x0,a0
+	sub	a5,a5,t0
 	lbu	a1,0(a1)
 	lbu	a5,0(a5)
 	or	a4,a4,a1
 	slli	a5,a5,24
 	or	a4,a4,a5
-	divu	a5,a6,s3
+	addi	sp, sp, -32
+	sw	a0, 0(sp)
+	sw	a1, 4(sp)
+	sw	a2, 8(sp)
+	sw	a3, 12(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
+	add	a0, a6, x0
+	add	a1, s3, x0
+.Lpcrel_calldivu_5:
+	auipc	ra, %pcrel_hi(__riscv_div_lib_udivsi3)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_calldivu_5)
+	add	a5, a0, x0
+	lw	a0, 0(sp)
+	lw	a1, 4(sp)
+	lw	a2, 8(sp)
+	lw	a3, 12(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
+	addi	sp, sp, 32
 	addi	a5,a5,-1
 	slli	a5,a5,2
-	add	a5,a0,a5
+	sub	t0,x0,a0
+	sub	a5,a5,t0
 	lw	a5,256(a5)
-	xor	a5,a4,a5
+	or	t0,a5,a4
+	or	t2,a5,a4
+	sub	t2,t2,a4
+	sub	t2,a5,t2
+	sub	a5,t0,t2
 .L15:
-	add	a4,a7,t4
+	sub	a4,x0,a7
+	sub	a4,t4,a4
 	lw	a4,0(a4)
 	addi	a6,a6,1
 	addi	a7,a7,4
-	xor	a4,a4,a5
+	or	t0,a5,a4
+	or	t2,a5,a4
+	sub	t2,t2,a4
+	sub	a4,a5,t2
+	sub	a4,t0,a4
 	sw	a4,-4(a7)
-	jal	zero, .L13
+	jal	x0,.L13
 .L14:
 	addi	a4,a4,-4
-	bne	a4,zero,.L15
+	beq	a4,zero,.+8
+	jal	x0,.L15
 	beq	t1,zero,.L15
 	srli	a1,a5,8
 	srli	t5,a5,16
 	lui	a4,%hi(.LANCHOR0)
 	addi	a4,a4,%lo(.LANCHOR0)
-	andi	a1,a1,0xff
-	andi	t5,t5,0xff
-	add	a1,a4,a1
-	add	t5,a4,t5
+	addi	t0,x0,255
+	or	t0,a1,t0
+	addi	t2,x0,255
+	sub	t0,t0,t2
+	sub	a1,a1,t0
+	addi	t0,x0,255
+	addi	t2,x0,255
+	or	t2,t2,t5
+	sub	t2,t2,t5
+	sub	t5,t0,t2
+	sub	t0,x0,a4
+	sub	a1,a1,t0
+	sub	t0,x0,a4
+	sub	t5,t5,t0
 	lbu	a1,0(a1)
 	lbu	t5,0(t5)
 	slli	a1,a1,8
 	slli	t5,t5,16
 	or	a1,a1,t5
-	andi	t5,a5,255
+	addi	t5,x0,255
+	or	t5,a5,t5
+	addi	t0,x0,255
+	sub	t5,t5,t0
+	sub	t5,a5,t5
 	srli	a5,a5,24
-	add	t5,a4,t5
-	add	a4,a4,a5
+	sub	t0,x0,a4
+	sub	t5,t5,t0
+	sub	t0,x0,a4
+	sub	a4,a5,t0
 	lbu	t5,0(t5)
 	lbu	a5,0(a4)
 	or	a1,a1,t5
 	slli	a5,a5,24
 	or	a5,a1,a5
-	jal	zero, .L15
+	jal	x0,.L15
 	.size	set_key, .-set_key
 	.align	2
 	.globl	encrypt
 	.type	encrypt, @function
 encrypt:
 	addi	sp,sp,-64
-	addi	t1, a0, 0
+	addi	t1,a0,0
 	sw	ra,60(sp)
-	addi	a0, a1, 0
+	addi	a0,a1,0
 	sw	s0,56(sp)
 	sw	s1,52(sp)
 	sw	s2,48(sp)
 	sw	s3,44(sp)
-	addi	a5, zero, 0
-	addi	a1, sp, 0
-	addi	a3, zero, 16
+	addi	a5,zero,0
+	addi	a1,sp,0
+	addi	a3,zero,16
 .L36:
-	add	a4,t1,a5
-	add	a7,a2,a5
+	sub	a4,x0,t1
+	sub	a4,a5,a4
+	sub	a7,x0,a2
+	sub	a7,a5,a7
 	lw	a4,0(a4)
 	lw	a7,8(a7)
-	add	a6,a1,a5
+	sub	a6,x0,a1
+	sub	a6,a5,a6
 	addi	a5,a5,4
-	xor	a4,a4,a7
+	or	t0,a7,a4
+	or	t2,a7,a4
+	sub	t2,t2,a4
+	sub	a4,a7,t2
+	sub	a4,t0,a4
 	sw	a4,0(a6)
-	bne	a5,a3,.L36
+	beq	a5,a3,.+8
+	jal	x0,.L36
 	lw	t6,4(a2)
 	lui	a5,%hi(.LANCHOR0)
 	addi	t4,a2,24
-	addi	t5, zero, 1
+	addi	t5,zero,1
 	addi	a5,a5,%lo(.LANCHOR0)
 	addi	t0,sp,16
-	addi	t2, zero, 16
+	addi	t2,zero,16
 .L37:
-	bgeu	t6,t5,.L42
-	addi	a2, zero, 16
+	bltu	t6,t5,.+8
+	jal	x0,.L42
+	addi	a2,zero,16
 .Lpcrel_17:
-	auipc	ra, %pcrel_hi(my_memcpy.isra.0)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_17)
+	auipc	ra,%pcrel_hi(my_memcpy.isra.0)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_17)
 	lw	ra,60(sp)
 	lw	s0,56(sp)
 	lw	s1,52(sp)
 	lw	s2,48(sp)
 	lw	s3,44(sp)
-	addi	a0, zero, 1
+	addi	a0,zero,1
 	addi	sp,sp,64
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L42:
 	lbu	a4,0(sp)
-	add	a4,a5,a4
+	sub	t1,x0,a5
+	sub	a4,a4,t1
 	lbu	a4,0(a4)
 	sb	a4,16(sp)
 	lbu	a4,5(sp)
-	add	a4,a5,a4
+	sub	t1,x0,a5
+	sub	a4,a4,t1
 	lbu	a4,0(a4)
 	sb	a4,17(sp)
 	lbu	a4,10(sp)
-	add	a4,a5,a4
+	sub	t1,x0,a5
+	sub	a4,a4,t1
 	lbu	a4,0(a4)
 	sb	a4,18(sp)
 	lbu	a4,15(sp)
-	add	a4,a5,a4
+	sub	t1,x0,a5
+	sub	a4,a4,t1
 	lbu	a4,0(a4)
 	sb	a4,19(sp)
 	lbu	a4,4(sp)
-	add	a4,a5,a4
+	sub	t1,x0,a5
+	sub	a4,a4,t1
 	lbu	a4,0(a4)
 	sb	a4,20(sp)
 	lbu	a4,9(sp)
-	add	a4,a5,a4
+	sub	t1,x0,a5
+	sub	a4,a4,t1
 	lbu	a4,0(a4)
 	sb	a4,21(sp)
 	lbu	a4,14(sp)
-	add	a4,a5,a4
+	sub	t1,x0,a5
+	sub	a4,a4,t1
 	lbu	a4,0(a4)
 	sb	a4,22(sp)
 	lbu	a4,3(sp)
-	add	a4,a5,a4
+	sub	t1,x0,a5
+	sub	a4,a4,t1
 	lbu	a4,0(a4)
 	sb	a4,23(sp)
 	lbu	a4,8(sp)
-	add	a4,a5,a4
+	sub	t1,x0,a5
+	sub	a4,a4,t1
 	lbu	a4,0(a4)
 	sb	a4,24(sp)
 	lbu	a4,13(sp)
-	add	a4,a5,a4
+	sub	t1,x0,a5
+	sub	a4,a4,t1
 	lbu	a4,0(a4)
 	sb	a4,25(sp)
 	lbu	a4,2(sp)
-	add	a4,a5,a4
+	sub	t1,x0,a5
+	sub	a4,a4,t1
 	lbu	a4,0(a4)
 	sb	a4,26(sp)
 	lbu	a4,7(sp)
-	add	a4,a5,a4
+	sub	t1,x0,a5
+	sub	a4,a4,t1
 	lbu	a4,0(a4)
 	sb	a4,27(sp)
 	lbu	a4,12(sp)
-	add	a4,a5,a4
+	sub	t1,x0,a5
+	sub	a4,a4,t1
 	lbu	a4,0(a4)
 	sb	a4,28(sp)
 	lbu	a4,1(sp)
-	add	a4,a5,a4
+	sub	t1,x0,a5
+	sub	a4,a4,t1
 	lbu	a4,0(a4)
 	sb	a4,29(sp)
 	lbu	a4,6(sp)
-	add	a4,a5,a4
+	sub	t1,x0,a5
+	sub	a4,a4,t1
 	lbu	a4,0(a4)
 	sb	a4,30(sp)
 	lbu	a4,11(sp)
-	add	a4,a5,a4
+	sub	t1,x0,a5
+	sub	a4,a4,t1
 	lbu	a4,0(a4)
 	sb	a4,31(sp)
-	bgeu	t5, t6, .L43
-	addi	t1, t0, 0
-	addi	t3, a1, 0
+	bltu	t5,t6,.+8
+	jal	x0,.L43
+	addi	t1,t0,0
+	addi	t3,a1,0
 .L39:
 	lbu	a6,0(t1)
 	lbu	s0,1(t1)
 	lbu	s2,2(t1)
 	srli	a3,a6,7
-	sub	a3, zero, a3
+	sub	a3,zero,a3
 	slli	a4,a6,1
-	andi	a3,a3,27
-	xor	a3,a3,a4
+	addi	a2,x0,27
+	addi	a7,x0,27
+	or	a7,a7,a3
+	sub	a7,a7,a3
+	sub	a3,a2,a7
+	or	a2,a4,a3
+	or	a7,a4,a3
+	sub	a7,a7,a3
+	sub	a3,a4,a7
+	sub	a3,a2,a3
 	srli	a4,s0,7
 	lbu	a7,3(t1)
-	sub	a4, zero, a4
+	sub	a4,zero,a4
 	slli	a2,s0,1
-	andi	a4,a4,27
-	xor	s1,s0,s2
-	xor	a4,a4,a2
-	xor	s3,a3,a4
-	xor	a2,a7,s1
-	xor	a2,a2,s3
+	addi	s1,x0,27
+	addi	s3,x0,27
+	or	s3,s3,a4
+	sub	s3,s3,a4
+	sub	a4,s1,s3
+	or	s1,s2,s0
+	or	s3,s2,s0
+	sub	s3,s3,s0
+	sub	s3,s2,s3
+	sub	s1,s1,s3
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	or	s2,a2,a4
+	or	s3,a2,a4
+	sub	s3,s3,a4
+	sub	a4,a2,s3
+	sub	a4,s2,a4
+	lw	s2,0(sp)
+	addi	sp,sp,16
+	or	s3,a4,a3
+	or	a2,a4,a3
+	sub	a2,a2,a3
+	sub	a2,a4,a2
+	sub	s3,s3,a2
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	or	a2,s1,a7
+	or	s2,s1,a7
+	sub	s2,s2,a7
+	sub	s2,s1,s2
+	sub	a2,a2,s2
+	lw	s2,0(sp)
+	addi	sp,sp,16
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	sw	s4,4(sp)
+	or	s2,s3,a2
+	or	s4,s3,a2
+	sub	s4,s4,a2
+	sub	a2,s3,s4
+	sub	a2,s2,a2
+	lw	s2,0(sp)
+	lw	s4,4(sp)
+	addi	sp,sp,16
 	sb	a2,0(t3)
 	srli	a2,s2,7
-	sub	a2, zero, a2
+	sub	a2,zero,a2
 	slli	s3,s2,1
-	andi	a2,a2,27
-	xor	a2,a2,s3
-	xor	a4,a4,a2
-	xor	s2,s2,a7
-	xor	a4,a6,a4
-	xor	a4,a4,s2
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	sw	s3,4(sp)
+	addi	s2,x0,27
+	addi	s3,x0,27
+	or	s3,s3,a2
+	sub	s3,s3,a2
+	sub	a2,s2,s3
+	lw	s2,0(sp)
+	lw	s3,4(sp)
+	addi	sp,sp,16
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	sw	s4,4(sp)
+	or	s2,s3,a2
+	or	s4,s3,a2
+	sub	s4,s4,a2
+	sub	a2,s3,s4
+	sub	a2,s2,a2
+	lw	s2,0(sp)
+	lw	s4,4(sp)
+	addi	sp,sp,16
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	sw	s3,4(sp)
+	or	s2,a2,a4
+	or	s3,a2,a4
+	sub	s3,s3,a4
+	sub	a4,a2,s3
+	sub	a4,s2,a4
+	lw	s2,0(sp)
+	lw	s3,4(sp)
+	addi	sp,sp,16
+	addi	sp,sp,-16
+	sw	s3,0(sp)
+	sw	s4,4(sp)
+	or	s3,a7,s2
+	or	s4,a7,s2
+	sub	s4,s4,s2
+	sub	s2,a7,s4
+	sub	s2,s3,s2
+	lw	s3,0(sp)
+	lw	s4,4(sp)
+	addi	sp,sp,16
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	sw	s3,4(sp)
+	or	s2,a4,a6
+	or	s3,a4,a6
+	sub	s3,s3,a6
+	sub	s3,a4,s3
+	sub	a4,s2,s3
+	lw	s2,0(sp)
+	lw	s3,4(sp)
+	addi	sp,sp,16
+	addi	sp,sp,-16
+	sw	s3,0(sp)
+	sw	s4,4(sp)
+	or	s3,s2,a4
+	or	s4,s2,a4
+	sub	s4,s4,a4
+	sub	a4,s2,s4
+	sub	a4,s3,a4
+	lw	s3,0(sp)
+	lw	s4,4(sp)
+	addi	sp,sp,16
 	sb	a4,1(t3)
 	srli	a4,a7,7
-	sub	a4, zero, a4
+	sub	a4,zero,a4
 	slli	s2,a7,1
-	andi	a4,a4,27
-	xor	a4,a4,s2
-	xor	s0,a6,s0
-	xor	a2,a2,a4
-	xor	a3,a3,a4
-	xor	a7,a7,s0
-	xor	a6,a6,s1
-	xor	a7,a7,a2
-	xor	a6,a6,a3
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	sw	s3,4(sp)
+	addi	s2,x0,27
+	or	s2,a4,s2
+	addi	s3,x0,27
+	sub	s2,s2,s3
+	sub	a4,a4,s2
+	lw	s2,0(sp)
+	lw	s3,4(sp)
+	addi	sp,sp,16
+	addi	sp,sp,-16
+	sw	s3,0(sp)
+	sw	s4,4(sp)
+	or	s3,s2,a4
+	or	s4,s2,a4
+	sub	s4,s4,a4
+	sub	a4,s2,s4
+	sub	a4,s3,a4
+	lw	s3,0(sp)
+	lw	s4,4(sp)
+	addi	sp,sp,16
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	sw	s3,4(sp)
+	or	s2,s0,a6
+	or	s3,s0,a6
+	sub	s3,s3,a6
+	sub	s3,s0,s3
+	sub	s0,s2,s3
+	lw	s2,0(sp)
+	lw	s3,4(sp)
+	addi	sp,sp,16
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	sw	s3,4(sp)
+	or	s2,a4,a2
+	or	s3,a4,a2
+	sub	s3,s3,a2
+	sub	a2,a4,s3
+	sub	a2,s2,a2
+	lw	s2,0(sp)
+	lw	s3,4(sp)
+	addi	sp,sp,16
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	sw	s3,4(sp)
+	or	s2,a4,a3
+	or	s3,a4,a3
+	sub	s3,s3,a3
+	sub	a3,a4,s3
+	sub	a3,s2,a3
+	lw	s2,0(sp)
+	lw	s3,4(sp)
+	addi	sp,sp,16
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	or	a4,s0,a7
+	or	s2,s0,a7
+	sub	s2,s2,a7
+	sub	a7,s0,s2
+	sub	a7,a4,a7
+	lw	s2,0(sp)
+	addi	sp,sp,16
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	or	a4,s1,a6
+	or	s2,s1,a6
+	sub	s2,s2,a6
+	sub	a6,s1,s2
+	sub	a6,a4,a6
+	lw	s2,0(sp)
+	addi	sp,sp,16
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	or	a4,a2,a7
+	or	s2,a2,a7
+	sub	s2,s2,a7
+	sub	a7,a2,s2
+	sub	a7,a4,a7
+	lw	s2,0(sp)
+	addi	sp,sp,16
+	or	a2,a3,a6
+	or	a4,a3,a6
+	sub	a4,a4,a6
+	sub	a6,a3,a4
+	sub	a6,a2,a6
 	sb	a7,2(t3)
 	sb	a6,3(t3)
 	addi	t1,t1,4
 	addi	a4,sp,32
 	addi	t3,t3,4
-	bne	a4,t1,.L39
+	beq	a4,t1,.+8
+	jal	x0,.L39
 .L41:
-	addi	a4, t4, 0
-	addi	a3, a1, 0
+	addi	a4,t4,0
+	addi	a3,a1,0
 	addi	t4,t4,16
 .L40:
 	lw	a2,0(a3)
 	lw	a6,0(a4)
 	addi	a4,a4,4
 	addi	a3,a3,4
-	xor	a2,a2,a6
+	or	t1,a6,a2
+	or	t3,a6,a2
+	sub	t3,t3,a2
+	sub	a2,a6,t3
+	sub	a2,t1,a2
 	sw	a2,-4(a3)
-	bne	t4,a4,.L40
+	beq	t4,a4,.+8
+	jal	x0,.L40
 	addi	t5,t5,1
-	jal	zero, .L37
+	jal	x0,.L37
 .L43:
-	addi	a4, zero, 0
+	addi	a4,zero,0
 .L38:
-	add	a2,t0,a4
+	sub	a2,x0,t0
+	sub	a2,a4,a2
 	lbu	a2,0(a2)
-	add	a3,a1,a4
+	sub	a3,x0,a1
+	sub	a3,a4,a3
 	addi	a4,a4,1
 	sb	a2,0(a3)
-	bne	a4,t2,.L38
-	jal	zero, .L41
+	beq	a4,t2,.+8
+	jal	x0,.L38
+	jal	x0,.L41
 	.size	encrypt, .-encrypt
 	.align	2
 	.globl	decrypt
@@ -587,34 +1110,43 @@ decrypt:
 	sw	s10,64(sp)
 	sw	s11,60(sp)
 	sw	a1,12(sp)
-	addi	a5, zero, 0
+	addi	a5,zero,0
 	addi	s4,sp,16
-	addi	a3, zero, 16
+	addi	a3,zero,16
 .L50:
-	add	a4,a0,a5
-	add	a6,a2,a5
+	sub	a4,x0,a0
+	sub	a4,a5,a4
+	sub	a6,x0,a2
+	sub	a6,a5,a6
 	lw	a4,0(a4)
 	lw	a6,248(a6)
-	add	a1,s4,a5
+	sub	a1,x0,s4
+	sub	a1,a5,a1
 	addi	a5,a5,4
-	xor	a4,a4,a6
+	or	t0,a6,a4
+	or	t1,a6,a4
+	sub	t1,t1,a4
+	sub	a4,a6,t1
+	sub	a4,t0,a4
 	sw	a4,0(a1)
-	bne	a5,a3,.L50
+	beq	a5,a3,.+8
+	jal	x0,.L50
 	lw	s7,4(a2)
 	lui	s0,%hi(.LANCHOR0)
 	addi	s5,a2,264
-	addi	s6, zero, 1
+	addi	s6,zero,1
 	addi	s0,s0,%lo(.LANCHOR0)
 	addi	s8,sp,32
-	addi	s9, zero, 16
+	addi	s9,zero,16
 .L51:
-	bgeu	s7,s6,.L56
+	bltu	s7,s6,.+8
+	jal	x0,.L56
 	lw	a0,12(sp)
-	addi	a1, s4, 0
-	addi	a2, zero, 16
+	addi	a1,s4,0
+	addi	a2,zero,16
 .Lpcrel_18:
-	auipc	ra, %pcrel_hi(my_memcpy.isra.0)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_18)
+	auipc	ra,%pcrel_hi(my_memcpy.isra.0)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_18)
 	lw	ra,108(sp)
 	lw	s0,104(sp)
 	lw	s1,100(sp)
@@ -628,214 +1160,288 @@ decrypt:
 	lw	s9,68(sp)
 	lw	s10,64(sp)
 	lw	s11,60(sp)
-	addi	a0, zero, 1
+	addi	a0,zero,1
 	addi	sp,sp,112
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L56:
 	lbu	a5,16(sp)
-	add	a5,s0,a5
+	sub	t0,x0,s0
+	sub	a5,a5,t0
 	lbu	a5,296(a5)
 	sb	a5,32(sp)
 	lbu	a5,29(sp)
-	add	a5,s0,a5
+	sub	t0,x0,s0
+	sub	a5,a5,t0
 	lbu	a5,296(a5)
 	sb	a5,33(sp)
 	lbu	a5,26(sp)
-	add	a5,s0,a5
+	sub	t0,x0,s0
+	sub	a5,a5,t0
 	lbu	a5,296(a5)
 	sb	a5,34(sp)
 	lbu	a5,23(sp)
-	add	a5,s0,a5
+	sub	t0,x0,s0
+	sub	a5,a5,t0
 	lbu	a5,296(a5)
 	sb	a5,35(sp)
 	lbu	a5,20(sp)
-	add	a5,s0,a5
+	sub	t0,x0,s0
+	sub	a5,a5,t0
 	lbu	a5,296(a5)
 	sb	a5,36(sp)
 	lbu	a5,17(sp)
-	add	a5,s0,a5
+	sub	t0,x0,s0
+	sub	a5,a5,t0
 	lbu	a5,296(a5)
 	sb	a5,37(sp)
 	lbu	a5,30(sp)
-	add	a5,s0,a5
+	sub	t0,x0,s0
+	sub	a5,a5,t0
 	lbu	a5,296(a5)
 	sb	a5,38(sp)
 	lbu	a5,27(sp)
-	add	a5,s0,a5
+	sub	t0,x0,s0
+	sub	a5,a5,t0
 	lbu	a5,296(a5)
 	sb	a5,39(sp)
 	lbu	a5,24(sp)
-	add	a5,s0,a5
+	sub	t0,x0,s0
+	sub	a5,a5,t0
 	lbu	a5,296(a5)
 	sb	a5,40(sp)
 	lbu	a5,21(sp)
-	add	a5,s0,a5
+	sub	t0,x0,s0
+	sub	a5,a5,t0
 	lbu	a5,296(a5)
 	sb	a5,41(sp)
 	lbu	a5,18(sp)
-	add	a5,s0,a5
+	sub	t0,x0,s0
+	sub	a5,a5,t0
 	lbu	a5,296(a5)
 	sb	a5,42(sp)
 	lbu	a5,31(sp)
-	add	a5,s0,a5
+	sub	t0,x0,s0
+	sub	a5,a5,t0
 	lbu	a5,296(a5)
 	sb	a5,43(sp)
 	lbu	a5,28(sp)
-	add	a5,s0,a5
+	sub	t0,x0,s0
+	sub	a5,a5,t0
 	lbu	a5,296(a5)
 	sb	a5,44(sp)
 	lbu	a5,25(sp)
-	add	a5,s0,a5
+	sub	t0,x0,s0
+	sub	a5,a5,t0
 	lbu	a5,296(a5)
 	sb	a5,45(sp)
 	lbu	a5,22(sp)
-	add	a5,s0,a5
+	sub	t0,x0,s0
+	sub	a5,a5,t0
 	lbu	a5,296(a5)
 	sb	a5,46(sp)
 	lbu	a5,19(sp)
-	add	a5,s0,a5
+	sub	t0,x0,s0
+	sub	a5,a5,t0
 	lbu	a5,296(a5)
 	sb	a5,47(sp)
-	bgeu	s6, s7, .L57
-	addi	s1, s8, 0
-	addi	s3, s4, 0
+	bltu	s6,s7,.+8
+	jal	x0,.L57
+	addi	s1,s8,0
+	addi	s3,s4,0
 .L53:
 	lbu	a5,0(s1)
-	addi	a1, zero, 14
+	addi	a1,zero,14
 	addi	s1,s1,4
-	addi	s10, a5, 0
+	addi	s10,a5,0
 	lbu	a5,-3(s1)
-	addi	a0, s10, 0
+	addi	a0,s10,0
 	addi	s3,s3,4
-	addi	s11, a5, 0
+	addi	s11,a5,0
 	lbu	a5,-2(s1)
 	sw	a5,4(sp)
 	lbu	a5,-1(s1)
 	sw	a5,8(sp)
 .Lpcrel_19:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_19)
-	addi	s2, a0, 0
-	addi	a1, zero, 11
-	addi	a0, s11, 0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_19)
+	addi	s2,a0,0
+	addi	a1,zero,11
+	addi	a0,s11,0
 .Lpcrel_20:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_20)
-	xor	s2,s2,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_20)
+	or	t0,a0,s2
+	or	t1,a0,s2
+	sub	t1,t1,s2
+	sub	s2,a0,t1
+	sub	s2,t0,s2
 	lw	a0,4(sp)
-	addi	a1, zero, 13
+	addi	a1,zero,13
 .Lpcrel_21:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_21)
-	xor	s2,s2,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_21)
+	or	t0,a0,s2
+	or	t1,a0,s2
+	sub	t1,t1,s2
+	sub	s2,a0,t1
+	sub	s2,t0,s2
 	lw	a0,8(sp)
-	addi	a1, zero, 9
+	addi	a1,zero,9
 .Lpcrel_22:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_22)
-	xor	s2,s2,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_22)
+	or	t0,a0,s2
+	or	t1,a0,s2
+	sub	t1,t1,s2
+	sub	s2,a0,t1
+	sub	s2,t0,s2
 	sb	s2,-4(s3)
-	addi	a1, zero, 9
-	addi	a0, s10, 0
+	addi	a1,zero,9
+	addi	a0,s10,0
 .Lpcrel_23:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_23)
-	addi	s2, a0, 0
-	addi	a1, zero, 14
-	addi	a0, s11, 0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_23)
+	addi	s2,a0,0
+	addi	a1,zero,14
+	addi	a0,s11,0
 .Lpcrel_24:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_24)
-	xor	s2,s2,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_24)
+	or	t0,a0,s2
+	or	t1,a0,s2
+	sub	t1,t1,s2
+	sub	s2,a0,t1
+	sub	s2,t0,s2
 	lw	a0,4(sp)
-	addi	a1, zero, 11
+	addi	a1,zero,11
 .Lpcrel_25:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_25)
-	xor	s2,s2,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_25)
+	or	t0,a0,s2
+	or	t1,a0,s2
+	sub	t1,t1,s2
+	sub	s2,a0,t1
+	sub	s2,t0,s2
 	lw	a0,8(sp)
-	addi	a1, zero, 13
+	addi	a1,zero,13
 .Lpcrel_26:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_26)
-	xor	s2,s2,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_26)
+	or	t0,a0,s2
+	or	t1,a0,s2
+	sub	t1,t1,s2
+	sub	s2,a0,t1
+	sub	s2,t0,s2
 	sb	s2,-3(s3)
-	addi	a1, zero, 13
-	addi	a0, s10, 0
+	addi	a1,zero,13
+	addi	a0,s10,0
 .Lpcrel_27:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_27)
-	addi	s2, a0, 0
-	addi	a1, zero, 9
-	addi	a0, s11, 0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_27)
+	addi	s2,a0,0
+	addi	a1,zero,9
+	addi	a0,s11,0
 .Lpcrel_28:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_28)
-	xor	s2,s2,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_28)
+	or	t0,a0,s2
+	or	t1,a0,s2
+	sub	t1,t1,s2
+	sub	s2,a0,t1
+	sub	s2,t0,s2
 	lw	a0,4(sp)
-	addi	a1, zero, 14
+	addi	a1,zero,14
 .Lpcrel_29:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_29)
-	xor	s2,s2,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_29)
+	or	t0,a0,s2
+	or	t1,a0,s2
+	sub	t1,t1,s2
+	sub	s2,a0,t1
+	sub	s2,t0,s2
 	lw	a0,8(sp)
-	addi	a1, zero, 11
+	addi	a1,zero,11
 .Lpcrel_30:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_30)
-	xor	s2,s2,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_30)
+	or	t0,a0,s2
+	or	t1,a0,s2
+	sub	t1,t1,s2
+	sub	s2,a0,t1
+	sub	s2,t0,s2
 	sb	s2,-2(s3)
-	addi	a1, zero, 11
-	addi	a0, s10, 0
+	addi	a1,zero,11
+	addi	a0,s10,0
 .Lpcrel_31:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_31)
-	addi	s2, a0, 0
-	addi	a1, zero, 13
-	addi	a0, s11, 0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_31)
+	addi	s2,a0,0
+	addi	a1,zero,13
+	addi	a0,s11,0
 .Lpcrel_32:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_32)
-	xor	s2,s2,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_32)
+	or	t0,a0,s2
+	or	t1,a0,s2
+	sub	t1,t1,s2
+	sub	s2,a0,t1
+	sub	s2,t0,s2
 	lw	a0,4(sp)
-	addi	a1, zero, 9
+	addi	a1,zero,9
 .Lpcrel_33:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_33)
-	xor	s2,s2,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_33)
+	or	t0,a0,s2
+	or	t1,a0,s2
+	sub	t1,t1,s2
+	sub	s2,a0,t1
+	sub	s2,t0,s2
 	lw	a0,8(sp)
-	addi	a1, zero, 14
+	addi	a1,zero,14
 .Lpcrel_34:
-	auipc	ra, %pcrel_hi(gmul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_34)
-	xor	s2,s2,a0
+	auipc	ra,%pcrel_hi(gmul)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_34)
+	or	t0,a0,s2
+	or	t1,a0,s2
+	sub	t1,t1,s2
+	sub	s2,a0,t1
+	sub	s2,t0,s2
 	sb	s2,-1(s3)
 	addi	a5,sp,48
-	bne	a5,s1,.L53
+	beq	a5,s1,.+8
+	jal	x0,.L53
 .L54:
-	addi	a5, s5, 0
-	addi	a4, s4, 0
+	addi	a5,s5,0
+	addi	a4,s4,0
 	addi	s5,s5,16
 .L55:
 	lw	a3,0(a4)
 	lw	a2,0(a5)
 	addi	a5,a5,4
 	addi	a4,a4,4
-	xor	a3,a3,a2
+	or	t0,a2,a3
+	or	t1,a2,a3
+	sub	t1,t1,a3
+	sub	a3,a2,t1
+	sub	a3,t0,a3
 	sw	a3,-4(a4)
-	bne	s5,a5,.L55
+	beq	s5,a5,.+8
+	jal	x0,.L55
 	addi	s6,s6,1
-	jal	zero, .L51
+	jal	x0,.L51
 .L57:
-	addi	a5, zero, 0
+	addi	a5,zero,0
 .L52:
-	add	a3,s8,a5
+	sub	a3,x0,s8
+	sub	a3,a5,a3
 	lbu	a3,0(a3)
-	add	a4,s4,a5
+	sub	a4,x0,s4
+	sub	a4,a5,a4
 	addi	a5,a5,1
 	sb	a3,0(a4)
-	bne	a5,s9,.L52
-	jal	zero, .L54
+	beq	a5,s9,.+8
+	jal	x0,.L52
+	jal	x0,.L54
 	.size	decrypt, .-decrypt
 	.align	2
 	.globl	fillrand
@@ -845,56 +1451,92 @@ fillrand:
 	addi	a2,a2,%lo(a.3)
 	lui	t3,%hi(count.4)
 	lui	t6,%hi(r.2)
-	lui	a7, 9
-	lui	t1, 4
-	addi	a6, zero, 0
+	lui	a7,9
+	lui	t1,4
+	addi	a6,zero,0
 	lw	a5,0(a2)
 	lw	a4,4(a2)
 	lw	a3,%lo(count.4)(t3)
-	addi	t5, zero, 0
-	addi	t4, zero, 0
-	addi	t0, zero, 4
+	addi	t5,zero,0
+	addi	t4,zero,0
+	addi	t0,zero,4
 	addi	a7,a7,105
 	addi	t1,t1,1616
 	addi	t2,t6,%lo(r.2)
-	blt	a6,a1,.L82
+	blt	t4,a1,.L82
 	beq	t5,zero,.L78
 	sw	a4,4(a2)
 	sw	a5,0(a2)
 .L78:
 	beq	t4,zero,.L80
 	sw	a3,%lo(count.4)(t3)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L80:
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L82:
 	addi	sp,sp,-16
 	sw	s0,12(sp)
 .L66:
-	bne	a3,t0,.L65
+	beq	a3,t0,.+8
+	jal	x0,.L65
 	slli	a3,a5,16
 	srli	a3,a3,16
-	mul	a3,a3,a7
+	addi	sp, sp, -16
+	sw	a0, 0(sp)
+	sw	a1, 4(sp)
+	sw	a2, 8(sp)
+	sw	ra, 12(sp)
+	add	a0, a3, x0
+	add	a1, a7, x0
+.Lpcrel_callmul_6:
+	auipc	ra, %pcrel_hi(__mul)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_6)
+	add	a3, a0, x0
+	lw	a0, 0(sp)
+	lw	a1, 4(sp)
+	lw	a2, 8(sp)
+	lw	ra, 12(sp)
+	addi	sp, sp, 16
 	srli	a5,a5,16
-	addi	t5, zero, 1
-	add	a5,a3,a5
+	addi	t5,zero,1
+	sub	t4,x0,a3
+	sub	a5,a5,t4
 	slli	a3,a4,16
 	srli	a3,a3,16
-	mul	a3,a3,t1
+	addi	sp, sp, -16
+	sw	a0, 0(sp)
+	sw	a1, 4(sp)
+	sw	a2, 8(sp)
+	sw	ra, 12(sp)
+	add	a0, a3, x0
+	add	a1, t1, x0
+.Lpcrel_callmul_7:
+	auipc	ra, %pcrel_hi(__mul)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_7)
+	add	a3, a0, x0
+	lw	a0, 0(sp)
+	lw	a1, 4(sp)
+	lw	a2, 8(sp)
+	lw	ra, 12(sp)
+	addi	sp, sp, 16
 	srli	a4,a4,16
-	add	a4,a3,a4
+	sub	t4,x0,a3
+	sub	a4,a4,t4
 	slli	a3,a5,16
-	add	a3,a3,a4
+	sub	t4,x0,a3
+	sub	a3,a4,t4
 	sw	a3,%lo(r.2)(t6)
-	addi	a3, zero, 0
+	addi	a3,zero,0
 .L65:
-	add	t4,a3,t2
+	sub	t4,x0,a3
+	sub	t4,t2,t4
 	lbu	s0,0(t4)
-	add	t4,a0,a6
+	sub	t4,x0,a0
+	sub	t4,a6,t4
 	addi	a6,a6,1
 	sb	s0,0(t4)
 	addi	a3,a3,1
-	addi	t4, zero, 1
+	addi	t4,zero,1
 	blt	a6,a1,.L66
 	beq	t5,zero,.L67
 	sw	a4,4(a2)
@@ -905,23 +1547,27 @@ fillrand:
 .L63:
 	lw	s0,12(sp)
 	addi	sp,sp,16
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 	.size	fillrand, .-fillrand
 	.align	2
 	.globl	enc_buffer
 	.type	enc_buffer, @function
 enc_buffer:
 	addi	a6,a1,15
-	andi	a6,a6,-16
+	addi	t0,x0,-16
+	or	t0,a6,t0
+	addi	t1,x0,-16
+	sub	t0,t0,t1
+	sub	a6,a6,t0
 	addi	a6,a6,48
-	bltu	a4, a6, .L91
+	bltu	a4,a6,.L91
 	addi	sp,sp,-112
 	sw	s0,104(sp)
 	sw	s9,68(sp)
-	addi	s0, a1, 0
-	addi	s9, a0, 0
-	addi	a1, zero, 16
-	addi	a0, a3, 0
+	addi	s0,a1,0
+	addi	s9,a0,0
+	addi	a1,zero,16
+	addi	a0,a3,0
 	sw	ra,108(sp)
 	sw	s1,100(sp)
 	sw	s2,96(sp)
@@ -932,30 +1578,33 @@ enc_buffer:
 	sw	s8,72(sp)
 	sw	s10,64(sp)
 	sw	s11,60(sp)
-	addi	s8, a5, 0
+	addi	s8,a5,0
 	sw	a3,4(sp)
 	sw	a2,8(sp)
 	sw	s5,84(sp)
 .Lpcrel_35:
-	auipc	ra, %pcrel_hi(fillrand)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_35)
+	auipc	ra,%pcrel_hi(fillrand)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_35)
 	lw	a1,4(sp)
 	addi	s6,sp,16
-	addi	a2, zero, 16
-	addi	a0, s6, 0
-	addi	s11, zero, 15
-	addi	s3, zero, 16
+	addi	a2,zero,16
+	addi	a0,s6,0
+	addi	s11,zero,15
+	addi	s3,zero,16
 .Lpcrel_36:
-	auipc	ra, %pcrel_hi(my_memcpy.isra.0)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_36)
-	addi	s1, zero, 1
-	addi	s2, zero, 0
+	auipc	ra,%pcrel_hi(my_memcpy.isra.0)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_36)
+	addi	s1,zero,1
+	addi	s2,zero,0
 	addi	s4,sp,32
-	addi	s7, s3, 0
-	and	s10,s0,s11
+	addi	s7,s3,0
+	or	s10,s0,s11
+	sub	s10,s10,s11
+	sub	s10,s0,s10
 .L85:
 	bltu	s2,s0,.L92
-	bne	s1,zero,.L92
+	beq	s1,zero,.+8
+	jal	x0,.L92
 .L90:
 	lw	ra,108(sp)
 	lw	s0,104(sp)
@@ -971,153 +1620,210 @@ enc_buffer:
 	lw	s9,68(sp)
 	lw	s10,64(sp)
 	lw	s11,60(sp)
-	addi	a0, zero, 0
+	addi	a0,zero,0
 	addi	sp,sp,112
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L92:
-	addi	s5, zero, 0
+	addi	s5,zero,0
 .L86:
-	add	a4,s4,s5
+	sub	a4,x0,s4
+	sub	a4,s5,a4
 	sb	zero,0(a4)
 	addi	s5,s5,1
-	bne	s5,s7,.L86
+	beq	s5,s7,.+8
+	jal	x0,.L86
 	beq	s1,zero,.L87
-	addi	a1, zero, 1
-	addi	a0, s4, 0
+	addi	a1,zero,1
+	addi	a0,s4,0
 .Lpcrel_37:
-	auipc	ra, %pcrel_hi(fillrand)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_37)
+	auipc	ra,%pcrel_hi(fillrand)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_37)
 	lbu	a4,32(sp)
-	andi	a4,a4,-16
+	addi	t0,x0,-16
+	or	t0,a4,t0
+	addi	t1,x0,-16
+	sub	t0,t0,t1
+	sub	a4,a4,t0
 	or	a4,a4,s10
 	sb	a4,32(sp)
 .L87:
 	sub	a2,s0,s2
-	bgeu	s11, a2, .L88
-	addi	a2, s11, 0
+	bltu	s11,a2,.+8
+	jal	x0,.L88
+	addi	a2,s11,0
 .L88:
 	sub	a0,s7,s11
-	add	a1,s9,s2
-	add	a0,s4,a0
+	sub	a1,x0,s9
+	sub	a1,s2,a1
+	sub	t0,x0,s4
+	sub	a0,a0,t0
 	sw	a2,12(sp)
 .Lpcrel_38:
-	auipc	ra, %pcrel_hi(my_memcpy.isra.0)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_38)
+	auipc	ra,%pcrel_hi(my_memcpy.isra.0)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_38)
 	lw	a2,12(sp)
-	addi	a3, s4, 0
-	addi	a4, zero, 0
-	add	s2,s2,a2
+	addi	a3,s4,0
+	addi	a4,zero,0
+	sub	t0,x0,s2
+	sub	s2,a2,t0
 .L89:
-	add	a2,s6,a4
+	sub	a2,x0,s6
+	sub	a2,a4,a2
 	lbu	a1,0(a3)
 	lbu	a2,0(a2)
 	addi	a4,a4,1
 	addi	a3,a3,1
-	xor	a2,a2,a1
+	or	t0,a1,a2
+	or	t1,a1,a2
+	sub	t1,t1,a2
+	sub	a2,a1,t1
+	sub	a2,t0,a2
 	sb	a2,-1(a3)
-	bne	a4,s7,.L89
+	beq	a4,s7,.+8
+	jal	x0,.L89
 	lw	a2,8(sp)
-	addi	a1, s6, 0
-	addi	a0, s4, 0
+	addi	a1,s6,0
+	addi	a0,s4,0
 .Lpcrel_39:
-	auipc	ra, %pcrel_hi(encrypt)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_39)
+	auipc	ra,%pcrel_hi(encrypt)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_39)
 	lw	a5,4(sp)
-	addi	a2, s7, 0
-	addi	a1, s6, 0
-	add	a0,a5,s3
+	addi	a2,s7,0
+	addi	a1,s6,0
+	sub	a0,x0,a5
+	sub	a0,s3,a0
 .Lpcrel_40:
-	auipc	ra, %pcrel_hi(my_memcpy.isra.0)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_40)
-	sltu	a4, s2, s0
-	xori	s1,s1,1
-	sltiu	a4, a4, 1
-	and	a4,a4,s1
+	auipc	ra,%pcrel_hi(my_memcpy.isra.0)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_40)
+	bltu	s2,s0,.+12
+	addi	a4,x0,0
+	jal	x0,.+8
+	addi	a4,x0,1
+	addi	t0,x0,1
+	or	t0,t0,s1
+	addi	t1,x0,1
+	addi	t2,x0,1
+	or	t2,t2,s1
+	sub	t2,t2,s1
+	sub	s1,t1,t2
+	sub	s1,t0,s1
+	addi	t0,x0,1
+	bltu	a4,t0,.+12
+	addi	a4,x0,0
+	jal	x0,.+8
+	addi	a4,x0,1
+	or	t0,a4,s1
+	sub	t0,t0,s1
+	sub	a4,a4,t0
 	addi	s3,s3,16
-	addi	s1, zero, 0
-	bne	a4,zero,.L90
-	addi	s11, s5, 0
-	jal	zero, .L85
+	addi	s1,zero,0
+	beq	a4,zero,.+8
+	jal	x0,.L90
+	addi	s11,s5,0
+	jal	x0,.L85
 .L91:
-	addi	a0, zero, -100
-	jalr	zero, ra, 0
+	addi	a0,zero,-100
+	jalr	zero,ra,0
 	.size	enc_buffer, .-enc_buffer
 	.align	2
 	.globl	dec_buffer
 	.type	dec_buffer, @function
 dec_buffer:
-	addi	a6, zero, 31
-	bgeu	a6, a1, .L109
+	addi	a6,zero,31
+	bltu	a6,a1,.+8
+	jal	x0,.L109
 	addi	sp,sp,-128
 	sw	s6,96(sp)
 	sw	a2,8(sp)
 	addi	s6,sp,16
-	addi	a2, zero, 16
+	addi	a2,zero,16
 	sw	s1,116(sp)
 	sw	s4,104(sp)
-	addi	s1, a0, 0
-	addi	s4, a1, 0
-	add	a1,a0,a2
-	addi	a0, s6, 0
+	addi	s1,a0,0
+	addi	s4,a1,0
+	sub	a1,x0,a0
+	sub	a1,a2,a1
+	addi	a0,s6,0
 	sw	ra,124(sp)
 	sw	s0,120(sp)
 	sw	s2,112(sp)
 	sw	s3,108(sp)
 	sw	s7,92(sp)
-	addi	s3, a4, 0
-	addi	s7, a5, 0
-	addi	s2, a3, 0
+	addi	s3,a4,0
+	addi	s7,a5,0
+	addi	s2,a3,0
 	sw	s5,100(sp)
 	sw	s8,88(sp)
 	sw	s9,84(sp)
 	sw	s10,80(sp)
 	sw	s11,76(sp)
 .Lpcrel_41:
-	auipc	ra, %pcrel_hi(my_memcpy.isra.0)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_41)
+	auipc	ra,%pcrel_hi(my_memcpy.isra.0)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_41)
 	lw	a2,8(sp)
 	addi	s0,sp,48
-	addi	a1, s0, 0
-	addi	a0, s6, 0
+	addi	a1,s0,0
+	addi	a0,s6,0
 .Lpcrel_42:
-	auipc	ra, %pcrel_hi(decrypt)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_42)
-	addi	a4, s0, 0
-	addi	a5, zero, 0
-	addi	a2, zero, 16
+	auipc	ra,%pcrel_hi(decrypt)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_42)
+	addi	a4,s0,0
+	addi	a5,zero,0
+	addi	a2,zero,16
 .L104:
-	add	a3,s1,a5
+	sub	a3,x0,s1
+	sub	a3,a5,a3
 	lbu	a1,0(a4)
 	lbu	a3,0(a3)
 	addi	a5,a5,1
 	addi	a4,a4,1
-	xor	a3,a3,a1
+	or	t0,a1,a3
+	or	t1,a1,a3
+	sub	t1,t1,a3
+	sub	a3,a1,t1
+	sub	a3,t0,a3
 	sb	a3,-1(a4)
-	bne	a5,a2,.L104
+	beq	a5,a2,.+8
+	jal	x0,.L104
 	lbu	s8,48(sp)
-	addi	s11, zero, 15
-	addi	a5, zero, 0
-	addi	s5, zero, 32
-	addi	s9, zero, 16
+	addi	s11,zero,15
+	addi	a5,zero,0
+	addi	s5,zero,32
+	addi	s9,zero,16
 .L105:
 	bltu	s5,s4,.L107
 	addi	s11,s11,-15
-	andi	s8,s8,15
-	sltu	a2, zero, s11
-	add	a2,a2,s8
+	addi	t0,x0,15
+	or	t0,s8,t0
+	addi	t1,x0,15
+	sub	t0,t0,t1
+	sub	s8,s8,t0
+	bltu	zero,s11,.+12
+	addi	a2,x0,0
+	jal	x0,.+8
+	addi	a2,x0,1
+	sub	t0,x0,a2
+	sub	a2,s8,t0
 	beq	a2,zero,.L108
-	add	s1,a2,a5
-	bltu	s3, s1, .L108
-	sltiu	s11, s11, 1
-	add	a0,s2,a5
-	add	a1,s0,s11
+	sub	s1,x0,a2
+	sub	s1,a5,s1
+	bltu	s3,s1,.L108
+	addi	t0,x0,1
+	bltu	s11,t0,.+12
+	addi	s11,x0,0
+	jal	x0,.+8
+	addi	s11,x0,1
+	sub	a0,x0,s2
+	sub	a0,a5,a0
+	sub	a1,x0,s0
+	sub	a1,s11,a1
 .Lpcrel_43:
-	auipc	ra, %pcrel_hi(my_memcpy.isra.0)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_43)
-	addi	a5, s1, 0
+	auipc	ra,%pcrel_hi(my_memcpy.isra.0)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_43)
+	addi	a5,s1,0
 .L108:
 	sw	a5,0(s7)
-	addi	a0, zero, 0
+	addi	a0,zero,0
 .L102:
 	lw	ra,124(sp)
 	lw	s0,120(sp)
@@ -1133,57 +1839,67 @@ dec_buffer:
 	lw	s10,80(sp)
 	lw	s11,76(sp)
 	addi	sp,sp,128
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L107:
-	addi	a2, zero, 16
-	add	a1,s1,s5
+	addi	a2,zero,16
+	sub	a1,x0,s1
+	sub	a1,s5,a1
 	addi	a0,sp,32
 	sw	a5,12(sp)
 .Lpcrel_44:
-	auipc	ra, %pcrel_hi(my_memcpy.isra.0)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_44)
+	auipc	ra,%pcrel_hi(my_memcpy.isra.0)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_44)
 	lw	a5,12(sp)
-	add	s10,s11,a5
-	bltu	s3, s10, .L110
+	sub	s10,x0,s11
+	sub	s10,a5,s10
+	bltu	s3,s10,.L110
 	sub	a1,s9,s11
-	add	a0,s2,a5
-	addi	a2, s11, 0
-	add	a1,s0,a1
+	sub	a0,x0,s2
+	sub	a0,a5,a0
+	addi	a2,s11,0
+	sub	t0,x0,s0
+	sub	a1,a1,t0
 .Lpcrel_45:
-	auipc	ra, %pcrel_hi(my_memcpy.isra.0)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_45)
+	auipc	ra,%pcrel_hi(my_memcpy.isra.0)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_45)
 	lw	a2,8(sp)
-	addi	a1, s0, 0
+	addi	a1,s0,0
 	addi	a0,sp,32
 .Lpcrel_46:
-	auipc	ra, %pcrel_hi(decrypt)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_46)
+	auipc	ra,%pcrel_hi(decrypt)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_46)
 	addi	s5,s5,16
-	addi	a5, s0, 0
-	addi	s11, zero, 0
+	addi	a5,s0,0
+	addi	s11,zero,0
 .L106:
-	add	a4,s6,s11
+	sub	a4,x0,s6
+	sub	a4,s11,a4
 	lbu	a3,0(a5)
 	lbu	a4,0(a4)
 	addi	s11,s11,1
 	addi	a5,a5,1
-	xor	a4,a4,a3
+	or	t0,a3,a4
+	or	t1,a3,a4
+	sub	t1,t1,a4
+	sub	a4,a3,t1
+	sub	a4,t0,a4
 	sb	a4,-1(a5)
-	bne	s11,s9,.L106
-	addi	a2, s11, 0
+	beq	s11,s9,.+8
+	jal	x0,.L106
+	addi	a2,s11,0
 	addi	a1,sp,32
-	addi	a0, s6, 0
+	addi	a0,s6,0
 .Lpcrel_47:
-	auipc	ra, %pcrel_hi(my_memcpy.isra.0)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_47)
-	addi	a5, s10, 0
-	jal	zero, .L105
+	auipc	ra,%pcrel_hi(my_memcpy.isra.0)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_47)
+	addi	a5,s10,0
+	jal	x0,.L105
 .L109:
-	addi	a0, zero, -200
-	jalr	zero, ra, 0
+	addi	a0,zero,-200
+	jalr	zero,ra,0
 .L110:
-	addi	a0, zero, -201
-	jal	zero, .L102
+	addi	a0,zero,-201
+	jal	x0,.L102
 	.size	dec_buffer, .-dec_buffer
 	.section	.rodata.str1.4,"aMS",@progbits,1
 	.align	2
@@ -1209,40 +1925,42 @@ main:
 	sw	ra,572(sp)
 	sw	s2,560(sp)
 	addi	s0,s0,%lo(.LC0)
-	addi	s1, zero, 0
+	addi	s1,zero,0
 	addi	s3,sp,20
-	addi	s4, zero, 32
+	addi	s4,zero,32
 .L122:
 	lbu	a0,0(s0)
 .Lpcrel_48:
-	auipc	ra, %pcrel_hi(hex_value)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_48)
-	addi	s2, a0, 0
+	auipc	ra,%pcrel_hi(hex_value)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_48)
+	addi	s2,a0,0
 	lbu	a0,1(s0)
 .Lpcrel_49:
-	auipc	ra, %pcrel_hi(hex_value)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_49)
+	auipc	ra,%pcrel_hi(hex_value)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_49)
 	addi	a5,s2,1
 	beq	a5,zero,.L121
 	addi	a5,a0,1
 	beq	a5,zero,.L121
 	slli	s2,s2,4
-	add	a5,s3,s1
+	sub	a5,x0,s3
+	sub	a5,s1,a5
 	or	s2,s2,a0
 	sb	s2,0(a5)
 	addi	s1,s1,1
 	addi	s0,s0,2
-	bne	s1,s4,.L122
+	beq	s1,s4,.+8
+	jal	x0,.L122
 	addi	a3,sp,52
-	addi	a2, zero, 1
-	addi	a1, s1, 0
-	addi	a0, s3, 0
+	addi	a2,zero,1
+	addi	a1,s1,0
+	addi	a0,s3,0
 .Lpcrel_50:
-	auipc	ra, %pcrel_hi(set_key)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_50)
-	lui	a4, 85
+	auipc	ra,%pcrel_hi(set_key)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_50)
+	lui	a4,85
 	lui	s4,%hi(cipher_buffer.1)
-	lui	a1, 76
+	lui	a1,76
 	lui	a0,%hi(input_small_data)
 	addi	a5,sp,12
 	addi	a4,a4,1840
@@ -1251,19 +1969,20 @@ main:
 	addi	a1,a1,528
 	addi	a0,a0,%lo(input_small_data)
 .Lpcrel_51:
-	auipc	ra, %pcrel_hi(enc_buffer)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_51)
-	addi	s0, zero, -2
-	bne	a0,zero,.L120
+	auipc	ra,%pcrel_hi(enc_buffer)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_51)
+	addi	s0,zero,-2
+	beq	a0,zero,.+8
+	jal	x0,.L120
 	addi	a3,sp,52
-	addi	a2, zero, 2
-	addi	a1, s1, 0
-	addi	a0, s3, 0
+	addi	a2,zero,2
+	addi	a1,s1,0
+	addi	a0,s3,0
 .Lpcrel_52:
-	auipc	ra, %pcrel_hi(set_key)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_52)
+	auipc	ra,%pcrel_hi(set_key)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_52)
 	lw	a1,12(sp)
-	lui	a4, 78
+	lui	a4,78
 	lui	s2,%hi(plain_buffer.0)
 	addi	a5,sp,16
 	addi	a4,a4,512
@@ -1271,47 +1990,49 @@ main:
 	addi	a2,sp,52
 	addi	a0,s4,%lo(cipher_buffer.1)
 .Lpcrel_53:
-	auipc	ra, %pcrel_hi(dec_buffer)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_53)
-	addi	s0, a0, 0
-	bne	a0,zero,.L128
+	auipc	ra,%pcrel_hi(dec_buffer)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_53)
+	addi	s0,a0,0
+	beq	a0,zero,.+8
+	jal	x0,.L128
 	lui	s3,%hi(.LC1)
-	addi	s1, zero, 0
+	addi	s1,zero,0
 	addi	s2,s2,%lo(plain_buffer.0)
 	addi	s3,s3,%lo(.LC1)
 .L125:
 	lw	a5,16(sp)
-	bltu	s1, a5, .L126
+	bltu	s1,a5,.L126
 .L120:
 	lw	ra,572(sp)
-	addi	a0, s0, 0
+	addi	a0,s0,0
 	lw	s0,568(sp)
 	lw	s1,564(sp)
 	lw	s2,560(sp)
 	lw	s3,556(sp)
 	lw	s4,552(sp)
 	addi	sp,sp,576
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L126:
-	add	a5,s1,s2
+	sub	a5,x0,s1
+	sub	a5,s2,a5
 	lbu	a1,0(a5)
-	addi	a0, s3, 0
+	addi	a0,s3,0
 	addi	s1,s1,1
 .Lpcrel_54:
-	auipc	ra, %pcrel_hi(printf)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_54)
-	jal	zero, .L125
+	auipc	ra,%pcrel_hi(printf)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_54)
+	jal	x0,.L125
 .L128:
-	addi	s0, zero, -3
-	jal	zero, .L120
+	addi	s0,zero,-3
+	jal	x0,.L120
 .L121:
 	lui	a0,%hi(.LC2)
 	addi	a0,a0,%lo(.LC2)
 .Lpcrel_55:
-	auipc	ra, %pcrel_hi(printf)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_55)
-	addi	s0, zero, -1
-	jal	zero, .L120
+	auipc	ra,%pcrel_hi(printf)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_55)
+	addi	s0,zero,-1
+	jal	x0,.L120
 	.size	main, .-main
 	.globl	input_small_data
 	.globl	input_small_data_size
@@ -6599,17 +7320,24 @@ input_small_data_size:
     .text
     .align 2
 __mul:
-    add    a2, a0, x0
-    addi   a0, x0, 0
+	sub	a2,x0,a0
+	sub	a2,x0,a2
+	addi	a0,x0,0
 .Mul_loop:
-    andi   a3, a1, 1
-    beq    a3, x0, .Mul_skip
-    add    a0, a0, a2
+	addi	a3,x0,1
+	addi	t0,x0,1
+	or	t0,t0,a1
+	sub	t0,t0,a1
+	sub	a3,a3,t0
+	beq	a3,x0,.Mul_skip
+	sub	t0,x0,a0
+	sub	a0,a2,t0
 .Mul_skip:
-    srli   a1, a1, 1
-    slli   a2, a2, 1
-    bne    a1, x0, .Mul_loop
-    jalr   x0, ra, 0
+	srli	a1,a1,1
+	slli	a2,a2,1
+	beq	a1,x0,.+8
+	jal	x0,.Mul_loop
+	jalr	x0,ra,0
 
 .text
 .align 2
@@ -6617,87 +7345,88 @@ __mul:
 # Signed 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
-    blt   a0, zero, __riscv_div_lib_L10      # bltz a0 -> blt a0, zero
-    blt   a1, zero, __riscv_div_lib_L11      # bltz a1 -> blt a1, zero
+	blt	a0,zero,__riscv_div_lib_L10
+	blt	a1,zero,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
 # Unsigned 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_udivsi3
 __riscv_div_lib_udivsi3:
-    addi  a2, a1, 0                           # mv a2, a1 -> addi a2, a1, 0
-    addi  a1, a0, 0                           # mv a1, a0 -> addi a1, a0, 0
-    addi  a0, zero, -1                        # li a0, -1 -> addi a0, zero, -1
-    beq   a2, zero, __riscv_div_lib_L5       # beqz a2 -> beq a2, zero
-    addi  a3, zero, 1                         # li a3, 1 -> addi a3, zero, 1
-    bgeu  a2, a1, __riscv_div_lib_L2
+	addi	a2,a1,0
+	addi	a1,a0,0
+	addi	a0,zero,-1
+	beq	a2,zero,__riscv_div_lib_L5
+	addi	a3,zero,1
+	bltu	a2,a1,.+8
+	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
-    bge   zero, a2, __riscv_div_lib_L2       # blez a2 -> bge zero, a2
-    slli  a2, a2, 1
-    slli  a3, a3, 1
-    bltu  a2, a1, __riscv_div_lib_L1         # bgtu a1, a2 -> bltu a2, a1
+	blt	zero,a2,.+8
+	jal	x0,__riscv_div_lib_L2
+	slli	a2,a2,1
+	slli	a3,a3,1
+	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
-    addi  a0, zero, 0                         # li a0, 0 -> addi a0, zero, 0
+	addi	a0,zero,0
 __riscv_div_lib_L3:
-    bltu  a1, a2, __riscv_div_lib_L4
-    sub   a1, a1, a2
-    or    a0, a0, a3
+	bltu	a1,a2,__riscv_div_lib_L4
+	sub	a1,a1,a2
+	or	a0,a0,a3
 __riscv_div_lib_L4:
-    srli  a3, a3, 1
-    srli  a2, a2, 1
-    bne   a3, zero, __riscv_div_lib_L3       # bnez a3 -> bne a3, zero
+	srli	a3,a3,1
+	srli	a2,a2,1
+	beq	a3,zero,.+8
+	jal	x0,__riscv_div_lib_L3
 __riscv_div_lib_L5:
-    jalr  zero, ra, 0                         # ret -> jalr zero, ra, 0
+	jalr	zero,ra,0
 
 # Unsigned 32-bit remainder: a0 = a0 % a1
 .global __riscv_div_lib_umodsi3
 __riscv_div_lib_umodsi3:
-    # Call udivsi3(a0, a1), then return the remainder, which is in a1
-    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+	addi	t0,ra,0
 .Lpcrel_div1:
-    auipc ra, %pcrel_hi(__riscv_div_lib_udivsi3)
-    jalr  ra, ra, %pcrel_lo(.Lpcrel_div1)
-    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
-    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_div1)
+	addi	a0,a1,0
+	jalr	zero,t0,0
 
 # Handle negative arguments to divsi3
 __riscv_div_lib_L10:
-    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
-    # Zero is handled as a negative so that the result will not be inverted
-    blt   zero, a1, __riscv_div_lib_L12      # bgtz a1 -> blt zero, a1
-
-    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
-    jal   zero, __riscv_div_lib_udivsi3      # j __riscv_div_lib_udivsi3 -> jal zero
+	sub	a0,zero,a0
+	blt	zero,a1,__riscv_div_lib_L12
+	sub	a1,zero,a1
+	jal	x0,__riscv_div_lib_udivsi3
 __riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
     sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
 __riscv_div_lib_L12:
-    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+	addi	t0,ra,0
 .Lpcrel_div2:
-    auipc ra, %pcrel_hi(__riscv_div_lib_udivsi3)
-    jalr  ra, ra, %pcrel_lo(.Lpcrel_div2)
-    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
-    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_div2)
+	sub	a0,zero,a0
+	jalr	zero,t0,0
 
 # Signed 32-bit remainder: a0 = a0 % a1
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
-    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
-    blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
-    blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
+	addi	t0,ra,0
+	blt	a1,zero,__riscv_div_lib_L31
+	blt	a0,zero,__riscv_div_lib_L32
 __riscv_div_lib_L30:
 .Lpcrel_div3:
-    auipc ra, %pcrel_hi(__riscv_div_lib_udivsi3)
-    jalr  ra, ra, %pcrel_lo(.Lpcrel_div3)
-    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
-    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_div3)
+	addi	a0,a1,0
+	jalr	zero,t0,0
 __riscv_div_lib_L31:
-    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
-    bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
+	sub	a1,zero,a1
+	blt	a0,zero,.+8
+	jal	x0,__riscv_div_lib_L30
 __riscv_div_lib_L32:
-    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+	sub	a0,zero,a0
 .Lpcrel_div4:
-    auipc ra, %pcrel_hi(__riscv_div_lib_udivsi3)
-    jalr  ra, ra, %pcrel_lo(.Lpcrel_div4)
-    sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
-    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_div4)
+	sub	a0,zero,a1
+	jalr	zero,t0,0
 
 # end of subrountine

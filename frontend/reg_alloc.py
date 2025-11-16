@@ -283,5 +283,79 @@ def test_mulh():
     for line in result:
         print(line)
 
+def test_xor_s3_issue():
+    """
+    测试 XOR 实现是否会错误覆盖 s3
+    原始 placeholder 代码：
+        or	op_0,s3,a2
+        or	op_3,s3,a2
+        sub	op_2,op_3,a2
+        sub	op_1,s3,op_2
+        sub	a2,op_0,op_1
+    这段代码实现了 xor a2, a2, s3
+    问题：如果 op_3 被分配到 s3，会导致 s3 被覆盖
+    """
+    code = [
+        "or op_0, s3, a2",
+        "or op_3, s3, a2",
+        "sub op_2, op_3, a2",
+        "sub op_1, s3, op_2",
+        "sub a2, op_0, op_1",
+    ]
+    
+    # s3 在后续还会被使用（live_out），所以不应该被覆盖
+    live_out = ["a2"]
+    
+    print("=" * 60)
+    print("测试 XOR 实现（s3 覆盖问题）")
+    print("=" * 60)
+    print("\n输入代码（placeholder 形式）：")
+    for i, line in enumerate(code, 1):
+        print(f"  {i}: {line}")
+    
+    print(f"\nLive-out: {live_out}")
+    print("\n运行寄存器分配...")
+    
+    mapping, m = allocate_compact_mapping(code, live_out)
+    
+    print("\n分配结果：")
+    print(f"Mapping: {mapping}")
+    print(f"Max op_ index used: {m}")
+    
+    # 应用映射，生成分配后的代码
+    result = []
+    for line in code:
+        mnem, ops = parse_instruction(line, op_reg="op_")
+        if mnem:
+            new_ops = [mapping.get(op.strip(), op.strip()) for op in ops]
+            result.append(f"{mnem} {', '.join(new_ops)}")
+        else:
+            result.append(line)
+    
+    print("\n分配后的代码：")
+    for i, line in enumerate(result, 1):
+        print(f"  {i}: {line}")
+    
+    # 检查是否有问题：op_3 是否被分配到 s3
+    if mapping.get("op_3") == "s3":
+        print("\n" + "=" * 60)
+        print("❌ 问题发现：op_3 被分配到 s3，会导致 s3 被覆盖！")
+        print("=" * 60)
+        print("\n问题分析：")
+        print("  在分配后的代码中，第2行 'or s3, s3, a2' 会覆盖 s3 的原始值")
+        print("  但第4行 'sub op_1, s3, op_2' 需要用到 s3 的原始值")
+        print("  这会导致计算结果错误！")
+        return False
+    else:
+        print("\n" + "=" * 60)
+        print("✓ 测试通过：op_3 没有被分配到 s3")
+        print("=" * 60)
+        if mapping.get("op_3"):
+            print(f"  op_3 被分配到: {mapping.get('op_3')}")
+        return True
+
+
 if __name__ == "__main__":
     test_mulh()
+    print("\n" + "=" * 60 + "\n")
+    test_xor_s3_issue()
