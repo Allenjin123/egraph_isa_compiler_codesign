@@ -14,29 +14,29 @@ bitcount:
 	srli	a4,a0,1
 	and	a4,a4,a5
 	and	a0,a0,a5
-	sub	t0,x0,a4
-	sub	a4,a0,t0
+	sub	a4,x0,a4
+	sub	a4,a0,a4
 	lui	a3,209715
 	addi	a3,a3,819
 	srli	a5,a4,2
 	and	a5,a5,a3
 	and	a4,a4,a3
-	sub	t0,x0,a5
-	sub	a5,a4,t0
+	sub	a5,x0,a5
+	sub	a5,a4,a5
 	lui	a3,61681
 	addi	a3,a3,-241
 	srli	a4,a5,4
 	and	a4,a4,a3
 	and	a5,a5,a3
-	sub	t0,x0,a4
-	sub	a4,a5,t0
+	sub	a4,x0,a4
+	sub	a4,a5,a4
 	lui	a3,4080
 	addi	a3,a3,255
 	srli	a5,a4,8
 	and	a5,a5,a3
 	and	a4,a4,a3
-	sub	t0,x0,a5
-	sub	a5,a4,t0
+	sub	a5,x0,a5
+	sub	a5,a4,a5
 	slli	a0,a5,16
 	srli	a0,a0,16
 	srli	a5,a5,16
@@ -62,7 +62,7 @@ ntbl_bitcount:
 	sub	a5,a5,t0
 	srli	a3,a0,12
 	addi	t0,x0,15
-	and	a2,t0,a2
+	and	a2,a2,t0
 	lbu	t1,0(a1)
 	sub	t0,x0,a4
 	sub	a2,a2,t0
@@ -75,7 +75,7 @@ ntbl_bitcount:
 	sub	a3,a3,t0
 	srli	a2,a0,20
 	addi	t0,x0,15
-	and	a1,t0,a1
+	and	a1,a1,t0
 	lbu	a6,0(a3)
 	sub	t0,x0,a4
 	sub	a1,a1,t0
@@ -83,30 +83,30 @@ ntbl_bitcount:
 	addi	t0,x0,15
 	and	a2,a2,t0
 	lbu	a1,0(a1)
-	sub	t0,x0,a5
-	sub	a5,t1,t0
+	sub	a5,x0,a5
+	sub	a5,t1,a5
 	sub	t0,x0,a4
 	sub	a2,a2,t0
 	addi	t0,x0,15
-	and	a3,t0,a3
+	and	a3,a3,t0
 	lbu	a2,0(a2)
-	sub	t0,x0,a5
-	sub	a5,a7,t0
+	sub	a5,x0,a5
+	sub	a5,a7,a5
 	sub	t0,x0,a4
 	sub	a3,a3,t0
 	srli	a0,a0,28
 	lbu	a3,0(a3)
-	sub	t0,x0,a5
-	sub	a5,a6,t0
-	sub	t0,x0,a4
-	sub	a4,a0,t0
+	sub	a5,x0,a5
+	sub	a5,a6,a5
+	sub	a4,x0,a4
+	sub	a4,a0,a4
 	lbu	a0,0(a4)
-	sub	t0,x0,a5
-	sub	a5,a1,t0
-	sub	t0,x0,a5
-	sub	a5,a2,t0
-	sub	t0,x0,a5
-	sub	a5,a3,t0
+	sub	a5,x0,a5
+	sub	a5,a1,a5
+	sub	a5,x0,a5
+	sub	a5,a2,a5
+	sub	a5,x0,a5
+	sub	a5,a3,a5
 	sub	t0,x0,a5
 	sub	a0,a0,t0
 	jalr	zero,ra,0
@@ -121,7 +121,7 @@ BW_btbl_bitcount:
 	addi	a2,x0,255
 	and	a2,a0,a2
 	addi	t0,x0,255
-	and	a4,a4,t0
+	and	a4,t0,a4
 	sub	t0,x0,a5
 	sub	a4,a4,t0
 	sub	t0,x0,a5
@@ -133,15 +133,15 @@ BW_btbl_bitcount:
 	sub	a3,a3,t0
 	lbu	a4,0(a2)
 	addi	t0,x0,255
-	and	a0,t0,a0
+	and	a0,a0,t0
 	lbu	a3,0(a3)
-	sub	t0,x0,a5
-	sub	a5,a0,t0
+	sub	a5,x0,a5
+	sub	a5,a0,a5
 	lbu	a0,0(a5)
 	sub	a5,x0,a4
 	sub	a5,a1,a5
-	sub	t0,x0,a5
-	sub	a5,a3,t0
+	sub	a5,x0,a5
+	sub	a5,a3,a5
 	sub	t0,x0,a5
 	sub	a0,a0,t0
 	jalr	zero,ra,0
@@ -154,31 +154,31 @@ AR_btbl_bitcount:
 	lui	a5,%hi(.LANCHOR0)
 	addi	a5,a5,%lo(.LANCHOR0)
 	addi	a2,x0,255
-	and	a2,a2,a0
+	and	a2,a0,a2
 	srli	a4,a0,16
 	addi	t0,x0,255
-	and	a3,a3,t0
+	and	a3,t0,a3
 	sub	t0,x0,a5
 	sub	a3,a3,t0
 	sub	t0,x0,a5
 	sub	a2,a2,t0
 	addi	t0,x0,255
-	and	a4,t0,a4
+	and	a4,a4,t0
 	lbu	a3,0(a3)
 	lbu	a2,0(a2)
 	sub	t0,x0,a5
 	sub	a4,a4,t0
 	srli	a0,a0,24
 	lbu	a4,0(a4)
-	sub	t0,x0,a5
-	sub	a5,a0,t0
+	sub	a5,x0,a5
+	sub	a5,a0,a5
 	lbu	a0,0(a5)
-	sub	t0,x0,a3
-	sub	a3,a2,t0
-	sub	t0,x0,a4
-	sub	a4,a3,t0
-	sub	t0,x0,a0
-	sub	a0,a4,t0
+	sub	a3,x0,a3
+	sub	a3,a2,a3
+	sub	a4,x0,a4
+	sub	a4,a3,a4
+	sub	a0,x0,a0
+	sub	a0,a4,a0
 	jalr	zero,ra,0
 	.size	AR_btbl_bitcount, .-AR_btbl_bitcount
 	.align	2
@@ -187,14 +187,13 @@ AR_btbl_bitcount:
 ntbl_bitcnt:
 	lui	a2,%hi(.LANCHOR0)
 	addi	a4,x0,15
-	and	a4,a4,a0
+	and	a4,a0,a4
 	addi	a2,a2,%lo(.LANCHOR0)
 	srai	a5,a0,4
 	sub	t0,x0,a2
 	sub	a4,a4,t0
 	lbu	a0,0(a4)
-	bne	a5,zero,.+8
-	jal	x0,.L6
+	beq	a5,zero,.L6
 	addi	a3,zero,0
 .L8:
 	addi	a4,x0,15
@@ -202,12 +201,13 @@ ntbl_bitcnt:
 	sub	t0,x0,a2
 	sub	a4,a4,t0
 	srai	a5,a5,4
-	sub	t0,x0,a3
-	sub	a3,a0,t0
+	sub	a3,x0,a3
+	sub	a3,a0,a3
 	lbu	a0,0(a4)
-	bne	a5,zero,.L8
-	sub	t0,x0,a0
-	sub	a0,a3,t0
+	beq	a5,zero,.+8
+	jal	x0,.L8
+	sub	a0,x0,a0
+	sub	a0,a3,a0
 .L6:
 	jalr	zero,ra,0
 	.size	ntbl_bitcnt, .-ntbl_bitcnt
@@ -216,8 +216,7 @@ ntbl_bitcnt:
 bit_shifter:
 	addi	a5,a0,0
 	addi	a0,zero,0
-	bne	a5,zero,.+8
-	jal	x0,.L13
+	beq	a5,zero,.L13
 	addi	a4,zero,0
 .L15:
 	addi	a3,x0,1
@@ -225,11 +224,11 @@ bit_shifter:
 	addi	a4,a4,1
 	srai	a5,a5,1
 	addi	a2,a4,-32
-	sub	t0,x0,a0
-	sub	a0,a3,t0
-	bne	a5,zero,.+8
-	jal	x0,.L13
-	bne	a2,zero,.L15
+	sub	a0,x0,a0
+	sub	a0,a3,a0
+	beq	a5,zero,.L13
+	beq	a2,zero,.+8
+	jal	x0,.L15
 	jalr	zero,ra,0
 .L13:
 	jalr	zero,ra,0
@@ -238,15 +237,15 @@ bit_shifter:
 	.globl	bit_count
 	.type	bit_count, @function
 bit_count:
-	bne	a0,zero,.+8
-	jal	x0,.L23
+	beq	a0,zero,.L23
 	addi	a5,a0,0
 	addi	a0,zero,0
 .L24:
 	addi	a4,a5,-1
 	and	a5,a5,a4
 	addi	a0,a0,1
-	bne	a5,zero,.L24
+	beq	a5,zero,.+8
+	jal	x0,.L24
 .L23:
 	jalr	zero,ra,0
 	.size	bit_count, .-bit_count
@@ -489,19 +488,18 @@ rand:
 	sub	a3,t1,a3
 	sub	a3,x0,a3
 	sub	a3,t0,a3
-	sub	t0,x0,a4
-	sub	a4,a1,t0
+	sub	a4,x0,a4
+	sub	a4,a1,a4
 	addi	a2,a5,1
-	bgeu	a2,a5,.+8
-	jal	x0,.+12
+	bltu	a2,a5,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
 	sw	a2,%lo(bitcnts_rand_state)(a6)
-	sub	t0,x0,a4
-	sub	a4,a3,t0
-	sub	t0,x0,a5
-	sub	a5,a4,t0
+	sub	a4,x0,a4
+	sub	a4,a3,a4
+	sub	a5,x0,a5
+	sub	a5,a4,a5
 	slli	a0,a5,1
 	sw	a5,%lo(bitcnts_rand_state+4)(a6)
 	srli	a0,a0,1
@@ -513,33 +511,31 @@ rand:
 atoi:
 	lbu	a2,0(a0)
 	addi	a5,zero,45
-	bne	a2,a5,.+8
-	jal	x0,.L40
+	beq	a2,a5,.L40
 	addi	a5,zero,43
 	addi	a6,zero,1
-	bne	a2,a5,.+8
-	jal	x0,.L41
+	beq	a2,a5,.L41
 .L33:
 	addi	a3,a2,-48
 	addi	a5,x0,255
-	and	a5,a3,a5
+	and	a5,a5,a3
 	addi	a1,zero,9
 	addi	a4,zero,0
-	bgeu	a1,a5,.+8
-	jal	x0,.L42
+	bltu	a1,a5,.L42
 .L34:
 	slli	a5,a4,2
 	lbu	a2,1(a0)
-	sub	t0,x0,a5
-	sub	a5,a4,t0
+	sub	a5,x0,a5
+	sub	a5,a4,a5
 	slli	a5,a5,1
 	sub	a4,x0,a3
 	sub	a4,a5,a4
 	addi	a3,a2,-48
 	addi	a5,x0,255
-	and	a5,a5,a3
+	and	a5,a3,a5
 	addi	a0,a0,1
-	bgeu	a1,a5,.L34
+	bltu	a1,a5,.+8
+	jal	x0,.L34
 	addi	sp, sp, -16
 	sw	a1, 0(sp)
 	sw	a2, 4(sp)
@@ -560,13 +556,14 @@ atoi:
 .L41:
 	lbu	a2,1(a0)
 	addi	a1,zero,9
-	sub	t0,x0,a0
-	sub	a0,a6,t0
+	sub	a0,x0,a0
+	sub	a0,a6,a0
 	addi	a3,a2,-48
 	addi	a5,x0,255
-	and	a5,a5,a3
+	and	a5,a3,a5
 	addi	a4,zero,0
-	bgeu	a1,a5,.L34
+	bltu	a1,a5,.+8
+	jal	x0,.L34
 .L42:
 	addi	a0,zero,0
 	jalr	zero,ra,0
@@ -608,17 +605,15 @@ main:
 	sw	s11,60(sp)
 	lbu	a5,0(a4)
 	addi	a3,zero,45
-	bne	a5,a3,.+8
-	jal	x0,.L63
+	beq	a5,a3,.L63
 	addi	a5,a5,-43
 	addi	t0,x0,1
-	bgeu	a5,t0,.+8
-	jal	x0,.+12
+	bltu	a5,t0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
-	sub	t0,x0,a4
-	sub	a4,a5,t0
+	sub	a4,x0,a4
+	sub	a4,a5,a4
 	addi	s8,zero,1
 .L45:
 	lbu	a1,0(a4)
@@ -626,22 +621,22 @@ main:
 	addi	a3,zero,0
 	addi	a2,a1,-48
 	addi	a5,x0,255
-	and	a5,a5,a2
-	bgeu	a0,a5,.+8
-	jal	x0,.L47
+	and	a5,a2,a5
+	bltu	a0,a5,.L47
 .L46:
 	slli	a5,a3,2
 	lbu	a1,1(a4)
-	sub	t0,x0,a5
-	sub	a5,a3,t0
+	sub	a5,x0,a5
+	sub	a5,a3,a5
 	slli	a5,a5,1
 	sub	a3,x0,a2
 	sub	a3,a5,a3
 	addi	a2,a1,-48
 	addi	a5,x0,255
-	and	a5,a2,a5
+	and	a5,a5,a2
 	addi	a4,a4,1
-	bgeu	a0,a5,.L46
+	bltu	a0,a5,.+8
+	jal	x0,.L46
 .L47:
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
@@ -679,11 +674,11 @@ main:
 	lw	a2,16(sp)
 	sw	zero,20(sp)
 	slli	a5,a2,1
-	sub	t0,x0,a5
-	sub	a5,a2,t0
+	sub	a5,x0,a5
+	sub	a5,a2,a5
 	slli	a5,a5,2
-	sub	t0,x0,a5
-	sub	a5,a2,t0
+	sub	a5,x0,a5
+	sub	a5,a2,a5
 	sw	a5,40(sp)
 	lui	a5,361759
 	addi	a5,a5,1069
@@ -753,8 +748,8 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a4
-	sub	a4,a2,t0
+	sub	a4,x0,a4
+	sub	a4,a2,a4
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a3,t0
@@ -924,16 +919,15 @@ main:
 	sub	a3,x0,a3
 	sub	a3,t0,a3
 	addi	a2,a5,1
-	bgeu	a2,a5,.+8
-	jal	x0,.+12
+	bltu	a2,a5,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
 	sw	a2,%lo(bitcnts_rand_state)(s4)
-	sub	t0,x0,a4
-	sub	a4,a3,t0
-	sub	t0,x0,a5
-	sub	a5,a4,t0
+	sub	a4,x0,a4
+	sub	a4,a3,a4
+	sub	a5,x0,a5
+	sub	a5,a4,a5
 	lw	a4,16(sp)
 	sw	a5,%lo(bitcnts_rand_state+4)(s4)
 	bge	zero,a4,.L55
@@ -954,9 +948,10 @@ main:
 	addi	a0,s8,0
 	jalr	ra,s2,0
 	addi	s8,s8,13
-	sub	t0,x0,s11
-	sub	s11,a0,t0
-	bne	s8,s1,.L49
+	sub	s11,x0,s11
+	sub	s11,a0,s11
+	beq	s8,s1,.+8
+	jal	x0,.L49
 	addi	s1,s11,0
 	srai	s2,s11,31
 .L48:
@@ -1336,19 +1331,17 @@ main:
 	sub	a2,t0,a2
 	sub	t0,x0,a5
 	sub	s0,s0,t0
-	bgeu	s0,a5,.+8
-	jal	x0,.+12
+	bltu	s0,a5,.+12
 	addi	a3,x0,0
 	jal	x0,.+8
 	addi	a3,x0,1
 	sub	t0,x0,s0
 	sub	s1,s1,t0
-	sub	t0,x0,a3
-	sub	a3,s9,t0
-	sub	t0,x0,a3
-	sub	a3,s2,t0
-	bgeu	s1,s0,.+8
-	jal	x0,.+12
+	sub	a3,x0,a3
+	sub	a3,s9,a3
+	sub	a3,x0,a3
+	sub	a3,s2,a3
+	bltu	s1,s0,.+12
 	addi	s0,x0,0
 	jal	x0,.+8
 	addi	s0,x0,1
@@ -1383,24 +1376,23 @@ main:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_3)
 	addi	a5,zero,7
-	bne	s3,a5,.L52
+	beq	s3,a5,.+8
+	jal	x0,.L52
 	lw	a3,20(sp)
 	sub	a5,x0,s7
 	sub	a5,s1,a5
-	bgeu	a5,s7,.+8
-	jal	x0,.+12
+	bltu	a5,s7,.+12
 	addi	a4,x0,0
 	jal	x0,.+8
 	addi	a4,x0,1
 	sub	t0,x0,a3
 	sub	a5,a5,t0
-	bgeu	a5,a3,.+8
-	jal	x0,.+12
+	bltu	a5,a3,.+12
 	addi	a3,x0,0
 	jal	x0,.+8
 	addi	a3,x0,1
-	sub	t0,x0,a4
-	sub	a4,s9,t0
+	sub	a4,x0,a4
+	sub	a4,s9,a4
 	sub	t0,x0,a3
 	sub	a4,a4,t0
 	lw	a3,24(sp)
@@ -1414,16 +1406,15 @@ main:
 	lw	a3,24(sp)
 	srai	a2,a2,31
 	addi	a0,a0,%lo(.LC1)
-	bgeu	a5,a3,.+8
-	jal	x0,.+12
+	bltu	a5,a3,.+12
 	addi	a3,x0,0
 	jal	x0,.+8
 	addi	a3,x0,1
-	sub	t0,x0,a3
-	sub	a3,a4,t0
+	sub	a3,x0,a3
+	sub	a3,a4,a3
 	lw	a4,28(sp)
-	sub	t0,x0,a2
-	sub	a2,a3,t0
+	sub	a2,x0,a2
+	sub	a2,a3,a2
 	lw	a3,44(sp)
 	sub	t0,x0,a4
 	sub	a5,a5,t0
@@ -1434,19 +1425,17 @@ main:
 	lw	a3,28(sp)
 	lw	a1,256(a4)
 	lw	a4,16(sp)
-	bgeu	a5,a3,.+8
-	jal	x0,.+12
+	bltu	a5,a3,.+12
 	addi	a3,x0,0
 	jal	x0,.+8
 	addi	a3,x0,1
-	sub	t0,x0,a3
-	sub	a3,a2,t0
+	sub	a3,x0,a3
+	sub	a3,a2,a3
 	lw	a2,16(sp)
 	sub	t0,x0,a2
 	sub	a5,a5,t0
 	srai	a4,a2,31
-	bgeu	a5,a2,.+8
-	jal	x0,.+12
+	bltu	a5,a2,.+12
 	addi	s8,x0,0
 	jal	x0,.+8
 	addi	s8,x0,1
@@ -1474,16 +1463,35 @@ main:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_5)
 	lw	ra,108(sp)
 	addi	a0,x0,1
-	bgeu	s0,a0,.+8
-	jal	x0,.+12
+	bltu	s0,a0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
 	lw	s0,104(sp)
 	sub	a0,s1,a0
 	and	t0,s1,a0
-	sub	t0,t0,a0
-	sub	a0,s1,t0
+	and	t1,s1,a0
+	and	t2,a0,s1
+	sub	t2,t2,s1
+	sub	t2,a0,t2
+	and	t3,a0,s1
+	sub	t2,t2,t3
+	and	t1,t1,t2
+	and	t2,a0,s1
+	sub	t2,t2,s1
+	sub	t2,a0,t2
+	and	t3,a0,s1
+	sub	t2,t2,t3
+	sub	t1,t1,t2
+	sub	t0,t0,t1
+	and	t1,s1,a0
+	and	t2,a0,s1
+	sub	t2,t2,s1
+	sub	t2,a0,t2
+	and	t3,a0,s1
+	sub	a0,t2,t3
+	and	a0,t1,a0
+	sub	a0,t0,a0
 	lw	s2,96(sp)
 	lw	s1,100(sp)
 	lw	s3,92(sp)
@@ -1584,14 +1592,14 @@ __mul:
 .Mul_loop:
 	addi	a3,x0,1
 	and	a3,a1,a3
-	bne	a3,x0,.+8
-	jal	x0,.Mul_skip
+	beq	a3,x0,.Mul_skip
 	sub	a0,x0,a0
 	sub	a0,a2,a0
 .Mul_skip:
 	srli	a1,a1,1
 	slli	a2,a2,1
-	bne	a1,x0,.Mul_loop
+	beq	a1,x0,.+8
+	jal	x0,.Mul_loop
 	jalr	x0,ra,0
 
 .text
@@ -1612,21 +1620,19 @@ __riscv_div_lib_udivsi3:
 	addi	a2,a1,0
 	addi	a1,a0,0
 	addi	a0,zero,-1
-	bne	a2,zero,.+8
-	jal	x0,__riscv_div_lib_L5
+	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bgeu	a2,a1,__riscv_div_lib_L2
+	bltu	a2,a1,.+8
+	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	bge	zero,a2,__riscv_div_lib_L2
 	slli	a2,a2,1
 	slli	a3,a3,1
-	bgeu	a2,a1,.+8
-	jal	x0,__riscv_div_lib_L1
+	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bgeu	a1,a2,.+8
-	jal	x0,__riscv_div_lib_L4
+	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	and	t0,a0,a3
 	sub	t0,t0,a3
@@ -1634,7 +1640,8 @@ __riscv_div_lib_L3:
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1
-	bne	a3,zero,__riscv_div_lib_L3
+	beq	a3,zero,.+8
+	jal	x0,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
 
