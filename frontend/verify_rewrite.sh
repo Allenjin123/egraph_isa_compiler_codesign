@@ -101,6 +101,9 @@ parse_program_name() {
     # Remove optimization flags like _O3, _O2, etc
     name="${name%_O[0-3]}"
     name="${name%_O[0-3]s}"
+    # Also handle Oz variants
+    name="${name%_Oz}"
+    name="${name%_Ozs}"
     
     echo "$name|$size_type"
 }
@@ -119,7 +122,7 @@ find_mibench_dir() {
     esac
     
     # Search in network and automotive directories
-    for category in network automotive; do
+    for category in network automotive security; do
         for subdir in "$MIBENCH_DIR/$category"/*; do
             if [ -d "$subdir" ]; then
                 local dir_name=$(basename "$subdir")
@@ -270,6 +273,13 @@ if ! riscv32-unknown-elf-gcc \
 fi
 echo -e "${GREEN}✓ Compilation succeeded${NC}"
 
+# Disassemble clean executable
+CLEAN_ASM_DIR=$(dirname "$CLEAN_ASM")
+CLEAN_DISASM="$CLEAN_ASM_DIR/${PROGRAM_NAME}_clean.dis"
+echo "Disassembling clean executable..."
+riscv32-unknown-elf-objdump -d -M no-aliases -l "$CLEAN_EXE" > "$CLEAN_DISASM" 2>&1
+echo -e "${GREEN}✓ Disassembly saved to: $CLEAN_DISASM${NC}"
+
 echo "Running with spike..."
 CLEAN_OUTPUT="$BUILD_DIR/output_clean.txt"
 
@@ -323,6 +333,13 @@ if ! riscv32-unknown-elf-gcc \
     exit 1
 fi
 echo -e "${GREEN}✓ Compilation succeeded${NC}"
+
+# Disassemble rewrite executable
+REWRITE_ASM_DIR=$(dirname "$REWRITE_ASM")
+REWRITE_DISASM="$REWRITE_ASM_DIR/${PROGRAM_NAME}_rewrite_variant_0.dis"
+echo "Disassembling rewrite executable..."
+riscv32-unknown-elf-objdump -d -M no-aliases -l "$REWRITE_EXE" > "$REWRITE_DISASM" 2>&1
+echo -e "${GREEN}✓ Disassembly saved to: $REWRITE_DISASM${NC}"
 
 echo "Running with spike..."
 REWRITE_OUTPUT="$BUILD_DIR/output_rewrite.txt"
