@@ -429,38 +429,32 @@ class RewriteBlock:
         num_available = len(available_free_regs)
         num_needed = max(0, num_virtual - num_available)
         
+        # 借用寄存器（如需要），并记录栈操作
+        borrowed_regs, push_stack, pop_stack = [], [], []
         if num_needed > 0:
-            # 需要借用寄存器（避开已使用的真实寄存器）
             borrowed_regs, push_stack, pop_stack = self.allocate_registers(num_needed, used_real_regs)
-            
-            # 构建最终的寄存器映射：op_k -> 真实寄存器
-            final_mapping = {}
-            for op_name, allocated in mapping.items():
-                if allocated.startswith('op_'):
-                    # 虚拟寄存器，分配到 available_free_regs 或 borrowed_regs
-                    op_num = int(allocated.split('_')[1])
-                    if op_num < num_available:
-                        final_mapping[op_name] = available_free_regs[op_num]
-                    else:
-                        final_mapping[op_name] = borrowed_regs[op_num - num_available]
-                else:
-                    # 已经是真实寄存器
-                    final_mapping[op_name] = allocated
-            
-            # 记录栈操作
             self.stack_per_line[line_idx]["push"] = push_stack
             self.stack_per_line[line_idx]["pop"] = pop_stack
-        else:
-            # 不需要借用寄存器
-            final_mapping = {}
-            for op_name, allocated in mapping.items():
-                if allocated.startswith('op_'):
-                    # 虚拟寄存器，分配到 available_free_regs
-                    op_num = int(allocated.split('_')[1])
-                    final_mapping[op_name] = available_free_regs[op_num]
-                else:
-                    # 已经是真实寄存器
-                    final_mapping[op_name] = allocated
+
+        # 将 free 与借用寄存器合并，并进行小排序：优先选择以 t 开头的寄存器
+        combined_regs = available_free_regs + borrowed_regs
+        combined_regs_sorted = sorted(combined_regs, key=lambda r: (0 if r.startswith('t') else 1, r))
+        
+        # 验证寄存器数量是否足够
+        if len(combined_regs_sorted) < num_virtual:
+            raise RuntimeError(
+                f"寄存器不足：需要 {num_virtual} 个寄存器，但只有 {len(combined_regs_sorted)} 个可用 "
+                f"(available_free_regs={len(available_free_regs)}, borrowed_regs={len(borrowed_regs)})"
+            )
+
+        # 构建最终的寄存器映射：op_k -> 真实寄存器（统一从合并后的序列选择）
+        final_mapping = {}
+        for op_name, allocated in mapping.items():
+            if allocated.startswith('op_'):
+                op_num = int(allocated.split('_')[1])
+                final_mapping[op_name] = combined_regs_sorted[op_num]
+            else:
+                final_mapping[op_name] = allocated
         
         # 替换所有占位符
         for i, line in enumerate(lines):
@@ -478,7 +472,7 @@ class RewriteBlock:
             exclude_regs = set()
         
         candidate_regs = ['s2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11',
-                          'a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 't0', 't1', 't2', 't3', 't4', 't5', 't6']
+                          't0', 't1', 't2', 't3', 't4', 't5', 't6','a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7']
         
         borrowable = []
         for reg in candidate_regs:
@@ -497,7 +491,12 @@ class RewriteBlock:
         borrowed_regs = self._select_borrowable_registers(num_needed, exclude_regs)
         
         if len(borrowed_regs) < num_needed:
-            raise RuntimeError(f"需要 {num_needed} 个寄存器，但只能借用 {len(borrowed_regs)} 个")
+            raise RuntimeError(
+                f"寄存器借用失败：需要 {num_needed} 个额外寄存器，但只能借用 {len(borrowed_regs)} 个\n"
+                f"  - free_regs: {self.free_regs}\n"
+                f"  - exclude_regs (已被 allocate_compact_mapping 使用): {exclude_regs}\n"
+                f"  - 可借用寄存器池已耗尽"
+            )
         
         borrowed_regs = borrowed_regs[:num_needed]
         
