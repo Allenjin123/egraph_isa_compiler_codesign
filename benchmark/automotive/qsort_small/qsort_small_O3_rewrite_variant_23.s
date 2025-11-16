@@ -208,8 +208,7 @@ quicksort_range:
 	addi	a3,a3,1
 	sb	a6,-1(a4)
 	addi	a6,sp,272
-	beq	a4,a6,.+8
-	jal	x0,.L22
+	bne	a4,a6,.L22
 	jal	x0,.L21
 .L60:
 	jalr	zero,ra,0
@@ -319,11 +318,7 @@ main:
 	add	sp,sp,t0
 	lw	ra,2028(sp)
 	addi	a0,a0,1808
-	or	t0,a0,a4
-	or	t1,a0,a4
-	sub	t1,t1,a4
-	sub	t1,a0,t1
-	sub	a0,t0,t1
+	xor	a0,a4,a0
 	or	a0,a0,a5
 	lw	s0,2024(sp)
 	lw	s1,2020(sp)
@@ -11390,7 +11385,49 @@ __mul:
 	add	a2,a0,x0
 	addi	a0,x0,0
 .Mul_loop:
-	andi	a3,a1,1
+	xori	a3,a1,1
+	xori	t0,a1,1
+	xori	t1,a1,1
+	ori	t1,t1,1
+	or	t0,t0,t1
+	xori	t1,a1,1
+	ori	t1,t1,1
+	sub	t0,t0,t1
+	sub	a3,a3,t0
+	addi	t0,x0,-1
+	xor	a3,a3,t0
+	xori	t0,a1,1
+	ori	t0,t0,1
+	xori	t1,a1,1
+	xor	t0,t0,t1
+	xori	t1,a1,1
+	ori	t1,t1,1
+	xori	t2,a1,1
+	and	t1,t1,t2
+	xor	t0,t0,t1
+	or	a3,a3,t0
+	xori	t0,a1,1
+	xori	t1,a1,1
+	xori	t2,a1,1
+	ori	t2,t2,1
+	or	t1,t1,t2
+	xori	t2,a1,1
+	ori	t2,t2,1
+	sub	t1,t1,t2
+	sub	t0,t0,t1
+	addi	t1,x0,-1
+	xor	t0,t0,t1
+	xori	t1,a1,1
+	ori	t1,t1,1
+	xori	t2,a1,1
+	xor	t1,t1,t2
+	xori	t2,a1,1
+	ori	t2,t2,1
+	xori	t3,a1,1
+	and	t2,t2,t3
+	xor	t1,t1,t2
+	xor	t0,t0,t1
+	xor	a3,a3,t0
 	beq	a3,x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
@@ -11415,11 +11452,9 @@ __riscv_div_lib_udivsi3:
 	addi	a2,a1,0
 	addi	a1,a0,0
 	addi	a0,zero,-1
-	bne	a2,zero,.+8
-	jal	x0,__riscv_div_lib_L5
+	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bltu	a2,a1,.+8
-	jal	x0,__riscv_div_lib_L2
+	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	bge	zero,a2,__riscv_div_lib_L2
 	slli	a2,a2,1
@@ -11428,17 +11463,13 @@ __riscv_div_lib_L1:
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bltu	a1,a2,.+8
-	jal	x0,.+8
-	jal	x0,__riscv_div_lib_L4
+	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	or	a0,a0,a3
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1
-	bne	a3,zero,.+8
-	jal	x0,.+8
-	jal	x0,__riscv_div_lib_L3
+	bne	a3,zero,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
 
@@ -11473,8 +11504,7 @@ __riscv_div_lib_L12:
 __riscv_div_lib_modsi3:
 	addi	t0,ra,0
 	blt	a1,zero,__riscv_div_lib_L31
-	bge	a0,zero,.+8
-	jal	x0,__riscv_div_lib_L32
+	blt	a0,zero,__riscv_div_lib_L32
 __riscv_div_lib_L30:
 .Lpcrel_div3:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)

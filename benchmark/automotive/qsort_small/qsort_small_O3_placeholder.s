@@ -24,25 +24,40 @@ quicksort_range:
 .L2:
 	sub	op_0,x0,s3
 	sub	a5,a1,op_0
-	srli	a2,a5,31
+	addi	op_0,x0,31
+	srl	a2,a5,op_0
 	sub	op_0,x0,a2
 	sub	a2,a5,op_0
-	srai	a2,a2,1
-	slli	a2,a2,7
-	addi	a3,sp,16
-	addi	a5,zero,0
+	addi	op_0,x0,1
+	sra	a2,a2,op_0
+	addi	op_0,x0,7
+	sll	a2,a2,op_0
+	addi	op_3,x0,16
+	and	op_2,x0,op_3
+	addi	op_4,x0,16
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,sp
+	sub	a3,op_0,op_5
+	addi	op_3,x0,0
+	and	op_2,x0,op_3
+	addi	op_4,x0,0
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,zero
+	sub	a5,op_0,op_5
 .L3:
 	sub	op_0,x0,a2
 	sub	a4,a5,op_0
 	sub	op_0,x0,a0
 	sub	a4,a4,op_0
 	lbu	a4,0(a4)
-	bne	a4,zero,.+8
-	jal	x0,.L4
+	beq	a4,zero,.L4
 	sb	a4,0(a3)
 	addi	a5,a5,1
 	addi	a3,a3,1
-	bne	a5,s4,.L3
+	beq	a5,s4,.+8
+	jal	x0,.L3
 .L4:
 	sub	op_0,x0,a5
 	sub	a5,sp,op_0
@@ -50,29 +65,34 @@ quicksort_range:
 	addi	a2,s3,0
 	addi	s0,a1,0
 .L6:
-	blt	a2,s0,.L31
-	slli	t1,s0,7
+	blt	a2,s0,.+8
+	jal	x0,.+8
+	jal	x0,.L31
+	addi	op_0,x0,7
+	sll	t1,s0,op_0
 	sub	op_0,x0,a0
 	sub	t1,t1,op_0
 	lbu	a4,0(t1)
 	addi	a6,t1,0
-	bne	a4,zero,.+8
-	jal	x0,.L8
+	beq	a4,zero,.L8
 .L36:
 	addi	a3,sp,16
 	jal	x0,.L7
 .L65:
-	bne	a5,a4,.L39
+	beq	a5,a4,.+8
+	jal	x0,.L39
 	lbu	a4,0(a6)
-	bne	a4,zero,.+8
-	jal	x0,.L8
+	beq	a4,zero,.L8
 .L7:
 	lbu	a5,0(a3)
 	addi	a6,a6,1
 	addi	a3,a3,1
-	bne	a5,zero,.L65
+	beq	a5,zero,.+8
+	jal	x0,.L65
 .L39:
-	bltu	a5,a4,.+12
+	bltu	a5,a4,.+8
+	jal	x0,.+8
+	jal	x0,.+12
 	addi	a3,x0,0
 	jal	x0,.+8
 	addi	a3,x0,1
@@ -81,52 +101,63 @@ quicksort_range:
 	jal	x0,.+8
 	addi	a5,x0,1
 	sub	a5,a3,a5
-	bne	a5,s2,.L8
+	beq	a5,s2,.+8
+	jal	x0,.L8
 	lbu	a4,128(t1)
 	addi	t1,t1,128
 	addi	s0,s0,1
 	addi	a6,t1,0
-	bne	a4,zero,.L36
+	beq	a4,zero,.+8
+	jal	x0,.L36
 .L8:
-	slli	a7,a2,7
+	addi	op_0,x0,7
+	sll	a7,a2,op_0
 	sub	op_0,x0,a0
 	sub	a7,a7,op_0
 	lbu	a5,0(a7)
 	addi	a3,a7,0
-	addi	a6,sp,16
-	bne	a5,zero,.L13
+	addi	op_3,x0,16
+	and	op_2,x0,op_3
+	addi	op_4,x0,16
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,sp
+	sub	a6,op_0,op_5
+	beq	a5,zero,.+8
+	jal	x0,.L13
 	jal	x0,.L66
 .L68:
-	bne	a4,a5,.L40
+	beq	a4,a5,.+8
+	jal	x0,.L40
 	lbu	a5,0(a3)
-	bne	a5,zero,.+8
-	jal	x0,.L67
+	beq	a5,zero,.L67
 	addi	a6,a6,1
 .L13:
 	lbu	a4,0(a6)
 	addi	a3,a3,1
-	bne	a4,zero,.L68
+	beq	a4,zero,.+8
+	jal	x0,.L68
 .L40:
 	bltu	a4,a5,.+12
 	addi	a3,x0,0
 	jal	x0,.+8
 	addi	a3,x0,1
 .L14:
-	bltu	a5,a4,.+8
-	jal	x0,.+8
-	jal	x0,.+12
+	bltu	a5,a4,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
 	sub	a5,a3,a5
-	bne	a5,s1,.L69
+	beq	a5,s1,.+8
+	jal	x0,.L69
 .L17:
 	lbu	a5,-128(a7)
 	addi	a7,a7,-128
 	addi	a2,a2,-1
 	addi	a3,a7,0
 	addi	a6,sp,16
-	bne	a5,zero,.L13
+	beq	a5,zero,.+8
+	jal	x0,.L13
 .L66:
 	lbu	a4,16(sp)
 	addi	a3,zero,0
@@ -135,8 +166,7 @@ quicksort_range:
 	jal	x0,.+8
 	addi	a5,x0,1
 	sub	a5,a3,a5
-	bne	a5,s1,.+8
-	jal	x0,.L17
+	beq	a5,s1,.L17
 .L69:
 	blt	a2,s0,.+8
 	jal	x0,.L70
@@ -152,52 +182,81 @@ quicksort_range:
 	addi	a3,zero,0
 	jal	x0,.L14
 .L70:
-	addi	op_2,x0,3
-	or	op_1,t1,op_2
-	addi	op_3,x0,3
-	sub	op_0,op_1,op_3
-	sub	a5,t1,op_0
-	bne	a5,zero,.L19
-	addi	a5,sp,144
+	addi	op_0,x0,3
+	and	a5,op_0,t1
+	beq	a5,zero,.+8
+	jal	x0,.L19
+	addi	op_3,x0,144
+	and	op_2,x0,op_3
+	addi	op_4,x0,144
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,sp
+	sub	a5,op_0,op_5
 	addi	a4,a5,0
 	addi	a3,t1,0
 .L20:
 	lw	a6,0(a3)
-	addi	a4,a4,4
+	addi	op_3,x0,4
+	and	op_2,x0,op_3
+	addi	op_4,x0,4
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,a4
+	sub	a4,op_0,op_5
 	addi	a3,a3,4
 	sw	a6,-4(a4)
 	addi	a6,sp,272
-	bne	a4,a6,.L20
+	beq	a4,a6,.+8
+	jal	x0,.L20
 .L21:
-	or	a4,a7,t1
+	and	op_1,a7,t1
+	sub	op_0,op_1,t1
+	sub	a4,a7,op_0
 	addi	op_0,x0,3
-	addi	op_3,x0,3
-	or	op_2,op_3,a4
-	sub	op_1,op_2,a4
-	sub	a4,op_0,op_1
-	bne	a4,zero,.L23
+	and	a4,a4,op_0
+	beq	a4,zero,.+8
+	jal	x0,.L23
 	addi	a6,t1,128
 	addi	a4,a7,0
 .L24:
 	lw	a3,0(a4)
-	addi	t1,t1,4
+	addi	op_3,x0,4
+	and	op_2,x0,op_3
+	addi	op_4,x0,4
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,t1
+	sub	t1,op_0,op_5
 	addi	a4,a4,4
 	sw	a3,-4(t1)
-	bne	t1,a6,.L24
+	beq	t1,a6,.+8
+	jal	x0,.L24
 .L25:
-	addi	op_2,x0,3
-	or	op_1,a7,op_2
-	addi	op_3,x0,3
-	sub	op_0,op_1,op_3
-	sub	a4,a7,op_0
-	bne	a4,zero,.L30
+	addi	op_0,x0,3
+	and	a4,op_0,a7
+	beq	a4,zero,.+8
+	jal	x0,.L30
 .L28:
 	lw	a4,0(a5)
-	addi	a5,a5,4
+	addi	op_3,x0,4
+	and	op_2,x0,op_3
+	addi	op_4,x0,4
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,a5
+	sub	a5,op_0,op_5
 	addi	a7,a7,4
 	sw	a4,-4(a7)
-	addi	a4,sp,272
-	bne	a5,a4,.L28
+	addi	op_3,x0,272
+	and	op_2,x0,op_3
+	addi	op_4,x0,272
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,sp
+	sub	a4,op_0,op_5
+	beq	a5,a4,.+8
+	jal	x0,.L28
 .L29:
 	addi	s0,s0,1
 	addi	a2,a2,-1
@@ -207,15 +266,27 @@ quicksort_range:
 	addi	a5,a5,1
 	addi	a7,a7,1
 	sb	a4,-1(a7)
-	addi	a4,sp,272
-	bne	a4,a5,.+8
-	jal	x0,.L29
+	addi	op_3,x0,272
+	and	op_2,x0,op_3
+	addi	op_4,x0,272
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,sp
+	sub	a4,op_0,op_5
+	beq	a4,a5,.L29
 	lbu	a4,0(a5)
-	addi	a5,a5,1
+	addi	op_3,x0,1
+	and	op_2,x0,op_3
+	addi	op_4,x0,1
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,a5
+	sub	a5,op_0,op_5
 	addi	a7,a7,1
 	sb	a4,-1(a7)
 	addi	a4,sp,272
-	bne	a4,a5,.L30
+	beq	a4,a5,.+8
+	jal	x0,.L30
 	jal	x0,.L29
 .L71:
 	sw	a0,12(sp)
@@ -238,10 +309,17 @@ quicksort_range:
 	addi	a4,a7,0
 .L26:
 	lbu	a3,0(a4)
-	addi	a4,a4,1
+	addi	op_3,x0,1
+	and	op_2,x0,op_3
+	addi	op_4,x0,1
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,a4
+	sub	a4,op_0,op_5
 	addi	t1,t1,1
 	sb	a3,-1(t1)
-	bne	a4,a6,.L26
+	beq	a4,a6,.+8
+	jal	x0,.L26
 	jal	x0,.L25
 .L19:
 	addi	a5,sp,144
@@ -252,8 +330,15 @@ quicksort_range:
 	addi	a4,a4,1
 	addi	a3,a3,1
 	sb	a6,-1(a4)
-	addi	a6,sp,272
-	bne	a4,a6,.L22
+	addi	op_3,x0,272
+	and	op_2,x0,op_3
+	addi	op_4,x0,272
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,sp
+	sub	a6,op_0,op_5
+	beq	a4,a6,.+8
+	jal	x0,.L22
 	jal	x0,.L21
 .L60:
 	jalr	zero,ra,0
@@ -271,7 +356,13 @@ quicksort_range:
 	.type	main, @function
 main:
 	lui	t0,1048264
-	addi	sp,sp,-2032
+	addi	op_3,x0,-2032
+	and	op_2,x0,op_3
+	addi	op_4,x0,-2032
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,sp
+	sub	sp,op_0,op_5
 	addi	t0,t0,-32
 	sw	s0,2024(sp)
 	sw	ra,2028(sp)
@@ -293,11 +384,11 @@ main:
 	lbu	a4,0(a4)
 	sub	op_0,x0,a2
 	sub	a3,a5,op_0
-	bne	a4,zero,.+8
-	jal	x0,.L74
+	beq	a4,zero,.L74
 	sb	a4,0(a3)
 	addi	a5,a5,1
-	bne	a5,a0,.L73
+	beq	a5,a0,.+8
+	jal	x0,.L73
 .L74:
 	sub	op_0,x0,a2
 	sub	a5,a5,op_0
@@ -308,10 +399,17 @@ main:
 	sub	op_0,x0,a5
 	sub	a5,sp,op_0
 	addi	a6,a6,4
-	bne	a5,a2,.L76
+	beq	a5,a2,.+8
+	jal	x0,.L76
 	lui	a2,2
 	addi	a0,sp,0
-	addi	a2,a2,1807
+	addi	op_3,x0,1807
+	and	op_2,x0,op_3
+	addi	op_4,x0,1807
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,a2
+	sub	a2,op_0,op_5
 	addi	a1,zero,0
 .Lpcrel_2:
 	auipc	ra,%pcrel_hi(quicksort_range)
@@ -322,10 +420,15 @@ main:
 .L79:
 	lbu	a2,0(a6)
 	addi	a1,a6,0
-	bne	a2,zero,.+8
-	jal	x0,.L77
+	beq	a2,zero,.L77
 .L78:
-	addi	a1,a1,1
+	addi	op_3,x0,1
+	and	op_2,x0,op_3
+	addi	op_4,x0,1
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,a1
+	sub	a1,op_0,op_5
 	sub	op_0,x0,a4
 	sub	a0,a2,op_0
 	lbu	a2,0(a1)
@@ -337,14 +440,22 @@ main:
 	sub	a3,a5,op_0
 	addi	a4,a0,0
 	addi	a5,a3,0
-	bne	a2,zero,.L78
+	beq	a2,zero,.+8
+	jal	x0,.L78
 .L77:
 	lui	a3,313
 	addi	a3,a3,-2048
-	addi	a6,a6,128
+	addi	op_3,x0,128
+	and	op_2,x0,op_3
+	addi	op_4,x0,128
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,a6
+	sub	a6,op_0,op_5
 	sub	op_0,x0,a3
 	sub	a3,sp,op_0
-	bne	a6,a3,.L79
+	beq	a6,a3,.+8
+	jal	x0,.L79
 	lui	s2,%hi(qsort_checksum)
 	lui	a0,%hi(.LC0)
 	lui	a1,2
@@ -364,11 +475,24 @@ main:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_4)
 	lui	a5,313
-	addi	a5,a5,-2048
-	addi	s0,s0,128
+	addi	op_3,x0,-2048
+	and	op_2,x0,op_3
+	addi	op_4,x0,-2048
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,a5
+	sub	a5,op_0,op_5
+	addi	op_3,x0,128
+	and	op_2,x0,op_3
+	addi	op_4,x0,128
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,s0
+	sub	s0,op_0,op_5
 	sub	op_0,x0,a5
 	sub	a5,sp,op_0
-	bne	a5,s0,.L80
+	beq	a5,s0,.+8
+	jal	x0,.L80
 	lui	t0,312
 	lw	a4,%lo(qsort_checksum)(s2)
 	addi	t0,t0,32
@@ -377,13 +501,41 @@ main:
 	sub	op_0,x0,sp
 	sub	sp,t0,op_0
 	lw	ra,2028(sp)
-	addi	a0,a0,1808
-	or	op_0,a0,a4
-	or	op_3,a0,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a0,op_2
-	sub	a0,op_0,op_1
-	or	a0,a0,a5
+	addi	op_3,x0,1808
+	and	op_2,x0,op_3
+	addi	op_4,x0,1808
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,a0
+	sub	a0,op_0,op_5
+	and	op_2,a0,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a0,op_1
+	and	op_3,a0,a4
+	sub	a0,op_0,op_3
+	and	op_1,a0,a5
+	and	op_4,a0,a5
+	and	op_8,a5,a0
+	sub	op_7,op_8,a0
+	sub	op_6,a5,op_7
+	and	op_9,a5,a0
+	sub	op_5,op_6,op_9
+	and	op_3,op_4,op_5
+	and	op_13,a5,a0
+	sub	op_12,op_13,a0
+	sub	op_11,a5,op_12
+	and	op_14,a5,a0
+	sub	op_10,op_11,op_14
+	sub	op_2,op_3,op_10
+	sub	op_0,op_1,op_2
+	and	op_16,a0,a5
+	and	op_20,a5,a0
+	sub	op_19,op_20,a0
+	sub	op_18,a5,op_19
+	and	op_21,a5,a0
+	sub	op_17,op_18,op_21
+	and	op_15,op_16,op_17
+	sub	a0,op_0,op_15
 	lw	s0,2024(sp)
 	lw	s1,2020(sp)
 	lw	s2,2016(sp)
@@ -11453,19 +11605,18 @@ __mul:
 	sub	a2,x0,op_0
 	addi	a0,x0,0
 .Mul_loop:
-	addi	op_2,x0,1
-	or	op_1,a1,op_2
-	addi	op_3,x0,1
-	sub	op_0,op_1,op_3
-	sub	a3,a1,op_0
-	bne	a3,x0,.+8
-	jal	x0,.Mul_skip
+	addi	op_0,x0,1
+	and	a3,op_0,a1
+	beq	a3,x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
 .Mul_skip:
-	srli	a1,a1,1
-	slli	a2,a2,1
-	bne	a1,x0,.Mul_loop
+	addi	op_0,x0,1
+	srl	a1,a1,op_0
+	addi	op_0,x0,1
+	sll	a2,a2,op_0
+	beq	a1,x0,.+8
+	jal	x0,.Mul_loop
 	jalr	x0,ra,0
 
 .text
@@ -11474,46 +11625,70 @@ __mul:
 # Signed 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
-	blt	a0,zero,__riscv_div_lib_L10
+	blt	a0,zero,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L10
 	blt	a1,zero,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
 # Unsigned 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_udivsi3
 __riscv_div_lib_udivsi3:
-	addi	a2,a1,0
+	addi	op_3,x0,0
+	and	op_2,x0,op_3
+	addi	op_4,x0,0
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,a1
+	sub	a2,op_0,op_5
 	addi	a1,a0,0
 	addi	a0,zero,-1
-	bne	a2,zero,.+8
-	jal	x0,__riscv_div_lib_L5
-	addi	a3,zero,1
+	beq	a2,zero,__riscv_div_lib_L5
+	addi	op_3,x0,1
+	and	op_2,x0,op_3
+	addi	op_4,x0,1
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,zero
+	sub	a3,op_0,op_5
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	blt	zero,a2,.+8
 	jal	x0,__riscv_div_lib_L2
-	slli	a2,a2,1
-	slli	a3,a3,1
+	addi	op_0,x0,1
+	sll	a2,a2,op_0
+	addi	op_0,x0,1
+	sll	a3,a3,op_0
 	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bltu	a1,a2,.+8
-	jal	x0,.+8
-	jal	x0,__riscv_div_lib_L4
+	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	or	a0,a0,a3
+	and	op_1,a0,a3
+	sub	op_0,op_1,a3
+	sub	a0,a0,op_0
 __riscv_div_lib_L4:
-	srli	a3,a3,1
-	srli	a2,a2,1
-	bne	a3,zero,__riscv_div_lib_L3
+	addi	op_0,x0,1
+	srl	a3,a3,op_0
+	addi	op_0,x0,1
+	srl	a2,a2,op_0
+	beq	a3,zero,.+8
+	jal	x0,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
 
 # Unsigned 32-bit remainder: a0 = a0 % a1
 .global __riscv_div_lib_umodsi3
 __riscv_div_lib_umodsi3:
-	addi	t0,ra,0
+	addi	op_3,x0,0
+	and	op_2,x0,op_3
+	addi	op_4,x0,0
+	sub	op_1,op_2,op_4
+	sub	op_0,x0,op_1
+	sub	op_5,x0,ra
+	sub	t0,op_0,op_5
 .Lpcrel_div1:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_div1)

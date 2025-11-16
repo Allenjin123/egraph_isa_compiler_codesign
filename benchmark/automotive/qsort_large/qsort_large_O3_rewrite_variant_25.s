@@ -150281,7 +150281,8 @@ __mul:
 	add	a2,a0,x0
 	addi	a0,x0,0
 .Mul_loop:
-	andi	a3,a1,1
+	addi	a3,x0,1
+	and	a3,a1,a3
 	beq	a3,x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
@@ -150297,7 +150298,8 @@ __mul:
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
 	blt	a0,zero,__riscv_div_lib_L10
-	blt	a1,zero,__riscv_div_lib_L11
+	bge	a1,zero,.+8
+	jal	x0,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
 # Unsigned 32-bit division: a0 = a0 / a1
@@ -150311,7 +150313,9 @@ __riscv_div_lib_udivsi3:
 	addi	a3,zero,1
 	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
-	bge	zero,a2,__riscv_div_lib_L2
+	bge	zero,a2,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L2
 	slli	a2,a2,1
 	slli	a3,a3,1
 	bltu	a2,a1,__riscv_div_lib_L1
@@ -150320,10 +150324,11 @@ __riscv_div_lib_L2:
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	or	a0,a0,a3
+	xor	t0,a0,a3
+	and	t1,a0,a3
+	xor	a0,t0,t1
 __riscv_div_lib_L4:
-	addi	t0,x0,1
-	srl	a3,a3,t0
+	srli	a3,a3,1
 	srli	a2,a2,1
 	bne	a3,zero,__riscv_div_lib_L3
 __riscv_div_lib_L5:
@@ -150348,9 +150353,7 @@ __riscv_div_lib_L10:
 __riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
     sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
 __riscv_div_lib_L12:
-	addi	t0,x0,0
-	or	t0,x0,t0
-	add	t0,ra,t0
+	addi	t0,ra,0
 .Lpcrel_div2:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_div2)
@@ -150360,10 +150363,9 @@ __riscv_div_lib_L12:
 # Signed 32-bit remainder: a0 = a0 % a1
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
-	addi	t0,x0,0
-	or	t0,x0,t0
-	add	t0,ra,t0
-	blt	a1,zero,__riscv_div_lib_L31
+	addi	t0,ra,0
+	bge	a1,zero,.+8
+	jal	x0,__riscv_div_lib_L31
 	blt	a0,zero,__riscv_div_lib_L32
 __riscv_div_lib_L30:
 .Lpcrel_div3:

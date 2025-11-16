@@ -110,7 +110,9 @@ mac:
 	sub	a0,a2,t0
 	sub	t0,x0,a7
 	sub	a7,a5,t0
-	bne	t1,a1,.L9
+	bne	t1,a1,.+8
+	jal	x0,.+8
+	jal	x0,.L9
 	sw	a7,0(a3)
 	jalr	zero,ra,0
 	.size	mac, .-mac
@@ -264,17 +266,23 @@ fir_no_red_ld:
 	sra	a0,a0,t1
 	sw	a6,0(t5)
 	sw	a0,4(t5)
-	addi	t6,t6,2
+	addi	t1,x0,2
+	or	t1,x0,t1
+	sub	t2,x0,t6
+	sub	t6,t1,t2
 	addi	t5,t5,8
 	addi	t4,t4,4
-	bne	t6,t0,.L18
+	bne	t6,t0,.+8
+	jal	x0,.+8
+	jal	x0,.L18
 	jalr	zero,ra,0
 	.size	fir_no_red_ld, .-fir_no_red_ld
 	.align	2
 	.globl	latsynth
 	.type	latsynth, @function
 latsynth:
-	slli	a4,a2,1
+	addi	a4,x0,1
+	sll	a4,a2,a4
 	addi	a4,a4,-2
 	sub	a6,x0,a1
 	sub	a6,a4,a6
@@ -302,8 +310,7 @@ latsynth:
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
 	sub	a3,a3,a5
-	blt	a6,a2,.+8
-	jal	x0,.L22
+	bge	a6,a2,.L22
 	addi	a4,a4,2
 	sub	t0,x0,a1
 	sub	a1,a4,t0
@@ -591,8 +598,10 @@ jpegdct:
 	addi	sp, sp, 32
 	addi	s8,x0,13
 	sra	a3,a3,s8
-	slli	a2,a2,16
-	srli	a2,a2,16
+	addi	s8,x0,16
+	sll	a2,a2,s8
+	addi	s8,x0,16
+	srl	a2,a2,s8
 	addi	a0,a0,16
 	addi	a6,a6,16
 	addi	t3,t3,16
@@ -712,7 +721,8 @@ jpegdct:
 	sub	a4,a4,s7
 	sub	s7,x0,a3
 	sub	a4,a4,s7
-	slli	s7,a4,16
+	addi	s7,x0,16
+	sll	s7,a4,s7
 	addi	a4,x0,29
 	sra	a4,s7,a4
 	sh	a4,-16(t6)
@@ -777,7 +787,8 @@ jpegdct:
 	sub	a5,a5,s2
 	sub	s2,x0,a4
 	sub	a5,a5,s2
-	slli	s2,a5,16
+	addi	s2,x0,16
+	sll	s2,a5,s2
 	addi	a5,x0,29
 	sra	a5,s2,a5
 	sh	a5,-16(t1)
@@ -804,7 +815,8 @@ jpegdct:
 	sub	s1,s0,a5
 	sub	a5,x0,a3
 	sub	a3,s1,a5
-	slli	a5,a3,16
+	addi	a5,x0,16
+	sll	a5,a3,a5
 	addi	a3,x0,29
 	sra	a3,a5,a3
 	sh	a3,-16(a7)
@@ -831,7 +843,8 @@ jpegdct:
 	sub	t2,t0,a3
 	sub	t0,x0,a4
 	sub	a4,t2,t0
-	slli	a5,a4,16
+	addi	a5,x0,16
+	sll	a5,a4,a5
 	addi	a4,x0,29
 	sra	a4,a5,a4
 	sh	a4,-16(t5)
@@ -944,8 +957,18 @@ jpegdct:
 	sub	s8,x0,a3
 	sub	s8,a4,s8
 	addi	t4,t4,-1
-	slli	t4,t4,16
-	srli	t4,t4,16
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	addi	s2,x0,16
+	sll	t4,t4,s2
+	lw	s2,0(sp)
+	addi	sp,sp,16
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	addi	s2,x0,16
+	srl	t4,t4,s2
+	lw	s2,0(sp)
+	addi	sp,sp,16
 	addi	s2,s2,2
 	addi	t3,t3,2
 	addi	sp, sp, -32
@@ -1119,7 +1142,12 @@ jpegdct:
 	sub	a4,a4,s2
 	lw	s2,0(sp)
 	addi	sp,sp,16
-	slli	a4,a4,16
+	addi	sp,sp,-16
+	sw	s2,0(sp)
+	addi	s2,x0,16
+	sll	a4,a4,s2
+	lw	s2,0(sp)
+	addi	sp,sp,16
 	addi	sp,sp,-16
 	sw	s2,0(sp)
 	addi	s2,x0,16
@@ -1169,7 +1197,8 @@ jpegdct:
 	sub	a5,a5,a4
 	sub	a4,x0,a0
 	sub	a5,a5,a4
-	slli	a5,a5,16
+	addi	a4,x0,16
+	sll	a5,a5,a4
 	addi	a4,x0,16
 	sra	a5,a5,a4
 	sra	a5,a5,a7
@@ -1195,7 +1224,8 @@ jpegdct:
 	sub	a6,a2,a4
 	sub	a2,x0,t1
 	sub	t1,a6,a2
-	slli	t1,t1,16
+	addi	a2,x0,16
+	sll	t1,t1,a2
 	addi	a2,x0,16
 	sra	t1,t1,a2
 	sra	t1,t1,a7
@@ -1221,12 +1251,15 @@ jpegdct:
 	sub	s3,a3,t1
 	sub	t1,x0,a0
 	sub	a0,s3,t1
-	slli	a0,a0,16
+	addi	t1,x0,16
+	sll	a0,a0,t1
 	addi	t1,x0,16
 	sra	a0,a0,t1
 	sra	a0,a0,a7
 	sh	a0,-2(s0)
-	bne	t4,zero,.L32
+	bne	t4,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L32
 	lw	s8,4(sp)
 	lw	s7,8(sp)
 	lw	s3,12(sp)
@@ -1299,9 +1332,15 @@ benchmark_body.constprop.0.isra.0:
 	sw	a6,0(a4)
 	sw	a0,4(a4)
 	sw	a1,8(a4)
-	addi	a5,a5,16
+	addi	t0,x0,16
+	or	t0,x0,t0
+	sub	t1,x0,a5
+	sub	a5,t0,t1
 	addi	a3,a3,%lo(.LANCHOR1+800)
-	addi	a4,a4,16
+	addi	t0,x0,16
+	or	t0,x0,t0
+	sub	t1,x0,a4
+	sub	a4,t0,t1
 	bne	a5,a3,.L41
 	addi	a1,sp,400
 	addi	a3,sp,0
@@ -1323,7 +1362,8 @@ benchmark_body.constprop.0.isra.0:
 	lh	a1,0(a3)
 	lhu	a0,0(a4)
 	addi	a4,a4,2
-	slli	a5,a1,1
+	addi	a5,x0,1
+	sll	a5,a1,a5
 	sub	t0,x0,a5
 	sub	a5,a1,t0
 	addi	t0,x0,15
@@ -1614,7 +1654,10 @@ benchmark_body.constprop.0.isra.0:
 	auipc	ra,%pcrel_hi(jpegdct)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_2)
 	lui	a5,%hi(.LANCHOR0)
-	addi	s5,s5,-1
+	addi	t0,x0,-1
+	or	t0,x0,t0
+	sub	t1,x0,s5
+	sub	s5,t0,t1
 	addi	a2,a5,%lo(.LANCHOR0)
 	bne	s5,zero,.L50
 	lw	ra,860(sp)
@@ -1636,8 +1679,7 @@ benchmark_body.constprop.0.isra.0:
 	.align	2
 	.type	benchmark_body.isra.0, @function
 benchmark_body.isra.0:
-	blt	zero,a0,.+8
-	jal	x0,.L84
+	bge	zero,a0,.L84
 	addi	sp,sp,-880
 	lui	a2,%hi(.LANCHOR0)
 	sw	s0,872(sp)
@@ -1726,7 +1768,8 @@ benchmark_body.isra.0:
 	lh	a1,0(a3)
 	lhu	a0,0(a4)
 	addi	a4,a4,2
-	slli	a5,a1,1
+	addi	a5,x0,1
+	sll	a5,a1,a5
 	sub	t0,x0,a5
 	sub	a5,a1,t0
 	addi	t0,x0,15
@@ -2007,9 +2050,7 @@ benchmark_body.isra.0:
 	sra	a4,a4,t0
 	sub	t1,x0,a4
 	sub	t1,a5,t1
-	bne	a1,s9,.+8
-	jal	x0,.+8
-	jal	x0,.L72
+	bne	a1,s9,.L72
 	lui	a5,%hi(e)
 	addi	a0,s7,0
 	sw	t1,400(a2)
@@ -2160,13 +2201,13 @@ main:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_9)
 	lw	ra,28(sp)
 	addi	t0,x0,1
+	or	t0,t0,a0
 	addi	t1,x0,1
-	and	t1,t1,a0
-	sub	t1,t1,a0
-	sub	t0,t0,t1
-	addi	t1,x0,1
-	and	x0,t1,a0
-	sub	a0,t0,x0
+	addi	t2,x0,1
+	or	t2,t2,a0
+	sub	t2,t2,a0
+	sub	a0,t1,t2
+	sub	a0,t0,a0
 	addi	sp,sp,32
 	jalr	zero,ra,0
 	.size	main, .-main
@@ -2817,14 +2858,19 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	a3,x0,1
-	and	a3,a3,a1
+	addi	t0,x0,1
+	or	t0,t0,a1
+	sub	t0,t0,a1
+	sub	a3,a3,t0
 	bne	a3,x0,.+8
 	jal	x0,.Mul_skip
 	sub	t0,x0,a0
 	sub	a0,a2,t0
 .Mul_skip:
-	srli	a1,a1,1
-	slli	a2,a2,1
+	addi	t0,x0,1
+	srl	a1,a1,t0
+	addi	t0,x0,1
+	sll	a2,a2,t0
 	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
 
@@ -2834,10 +2880,10 @@ __mul:
 # Signed 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
-	blt	a0,zero,.+8
-	jal	x0,.+8
+	bge	a0,zero,.+8
 	jal	x0,__riscv_div_lib_L10
-	blt	a1,zero,__riscv_div_lib_L11
+	bge	a1,zero,.+8
+	jal	x0,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
 # Unsigned 32-bit division: a0 = a0 / a1
@@ -2852,22 +2898,23 @@ __riscv_div_lib_udivsi3:
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
-	blt	zero,a2,.+8
-	jal	x0,__riscv_div_lib_L2
-	slli	a2,a2,1
-	slli	a3,a3,1
+	bge	zero,a2,__riscv_div_lib_L2
+	addi	t0,x0,1
+	sll	a2,a2,t0
+	addi	t0,x0,1
+	sll	a3,a3,t0
 	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	and	t0,a0,a3
-	sub	t0,t0,a3
-	sub	a0,a0,t0
+	or	a0,a0,a3
 __riscv_div_lib_L4:
-	srli	a3,a3,1
-	srli	a2,a2,1
+	addi	t0,x0,1
+	srl	a3,a3,t0
+	addi	t0,x0,1
+	srl	a2,a2,t0
 	bne	a3,zero,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
@@ -2885,7 +2932,8 @@ __riscv_div_lib_umodsi3:
 # Handle negative arguments to divsi3
 __riscv_div_lib_L10:
 	sub	a0,zero,a0
-	blt	zero,a1,__riscv_div_lib_L12
+	bge	zero,a1,.+8
+	jal	x0,__riscv_div_lib_L12
 	sub	a1,zero,a1
 	jal	x0,__riscv_div_lib_udivsi3
 __riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
@@ -2902,8 +2950,10 @@ __riscv_div_lib_L12:
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
 	addi	t0,ra,0
-	blt	a1,zero,__riscv_div_lib_L31
-	blt	a0,zero,__riscv_div_lib_L32
+	bge	a1,zero,.+8
+	jal	x0,__riscv_div_lib_L31
+	bge	a0,zero,.+8
+	jal	x0,__riscv_div_lib_L32
 __riscv_div_lib_L30:
 .Lpcrel_div3:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
@@ -2912,8 +2962,7 @@ __riscv_div_lib_L30:
 	jalr	zero,t0,0
 __riscv_div_lib_L31:
 	sub	a1,zero,a1
-	blt	a0,zero,.+8
-	jal	x0,__riscv_div_lib_L30
+	bge	a0,zero,__riscv_div_lib_L30
 __riscv_div_lib_L32:
 	sub	a0,zero,a0
 .Lpcrel_div4:

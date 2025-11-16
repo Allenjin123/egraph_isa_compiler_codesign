@@ -262,13 +262,13 @@ rand:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,a3,16
-	lui	t1,16
-	addi	t1,t1,-1
-	and	t0,t0,t1
-	lui	t1,16
-	addi	t1,t1,-1
-	and	t1,a2,t1
+	lui	t0,16
+	addi	t0,t0,-1
+	and	t0,a3,t0
+	srli	t1,a2,16
+	lui	t2,16
+	addi	t2,t2,-1
+	and	t1,t1,t2
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -288,9 +288,10 @@ rand:
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
 	srli	t0,t0,16
-	lui	t1,16
-	addi	t1,t1,-1
-	and	t1,a3,t1
+	srli	t1,a3,16
+	lui	t2,16
+	addi	t2,t2,-1
+	and	t1,t1,t2
 	srli	t2,a2,16
 	lui	t3,16
 	addi	t3,t3,-1
@@ -313,35 +314,6 @@ rand:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
-	srli	t2,a3,16
-	lui	t3,16
-	addi	t3,t3,-1
-	and	t2,t2,t3
-	srli	t3,a2,16
-	lui	t4,16
-	addi	t4,t4,-1
-	and	t3,t3,t4
-	addi	sp, sp, -32
-	sw	a0, 0(sp)
-	sw	a1, 4(sp)
-	sw	a2, 8(sp)
-	sw	a3, 12(sp)
-	sw	ra, 16(sp)
-	add	a0, t2, x0
-	add	a1, t3, x0
-.Lpcrel_callmul_584:
-	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_584)
-	add	t2, a0, x0
-	lw	a0, 0(sp)
-	lw	a1, 4(sp)
-	lw	a2, 8(sp)
-	lw	a3, 12(sp)
-	lw	ra, 16(sp)
-	addi	sp, sp, 32
-	sub	t2,x0,t2
-	sub	t1,t1,t2
 	sub	t1,x0,t1
 	sub	t0,t0,t1
 	srli	t1,a3,16
@@ -351,6 +323,33 @@ rand:
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a2,t2
+	addi	sp, sp, -32
+	sw	a0, 0(sp)
+	sw	a1, 4(sp)
+	sw	a2, 8(sp)
+	sw	a3, 12(sp)
+	sw	ra, 16(sp)
+	add	a0, t1, x0
+	add	a1, t2, x0
+.Lpcrel_callmul_584:
+	auipc	ra, %pcrel_hi(__mul)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_584)
+	add	t1, a0, x0
+	lw	a0, 0(sp)
+	lw	a1, 4(sp)
+	lw	a2, 8(sp)
+	lw	a3, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
+	srli	t1,t1,16
+	add	t0,t0,t1
+	lui	t1,16
+	addi	t1,t1,-1
+	and	t1,a3,t1
+	srli	t2,a2,16
+	lui	t3,16
+	addi	t3,t3,-1
+	and	t2,t2,t3
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -372,13 +371,13 @@ rand:
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t1,t1,t2
-	lui	t2,16
-	addi	t2,t2,-1
-	and	t2,a3,t2
-	srli	t3,a2,16
-	lui	t4,16
-	addi	t4,t4,-1
-	and	t3,t3,t4
+	srli	t2,a3,16
+	lui	t3,16
+	addi	t3,t3,-1
+	and	t2,t2,t3
+	lui	t3,16
+	addi	t3,t3,-1
+	and	t3,a2,t3
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -400,11 +399,10 @@ rand:
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
-	sub	t2,x0,t2
-	sub	x0,t1,t2
-	lui	t1,16
-	addi	t1,t1,-1
-	and	t1,a3,t1
+	add	t1,t1,t2
+	lui	t2,16
+	addi	t2,t2,-1
+	and	t2,a3,t2
 	lui	a3,16
 	addi	a3,a3,-1
 	and	a3,a2,a3
@@ -413,7 +411,7 @@ rand:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	ra, 12(sp)
-	add	a0, t1, x0
+	add	a0, t2, x0
 	add	a1, a3, x0
 .Lpcrel_callmul_587:
 	auipc	ra, %pcrel_hi(__mul)
@@ -425,9 +423,9 @@ rand:
 	lw	ra, 12(sp)
 	addi	sp, sp, 16
 	srli	a3,a3,16
-	add	x0,x0,a3
-	srli	x0,x0,16
-	add	a3,t0,x0
+	add	a3,t1,a3
+	srli	a3,a3,16
+	add	a3,t0,a3
 	add	a4,a4,a1
 	addi	a2,a5,1
 	bltu	a2,a5,.+12
@@ -435,8 +433,7 @@ rand:
 	jal	x0,.+8
 	addi	a5,x0,1
 	sw	a2,%lo(bitcnts_rand_state)(a6)
-	sub	t0,x0,a4
-	sub	a4,a3,t0
+	add	a4,a4,a3
 	add	a5,a5,a4
 	slli	a0,a5,1
 	sw	a5,%lo(bitcnts_rand_state+4)(a6)
@@ -454,12 +451,7 @@ atoi:
 	addi	a6,zero,1
 	beq	a2,a5,.L41
 .L33:
-	addi	a3,x0,-48
-	and	a3,x0,a3
-	addi	t0,x0,-48
-	sub	a3,a3,t0
-	sub	a3,x0,a3
-	add	a3,a2,a3
+	addi	a3,a2,-48
 	andi	a5,a3,255
 	addi	a1,zero,9
 	addi	a4,zero,0
@@ -1374,24 +1366,9 @@ main:
 	addi	sp,sp,112
 	jalr	zero,ra,0
 .L55:
-	addi	s1,x0,0
-	and	s1,x0,s1
-	addi	t0,x0,0
-	sub	s1,s1,t0
-	sub	s1,x0,s1
-	add	s1,zero,s1
-	addi	s2,x0,0
-	and	s2,x0,s2
-	addi	t0,x0,0
-	sub	s2,s2,t0
-	sub	s2,x0,s2
-	add	s2,zero,s2
-	addi	s11,x0,0
-	and	s11,x0,s11
-	addi	t0,x0,0
-	sub	s11,s11,t0
-	sub	s11,x0,s11
-	add	s11,zero,s11
+	addi	s1,zero,0
+	addi	s2,zero,0
+	addi	s11,zero,0
 	jal	x0,.L48
 .L63:
 	addi	a4,a4,1
@@ -1503,7 +1480,9 @@ __riscv_div_lib_udivsi3:
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
-	bge	zero,a2,__riscv_div_lib_L2
+	bge	zero,a2,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L2
 	slli	a2,a2,1
 	slli	a3,a3,1
 	bltu	a2,a1,__riscv_div_lib_L1
@@ -1552,7 +1531,12 @@ __riscv_div_lib_L12:
 # Signed 32-bit remainder: a0 = a0 % a1
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
-	addi	t0,ra,0
+	addi	t0,x0,0
+	and	t0,x0,t0
+	addi	t1,x0,0
+	sub	t0,t0,t1
+	sub	t0,x0,t0
+	add	t0,ra,t0
 	bge	a1,zero,.+8
 	jal	x0,__riscv_div_lib_L31
 	bge	a0,zero,.+8

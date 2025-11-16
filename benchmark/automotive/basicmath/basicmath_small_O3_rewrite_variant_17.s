@@ -1074,10 +1074,7 @@ __riscv_div_lib_L2:
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	addi	t0,x0,-1
-	xor	x0,a0,t0
-	and	x0,a3,x0
-	add	a0,x0,a0
+	or	a0,a0,a3
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1

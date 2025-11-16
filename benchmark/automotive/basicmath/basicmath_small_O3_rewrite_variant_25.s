@@ -350,9 +350,7 @@ SolveCubic:
 	add	s4,a2,s5
 	beq	a3,a5,.L17
 	beq	a3,zero,.L18
-	addi	s4,x0,0
-	or	s4,x0,s4
-	add	s4,s3,s4
+	addi	s4,s3,0
 .L18:
 	bge	t4,s4,.L33
 	addi	t1,a1,0
@@ -497,12 +495,7 @@ SolveCubic:
 	sw	s4,24(sp)
 	sw	s5,20(sp)
 .L11:
-	addi	a5,x0,-53
-	and	a5,x0,a5
-	addi	t0,x0,-53
-	sub	a5,a5,t0
-	sub	a5,x0,a5
-	add	a5,zero,a5
+	addi	a5,zero,-53
 	lui	s3,1
 	blt	a0,a5,.L57
 	lui	s1,1
@@ -516,19 +509,16 @@ SolveCubic:
 .L30:
 	lui	s3,1
 	lui	s1,1
-	ori	s3,x0,93
-	add	s3,s1,s3
+	addi	s3,s1,93
 	addi	s1,s1,-2002
-	ori	a0,x0,0
-	add	a0,zero,a0
+	addi	a0,zero,0
 	jal	x0,.L14
 .L56:
 	addi	a1,a7,0
 	jal	x0,.L13
 .L57:
 	lui	s1,1
-	ori	t0,x0,1140
-	add	s3,s3,t0
+	addi	s3,s3,1140
 	addi	s1,s1,-954
 	addi	a0,zero,1047
 	jal	x0,.L14
@@ -1041,7 +1031,8 @@ __mul:
 	add	a2,a0,x0
 	addi	a0,x0,0
 .Mul_loop:
-	andi	a3,a1,1
+	addi	a3,x0,1
+	and	a3,a3,a1
 	beq	a3,x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
@@ -1068,8 +1059,7 @@ __riscv_div_lib_udivsi3:
 	addi	a0,zero,-1
 	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bltu	a2,a1,.+8
-	jal	x0,__riscv_div_lib_L2
+	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	bge	zero,a2,__riscv_div_lib_L2
 	addi	t0,x0,1
@@ -1077,18 +1067,11 @@ __riscv_div_lib_L1:
 	slli	a3,a3,1
 	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
-	addi	a0,x0,0
-	and	a0,x0,a0
-	addi	t0,x0,0
-	sub	a0,a0,t0
-	sub	a0,x0,a0
-	add	a0,zero,a0
+	addi	a0,zero,0
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	xori	t0,a0,-1
-	and	t0,a3,t0
-	add	a0,t0,a0
+	or	a0,a0,a3
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1
@@ -1125,13 +1108,9 @@ __riscv_div_lib_L12:
 # Signed 32-bit remainder: a0 = a0 % a1
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
-	addi	t0,x0,0
-	or	t0,x0,t0
-	add	t0,ra,t0
+	addi	t0,ra,0
 	blt	a1,zero,__riscv_div_lib_L31
-	blt	a0,zero,.+8
-	jal	x0,.+8
-	jal	x0,__riscv_div_lib_L32
+	blt	a0,zero,__riscv_div_lib_L32
 __riscv_div_lib_L30:
 .Lpcrel_div3:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)

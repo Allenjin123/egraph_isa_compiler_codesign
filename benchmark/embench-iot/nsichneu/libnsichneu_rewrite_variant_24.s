@@ -1214,7 +1214,9 @@ benchmark_body.isra.0:
 	add	t3,a4,t3
 	sw	t0,12(t3)
 	lw	t3,%lo(P3_is_marked)(a1)
-	addi	t3,t3,3
+	addi	t0,x0,3
+	or	t0,x0,t0
+	add	t3,t3,t0
 	sw	t3,%lo(P3_is_marked)(a1)
 	jal	x0,.L125
 .L243:
@@ -1234,7 +1236,11 @@ benchmark_body.isra.0:
 	add	t6,a4,t6
 	sw	t3,12(t6)
 	lw	t3,%lo(P3_is_marked)(a1)
-	addi	t3,t3,1
+	addi	t2,x0,1
+	xori	t6,x0,-1
+	and	t2,t2,t6
+	add	t2,t2,x0
+	add	t3,t3,t2
 	slli	t3,t3,2
 	add	t3,a4,t3
 	sw	t5,12(t3)
@@ -1244,8 +1250,7 @@ benchmark_body.isra.0:
 	add	t3,a4,t3
 	sw	t0,12(t3)
 	lw	t3,%lo(P3_is_marked)(a1)
-	ori	t0,x0,3
-	add	t3,t3,t0
+	addi	t3,t3,3
 	sw	t3,%lo(P3_is_marked)(a1)
 	jal	x0,.L114
 .L244:
@@ -1295,8 +1300,7 @@ benchmark_body.isra.0:
 	add	t6,a4,t6
 	sw	t3,12(t6)
 	lw	t3,%lo(P3_is_marked)(a1)
-	ori	t2,x0,1
-	add	t3,t3,t2
+	addi	t3,t3,1
 	slli	t3,t3,2
 	add	t3,a4,t3
 	sw	t5,12(t3)
@@ -1992,9 +1996,7 @@ benchmark_body.isra.0:
 	add	t0,t3,t5
 	sw	t6,36(a4)
 	lw	t6,%lo(P2_is_marked)(a5)
-	ori	t2,x0,-4
-	sub	zero,x0,t6
-	sub	t6,t2,zero
+	addi	t6,t6,-4
 	sw	t6,%lo(P2_is_marked)(a5)
 	lw	t6,%lo(P3_is_marked)(a1)
 	slli	t6,t6,2
@@ -2298,12 +2300,7 @@ benchmark_body.isra.0:
 	add	t0,t3,t5
 	sw	t6,36(a4)
 	lw	t6,%lo(P2_is_marked)(a5)
-	addi	t2,x0,-4
-	xor	t2,x0,t2
-	addi	zero,x0,-4
-	and	zero,x0,zero
-	xor	x0,t2,zero
-	add	t6,t6,x0
+	addi	t6,t6,-4
 	sw	t6,%lo(P2_is_marked)(a5)
 	lw	t6,%lo(P3_is_marked)(a1)
 	slli	t6,t6,2
@@ -2332,7 +2329,9 @@ benchmark_body.isra.0:
 	bge	t3,t5,.L78
 	lw	t6,%lo(P2_is_marked)(a5)
 	add	t0,t3,t5
-	addi	t6,t6,-4
+	addi	t2,x0,-4
+	or	t2,x0,t2
+	add	t6,t6,t2
 	sw	t6,%lo(P2_is_marked)(a5)
 	lw	t6,%lo(P3_is_marked)(a1)
 	slli	t6,t6,2
@@ -2514,9 +2513,7 @@ benchmark_body.isra.0:
 	bge	t3,t5,.L84
 	lw	t6,%lo(P2_is_marked)(a5)
 	add	t0,t3,t5
-	ori	t2,x0,-4
-	sub	zero,x0,t6
-	sub	t6,t2,zero
+	addi	t6,t6,-4
 	sw	t6,%lo(P2_is_marked)(a5)
 	lw	t6,%lo(P3_is_marked)(a1)
 	slli	t6,t6,2
@@ -2576,7 +2573,8 @@ benchmark_body.isra.0:
 	bge	t3,t5,.L86
 	lw	t6,%lo(P2_is_marked)(a5)
 	add	t0,t3,t5
-	addi	t6,t6,-4
+	ori	t2,x0,-4
+	add	t6,t6,t2
 	sw	t6,%lo(P2_is_marked)(a5)
 	lw	t6,%lo(P3_is_marked)(a1)
 	slli	t6,t6,2
@@ -3070,7 +3068,8 @@ benchmark_body.isra.0:
 	bge	t3,t5,.L7
 	lw	t6,%lo(P1_is_marked)(a6)
 	sub	t0,t3,t5
-	addi	t6,t6,-3
+	ori	t2,x0,-3
+	add	t6,t6,t2
 	sw	t6,%lo(P1_is_marked)(a6)
 	lw	t6,%lo(P3_is_marked)(a1)
 	slli	t6,t6,2
@@ -3125,7 +3124,8 @@ benchmark_body.isra.0:
 	bge	t3,t5,.L9
 	lw	t6,%lo(P2_is_marked)(a5)
 	add	t0,t3,t5
-	addi	t6,t6,-4
+	ori	t2,x0,-4
+	add	t6,t6,t2
 	sw	t6,%lo(P2_is_marked)(a5)
 	lw	t6,%lo(P3_is_marked)(a1)
 	slli	t6,t6,2
@@ -3142,7 +3142,8 @@ benchmark_body.isra.0:
 	add	t3,a4,t3
 	sw	t0,12(t3)
 	lw	t3,%lo(P3_is_marked)(a1)
-	addi	t3,t3,3
+	ori	t0,x0,3
+	add	t3,t3,t0
 	sw	t3,%lo(P3_is_marked)(a1)
 	jal	x0,.L9
 .L139:
@@ -3386,7 +3387,8 @@ benchmark_body.isra.0:
 	bge	t3,t5,.L18
 	lw	t6,%lo(P2_is_marked)(a5)
 	add	t0,t3,t5
-	addi	t6,t6,-4
+	ori	t2,x0,-4
+	add	t6,t6,t2
 	sw	t6,%lo(P2_is_marked)(a5)
 	lw	t6,%lo(P3_is_marked)(a1)
 	slli	t6,t6,2
@@ -3415,7 +3417,9 @@ benchmark_body.isra.0:
 	bge	t3,t5,.L19
 	lw	t6,%lo(P2_is_marked)(a5)
 	add	t0,t3,t5
-	addi	t6,t6,-4
+	ori	t2,x0,-4
+	sub	zero,x0,t6
+	sub	t6,t2,zero
 	sw	t6,%lo(P2_is_marked)(a5)
 	lw	t6,%lo(P3_is_marked)(a1)
 	slli	t6,t6,2
@@ -3485,8 +3489,7 @@ benchmark_body.isra.0:
 	add	t3,a4,t3
 	sw	t5,12(t3)
 	lw	t3,%lo(P3_is_marked)(a1)
-	ori	t2,x0,2
-	add	t3,t3,t2
+	addi	t3,t3,2
 	slli	t3,t3,2
 	add	t3,a4,t3
 	sw	t0,12(t3)
@@ -3532,25 +3535,19 @@ benchmark_body.isra.0:
 	bge	t3,t5,.L23
 	lw	t6,%lo(P2_is_marked)(a5)
 	add	t0,t3,t5
-	ori	t2,x0,-4
-	sub	zero,x0,t6
-	sub	t6,t2,zero
+	addi	t6,t6,-4
 	sw	t6,%lo(P2_is_marked)(a5)
 	lw	t6,%lo(P3_is_marked)(a1)
 	slli	t6,t6,2
 	add	t6,a4,t6
 	sw	t3,12(t6)
 	lw	t3,%lo(P3_is_marked)(a1)
-	ori	t2,x0,1
-	sub	t6,x0,t3
-	sub	t3,t2,t6
+	addi	t3,t3,1
 	slli	t3,t3,2
 	add	t3,a4,t3
 	sw	t5,12(t3)
 	lw	t3,%lo(P3_is_marked)(a1)
-	ori	t2,x0,2
-	sub	t5,x0,t3
-	sub	t3,t2,t5
+	addi	t3,t3,2
 	slli	t3,t3,2
 	add	t3,a4,t3
 	sw	t0,12(t3)
@@ -3637,7 +3634,9 @@ benchmark_body.isra.0:
 	add	t3,a4,t3
 	sw	t5,12(t3)
 	lw	t3,%lo(P3_is_marked)(a1)
-	addi	t3,t3,2
+	addi	t2,x0,2
+	or	t2,x0,t2
+	add	t3,t3,t2
 	slli	t3,t3,2
 	add	t3,a4,t3
 	sw	t0,12(t3)
@@ -3837,12 +3836,17 @@ benchmark_body.isra.0:
 	add	t6,a4,t6
 	sw	t3,12(t6)
 	lw	t3,%lo(P3_is_marked)(a1)
-	addi	t3,t3,1
+	addi	t2,x0,1
+	or	t2,x0,t2
+	sub	t6,x0,t3
+	sub	t3,t2,t6
 	slli	t3,t3,2
 	add	t3,a4,t3
 	sw	t5,12(t3)
 	lw	t3,%lo(P3_is_marked)(a1)
-	addi	t3,t3,2
+	ori	t2,x0,2
+	sub	t5,x0,t3
+	sub	t3,t2,t5
 	slli	t3,t3,2
 	add	t3,a4,t3
 	sw	t0,12(t3)
@@ -3868,12 +3872,15 @@ benchmark_body.isra.0:
 	add	t6,a4,t6
 	sw	t3,12(t6)
 	lw	t3,%lo(P3_is_marked)(a1)
-	addi	t3,t3,1
+	addi	t2,x0,1
+	or	t2,x0,t2
+	add	t3,t3,t2
 	slli	t3,t3,2
 	add	t3,a4,t3
 	sw	t5,12(t3)
 	lw	t3,%lo(P3_is_marked)(a1)
-	addi	t3,t3,2
+	ori	t2,x0,2
+	add	t3,t3,t2
 	slli	t3,t3,2
 	add	t3,a4,t3
 	sw	t0,12(t3)
@@ -3985,7 +3992,8 @@ benchmark_body.isra.0:
 	add	t0,t3,t5
 	sw	t6,36(a4)
 	lw	t6,%lo(P2_is_marked)(a5)
-	addi	t6,t6,-4
+	ori	t2,x0,-4
+	add	t6,t6,t2
 	sw	t6,%lo(P2_is_marked)(a5)
 	lw	t6,%lo(P3_is_marked)(a1)
 	slli	t6,t6,2
@@ -4109,8 +4117,7 @@ benchmark_body.isra.0:
 	add	t0,t3,t5
 	sw	t6,36(a4)
 	lw	t6,%lo(P2_is_marked)(a5)
-	ori	t2,x0,-4
-	add	t6,t6,t2
+	addi	t6,t6,-4
 	sw	t6,%lo(P2_is_marked)(a5)
 	lw	t6,%lo(P3_is_marked)(a1)
 	slli	t6,t6,2
@@ -4148,7 +4155,9 @@ benchmark_body.isra.0:
 	add	t6,a4,t6
 	sw	t3,12(t6)
 	lw	t3,%lo(P3_is_marked)(a1)
-	addi	t3,t3,1
+	ori	t2,x0,1
+	sub	t6,x0,t3
+	sub	t3,t2,t6
 	slli	t3,t3,2
 	add	t3,a4,t3
 	sw	t5,12(t3)
@@ -4762,12 +4771,14 @@ benchmark_body.isra.0:
 	sw	t3,12(t6)
 	lw	t3,%lo(P3_is_marked)(a1)
 	ori	t2,x0,1
-	add	t3,t3,t2
+	sub	t6,x0,t3
+	sub	t3,t2,t6
 	slli	t3,t3,2
 	add	t3,a4,t3
 	sw	t5,12(t3)
 	lw	t3,%lo(P3_is_marked)(a1)
-	addi	t3,t3,2
+	ori	t2,x0,2
+	add	t3,t3,t2
 	slli	t3,t3,2
 	add	t3,a4,t3
 	sw	t0,12(t3)
@@ -4798,8 +4809,7 @@ benchmark_body.isra.0:
 	add	t3,a4,t3
 	sw	t5,12(t3)
 	lw	t3,%lo(P3_is_marked)(a1)
-	ori	t2,x0,2
-	add	t3,t3,t2
+	addi	t3,t3,2
 	slli	t3,t3,2
 	add	t3,a4,t3
 	sw	t0,12(t3)
@@ -4818,7 +4828,8 @@ benchmark_body.isra.0:
 	add	t0,t3,t5
 	sw	t6,36(a4)
 	lw	t6,%lo(P2_is_marked)(a5)
-	addi	t6,t6,-4
+	ori	t2,x0,-4
+	add	t6,t6,t2
 	sw	t6,%lo(P2_is_marked)(a5)
 	lw	t6,%lo(P3_is_marked)(a1)
 	slli	t6,t6,2
@@ -5016,7 +5027,9 @@ __mul:
 	add	a2,a0,x0
 	addi	a0,x0,0
 .Mul_loop:
-	andi	a3,a1,1
+	ori	a3,x0,1
+	add	a3,x0,a3
+	and	a3,a3,a1
 	beq	a3,x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
@@ -5032,15 +5045,15 @@ __mul:
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
 	blt	a0,zero,__riscv_div_lib_L10
-	blt	a1,zero,.+8
-	jal	x0,.+8
-	jal	x0,__riscv_div_lib_L11
+	blt	a1,zero,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
 # Unsigned 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_udivsi3
 __riscv_div_lib_udivsi3:
-	addi	a2,a1,0
+	addi	a2,x0,0
+	or	a2,x0,a2
+	add	a2,a1,a2
 	addi	a1,a0,0
 	addi	a0,zero,-1
 	beq	a2,zero,__riscv_div_lib_L5
@@ -5048,15 +5061,25 @@ __riscv_div_lib_udivsi3:
 	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	bge	zero,a2,__riscv_div_lib_L2
-	slli	a2,a2,1
-	slli	a3,a3,1
-	bltu	a2,a1,__riscv_div_lib_L1
+	addi	t0,x0,1
+	sll	a2,a2,t0
+	addi	t0,x0,1
+	sll	a3,a3,t0
+	bltu	a2,a1,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	or	a0,a0,a3
+	and	t0,a0,a3
+	xor	t1,a0,a3
+	or	t0,t0,t1
+	and	t1,a0,a3
+	xor	t2,a0,a3
+	and	a0,t1,t2
+	sub	a0,t0,a0
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1
@@ -5077,7 +5100,8 @@ __riscv_div_lib_umodsi3:
 # Handle negative arguments to divsi3
 __riscv_div_lib_L10:
 	sub	a0,zero,a0
-	blt	zero,a1,__riscv_div_lib_L12
+	bge	zero,a1,.+8
+	jal	x0,__riscv_div_lib_L12
 	sub	a1,zero,a1
 	jal	x0,__riscv_div_lib_udivsi3
 __riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
@@ -5094,10 +5118,10 @@ __riscv_div_lib_L12:
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
 	addi	t0,ra,0
-	blt	a1,zero,__riscv_div_lib_L31
-	blt	a0,zero,.+8
+	blt	a1,zero,.+8
 	jal	x0,.+8
-	jal	x0,__riscv_div_lib_L32
+	jal	x0,__riscv_div_lib_L31
+	blt	a0,zero,__riscv_div_lib_L32
 __riscv_div_lib_L30:
 .Lpcrel_div3:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)

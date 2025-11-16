@@ -32,7 +32,24 @@ vec_mpy1:
 	lh	a5,0(a1)
 	lhu	a4,0(a0)
 	addi	a0,a0,2
-	mul	a5,a5,a2
+	addi	sp, sp, -32
+	sw	a0, 0(sp)
+	sw	a1, 4(sp)
+	sw	a2, 8(sp)
+	sw	a3, 12(sp)
+	sw	ra, 16(sp)
+	add	a0, a5, x0
+	add	a1, a2, x0
+.Lpcrel_callmul_306:
+	auipc	ra, %pcrel_hi(__mul)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_306)
+	add	a5, a0, x0
+	lw	a0, 0(sp)
+	lw	a1, 4(sp)
+	lw	a2, 8(sp)
+	lw	a3, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	addi	a1,a1,2
 	srai	a5,a5,15
 	add	a5,a5,a4
@@ -52,24 +69,26 @@ mac:
 	lh	a4,0(a1)
 	lh	a5,0(a6)
 	addi	a1,a1,2
-	addi	sp, sp, -16
+	mul	a2,a4,a4
+	addi	a6,a6,2
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
-	sw	a3, 8(sp)
-	sw	ra, 12(sp)
-	add	a0, a4, x0
+	sw	a2, 8(sp)
+	sw	a3, 12(sp)
+	sw	ra, 16(sp)
+	add	a0, a5, x0
 	add	a1, a4, x0
-.Lpcrel_callmul_304:
+.Lpcrel_callmul_307:
 	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_304)
-	add	a2, a0, x0
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_307)
+	add	a5, a0, x0
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
-	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
-	addi	a6,a6,2
-	mul	a5,a5,a4
+	lw	a2, 8(sp)
+	lw	a3, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	add	a0,a0,a2
 	add	a7,a7,a5
 	bne	t1,a1,.L9
@@ -100,9 +119,9 @@ fir:
 	sw	a3, 12(sp)
 	sw	ra, 16(sp)
 	add	a1, a4, x0
-.Lpcrel_callmul_305:
+.Lpcrel_callmul_308:
 	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_305)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_308)
 	add	a4, a0, x0
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
@@ -171,27 +190,9 @@ latsynth:
 	lh	a7,0(a6)
 	lh	a5,0(a5)
 	addi	a6,zero,1
-	addi	sp, sp, -32
-	sw	a0, 0(sp)
-	sw	a1, 4(sp)
-	sw	a2, 8(sp)
-	sw	a3, 12(sp)
-	sw	ra, 16(sp)
-	add	a0, a5, x0
-	add	a1, a7, x0
-.Lpcrel_callmul_306:
-	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_306)
-	add	a5, a0, x0
-	lw	a0, 0(sp)
-	lw	a1, 4(sp)
-	lw	a2, 8(sp)
-	lw	a3, 12(sp)
-	lw	ra, 16(sp)
-	addi	sp, sp, 32
+	mul	a5,a5,a7
 	sub	a3,a3,a5
-	blt	a6,a2,.+8
-	jal	x0,.L22
+	bge	a6,a2,.L22
 	addi	a4,a4,2
 	add	a1,a1,a4
 	addi	a7,a0,2
@@ -201,27 +202,27 @@ latsynth:
 	lh	a2,-4(a4)
 	addi	a4,a4,-2
 	addi	a1,a1,-2
+	mul	a6,a2,a5
+	sub	a3,a3,a6
+	srai	a6,a3,16
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	ra, 16(sp)
-	add	a0, a2, x0
-	add	a1, a5, x0
-.Lpcrel_callmul_307:
+	add	a0, a5, x0
+	add	a1, a6, x0
+.Lpcrel_callmul_309:
 	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_307)
-	add	a6, a0, x0
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_309)
+	add	a5, a0, x0
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	sub	a3,a3,a6
-	srai	a6,a3,16
-	mul	a5,a5,a6
 	srai	a5,a5,16
 	add	a5,a5,a2
 	sh	a5,0(a4)
@@ -253,29 +254,29 @@ iir1:
 	addi	a0,a0,8
 	addi	a3,a3,8
 	mul	t1,t1,t3
+	mul	a6,a6,t3
+	add	a4,a4,t1
+	srai	a4,a4,15
+	add	a4,a4,a1
+	sw	a4,-8(a3)
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	ra, 16(sp)
-	add	a0, a6, x0
-	add	a1, t3, x0
-.Lpcrel_callmul_308:
+	add	a0, a5, x0
+	add	a1, a7, x0
+.Lpcrel_callmul_310:
 	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_308)
-	add	a6, a0, x0
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_310)
+	add	a5, a0, x0
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	add	a4,a4,t1
-	srai	a4,a4,15
-	add	a4,a4,a1
-	sw	a4,-8(a3)
-	mul	a5,a5,a7
 	add	a5,a5,a6
 	srai	a5,a5,15
 	add	a1,a5,a4
@@ -783,8 +784,7 @@ benchmark_body.constprop.0.isra.0:
 	.align	2
 	.type	benchmark_body.isra.0, @function
 benchmark_body.isra.0:
-	blt	zero,a0,.+8
-	jal	x0,.L84
+	bge	zero,a0,.L84
 	addi	sp,sp,-880
 	lui	a2,%hi(.LANCHOR0)
 	sw	s0,872(sp)
@@ -1075,8 +1075,7 @@ verify_benchmark:
 	lui	a5,3
 	addi	a5,a5,-2045
 	addi	a0,zero,0
-	bne	a4,a5,.+8
-	jal	x0,.L104
+	beq	a4,a5,.L104
 .L92:
 	addi	sp,sp,800
 	jalr	zero,ra,0
@@ -1095,11 +1094,7 @@ verify_benchmark:
 	lui	a5,107882
 	addi	a5,a5,1558
 	add	a0,a0,a5
-	addi	t0,x0,1
-	bltu	a0,t0,.+12
-	addi	a0,x0,0
-	jal	x0,.+8
-	addi	a0,x0,1
+	sltiu	a0,a0,1
 	jal	x0,.L92
 	.size	verify_benchmark, .-verify_benchmark
 	.section	.text.startup,"ax",@progbits
@@ -1122,7 +1117,14 @@ main:
 	auipc	ra,%pcrel_hi(verify_benchmark)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_9)
 	lw	ra,28(sp)
-	xori	a0,a0,1
+	addi	t0,x0,1
+	or	t0,t0,a0
+	addi	t1,x0,1
+	addi	t2,x0,1
+	or	t2,t2,a0
+	sub	t2,t2,a0
+	sub	a0,t1,t2
+	sub	a0,t0,a0
 	addi	sp,sp,32
 	jalr	zero,ra,0
 	.size	main, .-main
@@ -1771,9 +1773,12 @@ __mul:
 	add	a2,a0,x0
 	addi	a0,x0,0
 .Mul_loop:
-	andi	a3,a1,1
-	bne	a3,x0,.+8
-	jal	x0,.Mul_skip
+	addi	a3,x0,1
+	or	a3,a1,a3
+	addi	t0,x0,1
+	sub	a3,a3,t0
+	sub	a3,a1,a3
+	beq	a3,x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
 	srli	a1,a1,1
@@ -1800,11 +1805,9 @@ __riscv_div_lib_udivsi3:
 	bne	a2,zero,.+8
 	jal	x0,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bltu	a2,a1,.+8
-	jal	x0,__riscv_div_lib_L2
+	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
-	blt	zero,a2,.+8
-	jal	x0,__riscv_div_lib_L2
+	bge	zero,a2,__riscv_div_lib_L2
 	slli	a2,a2,1
 	slli	a3,a3,1
 	bltu	a2,a1,__riscv_div_lib_L1
@@ -1813,7 +1816,9 @@ __riscv_div_lib_L2:
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	or	a0,a0,a3
+	and	t0,a0,a3
+	sub	t0,t0,a3
+	sub	a0,a0,t0
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1
@@ -1861,8 +1866,7 @@ __riscv_div_lib_L30:
 	jalr	zero,t0,0
 __riscv_div_lib_L31:
 	sub	a1,zero,a1
-	blt	a0,zero,.+8
-	jal	x0,__riscv_div_lib_L30
+	bge	a0,zero,__riscv_div_lib_L30
 __riscv_div_lib_L32:
 	sub	a0,zero,a0
 .Lpcrel_div4:

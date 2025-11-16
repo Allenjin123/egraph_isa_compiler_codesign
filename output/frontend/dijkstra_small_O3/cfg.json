@@ -69,11 +69,14 @@
         2,
         1
       ],
-      "predecessors": []
+      "predecessors": [
+        11,
+        48
+      ]
     },
     "1": {
       "terminator_type": "unconditional",
-      "jump_target": null,
+      "jump_target": "printf",
       "successors": [],
       "predecessors": [
         0
@@ -102,7 +105,7 @@
     },
     "4": {
       "terminator_type": "call",
-      "jump_target": null,
+      "jump_target": "printf",
       "successors": [
         5
       ],
@@ -113,7 +116,7 @@
     },
     "5": {
       "terminator_type": "unconditional",
-      "jump_target": null,
+      "jump_target": "printf",
       "successors": [],
       "predecessors": [
         4
@@ -142,7 +145,7 @@
     },
     "8": {
       "terminator_type": "call",
-      "jump_target": null,
+      "jump_target": "printf",
       "successors": [
         9
       ],
@@ -174,8 +177,9 @@
     },
     "11": {
       "terminator_type": "call",
-      "jump_target": null,
+      "jump_target": "print_path",
       "successors": [
+        0,
         12
       ],
       "predecessors": [
@@ -194,7 +198,7 @@
     },
     "13": {
       "terminator_type": "call",
-      "jump_target": null,
+      "jump_target": "printf",
       "successors": [
         14
       ],
@@ -259,7 +263,9 @@
       "successors": [
         21
       ],
-      "predecessors": []
+      "predecessors": [
+        56
+      ]
     },
     "21": {
       "terminator_type": "conditional",
@@ -408,7 +414,7 @@
     },
     "34": {
       "terminator_type": "call",
-      "jump_target": null,
+      "jump_target": "printf",
       "successors": [
         35
       ],
@@ -420,7 +426,7 @@
     },
     "35": {
       "terminator_type": "call",
-      "jump_target": null,
+      "jump_target": "printf",
       "successors": [
         36
       ],
@@ -451,7 +457,7 @@
     },
     "38": {
       "terminator_type": "call",
-      "jump_target": null,
+      "jump_target": "printf",
       "successors": [
         39
       ],
@@ -462,7 +468,7 @@
     },
     "39": {
       "terminator_type": "call",
-      "jump_target": null,
+      "jump_target": "putchar",
       "successors": [
         40
       ],
@@ -501,7 +507,7 @@
     },
     "43": {
       "terminator_type": "call",
-      "jump_target": null,
+      "jump_target": "printf",
       "successors": [
         44
       ],
@@ -532,7 +538,7 @@
     },
     "46": {
       "terminator_type": "unconditional",
-      "jump_target": null,
+      "jump_target": "puts",
       "successors": [],
       "predecessors": [
         22
@@ -551,8 +557,9 @@
     },
     "48": {
       "terminator_type": "call",
-      "jump_target": null,
+      "jump_target": "print_path",
       "successors": [
+        0,
         49
       ],
       "predecessors": [
@@ -561,7 +568,7 @@
     },
     "49": {
       "terminator_type": "call",
-      "jump_target": null,
+      "jump_target": "printf",
       "successors": [
         50
       ],
@@ -634,8 +641,9 @@
     },
     "56": {
       "terminator_type": "call",
-      "jump_target": null,
+      "jump_target": "dijkstra",
       "successors": [
+        20,
         57
       ],
       "predecessors": [
@@ -705,11 +713,9 @@
       ]
     },
     "63": {
-      "terminator_type": "fallthrough",
+      "terminator_type": "return",
       "jump_target": null,
-      "successors": [
-        64
-      ],
+      "successors": [],
       "predecessors": [
         62
       ]
@@ -721,9 +727,7 @@
         77,
         65
       ],
-      "predecessors": [
-        63
-      ]
+      "predecessors": []
     },
     "65": {
       "terminator_type": "conditional",
@@ -745,7 +749,11 @@
       ],
       "predecessors": [
         65,
-        78
+        75,
+        78,
+        80,
+        84,
+        87
       ]
     },
     "67": {
@@ -839,8 +847,9 @@
     },
     "75": {
       "terminator_type": "call",
-      "jump_target": null,
+      "jump_target": "__riscv_div_lib_udivsi3",
       "successors": [
+        66,
         76
       ],
       "predecessors": []
@@ -886,8 +895,9 @@
     },
     "80": {
       "terminator_type": "call",
-      "jump_target": null,
+      "jump_target": "__riscv_div_lib_udivsi3",
       "successors": [
+        66,
         81
       ],
       "predecessors": [
@@ -925,8 +935,9 @@
     },
     "84": {
       "terminator_type": "call",
-      "jump_target": null,
+      "jump_target": "__riscv_div_lib_udivsi3",
       "successors": [
+        66,
         85
       ],
       "predecessors": [
@@ -955,8 +966,9 @@
     },
     "87": {
       "terminator_type": "call",
-      "jump_target": null,
+      "jump_target": "__riscv_div_lib_udivsi3",
       "successors": [
+        66,
         88
       ],
       "predecessors": [

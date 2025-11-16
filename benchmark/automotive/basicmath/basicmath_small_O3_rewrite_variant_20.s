@@ -1041,9 +1041,7 @@ __mul:
 .Mul_skip:
 	srli	a1,a1,1
 	slli	a2,a2,1
-	bne	a1,x0,.+8
-	jal	x0,.+8
-	jal	x0,.Mul_loop
+	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
 
 .text
@@ -1076,9 +1074,10 @@ __riscv_div_lib_L2:
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	xor	t0,a0,a3
-	and	t1,a0,a3
-	xor	a0,t0,t1
+	addi	t0,x0,-1
+	xor	t0,a0,t0
+	and	t0,a3,t0
+	add	a0,t0,a0
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1

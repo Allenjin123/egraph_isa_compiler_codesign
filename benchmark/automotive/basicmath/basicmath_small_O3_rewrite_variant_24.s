@@ -350,9 +350,7 @@ SolveCubic:
 	add	s4,a2,s5
 	beq	a3,a5,.L17
 	beq	a3,zero,.L18
-	addi	s4,x0,0
-	or	s4,x0,s4
-	add	s4,s3,s4
+	addi	s4,s3,0
 .L18:
 	bge	t4,s4,.L33
 	addi	t1,a1,0
@@ -497,12 +495,7 @@ SolveCubic:
 	sw	s4,24(sp)
 	sw	s5,20(sp)
 .L11:
-	addi	a5,x0,-53
-	and	a5,x0,a5
-	addi	t0,x0,-53
-	sub	a5,a5,t0
-	sub	a5,x0,a5
-	add	a5,zero,a5
+	addi	a5,zero,-53
 	lui	s3,1
 	blt	a0,a5,.L57
 	lui	s1,1
@@ -516,20 +509,16 @@ SolveCubic:
 .L30:
 	lui	s3,1
 	lui	s1,1
-	ori	s3,x0,93
-	add	s3,s1,s3
+	addi	s3,s1,93
 	addi	s1,s1,-2002
-	ori	a0,x0,0
-	add	a0,zero,a0
+	addi	a0,zero,0
 	jal	x0,.L14
 .L56:
 	addi	a1,a7,0
 	jal	x0,.L13
 .L57:
 	lui	s1,1
-	addi	t0,x0,1140
-	or	t0,x0,t0
-	add	s3,s3,t0
+	addi	s3,s3,1140
 	addi	s1,s1,-954
 	addi	a0,zero,1047
 	jal	x0,.L14
@@ -1064,33 +1053,35 @@ __riscv_div_lib_divsi3:
 # Unsigned 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_udivsi3
 __riscv_div_lib_udivsi3:
-	addi	a2,a1,0
+	ori	a2,x0,0
+	sub	t0,x0,a1
+	sub	a2,a2,t0
 	addi	a1,a0,0
 	addi	a0,zero,-1
 	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bltu	a2,a1,.+8
-	jal	x0,__riscv_div_lib_L2
+	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	bge	zero,a2,__riscv_div_lib_L2
-	ori	t0,x0,1
-	add	t0,x0,t0
-	sll	a2,a2,t0
+	slli	a2,a2,1
 	slli	a3,a3,1
 	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
-	addi	a0,x0,0
-	and	a0,x0,a0
-	addi	t0,x0,0
-	sub	a0,a0,t0
-	sub	a0,x0,a0
-	add	a0,zero,a0
+	addi	a0,zero,0
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	xori	t0,a0,-1
-	and	t0,a3,t0
-	add	a0,t0,a0
+	and	t0,a0,a3
+	xori	t0,t0,-1
+	and	t1,a0,a3
+	xori	t1,t1,-1
+	or	t2,a3,a0
+	or	t1,t1,t2
+	or	t2,a3,a0
+	sub	t1,t1,t2
+	sub	t0,t0,t1
+	and	t1,a0,a3
+	xor	a0,t0,t1
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1
@@ -1117,7 +1108,10 @@ __riscv_div_lib_L10:
 __riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
     sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
 __riscv_div_lib_L12:
-	addi	t0,ra,0
+	addi	t0,x0,0
+	or	t0,x0,t0
+	sub	t1,x0,ra
+	sub	t0,t0,t1
 .Lpcrel_div2:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_div2)
@@ -1127,9 +1121,7 @@ __riscv_div_lib_L12:
 # Signed 32-bit remainder: a0 = a0 % a1
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
-	addi	t0,x0,0
-	or	t0,x0,t0
-	add	t0,ra,t0
+	addi	t0,ra,0
 	blt	a1,zero,__riscv_div_lib_L31
 	blt	a0,zero,.+8
 	jal	x0,.+8
