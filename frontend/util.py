@@ -565,6 +565,13 @@ def format_instruction(op: str, rd: str, operands: List[str]) -> str:
     
     # 普通指令
     if operands:
+        # JAL 指令特殊处理：如果操作数是纯数字，改成 ".+数字"
+        if op == 'jal' and len(operands) == 1:
+            target = operands[0]
+            # 检查是否是纯数字（不能有负号）
+            if re.match(r'^\d+$', target):
+                target = f".+{target}"
+            return f"{op}\t{rd},{target}"
         return f"{op}\t{rd},{','.join(operands)}"
     else:
         return f"{op}\t{rd}" 

@@ -867,7 +867,7 @@ main:
 	addi	op_0,x0,1
 	blt	a0,op_0,.+12
 	addi	a0,x0,0
-	jal	x0,8
+	jal	x0,.+8
 	addi	a0,x0,1
 	addi	sp,sp,2032
 	jalr	zero,ra,0

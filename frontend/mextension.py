@@ -45,6 +45,14 @@ def _is_a1(reg: str) -> bool:
     return reg in {"a1", "x11"}
 
 
+def _is_a2(reg: str) -> bool:
+    return reg in {"a2", "x12"}
+
+
+def _is_a3(reg: str) -> bool:
+    return reg in {"a3", "x13"}
+
+
 def _is_t0(reg: str) -> bool:
     return reg in {"t0", "x5"}
 
@@ -84,10 +92,12 @@ def replace_m_extension(asm: str) -> str:
 
         save_a0 = not _is_a0(rd)
         save_a1 = not _is_a1(rd)
+        save_a2 = not _is_a2(rd)
+        save_a3 = not _is_a3(rd)
         save_t0 = needs_t0 and not _is_t0(rd)
         
-        # a2, a3 和 ra 始终保存
-        stack_slots = int(save_a0) + int(save_a1) + int(save_t0) + 3
+        # ra 始终保存，a0-a3 根据 rd 决定是否保存
+        stack_slots = int(save_a0) + int(save_a1) + int(save_a2) + int(save_a3) + int(save_t0) + 1
         # RISC-V ABI 要求栈指针保持 16 字节对齐
         stack_frame = ((4 * stack_slots + 15) // 16) * 16
 
@@ -102,14 +112,16 @@ def replace_m_extension(asm: str) -> str:
             if save_a1:
                 new_lines.append(f"{indent}sw\ta1, {offset}(sp)")
                 offset += 4
+            if save_a2:
+                new_lines.append(f"{indent}sw\ta2, {offset}(sp)")
+                offset += 4
+            if save_a3:
+                new_lines.append(f"{indent}sw\ta3, {offset}(sp)")
+                offset += 4
             if save_t0:
                 new_lines.append(f"{indent}sw\tt0, {offset}(sp)")
                 offset += 4
-            # 始终保存 a2, a3 和 ra
-            new_lines.append(f"{indent}sw\ta2, {offset}(sp)")
-            offset += 4
-            new_lines.append(f"{indent}sw\ta3, {offset}(sp)")
-            offset += 4
+            # 始终保存 ra
             new_lines.append(f"{indent}sw\tra, {offset}(sp)")
 
         # 处理参数准备：检查参数中有没有 a0
@@ -152,14 +164,16 @@ def replace_m_extension(asm: str) -> str:
             if save_a1:
                 new_lines.append(f"{indent}lw\ta1, {offset}(sp)")
                 offset += 4
+            if save_a2:
+                new_lines.append(f"{indent}lw\ta2, {offset}(sp)")
+                offset += 4
+            if save_a3:
+                new_lines.append(f"{indent}lw\ta3, {offset}(sp)")
+                offset += 4
             if save_t0:
                 new_lines.append(f"{indent}lw\tt0, {offset}(sp)")
                 offset += 4
-            # 始终恢复 a2, a3 和 ra
-            new_lines.append(f"{indent}lw\ta2, {offset}(sp)")
-            offset += 4
-            new_lines.append(f"{indent}lw\ta3, {offset}(sp)")
-            offset += 4
+            # 始终恢复 ra
             new_lines.append(f"{indent}lw\tra, {offset}(sp)")
             new_lines.append(f"{indent}addi\tsp, sp, {stack_frame}")
 
