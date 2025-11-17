@@ -38,6 +38,9 @@ echo ""
 echo -e "${GREEN}✓ Mul/div subroutines appended to clean.s files${NC}"
 echo ""
 
+# Create tmp directory for logs and outputs
+mkdir -p tmp
+
 # Step 2: Run spike counts
 echo -e "${CYAN}Step 2: Running Spike instruction counts (parallel)${NC}"
 echo ""
