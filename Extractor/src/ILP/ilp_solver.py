@@ -129,9 +129,10 @@ def extract_solution(egraph: EGraph, variables: Dict[str, float]) -> Dict[str, s
     """
     # Build reverse index once: var_name -> (eclass_id, node_id)
     # This avoids O(n²) complexity
+    # Note: ILP variables use sanitized IDs, so we need to sanitize here too
     var_to_node = {}
     for node_id, node in egraph.enodes.items():
-        expected_var = f"N_{node.eclass_id}_{node_id}"
+        expected_var = f"N_{sanitize(node.eclass_id)}_{sanitize(node_id)}"
         var_to_node[expected_var] = (node.eclass_id, node_id)
     
     choices = {}

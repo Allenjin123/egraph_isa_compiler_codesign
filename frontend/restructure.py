@@ -8,7 +8,7 @@ from typing import Dict, List, Tuple, Set
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "Extractor" / "src"))
-from egraph import EGraph, ENode 
+from egraph import EGraph, ENode, sanitize
 from ILP.ilp_solver import parse_solution_file, extract_solution  
 from util import INSTRUCTIONS_WITHOUT_RD, RV32I_LOAD, ALL_ABI_REGS, parse_instruction, format_instruction, SPECIAL_REGS
 from reg_alloc import allocate_compact_mapping
@@ -43,6 +43,7 @@ def get_eclass_to_rd(program_name: str, block_num: int) -> List[Tuple[str, str]]
     ]
     """
     eclass_file = FRONTEND_OUTPUT_DIR / program_name / "basic_blocks_eclass" / f"{block_num}.txt"
+    # EGraph 中的 eclass_id 使用原始程序名（包含特殊字符），不需要 sanitize
     prefix = f"{program_name}_{block_num}_eclass_"
     result = []
     
@@ -207,6 +208,7 @@ class BlockGraph:
     
     def load_root_eclass(self):
         """从 choices 中找到 root 节点，提取其子 eclass"""
+        # EGraph 中的 eclass_id 使用原始程序名（包含特殊字符），不需要 sanitize
         root_key = f"{self.program_name}_{self.block_num}_eclass_root"
         
         if root_key in self.choices:
