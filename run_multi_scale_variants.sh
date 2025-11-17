@@ -20,6 +20,7 @@ DEFAULT_SYNTH_PARALLEL=38      # Number of synthesis processes to run in paralle
 DEFAULT_CLEAN=true             # Clean old outputs by default
 DEFAULT_RUN_SATURATION=true    # Run saturation by default
 DEFAULT_FREQ_ANALYSIS=false    # Frequency analysis disabled by default
+DEFAULT_SHIFT_CONSTRAINTS=false # Shift immediate constraints disabled by default
 DEFAULT_CORE_NAME="ibex"       # Default core name
 # DEFAULT_PROGRAMS is now dynamically determined from available clean.s files
 
@@ -76,6 +77,7 @@ usage() {
     echo "  --skip-frontend            skip front end processing"
     echo "  --skip-saturation          跳过饱和步骤（使用现有 JSON 文件）"
     echo "  --enable-freq-analysis     启用频率分析（延迟以秒计算而不是周期）"
+    echo "  --enable-shift-constraints 启用移位立即数约束优化（v2 DSL 格式）"
     echo "  --core-name CORE           指定核心名称 (默认: ibex)"
     echo "  -r, --reconstruct-only     仅重建汇编文件（跳过 ILP 提取）"
     echo "  -h, --help                 显示此帮助信息"
@@ -97,6 +99,7 @@ usage() {
     echo "  $0 --skip-saturation --no-clean                        # 所有程序，跳过清理和饱和"
     echo "  $0 dijkstra_small_O3 --enable-freq-analysis            # 启用频率分析，延迟以秒计算"
     echo "  $0 dijkstra_small_O3 --core-name rocket                # 使用 rocket 核心进行合成"
+    echo "  $0 dijkstra_small_O3 --enable-shift-constraints        # 启用移位立即数约束优化"
     echo ""
     exit 1
 }
@@ -120,6 +123,7 @@ CLEAN_OUTPUTS="$DEFAULT_CLEAN"
 SKIP_FRONTEND=false
 RUN_SATURATION="$DEFAULT_RUN_SATURATION"
 ENABLE_FREQ_ANALYSIS="$DEFAULT_FREQ_ANALYSIS"
+ENABLE_SHIFT_CONSTRAINTS="$DEFAULT_SHIFT_CONSTRAINTS"
 CORE_NAME="$DEFAULT_CORE_NAME"
 
 # Parse all arguments
@@ -171,6 +175,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --enable-freq-analysis)
             ENABLE_FREQ_ANALYSIS=true
+            shift
+            ;;
+        --enable-shift-constraints)
+            ENABLE_SHIFT_CONSTRAINTS=true
             shift
             ;;
         --core-name)
@@ -242,6 +250,7 @@ echo -e "ILP 并行数: ${GREEN}${ILP_PARALLEL}${NC} (每个程序的缩放因�
 echo -e "合成并行数: ${GREEN}${SYNTH_PARALLEL}${NC} (并行合成进程数)"
 echo -e "核心名称: ${GREEN}${CORE_NAME}${NC}"
 echo -e "频率分析: ${GREEN}$([ "$ENABLE_FREQ_ANALYSIS" = true ] && echo "启用 (延迟以秒计算)" || echo "禁用 (延迟以周期计算)")${NC}"
+echo -e "移位约束: ${GREEN}$([ "$ENABLE_SHIFT_CONSTRAINTS" = true ] && echo "启用 (v2 DSL 格式)" || echo "禁用")${NC}"
 echo -e "输出基础目录: ${GREEN}${OUTPUT_BASE_DIR}${NC}"
 echo -e "${CYAN}========================================${NC}"
 echo ""
@@ -740,7 +749,12 @@ CORE_FLAG=""
 if [ "$CORE_NAME" != "ibex" ]; then
     CORE_FLAG="--core-name $CORE_NAME"
 fi
-python3 "$SCRIPT_DIR/analyze_all_variants.py" "$FINAL_OUTPUT" "$PROGRAM_NAME" "$OUTPUT_DIR" "$SYNTH_PARALLEL" $FREQ_FLAG $CORE_FLAG
+# Add shift constraints flag
+SHIFT_FLAG=""
+if [ "$ENABLE_SHIFT_CONSTRAINTS" = true ]; then
+    SHIFT_FLAG="--enable-shift-constraints"
+fi
+python3 "$SCRIPT_DIR/analyze_all_variants.py" "$FINAL_OUTPUT" "$PROGRAM_NAME" "$OUTPUT_DIR" "$SYNTH_PARALLEL" $FREQ_FLAG $CORE_FLAG $SHIFT_FLAG
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓ Pareto 分析完成${NC}"

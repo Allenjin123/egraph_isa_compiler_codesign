@@ -25,7 +25,7 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 
 
-def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enable_freq_analysis=False, core_name="ibex"):
+def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enable_freq_analysis=False, core_name="ibex", enable_shift_constraints=False):
     """
     Analyze a single variant (to be called in parallel).
 
@@ -36,6 +36,7 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enab
         dsl_dir: Directory to save DSL files
         enable_freq_analysis: If True, parse frequency and calculate latency in seconds
         core_name: Name of the core to synthesize (default: "ibex")
+        enable_shift_constraints: If True, apply shift immediate constraints in DSL
 
     Returns:
         Tuple of (variant_id, subset, area, latency, frequency, num_blocks) or None on error
@@ -105,7 +106,11 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enab
         else:
             print(f"Variant {variant_id}: Starting synthesis with {len(subset)} instructions...")
             start_time = time.time()
-            area, frequency = ap.parse_area(subset, dsl_file_path, enable_freq_analysis=enable_freq_analysis, core_name=core_name)
+            # Only pass shift_imm_dict if shift constraints are enabled
+            if enable_shift_constraints:
+                area, frequency = ap.parse_area(subset, dsl_file_path, enable_freq_analysis=enable_freq_analysis, core_name=core_name, shift_imm_dict=shift_imm_dict)
+            else:
+                area, frequency = ap.parse_area(subset, dsl_file_path, enable_freq_analysis=enable_freq_analysis, core_name=core_name)
             synthesis_time = time.time() - start_time
 
         # Calculate latency (passing frequency from synthesis if freq analysis enabled)
@@ -132,10 +137,11 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enab
 
 def main():
     if len(sys.argv) < 4:
-        print("Usage: python analyze_all_variants.py <variants_dir> <program_name> <output_dir> [num_processes] [--enable-freq-analysis] [--core-name CORE]")
+        print("Usage: python analyze_all_variants.py <variants_dir> <program_name> <output_dir> [num_processes] [--enable-freq-analysis] [--enable-shift-constraints] [--core-name CORE]")
         print("Example: python analyze_all_variants.py output/backend/dijkstra_small_O3/variants dijkstra_small_O3 output/backend/dijkstra_small_O3 72")
         print("         python analyze_all_variants.py output/backend/dijkstra_small_O3/variants dijkstra_small_O3 output/backend/dijkstra_small_O3 72 --enable-freq-analysis")
         print("         python analyze_all_variants.py output/backend/dijkstra_small_O3/variants dijkstra_small_O3 output/backend/dijkstra_small_O3 72 --core-name rocket")
+        print("         python analyze_all_variants.py output/backend/dijkstra_small_O3/variants dijkstra_small_O3 output/backend/dijkstra_small_O3 72 --enable-shift-constraints")
         sys.exit(1)
 
     variants_dir = sys.argv[1]
@@ -144,6 +150,9 @@ def main():
 
     # Check for frequency analysis flag
     enable_freq_analysis = "--enable-freq-analysis" in sys.argv
+
+    # Check for shift constraints flag
+    enable_shift_constraints = "--enable-shift-constraints" in sys.argv
 
     # Check for core name
     core_name = "ibex"  # default
@@ -155,6 +164,7 @@ def main():
     # Parse num_processes (skip the flags if present)
     args_without_flags = [arg for i, arg in enumerate(sys.argv[4:], 4)
                          if arg != "--enable-freq-analysis" and
+                         arg != "--enable-shift-constraints" and
                          (i == 4 or sys.argv[i-1] != "--core-name") and
                          arg != "--core-name"]
     num_processes = int(args_without_flags[0]) if len(args_without_flags) > 0 else 72  # Default to 72
@@ -179,6 +189,7 @@ def main():
     print(f"Core name: {core_name}")
     print(f"Parallel processes: {num_processes}")
     print(f"Frequency analysis: {'ENABLED (latency in seconds)' if enable_freq_analysis else 'DISABLED (latency in cycles)'}")
+    print(f"Shift constraints: {'ENABLED (v2 DSL format)' if enable_shift_constraints else 'DISABLED'}")
     print(f"DSL files: {dsl_dir}")
     print("=" * 80)
     print()
@@ -231,7 +242,8 @@ def main():
                               program_name=program_name,
                               dsl_dir=str(dsl_dir),
                               enable_freq_analysis=enable_freq_analysis,
-                              core_name=core_name)
+                              core_name=core_name,
+                              enable_shift_constraints=enable_shift_constraints)
 
         # Run analysis in parallel
         overall_start = time.time()
