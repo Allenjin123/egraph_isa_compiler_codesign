@@ -23,6 +23,112 @@ class AsmReconstructor:
     def __init__(self, verbose=False):
         self.verbose = verbose
     
+    def extract_registers_from_line(self, line: str) -> set:
+        """从指令行中提取所有寄存器"""
+        import re
+        # 匹配寄存器：a0-a7, t0-t6, s0-s11, sp, ra, zero 等
+        reg_pattern = r'\b([ast]\d+|zero|sp|ra|gp|tp|fp)\b'
+        matches = re.findall(reg_pattern, line)
+        return set(matches)
+    
+    def fix_div_lib_registers(self, lines: List[str], div_free_regs: List[str]) -> List[str]:
+        """修复 __riscv_div_lib_L3 中使用的寄存器
+        
+        Args:
+            lines: 完整的汇编代码行列表
+            div_free_regs: div 可用的 free registers 列表
+            
+        Returns:
+            修复后的代码行列表
+        """
+        if not div_free_regs:
+            return lines
+        
+        # 1. 找到 __riscv_div_lib_L3 标签的位置
+        start_idx = None
+        end_idx = None
+        
+        for i, line in enumerate(lines):
+            if '__riscv_div_lib_L3:' in line:
+                start_idx = i
+            elif start_idx is not None and self.is_label_line(line):
+                # 遇到下一个标签，结束
+                end_idx = i
+                break
+        
+        if start_idx is None:
+            if self.verbose:
+                print("  未找到 __riscv_div_lib_L3 标签")
+            return lines
+        
+        if end_idx is None:
+            end_idx = len(lines)
+        
+        if self.verbose:
+            print(f"  找到 __riscv_div_lib_L3: 行 {start_idx+1} 到 {end_idx}")
+        
+        # 2. 提取该段代码中使用的所有寄存器（排除 a0-a3）
+        used_regs = set()
+        protected_regs = {'a0', 'a1', 'a2', 'a3', 'zero', 'sp', 'ra'}
+        
+        for i in range(start_idx, end_idx):
+            line = lines[i]
+            if self.is_instruction_line(line):
+                regs = self.extract_registers_from_line(line)
+                used_regs.update(regs - protected_regs)
+        
+        if self.verbose:
+            print(f"  使用的寄存器（除 a0-a3）: {sorted(used_regs)}")
+        
+        # 3. 找出哪些寄存器不在 div_free_regs 中
+        div_free_set = set(div_free_regs)
+        conflicting_regs = used_regs - div_free_set
+        
+        if not conflicting_regs:
+            if self.verbose:
+                print(f"  ✓ 所有寄存器都在 free list 中，无需替换")
+            return lines
+        
+        if self.verbose:
+            print(f"  需要替换的寄存器: {sorted(conflicting_regs)}")
+        
+        # 4. 为每个冲突寄存器分配一个 free 寄存器
+        replacement_map = {}
+        available_regs = [r for r in div_free_regs if r not in used_regs]
+        
+        for i, conflict_reg in enumerate(sorted(conflicting_regs)):
+            if i < len(available_regs):
+                replacement_map[conflict_reg] = available_regs[i]
+            else:
+                if self.verbose:
+                    print(f"  警告: 没有足够的 free 寄存器来替换 {conflict_reg}")
+                break
+        
+        if self.verbose:
+            print(f"  替换映射: {replacement_map}")
+        
+        # 5. 在 __riscv_div_lib_L3 段中执行替换
+        result_lines = lines[:start_idx]
+        
+        for i in range(start_idx, end_idx):
+            line = lines[i]
+            new_line = line
+            
+            # 对每个需要替换的寄存器进行替换
+            for old_reg, new_reg in replacement_map.items():
+                # 使用单词边界确保只替换完整的寄存器名
+                import re
+                new_line = re.sub(r'\b' + old_reg + r'\b', new_reg, new_line)
+            
+            result_lines.append(new_line)
+        
+        result_lines.extend(lines[end_idx:])
+        
+        if self.verbose:
+            print(f"  ✓ 完成寄存器替换")
+        
+        return result_lines
+    
     def is_label_line(self, line: str) -> bool:
         """检查是否是标签行（从第0列开始且以':'结尾）"""
         if not line or line.startswith('#'):
@@ -145,6 +251,15 @@ class AsmReconstructor:
             block_id = int(block_file.stem)
             with open(block_file, 'r', encoding='utf-8') as f:
                 rewritten_blocks[block_id] = f.readlines()
+        
+        # 读取 div_reg.txt（div 库函数可用的寄存器）
+        div_reg_file = rewrite_blocks_dir / "div_reg.txt"
+        div_free_regs = []
+        if div_reg_file.exists():
+            with open(div_reg_file, 'r', encoding='utf-8') as f:
+                div_free_regs = [line.strip() for line in f if line.strip()]
+            if self.verbose:
+                print(f"  加载了 div 可用寄存器: {div_free_regs}")
 
         # 读取 placeholder block（可选）
         placeholder_blocks = None
@@ -226,6 +341,12 @@ class AsmReconstructor:
 
         # 重建输出
         output_lines = build_output_lines(rewritten_blocks)
+        
+        # 修复 __riscv_div_lib_L3 中的寄存器
+        if div_free_regs:
+            if self.verbose:
+                print(f"\n  修复 div 库函数寄存器...")
+            output_lines = self.fix_div_lib_registers(output_lines, div_free_regs)
 
         # 写入 _rewrite.s 文件
         output_file = clean_file.parent / clean_file.name.replace('_clean.s', '_rewrite.s')
@@ -236,6 +357,11 @@ class AsmReconstructor:
         # 如果存在 placeholder，额外输出
         if placeholder_blocks is not None:
             placeholder_output_lines = build_output_lines(placeholder_blocks)
+            
+            # 修复 placeholder 中的 div 库函数寄存器
+            if div_free_regs:
+                placeholder_output_lines = self.fix_div_lib_registers(placeholder_output_lines, div_free_regs)
+            
             placeholder_file = clean_file.parent / clean_file.name.replace('_clean.s', '_placeholder.s')
             with open(placeholder_file, 'w', encoding='utf-8') as f:
                 f.writelines(placeholder_output_lines)
