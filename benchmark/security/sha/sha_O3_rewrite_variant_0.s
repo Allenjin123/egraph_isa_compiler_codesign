@@ -121,12 +121,18 @@ sha_transform:
 	sub	t0,a1,t0
 	and	a4,a1,a4
 	sub	a4,t0,a4
-	srli	t6,a2,31
-	slli	a7,a2,1
-	slli	a6,a3,1
-	srli	a2,a3,31
-	slli	a1,a4,1
-	srli	a3,a4,31
+	addi	t6,x0,31
+	srl	t6,a2,t6
+	addi	a7,x0,1
+	sll	a7,a2,a7
+	addi	a6,x0,1
+	sll	a6,a3,a6
+	addi	a2,x0,31
+	srl	a2,a3,a2
+	addi	a1,x0,1
+	sll	a1,a4,a1
+	addi	a3,x0,31
+	srl	a3,a4,a3
 	sub	a7,x0,a7
 	sub	a7,t6,a7
 	sub	a6,x0,a6
@@ -167,8 +173,10 @@ sha_transform:
 	lw	t4,8(a0)
 	lw	t3,12(a0)
 	lw	t1,16(a0)
-	srli	a4,a5,31
-	slli	a5,a5,1
+	addi	a4,x0,31
+	srl	a4,a5,a4
+	addi	t0,x0,1
+	sll	a5,a5,t0
 	sub	t0,x0,a4
 	sub	a5,a5,t0
 	lui	s1,370728
@@ -188,8 +196,10 @@ sha_transform:
 	addi	a7,a2,0
 .L3:
 	lw	a2,0(a3)
-	slli	a4,a6,5
-	srli	a5,a6,27
+	addi	a4,x0,5
+	sll	a4,a6,a4
+	addi	a5,x0,27
+	srl	a5,a6,a5
 	sub	a5,x0,a5
 	sub	a5,a4,a5
 	addi	sp,sp,-16
@@ -213,8 +223,10 @@ sha_transform:
 	sub	a4,a2,a4
 	sub	a5,x0,a5
 	sub	a5,a4,a5
-	slli	a2,a1,30
-	srli	a4,a1,2
+	addi	a2,x0,30
+	sll	a2,a1,a2
+	addi	a4,x0,2
+	srl	a4,a1,a4
 	addi	a3,a3,4
 	sub	a1,x0,t2
 	sub	a5,a5,a1
@@ -233,8 +245,10 @@ sha_transform:
 	addi	a5,a3,0
 	addi	a2,a1,0
 .L4:
-	slli	a3,a5,5
-	srli	a4,a5,27
+	addi	a3,x0,5
+	sll	a3,a5,a3
+	addi	a4,x0,27
+	srl	a4,a5,a4
 	lw	a1,0(s0)
 	sub	a4,x0,a4
 	sub	a4,a3,a4
@@ -262,8 +276,10 @@ sha_transform:
 	sub	a3,a4,a3
 	sub	a3,x0,a3
 	sub	a3,a1,a3
-	srli	a4,a6,2
-	slli	a1,a6,30
+	addi	a4,x0,2
+	srl	a4,a6,a4
+	addi	a1,x0,30
+	sll	a1,a6,a1
 	addi	s0,s0,4
 	sub	a6,x0,t0
 	sub	a3,a3,a6
@@ -283,8 +299,10 @@ sha_transform:
 	addi	a1,s0,0
 .L5:
 	lw	s2,0(t2)
-	slli	a4,a3,5
-	srli	a6,a3,27
+	addi	a4,x0,5
+	sll	a4,a3,a4
+	addi	a6,x0,27
+	srl	a6,a3,a6
 	sub	a6,x0,a6
 	sub	a6,a4,a6
 	and	a4,a1,a2
@@ -305,8 +323,10 @@ sha_transform:
 	addi	sp,sp,16
 	sub	a4,x0,a4
 	sub	a4,a6,a4
-	slli	s0,a5,30
-	srli	a6,a5,2
+	addi	s0,x0,30
+	sll	s0,a5,s0
+	addi	a6,x0,2
+	srl	a6,a5,a6
 	addi	t2,t2,4
 	sub	a5,x0,a7
 	sub	a4,a4,a5
@@ -324,8 +344,10 @@ sha_transform:
 	addi	a4,a5,0
 	addi	s0,a6,0
 .L6:
-	slli	a5,a4,5
-	srli	a6,a4,27
+	addi	a5,x0,5
+	sll	a5,a4,a5
+	addi	a6,x0,27
+	srl	a6,a4,a6
 	lw	a7,0(t0)
 	sub	a6,x0,a6
 	sub	a6,a5,a6
@@ -353,11 +375,13 @@ sha_transform:
 	sub	a5,a6,a5
 	sub	a5,x0,a5
 	sub	a5,a7,a5
-	slli	a6,a3,30
+	addi	a6,x0,30
+	sll	a6,a3,a6
 	sub	a7,x0,a2
 	sub	a5,a5,a7
 	addi	t0,t0,4
-	srli	a2,a3,2
+	addi	a2,x0,2
+	srl	a2,a3,a2
 	addi	a7,sp,320
 	sub	a6,x0,a6
 	sub	a6,a2,a6
@@ -416,18 +440,19 @@ sha_init:
 sha_update:
 	lw	a4,20(a0)
 	lw	a3,24(a0)
-	slli	a5,a2,3
+	addi	a5,x0,3
+	sll	a5,a2,a5
 	sub	t0,x0,a4
 	sub	a5,a5,t0
-	bgeu	a5,a4,.+8
-	jal	x0,.+12
+	bltu	a5,a4,.+12
 	addi	a4,x0,0
 	jal	x0,.+8
 	addi	a4,x0,1
 	addi	sp,sp,-48
 	sub	a3,x0,a3
 	sub	a3,a4,a3
-	srli	a4,a2,29
+	addi	a4,x0,29
+	srl	a4,a2,a4
 	sw	s0,40(sp)
 	sw	s2,32(sp)
 	sw	ra,44(sp)
@@ -443,10 +468,12 @@ sha_update:
 	sw	s5,20(sp)
 	addi	s5,a2,-64
 	sw	s3,28(sp)
-	srli	s3,s5,6
+	addi	s3,x0,6
+	srl	s3,s5,s3
 	sw	s4,24(sp)
 	addi	s4,s3,1
-	slli	s4,s4,6
+	addi	t0,x0,6
+	sll	s4,s4,t0
 	sw	s6,16(sp)
 	sw	s7,12(sp)
 	sw	s1,36(sp)
@@ -467,8 +494,7 @@ sha_update:
 	jal	x0,.L31
 	sub	a3,s6,a5
 	addi	t0,x0,3
-	bgeu	a3,t0,.+8
-	jal	x0,.+12
+	bltu	a3,t0,.+12
 	addi	a3,x0,0
 	jal	x0,.+8
 	addi	a3,x0,1
@@ -644,7 +670,8 @@ sha_update:
 	beq	s1,s4,.+8
 	jal	x0,.L22
 	sub	a3,zero,s3
-	slli	a3,a3,6
+	addi	t0,x0,6
+	sll	a3,a3,t0
 	sub	s2,s2,a3
 	lw	s1,36(sp)
 	sub	a3,x0,a3
@@ -661,12 +688,12 @@ sha_update:
 	addi	a7,a3,-1
 	addi	a5,zero,6
 	addi	a1,s0,28
-	bgeu	a5,a7,.L24
+	bltu	a5,a7,.+8
+	jal	x0,.L24
 	addi	a5,s0,27
 	sub	a5,a5,s2
 	addi	t0,x0,3
-	bgeu	a5,t0,.+8
-	jal	x0,.+12
+	bltu	a5,t0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
@@ -677,11 +704,11 @@ sha_update:
 	sub	a5,a5,s2
 	sub	a5,a1,a5
 	addi	t0,x0,3
-	and	a5,a5,t0
+	and	a5,t0,a5
 	beq	a5,zero,.+8
 	jal	x0,.L24
 	addi	a6,x0,-4
-	and	a6,a6,a3
+	and	a6,a3,a6
 	sub	a0,x0,a6
 	sub	a0,s2,a0
 	addi	a5,a1,0
@@ -747,7 +774,8 @@ sha_final:
 	lw	a7,20(a0)
 	addi	sp,sp,-48
 	addi	a5,a0,28
-	srli	a4,a7,3
+	addi	a4,x0,3
+	srl	a4,a7,a4
 	addi	t0,x0,63
 	and	a4,a4,t0
 	addi	a2,zero,-128
@@ -932,7 +960,7 @@ sha_final:
 	beq	a4,zero,.L89
 	sb	zero,28(a0)
 	addi	t0,x0,2
-	and	a3,a3,t0
+	and	a3,t0,a3
 	beq	a3,zero,.L90
 	sb	zero,29(a0)
 	addi	a5,zero,3
@@ -1099,7 +1127,8 @@ sha_final:
 	addi	a5,a4,-49
 	addi	t3,zero,5
 	sub	a6,a6,a3
-	bgeu	t3,a5,.L69
+	bltu	t3,a5,.+8
+	jal	x0,.L69
 	addi	a4,a4,29
 	sub	a5,x0,a0
 	sub	a5,a4,a5
@@ -1110,7 +1139,7 @@ sha_final:
 	beq	t3,zero,.L70
 	sb	zero,0(a2)
 	addi	t0,x0,2
-	and	a5,a5,t0
+	and	a5,t0,a5
 	beq	a5,zero,.L92
 	sb	zero,1(a2)
 	addi	a5,zero,3
@@ -1127,7 +1156,8 @@ sha_final:
 	sub	a5,a4,a5
 	sub	a1,a1,t3
 	sw	zero,0(a5)
-	srli	a4,a1,2
+	addi	a4,x0,2
+	srl	a4,a1,a4
 	addi	a3,zero,1
 	beq	a4,a3,.L74
 	sw	zero,4(a5)
@@ -1273,7 +1303,8 @@ sha_process_buffer:
 	addi	a1,s2,0
 	addi	a0,s3,0
 	addi	s1,s0,0
-	bgeu	s4,s0,.L96
+	bltu	s4,s0,.+8
+	jal	x0,.L96
 	lui	s1,2
 .L96:
 	addi	a2,s1,0
@@ -6579,13 +6610,15 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	a3,x0,1
-	and	a3,a3,a1
+	and	a3,a1,a3
 	beq	a3,x0,.Mul_skip
 	sub	a0,x0,a0
 	sub	a0,a2,a0
 .Mul_skip:
-	srli	a1,a1,1
-	slli	a2,a2,1
+	addi	t0,x0,1
+	srl	a1,a1,t0
+	addi	t0,x0,1
+	sll	a2,a2,t0
 	beq	a1,x0,.+8
 	jal	x0,.Mul_loop
 	jalr	x0,ra,0
@@ -6608,26 +6641,29 @@ __riscv_div_lib_udivsi3:
 	addi	a0,zero,-1
 	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bgeu	a2,a1,__riscv_div_lib_L2
+	bltu	a2,a1,.+8
+	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	blt	zero,a2,.+8
 	jal	x0,__riscv_div_lib_L2
-	slli	a2,a2,1
-	slli	a3,a3,1
-	bgeu	a2,a1,.+8
-	jal	x0,__riscv_div_lib_L1
+	addi	t1,x0,1
+	sll	a2,a2,t1
+	addi	t1,x0,1
+	sll	a3,a3,t1
+	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bgeu	a1,a2,.+8
-	jal	x0,__riscv_div_lib_L4
+	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	and	t1,a0,a3
 	sub	t1,t1,a3
 	sub	a0,a0,t1
 __riscv_div_lib_L4:
-	srli	a3,a3,1
-	srli	a2,a2,1
+	addi	t1,x0,1
+	srl	a3,a3,t1
+	addi	t1,x0,1
+	srl	a2,a2,t1
 	beq	a3,zero,.+8
 	jal	x0,__riscv_div_lib_L3
 __riscv_div_lib_L5:

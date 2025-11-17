@@ -704,8 +704,10 @@ def rewrite_program(program_name: str, solution_file: str = None, output_dir: st
         print(f"\n程序 {program_name} 的 div/divu free_regs 交集: {intersection}")
         print(f"  可用于 div 库函数的寄存器数: {len(intersection)}")
         
-        # 保存到文件
-        div_reg_file = output_dir / 'div_reg.txt'
+        # 保存到程序级别的输出目录 (output/frontend/<program_name>)
+        program_output_dir = FRONTEND_OUTPUT_DIR / program_name
+        program_output_dir.mkdir(parents=True, exist_ok=True)
+        div_reg_file = program_output_dir / 'div_reg.txt'
         with open(div_reg_file, 'w') as f:
             f.write('\n'.join(intersection))
         print(f"  已保存到: {div_reg_file}")
@@ -839,14 +841,13 @@ def rewrite_program_all_variants(program_name: str, num_variants: int = 5, print
         print(f"\n程序 {program_name} 的 div/divu free_regs 交集: {intersection}")
         print(f"  可用于 div 库函数的寄存器数: {len(intersection)}")
         
-        # 为每个 variant 保存 div_reg.txt
-        for i in range(len(all_stats)):
-            variant_dir = base_output_dir / f"variant_{i}"
-            if variant_dir.exists():
-                div_reg_file = variant_dir / 'div_reg.txt'
-                with open(div_reg_file, 'w') as f:
-                    f.write('\n'.join(intersection))
-        print(f"  已保存到各 variant 的 div_reg.txt")
+        # 保存 div_reg.txt 到程序级别的输出目录
+        program_output_dir = FRONTEND_OUTPUT_DIR / program_name
+        program_output_dir.mkdir(parents=True, exist_ok=True)
+        div_reg_file = program_output_dir / 'div_reg.txt'
+        with open(div_reg_file, 'w') as f:
+            f.write('\n'.join(intersection))
+        print(f"  已保存到: {div_reg_file}")
 
     print(f"{'='*70}\n")
 

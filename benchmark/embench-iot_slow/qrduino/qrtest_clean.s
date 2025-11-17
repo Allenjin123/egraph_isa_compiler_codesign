@@ -1,0 +1,6720 @@
+	.file	"qrtest.c"
+	.option nopic
+	.option norelax
+	.attribute arch, "rv32i2p1_m2p0_zicsr2p0_zifencei2p0_zmmul1p0"
+	.attribute unaligned_access, 0
+	.attribute stack_align, 16
+	.text
+	.align	2
+	.type	appendrs, @function
+appendrs:
+	beq	a3,zero,.L10
+	addi	a5,a3,-1
+	addi	a6, zero, 5
+	bgeu	a6, a5, .L31
+	sub	a6, zero, a2
+	andi	a5,a6,3
+	addi	a7, zero, 0
+	beq	a5,zero,.L6
+	sb	zero,0(a2)
+	andi	a6,a6,2
+	addi	a7, zero, 1
+	beq	a6,zero,.L6
+	sb	zero,1(a2)
+	addi	a6, zero, 3
+	addi	a7, zero, 2
+	bne	a5,a6,.L6
+	sb	zero,2(a2)
+	addi	a7, a5, 0
+.L6:
+	sub	t3,a3,a5
+	andi	t1,t3,-4
+	add	a5,a2,a5
+	add	a6,a5,t1
+.L8:
+	sw	zero,0(a5)
+	addi	a5,a5,4
+	bne	a5,a6,.L8
+	add	a5,a7,t1
+	beq	t3,t1,.L10
+.L5:
+	add	a6,a2,a5
+	sb	zero,0(a6)
+	addi	a6,a5,1
+	bgeu	a6, a3, .L10
+	add	a6,a2,a6
+	sb	zero,0(a6)
+	addi	a6,a5,2
+	bgeu	a6, a3, .L10
+	add	a6,a2,a6
+	sb	zero,0(a6)
+	addi	a6,a5,3
+	bgeu	a6, a3, .L10
+	add	a6,a2,a6
+	sb	zero,0(a6)
+	addi	a6,a5,4
+	bgeu	a6, a3, .L10
+	add	a6,a2,a6
+	sb	zero,0(a6)
+	addi	a5,a5,5
+	bgeu	a5, a3, .L10
+	add	a5,a2,a5
+	sb	zero,0(a5)
+.L10:
+	beq	a1,zero,.L50
+	addi	sp,sp,-64
+	addi	a7,a3,-1
+	sw	s3,48(sp)
+	sw	s5,40(sp)
+	andi	s3,a7,-4
+	sw	s7,32(sp)
+	addi	s5,a3,-2
+	addi	s7,a2,1
+	sw	s4,44(sp)
+	sw	s9,24(sp)
+	sw	s10,20(sp)
+	addi	s9,s3,1
+	addi	s10,s3,2
+	andi	t6,s5,0xff
+	or	s4,a2,s7
+	lui	t4,%hi(.LANCHOR0)
+	sw	s0,60(sp)
+	sw	s1,56(sp)
+	sw	s2,52(sp)
+	sw	s6,36(sp)
+	sw	s8,28(sp)
+	sw	s11,16(sp)
+	add	t2,a0,a1
+	add	s8,a2,s9
+	add	s11,a2,s10
+	add	t0,a2,s3
+	add	t6,t6,s7
+	andi	s4,s4,3
+	add	s1,a2,a7
+	addi	t4,t4,%lo(.LANCHOR0)
+	addi	s0, zero, 255
+	addi	s6, zero, 5
+	addi	s2, zero, 1
+	addi	t5, zero, 254
+	addi	t1, s7, 0
+	sw	a4,12(sp)
+.L29:
+	lbu	a5,0(a0)
+	lbu	a1,0(a2)
+	xor	a5,a5,a1
+	add	a5,t4,a5
+	lbu	s7,0(a5)
+	beq	s7,s0,.L12
+	lw	a5,12(sp)
+	addi	a1, a2, 0
+	add	a6,a5,a3
+	bltu	s2, a3, .L19
+	jal	zero, .L30
+.L51:
+	lbu	a5,1(t3)
+	addi	a1,a1,1
+	addi	a6,a6,-1
+	xor	a5,a4,a5
+	sb	a5,-1(a1)
+	beq	t6,a1,.L30
+.L19:
+	lbu	a5,-1(a6)
+	lbu	a4,1(a1)
+	add	a5,a5,s7
+	add	t3,t4,a5
+	blt	t5, a5, .L51
+	add	a5,t4,a5
+	lbu	a5,256(a5)
+	addi	a1,a1,1
+	addi	a6,a6,-1
+	xor	a5,a4,a5
+	sb	a5,-1(a1)
+	bne	t6,a1,.L19
+.L30:
+	lw	a5,12(sp)
+	lbu	a5,0(a5)
+	add	a5,a5,s7
+	bge	t5, a5, .L15
+	addi	a5,a5,-255
+.L15:
+	add	a5,t4,a5
+	lbu	a5,256(a5)
+.L21:
+	sb	a5,0(s1)
+	addi	a0,a0,1
+	bne	a0,t2,.L29
+	lw	s0,60(sp)
+	lw	s1,56(sp)
+	lw	s2,52(sp)
+	lw	s3,48(sp)
+	lw	s4,44(sp)
+	lw	s5,40(sp)
+	lw	s6,36(sp)
+	lw	s7,32(sp)
+	lw	s8,28(sp)
+	lw	s9,24(sp)
+	lw	s10,20(sp)
+	lw	s11,16(sp)
+	addi	sp,sp,64
+	jalr	zero, ra, 0
+.L12:
+	beq	a7,zero,.L25
+	bgeu	s6, s5, .L22
+	bne	s4,zero,.L22
+	addi	a5, a2, 0
+.L23:
+	lw	a1,1(a5)
+	addi	a5,a5,4
+	sw	a1,-4(a5)
+	bne	t0,a5,.L23
+	beq	a7,s3,.L25
+	lbu	a5,0(s8)
+	sb	a5,0(t0)
+	bgeu	s9,a7,.L25
+	lbu	a5,0(s11)
+	sb	a5,0(s8)
+	bgeu	s10,a7,.L25
+	lbu	a5,3(t0)
+	sb	a5,0(s11)
+.L25:
+	addi	a5, zero, 0
+	jal	zero, .L21
+.L22:
+	addi	a5, t1, 0
+	add	a6,a2,a3
+.L27:
+	lbu	a1,0(a5)
+	addi	a5,a5,1
+	sb	a1,-2(a5)
+	bne	a5,a6,.L27
+	addi	a5, zero, 0
+	jal	zero, .L21
+.L50:
+	jalr	zero, ra, 0
+.L31:
+	addi	a5, zero, 0
+	jal	zero, .L5
+	.size	appendrs, .-appendrs
+	.align	2
+	.type	applymask, @function
+applymask:
+	addi	a5, zero, 7
+	bltu	a5, a0, .L169
+	lui	a4,%hi(.L55)
+	addi	a4,a4,%lo(.L55)
+	slli	a5,a0,2
+	add	a5,a5,a4
+	lw	a5,0(a5)
+	addi	sp,sp,-16
+	lui	a2,%hi(WD)
+	jalr	zero, a5, 0
+	.section	.rodata
+	.align	2
+	.align	2
+.L55:
+	.word	.L62
+	.word	.L61
+	.word	.L60
+	.word	.L59
+	.word	.L58
+	.word	.L57
+	.word	.L56
+	.word	.L54
+	.text
+.L56:
+	lbu	a6,%lo(WD)(a2)
+	addi	a0, zero, 0
+	addi	t3, zero, 0
+	addi	a7, zero, 0
+	beq	a6,zero,.L52
+	sw	s0,12(sp)
+	addi	t1, zero, 3
+	lui	t4,%hi(framask)
+	lui	t0,%hi(qrframe)
+	lui	t6,%hi(WDB)
+	addi	t5, zero, 128
+.L64:
+	addi	a3, zero, 0
+	addi	a5, zero, 0
+.L110:
+	beq	a3,t1,.L138
+	sub	a4,a3,a7
+	sltu	a1, zero, a3
+	sltiu	a4, a4, 1
+	addi	a3,a3,1
+	and	a1,a1,a4
+	andi	a3,a3,0xff
+.L107:
+	and	a4,a5,a0
+	add	a4,a4,a1
+	andi	a4,a4,1
+	bne	a4,zero,.L108
+	bltu	a0, a5, .L139
+	addi	s0, a0, 0
+	addi	a4, a5, 0
+.L109:
+	mul	a1,s0,s0
+	lw	t2,%lo(framask)(t4)
+	add	a1,a1,s0
+	srli	a1,a1,1
+	add	a4,a4,a1
+	srli	a1,a4,3
+	add	a1,t2,a1
+	lbu	a1,0(a1)
+	xori	a4, a4, -1
+	andi	a4,a4,7
+	sra	a4,a1,a4
+	andi	a4,a4,1
+	bne	a4,zero,.L108
+	lbu	a1,%lo(WDB)(t6)
+	lw	a6,%lo(qrframe)(t0)
+	srli	t2,a5,3
+	mul	a1,a1,t3
+	andi	a4,a5,7
+	sra	a4,t5,a4
+	add	a1,a1,t2
+	add	a1,a6,a1
+	lbu	a6,0(a1)
+	xor	a4,a4,a6
+	sb	a4,0(a1)
+	lbu	a6,%lo(WD)(a2)
+.L108:
+	addi	a5,a5,1
+	andi	a5,a5,0xff
+	bltu	a5,a6,.L110
+	addi	t3,t3,1
+	addi	a7,a7,1
+	andi	a0,t3,0xff
+	andi	a7,a7,0xff
+	bgeu	a0, a6, .L174
+	bne	a7,t1,.L64
+	addi	a7, zero, 0
+	jal	zero, .L64
+.L54:
+	lbu	a6,%lo(WD)(a2)
+	addi	a0, zero, 0
+	addi	t3, zero, 0
+	addi	a7, zero, 0
+	beq	a6,zero,.L52
+	sw	s0,12(sp)
+	addi	t1, zero, 3
+	lui	t4,%hi(framask)
+	lui	t0,%hi(qrframe)
+	lui	t6,%hi(WDB)
+	addi	t5, zero, 128
+.L63:
+	addi	a3, zero, 0
+	addi	a5, zero, 0
+.L115:
+	beq	a3,t1,.L141
+	sub	a4,a3,a7
+	sltu	a1, zero, a3
+	sltiu	a4, a4, 1
+	addi	a3,a3,1
+	and	a1,a1,a4
+	andi	a3,a3,0xff
+.L112:
+	add	a4,a5,a0
+	add	a4,a4,a1
+	andi	a4,a4,1
+	bne	a4,zero,.L113
+	bltu	a0, a5, .L142
+	addi	s0, a0, 0
+	addi	a4, a5, 0
+.L114:
+	mul	a1,s0,s0
+	lw	t2,%lo(framask)(t4)
+	add	a1,a1,s0
+	srli	a1,a1,1
+	add	a4,a4,a1
+	srli	a1,a4,3
+	add	a1,t2,a1
+	lbu	a1,0(a1)
+	xori	a4, a4, -1
+	andi	a4,a4,7
+	sra	a4,a1,a4
+	andi	a4,a4,1
+	bne	a4,zero,.L113
+	lbu	a1,%lo(WDB)(t6)
+	lw	a6,%lo(qrframe)(t0)
+	srli	t2,a5,3
+	mul	a1,a1,t3
+	andi	a4,a5,7
+	sra	a4,t5,a4
+	add	a1,a1,t2
+	add	a1,a6,a1
+	lbu	a6,0(a1)
+	xor	a4,a4,a6
+	sb	a4,0(a1)
+	lbu	a6,%lo(WD)(a2)
+.L113:
+	addi	a5,a5,1
+	andi	a5,a5,0xff
+	bltu	a5,a6,.L115
+	addi	t3,t3,1
+	addi	a7,a7,1
+	andi	a0,t3,0xff
+	andi	a7,a7,0xff
+	bgeu	a0, a6, .L174
+	bne	a7,t1,.L63
+	addi	a7, zero, 0
+	jal	zero, .L63
+.L62:
+	lbu	t0,%lo(WD)(a2)
+	beq	t0,zero,.L52
+	addi	a1, a0, 0
+	addi	t1, zero, 0
+	lui	t3,%hi(framask)
+	lui	t6,%hi(qrframe)
+	lui	t5,%hi(WDB)
+	addi	t4, zero, 128
+.L74:
+	addi	a5, a0, 0
+	jal	zero, .L73
+.L182:
+	addi	a7, a1, 0
+	addi	a4, a5, 0
+.L72:
+	mul	a3,a7,a7
+	lw	a6,%lo(framask)(t3)
+	add	a3,a3,a7
+	srli	a3,a3,1
+	add	a4,a4,a3
+	srli	a3,a4,3
+	add	a3,a6,a3
+	lbu	a3,0(a3)
+	xori	a4, a4, -1
+	andi	a4,a4,7
+	sra	a4,a3,a4
+	andi	a4,a4,1
+	bne	a4,zero,.L71
+	lbu	a3,%lo(WDB)(t5)
+	lw	a6,%lo(qrframe)(t6)
+	srli	a7,a5,3
+	mul	a3,a3,t1
+	andi	a4,a5,7
+	sra	a4,t4,a4
+	add	a3,a3,a7
+	add	a3,a6,a3
+	lbu	a6,0(a3)
+	xor	a4,a4,a6
+	sb	a4,0(a3)
+	lbu	t0,%lo(WD)(a2)
+.L71:
+	addi	a5,a5,1
+	andi	a5,a5,0xff
+	bgeu	a5,t0,.L181
+.L73:
+	add	a4,a5,a1
+	andi	a4,a4,1
+	bne	a4,zero,.L71
+	bgeu	a1, a5, .L182
+	addi	a7, a5, 0
+	addi	a4, a1, 0
+	jal	zero, .L72
+.L61:
+	lbu	a6,%lo(WD)(a2)
+	addi	a7, zero, 0
+	addi	t1, zero, 0
+	beq	a6,zero,.L52
+	lui	t3,%hi(framask)
+	lui	t6,%hi(qrframe)
+	lui	t5,%hi(WDB)
+	addi	t4, zero, 128
+	jal	zero, .L70
+.L75:
+	addi	t1,t1,1
+	andi	a7,t1,0xff
+	bgeu	a7,a6,.L52
+.L70:
+	andi	a5,a7,1
+	bne	a5,zero,.L75
+.L79:
+	bltu	a7, a5, .L125
+.L183:
+	addi	a1, a7, 0
+	addi	a4, a5, 0
+.L76:
+	mul	a3,a1,a1
+	lw	a0,%lo(framask)(t3)
+	add	a3,a3,a1
+	srli	a3,a3,1
+	add	a4,a4,a3
+	srli	a3,a4,3
+	add	a3,a0,a3
+	lbu	a3,0(a3)
+	xori	a4, a4, -1
+	andi	a4,a4,7
+	sra	a4,a3,a4
+	andi	a4,a4,1
+	bne	a4,zero,.L77
+	lbu	a3,%lo(WDB)(t5)
+	lw	a1,%lo(qrframe)(t6)
+	srli	a0,a5,3
+	mul	a3,a3,t1
+	andi	a4,a5,7
+	sra	a4,t4,a4
+	addi	a5,a5,1
+	andi	a5,a5,0xff
+	add	a3,a3,a0
+	add	a3,a1,a3
+	lbu	a1,0(a3)
+	xor	a4,a4,a1
+	sb	a4,0(a3)
+	lbu	a6,%lo(WD)(a2)
+	bgeu	a5,a6,.L75
+	bgeu	a7, a5, .L183
+.L125:
+	addi	a1, a5, 0
+	addi	a4, a7, 0
+	jal	zero, .L76
+.L60:
+	lbu	t0,%lo(WD)(a2)
+	addi	a7, zero, 0
+	addi	t3, zero, 0
+	beq	t0,zero,.L52
+	lui	t1,%hi(framask)
+	lui	t6,%hi(qrframe)
+	lui	t5,%hi(WDB)
+	addi	t4, zero, 128
+.L69:
+	addi	a5, zero, 0
+	addi	a4, zero, 0
+.L81:
+	beq	a5,zero,.L80
+	addi	a3,a5,-3
+	bne	a3,zero,.L85
+.L80:
+	bltu	a7, a4, .L126
+	addi	a6, a7, 0
+	addi	a5, a4, 0
+.L83:
+	mul	a3,a6,a6
+	lw	a1,%lo(framask)(t1)
+	add	a3,a3,a6
+	srli	a3,a3,1
+	add	a5,a5,a3
+	srli	a3,a5,3
+	add	a3,a1,a3
+	lbu	a3,0(a3)
+	xori	a5, a5, -1
+	andi	a5,a5,7
+	sra	a5,a3,a5
+	andi	a5,a5,1
+	beq	a5,zero,.L84
+	addi	a5,a4,1
+	andi	a5,a5,0xff
+	bgeu	a5,t0,.L82
+.L176:
+	addi	a4,a4,2
+	andi	a4,a4,0xff
+	bgeu	a4,t0,.L82
+	addi	a5, a0, 0
+.L85:
+	addi	a4,a4,1
+	addi	a5,a5,1
+	andi	a4,a4,0xff
+	andi	a5,a5,0xff
+	bltu	a4,t0,.L81
+	jal	zero, .L82
+.L59:
+	lbu	t2,%lo(WD)(a2)
+	addi	a6, zero, 0
+	addi	t3, zero, 0
+	addi	a7, zero, 0
+	beq	t2,zero,.L52
+	lui	t1,%hi(framask)
+	lui	t6,%hi(qrframe)
+	lui	t5,%hi(WDB)
+	addi	t4, zero, 128
+	addi	t0, zero, 3
+.L68:
+	addi	a5, a7, 0
+	addi	a4, zero, 0
+.L87:
+	addi	a3,a5,-3
+	beq	a3,zero,.L86
+	bne	a5,zero,.L91
+.L86:
+	bltu	a6, a4, .L129
+	addi	a0, a6, 0
+	addi	a5, a4, 0
+.L89:
+	mul	a3,a0,a0
+	lw	a1,%lo(framask)(t1)
+	add	a3,a3,a0
+	srli	a3,a3,1
+	add	a5,a5,a3
+	srli	a3,a5,3
+	add	a3,a1,a3
+	lbu	a3,0(a3)
+	xori	a5, a5, -1
+	andi	a5,a5,7
+	sra	a5,a3,a5
+	andi	a5,a5,1
+	beq	a5,zero,.L90
+	addi	a5,a4,1
+	andi	a5,a5,0xff
+	bgeu	a5,t2,.L88
+.L178:
+	addi	a4,a4,2
+	andi	a4,a4,0xff
+	bgeu	a4,t2,.L88
+	addi	a5, zero, 2
+.L91:
+	addi	a4,a4,1
+	addi	a5,a5,1
+	andi	a4,a4,0xff
+	andi	a5,a5,0xff
+	bltu	a4,t2,.L87
+	jal	zero, .L88
+.L58:
+	lbu	t2,%lo(WD)(a2)
+	addi	a7, zero, 0
+	addi	t1, zero, 0
+	beq	t2,zero,.L52
+	lui	t3,%hi(framask)
+	lui	t6,%hi(qrframe)
+	lui	t5,%hi(WDB)
+	addi	t4, zero, 128
+	addi	t0, zero, 3
+.L67:
+	srli	a5,a7,1
+	andi	a5,a5,1
+	addi	a0, zero, 0
+	addi	a1, zero, 0
+.L98:
+	addi	a0,a0,1
+	andi	a0,a0,0xff
+	bne	a5,zero,.L94
+.L99:
+	bltu	a7,a1,.L134
+.L185:
+	addi	a6, a7, 0
+	addi	a5, a1, 0
+.L100:
+	mul	a4,a6,a6
+	lw	a3,%lo(framask)(t3)
+	add	a4,a4,a6
+	srli	a4,a4,1
+	add	a5,a5,a4
+	srli	a4,a5,3
+	add	a4,a3,a4
+	lbu	a4,0(a4)
+	xori	a5, a5, -1
+	andi	a5,a5,7
+	sra	a5,a4,a5
+	andi	a5,a5,1
+	beq	a5,zero,.L184
+	addi	a1,a1,1
+	andi	a1,a1,0xff
+	bgeu	a1, t2, .L95
+	addi	a5, zero, 3
+	bne	a0,a5,.L179
+.L96:
+	addi	a5,a1,1
+	andi	a5,a5,0xff
+	bgeu	a5, t2, .L95
+	addi	a1,a1,2
+	andi	a1,a1,0xff
+	bgeu	a1,t2,.L95
+	addi	a0, zero, 3
+.L94:
+	addi	a1,a1,1
+	andi	a1,a1,0xff
+	bgeu	a1, t2, .L95
+	addi	a4, zero, 3
+	addi	a5, zero, 1
+	bne	a0,a4,.L98
+	addi	a0, a5, 0
+	bgeu	a7,a1,.L185
+.L134:
+	addi	a6, a1, 0
+	addi	a5, a7, 0
+	jal	zero, .L100
+.L57:
+	lbu	a6,%lo(WD)(a2)
+	addi	a0, zero, 0
+	addi	t4, zero, 0
+	addi	t3, zero, 0
+	beq	a6,zero,.L52
+	sw	s0,12(sp)
+	addi	a7, zero, 3
+	lui	t5,%hi(framask)
+	lui	t2,%hi(qrframe)
+	lui	t0,%hi(WDB)
+	addi	t6, zero, 128
+.L66:
+	sltu	t1, zero, t3
+	addi	a3, zero, 0
+	addi	a5, zero, 0
+.L105:
+	beq	a3,a7,.L135
+	sltu	a1, zero, a3
+	addi	a3,a3,1
+	and	a1,t1,a1
+	andi	a3,a3,0xff
+.L102:
+	and	a4,a5,a0
+	andi	a4,a4,1
+	add	a4,a4,a1
+	bne	a4,zero,.L103
+	bltu	a0, a5, .L136
+	addi	s0, a0, 0
+	addi	a4, a5, 0
+.L104:
+	mul	a1,s0,s0
+	add	a1,a1,s0
+	srli	a1,a1,1
+	lw	s0,%lo(framask)(t5)
+	add	a4,a4,a1
+	srli	a1,a4,3
+	add	a1,s0,a1
+	lbu	a1,0(a1)
+	xori	a4, a4, -1
+	andi	a4,a4,7
+	sra	a4,a1,a4
+	andi	a4,a4,1
+	bne	a4,zero,.L103
+	lbu	a1,%lo(WDB)(t0)
+	lw	a6,%lo(qrframe)(t2)
+	srli	s0,a5,3
+	mul	a1,a1,t4
+	andi	a4,a5,7
+	sra	a4,t6,a4
+	add	a1,a1,s0
+	add	a1,a6,a1
+	lbu	a6,0(a1)
+	xor	a4,a4,a6
+	sb	a4,0(a1)
+	lbu	a6,%lo(WD)(a2)
+.L103:
+	addi	a5,a5,1
+	andi	a5,a5,0xff
+	bltu	a5,a6,.L105
+	addi	t4,t4,1
+	addi	t3,t3,1
+	andi	a0,t4,0xff
+	andi	t3,t3,0xff
+	bgeu	a0,a6,.L174
+	bne	t3,a7,.L66
+	addi	t3, zero, 0
+	jal	zero, .L66
+.L77:
+	addi	a5,a5,1
+	andi	a5,a5,0xff
+	bltu	a5,a6,.L79
+	jal	zero, .L75
+.L138:
+	addi	a3, zero, 1
+	addi	a1, zero, 0
+	jal	zero, .L107
+.L135:
+	addi	a3, zero, 1
+	addi	a1, zero, 0
+	jal	zero, .L102
+.L141:
+	addi	a3, zero, 1
+	addi	a1, zero, 0
+	jal	zero, .L112
+.L90:
+	lbu	a3,%lo(WDB)(t5)
+	lw	a1,%lo(qrframe)(t6)
+	srli	t2,a4,3
+	mul	a3,a3,t3
+	andi	a5,a4,7
+	sra	a5,t4,a5
+	addi	a0,a4,1
+	andi	a0,a0,0xff
+	add	a3,a3,t2
+	add	a3,a1,a3
+	lbu	a1,0(a3)
+	xor	a5,a5,a1
+	sb	a5,0(a3)
+	lbu	t2,%lo(WD)(a2)
+	bltu	a0,t2,.L178
+.L88:
+	addi	t3,t3,1
+	addi	a7,a7,1
+	andi	a6,t3,0xff
+	andi	a7,a7,0xff
+	bgeu	a6,t2,.L52
+	bne	a7,t0,.L68
+	addi	a7, zero, 0
+	jal	zero, .L68
+.L129:
+	addi	a0, a4, 0
+	addi	a5, a6, 0
+	jal	zero, .L89
+.L84:
+	lbu	a3,%lo(WDB)(t5)
+	lw	a1,%lo(qrframe)(t6)
+	srli	t0,a4,3
+	mul	a3,a3,t3
+	andi	a5,a4,7
+	sra	a5,t4,a5
+	addi	a6,a4,1
+	andi	a6,a6,0xff
+	add	a3,a3,t0
+	add	a3,a1,a3
+	lbu	a1,0(a3)
+	xor	a5,a5,a1
+	sb	a5,0(a3)
+	lbu	t0,%lo(WD)(a2)
+	bltu	a6,t0,.L176
+.L82:
+	addi	t3,t3,1
+	andi	a7,t3,0xff
+	bltu	a7,t0,.L69
+.L52:
+	addi	sp,sp,16
+	jalr	zero, ra, 0
+.L126:
+	addi	a6, a4, 0
+	addi	a5, a7, 0
+	jal	zero, .L83
+.L136:
+	addi	s0, a5, 0
+	addi	a4, a0, 0
+	jal	zero, .L104
+.L142:
+	addi	s0, a5, 0
+	addi	a4, a0, 0
+	jal	zero, .L114
+.L139:
+	addi	s0, a5, 0
+	addi	a4, a0, 0
+	jal	zero, .L109
+.L184:
+	lbu	a4,%lo(WDB)(t5)
+	lw	a3,%lo(qrframe)(t6)
+	srli	a6,a1,3
+	mul	a4,a4,t1
+	andi	a5,a1,7
+	sra	a5,t4,a5
+	addi	a1,a1,1
+	andi	a1,a1,0xff
+	add	a4,a4,a6
+	add	a4,a3,a4
+	lbu	a3,0(a4)
+	xor	a5,a5,a3
+	sb	a5,0(a4)
+	lbu	t2,%lo(WD)(a2)
+	bgeu	a1, t2, .L95
+	beq	a0,t0,.L96
+.L179:
+	addi	a0,a0,1
+	andi	a0,a0,0xff
+	jal	zero, .L99
+.L181:
+	addi	t1,t1,1
+	andi	a1,t1,0xff
+	bltu	a1,t0,.L74
+	jal	zero, .L52
+.L95:
+	addi	t1,t1,1
+	andi	a7,t1,0xff
+	bltu	a7,t2,.L67
+	jal	zero, .L52
+.L174:
+	lw	s0,12(sp)
+	jal	zero, .L52
+.L169:
+	jalr	zero, ra, 0
+	.size	applymask, .-applymask
+	.align	2
+	.type	badruns, @function
+badruns:
+	lui	a5,%hi(rlens)
+	lw	a5,%lo(rlens)(a5)
+	addi	a6, a0, 0
+	addi	a4, zero, 0
+	addi	a0, zero, 0
+	addi	a1, zero, 4
+.L188:
+	add	a3,a5,a4
+	lbu	a3,0(a3)
+	addi	a4,a4,1
+	andi	a4,a4,0xff
+	addi	a2,a0,-2
+	bgeu	a1, a3, .L187
+	add	a0,a3,a2
+.L187:
+	bgeu	a6,a4,.L188
+	addi	a4, zero, 4
+	bge	a4, a6, .L186
+	addi	a7, zero, 5
+	sub	a7,a7,a5
+	addi	t1,a6,-1
+	addi	a3, zero, 3
+	jal	zero, .L192
+.L190:
+	andi	a3,a2,0xff
+	addi	a5,a5,2
+	bge	a3,t1,.L186
+.L192:
+	lbu	a1,5(a5)
+	lbu	a4,1(a5)
+	add	a2,a7,a5
+	bne	a4,a1,.L190
+	lbu	a1,2(a5)
+	bne	a4,a1,.L190
+	lbu	a1,4(a5)
+	bne	a1,a4,.L190
+	lbu	t3,3(a5)
+	slli	a4,a1,1
+	add	a4,a4,a1
+	bne	a4,t3,.L190
+	lbu	a1,0(a5)
+	addi	a3,a3,2
+	beq	a1,zero,.L191
+	slli	t3,a1,1
+	slli	a4,a4,2
+	add	t3,t3,a1
+	bge	a3,a6,.L191
+	bge	t3,a4,.L191
+	lbu	a1,6(a5)
+	slli	a3,a1,1
+	add	a3,a3,a1
+	blt	a3, a4, .L190
+.L191:
+	andi	a3,a2,0xff
+	addi	a0,a0,40
+	addi	a5,a5,2
+	blt	a3,t1,.L192
+.L186:
+	jalr	zero, ra, 0
+	.size	badruns, .-badruns
+	.align	2
+	.globl	initialise_board
+	.type	initialise_board, @function
+initialise_board:
+	jalr	zero, ra, 0
+	.size	initialise_board, .-initialise_board
+	.align	2
+	.globl	start_trigger
+	.type	start_trigger, @function
+start_trigger:
+	jalr	zero, ra, 0
+	.size	start_trigger, .-start_trigger
+	.align	2
+	.globl	stop_trigger
+	.type	stop_trigger, @function
+stop_trigger:
+	jalr	zero, ra, 0
+	.size	stop_trigger, .-stop_trigger
+	.align	2
+	.globl	qrencode
+	.type	qrencode, @function
+qrencode:
+	addi	sp,sp,-80
+	sw	s8,40(sp)
+	lui	s8,%hi(strinbuf)
+	lw	a2,%lo(strinbuf)(s8)
+	sw	ra,76(sp)
+	sw	s0,72(sp)
+	sw	s1,68(sp)
+	sw	s2,64(sp)
+	sw	s3,60(sp)
+	sw	s4,56(sp)
+	sw	s5,52(sp)
+	sw	s6,48(sp)
+	sw	s7,44(sp)
+	sw	s9,36(sp)
+	sw	s10,32(sp)
+	sw	s11,28(sp)
+	lbu	a5,0(a2)
+	beq	a5,zero,.L341
+	addi	a5, zero, 0
+.L203:
+	addi	a4, a5, 0
+	addi	a5,a5,1
+	add	a3,a2,a5
+	lbu	a3,0(a3)
+	bne	a3,zero,.L203
+.L202:
+	lui	s3,%hi(neccblk2)
+	lui	s1,%hi(neccblk1)
+	lbu	a3,%lo(neccblk2)(s3)
+	lbu	s0,%lo(neccblk1)(s1)
+	lui	s4,%hi(datablkw)
+	lbu	a0,%lo(datablkw)(s4)
+	add	s0,s0,a3
+	lui	a1,%hi(VERSION)
+	mul	s0,s0,a0
+	lbu	a0,%lo(VERSION)(a1)
+	add	s0,s0,a3
+	addi	a3,s0,-2
+	bltu	a5, a3, .L204
+	addi	a5, zero, 9
+	addi	a4,s0,-3
+	bgeu	a5, a0, .L342
+	addi	a5, a4, 0
+	addi	a4,s0,-4
+.L206:
+	add	a2,a2,a5
+	sb	zero,2(a2)
+	addi	a0, a5, 0
+	addi	a7, zero, -1
+	beq	a5,zero,.L209
+.L207:
+	lw	a3,%lo(strinbuf)(s8)
+	add	a2,a3,a4
+	lbu	a2,0(a2)
+	add	a3,a3,a0
+	lbu	a6,2(a3)
+	slli	a2,a2,4
+	or	a2,a2,a6
+	sb	a2,2(a3)
+	lw	a3,%lo(strinbuf)(s8)
+	add	a2,a3,a4
+	lbu	a2,0(a2)
+	add	a3,a3,a0
+	addi	a0, a4, 0
+	srli	a2,a2,4
+	sb	a2,1(a3)
+	addi	a4,a4,-1
+	bne	a4,a7,.L207
+.L209:
+	lw	a6,%lo(strinbuf)(s8)
+	slli	a0,a5,4
+	srli	a3,a5,4
+	lbu	a2,2(a6)
+	srli	a4,a5,12
+	ori	a4,a4,64
+	or	a2,a2,a0
+	sb	a2,2(a6)
+	lw	a2,%lo(strinbuf)(s8)
+	sb	a3,1(a2)
+	lw	a3,%lo(strinbuf)(s8)
+	addi	a2, zero, 17
+	sb	a4,0(a3)
+	lbu	a4,%lo(VERSION)(a1)
+	addi	a1, zero, -20
+	sltiu	a4,a4,10
+	sub	a5,a5,a4
+	addi	a5,a5,3
+	bltu	a5, s0, .L212
+.L215:
+	lui	s2,%hi(qrframe)
+	lw	a1,%lo(qrframe)(s2)
+	lui	s6,%hi(eccblkwid)
+	lw	s5,%lo(strinbuf)(s8)
+	lbu	a0,%lo(eccblkwid)(s6)
+	addi	a7, zero, 1
+	sb	a7,0(a1)
+	add	s7,s5,s0
+	beq	a0,zero,.L493
+	sb	a7,1(a1)
+	lui	s9,%hi(.LANCHOR0)
+	beq	a0,a7,.L494
+	addi	t4, a7, 0
+	addi	s9,s9,%lo(.LANCHOR0)
+	addi	t1,a1,1
+	addi	t3, zero, 254
+.L222:
+	lbu	a4,0(t1)
+	sb	t4,1(t1)
+	sub	a6,t1,a7
+	addi	a5, t1, 0
+	jal	zero, .L220
+.L217:
+	sb	a3,0(a5)
+	addi	a5,a5,-1
+	beq	a5,a6,.L495
+.L220:
+	addi	a2, a4, 0
+	lbu	a4,-1(a5)
+	addi	a3, a4, 0
+	beq	a2,zero,.L217
+	add	a2,s9,a2
+	lbu	a3,0(a2)
+	add	a3,a3,a7
+	bge	t3, a3, .L219
+	addi	a3,a3,-255
+.L219:
+	add	a3,s9,a3
+	lbu	a3,256(a3)
+	addi	a5,a5,-1
+	xor	a3,a4,a3
+	sb	a3,1(a5)
+	bne	a5,a6,.L220
+.L495:
+	lbu	a5,0(a1)
+	add	a5,s9,a5
+	lbu	a5,0(a5)
+	add	a5,a5,a7
+	bge	t3, a5, .L221
+	addi	a5,a5,-255
+.L221:
+	add	a5,s9,a5
+	lbu	a5,256(a5)
+	addi	a7,a7,1
+	andi	a4,a7,0xff
+	sb	a5,0(a1)
+	addi	t1,t1,1
+	bltu	a4, a0, .L222
+	add	a5,s9,a5
+	lbu	a4,0(a5)
+	addi	a5, zero, 1
+	sb	a4,0(a1)
+.L223:
+	add	a3,a1,a5
+	lbu	a4,0(a3)
+	addi	a5,a5,1
+	andi	a5,a5,0xff
+	add	a4,s9,a4
+	lbu	a4,0(a4)
+	sb	a4,0(a3)
+	bgeu	a0,a5,.L223
+.L214:
+	lbu	a6,%lo(neccblk1)(s1)
+	lbu	a1,%lo(datablkw)(s4)
+	beq	a6,zero,.L224
+	lbu	a3,%lo(eccblkwid)(s6)
+	addi	s10, zero, 0
+.L225:
+	lw	a4,%lo(qrframe)(s2)
+	addi	a2, s7, 0
+	addi	a0, s5, 0
+.Lpcrel_1:
+	auipc	ra, %pcrel_hi(appendrs)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_1)
+	lbu	a1,%lo(datablkw)(s4)
+	lbu	a3,%lo(eccblkwid)(s6)
+	lbu	a6,%lo(neccblk1)(s1)
+	addi	s10,s10,1
+	add	s5,s5,a1
+	add	s7,s7,a3
+	bltu	s10,a6,.L225
+.L224:
+	lbu	a5,%lo(neccblk2)(s3)
+	beq	a5,zero,.L226
+	lbu	a3,%lo(eccblkwid)(s6)
+	addi	a2,a1,1
+	addi	s10, zero, 0
+.L227:
+	lw	a4,%lo(qrframe)(s2)
+	andi	a1,a2,0xff
+	addi	a0, s5, 0
+	addi	a2, s7, 0
+.Lpcrel_2:
+	auipc	ra, %pcrel_hi(appendrs)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_2)
+	lbu	a1,%lo(datablkw)(s4)
+	lbu	a3,%lo(eccblkwid)(s6)
+	lbu	a5,%lo(neccblk2)(s3)
+	addi	a2,a1,1
+	addi	s10,s10,1
+	add	s5,s5,a2
+	add	s7,s7,a3
+	bltu	s10,a5,.L227
+	lw	a4,%lo(qrframe)(s2)
+	lbu	a6,%lo(neccblk1)(s1)
+	beq	a1,zero,.L346
+.L340:
+	addi	a0, zero, 0
+.L229:
+	addi	a3, zero, 0
+	beq	a6,zero,.L233
+.L230:
+	mul	a1,a1,a3
+	lw	a5,%lo(strinbuf)(s8)
+	addi	a4,a4,1
+	addi	a3,a3,1
+	add	a5,a5,a0
+	add	a5,a5,a1
+	lbu	a5,0(a5)
+	sb	a5,-1(a4)
+	lbu	a6,%lo(neccblk1)(s1)
+	lbu	a1,%lo(datablkw)(s4)
+	bltu	a3,a6,.L230
+.L233:
+	lbu	a5,%lo(neccblk2)(s3)
+	beq	a5,zero,.L231
+	addi	a3, zero, 0
+.L232:
+	addi	a2,a1,1
+	mul	a2,a2,a3
+	lw	a5,%lo(strinbuf)(s8)
+	addi	a4,a4,1
+	addi	a3,a3,1
+	add	a5,a5,a0
+	mul	a6,a6,a1
+	add	a5,a5,a2
+	add	a5,a5,a6
+	lbu	a5,0(a5)
+	sb	a5,-1(a4)
+	lbu	a5,%lo(neccblk2)(s3)
+	lbu	a1,%lo(datablkw)(s4)
+	lbu	a6,%lo(neccblk1)(s1)
+	bltu	a3,a5,.L232
+.L231:
+	addi	a0,a0,1
+	bltu	a0,a1,.L229
+.L228:
+	beq	a5,zero,.L348
+	mul	a1,a1,a6
+	lw	a5,%lo(strinbuf)(s8)
+	addi	a3, zero, 1
+	add	a2,a4,a3
+	add	a5,a5,a0
+	add	a5,a5,a1
+	lbu	a5,0(a5)
+	sb	a5,0(a4)
+	lbu	a5,%lo(neccblk2)(s3)
+	lbu	a6,%lo(neccblk1)(s1)
+	bgeu	a3, a5, .L234
+.L235:
+	lbu	a1,%lo(datablkw)(s4)
+	lw	a5,%lo(strinbuf)(s8)
+	addi	a2,a2,1
+	addi	a4,a1,1
+	mul	a4,a4,a3
+	add	a5,a5,a0
+	addi	a3,a3,1
+	mul	a6,a6,a1
+	add	a5,a5,a4
+	add	a5,a5,a6
+	lbu	a5,0(a5)
+	sb	a5,-1(a2)
+	lbu	a5,%lo(neccblk2)(s3)
+	lbu	a6,%lo(neccblk1)(s1)
+	bltu	a3,a5,.L235
+.L234:
+	lbu	a4,%lo(eccblkwid)(s6)
+	add	a5,a6,a5
+	addi	a6, zero, 0
+	beq	a4,zero,.L238
+.L237:
+	beq	a5,zero,.L241
+	add	a0,s0,a6
+	addi	a3, zero, 0
+.L239:
+	mul	a4,a4,a3
+	lw	a5,%lo(strinbuf)(s8)
+	addi	a2,a2,1
+	addi	a3,a3,1
+	add	a5,a5,a0
+	add	a5,a5,a4
+	lbu	a5,0(a5)
+	sb	a5,-1(a2)
+	lbu	a5,%lo(neccblk1)(s1)
+	lbu	a1,%lo(neccblk2)(s3)
+	lbu	a4,%lo(eccblkwid)(s6)
+	add	a5,a5,a1
+	bltu	a3,a5,.L239
+	addi	a6,a6,1
+	bltu	a6,a4,.L237
+.L241:
+	mul	a4,a4,a5
+	add	s0,s0,a4
+.L238:
+	lw	a0,%lo(qrframe)(s2)
+	beq	s0,zero,.L242
+	addi	a5,s0,-1
+	addi	a4, zero, 6
+	lw	a2,%lo(strinbuf)(s8)
+	bgeu	a4, a5, .L243
+	addi	a3,a2,-1
+	sub	a3,a3,a0
+	sltiu	a3,a3,3
+	addi	a5, a2, 0
+	addi	a4, a0, 0
+	bne	a3,zero,.L243
+	or	a3,a0,a2
+	andi	a3,a3,3
+	bne	a3,zero,.L243
+	andi	a6,s0,-4
+	add	a1,a6,a2
+.L244:
+	lw	a3,0(a4)
+	addi	a5,a5,4
+	addi	a4,a4,4
+	sw	a3,-4(a5)
+	bne	a1,a5,.L244
+	beq	a6,s0,.L247
+	add	a5,a0,a6
+	lbu	a4,0(a5)
+	addi	a5,a6,1
+	sb	a4,0(a1)
+	bgeu	a5,s0,.L247
+	add	a4,a0,a5
+	lbu	a4,0(a4)
+	add	a5,a2,a5
+	addi	a6,a6,2
+	sb	a4,0(a5)
+	bgeu	a6,s0,.L247
+	add	a0,a0,a6
+	lbu	a5,0(a0)
+	add	a6,a2,a6
+	sb	a5,0(a6)
+.L247:
+	lw	a0,%lo(qrframe)(s2)
+.L242:
+	lui	s5,%hi(WDB)
+	lui	s0,%hi(WD)
+	lbu	t0,%lo(WDB)(s5)
+	lbu	a5,%lo(WD)(s0)
+	mul	a7,a5,t0
+	beq	a7,zero,.L248
+	lui	a3,%hi(framebase)
+	addi	a5,a7,-1
+	addi	a4, zero, 6
+	lw	a6,%lo(framebase)(a3)
+	bgeu	a4, a5, .L249
+	sub	a3,a0,a6
+	addi	a3,a3,-1
+	sltiu	a3,a3,3
+	addi	a5, a0, 0
+	addi	a4, a6, 0
+	bne	a3,zero,.L249
+	or	a3,a0,a6
+	andi	a3,a3,3
+	bne	a3,zero,.L249
+	srli	a2,a7,2
+	slli	a2,a2,2
+	add	a1,a2,a0
+.L250:
+	lw	a3,0(a4)
+	addi	a5,a5,4
+	addi	a4,a4,4
+	sw	a3,-4(a5)
+	bne	a1,a5,.L250
+	beq	a7,a2,.L253
+	add	a5,a6,a2
+	lbu	a4,0(a5)
+	addi	a5,a2,1
+	sb	a4,0(a1)
+	bgeu	a5, a7, .L253
+	add	a4,a6,a5
+	lbu	a4,0(a4)
+	add	a5,a0,a5
+	addi	a2,a2,2
+	sb	a4,0(a5)
+	bgeu	a2, a7, .L253
+	add	a5,a6,a2
+	lbu	a5,0(a5)
+	add	a2,a0,a2
+	sb	a5,0(a2)
+.L253:
+	lbu	a5,%lo(WD)(s0)
+	lw	a0,%lo(qrframe)(s2)
+	lbu	t0,%lo(WDB)(s5)
+.L248:
+	lbu	a2,%lo(neccblk2)(s3)
+	lbu	a3,%lo(neccblk1)(s1)
+	lbu	a4,%lo(eccblkwid)(s6)
+	lbu	a1,%lo(datablkw)(s4)
+	add	a3,a3,a2
+	add	a4,a4,a1
+	mul	a4,a4,a3
+	add	a4,a4,a2
+	beq	a4,zero,.L270
+	addi	a5,a5,-1
+	andi	a4,a5,0xff
+	addi	a3, zero, 1
+	addi	a2, a4, 0
+	addi	a1, a3, 0
+	addi	s7, zero, 0
+	lui	t2,%hi(framask)
+	addi	s10, zero, 128
+	addi	t6, zero, 6
+.L269:
+	lw	a5,%lo(strinbuf)(s8)
+	addi	t4, zero, 8
+	add	a5,a5,s7
+	lbu	t3,0(a5)
+.L268:
+	slli	a5,t3,24
+	srai	a5,a5,24
+	bge	a5,zero,.L255
+	mul	t0,a2,t0
+	srli	a5,a4,3
+	andi	a6,a4,7
+	sra	a6,s10,a6
+	add	a5,a5,t0
+	add	a5,a0,a5
+	lbu	a0,0(a5)
+	or	a0,a6,a0
+	sb	a0,0(a5)
+	lw	a0,%lo(qrframe)(s2)
+	lbu	t0,%lo(WDB)(s5)
+.L255:
+	lbu	a6,%lo(WD)(s0)
+	lw	t1,%lo(framask)(t2)
+	addi	t5,a6,-1
+.L267:
+	beq	a3,zero,.L256
+	addi	a4,a4,-1
+	andi	a4,a4,0xff
+	addi	s11, a4, 0
+	addi	a7, a2, 0
+.L257:
+	xori	a3,a3,1
+	andi	a3,a3,0xff
+	bgeu	a2, a4, .L261
+.L265:
+	mul	a5,a4,a4
+	add	a5,a5,s11
+	srli	a5,a5,1
+	add	a5,a5,a7
+	xori	a7, a5, -1
+	andi	a7,a7,7
+	srli	a5,a5,3
+.L266:
+	add	a5,t1,a5
+	lbu	a5,0(a5)
+	sra	a5,a5,a7
+	andi	a5,a5,1
+	bne	a5,zero,.L267
+	addi	t4,t4,-1
+	slli	t3,t3,1
+	andi	t4,t4,0xff
+	andi	t3,t3,0xff
+	bne	t4,zero,.L268
+.L502:
+	lbu	t1,%lo(neccblk2)(s3)
+	lbu	a7,%lo(neccblk1)(s1)
+	lbu	a5,%lo(datablkw)(s4)
+	lbu	t3,%lo(eccblkwid)(s6)
+	add	a7,a7,t1
+	addi	s7,s7,1
+	add	a5,a5,t3
+	mul	a5,a5,a7
+	add	a5,a5,t1
+	blt	s7,a5,.L269
+	addi	a5, a6, 0
+.L270:
+	mul	a5,a5,t0
+	beq	a5,zero,.L276
+	addi	a4,a5,-1
+	addi	a3, zero, 6
+	lw	a7,%lo(strinbuf)(s8)
+	bgeu	a3, a4, .L273
+	or	a2,a0,a7
+	andi	a2,a2,3
+	addi	a4, a7, 0
+	addi	a3, a0, 0
+	bne	a2,zero,.L273
+	addi	a2,a7,-1
+	sub	a2,a2,a0
+	sltiu	a2,a2,3
+	bne	a2,zero,.L273
+	andi	a6,a5,-4
+	add	a1,a6,a7
+.L274:
+	lw	a2,0(a3)
+	addi	a4,a4,4
+	addi	a3,a3,4
+	sw	a2,-4(a4)
+	bne	a1,a4,.L274
+	beq	a5,a6,.L276
+	add	a4,a0,a6
+	lbu	a3,0(a4)
+	addi	a4,a6,1
+	sb	a3,0(a1)
+	bgeu	a4, a5, .L276
+	add	a3,a0,a4
+	lbu	a3,0(a3)
+	add	a4,a7,a4
+	addi	a6,a6,2
+	sb	a3,0(a4)
+	bgeu	a6, a5, .L276
+	add	a0,a0,a6
+	lbu	a5,0(a0)
+	add	a6,a7,a6
+	sb	a5,0(a6)
+.L276:
+	lui	s4, 7
+	addi	s4,s4,1328
+	addi	s3, zero, 0
+	sw	zero,8(sp)
+	addi	s6, zero, 1
+	lui	s1,%hi(rlens)
+	sw	s9,12(sp)
+.L272:
+	addi	a0, s3, 0
+.Lpcrel_3:
+	auipc	ra, %pcrel_hi(applymask)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_3)
+	lbu	t5,%lo(WD)(s0)
+	bgeu	s6, t5, .L280
+.L501:
+	lbu	s10,%lo(WDB)(s5)
+	lw	t1,%lo(qrframe)(s2)
+	addi	t5,t5,-1
+	andi	s11,t5,0xff
+	addi	a7, s10, 0
+	addi	t3, zero, 0
+	addi	s7, zero, 0
+	addi	t0, zero, 0
+	addi	t6, zero, -2
+.L281:
+	addi	a4, zero, 0
+	add	t4,t1,t3
+	add	t2,t1,a7
+.L285:
+	andi	a5,a4,0xff
+	srli	a5,a5,3
+	add	a5,t1,a5
+	xori	a0, a4, -1
+	sub	a3,t6,a4
+	addi	a4,a4,1
+	add	a2,a5,t3
+	srai	a6,a4,3
+	lbu	a2,0(a2)
+	add	a1,t4,a6
+	lbu	a1,0(a1)
+	andi	a0,a0,7
+	sra	a2,a2,a0
+	andi	a3,a3,7
+	sra	a1,a1,a3
+	andi	a2,a2,1
+	andi	a1,a1,1
+	add	a5,a5,a7
+	beq	a2,zero,.L282
+	beq	a1,zero,.L283
+	lbu	a5,0(a5)
+	add	a6,t2,a6
+	sra	a5,a5,a0
+	andi	a5,a5,1
+	beq	a5,zero,.L283
+	lbu	a5,0(a6)
+	sra	a5,a5,a3
+	andi	a5,a5,1
+	beq	a5,zero,.L283
+	addi	s7,s7,3
+.L283:
+	bne	a4,t5,.L285
+	addi	t0,t0,1
+	andi	t0,t0,0xff
+	add	a7,a7,s10
+	add	t3,t3,s10
+	bne	t0,s11,.L281
+.L286:
+	addi	s11, zero, 0
+	addi	s10, zero, 0
+.L293:
+	lw	a5,%lo(rlens)(s1)
+	sb	zero,0(a5)
+	lbu	a5,%lo(WD)(s0)
+	beq	a5,zero,.L288
+	addi	a1, zero, 0
+	addi	a0, zero, 0
+	addi	a5, zero, 0
+	addi	a3, zero, 0
+	jal	zero, .L292
+.L289:
+	andi	a0,t3,0xff
+	add	a2,a2,a0
+	sb	s6,0(a2)
+	lbu	s9,%lo(WD)(s0)
+	addi	a1,a1,1
+	addi	a4,a5,-1
+	ori	a4,a4,1
+	andi	a3,a1,0xff
+	add	s10,s10,a4
+	bgeu	a3,s9,.L496
+.L292:
+	lbu	a7,%lo(WDB)(s5)
+	lw	a4,%lo(qrframe)(s2)
+	srli	a3,a3,3
+	mul	a7,a7,s11
+	addi	t1, a5, 0
+	xori	a6, a1, -1
+	andi	a6,a6,7
+	lw	a2,%lo(rlens)(s1)
+	addi	t3,a0,1
+	add	a4,a4,a7
+	add	a4,a4,a3
+	lbu	a5,0(a4)
+	sra	a5,a5,a6
+	andi	a5,a5,1
+	bne	a5,t1,.L289
+	add	a2,a2,a0
+	lbu	a4,0(a2)
+	addi	a1,a1,1
+	andi	a3,a1,0xff
+	addi	a4,a4,1
+	sb	a4,0(a2)
+	lbu	s9,%lo(WD)(s0)
+	addi	a4,a5,-1
+	ori	a4,a4,1
+	add	s10,s10,a4
+	bltu	a3,s9,.L292
+.L496:
+.Lpcrel_4:
+	auipc	ra, %pcrel_hi(badruns)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_4)
+	addi	s11,s11,1
+	andi	a5,s11,0xff
+	add	s7,s7,a0
+	bltu	a5,s9,.L293
+	srai	a4,s10,31
+	xor	a5,a4,s10
+	sub	a5,a5,a4
+	addi	a4, zero, 5
+	mul	a5,a5,a4
+	mul	a3,s9,s9
+	slli	a5,a5,1
+	bltu	a3, a5, .L339
+	beq	s9,zero,.L492
+.L296:
+	addi	s11, zero, 0
+.L302:
+	lw	a5,%lo(rlens)(s1)
+	sb	zero,0(a5)
+	lbu	a5,%lo(WD)(s0)
+	beq	a5,zero,.L297
+	andi	a7,s11,0xff
+	xori	a6, s11, -1
+	srli	a7,a7,3
+	andi	a6,a6,7
+	addi	a3, zero, 0
+	addi	a0, zero, 0
+	addi	a1, zero, 0
+.L301:
+	lbu	a2,%lo(WDB)(s5)
+	lw	a5,%lo(qrframe)(s2)
+	lw	a4,%lo(rlens)(s1)
+	mul	a2,a2,a3
+	add	a5,a5,a7
+	addi	t1,a0,1
+	add	a5,a5,a2
+	lbu	a5,0(a5)
+	sra	a5,a5,a6
+	andi	a5,a5,1
+	beq	a5,a1,.L497
+	andi	a0,t1,0xff
+	add	a4,a4,a0
+	sb	s6,0(a4)
+	lbu	s10,%lo(WD)(s0)
+	addi	a3,a3,1
+	andi	a4,a3,0xff
+	bgeu	a4,s10,.L300
+.L299:
+	addi	a1, a5, 0
+	jal	zero, .L301
+.L204:
+	addi	a3, zero, 9
+	bltu	a3, a0, .L206
+.L205:
+	add	a2,a2,a5
+	sb	zero,1(a2)
+	addi	a0, a5, 0
+	addi	a7, zero, -1
+	beq	a5,zero,.L211
+.L210:
+	lw	a3,%lo(strinbuf)(s8)
+	add	a2,a3,a4
+	lbu	a2,0(a2)
+	add	a3,a3,a0
+	lbu	a6,1(a3)
+	slli	a2,a2,4
+	or	a2,a2,a6
+	sb	a2,1(a3)
+	lw	a3,%lo(strinbuf)(s8)
+	add	a2,a3,a4
+	lbu	a2,0(a2)
+	add	a3,a3,a0
+	addi	a0, a4, 0
+	srli	a2,a2,4
+	sb	a2,0(a3)
+	addi	a4,a4,-1
+	bne	a4,a7,.L210
+.L211:
+	lw	a0,%lo(strinbuf)(s8)
+	slli	a2,a5,4
+	srli	a4,a5,4
+	lbu	a3,1(a0)
+	ori	a4,a4,64
+	or	a3,a3,a2
+	sb	a3,1(a0)
+	lw	a3,%lo(strinbuf)(s8)
+	addi	a2, zero, 17
+	sb	a4,0(a3)
+	lbu	a4,%lo(VERSION)(a1)
+	addi	a1, zero, -20
+	sltiu	a4,a4,10
+	sub	a5,a5,a4
+	addi	a5,a5,3
+	bgeu	a5, s0, .L215
+.L212:
+	lw	a4,%lo(strinbuf)(s8)
+	addi	a3, a5, 0
+	add	a4,a4,a5
+	sb	a1,0(a4)
+	lw	a4,%lo(strinbuf)(s8)
+	addi	a5,a5,2
+	add	a4,a4,a3
+	sb	a2,1(a4)
+	bltu	a5, s0, .L212
+	jal	zero, .L215
+.L342:
+	addi	a5, a3, 0
+	jal	zero, .L205
+.L256:
+	addi	s11,a4,1
+	beq	a1,zero,.L258
+	beq	a2,zero,.L259
+	addi	a2,a2,-1
+	andi	s11,s11,0xff
+	andi	a2,a2,0xff
+	xori	a3,a3,1
+	addi	a4, s11, 0
+	addi	a7, a2, 0
+	andi	a3,a3,0xff
+	bltu	a2, a4, .L265
+.L261:
+	mul	a5,a2,a2
+	add	a5,a5,a7
+	srli	a5,a5,1
+	add	a5,a5,s11
+	xori	a7, a5, -1
+	andi	a7,a7,7
+	srli	a5,a5,3
+	jal	zero, .L266
+.L282:
+	bne	a1,zero,.L283
+	lbu	a5,0(a5)
+	add	a2,t1,a7
+	add	a2,a2,a6
+	sra	a5,a5,a0
+	andi	a5,a5,1
+	bne	a5,zero,.L283
+	lbu	a5,0(a2)
+	sra	a5,a5,a3
+	andi	a5,a5,1
+	bne	a5,zero,.L283
+	addi	s7,s7,3
+	jal	zero, .L283
+.L258:
+	beq	a2,t5,.L263
+	addi	a2,a2,1
+	andi	a2,a2,0xff
+	andi	s11,s11,0xff
+	addi	a7, a2, 0
+	addi	a4, s11, 0
+	jal	zero, .L257
+.L259:
+	addi	a4,a4,-1
+	andi	a4,a4,0xff
+	beq	a4,t6,.L498
+	addi	s11, a4, 0
+	addi	a1, zero, 0
+	addi	a7, zero, 0
+	jal	zero, .L257
+.L263:
+	addi	a4,a4,-1
+	andi	a4,a4,0xff
+	beq	a4,t6,.L264
+	addi	s11, a4, 0
+	addi	a7, a2, 0
+	addi	a1, zero, 1
+	jal	zero, .L257
+.L498:
+	lbu	a5,6(t1)
+	srai	a5,a5,5
+	andi	a5,a5,1
+	beq	a5,zero,.L499
+	addi	a7, zero, 9
+	addi	a2, a7, 0
+	mul	a5,a2,a2
+	addi	s11, zero, 4
+	addi	a4, s11, 0
+	addi	a1, zero, 0
+	add	a5,a5,a7
+	srli	a5,a5,1
+	add	a5,a5,s11
+	xori	a7, a5, -1
+	andi	a7,a7,7
+	srli	a5,a5,3
+	jal	zero, .L266
+.L264:
+	addi	a2,a2,-8
+	andi	a2,a2,0xff
+	addi	s11, zero, 5
+	addi	a7, a2, 0
+	addi	a4, s11, 0
+	addi	a1, zero, 1
+	jal	zero, .L257
+.L288:
+	addi	a0, zero, 0
+.Lpcrel_5:
+	auipc	ra, %pcrel_hi(badruns)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_5)
+	srai	a4,s10,31
+	xor	a5,a4,s10
+	sub	a5,a5,a4
+	slli	a4,a5,2
+	add	a5,a4,a5
+	slli	a5,a5,1
+	add	s7,s7,a0
+	addi	a3, zero, 0
+	beq	a5,zero,.L492
+.L339:
+	addi	a4, zero, 0
+.L295:
+	sub	a5,a5,a3
+	addi	a4,a4,1
+	bltu	a3, a5, .L295
+	slli	a5,a4,2
+	add	a5,a5,a4
+	slli	a5,a5,1
+	add	s7,s7,a5
+	jal	zero, .L296
+.L497:
+	add	a4,a4,a0
+	lbu	a2,0(a4)
+	addi	a3,a3,1
+	andi	a1,a3,0xff
+	addi	a2,a2,1
+	sb	a2,0(a4)
+	lbu	s10,%lo(WD)(s0)
+	bltu	a1,s10,.L299
+.L300:
+.Lpcrel_6:
+	auipc	ra, %pcrel_hi(badruns)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_6)
+	addi	s11,s11,1
+	andi	a5,s11,0xff
+	add	s7,s7,a0
+	bltu	a5,s10,.L302
+	bltu	s7,s4,.L500
+	lbu	a5,%lo(WDB)(s5)
+	lw	a0,%lo(qrframe)(s2)
+	lw	a1,%lo(strinbuf)(s8)
+	mul	s10,a5,s10
+	beq	s10,zero,.L305
+.L309:
+	addi	a5,s10,-1
+	addi	a4, zero, 6
+	bgeu	a4, a5, .L312
+	or	a3,a0,a1
+	andi	a3,a3,3
+	addi	a4, a0, 0
+	addi	a5, a1, 0
+	bne	a3,zero,.L312
+	addi	a3,a0,-1
+	sub	a3,a3,a1
+	sltiu	a3,a3,3
+	bne	a3,zero,.L312
+	andi	a6,s10,-4
+	add	a2,a6,a1
+.L313:
+	lw	a3,0(a5)
+	addi	a5,a5,4
+	addi	a4,a4,4
+	sw	a3,-4(a4)
+	bne	a2,a5,.L313
+	beq	a6,s10,.L305
+	lbu	a3,0(a2)
+	add	a4,a0,a6
+	addi	a5,a6,1
+	sb	a3,0(a4)
+	bgeu	a5,s10,.L305
+	add	a4,a1,a5
+	lbu	a4,0(a4)
+	add	a5,a0,a5
+	addi	a6,a6,2
+	sb	a4,0(a5)
+	bgeu	a6,s10,.L305
+	add	a5,a1,a6
+	lbu	a5,0(a5)
+	add	a6,a0,a6
+	sb	a5,0(a6)
+.L305:
+	addi	s3,s3,1
+	andi	s3,s3,0xff
+	addi	a5, zero, 8
+	bne	s3,a5,.L272
+.L503:
+	lw	s1,8(sp)
+	lw	s9,12(sp)
+	beq	s1,s3,.L308
+	addi	a0, s1, 0
+.Lpcrel_7:
+	auipc	ra, %pcrel_hi(applymask)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_7)
+.L308:
+	lui	a5,%hi(ECCLEVEL)
+	lbu	a5,%lo(ECCLEVEL)(a5)
+	addi	a5,a5,-1
+	andi	a5,a5,0xff
+	slli	a5,a5,3
+	add	a5,a5,s1
+	slli	a5,a5,2
+	add	a5,s9,a5
+	lw	a5,512(a5)
+	andi	a4,a5,1
+	beq	a4,zero,.L319
+	lbu	a4,%lo(WD)(s0)
+	lbu	a3,%lo(WDB)(s5)
+	lw	a2,%lo(qrframe)(s2)
+	addi	a4,a4,-1
+	srai	a1,a4,3
+	slli	a3,a3,3
+	add	a3,a3,a1
+	add	a2,a2,a3
+	lbu	a1,0(a2)
+	addi	a3, zero, 128
+	andi	a4,a4,7
+	sra	a4,a3,a4
+	or	a4,a4,a1
+	sb	a4,0(a2)
+	lw	a3,%lo(qrframe)(s2)
+	lbu	a4,1(a3)
+	ori	a4,a4,-128
+	sb	a4,1(a3)
+.L319:
+	srli	a4,a5,1
+	andi	a4,a4,1
+	beq	a4,zero,.L320
+	lbu	a4,%lo(WD)(s0)
+	lbu	a3,%lo(WDB)(s5)
+	lw	a2,%lo(qrframe)(s2)
+	addi	a4,a4,-2
+	srai	a1,a4,3
+	slli	a3,a3,3
+	add	a3,a3,a1
+	add	a2,a2,a3
+	lbu	a1,0(a2)
+	addi	a3, zero, 128
+	andi	a4,a4,7
+	sra	a4,a3,a4
+	or	a4,a4,a1
+	sb	a4,0(a2)
+	lbu	a3,%lo(WDB)(s5)
+	lw	a4,%lo(qrframe)(s2)
+	add	a4,a4,a3
+	lbu	a3,1(a4)
+	ori	a3,a3,-128
+	sb	a3,1(a4)
+.L320:
+	srli	a4,a5,2
+	andi	a4,a4,1
+	beq	a4,zero,.L321
+	lbu	a4,%lo(WD)(s0)
+	lbu	a3,%lo(WDB)(s5)
+	lw	a2,%lo(qrframe)(s2)
+	addi	a4,a4,-3
+	srai	a1,a4,3
+	slli	a3,a3,3
+	add	a3,a3,a1
+	add	a2,a2,a3
+	lbu	a1,0(a2)
+	addi	a3, zero, 128
+	andi	a4,a4,7
+	sra	a4,a3,a4
+	or	a4,a4,a1
+	sb	a4,0(a2)
+	lbu	a4,%lo(WDB)(s5)
+	lw	a3,%lo(qrframe)(s2)
+	slli	a4,a4,1
+	add	a4,a3,a4
+	lbu	a3,1(a4)
+	ori	a3,a3,-128
+	sb	a3,1(a4)
+.L321:
+	srli	a4,a5,3
+	andi	a4,a4,1
+	beq	a4,zero,.L322
+	lbu	a4,%lo(WD)(s0)
+	lbu	a3,%lo(WDB)(s5)
+	lw	a2,%lo(qrframe)(s2)
+	addi	a4,a4,-4
+	srai	a1,a4,3
+	slli	a3,a3,3
+	add	a3,a3,a1
+	add	a2,a2,a3
+	lbu	a1,0(a2)
+	addi	a3, zero, 128
+	andi	a4,a4,7
+	sra	a4,a3,a4
+	or	a4,a4,a1
+	sb	a4,0(a2)
+	lbu	a2,%lo(WDB)(s5)
+	lw	a3,%lo(qrframe)(s2)
+	slli	a4,a2,1
+	add	a4,a4,a2
+	add	a4,a3,a4
+	lbu	a3,1(a4)
+	ori	a3,a3,-128
+	sb	a3,1(a4)
+.L322:
+	srli	a4,a5,4
+	andi	a4,a4,1
+	beq	a4,zero,.L323
+	lbu	a4,%lo(WD)(s0)
+	lbu	a3,%lo(WDB)(s5)
+	lw	a2,%lo(qrframe)(s2)
+	addi	a4,a4,-5
+	srai	a1,a4,3
+	slli	a3,a3,3
+	add	a3,a3,a1
+	add	a2,a2,a3
+	lbu	a1,0(a2)
+	addi	a3, zero, 128
+	andi	a4,a4,7
+	sra	a4,a3,a4
+	or	a4,a4,a1
+	sb	a4,0(a2)
+	lbu	a4,%lo(WDB)(s5)
+	lw	a3,%lo(qrframe)(s2)
+	slli	a4,a4,2
+	add	a4,a3,a4
+	lbu	a3,1(a4)
+	ori	a3,a3,-128
+	sb	a3,1(a4)
+.L323:
+	srli	a4,a5,5
+	andi	a4,a4,1
+	beq	a4,zero,.L324
+	lbu	a4,%lo(WD)(s0)
+	lbu	a3,%lo(WDB)(s5)
+	lw	a2,%lo(qrframe)(s2)
+	addi	a4,a4,-6
+	srai	a1,a4,3
+	slli	a3,a3,3
+	add	a3,a3,a1
+	add	a2,a2,a3
+	lbu	a1,0(a2)
+	addi	a3, zero, 128
+	andi	a4,a4,7
+	sra	a4,a3,a4
+	or	a4,a4,a1
+	sb	a4,0(a2)
+	lbu	a2,%lo(WDB)(s5)
+	lw	a3,%lo(qrframe)(s2)
+	slli	a4,a2,2
+	add	a4,a4,a2
+	add	a4,a3,a4
+	lbu	a3,1(a4)
+	ori	a3,a3,-128
+	sb	a3,1(a4)
+.L324:
+	srli	a4,a5,6
+	andi	a4,a4,1
+	beq	a4,zero,.L326
+	lbu	a4,%lo(WD)(s0)
+	lbu	a3,%lo(WDB)(s5)
+	lw	a2,%lo(qrframe)(s2)
+	addi	a4,a4,-7
+	srai	a1,a4,3
+	slli	a3,a3,3
+	add	a3,a3,a1
+	add	a2,a2,a3
+	lbu	a1,0(a2)
+	addi	a3, zero, 128
+	andi	a4,a4,7
+	sra	a4,a3,a4
+	or	a4,a4,a1
+	sb	a4,0(a2)
+	lbu	a2,%lo(WDB)(s5)
+	lw	a3,%lo(qrframe)(s2)
+	slli	a4,a2,3
+	sub	a4,a4,a2
+	add	a4,a3,a4
+	lbu	a3,1(a4)
+	ori	a3,a3,-128
+	sb	a3,1(a4)
+.L326:
+	srli	a4,a5,7
+	andi	a4,a4,1
+	beq	a4,zero,.L330
+	lbu	a4,%lo(WD)(s0)
+	lbu	a3,%lo(WDB)(s5)
+	lw	a2,%lo(qrframe)(s2)
+	addi	a4,a4,-8
+	srai	a1,a4,3
+	slli	a3,a3,3
+	add	a3,a3,a1
+	add	a2,a2,a3
+	lbu	a1,0(a2)
+	addi	a3, zero, 128
+	andi	a4,a4,7
+	sra	a4,a3,a4
+	or	a4,a4,a1
+	sb	a4,0(a2)
+	lbu	a4,%lo(WDB)(s5)
+	lw	a3,%lo(qrframe)(s2)
+	slli	a4,a4,3
+	add	a4,a3,a4
+	lbu	a3,1(a4)
+	ori	a3,a3,-128
+	sb	a3,1(a4)
+.L330:
+	srli	a4,a5,8
+	andi	a4,a4,1
+	beq	a4,zero,.L328
+	lbu	a4,%lo(WD)(s0)
+	lbu	a2,%lo(WDB)(s5)
+	lw	a3,%lo(qrframe)(s2)
+	addi	a4,a4,-7
+	mul	a4,a4,a2
+	add	a4,a3,a4
+	lbu	a3,1(a4)
+	ori	a3,a3,-128
+	sb	a3,1(a4)
+	lbu	a3,%lo(WDB)(s5)
+	lw	a4,%lo(qrframe)(s2)
+	slli	a3,a3,3
+	add	a4,a4,a3
+	lbu	a3,0(a4)
+	ori	a3,a3,1
+	sb	a3,0(a4)
+.L328:
+	srli	a4,a5,9
+	andi	a4,a4,1
+	beq	a4,zero,.L331
+	lbu	a4,%lo(WD)(s0)
+	lbu	a2,%lo(WDB)(s5)
+	lw	a3,%lo(qrframe)(s2)
+	addi	a4,a4,-6
+	mul	a4,a4,a2
+	add	a4,a3,a4
+	lbu	a3,1(a4)
+	ori	a3,a3,-128
+	sb	a3,1(a4)
+	lbu	a3,%lo(WDB)(s5)
+	lw	a4,%lo(qrframe)(s2)
+	slli	a3,a3,3
+	add	a4,a4,a3
+	lbu	a3,0(a4)
+	ori	a3,a3,4
+	sb	a3,0(a4)
+.L331:
+	srli	a4,a5,10
+	andi	a4,a4,1
+	beq	a4,zero,.L332
+	lbu	a4,%lo(WD)(s0)
+	lbu	a2,%lo(WDB)(s5)
+	lw	a3,%lo(qrframe)(s2)
+	addi	a4,a4,-5
+	mul	a4,a4,a2
+	add	a4,a3,a4
+	lbu	a3,1(a4)
+	ori	a3,a3,-128
+	sb	a3,1(a4)
+	lbu	a3,%lo(WDB)(s5)
+	lw	a4,%lo(qrframe)(s2)
+	slli	a3,a3,3
+	add	a4,a4,a3
+	lbu	a3,0(a4)
+	ori	a3,a3,8
+	sb	a3,0(a4)
+.L332:
+	slli	a4,a5,20
+	bge	a4,zero,.L333
+	lbu	a4,%lo(WD)(s0)
+	lbu	a2,%lo(WDB)(s5)
+	lw	a3,%lo(qrframe)(s2)
+	addi	a4,a4,-4
+	mul	a4,a4,a2
+	add	a4,a3,a4
+	lbu	a3,1(a4)
+	ori	a3,a3,-128
+	sb	a3,1(a4)
+	lbu	a3,%lo(WDB)(s5)
+	lw	a4,%lo(qrframe)(s2)
+	slli	a3,a3,3
+	add	a4,a4,a3
+	lbu	a3,0(a4)
+	ori	a3,a3,16
+	sb	a3,0(a4)
+.L333:
+	slli	a4,a5,19
+	bge	a4,zero,.L334
+	lbu	a4,%lo(WD)(s0)
+	lbu	a2,%lo(WDB)(s5)
+	lw	a3,%lo(qrframe)(s2)
+	addi	a4,a4,-3
+	mul	a4,a4,a2
+	add	a4,a3,a4
+	lbu	a3,1(a4)
+	ori	a3,a3,-128
+	sb	a3,1(a4)
+	lbu	a3,%lo(WDB)(s5)
+	lw	a4,%lo(qrframe)(s2)
+	slli	a3,a3,3
+	add	a4,a4,a3
+	lbu	a3,0(a4)
+	ori	a3,a3,32
+	sb	a3,0(a4)
+.L334:
+	slli	a3,a5,18
+	srli	a4,a5,13
+	bge	a3,zero,.L335
+	lbu	a5,%lo(WD)(s0)
+	lbu	a2,%lo(WDB)(s5)
+	lw	a3,%lo(qrframe)(s2)
+	addi	a5,a5,-2
+	mul	a5,a5,a2
+	add	a5,a3,a5
+	lbu	a3,1(a5)
+	ori	a3,a3,-128
+	sb	a3,1(a5)
+	lbu	a3,%lo(WDB)(s5)
+	lw	a5,%lo(qrframe)(s2)
+	slli	a3,a3,3
+	add	a5,a5,a3
+	lbu	a3,0(a5)
+	ori	a3,a3,64
+	sb	a3,0(a5)
+.L335:
+	andi	a5,a4,2
+	beq	a5,zero,.L201
+	lbu	a5,%lo(WD)(s0)
+	lbu	a3,%lo(WDB)(s5)
+	lw	a4,%lo(qrframe)(s2)
+	addi	a5,a5,-1
+	mul	a5,a5,a3
+	add	a5,a4,a5
+	lbu	a4,1(a5)
+	ori	a4,a4,-128
+	sb	a4,1(a5)
+	lbu	a4,%lo(WDB)(s5)
+	lw	a5,%lo(qrframe)(s2)
+	slli	a4,a4,3
+	add	a5,a5,a4
+	lbu	a4,0(a5)
+	ori	a4,a4,-128
+	sb	a4,0(a5)
+.L201:
+	lw	ra,76(sp)
+	lw	s0,72(sp)
+	lw	s1,68(sp)
+	lw	s2,64(sp)
+	lw	s3,60(sp)
+	lw	s4,56(sp)
+	lw	s5,52(sp)
+	lw	s6,48(sp)
+	lw	s7,44(sp)
+	lw	s8,40(sp)
+	lw	s9,36(sp)
+	lw	s10,32(sp)
+	lw	s11,28(sp)
+	addi	sp,sp,80
+	jalr	zero, ra, 0
+.L297:
+	addi	a0, zero, 0
+.Lpcrel_8:
+	auipc	ra, %pcrel_hi(badruns)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_8)
+	add	s7,s7,a0
+.L492:
+	bgeu	s7,s4,.L305
+	addi	a5, zero, 7
+	beq	s3,a5,.L489
+.L491:
+	addi	a5,s3,1
+	sw	s3,8(sp)
+	andi	s3,a5,0xff
+	addi	a0, s3, 0
+.Lpcrel_9:
+	auipc	ra, %pcrel_hi(applymask)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_9)
+	lbu	t5,%lo(WD)(s0)
+	addi	s4, s7, 0
+	bltu	s6, t5, .L501
+.L280:
+	addi	s7, zero, 0
+	beq	t5,zero,.L492
+	jal	zero, .L286
+.L499:
+	addi	t4,t4,-1
+	slli	t3,t3,1
+	andi	t4,t4,0xff
+	addi	a3, a1, 0
+	addi	a2, zero, 9
+	addi	a1, zero, 0
+	addi	a4, zero, 5
+	andi	t3,t3,0xff
+	bne	t4,zero,.L268
+	jal	zero, .L502
+.L489:
+	lw	s9,12(sp)
+	addi	s1, zero, 7
+	jal	zero, .L308
+.L346:
+	addi	a0, zero, 0
+	jal	zero, .L228
+.L273:
+	add	a5,a0,a5
+	addi	a4, a7, 0
+.L278:
+	lbu	a3,0(a0)
+	addi	a0,a0,1
+	addi	a4,a4,1
+	sb	a3,-1(a4)
+	bne	a0,a5,.L278
+	jal	zero, .L276
+.L249:
+	addi	a5, a6, 0
+	add	a7,a6,a7
+.L252:
+	lbu	a4,0(a5)
+	addi	a5,a5,1
+	addi	a0,a0,1
+	sb	a4,-1(a0)
+	bne	a5,a7,.L252
+	jal	zero, .L253
+.L243:
+	add	s0,a0,s0
+.L246:
+	lbu	a5,0(a0)
+	addi	a0,a0,1
+	addi	a2,a2,1
+	sb	a5,-1(a2)
+	bne	a0,s0,.L246
+	jal	zero, .L247
+.L226:
+	lw	a4,%lo(qrframe)(s2)
+	bne	a1,zero,.L340
+.L348:
+	addi	a2, a4, 0
+	lbu	a4,%lo(eccblkwid)(s6)
+	add	a5,a6,a5
+	addi	a6, zero, 0
+	bne	a4,zero,.L237
+	jal	zero, .L238
+.L493:
+	lui	s9,%hi(.LANCHOR0)
+	sb	zero,0(a1)
+	addi	s9,s9,%lo(.LANCHOR0)
+	jal	zero, .L214
+.L341:
+	addi	a4, zero, -1
+	jal	zero, .L202
+.L494:
+	addi	s9,s9,%lo(.LANCHOR0)
+	lbu	a5,1(s9)
+	sb	zero,0(a1)
+	sb	a5,1(a1)
+	jal	zero, .L214
+.L312:
+	addi	a5, a1, 0
+	add	s10,a1,s10
+	addi	a4, a0, 0
+.L317:
+	lbu	a3,0(a5)
+	addi	a5,a5,1
+	addi	a4,a4,1
+	sb	a3,-1(a4)
+	bne	s10,a5,.L317
+	addi	s3,s3,1
+	andi	s3,s3,0xff
+	addi	a5, zero, 8
+	bne	s3,a5,.L272
+	jal	zero, .L503
+.L500:
+	addi	a5, zero, 7
+	beq	s3,a5,.L489
+	lbu	a5,%lo(WDB)(s5)
+	sw	s3,8(sp)
+	lw	a0,%lo(qrframe)(s2)
+	mul	s10,a5,s10
+	lw	a1,%lo(strinbuf)(s8)
+	addi	s4, s7, 0
+	bne	s10,zero,.L309
+	jal	zero, .L491
+	.size	qrencode, .-qrencode
+	.align	2
+	.globl	initframe
+	.type	initframe, @function
+initframe:
+	lui	a4,%hi(WDB)
+	lui	a5,%hi(WD)
+	lbu	a5,%lo(WD)(a5)
+	lbu	a3,%lo(WDB)(a4)
+	addi	sp,sp,-64
+	lui	t1,%hi(heap_ptr)
+	mul	a3,a3,a5
+	lui	t3,%hi(heap_requested)
+	lui	a2,%hi(heap_end)
+	sw	s0,60(sp)
+	sw	s1,56(sp)
+	sw	s2,52(sp)
+	sw	s3,48(sp)
+	sw	s4,44(sp)
+	sw	s5,40(sp)
+	sw	s6,36(sp)
+	sw	s7,32(sp)
+	sw	s8,28(sp)
+	sw	s9,24(sp)
+	sw	s10,20(sp)
+	sw	s11,16(sp)
+	lw	a0,%lo(heap_ptr)(t1)
+	lw	a6,%lo(heap_requested)(t3)
+	lw	t4,%lo(heap_end)(a2)
+	beq	a3,zero,.L670
+	add	a1,a0,a3
+	andi	a7,a1,3
+	add	a6,a6,a3
+	bne	a7,zero,.L787
+	sw	a6,%lo(heap_requested)(t3)
+	bltu	t4, a1, .L507
+.L794:
+	sw	a1,%lo(heap_ptr)(t1)
+	beq	a0,zero,.L672
+	addi	a5,a3,-1
+	addi	a2, zero, 5
+	bgeu	a2, a5, .L673
+	sub	a2, zero, a0
+	andi	a5,a2,3
+	addi	t5, zero, 0
+	beq	a5,zero,.L509
+	sb	zero,0(a0)
+	andi	a2,a2,2
+	addi	t5, zero, 1
+	beq	a2,zero,.L509
+	sb	zero,1(a0)
+	addi	a2, zero, 3
+	addi	t5, zero, 2
+	bne	a5,a2,.L509
+	sb	zero,2(a0)
+	addi	t5, a5, 0
+.L509:
+	sub	t6,a3,a5
+	andi	a7,t6,-4
+	add	a5,a0,a5
+	add	a2,a7,a5
+.L511:
+	sw	zero,0(a5)
+	addi	a5,a5,4
+	bne	a2,a5,.L511
+	add	a5,a7,t5
+	beq	a7,t6,.L512
+.L508:
+	add	a2,a0,a5
+	sb	zero,0(a2)
+	addi	a2,a5,1
+	bgeu	a2, a3, .L512
+	add	a2,a0,a2
+	sb	zero,0(a2)
+	addi	a2,a5,2
+	bgeu	a2, a3, .L512
+	add	a2,a0,a2
+	sb	zero,0(a2)
+	addi	a2,a5,3
+	bgeu	a2, a3, .L512
+	add	a2,a0,a2
+	sb	zero,0(a2)
+	addi	a2,a5,4
+	bgeu	a2, a3, .L512
+	add	a2,a0,a2
+	sb	zero,0(a2)
+	addi	a5,a5,5
+	bgeu	a5, a3, .L512
+	add	a5,a0,a5
+	sb	zero,0(a5)
+.L512:
+	lui	a5,%hi(WD)
+	lbu	a5,%lo(WD)(a5)
+.L505:
+	addi	a3,a5,1
+	mul	a2,a3,a5
+	lui	a5,%hi(framebase)
+	sw	a0,%lo(framebase)(a5)
+	srai	a2,a2,1
+	addi	a2,a2,7
+	srai	a2,a2,3
+	beq	a2,zero,.L678
+	add	t5,a1,a2
+	andi	t6,t5,3
+	add	a6,a6,a2
+	bne	t6,zero,.L788
+.L514:
+	bltu	t4, t5, .L678
+.L795:
+	sw	t5,%lo(heap_ptr)(t1)
+	beq	a1,zero,.L513
+	addi	a3,a2,-1
+	addi	a0, zero, 5
+	bgeu	a0, a3, .L679
+	sub	a0, zero, a1
+	andi	a3,a0,3
+	addi	a7, zero, 0
+	beq	a3,zero,.L516
+	sb	zero,0(a1)
+	andi	a0,a0,2
+	addi	a7, zero, 1
+	beq	a0,zero,.L516
+	sb	zero,1(a1)
+	addi	a0, zero, 3
+	addi	a7, zero, 2
+	bne	a3,a0,.L516
+	sb	zero,2(a1)
+	addi	a7, a3, 0
+.L516:
+	sub	t0,a2,a3
+	andi	t6,t0,-4
+	add	a3,a1,a3
+	add	a0,t6,a3
+.L518:
+	sw	zero,0(a3)
+	addi	a3,a3,4
+	bne	a0,a3,.L518
+	add	a3,a7,t6
+	beq	t0,t6,.L519
+.L515:
+	add	a0,a1,a3
+	sb	zero,0(a0)
+	addi	a0,a3,1
+	bgeu	a0, a2, .L519
+	add	a0,a1,a0
+	sb	zero,0(a0)
+	addi	a0,a3,2
+	bgeu	a0, a2, .L519
+	add	a0,a1,a0
+	sb	zero,0(a0)
+	addi	a0,a3,3
+	bgeu	a0, a2, .L519
+	add	a0,a1,a0
+	sb	zero,0(a0)
+	addi	a0,a3,4
+	bgeu	a0, a2, .L519
+	add	a0,a1,a0
+	sb	zero,0(a0)
+	addi	a3,a3,5
+	bgeu	a3, a2, .L519
+	add	a3,a1,a3
+	sb	zero,0(a3)
+.L519:
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	lw	a0,%lo(framebase)(a5)
+	addi	a3,a3,1
+.L513:
+	add	a2,t5,a3
+	andi	a7,a2,3
+	add	a3,a3,a6
+	beq	a7,zero,.L520
+	addi	a6, zero, 4
+	sub	a6,a6,a7
+	add	a2,a2,a6
+	add	a3,a3,a6
+.L520:
+	lui	a7,%hi(framask)
+	sw	a3,%lo(heap_requested)(t3)
+	sw	a1,%lo(framask)(a7)
+	bltu	t4, a2, .L683
+	sw	a2,%lo(heap_ptr)(t1)
+.L521:
+	lui	a3,%hi(rlens)
+	sw	t5,%lo(rlens)(a3)
+	addi	t4, zero, 2
+	addi	t3, zero, 3
+	addi	a1, zero, 5
+	addi	t5, zero, 4
+	addi	a2, zero, 1
+	addi	t2, a1, 0
+	addi	s0, t5, 0
+	addi	s11, t4, 0
+	addi	s5, t4, 0
+	addi	s2, a2, 0
+	sw	t3,0(sp)
+	addi	s4, t3, 0
+	addi	t0, zero, 0
+	addi	t1, zero, 6
+	addi	a6, zero, 0
+	addi	t6, zero, 0
+	addi	a3, zero, 128
+.L522:
+	lbu	s10,%lo(WDB)(a4)
+	addi	s9,a6,1
+	addi	s8,a6,2
+	mul	s10,s10,t3
+	addi	s7,a6,3
+	addi	s6,a6,4
+	addi	s1,a6,5
+	addi	s3,a6,6
+	add	a0,a0,s10
+	lbu	s10,0(a0)
+	ori	s10,s10,16
+	sb	s10,0(a0)
+	lbu	s10,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s10,s10,a6
+	add	a0,a0,s10
+	lbu	s10,0(a0)
+	ori	s10,s10,-128
+	sb	s10,0(a0)
+	lbu	s10,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s10,s10,s9
+	add	a0,a0,s10
+	lbu	s10,0(a0)
+	ori	s10,s10,-128
+	sb	s10,0(a0)
+	lbu	s10,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s10,s10,a6
+	add	a0,a0,s10
+	lbu	s10,0(a0)
+	ori	s10,s10,2
+	sb	s10,0(a0)
+	lbu	s10,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s10,s10,t1
+	add	a0,a0,s10
+	lbu	s10,0(a0)
+	ori	s10,s10,64
+	sb	s10,0(a0)
+	lbu	s10,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s10,s10,a6
+	add	a0,a0,s10
+	lbu	s10,0(a0)
+	ori	s10,s10,64
+	sb	s10,0(a0)
+	lbu	s10,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s10,s10,s8
+	add	a0,a0,s10
+	lbu	s10,0(a0)
+	ori	s10,s10,-128
+	sb	s10,0(a0)
+	lbu	a0,%lo(WDB)(a4)
+	mul	s9,a0,s9
+	lw	a0,%lo(framebase)(a5)
+	add	a0,a0,s9
+	lbu	s9,0(a0)
+	ori	s9,s9,2
+	sb	s9,0(a0)
+	lbu	s9,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s9,s9,t1
+	add	a0,a0,s9
+	lbu	s9,0(a0)
+	ori	s9,s9,32
+	sb	s9,0(a0)
+	lbu	s9,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s9,s9,a6
+	add	a0,a0,s9
+	lbu	s9,0(a0)
+	ori	s9,s9,32
+	sb	s9,0(a0)
+	lbu	s9,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s9,s9,s7
+	add	a0,a0,s9
+	lbu	s9,0(a0)
+	ori	s9,s9,-128
+	sb	s9,0(a0)
+	lbu	a0,%lo(WDB)(a4)
+	mul	s8,a0,s8
+	lw	a0,%lo(framebase)(a5)
+	add	a0,a0,s8
+	lbu	s8,0(a0)
+	ori	s8,s8,2
+	sb	s8,0(a0)
+	lbu	s8,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s8,s8,t1
+	add	a0,a0,s8
+	lbu	s8,0(a0)
+	ori	s8,s8,16
+	sb	s8,0(a0)
+	lbu	s8,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s8,s8,a6
+	add	a0,a0,s8
+	lbu	s8,0(a0)
+	ori	s8,s8,16
+	sb	s8,0(a0)
+	lbu	s8,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s8,s8,s6
+	add	a0,a0,s8
+	lbu	s8,0(a0)
+	ori	s8,s8,-128
+	sb	s8,0(a0)
+	lbu	a0,%lo(WDB)(a4)
+	mul	s7,a0,s7
+	lw	a0,%lo(framebase)(a5)
+	add	a0,a0,s7
+	lbu	s7,0(a0)
+	ori	s7,s7,2
+	sb	s7,0(a0)
+	lbu	s7,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s7,s7,t1
+	add	a0,a0,s7
+	lbu	s7,0(a0)
+	ori	s7,s7,8
+	sb	s7,0(a0)
+	lbu	s7,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s7,s7,a6
+	add	a0,a0,s7
+	lbu	s7,0(a0)
+	ori	s7,s7,8
+	sb	s7,0(a0)
+	lbu	s7,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s7,s1,s7
+	add	a0,a0,s7
+	lbu	s7,0(a0)
+	ori	s7,s7,-128
+	sb	s7,0(a0)
+	lbu	s7,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s6,s7,s6
+	add	a0,a0,s6
+	lbu	s6,0(a0)
+	ori	s6,s6,2
+	sb	s6,0(a0)
+	lbu	s6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s6,s6,t1
+	add	a0,a0,s6
+	lbu	s6,0(a0)
+	ori	s6,s6,4
+	sb	s6,0(a0)
+	lbu	s6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	a6,s6,a6
+	add	a0,a0,a6
+	lbu	a6,0(a0)
+	ori	a6,a6,4
+	sb	a6,0(a0)
+	lbu	a6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s3,s3,a6
+	add	a0,a0,s3
+	lbu	a6,0(a0)
+	ori	a6,a6,-128
+	sb	a6,0(a0)
+	lbu	a6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	s1,s1,a6
+	add	a0,a0,s1
+	lbu	a6,0(a0)
+	ori	a6,a6,2
+	sb	a6,0(a0)
+	lbu	a6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	a6,a6,t1
+	add	a0,a0,a6
+	lbu	a6,0(a0)
+	ori	a6,a6,2
+	sb	a6,0(a0)
+	beq	a2,zero,.L684
+	addi	a6, a2, 0
+	addi	a0, zero, 1
+.L523:
+	addi	t1,a6,1
+	mul	a6,a6,t1
+	lw	s1,%lo(framask)(a7)
+	andi	t1,s11,0xff
+	srli	a6,a6,1
+	add	a0,a0,a6
+	srli	a6,a0,3
+	add	a6,s1,a6
+	lbu	s1,0(a6)
+	andi	a0,a0,7
+	sra	a0,a3,a0
+	or	a0,a0,s1
+	sb	a0,0(a6)
+	beq	t1,zero,.L524
+	addi	a0,t1,1
+	mul	a0,a0,t1
+	lw	s3,%lo(framask)(a7)
+	addi	a6,t6,1
+	andi	a6,a6,0xff
+	addi	s1, zero, 4
+	addi	t1, zero, 5
+	srli	a0,a0,1
+	addi	a0,a0,1
+	srli	s6,a0,3
+	add	s3,s3,s6
+	lbu	s6,0(s3)
+	andi	a0,a0,7
+	sra	a0,a3,a0
+	or	a0,a0,s6
+	sb	a0,0(s3)
+	bltu	s1, a6, .L789
+.L525:
+	addi	a0,t1,1
+	mul	a0,a0,t1
+	lw	t1,%lo(framask)(a7)
+	srli	a0,a0,1
+	add	a0,a6,a0
+	srli	a6,a0,3
+	add	a6,t1,a6
+	lbu	t1,0(a6)
+	andi	a0,a0,7
+	sra	a0,a3,a0
+	or	a0,a0,t1
+	sb	a0,0(a6)
+	bgeu	s2, t2, .L686
+	addi	t1, a1, 0
+	addi	a0, zero, 2
+.L526:
+	addi	a6,t1,1
+	mul	a6,a6,t1
+	lw	t1,%lo(framask)(a7)
+	srli	a6,a6,1
+	add	a0,a0,a6
+	srli	a6,a0,3
+	add	a6,t1,a6
+	lbu	t1,0(a6)
+	andi	a0,a0,7
+	sra	a0,a3,a0
+	or	a0,a0,t1
+	sb	a0,0(a6)
+	bgeu	s2, a2, .L687
+	addi	a6, a2, 0
+	addi	a0, zero, 2
+.L527:
+	addi	t1,a6,1
+	mul	a6,a6,t1
+	lw	s1,%lo(framask)(a7)
+	lbu	t1,0(sp)
+	srli	a6,a6,1
+	add	a0,a0,a6
+	srli	a6,a0,3
+	add	a6,s1,a6
+	lbu	s1,0(a6)
+	andi	a0,a0,7
+	sra	a0,a3,a0
+	or	a0,a0,s1
+	sb	a0,0(a6)
+	beq	t1,zero,.L528
+	addi	a0,t1,1
+	mul	a0,a0,t1
+	lw	t1,%lo(framask)(a7)
+	andi	s11,s11,0xff
+	addi	s1, zero, 4
+	addi	a6, zero, 5
+	srli	a0,a0,1
+	addi	a0,a0,1
+	srli	s3,a0,3
+	add	t1,t1,s3
+	lbu	s3,0(t1)
+	andi	a0,a0,7
+	sra	a0,a3,a0
+	or	a0,a0,s3
+	sb	a0,0(t1)
+	bltu	s1, s11, .L790
+.L529:
+	addi	a0,a6,1
+	mul	a0,a0,a6
+	lw	a6,%lo(framask)(a7)
+	srli	a0,a0,1
+	add	a0,s11,a0
+	srli	t1,a0,3
+	add	a6,a6,t1
+	lbu	t1,0(a6)
+	andi	a0,a0,7
+	sra	a0,a3,a0
+	or	a0,a0,t1
+	sb	a0,0(a6)
+	bgeu	s5, t2, .L689
+	addi	t1, a1, 0
+	addi	a0, zero, 3
+.L530:
+	addi	a6,t1,1
+	mul	a6,a6,t1
+	lw	t1,%lo(framask)(a7)
+	srli	a6,a6,1
+	add	a0,a0,a6
+	srli	a6,a0,3
+	add	a6,t1,a6
+	lbu	t1,0(a6)
+	andi	a0,a0,7
+	sra	a0,a3,a0
+	or	a0,a0,t1
+	sb	a0,0(a6)
+	bgeu	s5, a2, .L690
+	addi	a6, a2, 0
+	addi	a0, zero, 3
+.L531:
+	addi	t1,a6,1
+	mul	a6,a6,t1
+	lw	s1,%lo(framask)(a7)
+	andi	t1,s0,0xff
+	srli	a6,a6,1
+	add	a0,a0,a6
+	srli	a6,a0,3
+	add	a6,s1,a6
+	lbu	s1,0(a6)
+	andi	a0,a0,7
+	sra	a0,a3,a0
+	or	a0,a0,s1
+	sb	a0,0(a6)
+	beq	t1,zero,.L532
+	addi	a0,t1,1
+	mul	a0,a0,t1
+	lw	s1,%lo(framask)(a7)
+	lbu	t1,0(sp)
+	addi	s3, zero, 4
+	addi	a6, zero, 5
+	srli	a0,a0,1
+	addi	a0,a0,1
+	srli	s6,a0,3
+	add	s1,s1,s6
+	lbu	s6,0(s1)
+	andi	a0,a0,7
+	sra	a0,a3,a0
+	or	a0,a0,s6
+	sb	a0,0(s1)
+	bltu	s3, t1, .L791
+.L533:
+	addi	a0,a6,1
+	mul	a0,a0,a6
+	lw	a6,%lo(framask)(a7)
+	srli	a0,a0,1
+	add	a0,t1,a0
+	srli	t1,a0,3
+	add	a6,a6,t1
+	lbu	t1,0(a6)
+	andi	a0,a0,7
+	sra	a0,a3,a0
+	or	a0,a0,t1
+	sb	a0,0(a6)
+	bgeu	s4, t2, .L692
+	addi	t1, a1, 0
+	addi	a0, zero, 4
+.L534:
+	addi	a6,t1,1
+	mul	a6,a6,t1
+	lw	t1,%lo(framask)(a7)
+	addi	s1, zero, 4
+	srli	a6,a6,1
+	add	a0,a0,a6
+	srli	a6,a0,3
+	add	a6,t1,a6
+	lbu	t1,0(a6)
+	andi	a0,a0,7
+	sra	a0,a3,a0
+	or	a0,a0,t1
+	sb	a0,0(a6)
+	bgeu	s4, a2, .L535
+	addi	s1, a2, 0
+	addi	a2, zero, 4
+.L535:
+	addi	a0,s1,1
+	mul	a0,a0,s1
+	lw	a6,%lo(framask)(a7)
+	addi	t1,t6,5
+	andi	t1,t1,0xff
+	srli	a0,a0,1
+	add	a2,a2,a0
+	srli	a0,a2,3
+	add	a0,a6,a0
+	lbu	a6,0(a0)
+	andi	a2,a2,7
+	sra	a2,a3,a2
+	or	a2,a2,a6
+	sb	a2,0(a0)
+	beq	t1,zero,.L536
+	addi	a2,t1,1
+	mul	a2,a2,t1
+	lw	a6,%lo(framask)(a7)
+	andi	s0,s0,0xff
+	addi	t1, zero, 4
+	addi	a0, zero, 5
+	srli	a2,a2,1
+	addi	a2,a2,1
+	srli	t6,a2,3
+	add	a6,a6,t6
+	lbu	t6,0(a6)
+	andi	a2,a2,7
+	sra	a2,a3,a2
+	or	a2,a2,t6
+	sb	a2,0(a6)
+	bltu	t1, s0, .L792
+.L537:
+	addi	a2,a0,1
+	mul	a2,a2,a0
+	lw	a0,%lo(framask)(a7)
+	addi	a6, zero, 5
+	srli	a2,a2,1
+	add	a2,a2,s0
+	srli	t1,a2,3
+	add	a0,a0,t1
+	lbu	t1,0(a0)
+	andi	a2,a2,7
+	sra	a2,a3,a2
+	or	a2,a2,t1
+	sb	a2,0(a0)
+	addi	a2, zero, 4
+	bgeu	a2, t2, .L538
+	addi	a6, a1, 0
+	addi	a1, zero, 5
+.L538:
+	addi	a2,a6,1
+	mul	a2,a2,a6
+	lw	a0,%lo(framask)(a7)
+	srli	a2,a2,1
+	add	a2,a2,a1
+	srli	a1,a2,3
+	add	a1,a0,a1
+	lbu	a0,0(a1)
+	andi	a2,a2,7
+	sra	a2,a3,a2
+	or	a2,a2,a0
+	sb	a2,0(a1)
+	lbu	a1,%lo(WDB)(a4)
+	lw	a2,%lo(framebase)(a5)
+	mul	a1,a1,t4
+	add	a2,a2,a1
+	lbu	a1,0(a2)
+	ori	a1,a1,32
+	sb	a1,0(a2)
+	lbu	a1,%lo(WDB)(a4)
+	lw	a2,%lo(framebase)(a5)
+	mul	a1,a1,t3
+	add	a2,a2,a1
+	lbu	a1,0(a2)
+	ori	a1,a1,32
+	sb	a1,0(a2)
+	lbu	a1,%lo(WDB)(a4)
+	lw	a2,%lo(framebase)(a5)
+	mul	a1,a1,t4
+	add	a2,a2,a1
+	lbu	a1,0(a2)
+	ori	a1,a1,8
+	sb	a1,0(a2)
+	lbu	a1,%lo(WDB)(a4)
+	lw	a2,%lo(framebase)(a5)
+	mul	a1,a1,t5
+	add	a2,a2,a1
+	lbu	a1,0(a2)
+	ori	a1,a1,16
+	sb	a1,0(a2)
+	lbu	a1,%lo(WDB)(a4)
+	lw	a2,%lo(framebase)(a5)
+	mul	a1,a1,t4
+	add	a2,a2,a1
+	lbu	a1,0(a2)
+	ori	a1,a1,16
+	sb	a1,0(a2)
+	lbu	a1,%lo(WDB)(a4)
+	lw	a2,%lo(framebase)(a5)
+	mul	a1,a1,t5
+	add	a2,a2,a1
+	lbu	a1,0(a2)
+	ori	a1,a1,32
+	sb	a1,0(a2)
+	lbu	a1,%lo(WDB)(a4)
+	lw	a2,%lo(framebase)(a5)
+	mul	a1,a1,t3
+	add	a2,a2,a1
+	lbu	a1,0(a2)
+	ori	a1,a1,8
+	sb	a1,0(a2)
+	lbu	a1,%lo(WDB)(a4)
+	lw	a2,%lo(framebase)(a5)
+	mul	a1,a1,t5
+	add	a2,a2,a1
+	lbu	a1,0(a2)
+	ori	a1,a1,8
+	sb	a1,0(a2)
+	lw	a0,%lo(framebase)(a5)
+	beq	t0,s2,.L793
+	lui	a2,%hi(WD)
+	lbu	a2,%lo(WD)(a2)
+	addi	t0, zero, 1
+	addi	t6,a2,-7
+	andi	t6,t6,0xff
+	addi	t2,a2,-2
+	addi	t3,t6,3
+	addi	t4,t6,2
+	addi	t5,t6,4
+	andi	t2,t2,0xff
+	addi	a2,a2,-6
+	sw	t3,0(sp)
+	addi	s11, t4, 0
+	addi	s0, t5, 0
+	addi	a6, t6, 0
+	addi	t1,t6,6
+	andi	a2,a2,0xff
+	addi	a1, t2, 0
+	jal	zero, .L522
+.L684:
+	addi	a0, zero, 0
+	addi	a6, zero, 1
+	jal	zero, .L523
+.L787:
+	addi	a2, zero, 4
+	sub	a2,a2,a7
+	add	a6,a6,a2
+	add	a1,a1,a2
+	sw	a6,%lo(heap_requested)(t3)
+	bgeu	t4, a1, .L794
+.L507:
+	addi	a3,a5,1
+	mul	a2,a5,a3
+	addi	a1, a0, 0
+	lui	a5,%hi(framebase)
+	sw	zero,%lo(framebase)(a5)
+	addi	a0, zero, 0
+	srai	a2,a2,1
+	addi	a2,a2,7
+	srai	a2,a2,3
+	add	t5,a1,a2
+	andi	t6,t5,3
+	add	a6,a6,a2
+	beq	t6,zero,.L514
+.L788:
+	addi	a7, zero, 4
+	sub	a7,a7,t6
+	add	t5,t5,a7
+	add	a6,a6,a7
+	bgeu	t4, t5, .L795
+.L678:
+	addi	t5, a1, 0
+	addi	a1, zero, 0
+	jal	zero, .L513
+.L793:
+	lui	a2,%hi(WD)
+	lbu	t1,%lo(WD)(a2)
+	lbu	t3,%lo(WDB)(a4)
+	addi	a2,t1,-7
+	andi	a2,a2,0xff
+	addi	a6,a2,3
+	slli	a1,t3,1
+	srai	s3,a6,3
+	add	a1,a1,t3
+	add	a1,a1,s3
+	add	a1,a0,a1
+	lbu	a0,0(a1)
+	andi	a6,a6,7
+	sra	t4,a3,a6
+	or	a0,t4,a0
+	sb	a0,0(a1)
+	lw	a1,%lo(framebase)(a5)
+	srai	a0,a2,3
+	andi	a6,a2,7
+	add	a1,a1,a0
+	lbu	a0,0(a1)
+	sra	a6,a3,a6
+	srli	s1,a2,3
+	or	a0,a6,a0
+	sb	a0,0(a1)
+	lbu	t3,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	addi	a1,a2,6
+	add	t3,t3,s1
+	add	a0,a0,t3
+	lbu	t3,0(a0)
+	srai	t2,a1,3
+	andi	a1,a1,7
+	or	t3,a6,t3
+	sb	t3,0(a0)
+	lw	t6,%lo(framebase)(a5)
+	sra	a1,a3,a1
+	addi	a0,a2,1
+	add	t6,t6,t2
+	lbu	s0,0(t6)
+	srai	t5,a0,3
+	andi	t3,a0,7
+	or	a0,a1,s0
+	sb	a0,0(t6)
+	lbu	s0,%lo(WDB)(a4)
+	lw	t6,%lo(framebase)(a5)
+	sra	t3,a3,t3
+	slli	a0,s0,1
+	add	a0,a0,s0
+	slli	a0,a0,1
+	add	a0,a0,t5
+	add	t6,t6,a0
+	lbu	s0,0(t6)
+	addi	a0,t1,-6
+	andi	a0,a0,0xff
+	or	t3,t3,s0
+	sb	t3,0(t6)
+	lw	t6,%lo(framebase)(a5)
+	andi	t3,a0,7
+	sra	t3,a3,t3
+	add	t6,t6,t5
+	lbu	s0,0(t6)
+	addi	t5,a2,2
+	srai	s2,t5,3
+	or	t3,t3,s0
+	sb	t3,0(t6)
+	lbu	t3,%lo(WDB)(a4)
+	lw	t6,%lo(framebase)(a5)
+	andi	t5,t5,7
+	slli	t3,t3,1
+	add	t3,t3,s1
+	add	t3,t6,t3
+	lbu	s0,0(t3)
+	sra	t5,a3,t5
+	addi	t6,t1,-5
+	or	s0,a6,s0
+	sb	s0,0(t3)
+	lbu	s0,%lo(WDB)(a4)
+	lw	t3,%lo(framebase)(a5)
+	andi	s6,t6,7
+	add	s0,s0,t2
+	add	t3,t3,s0
+	lbu	s4,0(t3)
+	sra	s6,a3,s6
+	addi	s0,t1,-4
+	or	s4,a1,s4
+	sb	s4,0(t3)
+	lbu	s5,%lo(WDB)(a4)
+	lw	s4,%lo(framebase)(a5)
+	addi	s9,t1,-3
+	slli	t3,s5,1
+	add	t3,t3,s5
+	slli	t3,t3,1
+	add	t3,t3,s2
+	add	s4,s4,t3
+	lbu	s5,0(s4)
+	addi	s11,t1,-2
+	addi	t3,a2,4
+	or	s5,t5,s5
+	sb	s5,0(s4)
+	lw	s5,%lo(framebase)(a5)
+	addi	a2,a2,5
+	andi	s7,s0,7
+	add	s5,s5,s2
+	lbu	s8,0(s5)
+	sra	s7,a3,s7
+	srai	s4,t3,3
+	or	s8,s6,s8
+	sb	s8,0(s5)
+	lbu	s10,%lo(WDB)(a4)
+	lw	s8,%lo(framebase)(a5)
+	andi	t3,t3,7
+	slli	s5,s10,1
+	add	s5,s5,s10
+	add	s5,s5,s1
+	add	s8,s8,s5
+	lbu	s10,0(s8)
+	sra	t3,a3,t3
+	andi	s5,s9,7
+	or	s10,a6,s10
+	sb	s10,0(s8)
+	lbu	s8,%lo(WDB)(a4)
+	lw	s10,%lo(framebase)(a5)
+	sra	s5,a3,s5
+	slli	t1,s8,1
+	add	t1,t1,t2
+	add	t1,s10,t1
+	lbu	s8,0(t1)
+	andi	t6,t6,0xff
+	andi	s0,s0,0xff
+	or	s8,a1,s8
+	sb	s8,0(t1)
+	lbu	s8,%lo(WDB)(a4)
+	lw	s10,%lo(framebase)(a5)
+	slli	t1,s8,1
+	add	t1,t1,s8
+	slli	t1,t1,1
+	add	t1,t1,s3
+	add	t1,s10,t1
+	lbu	s8,0(t1)
+	srai	s10,a2,3
+	andi	a2,a2,7
+	or	s8,t4,s8
+	sb	s8,0(t1)
+	lw	t1,%lo(framebase)(a5)
+	sra	a2,a3,a2
+	sw	a2,0(sp)
+	add	s8,t1,s3
+	lbu	a2,0(s8)
+	andi	t1,s11,0xff
+	or	a2,s7,a2
+	sb	a2,0(s8)
+	lbu	a2,%lo(WDB)(a4)
+	lw	s8,%lo(framebase)(a5)
+	slli	a2,a2,2
+	add	a2,a2,s1
+	add	a2,s8,a2
+	lbu	s8,0(a2)
+	or	s8,a6,s8
+	sb	s8,0(a2)
+	lbu	s8,%lo(WDB)(a4)
+	slli	a2,s8,1
+	add	a2,a2,s8
+	lw	s8,%lo(framebase)(a5)
+	add	a2,a2,t2
+	add	a2,s8,a2
+	lbu	s8,0(a2)
+	or	s8,a1,s8
+	sb	s8,0(a2)
+	lbu	s8,%lo(WDB)(a4)
+	slli	a2,s8,1
+	add	a2,a2,s8
+	lw	s8,%lo(framebase)(a5)
+	slli	a2,a2,1
+	add	a2,a2,s4
+	add	a2,s8,a2
+	lbu	s8,0(a2)
+	or	s8,t3,s8
+	sb	s8,0(a2)
+	lw	a2,%lo(framebase)(a5)
+	add	a2,a2,s4
+	lbu	s8,0(a2)
+	or	s5,s5,s8
+	sb	s5,0(a2)
+	lbu	s5,%lo(WDB)(a4)
+	lw	s8,%lo(framebase)(a5)
+	slli	a2,s5,2
+	add	a2,a2,s5
+	add	a2,a2,s1
+	add	a2,s8,a2
+	lbu	s8,0(a2)
+	andi	s5,t1,7
+	sra	s5,a3,s5
+	or	s8,a6,s8
+	sb	s8,0(a2)
+	lbu	a2,%lo(WDB)(a4)
+	lw	s8,%lo(framebase)(a5)
+	sw	s5,4(sp)
+	slli	a2,a2,2
+	add	a2,a2,t2
+	add	a2,s8,a2
+	lbu	s8,0(a2)
+	lw	s5,0(sp)
+	or	s8,a1,s8
+	sb	s8,0(a2)
+	lbu	s8,%lo(WDB)(a4)
+	slli	a2,s8,1
+	add	a2,a2,s8
+	lw	s8,%lo(framebase)(a5)
+	slli	a2,a2,1
+	add	a2,a2,s10
+	add	a2,s8,a2
+	lbu	s8,0(a2)
+	or	s8,s5,s8
+	sb	s8,0(a2)
+	lw	a2,%lo(framebase)(a5)
+	lw	s5,4(sp)
+	addi	s8, t1, 0
+	add	a2,a2,s10
+	lbu	s10,0(a2)
+	or	s5,s5,s10
+	sb	s5,0(a2)
+	lbu	s5,%lo(WDB)(a4)
+	lw	s10,%lo(framebase)(a5)
+	slli	a2,s5,1
+	add	a2,a2,s5
+	slli	a2,a2,1
+	add	a2,a2,s1
+	add	a2,s10,a2
+	lbu	s10,0(a2)
+	addi	s5, a0, 0
+	andi	s1,s9,0xff
+	or	a6,a6,s10
+	sb	a6,0(a2)
+	lbu	a6,%lo(WDB)(a4)
+	lw	s10,%lo(framebase)(a5)
+	slli	a2,a6,2
+	add	a2,a2,a6
+	add	a2,a2,t2
+	add	a2,s10,a2
+	lbu	a6,0(a2)
+	or	a6,a1,a6
+	sb	a6,0(a2)
+	lbu	a6,%lo(WDB)(a4)
+	lw	s10,%lo(framebase)(a5)
+	slli	a2,a6,1
+	add	a2,a2,a6
+	slli	a2,a2,1
+	add	a2,a2,t2
+	add	s10,s10,a2
+	lbu	a2,0(s10)
+	or	a1,a1,a2
+	sb	a1,0(s10)
+	bgeu	t0, a0, .L796
+	addi	a2,a0,1
+	mul	a2,a2,a0
+	lw	s10,%lo(framask)(a7)
+	addi	t2, zero, 2
+	srli	a2,a2,1
+	addi	a1,a2,1
+	srli	a6,a1,3
+	add	a6,s10,a6
+	lbu	s10,0(a6)
+	andi	a1,a1,7
+	sra	a1,a3,a1
+	or	a1,a1,s10
+	sb	a1,0(a6)
+	beq	a0,t2,.L541
+	lw	a1,%lo(framask)(a7)
+	add	a2,a2,t2
+	srli	a6,a2,3
+	add	a1,a1,a6
+	lbu	a6,0(a1)
+	andi	a2,a2,7
+	sra	a2,a3,a2
+	or	a2,a2,a6
+	sb	a2,0(a1)
+	bltu	t0, t1, .L668
+	lw	a1,%lo(framask)(a7)
+	addi	a2,t1,1
+	sra	a3,a3,a2
+	lbu	a6,0(a1)
+	or	a3,a3,a6
+	sb	a3,0(a1)
+.L543:
+	addi	a1,t6,1
+	mul	a1,a1,t6
+	lw	t2,%lo(framask)(a7)
+	addi	a3, zero, 128
+	srli	a1,a1,1
+	addi	a1,a1,5
+	srli	a6,a1,3
+	add	a6,t2,a6
+	andi	a1,a1,7
+	sra	a3,a3,a1
+	lbu	a1,0(a6)
+	or	a3,a3,a1
+	sb	a3,0(a6)
+.L667:
+	addi	a3, t6, 0
+	addi	t6, t0, 0
+	addi	t0, a3, 0
+.L544:
+	addi	a3,t0,1
+	mul	a3,t0,a3
+	lw	t0,%lo(framask)(a7)
+	addi	a1, zero, 128
+	addi	a6, zero, 3
+	srli	a3,a3,1
+	add	a3,t6,a3
+	srli	t6,a3,3
+	add	t6,t0,t6
+	lbu	t0,0(t6)
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,t0
+	sb	a3,0(t6)
+	bgeu	a6, a0, .L545
+	addi	a3,a0,1
+	mul	a3,a3,a0
+	lw	t6,%lo(framask)(a7)
+	addi	a6, zero, 2
+	addi	t0, t1, 0
+	srli	a3,a3,1
+	addi	a3,a3,3
+	srli	t2,a3,3
+	add	t6,t6,t2
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	lbu	a1,0(t6)
+	or	a3,a3,a1
+	sb	a3,0(t6)
+	bltu	a6, t1, .L666
+.L546:
+	addi	a3,a6,1
+	mul	a3,a3,a6
+	lw	a6,%lo(framask)(a7)
+	addi	a1, zero, 128
+	addi	t6, zero, 5
+	srli	a3,a3,1
+	add	a3,a3,t0
+	srli	t0,a3,3
+	add	a6,a6,t0
+	lbu	t0,0(a6)
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,t0
+	sb	a3,0(a6)
+	bltu	t6, s0, .L547
+	lw	a6,%lo(framask)(a7)
+	addi	a3,s0,15
+	srli	t6,a3,3
+	add	a6,a6,t6
+	lbu	t6,0(a6)
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,t6
+	sb	a3,0(a6)
+	addi	a3, zero, 1
+	bltu	a3, s0, .L797
+	sra	a3,a1,s9
+	lw	a1,%lo(framask)(a7)
+	lbu	a6,0(a1)
+	or	a3,a3,a6
+	sb	a3,0(a1)
+.L664:
+	addi	a3,a0,1
+	mul	a3,a3,a0
+	lw	t0,%lo(framask)(a7)
+	addi	a6, zero, 128
+	addi	a1, zero, 3
+	addi	t6, t1, 0
+	srli	a3,a3,1
+	addi	a3,a3,4
+	srli	t2,a3,3
+	add	t0,t0,t2
+	andi	a3,a3,7
+	sra	a3,a6,a3
+	lbu	a6,0(t0)
+	or	a3,a3,a6
+	sb	a3,0(t0)
+	bltu	a1, t1, .L663
+.L550:
+	addi	a3,a1,1
+	mul	a3,a3,a1
+	lw	t0,%lo(framask)(a7)
+	addi	a1, zero, 128
+	addi	a6, zero, 5
+	srli	a3,a3,1
+	add	a3,a3,t6
+	srli	t6,a3,3
+	add	t6,t0,t6
+	lbu	t0,0(t6)
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,t0
+	sb	a3,0(t6)
+	bltu	a6, s1, .L551
+	lw	a6,%lo(framask)(a7)
+	addi	a3,s1,15
+	srli	t6,a3,3
+	add	a6,a6,t6
+	lbu	t6,0(a6)
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,t6
+	sb	a3,0(a6)
+	addi	a3, zero, 1
+	bltu	a3, s1, .L798
+	sra	a3,a1,s11
+	lw	a1,%lo(framask)(a7)
+	lbu	a6,0(a1)
+	or	a3,a3,a6
+	sb	a3,0(a1)
+.L661:
+	addi	a6, a0, 0
+	addi	s5, zero, 5
+.L553:
+	addi	a3,a6,1
+	mul	a3,a3,a6
+	lw	a0,%lo(framask)(a7)
+	addi	a1, zero, 128
+	addi	a6, zero, 4
+	srli	a3,a3,1
+	add	a3,a3,s5
+	srli	t6,a3,3
+	add	a0,a0,t6
+	lbu	t6,0(a0)
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,t6
+	sb	a3,0(a0)
+	bgeu	a6, t1, .L554
+	mul	a3,a2,t1
+	lw	a2,%lo(framask)(a7)
+	addi	a0, zero, 5
+	srli	a3,a3,1
+	add	a3,a3,a6
+	srli	a6,a3,3
+	add	a2,a2,a6
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	lbu	a1,0(a2)
+	or	a3,a3,a1
+	sb	a3,0(a2)
+	beq	t1,a0,.L799
+.L555:
+	addi	a3,s8,1
+	mul	a3,a3,s8
+	lw	a6,%lo(framask)(a7)
+	addi	a2, zero, 128
+	addi	a1, zero, 1
+	srli	a3,a3,1
+	add	a3,a3,a0
+	srli	a0,a3,3
+	add	a0,a6,a0
+	lbu	a6,0(a0)
+	andi	a3,a3,7
+	sra	a3,a2,a3
+	or	a3,a3,a6
+	sb	a3,0(a0)
+	lbu	a3,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	slli	a3,a3,1
+	add	a3,a3,s2
+	add	a3,a0,a3
+	lbu	a0,0(a3)
+	or	a0,s6,a0
+	sb	a0,0(a3)
+	lbu	a6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	slli	a3,a6,1
+	add	a3,a3,a6
+	add	a3,a3,s2
+	add	a3,a0,a3
+	lbu	a0,0(a3)
+	or	a0,t5,a0
+	sb	a0,0(a3)
+	lbu	a3,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	slli	a3,a3,1
+	add	a3,a3,s4
+	add	a3,a0,a3
+	lbu	a0,0(a3)
+	or	a0,t3,a0
+	sb	a0,0(a3)
+	lbu	a3,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	slli	a3,a3,2
+	add	a3,a3,s3
+	add	a3,a0,a3
+	lbu	a0,0(a3)
+	or	a0,t4,a0
+	sb	a0,0(a3)
+	lbu	a3,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	slli	a3,a3,1
+	add	a3,a3,s3
+	add	a3,a0,a3
+	lbu	a0,0(a3)
+	or	a0,s7,a0
+	sb	a0,0(a3)
+	lbu	a3,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	slli	a3,a3,2
+	add	a3,a3,s2
+	add	a3,a0,a3
+	lbu	a0,0(a3)
+	or	a0,t5,a0
+	sb	a0,0(a3)
+	lbu	a6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	slli	a3,a6,1
+	add	a3,a3,a6
+	add	a3,a3,s4
+	add	a3,a0,a3
+	lbu	a0,0(a3)
+	or	a0,t3,a0
+	sb	a0,0(a3)
+	lbu	a3,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	slli	a3,a3,2
+	add	a3,a3,s4
+	add	a3,a0,a3
+	lbu	a0,0(a3)
+	or	a0,t3,a0
+	sb	a0,0(a3)
+	lui	a3,%hi(VERSION)
+	lbu	a0,%lo(VERSION)(a3)
+	bgeu	a1, a0, .L556
+	lui	a1,%hi(WD)
+	lui	a3,%hi(.LANCHOR0)
+	lbu	t1,%lo(WD)(a1)
+	addi	a3,a3,%lo(.LANCHOR0)
+	add	a3,a3,a0
+	lbu	s6,640(a3)
+	addi	t2,t1,-8
+	addi	s0,t1,-6
+	andi	t2,t2,0xff
+	sub	a1,t2,s6
+	andi	s0,s0,0xff
+	sub	a0,s0,s6
+	addi	a3,t1,-7
+	andi	s1,a1,0xff
+	addi	s11,s6,9
+	addi	a1,s6,-3
+	andi	s2,a0,0xff
+	sw	a1,0(sp)
+	andi	t5,a3,0xff
+	sw	s11,12(sp)
+.L589:
+	lw	a1,0(sp)
+	andi	a3,a3,0xff
+	bgeu	a1, a3, .L570
+	addi	t3,t1,-8
+	addi	t1,t1,-6
+	andi	t3,t3,0xff
+	andi	t1,t1,0xff
+	addi	s5,t5,-2
+	addi	s4,t5,2
+	addi	s8,t5,-1
+	addi	s7,t5,1
+	sw	s1,4(sp)
+	sw	s2,8(sp)
+	jal	zero, .L571
+.L800:
+	addi	a0, t5, 0
+	addi	a1, t3, 0
+.L562:
+	addi	a6,a0,1
+	mul	a0,a0,a6
+	lw	a6,%lo(framask)(a7)
+	srli	a0,a0,1
+	add	a1,a1,a0
+	srli	a0,a1,3
+	add	a0,a6,a0
+	lbu	a6,0(a0)
+	andi	a1,a1,7
+	sra	a1,a2,a1
+	or	a1,a1,a6
+	sb	a1,0(a0)
+	bltu	t5,t1,.L702
+	addi	a0, t5, 0
+	addi	a1, t1, 0
+.L563:
+	addi	a6,a0,1
+	mul	a0,a0,a6
+	lw	a6,%lo(framask)(a7)
+	srli	a0,a0,1
+	add	a1,a1,a0
+	srli	a0,a1,3
+	add	a0,a6,a0
+	lbu	a6,0(a0)
+	andi	a1,a1,7
+	sra	a1,a2,a1
+	or	a1,a1,a6
+	sb	a1,0(a0)
+	bltu	t2, a3, .L703
+	addi	a0, t2, 0
+	addi	a1, a3, 0
+.L564:
+	addi	a6,a0,1
+	mul	a0,a0,a6
+	lw	a6,%lo(framask)(a7)
+	srli	a0,a0,1
+	add	a1,a1,a0
+	srli	a0,a1,3
+	add	a0,a6,a0
+	lbu	a6,0(a0)
+	andi	a1,a1,7
+	sra	a1,a2,a1
+	or	a1,a1,a6
+	sb	a1,0(a0)
+	bltu	s0, a3, .L704
+	addi	a0, s0, 0
+	addi	a1, a3, 0
+.L565:
+	addi	a6,a0,1
+	mul	a0,a0,a6
+	lw	a6,%lo(framask)(a7)
+	srli	a0,a0,1
+	add	a1,a1,a0
+	srli	a0,a1,3
+	add	a0,a6,a0
+	lbu	a6,0(a0)
+	andi	a1,a1,7
+	sra	a1,a2,a1
+	or	a1,a1,a6
+	sb	a1,0(a0)
+	bltu	s0,t3,.L705
+	addi	a0, s0, 0
+	addi	a1, t3, 0
+.L566:
+	addi	a6,a0,1
+	mul	a0,a0,a6
+	lw	a6,%lo(framask)(a7)
+	srli	a0,a0,1
+	add	a1,a1,a0
+	srli	a0,a1,3
+	add	a0,a6,a0
+	lbu	a6,0(a0)
+	andi	a1,a1,7
+	sra	a1,a2,a1
+	or	a1,a1,a6
+	sb	a1,0(a0)
+	bltu	t2,t1,.L706
+	addi	a0, t2, 0
+	addi	a1, t1, 0
+.L567:
+	addi	a6,a0,1
+	mul	a0,a0,a6
+	lw	a6,%lo(framask)(a7)
+	srli	a0,a0,1
+	add	a1,a1,a0
+	srli	a0,a1,3
+	add	a0,a6,a0
+	lbu	a6,0(a0)
+	andi	a1,a1,7
+	sra	a1,a2,a1
+	or	a1,a1,a6
+	sb	a1,0(a0)
+	bltu	t2,t3,.L707
+	addi	a0, t2, 0
+	addi	a1, t3, 0
+.L568:
+	addi	a6,a0,1
+	mul	a0,a0,a6
+	lw	a6,%lo(framask)(a7)
+	srli	a0,a0,1
+	add	a1,a1,a0
+	srli	a0,a1,3
+	add	a0,a6,a0
+	lbu	a6,0(a0)
+	andi	a1,a1,7
+	sra	a1,a2,a1
+	or	a1,a1,a6
+	sb	a1,0(a0)
+	bltu	s0,t1,.L708
+	addi	a0, s0, 0
+	addi	a1, t1, 0
+.L569:
+	addi	a6,a0,1
+	mul	a0,a0,a6
+	lw	a6,%lo(framask)(a7)
+	srli	a0,a0,1
+	add	a1,a1,a0
+	srli	a0,a1,3
+	add	a0,a6,a0
+	lbu	a6,0(a0)
+	andi	a1,a1,7
+	sra	a1,a2,a1
+	or	a1,a1,a6
+	sb	a1,0(a0)
+	bltu	a3, s6, .L784
+	lw	a1,0(sp)
+	sub	a3,a3,s6
+	sub	t3,t3,s6
+	sub	t1,t1,s6
+	andi	a3,a3,0xff
+	andi	t3,t3,0xff
+	andi	t1,t1,0xff
+	bgeu	a1, a3, .L784
+.L571:
+	lbu	a6,%lo(WDB)(a4)
+	lw	t4,%lo(framebase)(a5)
+	srai	s3,a3,3
+	mul	a6,a6,t5
+	andi	t0,a3,7
+	sra	t0,a2,t0
+	addi	a0,a3,-2
+	srai	s2,a0,3
+	andi	a0,a0,7
+	sra	a0,a2,a0
+	addi	a1,a3,2
+	srai	s1,a1,3
+	andi	a1,a1,7
+	add	a6,a6,s3
+	add	t4,t4,a6
+	lbu	t6,0(t4)
+	sra	a1,a2,a1
+	addi	a6,a3,-1
+	or	t6,t0,t6
+	sb	t6,0(t4)
+	lbu	t6,%lo(WDB)(a4)
+	lw	s11,%lo(framebase)(a5)
+	srai	s10,a6,3
+	mul	t6,t6,s5
+	andi	a6,a6,7
+	sra	a6,a2,a6
+	addi	t4,a3,1
+	srai	s9,t4,3
+	andi	t4,t4,7
+	sra	t4,a2,t4
+	add	t6,t6,s2
+	add	t6,s11,t6
+	lbu	s11,0(t6)
+	or	s11,a0,s11
+	sb	s11,0(t6)
+	lbu	t6,%lo(WDB)(a4)
+	lw	s11,%lo(framebase)(a5)
+	mul	t6,t6,s8
+	add	t6,t6,s2
+	add	t6,s11,t6
+	lbu	s11,0(t6)
+	or	s11,a0,s11
+	sb	s11,0(t6)
+	lbu	t6,%lo(WDB)(a4)
+	lw	s11,%lo(framebase)(a5)
+	mul	t6,t6,s5
+	add	t6,t6,s1
+	add	t6,s11,t6
+	lbu	s11,0(t6)
+	or	s11,a1,s11
+	sb	s11,0(t6)
+	lbu	t6,%lo(WDB)(a4)
+	lw	s11,%lo(framebase)(a5)
+	mul	t6,t6,s4
+	add	t6,t6,s10
+	add	t6,s11,t6
+	lbu	s11,0(t6)
+	or	s11,a6,s11
+	sb	s11,0(t6)
+	lbu	t6,%lo(WDB)(a4)
+	lw	s11,%lo(framebase)(a5)
+	mul	t6,t6,s5
+	add	t6,t6,s10
+	add	t6,s11,t6
+	lbu	s10,0(t6)
+	or	a6,a6,s10
+	sb	a6,0(t6)
+	lbu	a6,%lo(WDB)(a4)
+	lw	t6,%lo(framebase)(a5)
+	mul	a6,a6,t5
+	add	a6,a6,s2
+	add	a6,t6,a6
+	lbu	t6,0(a6)
+	or	t6,a0,t6
+	sb	t6,0(a6)
+	lbu	a6,%lo(WDB)(a4)
+	lw	t6,%lo(framebase)(a5)
+	mul	a6,a6,s8
+	add	a6,a6,s1
+	add	a6,t6,a6
+	lbu	t6,0(a6)
+	or	t6,a1,t6
+	sb	t6,0(a6)
+	lbu	a6,%lo(WDB)(a4)
+	lw	t6,%lo(framebase)(a5)
+	mul	a6,a6,s4
+	add	a6,a6,s3
+	add	a6,t6,a6
+	lbu	t6,0(a6)
+	or	t6,t0,t6
+	sb	t6,0(a6)
+	lbu	a6,%lo(WDB)(a4)
+	lw	t6,%lo(framebase)(a5)
+	mul	a6,a6,s5
+	add	a6,a6,s3
+	add	a6,t6,a6
+	lbu	t6,0(a6)
+	or	t0,t0,t6
+	sb	t0,0(a6)
+	lbu	a6,%lo(WDB)(a4)
+	lw	t6,%lo(framebase)(a5)
+	mul	a6,a6,s7
+	add	a6,a6,s2
+	add	a6,t6,a6
+	lbu	t6,0(a6)
+	or	t6,a0,t6
+	sb	t6,0(a6)
+	lbu	a6,%lo(WDB)(a4)
+	lw	t6,%lo(framebase)(a5)
+	mul	a6,a6,t5
+	add	a6,a6,s1
+	add	a6,t6,a6
+	lbu	t6,0(a6)
+	or	t6,a1,t6
+	sb	t6,0(a6)
+	lbu	a6,%lo(WDB)(a4)
+	lw	t6,%lo(framebase)(a5)
+	mul	a6,a6,s4
+	add	a6,a6,s9
+	add	a6,t6,a6
+	lbu	t6,0(a6)
+	or	t6,t4,t6
+	sb	t6,0(a6)
+	lbu	a6,%lo(WDB)(a4)
+	lw	t6,%lo(framebase)(a5)
+	mul	a6,a6,s5
+	add	a6,a6,s9
+	add	t6,t6,a6
+	lbu	a6,0(t6)
+	or	t4,t4,a6
+	sb	t4,0(t6)
+	lbu	a6,%lo(WDB)(a4)
+	lw	t4,%lo(framebase)(a5)
+	mul	a6,a6,s4
+	add	a6,a6,s2
+	add	a6,t4,a6
+	lbu	t4,0(a6)
+	or	a0,a0,t4
+	sb	a0,0(a6)
+	lbu	a0,%lo(WDB)(a4)
+	lw	a6,%lo(framebase)(a5)
+	mul	a0,a0,s7
+	add	a0,a0,s1
+	add	a0,a6,a0
+	lbu	a6,0(a0)
+	or	a6,a1,a6
+	sb	a6,0(a0)
+	lbu	a0,%lo(WDB)(a4)
+	lw	a6,%lo(framebase)(a5)
+	mul	a0,a0,s4
+	add	a0,a0,s1
+	add	a0,a6,a0
+	lbu	a6,0(a0)
+	or	a1,a1,a6
+	sb	a1,0(a0)
+	bgeu	t5,t3,.L800
+	addi	a0, t3, 0
+	addi	a1, t5, 0
+	jal	zero, .L562
+.L708:
+	addi	a0, t1, 0
+	addi	a1, s0, 0
+	jal	zero, .L569
+.L707:
+	addi	a0, t3, 0
+	addi	a1, t2, 0
+	jal	zero, .L568
+.L706:
+	addi	a0, t1, 0
+	addi	a1, t2, 0
+	jal	zero, .L567
+.L705:
+	addi	a0, t3, 0
+	addi	a1, s0, 0
+	jal	zero, .L566
+.L704:
+	addi	a0, a3, 0
+	addi	a1, s0, 0
+	jal	zero, .L565
+.L703:
+	addi	a0, a3, 0
+	addi	a1, t2, 0
+	jal	zero, .L564
+.L702:
+	addi	a0, t1, 0
+	addi	a1, t5, 0
+	jal	zero, .L563
+.L784:
+	lw	s1,4(sp)
+	lw	s2,8(sp)
+.L570:
+	lw	a3,12(sp)
+	bgeu	a3, t5, .L556
+	lbu	a6,%lo(WDB)(a4)
+	sub	t5,t5,s6
+	andi	t5,t5,0xff
+	mul	a6,a6,t5
+	lw	a0,%lo(framebase)(a5)
+	addi	a1,t5,-2
+	addi	s8,t5,-1
+	addi	a3,t5,2
+	addi	s7,t5,1
+	addi	s4, t5, 0
+	add	a0,a0,a6
+	lbu	a6,0(a0)
+	ori	a6,a6,2
+	sb	a6,0(a0)
+	lbu	a6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	a6,a6,a1
+	add	a0,a0,a6
+	lbu	a6,0(a0)
+	ori	a6,a6,8
+	sb	a6,0(a0)
+	lbu	a6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	a6,a6,s8
+	add	a0,a0,a6
+	lbu	a6,0(a0)
+	ori	a6,a6,8
+	sb	a6,0(a0)
+	lbu	a0,%lo(WDB)(a4)
+	lw	a6,%lo(framebase)(a5)
+	mul	a0,a0,a1
+	add	a0,a6,a0
+	lbu	a6,1(a0)
+	ori	a6,a6,-128
+	sb	a6,1(a0)
+	lbu	a6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	a6,a6,a3
+	add	a0,a0,a6
+	lbu	a6,0(a0)
+	ori	a6,a6,4
+	sb	a6,0(a0)
+	lbu	a6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	a6,a6,a1
+	add	a0,a0,a6
+	lbu	a6,0(a0)
+	ori	a6,a6,4
+	sb	a6,0(a0)
+	lbu	a6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	a6,a6,t5
+	add	a0,a0,a6
+	lbu	a6,0(a0)
+	ori	a6,a6,8
+	sb	a6,0(a0)
+	lbu	a0,%lo(WDB)(a4)
+	lw	a6,%lo(framebase)(a5)
+	mul	a0,a0,s8
+	add	a0,a6,a0
+	lbu	a6,1(a0)
+	ori	a6,a6,-128
+	sb	a6,1(a0)
+	lbu	a6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	a6,a6,a3
+	add	a0,a0,a6
+	lbu	a6,0(a0)
+	ori	a6,a6,2
+	sb	a6,0(a0)
+	lbu	a6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	a6,a6,a1
+	add	a0,a0,a6
+	lbu	a6,0(a0)
+	ori	a6,a6,2
+	sb	a6,0(a0)
+	lbu	a6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	a6,a6,s7
+	add	a0,a0,a6
+	lbu	a6,0(a0)
+	ori	a6,a6,8
+	sb	a6,0(a0)
+	lbu	a0,%lo(WDB)(a4)
+	lw	a6,%lo(framebase)(a5)
+	mul	a0,a0,t5
+	add	a0,a6,a0
+	lbu	a6,1(a0)
+	ori	a6,a6,-128
+	sb	a6,1(a0)
+	lbu	a6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	a6,a6,a3
+	add	a0,a0,a6
+	lbu	a6,0(a0)
+	ori	a6,a6,1
+	sb	a6,0(a0)
+	lbu	a6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	a6,a6,a1
+	add	a0,a0,a6
+	lbu	a6,0(a0)
+	ori	a6,a6,1
+	sb	a6,0(a0)
+	lbu	a6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	mul	a6,a6,a3
+	add	a0,a0,a6
+	lbu	a6,0(a0)
+	ori	a6,a6,8
+	sb	a6,0(a0)
+	lbu	a0,%lo(WDB)(a4)
+	lw	a6,%lo(framebase)(a5)
+	mul	a0,a0,s7
+	add	a0,a6,a0
+	lbu	a6,1(a0)
+	ori	a6,a6,-128
+	sb	a6,1(a0)
+	lbu	a0,%lo(WDB)(a4)
+	lw	a6,%lo(framebase)(a5)
+	mul	a0,a0,a3
+	add	a0,a6,a0
+	lbu	a6,1(a0)
+	ori	a6,a6,-128
+	sb	a6,1(a0)
+	addi	a0, zero, 4
+	lw	a6,%lo(framask)(a7)
+	bgeu	a0, t5, .L572
+	mul	a0,s7,t5
+	addi	t3, zero, 7
+	srli	a0,a0,1
+	addi	t1,a0,5
+	srli	t4,t1,3
+	add	a6,a6,t4
+	lbu	t4,0(a6)
+	and	t1,t1,t3
+	sra	t1,a2,t1
+	or	t1,t1,t4
+	sb	t1,0(a6)
+	addi	a6, zero, 6
+	bgeu	a6, t5, .L660
+.L573:
+	lw	a6,%lo(framask)(a7)
+	add	a0,a0,t3
+	srli	t1,a0,3
+	add	a6,a6,t1
+	lbu	t1,0(a6)
+	andi	a0,a0,7
+	sra	a0,a2,a0
+	or	a0,a0,t1
+	sb	a0,0(a6)
+	addi	a0, zero, 5
+	addi	s5, s1, 0
+	bgeu	a0, s1, .L710
+	addi	a0,s1,1
+	mul	a0,a0,s1
+	addi	a6, zero, 6
+	srli	a0,a0,1
+.L574:
+	add	a0,a0,a6
+	lw	a6,%lo(framask)(a7)
+	srli	t1,a0,3
+	andi	a0,a0,7
+	add	a6,a6,t1
+	lbu	t1,0(a6)
+	sra	a0,a2,a0
+	addi	s9, s2, 0
+	or	a0,a0,t1
+	sb	a0,0(a6)
+	addi	a0, zero, 5
+	lw	t1,%lo(framask)(a7)
+	bltu	a0, s2, .L575
+	addi	a0,s2,21
+	srli	a6,a0,3
+	add	a6,t1,a6
+	lbu	t1,0(a6)
+	andi	a0,a0,7
+	sra	a0,a2,a0
+	or	a0,a0,t1
+	sb	a0,0(a6)
+	addi	t3, s2, 0
+	addi	a0, zero, 15
+.L576:
+	lw	a6,%lo(framask)(a7)
+	add	a0,a0,t3
+	srli	t1,a0,3
+	add	a6,a6,t1
+	lbu	t1,0(a6)
+	andi	a0,a0,7
+	sra	a0,a2,a0
+	or	a0,a0,t1
+	sb	a0,0(a6)
+	addi	a0, zero, 6
+	lw	a6,%lo(framask)(a7)
+	bltu	a0, s1, .L577
+	addi	a0,s1,28
+	srli	t1,a0,3
+	add	a6,a6,t1
+	lbu	t1,0(a6)
+	andi	a0,a0,7
+	sra	a0,a2,a0
+	or	a0,a0,t1
+	sb	a0,0(a6)
+	addi	a0, zero, 4
+	lw	a6,%lo(framask)(a7)
+	bltu	a0, s1, .L801
+	addi	a0,s1,15
+	srli	t1,a0,3
+	add	a6,a6,t1
+	lbu	t1,0(a6)
+	andi	a0,a0,7
+	sra	a0,a2,a0
+	or	a0,a0,t1
+	sb	a0,0(a6)
+.L658:
+	addi	a6, s2, 0
+	addi	a0, zero, 28
+.L580:
+	add	a0,a0,a6
+	lw	a6,%lo(framask)(a7)
+	srli	t1,a0,3
+	andi	a0,a0,7
+	add	a6,a6,t1
+	lbu	t1,0(a6)
+	sra	a0,a2,a0
+	srai	t4,t5,3
+	or	a0,a0,t1
+	sb	a0,0(a6)
+	lbu	t3,%lo(WDB)(a4)
+	lw	t1,%lo(framebase)(a5)
+	andi	a0,t5,7
+	slli	a6,t3,1
+	add	a6,a6,t3
+	slli	a6,a6,1
+	add	a6,a6,t4
+	add	a6,t1,a6
+	lbu	t1,0(a6)
+	sra	a0,a2,a0
+	srai	t3,a1,3
+	or	t1,a0,t1
+	sb	t1,0(a6)
+	lbu	a6,%lo(WDB)(a4)
+	lw	t1,%lo(framebase)(a5)
+	andi	a1,a1,7
+	slli	a6,a6,2
+	add	a6,a6,t3
+	add	a6,t1,a6
+	lbu	t6,0(a6)
+	sra	a1,a2,a1
+	srai	t1,a3,3
+	or	t6,a1,t6
+	sb	t6,0(a6)
+	lbu	t0,%lo(WDB)(a4)
+	lw	t6,%lo(framebase)(a5)
+	andi	a3,a3,7
+	slli	a6,t0,2
+	add	a6,a6,t0
+	add	a6,a6,t3
+	add	a6,t6,a6
+	lbu	t6,0(a6)
+	sra	a3,a2,a3
+	srai	s3,s8,3
+	or	t6,a1,t6
+	sb	t6,0(a6)
+	lbu	a6,%lo(WDB)(a4)
+	lw	t6,%lo(framebase)(a5)
+	andi	s8,s8,7
+	slli	a6,a6,2
+	add	a6,a6,t1
+	add	a6,t6,a6
+	lbu	t0,0(a6)
+	sra	s8,a2,s8
+	srai	t6,s7,3
+	or	t0,a3,t0
+	sb	t0,0(a6)
+	lbu	a6,%lo(WDB)(a4)
+	lw	t0,%lo(framebase)(a5)
+	slli	a6,a6,3
+	add	a6,a6,s3
+	add	t0,t0,a6
+	lbu	s10,0(t0)
+	andi	a6,s7,7
+	sra	a6,a2,a6
+	or	s10,s8,s10
+	sb	s10,0(t0)
+	lbu	t0,%lo(WDB)(a4)
+	lw	s10,%lo(framebase)(a5)
+	slli	t0,t0,2
+	add	t0,t0,s3
+	add	t0,s10,t0
+	lbu	s3,0(t0)
+	or	s8,s8,s3
+	sb	s8,0(t0)
+	lbu	s8,%lo(WDB)(a4)
+	lw	s3,%lo(framebase)(a5)
+	slli	t0,s8,1
+	add	t0,t0,s8
+	slli	t0,t0,1
+	add	t0,t0,t3
+	add	s3,s3,t0
+	lbu	t0,0(s3)
+	or	t0,a1,t0
+	sb	t0,0(s3)
+	lbu	s8,%lo(WDB)(a4)
+	lw	s3,%lo(framebase)(a5)
+	slli	t0,s8,2
+	add	t0,t0,s8
+	add	t0,t0,t1
+	add	s3,s3,t0
+	lbu	t0,0(s3)
+	or	t0,a3,t0
+	sb	t0,0(s3)
+	lbu	t0,%lo(WDB)(a4)
+	lw	s3,%lo(framebase)(a5)
+	slli	t0,t0,3
+	add	t0,t0,t4
+	add	s3,s3,t0
+	lbu	t0,0(s3)
+	or	t0,a0,t0
+	sb	t0,0(s3)
+	lbu	t0,%lo(WDB)(a4)
+	lw	s3,%lo(framebase)(a5)
+	slli	t0,t0,2
+	add	t4,t0,t4
+	add	s3,s3,t4
+	lbu	t4,0(s3)
+	or	a0,a0,t4
+	sb	a0,0(s3)
+	lbu	t0,%lo(WDB)(a4)
+	lw	t4,%lo(framebase)(a5)
+	slli	a0,t0,3
+	sub	a0,a0,t0
+	add	a0,a0,t3
+	add	a0,t4,a0
+	lbu	t4,0(a0)
+	or	t4,a1,t4
+	sb	t4,0(a0)
+	lbu	t0,%lo(WDB)(a4)
+	lw	t4,%lo(framebase)(a5)
+	slli	a0,t0,1
+	add	a0,a0,t0
+	slli	a0,a0,1
+	add	a0,a0,t1
+	add	a0,t4,a0
+	lbu	t4,0(a0)
+	or	t4,a3,t4
+	sb	t4,0(a0)
+	lbu	a0,%lo(WDB)(a4)
+	lw	t4,%lo(framebase)(a5)
+	slli	a0,a0,3
+	add	a0,a0,t6
+	add	a0,t4,a0
+	lbu	t4,0(a0)
+	or	t4,a6,t4
+	sb	t4,0(a0)
+	lbu	a0,%lo(WDB)(a4)
+	lw	t4,%lo(framebase)(a5)
+	slli	a0,a0,2
+	add	t6,a0,t6
+	add	a0,t4,t6
+	lbu	t4,0(a0)
+	or	a6,a6,t4
+	sb	a6,0(a0)
+	lbu	a0,%lo(WDB)(a4)
+	lw	a6,%lo(framebase)(a5)
+	slli	a0,a0,3
+	add	a0,a0,t3
+	add	a0,a6,a0
+	lbu	a6,0(a0)
+	or	a1,a1,a6
+	sb	a1,0(a0)
+	lbu	a6,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	slli	a1,a6,3
+	sub	a1,a1,a6
+	add	a1,a1,t1
+	add	a1,a0,a1
+	lbu	a0,0(a1)
+	or	a0,a3,a0
+	sb	a0,0(a1)
+	lbu	a1,%lo(WDB)(a4)
+	lw	a0,%lo(framebase)(a5)
+	slli	a1,a1,3
+	add	a1,a1,t1
+	add	a1,a0,a1
+	lbu	a0,0(a1)
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	addi	a3, zero, 6
+	bgeu	a3, s1, .L712
+	addi	a3,s1,1
+	mul	a3,a3,s1
+	addi	a1, zero, 6
+	srli	a3,a3,1
+.L581:
+	add	a3,a3,a1
+	lw	a1,%lo(framask)(a7)
+	srli	a0,a3,3
+	andi	a3,a3,7
+	add	a1,a1,a0
+	lbu	a0,0(a1)
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	addi	a3, zero, 6
+	lw	a1,%lo(framask)(a7)
+	bltu	a3, s2, .L582
+	addi	a3,s2,21
+	srli	a0,a3,3
+	add	a1,a1,a0
+	lbu	a0,0(a1)
+	andi	a3,a3,7
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	addi	a3, zero, 5
+	lw	a1,%lo(framask)(a7)
+	bltu	a3, t5, .L657
+	addi	a3,t5,15
+	srli	a0,a3,3
+	add	a1,a1,a0
+	lbu	a0,0(a1)
+	andi	a3,a3,7
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+.L656:
+	addi	s7, zero, 28
+.L584:
+	lw	a3,%lo(framask)(a7)
+	add	s7,s7,s4
+	srli	a1,s7,3
+	add	a3,a3,a1
+	lbu	a1,0(a3)
+	andi	s7,s7,7
+	sra	s7,a2,s7
+	or	s7,s7,a1
+	sb	s7,0(a3)
+	addi	a3, zero, 7
+	bgeu	a3, s1, .L714
+	addi	a3,s1,1
+	mul	a3,a3,s1
+	addi	a1, zero, 7
+	srli	a3,a3,1
+.L585:
+	add	a3,a3,a1
+	lw	a1,%lo(framask)(a7)
+	srli	a0,a3,3
+	andi	a3,a3,7
+	add	a1,a1,a0
+	lbu	a0,0(a1)
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	addi	a3, zero, 5
+	bgeu	a3, s2, .L715
+	addi	a3,s2,1
+	mul	a3,a3,s2
+	addi	a1, zero, 5
+	srli	a3,a3,1
+.L586:
+	lw	a0,%lo(framask)(a7)
+	add	a3,a3,a1
+	srli	a6,a3,3
+	add	a0,a0,a6
+	lbu	a6,0(a0)
+	andi	a1,a3,7
+	sra	a1,a2,a1
+	or	a1,a1,a6
+	sb	a1,0(a0)
+	addi	a1, zero, 5
+	addi	a3, zero, 15
+	bgeu	a1, s1, .L587
+	addi	a3,s1,1
+	mul	a3,a3,s1
+	addi	s5, a1, 0
+	srli	a3,a3,1
+.L587:
+	lw	a0,%lo(framask)(a7)
+	add	a3,a3,s5
+	srli	a6,a3,3
+	add	a0,a0,a6
+	lbu	a6,0(a0)
+	andi	a1,a3,7
+	sra	a1,a2,a1
+	or	a1,a1,a6
+	sb	a1,0(a0)
+	addi	a1, zero, 7
+	addi	a3, zero, 28
+	bgeu	a1, s2, .L588
+	addi	a3,s2,1
+	mul	a3,a3,s2
+	addi	s9, a1, 0
+	srli	a3,a3,1
+.L588:
+	lw	a1,%lo(framask)(a7)
+	add	a3,a3,s9
+	srli	a0,a3,3
+	add	a1,a1,a0
+	lbu	a6,0(a1)
+	andi	a3,a3,7
+	sra	a3,a2,a3
+	or	a3,a3,a6
+	sb	a3,0(a1)
+	lui	a3,%hi(WD)
+	lbu	t1,%lo(WD)(a3)
+	sub	a0,s2,s6
+	sub	a3,s1,s6
+	sub	s0,s0,s6
+	sub	t2,t2,s6
+	andi	s1,a3,0xff
+	andi	s2,a0,0xff
+	andi	s0,s0,0xff
+	andi	t2,t2,0xff
+	addi	a3,t1,-7
+	jal	zero, .L589
+.L714:
+	addi	a1, s1, 0
+	addi	a3, zero, 28
+	jal	zero, .L585
+.L582:
+	addi	a3,s2,1
+	mul	a3,a3,s2
+	srli	a3,a3,1
+	addi	a3,a3,6
+	srli	a0,a3,3
+	add	a1,a1,a0
+	lbu	a0,0(a1)
+	andi	a3,a3,7
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+.L657:
+	mul	s7,s7,t5
+	lw	a1,%lo(framask)(a7)
+	srli	s7,s7,1
+	addi	a3,s7,5
+	srli	a0,a3,3
+	add	a1,a1,a0
+	lbu	a0,0(a1)
+	andi	a3,a3,7
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	addi	a3, zero, 7
+	bgeu	a3, t5, .L656
+	addi	s4, zero, 7
+	jal	zero, .L584
+.L712:
+	addi	a1, s1, 0
+	addi	a3, zero, 21
+	jal	zero, .L581
+.L715:
+	addi	a1, s2, 0
+	addi	a3, zero, 15
+	jal	zero, .L586
+.L572:
+	addi	a0,t5,15
+	srli	t1,a0,3
+	add	a6,a6,t1
+	lbu	t1,0(a6)
+	andi	a0,a0,7
+	sra	a0,a2,a0
+	or	a0,a0,t1
+	sb	a0,0(a6)
+.L660:
+	addi	t3, t5, 0
+	addi	a0, zero, 28
+	jal	zero, .L573
+.L577:
+	addi	a0,s1,1
+	mul	a0,a0,s1
+	srli	a0,a0,1
+	addi	t1,a0,7
+	srli	t3,t1,3
+	add	a6,a6,t3
+	lbu	t3,0(a6)
+	andi	t1,t1,7
+	sra	t1,a2,t1
+	or	t1,t1,t3
+	sb	t1,0(a6)
+.L659:
+	lw	a6,%lo(framask)(a7)
+	addi	a0,a0,5
+	srli	t1,a0,3
+	add	a6,a6,t1
+	lbu	t1,0(a6)
+	andi	a0,a0,7
+	sra	a0,a2,a0
+	or	a0,a0,t1
+	sb	a0,0(a6)
+	addi	a0, zero, 6
+	bgeu	a0, s2, .L658
+	addi	a0,s2,1
+	mul	a0,a0,s2
+	addi	a6, zero, 7
+	srli	a0,a0,1
+	jal	zero, .L580
+.L710:
+	addi	a6, s1, 0
+	addi	a0, zero, 21
+	jal	zero, .L574
+.L575:
+	addi	a0,s2,1
+	mul	a0,a0,s2
+	addi	t3, zero, 5
+	srli	a0,a0,1
+	addi	a6,a0,6
+	srli	t4,a6,3
+	add	t1,t1,t4
+	lbu	t4,0(t1)
+	andi	a6,a6,7
+	sra	a6,a2,a6
+	or	a6,a6,t4
+	sb	a6,0(t1)
+	jal	zero, .L576
+.L556:
+	lui	t3,%hi(WD)
+	lbu	a3,%lo(WD)(t3)
+	lbu	a1,%lo(WDB)(a4)
+	lw	a2,%lo(framebase)(a5)
+	addi	a3,a3,-8
+	mul	a3,a3,a1
+	addi	t1, zero, 128
+	addi	a0, zero, 6
+	addi	a1, zero, 28
+	add	a2,a2,a3
+	lbu	a6,1(a2)
+	ori	a6,a6,-128
+	sb	a6,1(a2)
+	lbu	a2,%lo(WD)(t3)
+	lw	a6,%lo(framask)(a7)
+	addi	a2,a2,-8
+	andi	a2,a2,0xff
+	addi	a3,a2,1
+	mul	a3,a3,a2
+	lbu	a2,3(a6)
+	ori	a2,a2,8
+	sb	a2,3(a6)
+	lw	a2,%lo(framask)(a7)
+	srli	a6,a3,4
+	add	a2,a2,a6
+	lbu	a6,0(a2)
+	srli	a3,a3,1
+	andi	a3,a3,7
+	sra	a3,t1,a3
+	or	a3,a3,a6
+	sb	a3,0(a2)
+	lbu	a3,%lo(WD)(t3)
+	addi	a3,a3,-7
+	andi	a3,a3,0xff
+	bgeu	a0, a3, .L590
+	addi	a1,a3,1
+	mul	a1,a1,a3
+	addi	a3, zero, 7
+	srli	a1,a1,1
+.L590:
+	add	a3,a3,a1
+	lw	a1,%lo(framask)(a7)
+	srli	a2,a3,3
+	andi	a3,a3,7
+	add	a1,a1,a2
+	lbu	a0,0(a1)
+	addi	a2, zero, 128
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	lw	a1,%lo(framask)(a7)
+	lui	a3,%hi(WD)
+	lbu	a2,%lo(WD)(a3)
+	lbu	a3,3(a1)
+	addi	a0, zero, 1
+	addi	a2,a2,-8
+	ori	a3,a3,4
+	sb	a3,3(a1)
+	andi	a2,a2,0xff
+	addi	a3, a0, 0
+	bltu	a0, a2, .L591
+	addi	a0, a2, 0
+	addi	a2, a3, 0
+.L591:
+	addi	a3,a2,1
+	mul	a3,a3,a2
+	lw	a1,%lo(framask)(a7)
+	addi	a2, zero, 128
+	addi	t1, zero, 6
+	addi	a6, zero, 28
+	srli	a3,a3,1
+	add	a3,a3,a0
+	srli	a0,a3,3
+	add	a1,a1,a0
+	lbu	a0,0(a1)
+	andi	a3,a3,7
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	addi	a3,a3,-6
+	andi	a3,a3,0xff
+	bgeu	t1, a3, .L592
+	addi	a6,a3,1
+	mul	a6,a6,a3
+	addi	a3, zero, 7
+	srli	a6,a6,1
+.L592:
+	lw	a1,%lo(framask)(a7)
+	add	a3,a3,a6
+	srli	a2,a3,3
+	add	a1,a1,a2
+	lbu	a0,0(a1)
+	addi	a2, zero, 128
+	andi	a3,a3,7
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	lw	a1,%lo(framask)(a7)
+	lui	a3,%hi(WD)
+	lbu	a2,%lo(WD)(a3)
+	lbu	a3,3(a1)
+	addi	a0, zero, 2
+	addi	a2,a2,-8
+	or	a3,a3,a0
+	sb	a3,3(a1)
+	andi	a2,a2,0xff
+	addi	a3, a0, 0
+	bltu	a0, a2, .L593
+	addi	a0, a2, 0
+	addi	a2, a3, 0
+.L593:
+	addi	a3,a2,1
+	mul	a3,a3,a2
+	lw	a1,%lo(framask)(a7)
+	addi	a2, zero, 128
+	addi	t1, zero, 6
+	addi	a6, zero, 28
+	srli	a3,a3,1
+	add	a3,a3,a0
+	srli	a0,a3,3
+	add	a1,a1,a0
+	lbu	a0,0(a1)
+	andi	a3,a3,7
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	addi	a3,a3,-5
+	andi	a3,a3,0xff
+	bgeu	t1, a3, .L594
+	addi	a6,a3,1
+	mul	a6,a6,a3
+	addi	a3, zero, 7
+	srli	a6,a6,1
+.L594:
+	lw	a1,%lo(framask)(a7)
+	add	a3,a3,a6
+	srli	a2,a3,3
+	add	a1,a1,a2
+	lbu	a0,0(a1)
+	addi	a2, zero, 128
+	andi	a3,a3,7
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	lw	a1,%lo(framask)(a7)
+	lui	a3,%hi(WD)
+	lbu	a2,%lo(WD)(a3)
+	lbu	a3,3(a1)
+	addi	a0, zero, 3
+	addi	a2,a2,-8
+	ori	a3,a3,1
+	sb	a3,3(a1)
+	andi	a2,a2,0xff
+	addi	a3, a0, 0
+	bltu	a0, a2, .L595
+	addi	a0, a2, 0
+	addi	a2, a3, 0
+.L595:
+	addi	a3,a2,1
+	mul	a3,a3,a2
+	lw	a1,%lo(framask)(a7)
+	addi	a2, zero, 128
+	addi	t1, zero, 6
+	addi	a6, zero, 28
+	srli	a3,a3,1
+	add	a3,a3,a0
+	srli	a0,a3,3
+	add	a1,a1,a0
+	lbu	a0,0(a1)
+	andi	a3,a3,7
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	addi	a3,a3,-4
+	andi	a3,a3,0xff
+	bgeu	t1, a3, .L596
+	addi	a6,a3,1
+	mul	a6,a6,a3
+	addi	a3, zero, 7
+	srli	a6,a6,1
+.L596:
+	lw	a1,%lo(framask)(a7)
+	add	a3,a3,a6
+	srli	a2,a3,3
+	add	a1,a1,a2
+	lbu	a0,0(a1)
+	addi	a2, zero, 128
+	andi	a3,a3,7
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	lw	a1,%lo(framask)(a7)
+	lui	a3,%hi(WD)
+	lbu	a2,%lo(WD)(a3)
+	lbu	a3,4(a1)
+	addi	a0, zero, 4
+	addi	a2,a2,-8
+	ori	a3,a3,-128
+	sb	a3,4(a1)
+	andi	a2,a2,0xff
+	addi	a3, a0, 0
+	bltu	a0, a2, .L597
+	addi	a0, a2, 0
+	addi	a2, a3, 0
+.L597:
+	addi	a3,a2,1
+	mul	a3,a3,a2
+	addi	a2, zero, 128
+	addi	t1, zero, 6
+	addi	a6, zero, 28
+	srli	a3,a3,1
+	add	a3,a3,a0
+	srli	a0,a3,3
+	add	a1,a1,a0
+	lbu	a0,0(a1)
+	andi	a3,a3,7
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	addi	a3,a3,-3
+	andi	a3,a3,0xff
+	bgeu	t1, a3, .L598
+	addi	a6,a3,1
+	mul	a6,a6,a3
+	addi	a3, zero, 7
+	srli	a6,a6,1
+.L598:
+	lw	a1,%lo(framask)(a7)
+	add	a3,a3,a6
+	srli	a2,a3,3
+	add	a1,a1,a2
+	lbu	a0,0(a1)
+	addi	a2, zero, 128
+	andi	a3,a3,7
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	lw	a1,%lo(framask)(a7)
+	lui	a3,%hi(WD)
+	lbu	a2,%lo(WD)(a3)
+	lbu	a3,4(a1)
+	addi	a0, zero, 5
+	addi	a2,a2,-8
+	ori	a3,a3,64
+	sb	a3,4(a1)
+	andi	a2,a2,0xff
+	addi	a3, a0, 0
+	bltu	a0, a2, .L599
+	addi	a0, a2, 0
+	addi	a2, a3, 0
+.L599:
+	addi	a3,a2,1
+	mul	a3,a3,a2
+	addi	a2, zero, 128
+	addi	t1, zero, 6
+	addi	a6, zero, 28
+	srli	a3,a3,1
+	add	a3,a3,a0
+	srli	a0,a3,3
+	add	a1,a1,a0
+	lbu	a0,0(a1)
+	andi	a3,a3,7
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	addi	a3,a3,-2
+	andi	a3,a3,0xff
+	bgeu	t1, a3, .L600
+	addi	a6,a3,1
+	mul	a6,a6,a3
+	addi	a3, zero, 7
+	srli	a6,a6,1
+.L600:
+	lw	a1,%lo(framask)(a7)
+	add	a3,a3,a6
+	srli	a2,a3,3
+	add	a1,a1,a2
+	lbu	a0,0(a1)
+	addi	a2, zero, 128
+	andi	a3,a3,7
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	lw	a1,%lo(framask)(a7)
+	lui	a3,%hi(WD)
+	lbu	a2,%lo(WD)(a3)
+	lbu	a3,4(a1)
+	addi	a0, zero, 6
+	addi	a2,a2,-8
+	ori	a3,a3,32
+	sb	a3,4(a1)
+	andi	a2,a2,0xff
+	addi	a3, a0, 0
+	bltu	a0, a2, .L601
+	addi	a0, a2, 0
+	addi	a2, a3, 0
+.L601:
+	addi	a3,a2,1
+	mul	a3,a3,a2
+	addi	a2, zero, 128
+	addi	t1, zero, 6
+	addi	a6, zero, 28
+	srli	a3,a3,1
+	add	a3,a3,a0
+	srli	a0,a3,3
+	add	a1,a1,a0
+	lbu	a0,0(a1)
+	andi	a3,a3,7
+	sra	a3,a2,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	addi	a3,a3,-1
+	andi	a3,a3,0xff
+	bgeu	t1, a3, .L602
+	addi	a6,a3,1
+	mul	a6,a6,a3
+	addi	a3, zero, 7
+	srli	a6,a6,1
+.L602:
+	lw	a2,%lo(framask)(a7)
+	add	a3,a3,a6
+	srli	a1,a3,3
+	add	a2,a2,a1
+	lbu	a0,0(a2)
+	andi	a3,a3,7
+	addi	a1, zero, 128
+	sra	a3,a1,a3
+	or	a3,a3,a0
+	sb	a3,0(a2)
+	addi	a6, zero, 7
+	addi	a2, zero, 0
+	addi	a0, zero, 8
+.L605:
+	lw	t1,%lo(framask)(a7)
+	addi	a3,a2,28
+	srli	t3,a3,3
+	add	t1,t1,t3
+	lbu	t3,0(t1)
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,t3
+	sb	a3,0(t1)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	andi	t5,a2,0xff
+	lw	t1,%lo(framask)(a7)
+	addi	a3,a3,-8
+	add	a3,t5,a3
+	andi	a3,a3,0xff
+	addi	t3, zero, 28
+	addi	t4,a3,1
+	bgeu	a6, a3, .L603
+	mul	t4,t4,a3
+	addi	a3, zero, 7
+	srli	t3,t4,1
+.L603:
+	add	a3,a3,t3
+	srli	t3,a3,3
+	add	t1,t1,t3
+	lbu	t3,0(t1)
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,t3
+	sb	a3,0(t1)
+	lui	a3,%hi(WD)
+	lbu	t1,%lo(WD)(a3)
+	lw	t3,%lo(framask)(a7)
+	addi	t4, a2, 0
+	addi	t1,t1,-8
+	andi	t1,t1,0xff
+	bltu	t1,t5,.L604
+	addi	t4, t1, 0
+	addi	t1, a2, 0
+.L604:
+	addi	a3,t4,1
+	mul	a3,a3,t4
+	addi	a2,a2,1
+	srli	a3,a3,1
+	add	a3,a3,t1
+	srli	t1,a3,3
+	add	t1,t3,t1
+	lbu	t3,0(t1)
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,t3
+	sb	a3,0(t1)
+	bne	a2,a0,.L605
+	lw	a1,%lo(framask)(a7)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	lbu	t1,4(a1)
+	lbu	a6,5(a1)
+	addi	a3,a3,-8
+	ori	t1,t1,15
+	ori	a6,a6,-8
+	sb	t1,4(a1)
+	sb	a6,5(a1)
+	andi	a3,a3,0xff
+	addi	a0, zero, 36
+	bgeu	a2, a3, .L606
+	addi	a0,a3,1
+	mul	a0,a0,a3
+	addi	a3, a2, 0
+	srli	a0,a0,1
+.L606:
+	add	a3,a3,a0
+	srli	a0,a3,3
+	add	a1,a1,a0
+	lbu	a6,0(a1)
+	addi	a0, zero, 128
+	andi	a3,a3,7
+	sra	a3,a0,a3
+	or	a3,a3,a6
+	sb	a3,0(a1)
+	lw	a0,%lo(framask)(a7)
+	lui	a3,%hi(WD)
+	lbu	a1,%lo(WD)(a3)
+	lbu	a3,4(a0)
+	addi	a6, zero, 8
+	addi	a1,a1,-7
+	or	a3,a3,a6
+	sb	a3,4(a0)
+	andi	a1,a1,0xff
+	addi	a3, zero, 36
+	bgeu	a6, a1, .L607
+	addi	a3,a1,1
+	mul	a3,a3,a1
+	addi	a1, a2, 0
+	srli	a3,a3,1
+.L607:
+	add	a3,a3,a1
+	srli	a1,a3,3
+	add	a0,a0,a1
+	lbu	a6,0(a0)
+	addi	a1, zero, 128
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,a6
+	sb	a3,0(a0)
+	lw	a0,%lo(framask)(a7)
+	lui	a3,%hi(WD)
+	lbu	a1,%lo(WD)(a3)
+	lbu	a3,4(a0)
+	addi	a6, zero, 8
+	addi	a1,a1,-6
+	ori	a3,a3,4
+	sb	a3,4(a0)
+	andi	a1,a1,0xff
+	addi	a3, zero, 36
+	bgeu	a6, a1, .L608
+	addi	a3,a1,1
+	mul	a3,a3,a1
+	addi	a1, a2, 0
+	srli	a3,a3,1
+.L608:
+	add	a3,a3,a1
+	srli	a1,a3,3
+	add	a0,a0,a1
+	lbu	a6,0(a0)
+	addi	a1, zero, 128
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,a6
+	sb	a3,0(a0)
+	lw	a0,%lo(framask)(a7)
+	lui	a3,%hi(WD)
+	lbu	a1,%lo(WD)(a3)
+	lbu	a3,4(a0)
+	addi	a6, zero, 8
+	addi	a1,a1,-5
+	ori	a3,a3,2
+	sb	a3,4(a0)
+	andi	a1,a1,0xff
+	addi	a3, zero, 36
+	bgeu	a6, a1, .L609
+	addi	a3,a1,1
+	mul	a3,a3,a1
+	addi	a1, a2, 0
+	srli	a3,a3,1
+.L609:
+	add	a3,a3,a1
+	srli	a1,a3,3
+	add	a0,a0,a1
+	lbu	a6,0(a0)
+	addi	a1, zero, 128
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,a6
+	sb	a3,0(a0)
+	lw	a0,%lo(framask)(a7)
+	lui	a3,%hi(WD)
+	lbu	a1,%lo(WD)(a3)
+	lbu	a3,4(a0)
+	addi	a6, zero, 8
+	addi	a1,a1,-4
+	ori	a3,a3,1
+	sb	a3,4(a0)
+	andi	a1,a1,0xff
+	addi	a3, zero, 36
+	bgeu	a6, a1, .L610
+	addi	a3,a1,1
+	mul	a3,a3,a1
+	addi	a1, a2, 0
+	srli	a3,a3,1
+.L610:
+	add	a3,a3,a1
+	srli	a1,a3,3
+	add	a0,a0,a1
+	lbu	a6,0(a0)
+	addi	a1, zero, 128
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,a6
+	sb	a3,0(a0)
+	lw	a0,%lo(framask)(a7)
+	lui	a3,%hi(WD)
+	lbu	a1,%lo(WD)(a3)
+	lbu	a3,5(a0)
+	addi	a6, zero, 8
+	addi	a1,a1,-3
+	ori	a3,a3,-128
+	sb	a3,5(a0)
+	andi	a1,a1,0xff
+	addi	a3, zero, 36
+	bgeu	a6, a1, .L611
+	addi	a3,a1,1
+	mul	a3,a3,a1
+	addi	a1, a2, 0
+	srli	a3,a3,1
+.L611:
+	add	a3,a3,a1
+	srli	a1,a3,3
+	add	a0,a0,a1
+	lbu	a6,0(a0)
+	addi	a1, zero, 128
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,a6
+	sb	a3,0(a0)
+	lw	a0,%lo(framask)(a7)
+	lui	a3,%hi(WD)
+	lbu	a1,%lo(WD)(a3)
+	lbu	a3,5(a0)
+	addi	a6, zero, 8
+	addi	a1,a1,-2
+	ori	a3,a3,64
+	sb	a3,5(a0)
+	andi	a1,a1,0xff
+	addi	a3, zero, 36
+	bgeu	a6, a1, .L612
+	addi	a3,a1,1
+	mul	a3,a3,a1
+	addi	a1, a2, 0
+	srli	a3,a3,1
+.L612:
+	add	a3,a3,a1
+	srli	a1,a3,3
+	add	a0,a0,a1
+	lbu	a6,0(a0)
+	addi	a1, zero, 128
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,a6
+	sb	a3,0(a0)
+	lw	a0,%lo(framask)(a7)
+	lui	a3,%hi(WD)
+	lbu	a1,%lo(WD)(a3)
+	lbu	a3,5(a0)
+	addi	a6, zero, 8
+	addi	a1,a1,-1
+	ori	a3,a3,32
+	sb	a3,5(a0)
+	andi	a1,a1,0xff
+	addi	a3, zero, 36
+	bgeu	a6, a1, .L613
+	addi	a3,a1,1
+	mul	a3,a3,a1
+	addi	a1, a2, 0
+	srli	a3,a3,1
+.L613:
+	add	a3,a3,a1
+	srli	a1,a3,3
+	add	a0,a0,a1
+	lbu	a6,0(a0)
+	addi	a1, zero, 128
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,a6
+	sb	a3,0(a0)
+	lw	a0,%lo(framask)(a7)
+	lui	a3,%hi(WD)
+	lbu	a1,%lo(WD)(a3)
+	lbu	a3,5(a0)
+	addi	a6, zero, 7
+	addi	a1,a1,-7
+	ori	a3,a3,16
+	sb	a3,5(a0)
+	andi	a1,a1,0xff
+	addi	a3, zero, 36
+	bgeu	a6, a1, .L614
+	addi	a3,a1,1
+	mul	a3,a3,a1
+	addi	a1, a2, 0
+	srli	a3,a3,1
+.L614:
+	add	a3,a3,a1
+	srli	a1,a3,3
+	add	a0,a0,a1
+	lbu	a6,0(a0)
+	addi	a1, zero, 128
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,a6
+	sb	a3,0(a0)
+	lui	a3,%hi(WD)
+	lbu	a1,%lo(WD)(a3)
+	addi	a0, zero, 7
+	addi	a3, zero, 36
+	addi	a1,a1,-6
+	andi	a1,a1,0xff
+	bgeu	a0, a1, .L615
+	addi	a3,a1,1
+	mul	a3,a3,a1
+	addi	a1, a2, 0
+	srli	a3,a3,1
+.L615:
+	lw	a0,%lo(framask)(a7)
+	add	a3,a3,a1
+	srli	a1,a3,3
+	add	a0,a0,a1
+	lbu	a6,0(a0)
+	addi	a1, zero, 128
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,a6
+	sb	a3,0(a0)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	addi	a0, zero, 7
+	addi	a1, zero, 36
+	addi	a3,a3,-5
+	andi	a3,a3,0xff
+	bgeu	a0, a3, .L616
+	addi	a1,a3,1
+	mul	a1,a1,a3
+	addi	a3, a2, 0
+	srli	a1,a1,1
+.L616:
+	lw	a0,%lo(framask)(a7)
+	add	a3,a3,a1
+	srli	a1,a3,3
+	add	a0,a0,a1
+	lbu	a6,0(a0)
+	addi	a1, zero, 128
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,a6
+	sb	a3,0(a0)
+	lui	a3,%hi(WD)
+	lbu	a1,%lo(WD)(a3)
+	addi	a0, zero, 7
+	addi	a3, zero, 36
+	addi	a1,a1,-4
+	andi	a1,a1,0xff
+	bgeu	a0, a1, .L617
+	addi	a3,a1,1
+	mul	a3,a3,a1
+	addi	a1, a2, 0
+	srli	a3,a3,1
+.L617:
+	lw	a0,%lo(framask)(a7)
+	add	a3,a3,a1
+	srli	a1,a3,3
+	add	a0,a0,a1
+	lbu	a6,0(a0)
+	addi	a1, zero, 128
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,a6
+	sb	a3,0(a0)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	addi	a0, zero, 7
+	addi	a1, zero, 36
+	addi	a3,a3,-3
+	andi	a3,a3,0xff
+	bgeu	a0, a3, .L618
+	addi	a1,a3,1
+	mul	a1,a1,a3
+	addi	a3, a2, 0
+	srli	a1,a1,1
+.L618:
+	lw	a0,%lo(framask)(a7)
+	add	a3,a3,a1
+	srli	a1,a3,3
+	add	a0,a0,a1
+	lbu	a6,0(a0)
+	addi	a1, zero, 128
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,a6
+	sb	a3,0(a0)
+	lui	a3,%hi(WD)
+	lbu	a1,%lo(WD)(a3)
+	addi	a0, zero, 7
+	addi	a3, zero, 36
+	addi	a1,a1,-2
+	andi	a1,a1,0xff
+	bgeu	a0, a1, .L619
+	addi	a3,a1,1
+	mul	a3,a3,a1
+	addi	a1, a2, 0
+	srli	a3,a3,1
+.L619:
+	lw	a0,%lo(framask)(a7)
+	add	a3,a3,a1
+	srli	a1,a3,3
+	add	a0,a0,a1
+	lbu	a6,0(a0)
+	addi	a1, zero, 128
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,a6
+	sb	a3,0(a0)
+	lui	a3,%hi(WD)
+	lbu	a1,%lo(WD)(a3)
+	addi	a0, zero, 7
+	addi	a3, zero, 36
+	addi	a1,a1,-1
+	andi	a1,a1,0xff
+	bgeu	a0, a1, .L620
+	addi	a3,a1,1
+	mul	a3,a3,a1
+	addi	a1, a2, 0
+	srli	a3,a3,1
+.L620:
+	add	a3,a3,a1
+	lw	a1,%lo(framask)(a7)
+	srli	a0,a3,3
+	addi	a6, zero, 128
+	add	a1,a1,a0
+	lbu	a0,0(a1)
+	andi	a3,a3,7
+	sra	a3,a6,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	addi	a1, zero, 14
+	beq	a3,a1,.L621
+	addi	a0, zero, 0
+	addi	t1, zero, 6
+	jal	zero, .L625
+.L803:
+	andi	t5,a2,255
+	lw	t4,%lo(framask)(a7)
+	addi	a3,t5,21
+	srli	t3,a3,3
+	andi	a3,a3,7
+	addi	a1,t5,1
+	add	t0,t4,t3
+	sra	a3,a6,a3
+	bltu	t1, t6, .L623
+	lbu	a1,0(t0)
+	or	a1,a3,a1
+	sb	a1,0(t0)
+.L655:
+	lw	a1,%lo(framask)(a7)
+	addi	a0,a0,1
+	addi	a2,a2,1
+	add	a1,a1,t3
+	lbu	t3,0(a1)
+	or	a3,a3,t3
+	sb	a3,0(a1)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	addi	a1,a3,-14
+	bgeu	a0, a1, .L802
+.L625:
+	andi	a3,a0,7
+	andi	a1,a0,1
+	srli	t4,a2,3
+	sra	a3,a6,a3
+	andi	t6,a2,0xff
+	bne	a1,zero,.L803
+	lbu	t5,%lo(WDB)(a4)
+	lw	t3,%lo(framebase)(a5)
+	addi	a0,a0,1
+	slli	a1,t5,1
+	add	a1,a1,t5
+	slli	a1,a1,1
+	add	a1,a1,t4
+	add	a1,t3,a1
+	lbu	t3,0(a1)
+	or	a3,a3,t3
+	sb	a3,0(a1)
+	lbu	a1,%lo(WDB)(a4)
+	lw	a3,%lo(framebase)(a5)
+	mul	a1,a1,a2
+	addi	a2,a2,1
+	add	a3,a3,a1
+	lbu	a1,0(a3)
+	ori	a1,a1,2
+	sb	a1,0(a3)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	addi	a1,a3,-14
+	bltu	a0, a1, .L625
+.L802:
+	lui	a2,%hi(VERSION)
+	lbu	t4,%lo(VERSION)(a2)
+	addi	a2, zero, 6
+	bgeu	a2, t4, .L637
+.L628:
+	lui	a2,%hi(.LANCHOR0)
+	slli	a1,t4,2
+	addi	a2,a2,%lo(.LANCHOR0)
+	add	a2,a2,a1
+	lw	t5,656(a2)
+	addi	t1, zero, 16
+	addi	a6, zero, 15
+	addi	a1, zero, 5
+	addi	a2, zero, 17
+	addi	t3, zero, 11
+	addi	a0, zero, 128
+	addi	t6, zero, 255
+	jal	zero, .L631
+.L805:
+	addi	a3,a3,-9
+	andi	t0,a1,0xff
+	andi	a3,a3,0xff
+	addi	s0, t0, 0
+	bltu	a3,t0,.L641
+	addi	s0, a3, 0
+	addi	a3, t0, 0
+.L641:
+	addi	t2,s0,1
+	mul	t2,t2,s0
+	lw	s0,%lo(framask)(a7)
+	srli	t2,t2,1
+	add	a3,a3,t2
+	srli	t2,a3,3
+	add	t2,s0,t2
+	lbu	s0,0(t2)
+	andi	a3,a3,7
+	sra	a3,a0,a3
+	or	a3,a3,s0
+	sb	a3,0(t2)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	addi	a3,a3,-9
+	andi	a3,a3,0xff
+	bltu	t0, a3, .L642
+	addi	t2, t0, 0
+	addi	t0, a3, 0
+	addi	a3, t2, 0
+.L642:
+	addi	t2,a3,1
+	mul	a3,t2,a3
+	lw	t2,%lo(framask)(a7)
+	srli	a3,a3,1
+	add	t0,t0,a3
+	srli	a3,t0,3
+	add	t2,t2,a3
+	lbu	s0,0(t2)
+	andi	t0,t0,7
+	sra	a3,a0,t0
+	or	a3,a3,s0
+	sb	a3,0(t2)
+.L643:
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	srl	t0,t5,t1
+	bgeu	t3, t1, .L645
+	addi	t0,t1,-12
+	srl	t0,t4,t0
+.L645:
+	andi	t0,t0,1
+	bne	t0,zero,.L646
+	addi	a3,a3,-10
+	andi	t0,a1,0xff
+	andi	a3,a3,0xff
+	addi	t2, t0, 0
+	bltu	a3,t0,.L647
+	addi	t2, a3, 0
+	addi	a3, t0, 0
+.L647:
+	addi	s0,t2,1
+	mul	t2,t2,s0
+	lw	s0,%lo(framask)(a7)
+	srli	t2,t2,1
+	add	a3,a3,t2
+	srli	t2,a3,3
+	add	t2,s0,t2
+	lbu	s0,0(t2)
+	andi	a3,a3,7
+	sra	a3,a0,a3
+	or	a3,a3,s0
+	sb	a3,0(t2)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	addi	a3,a3,-10
+	andi	a3,a3,0xff
+	bltu	t0, a3, .L648
+	addi	t2, t0, 0
+	addi	t0, a3, 0
+	addi	a3, t2, 0
+.L648:
+	addi	t2,a3,1
+	mul	a3,a3,t2
+	lw	t2,%lo(framask)(a7)
+	srli	a3,a3,1
+	add	t0,t0,a3
+	srli	a3,t0,3
+	add	t2,t2,a3
+	lbu	s0,0(t2)
+	andi	t0,t0,7
+	sra	a3,a0,t0
+	or	a3,a3,s0
+	sb	a3,0(t2)
+.L649:
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	bgeu	t3, a6, .L804
+	addi	t0,a6,-12
+	srl	t0,t4,t0
+.L632:
+	andi	t0,t0,1
+	beq	t0,zero,.L633
+	lbu	t2,%lo(WDB)(a4)
+	addi	a3,a3,-11
+	lw	t0,%lo(framebase)(a5)
+	mul	a3,a3,t2
+	sra	t2,a0,a1
+	add	a3,t0,a3
+	lbu	t0,0(a3)
+	or	t0,t0,t2
+	sb	t0,0(a3)
+	lbu	t0,%lo(WDB)(a4)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	mul	t0,t0,a1
+	lw	t2,%lo(framebase)(a5)
+	addi	a3,a3,-11
+	srai	s0,a3,3
+	andi	a3,a3,7
+	sra	a3,a0,a3
+	add	t0,t0,s0
+	add	t0,t2,t0
+	lbu	t2,0(t0)
+	or	a3,a3,t2
+	sb	a3,0(t0)
+.L634:
+	addi	a2,a2,-3
+	addi	a6,a6,-3
+	addi	t1,t1,-3
+	lui	a3,%hi(WD)
+	andi	a2,a2,0xff
+	lbu	a3,%lo(WD)(a3)
+	andi	a6,a6,0xff
+	andi	t1,t1,0xff
+	addi	a1,a1,-1
+	beq	a2,t6,.L637
+.L631:
+	srl	t0,t5,a2
+	bgeu	t3, a2, .L639
+	addi	t0,a2,-12
+	srl	t0,t4,t0
+.L639:
+	andi	t0,t0,1
+	beq	t0,zero,.L805
+	lbu	t2,%lo(WDB)(a4)
+	addi	a3,a3,-9
+	lw	t0,%lo(framebase)(a5)
+	mul	t2,t2,a3
+	sra	a3,a0,a1
+	add	t0,t0,t2
+	lbu	t2,0(t0)
+	or	a3,a3,t2
+	sb	a3,0(t0)
+	lbu	t0,%lo(WDB)(a4)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	mul	t0,t0,a1
+	lw	t2,%lo(framebase)(a5)
+	addi	a3,a3,-9
+	srai	s0,a3,3
+	andi	a3,a3,7
+	sra	a3,a0,a3
+	add	t0,t0,s0
+	add	t0,t2,t0
+	lbu	t2,0(t0)
+	or	a3,a3,t2
+	sb	a3,0(t0)
+	jal	zero, .L643
+.L623:
+	mul	a3,a1,t5
+	srli	a3,a3,1
+	addi	a3,a3,6
+	srli	t3,a3,3
+	add	t4,t4,t3
+	lbu	a1,0(t4)
+	andi	a3,a3,7
+	sra	a3,a6,a3
+	or	a1,a3,a1
+	sb	a1,0(t4)
+	jal	zero, .L655
+.L633:
+	addi	a3,a3,-11
+	andi	t0,a1,0xff
+	andi	a3,a3,0xff
+	addi	t2, t0, 0
+	bltu	a3,t0,.L635
+	addi	t2, a3, 0
+	addi	a3, t0, 0
+.L635:
+	addi	s0,t2,1
+	mul	t2,t2,s0
+	lw	s0,%lo(framask)(a7)
+	srli	t2,t2,1
+	add	a3,a3,t2
+	srli	t2,a3,3
+	add	t2,s0,t2
+	lbu	s0,0(t2)
+	andi	a3,a3,7
+	sra	a3,a0,a3
+	or	a3,a3,s0
+	sb	a3,0(t2)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	addi	a3,a3,-11
+	andi	a3,a3,0xff
+	bltu	t0, a3, .L636
+	addi	t2, t0, 0
+	addi	t0, a3, 0
+	addi	a3, t2, 0
+.L636:
+	addi	t2,a3,1
+	mul	a3,a3,t2
+	lw	t2,%lo(framask)(a7)
+	srli	a3,a3,1
+	add	t0,t0,a3
+	srli	a3,t0,3
+	add	t2,t2,a3
+	lbu	s0,0(t2)
+	andi	t0,t0,7
+	sra	a3,a0,t0
+	or	a3,a3,s0
+	sb	a3,0(t2)
+	jal	zero, .L634
+.L804:
+	srl	t0,t5,a6
+	jal	zero, .L632
+.L646:
+	lbu	t2,%lo(WDB)(a4)
+	addi	a3,a3,-10
+	lw	t0,%lo(framebase)(a5)
+	mul	a3,t2,a3
+	sra	t2,a0,a1
+	add	a3,t0,a3
+	lbu	t0,0(a3)
+	or	t0,t0,t2
+	sb	t0,0(a3)
+	lbu	t0,%lo(WDB)(a4)
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	mul	t0,t0,a1
+	lw	t2,%lo(framebase)(a5)
+	addi	a3,a3,-10
+	srai	s0,a3,3
+	andi	a3,a3,7
+	sra	a3,a0,a3
+	add	t0,t0,s0
+	add	t0,t2,t0
+	lbu	t2,0(t0)
+	or	a3,a3,t2
+	sb	a3,0(t0)
+	jal	zero, .L649
+.L637:
+	beq	a3,zero,.L504
+.L627:
+	addi	t3, zero, 1
+	addi	t1, zero, 0
+	addi	t5, zero, 128
+.L630:
+	addi	a2, zero, 0
+	andi	t4,t1,0xff
+	jal	zero, .L654
+.L807:
+	addi	a0, a2, 0
+	addi	a1, t1, 0
+.L653:
+	addi	a3,a1,1
+	mul	a3,a3,a1
+	lw	a1,%lo(framask)(a7)
+	srli	a3,a3,1
+	add	a3,a3,a0
+	srli	a0,a3,3
+	add	a1,a1,a0
+	lbu	a0,0(a1)
+	andi	a3,a3,7
+	sra	a3,t5,a3
+	or	a3,a3,a0
+	sb	a3,0(a1)
+.L652:
+	addi	a2,a2,1
+	beq	a2,t3,.L806
+.L654:
+	lbu	a6,%lo(WDB)(a4)
+	lw	a3,%lo(framebase)(a5)
+	srli	a0,a2,3
+	mul	a6,a6,t1
+	xori	a1, a2, -1
+	andi	a1,a1,7
+	andi	t6,a2,0xff
+	add	a3,a3,a6
+	add	a3,a3,a0
+	lbu	a3,0(a3)
+	sra	a3,a3,a1
+	andi	a3,a3,1
+	beq	a3,zero,.L652
+	bgeu	t4,t6,.L807
+	addi	a0, t1, 0
+	addi	a1, a2, 0
+	jal	zero, .L653
+.L806:
+	lui	a3,%hi(WD)
+	lbu	a3,%lo(WD)(a3)
+	addi	t1,t1,1
+	addi	t3,t3,1
+	bltu	t1, a3, .L630
+.L504:
+	lw	s0,60(sp)
+	lw	s1,56(sp)
+	lw	s2,52(sp)
+	lw	s3,48(sp)
+	lw	s4,44(sp)
+	lw	s5,40(sp)
+	lw	s6,36(sp)
+	lw	s7,32(sp)
+	lw	s8,28(sp)
+	lw	s9,24(sp)
+	lw	s10,20(sp)
+	lw	s11,16(sp)
+	addi	sp,sp,64
+	jalr	zero, ra, 0
+.L554:
+	lw	a2,%lo(framask)(a7)
+	addi	a3,t1,10
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	lbu	a1,1(a2)
+	addi	a0, t1, 0
+	addi	s8, zero, 5
+	or	a3,a3,a1
+	sb	a3,1(a2)
+	jal	zero, .L555
+.L551:
+	addi	a6,s1,1
+	mul	a3,a6,s1
+	lw	t6,%lo(framask)(a7)
+	srli	a3,a3,1
+	addi	a3,a3,5
+	srli	t0,a3,3
+	add	t6,t6,t0
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	lbu	a1,0(t6)
+	or	a3,a3,a1
+	sb	a3,0(t6)
+.L662:
+	mul	a3,a6,s1
+	lw	t6,%lo(framask)(a7)
+	addi	a1, zero, 128
+	addi	a6, zero, 5
+	srli	a3,a3,1
+	addi	a3,a3,1
+	srli	t0,a3,3
+	add	t6,t6,t0
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	lbu	a1,0(t6)
+	or	a3,a3,a1
+	sb	a3,0(t6)
+	bgeu	a6, a0, .L553
+	jal	zero, .L661
+.L547:
+	addi	a3,s0,1
+	mul	a6,a3,s0
+	lw	t6,%lo(framask)(a7)
+	srli	a6,a6,1
+	addi	a6,a6,5
+	srli	t0,a6,3
+	add	t6,t6,t0
+	andi	a6,a6,7
+	sra	a1,a1,a6
+	lbu	a6,0(t6)
+	or	a1,a1,a6
+	sb	a1,0(t6)
+.L665:
+	mul	a3,a3,s0
+	lw	t6,%lo(framask)(a7)
+	addi	a1, zero, 128
+	addi	a6, zero, 4
+	srli	a3,a3,1
+	addi	a3,a3,1
+	srli	t0,a3,3
+	add	t6,t6,t0
+	lbu	t0,0(t6)
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	or	a3,a3,t0
+	sb	a3,0(t6)
+	bltu	a6, a0, .L664
+	lw	a6,%lo(framask)(a7)
+	addi	a3,a0,10
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	lbu	a1,1(a6)
+	or	a3,a3,a1
+	sb	a3,1(a6)
+.L663:
+	addi	a1, t1, 0
+	addi	t6, zero, 3
+	jal	zero, .L550
+.L545:
+	addi	a3,a0,6
+	srli	a6,a3,3
+	andi	a3,a3,7
+	sra	a3,a1,a3
+	lw	a1,%lo(framask)(a7)
+	add	a1,a1,a6
+	lbu	a6,0(a1)
+	or	a3,a3,a6
+	sb	a3,0(a1)
+.L666:
+	addi	a6, t1, 0
+	addi	t0, zero, 2
+	jal	zero, .L546
+.L796:
+	lw	a2,%lo(framask)(a7)
+	sra	a3,a3,t6
+	lbu	a1,0(a2)
+	or	a3,a3,a1
+	sb	a3,0(a2)
+.L541:
+	lw	a2,%lo(framask)(a7)
+	addi	a6,a0,3
+	addi	a3, zero, 128
+	lbu	a1,0(a2)
+	sra	a3,a3,a6
+	or	a3,a3,a1
+	sb	a3,0(a2)
+.L668:
+	addi	a2,t1,1
+	mul	a3,a2,t1
+	lw	s10,%lo(framask)(a7)
+	addi	a6, zero, 128
+	addi	t2, zero, 5
+	srli	a3,a3,1
+	addi	a3,a3,1
+	srli	a1,a3,3
+	add	a1,s10,a1
+	lbu	s10,0(a1)
+	andi	a3,a3,7
+	sra	a3,a6,a3
+	or	a3,a3,s10
+	sb	a3,0(a1)
+	bltu	t2, t6, .L543
+	addi	a3,t6,15
+	srli	t2,a3,3
+	andi	a3,a3,7
+	sra	a1,a6,a3
+	lw	a3,%lo(framask)(a7)
+	addi	a6, zero, 1
+	add	a3,a3,t2
+	lbu	t2,0(a3)
+	or	a1,a1,t2
+	sb	a1,0(a3)
+	bgeu	a6, t6, .L544
+	jal	zero, .L667
+.L536:
+	lw	a6,%lo(framask)(a7)
+	addi	s0, zero, 5
+	addi	a0, zero, 255
+	lbu	a2,0(a6)
+	ori	a2,a2,64
+	sb	a2,0(a6)
+	jal	zero, .L537
+.L692:
+	addi	a0, a1, 0
+	addi	t1, zero, 4
+	jal	zero, .L534
+.L532:
+	lw	s1,%lo(framask)(a7)
+	addi	t1, zero, 5
+	addi	a6, zero, 255
+	lbu	a0,0(s1)
+	ori	a0,a0,64
+	sb	a0,0(s1)
+	jal	zero, .L533
+.L690:
+	addi	a0, a2, 0
+	addi	a6, zero, 3
+	jal	zero, .L531
+.L689:
+	addi	a0, a1, 0
+	addi	t1, zero, 3
+	jal	zero, .L530
+.L528:
+	lw	t1,%lo(framask)(a7)
+	addi	s11, zero, 5
+	addi	a6, zero, 255
+	lbu	a0,0(t1)
+	ori	a0,a0,64
+	sb	a0,0(t1)
+	jal	zero, .L529
+.L687:
+	addi	a0, a2, 0
+	addi	a6, zero, 2
+	jal	zero, .L527
+.L686:
+	addi	a0, a1, 0
+	addi	t1, zero, 2
+	jal	zero, .L526
+.L524:
+	lw	s1,%lo(framask)(a7)
+	addi	a6, zero, 5
+	addi	t1, zero, 255
+	lbu	a0,0(s1)
+	ori	a0,a0,64
+	sb	a0,0(s1)
+	jal	zero, .L525
+.L683:
+	addi	t5, zero, 0
+	jal	zero, .L521
+.L670:
+	addi	a1, a0, 0
+	addi	a0, zero, 0
+	jal	zero, .L505
+.L621:
+	lui	a2,%hi(VERSION)
+	lbu	t4,%lo(VERSION)(a2)
+	addi	a2, zero, 6
+	bltu	a2, t4, .L628
+	jal	zero, .L627
+.L679:
+	addi	a3, zero, 0
+	jal	zero, .L515
+.L673:
+	addi	a5, zero, 0
+	jal	zero, .L508
+.L672:
+	addi	a0, a1, 0
+	jal	zero, .L507
+.L789:
+	addi	t1, a6, 0
+	addi	a6, zero, 5
+	jal	zero, .L525
+.L790:
+	addi	a6, s11, 0
+	addi	s11, zero, 5
+	jal	zero, .L529
+.L791:
+	addi	a6, t1, 0
+	addi	t1, zero, 5
+	jal	zero, .L533
+.L792:
+	addi	a0, s0, 0
+	addi	s0, zero, 5
+	jal	zero, .L537
+.L797:
+	add	a3,s0,a3
+	jal	zero, .L665
+.L801:
+	addi	a0,s1,1
+	mul	a0,a0,s1
+	srli	a0,a0,1
+	jal	zero, .L659
+.L798:
+	add	a6,s1,a3
+	jal	zero, .L662
+.L799:
+	addi	s8, a0, 0
+	jal	zero, .L555
+	.size	initframe, .-initframe
+	.align	2
+	.globl	freeframe
+	.type	freeframe, @function
+freeframe:
+	jalr	zero, ra, 0
+	.size	freeframe, .-freeframe
+	.align	2
+	.globl	initecc
+	.type	initecc, @function
+initecc:
+	slli	a5,a1,2
+	addi	a5,a5,17
+	andi	a5,a5,0xff
+	addi	a4,a5,7
+	srai	a4,a4,3
+	mul	a2,a5,a4
+	lui	a7,%hi(VERSION)
+	lui	a6,%hi(WD)
+	lui	a3,%hi(WDB)
+	sb	a5,%lo(WD)(a6)
+	sb	a1,%lo(VERSION)(a7)
+	sb	a4,%lo(WDB)(a3)
+	addi	a5, zero, 768
+	bge	a2,a5,.L810
+	addi	a2, a5, 0
+.L810:
+	lui	a7,%hi(heap_ptr)
+	lw	t1,%lo(heap_ptr)(a7)
+	lui	t6,%hi(heap_requested)
+	lw	a6,%lo(heap_requested)(t6)
+	add	a3,t1,a2
+	andi	a4,a3,3
+	add	a6,a2,a6
+	beq	a4,zero,.L811
+	addi	a5, zero, 4
+	sub	a5,a5,a4
+	add	a3,a3,a5
+	add	a6,a6,a5
+.L811:
+	lui	a5,%hi(heap_end)
+	lw	t4,%lo(heap_end)(a5)
+	bltu	t4,a3,.L816
+	sw	a3,%lo(heap_ptr)(a7)
+.L812:
+	slli	a1,a1,2
+	add	a1,a1,a0
+	lui	a5,%hi(.LANCHOR0)
+	slli	a1,a1,2
+	addi	a5,a5,%lo(.LANCHOR0)
+	add	a5,a5,a1
+	lbu	t0,800(a5)
+	lbu	a1,801(a5)
+	lbu	a4,802(a5)
+	lbu	t5,803(a5)
+	lui	a5,%hi(neccblk1)
+	add	t3,t0,a1
+	sb	t0,%lo(neccblk1)(a5)
+	add	a5,t5,a4
+	mul	a5,a5,t3
+	lui	t0,%hi(neccblk2)
+	sb	a1,%lo(neccblk2)(t0)
+	lui	t0,%hi(datablkw)
+	sb	a4,%lo(datablkw)(t0)
+	lui	t0,%hi(qrframe)
+	sw	t1,%lo(qrframe)(t0)
+	lui	t1,%hi(ECCLEVEL)
+	sb	a0,%lo(ECCLEVEL)(t1)
+	add	a5,a5,a4
+	add	a5,a5,a1
+	bgeu	a5,a2,.L813
+	addi	a5, a2, 0
+.L813:
+	add	a2,a3,a5
+	andi	t1,a2,3
+	add	a5,a5,a6
+	beq	t1,zero,.L814
+	addi	a0, zero, 4
+	sub	a0,a0,t1
+	add	a2,a2,a0
+	add	a5,a5,a0
+.L814:
+	lui	a0,%hi(eccblkwid)
+	sw	a5,%lo(heap_requested)(t6)
+	sb	t5,%lo(eccblkwid)(a0)
+	bltu	t4, a2, .L817
+	mul	a0,a4,t3
+	lui	a5,%hi(strinbuf)
+	sw	a2,%lo(heap_ptr)(a7)
+	sw	a3,%lo(strinbuf)(a5)
+	add	a0,a0,a1
+	addi	a0,a0,-3
+	jalr	zero, ra, 0
+.L816:
+	addi	a3, t1, 0
+	addi	t1, zero, 0
+	jal	zero, .L812
+.L817:
+	mul	a0,a4,t3
+	addi	a3, zero, 0
+	lui	a5,%hi(strinbuf)
+	sw	a3,%lo(strinbuf)(a5)
+	add	a0,a0,a1
+	addi	a0,a0,-3
+	jalr	zero, ra, 0
+	.size	initecc, .-initecc
+	.section	.rodata.str1.4,"aMS",@progbits,1
+	.align	2
+.LC0:
+	.string	"http://www.mageec.com"
+	.text
+	.align	2
+	.type	benchmark_body.isra.0, @function
+benchmark_body.isra.0:
+	bge	zero, a0, .L843
+	addi	sp,sp,-80
+	sw	s0,72(sp)
+	lui	a4, 460615
+	lui	s0,%hi(.LC0)
+	lui	a5, 488179
+	sw	s4,56(sp)
+	sw	s5,52(sp)
+	addi	s0,s0,%lo(.LC0)
+	lui	s5,%hi(heap)
+	lui	s4,%hi(heap+8192)
+	addi	a4,a4,1128
+	addi	a5,a5,-198
+	sw	s1,68(sp)
+	sw	s2,64(sp)
+	sw	s3,60(sp)
+	sw	s6,48(sp)
+	sw	s7,44(sp)
+	sw	s8,40(sp)
+	sw	s9,36(sp)
+	sw	s10,32(sp)
+	sw	s11,28(sp)
+	sw	ra,76(sp)
+	sw	a0,4(sp)
+	addi	s2,s0,22
+	addi	s5,s5,%lo(heap)
+	addi	s4,s4,%lo(heap+8192)
+	sw	a4,8(sp)
+	sw	a5,12(sp)
+	addi	s1, zero, 0
+	lui	s11,%hi(encode)
+	lui	s10,%hi(size)
+	lui	s9,%hi(heap_ptr)
+	lui	s8,%hi(heap_end)
+	lui	s7,%hi(heap_requested)
+	addi	s6, zero, 22
+	addi	s3, zero, 40
+.L825:
+	lui	a5,%hi(.LANCHOR0+820)
+	sw	s0,%lo(encode)(s11)
+	sw	s6,%lo(size)(s10)
+	sw	s5,%lo(heap_ptr)(s9)
+	sw	s4,%lo(heap_end)(s8)
+	sw	zero,%lo(heap_requested)(s7)
+	addi	a4,a5,%lo(.LANCHOR0+820)
+	addi	a1, zero, 1
+	jal	zero, .L827
+.L847:
+	andi	a1,a0,0xff
+	beq	a1,s3,.L826
+.L827:
+	lbu	a3,1(a4)
+	lbu	a6,0(a4)
+	lbu	a2,2(a4)
+	addi	a0,a1,1
+	add	a5,a6,a3
+	mul	a5,a5,a2
+	addi	a4,a4,16
+	add	a5,a5,a3
+	addi	a5,a5,-3
+	bgeu	s6, a5, .L847
+.L826:
+	lui	a5,%hi(neccblk1)
+	sb	a6,%lo(neccblk1)(a5)
+	lui	a5,%hi(neccblk2)
+	sb	a3,%lo(neccblk2)(a5)
+	addi	a0, zero, 1
+	lui	a5,%hi(datablkw)
+	sb	a2,%lo(datablkw)(a5)
+.Lpcrel_10:
+	auipc	ra, %pcrel_hi(initecc)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_10)
+	lui	a5,%hi(strinbuf)
+	lw	a5,%lo(strinbuf)(a5)
+	addi	a4, s0, 0
+	sub	a3,a5,s0
+	addi	a3,a3,-1
+	sltiu	a3,a3,3
+	addi	a2, a5, 0
+	bne	a3,zero,.L830
+	andi	a3,a5,3
+	bne	a3,zero,.L830
+	lw	a0,8(sp)
+	lui	a2, 447207
+	lui	a3, 415318
+	sw	a0,0(a5)
+	lw	a0,12(sp)
+	lui	a4, 456243
+	addi	a2,a2,1911
+	addi	a3,a3,1889
+	addi	a4,a4,-413
+	addi	a1, zero, 109
+	sw	a0,4(a5)
+	sw	a2,8(a5)
+	sw	a3,12(a5)
+	sw	a4,16(a5)
+	sh	a1,20(a5)
+.L829:
+.Lpcrel_11:
+	auipc	ra, %pcrel_hi(initframe)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_11)
+.Lpcrel_12:
+	auipc	ra, %pcrel_hi(qrencode)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_12)
+	lw	a5,4(sp)
+	addi	s1,s1,1
+	bne	s1,a5,.L825
+	lw	ra,76(sp)
+	lw	s0,72(sp)
+	lw	s1,68(sp)
+	lw	s2,64(sp)
+	lw	s3,60(sp)
+	lw	s4,56(sp)
+	lw	s5,52(sp)
+	lw	s6,48(sp)
+	lw	s7,44(sp)
+	lw	s8,40(sp)
+	lw	s9,36(sp)
+	lw	s10,32(sp)
+	lw	s11,28(sp)
+	addi	sp,sp,80
+	jalr	zero, ra, 0
+.L830:
+	lbu	a5,0(a4)
+	addi	a4,a4,1
+	addi	a2,a2,1
+	sb	a5,-1(a2)
+	beq	s2,a4,.L829
+	lbu	a5,0(a4)
+	addi	a4,a4,1
+	addi	a2,a2,1
+	sb	a5,-1(a2)
+	bne	s2,a4,.L830
+	jal	zero, .L829
+.L843:
+	jalr	zero, ra, 0
+	.size	benchmark_body.isra.0, .-benchmark_body.isra.0
+	.align	2
+	.type	benchmark_body.constprop.0.isra.0, @function
+benchmark_body.constprop.0.isra.0:
+	addi	sp,sp,-80
+	sw	s0,72(sp)
+	lui	a4, 460615
+	lui	s0,%hi(.LC0)
+	lui	a5, 488179
+	sw	s3,60(sp)
+	sw	s4,56(sp)
+	addi	s0,s0,%lo(.LC0)
+	lui	s4,%hi(heap)
+	lui	s3,%hi(heap+8192)
+	addi	a4,a4,1128
+	addi	a5,a5,-198
+	sw	s1,68(sp)
+	sw	s2,64(sp)
+	sw	s5,52(sp)
+	sw	s6,48(sp)
+	sw	s7,44(sp)
+	sw	s8,40(sp)
+	sw	s9,36(sp)
+	sw	s10,32(sp)
+	sw	s11,28(sp)
+	sw	ra,76(sp)
+	addi	s2,s0,22
+	addi	s4,s4,%lo(heap)
+	addi	s3,s3,%lo(heap+8192)
+	sw	a4,8(sp)
+	sw	a5,12(sp)
+	addi	s1, zero, 5
+	lui	s11,%hi(encode)
+	lui	s10,%hi(size)
+	lui	s9,%hi(heap_ptr)
+	lui	s8,%hi(heap_end)
+	lui	s7,%hi(heap_requested)
+	addi	s6, zero, 22
+	addi	s5, zero, 40
+.L854:
+	lui	a5,%hi(.LANCHOR0+820)
+	sw	s0,%lo(encode)(s11)
+	sw	s6,%lo(size)(s10)
+	sw	s4,%lo(heap_ptr)(s9)
+	sw	s3,%lo(heap_end)(s8)
+	sw	zero,%lo(heap_requested)(s7)
+	addi	a4,a5,%lo(.LANCHOR0+820)
+	addi	a1, zero, 1
+	jal	zero, .L850
+.L866:
+	andi	a1,a0,0xff
+	beq	a1,s5,.L849
+.L850:
+	lbu	a3,1(a4)
+	lbu	a6,0(a4)
+	lbu	a2,2(a4)
+	addi	a0,a1,1
+	add	a5,a6,a3
+	mul	a5,a5,a2
+	addi	a4,a4,16
+	add	a5,a5,a3
+	addi	a5,a5,-3
+	bgeu	s6, a5, .L866
+.L849:
+	lui	a5,%hi(neccblk1)
+	sb	a6,%lo(neccblk1)(a5)
+	lui	a5,%hi(neccblk2)
+	sb	a3,%lo(neccblk2)(a5)
+	addi	a0, zero, 1
+	lui	a5,%hi(datablkw)
+	sb	a2,%lo(datablkw)(a5)
+.Lpcrel_13:
+	auipc	ra, %pcrel_hi(initecc)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_13)
+	lui	a5,%hi(strinbuf)
+	lw	a5,%lo(strinbuf)(a5)
+	addi	a4, s0, 0
+	sub	a3,a5,s0
+	addi	a3,a3,-1
+	sltiu	a3,a3,3
+	addi	a2, a5, 0
+	bne	a3,zero,.L853
+	andi	a3,a5,3
+	bne	a3,zero,.L853
+	lw	a0,8(sp)
+	lui	a2, 447207
+	lui	a3, 415318
+	sw	a0,0(a5)
+	lw	a0,12(sp)
+	lui	a4, 456243
+	addi	a2,a2,1911
+	addi	a3,a3,1889
+	addi	a4,a4,-413
+	addi	a1, zero, 109
+	sw	a0,4(a5)
+	sw	a2,8(a5)
+	sw	a3,12(a5)
+	sw	a4,16(a5)
+	sh	a1,20(a5)
+.L852:
+	addi	s1,s1,-1
+.Lpcrel_14:
+	auipc	ra, %pcrel_hi(initframe)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_14)
+.Lpcrel_15:
+	auipc	ra, %pcrel_hi(qrencode)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_15)
+	bne	s1,zero,.L854
+	lw	ra,76(sp)
+	lw	s0,72(sp)
+	lw	s1,68(sp)
+	lw	s2,64(sp)
+	lw	s3,60(sp)
+	lw	s4,56(sp)
+	lw	s5,52(sp)
+	lw	s6,48(sp)
+	lw	s7,44(sp)
+	lw	s8,40(sp)
+	lw	s9,36(sp)
+	lw	s10,32(sp)
+	lw	s11,28(sp)
+	addi	sp,sp,80
+	jalr	zero, ra, 0
+.L853:
+	lbu	a5,0(a4)
+	addi	a4,a4,1
+	addi	a2,a2,1
+	sb	a5,-1(a2)
+	beq	s2,a4,.L852
+	lbu	a5,0(a4)
+	addi	a4,a4,1
+	addi	a2,a2,1
+	sb	a5,-1(a2)
+	bne	s2,a4,.L853
+	jal	zero, .L852
+	.size	benchmark_body.constprop.0.isra.0, .-benchmark_body.constprop.0.isra.0
+	.align	2
+	.globl	initeccsize
+	.type	initeccsize, @function
+initeccsize:
+	lui	a5,%hi(.LANCHOR0+820)
+	addi	sp,sp,-16
+	slli	a4,a0,2
+	addi	a5,a5,%lo(.LANCHOR0+820)
+	sw	ra,12(sp)
+	add	a4,a4,a5
+	addi	a2, zero, 1
+	addi	t3, zero, 40
+	jal	zero, .L869
+.L872:
+	andi	a2,t1,0xff
+	beq	a2,t3,.L868
+.L869:
+	lbu	a3,-3(a4)
+	lbu	a7,-4(a4)
+	lbu	a6,-2(a4)
+	addi	t1,a2,1
+	add	a5,a7,a3
+	mul	a5,a5,a6
+	addi	a4,a4,16
+	add	a5,a5,a3
+	addi	a5,a5,-3
+	bgeu	a1, a5, .L872
+.L868:
+	addi	a1, a2, 0
+	lui	a4,%hi(neccblk2)
+	lui	a2,%hi(neccblk1)
+	lui	a5,%hi(datablkw)
+	sb	a7,%lo(neccblk1)(a2)
+	sb	a3,%lo(neccblk2)(a4)
+	sb	a6,%lo(datablkw)(a5)
+.Lpcrel_16:
+	auipc	ra, %pcrel_hi(initecc)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_16)
+	lw	ra,12(sp)
+	addi	sp,sp,16
+	jalr	zero, ra, 0
+	.size	initeccsize, .-initeccsize
+	.align	2
+	.globl	freeecc
+	.type	freeecc, @function
+freeecc:
+	jalr	zero, ra, 0
+	.size	freeecc, .-freeecc
+	.align	2
+	.globl	warm_caches
+	.type	warm_caches, @function
+warm_caches:
+	addi	sp,sp,-16
+	sw	ra,12(sp)
+.Lpcrel_17:
+	auipc	ra, %pcrel_hi(benchmark_body.isra.0)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_17)
+	lw	ra,12(sp)
+	addi	sp,sp,16
+	jalr	zero, ra, 0
+	.size	warm_caches, .-warm_caches
+	.align	2
+	.globl	benchmark
+	.type	benchmark, @function
+benchmark:
+	addi	sp,sp,-16
+	sw	ra,12(sp)
+.Lpcrel_18:
+	auipc	ra, %pcrel_hi(benchmark_body.constprop.0.isra.0)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_18)
+	lw	ra,12(sp)
+	addi	a0, zero, 0
+	addi	sp,sp,16
+	jalr	zero, ra, 0
+	.size	benchmark, .-benchmark
+	.align	2
+	.globl	initialise_benchmark
+	.type	initialise_benchmark, @function
+initialise_benchmark:
+	jalr	zero, ra, 0
+	.size	initialise_benchmark, .-initialise_benchmark
+	.section	.rodata.str1.4
+	.align	2
+.LC1:
+	.base64	"/mU/gIJuoIC6QS6AuiYugLoJroCCFAA="
+	.text
+	.align	2
+	.globl	verify_benchmark
+	.type	verify_benchmark, @function
+verify_benchmark:
+	lui	a5,%hi(.LC1)
+	addi	a5,a5,%lo(.LC1)
+	lw	a1,8(a5)
+	lw	a6,0(a5)
+	lw	a0,4(a5)
+	lw	a2,12(a5)
+	lw	a3,16(a5)
+	lui	a4,%hi(strinbuf)
+	lhu	a5,20(a5)
+	lw	a4,%lo(strinbuf)(a4)
+	addi	sp,sp,-32
+	sw	a1,16(sp)
+	sh	a5,28(sp)
+	sw	a6,8(sp)
+	sw	a0,12(sp)
+	sw	a2,20(sp)
+	sw	a3,24(sp)
+	addi	a5,sp,8
+	addi	a1,sp,30
+.L883:
+	lbu	a2,0(a4)
+	lbu	a3,0(a5)
+	addi	a4,a4,1
+	addi	a5,a5,1
+	bne	a2,a3,.L886
+	bne	a5,a1,.L883
+	lui	a5,%hi(heap_requested)
+	lw	a5,%lo(heap_requested)(a5)
+	lui	a3,%hi(heap_end)
+	lw	a0,%lo(heap_end)(a3)
+	lui	a4,%hi(heap)
+	addi	a4,a4,%lo(heap)
+	add	a5,a5,a4
+	sltu	a0,a0,a5
+	sltiu	a0, a0, 1
+	addi	sp,sp,32
+	jalr	zero, ra, 0
+.L886:
+	addi	a0, zero, 0
+	addi	sp,sp,32
+	jalr	zero, ra, 0
+	.size	verify_benchmark, .-verify_benchmark
+	.section	.text.startup,"ax",@progbits
+	.align	2
+	.globl	main
+	.type	main, @function
+main:
+	addi	sp,sp,-32
+	addi	a0, zero, 1
+	sw	ra,28(sp)
+.Lpcrel_19:
+	auipc	ra, %pcrel_hi(benchmark_body.isra.0)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_19)
+.Lpcrel_20:
+	auipc	ra, %pcrel_hi(benchmark)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_20)
+	sw	zero,12(sp)
+	lw	a0,12(sp)
+.Lpcrel_21:
+	auipc	ra, %pcrel_hi(verify_benchmark)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_21)
+	lw	ra,28(sp)
+	xori	a0,a0,1
+	addi	sp,sp,32
+	jalr	zero, ra, 0
+	.size	main, .-main
+	.globl	eccblkwid
+	.globl	datablkw
+	.globl	neccblk2
+	.globl	neccblk1
+	.globl	ECCLEVEL
+	.globl	qrframe
+	.globl	strinbuf
+	.globl	WDB
+	.globl	WD
+	.globl	VERSION
+	.globl	rlens
+	.globl	framask
+	.globl	framebase
+	.bss
+	.align	2
+	.type	heap, @object
+	.size	heap, 8192
+heap:
+	.zero	8192
+	.section	.rodata
+	.align	2
+	.set	.LANCHOR0,. + 0
+	.type	g0log, @object
+	.size	g0log, 256
+g0log:
+	.base64	"/wABGQIyGsYD3zPuG2jHSwRk4A40je+BHMFp+MgITHEFimUv4SQPITWTjtrwEoJFHbXCfWon+bnJmgl4TeRypga/i2Jm3TD94pglsxCRIog20JTOj5bbvfHSE1yDOEZAHkK2o8NIfm5rOihU+oW6Pcpem58KFXkrTtTlrHPzp1cHcMD3jIBjDWdK3u0xxf4Y46WZdya4tHwRRJLZIyCJLjc/0VuVvM/NkIeXstz8vmHyVtOrFCpdnoQ8OVNHbUGiHy1D2Ld7pHbEF0nsfwxv9myhO1IpnVWq+2CGsbvMPlrLWV+wnKmgUQv1Fut6dSzXT67V6ebnreh01vTqqFBY"
+	.ascii	"\257"
+	.type	g0exp, @object
+	.size	g0exp, 256
+g0exp:
+	.base64	"AQIECBAgQIAdOnTozYcTJkyYLVq0derJjwMGDBgwYMCdJ06cJUqUNWrUtXfuwZ8jRowFChQoUKBdumnSuW/eoV++YcKZL168ZcqJDx48ePD959O7a9axf/7h36NbtnHi2a9DhhEiRIgNGjRo0L1nzoEfPnz47ceTO3bsxZczZsyFFy5cuG3aqU+eIUKEFSpUqE2aKVKkVapJkjly5NW3c+bRv2PGkT9+/OXXs3v28f/j26tLljFixJU3btylV65BghkyZMiNBw4cOHDg3adTplGiWbJ58vnvw5srVqxFigkSJEiQPXr09ffz++vLiwsWLFiwffrpz4MbNmzYrUeO"
+	.string	""
+	.type	fmtword, @object
+	.size	fmtword, 128
+fmtword:
+	.word	30660
+	.word	29427
+	.word	32170
+	.word	30877
+	.word	26159
+	.word	25368
+	.word	27713
+	.word	26998
+	.word	21522
+	.word	20773
+	.word	24188
+	.word	23371
+	.word	17913
+	.word	16590
+	.word	20375
+	.word	19104
+	.word	13663
+	.word	12392
+	.word	16177
+	.word	14854
+	.word	9396
+	.word	8579
+	.word	11994
+	.word	11245
+	.word	5769
+	.word	5054
+	.word	7399
+	.word	6608
+	.word	1890
+	.word	597
+	.word	3340
+	.word	2107
+	.type	adelta, @object
+	.size	adelta, 41
+adelta:
+	.base64	"AAsPExcbHxASFBYYGhwUFhgYGhwcFhgYGhocHBgYGhoaHBwYGhoaHBw="
+	.zero	3
+	.type	vpat, @object
+	.size	vpat, 136
+vpat:
+	.word	3220
+	.word	1468
+	.word	2713
+	.word	1235
+	.word	3062
+	.word	1890
+	.word	2119
+	.word	1549
+	.word	2344
+	.word	2936
+	.word	1117
+	.word	2583
+	.word	1330
+	.word	2470
+	.word	1667
+	.word	2249
+	.word	2028
+	.word	3780
+	.word	481
+	.word	4011
+	.word	142
+	.word	3098
+	.word	831
+	.word	3445
+	.word	592
+	.word	2517
+	.word	1776
+	.word	2234
+	.word	1951
+	.word	2827
+	.word	1070
+	.word	2660
+	.word	1345
+	.word	3177
+	.type	eccblocks, @object
+	.size	eccblocks, 640
+eccblocks:
+	.base64	"AQATBwEAEAoBAA0NAQAJEQEAIgoBABwQAQAWFgEAEBwBADcPAQAsGgIAERICAA0WAQBQFAIAIBICABgaBAAJEAEAbBoCACsYAgIPEgICCxYCAEQSBAAbEAQAExgEAA8cAgBOFAQAHxICBA4SBAENGgIAYRgCAiYWBAISFgQCDhoCAHQeAwIkFgQEEBQEBAwYAgJEEgQBKxoGAhMYBgIPHAQAURQBBDIeBAQWHAMIDBgCAlwYBgIkFgQGFBoHBA4cBABrGggBJRYIBBQYDAQLFgMBcx4EBSgYCwUQFAsFDBgFAVcWBQUpGAUHGB4LBwwYBQFiGAcDLRwPAhMYAw0P"
+	.base64	"HgEFaxwKAS4cAQ8WHAIRDhwFAXgeCQQrGhEBFhwCEw4cAwRxHAMLLBoRBBUaCRANGgMFaxwDDSkaDwUYHg8KDxwEBHQcEQAqGhEGFhwTBhAeAgdvHBEALhwHEBgeIgANGAQFeR4EDi8cCw4YHhAODx4GBHUeBg4tHAsQGB4eAhAeCARqGggNLxwHFhgeFg0PHgoCchwTBC4cHAYWHCEEEB4IBHoeFgMtHAgaFx4MHA8eAwp1HgMXLRwEHxgeCx8PHgcHdB4VBy0cASUXHhMaDx4FCnMeEwovHA8ZGB4XGQ8eDQNzHgIdLhwqARgeFxwPHhEAcx4KFy4cCiMYHhMj"
+	.base64	"Dx4RAXMeDhUuHB0TGB4LLg8eDQZzHg4XLhwsBxgeOwEQHgwHeR4MGi8cJw4YHhYpDx4GDnkeBiIvHC4KGB4CQA8eEQR6Hh0OLhwxChgeGC4PHgQSeh4NIC4cMA4YHiogDx4UBHUeKAcvHCsWGB4KQw8eEwZ2HhIfLxwiIhgeFD0PHg=="
+	.section	.sbss,"aw",@nobits
+	.align	2
+	.type	size, @object
+	.size	size, 4
+size:
+	.zero	4
+	.type	encode, @object
+	.size	encode, 4
+encode:
+	.zero	4
+	.type	eccblkwid, @object
+	.size	eccblkwid, 1
+eccblkwid:
+	.zero	1
+	.type	datablkw, @object
+	.size	datablkw, 1
+datablkw:
+	.zero	1
+	.type	neccblk2, @object
+	.size	neccblk2, 1
+neccblk2:
+	.zero	1
+	.type	neccblk1, @object
+	.size	neccblk1, 1
+neccblk1:
+	.zero	1
+	.type	ECCLEVEL, @object
+	.size	ECCLEVEL, 1
+ECCLEVEL:
+	.zero	1
+	.zero	3
+	.type	qrframe, @object
+	.size	qrframe, 4
+qrframe:
+	.zero	4
+	.type	strinbuf, @object
+	.size	strinbuf, 4
+strinbuf:
+	.zero	4
+	.type	WDB, @object
+	.size	WDB, 1
+WDB:
+	.zero	1
+	.type	WD, @object
+	.size	WD, 1
+WD:
+	.zero	1
+	.type	VERSION, @object
+	.size	VERSION, 1
+VERSION:
+	.zero	1
+	.zero	1
+	.type	rlens, @object
+	.size	rlens, 4
+rlens:
+	.zero	4
+	.type	framask, @object
+	.size	framask, 4
+framask:
+	.zero	4
+	.type	framebase, @object
+	.size	framebase, 4
+framebase:
+	.zero	4
+	.type	heap_requested, @object
+	.size	heap_requested, 4
+heap_requested:
+	.zero	4
+	.type	heap_end, @object
+	.size	heap_end, 4
+heap_end:
+	.zero	4
+	.type	heap_ptr, @object
+	.size	heap_ptr, 4
+heap_ptr:
+	.zero	4
+	.ident	"GCC: (g1b306039a) 15.1.0"
+	.section	.note.GNU-stack,"",@progbits

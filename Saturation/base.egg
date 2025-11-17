@@ -123,12 +123,14 @@
 ;; === Instruction Decomposition ===
 
 ;; Double shifts for larger shift amounts (example for constant propagation)
-(rewrite (Slli v (ImmVal 4))
-        (Slli (Slli v (ImmVal 2)) (ImmVal 2)))
-(rewrite (Srli v (ImmVal 4))
-        (Srli (Srli v (ImmVal 2)) (ImmVal 2)))
-(rewrite (Srai v (ImmVal 4))
-        (Srai (Srai v (ImmVal 2)) (ImmVal 2)))
+;;(rewrite (Slli v (ImmVal 4))
+;;         (Slli (Slli v (ImmVal 2)) (ImmVal 2)))
+;;(rewrite (Slli v (ImmVal 6))
+;;         (Slli (Slli v (ImmVal 3)) (ImmVal 3)))
+;;(rewrite (Srli v (ImmVal 4))
+;;         (Srli (Srli v (ImmVal 2)) (ImmVal 2)))
+;;(rewrite (Srai v (ImmVal 4))
+;;         (Srai (Srai v (ImmVal 2)) (ImmVal 2)))
 
 ;; === Load/Store Optimizations ===
 ;; Decompose byte and halfword loads/stores to use only LW/SW

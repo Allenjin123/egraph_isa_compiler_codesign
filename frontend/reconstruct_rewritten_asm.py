@@ -248,12 +248,20 @@ class AsmReconstructor:
         # 读取所有重写后的 block
         rewritten_blocks = {}
         for block_file in sorted(rewrite_blocks_dir.glob("*.txt")):
-            block_id = int(block_file.stem)
+            # 跳过 div_reg.txt 等非数字命名的文件
+            if block_file.stem == "div_reg":
+                continue
+            try:
+                block_id = int(block_file.stem)
+            except ValueError:
+                # 跳过无法转换为整数的文件
+                continue
             with open(block_file, 'r', encoding='utf-8') as f:
                 rewritten_blocks[block_id] = f.readlines()
         
         # 读取 div_reg.txt（div 库函数可用的寄存器）
-        div_reg_file = rewrite_blocks_dir / "div_reg.txt"
+        # div_reg.txt 位于程序级别的输出目录 (output/frontend/<program_name>)
+        div_reg_file = output_dir / "div_reg.txt"
         div_free_regs = []
         if div_reg_file.exists():
             with open(div_reg_file, 'r', encoding='utf-8') as f:
@@ -343,10 +351,10 @@ class AsmReconstructor:
         output_lines = build_output_lines(rewritten_blocks)
         
         # 修复 __riscv_div_lib_L3 中的寄存器
-        if div_free_regs:
-            if self.verbose:
-                print(f"\n  修复 div 库函数寄存器...")
-            output_lines = self.fix_div_lib_registers(output_lines, div_free_regs)
+        # if div_free_regs:
+        #     if self.verbose:
+        #         print(f"\n  修复 div 库函数寄存器...")
+        #     output_lines = self.fix_div_lib_registers(output_lines, div_free_regs)
 
         # 写入 _rewrite.s 文件
         output_file = clean_file.parent / clean_file.name.replace('_clean.s', '_rewrite.s')
