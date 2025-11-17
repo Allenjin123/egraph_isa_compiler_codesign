@@ -64,7 +64,7 @@ ntbl_bitcount:
 	addi	op_0,x0,8
 	srl	a2,a0,op_0
 	addi	op_0,x0,15
-	and	a5,a5,op_0
+	and	a5,op_0,a5
 	sub	op_0,x0,a4
 	sub	a1,a1,op_0
 	sub	op_0,x0,a4
@@ -87,14 +87,14 @@ ntbl_bitcount:
 	addi	op_0,x0,20
 	srl	a2,a0,op_0
 	addi	op_0,x0,15
-	and	a1,op_0,a1
+	and	a1,a1,op_0
 	lbu	a6,0(a3)
 	sub	op_0,x0,a4
 	sub	a1,a1,op_0
 	addi	op_0,x0,24
 	srl	a3,a0,op_0
 	addi	op_0,x0,15
-	and	a2,op_0,a2
+	and	a2,a2,op_0
 	lbu	a1,0(a1)
 	sub	op_0,x0,a5
 	sub	a5,t1,op_0
@@ -176,13 +176,13 @@ AR_btbl_bitcount:
 	addi	op_0,x0,16
 	srl	a4,a0,op_0
 	addi	op_0,x0,255
-	and	a3,op_0,a3
+	and	a3,a3,op_0
 	sub	op_0,x0,a5
 	sub	a3,a3,op_0
 	sub	op_0,x0,a5
 	sub	a2,a2,op_0
 	addi	op_0,x0,255
-	and	a4,op_0,a4
+	and	a4,a4,op_0
 	lbu	a3,0(a3)
 	lbu	a2,0(a2)
 	sub	op_0,x0,a5
@@ -214,8 +214,7 @@ ntbl_bitcnt:
 	sub	op_0,x0,a2
 	sub	a4,a4,op_0
 	lbu	a0,0(a4)
-	bne	a5,zero,.+8
-	jal	x0,.L6
+	beq	a5,zero,.L6
 	addi	a3,zero,0
 .L8:
 	addi	op_0,x0,15
@@ -227,7 +226,8 @@ ntbl_bitcnt:
 	sub	op_0,x0,a3
 	sub	a3,a0,op_0
 	lbu	a0,0(a4)
-	bne	a5,zero,.L8
+	beq	a5,zero,.+8
+	jal	x0,.L8
 	sub	op_0,x0,a0
 	sub	a0,a3,op_0
 .L6:
@@ -238,8 +238,7 @@ ntbl_bitcnt:
 bit_shifter:
 	addi	a5,a0,0
 	addi	a0,zero,0
-	bne	a5,zero,.+8
-	jal	x0,.L13
+	beq	a5,zero,.L13
 	addi	a4,zero,0
 .L15:
 	addi	op_0,x0,1
@@ -250,9 +249,9 @@ bit_shifter:
 	addi	a2,a4,-32
 	sub	op_0,x0,a0
 	sub	a0,a3,op_0
-	bne	a5,zero,.+8
-	jal	x0,.L13
-	bne	a2,zero,.L15
+	beq	a5,zero,.L13
+	beq	a2,zero,.+8
+	jal	x0,.L15
 	jalr	zero,ra,0
 .L13:
 	jalr	zero,ra,0
@@ -261,15 +260,15 @@ bit_shifter:
 	.globl	bit_count
 	.type	bit_count, @function
 bit_count:
-	bne	a0,zero,.+8
-	jal	x0,.L23
+	beq	a0,zero,.L23
 	addi	a5,a0,0
 	addi	a0,zero,0
 .L24:
 	addi	a4,a5,-1
 	and	a5,a5,a4
 	addi	a0,a0,1
-	bne	a5,zero,.L24
+	beq	a5,zero,.+8
+	jal	x0,.L24
 .L23:
 	jalr	zero,ra,0
 	.size	bit_count, .-bit_count
@@ -399,12 +398,10 @@ rand:
 atoi:
 	lbu	a2,0(a0)
 	addi	a5,zero,45
-	bne	a2,a5,.+8
-	jal	x0,.L40
+	beq	a2,a5,.L40
 	addi	a5,zero,43
 	addi	a6,zero,1
-	bne	a2,a5,.+8
-	jal	x0,.L41
+	beq	a2,a5,.L41
 .L33:
 	addi	a3,a2,-48
 	addi	op_0,x0,255
@@ -482,8 +479,7 @@ main:
 	sw	s11,60(sp)
 	lbu	a5,0(a4)
 	addi	a3,zero,45
-	bne	a5,a3,.+8
-	jal	x0,.L63
+	beq	a5,a3,.L63
 	addi	a5,a5,-43
 	addi	op_0,x0,1
 	bltu	a5,op_0,.+12
@@ -513,7 +509,7 @@ main:
 	sub	a3,a5,op_0
 	addi	a2,a1,-48
 	addi	op_0,x0,255
-	and	a5,a2,op_0
+	and	a5,op_0,a2
 	addi	a4,a4,1
 	bltu	a0,a5,.+8
 	jal	x0,.L46
@@ -678,7 +674,8 @@ main:
 	addi	s8,s8,13
 	sub	op_0,x0,s11
 	sub	s11,a0,op_0
-	bne	s8,s1,.L49
+	beq	s8,s1,.+8
+	jal	x0,.L49
 	addi	s1,s11,0
 	addi	op_0,x0,31
 	sra	s2,s11,op_0
@@ -894,7 +891,8 @@ main:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_3)
 	addi	a5,zero,7
-	bne	s3,a5,.L52
+	beq	s3,a5,.+8
+	jal	x0,.L52
 	lw	a3,20(sp)
 	sub	op_0,x0,s7
 	sub	a5,s1,op_0
@@ -1094,9 +1092,8 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	op_0,x0,1
-	and	a3,op_0,a1
-	bne	a3,x0,.+8
-	jal	x0,.Mul_skip
+	and	a3,a1,op_0
+	beq	a3,x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
 .Mul_skip:
@@ -1104,7 +1101,8 @@ __mul:
 	srl	a1,a1,op_0
 	addi	op_0,x0,1
 	sll	a2,a2,op_0
-	bne	a1,x0,.Mul_loop
+	beq	a1,x0,.+8
+	jal	x0,.Mul_loop
 	jalr	x0,ra,0
 
 .text
@@ -1123,8 +1121,7 @@ __riscv_div_lib_udivsi3:
 	addi	a2,a1,0
 	addi	a1,a0,0
 	addi	a0,zero,-1
-	bne	a2,zero,.+8
-	jal	x0,__riscv_div_lib_L5
+	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
@@ -1149,7 +1146,8 @@ __riscv_div_lib_L4:
 	srl	a3,a3,op_0
 	addi	op_0,x0,1
 	srl	a2,a2,op_0
-	bne	a3,zero,__riscv_div_lib_L3
+	beq	a3,zero,.+8
+	jal	x0,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
 

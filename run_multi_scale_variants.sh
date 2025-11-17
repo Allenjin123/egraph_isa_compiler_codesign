@@ -23,6 +23,7 @@ DEFAULT_FREQ_ANALYSIS=false    # Frequency analysis disabled by default
 DEFAULT_SHIFT_CONSTRAINTS=false # Shift immediate constraints disabled by default
 DEFAULT_CACHE_LATENCIES=false  # Cache latency parameters disabled by default
 DEFAULT_CORE_NAME="ibex"       # Default core name
+DEFAULT_FOLDERS="automotive network security embench-iot_1 embench-iot_2 embench-iot_3"  # Default folders to search
 # DEFAULT_PROGRAMS is now dynamically determined from available clean.s files
 
 # Color codes for output
@@ -44,7 +45,12 @@ BENCHMARK_DIR="$SCRIPT_DIR/benchmark"
 
 # Function to discover available programs from clean.s files
 discover_available_programs() {
+    local folders="$1"
     local programs=()
+
+    # Build grep pattern from folder list
+    # Convert space-separated folder list to regex alternation
+    local folder_pattern=$(echo "$folders" | sed 's/ /|/g')
 
     # Find all *_clean.s files in benchmark directory
     while IFS= read -r clean_file; do
@@ -53,7 +59,7 @@ discover_available_programs() {
         local program_name="${filename%_clean.s}"
         programs+=("$program_name")
     done < <(find "$BENCHMARK_DIR" -name "*_clean.s" -type f | \
-             grep -E "(automotive|network|security|embench-iot)/[^/]+/[^/]+_clean\.s$" | sort)
+             grep -E "(${folder_pattern})/[^/]+/[^/]+_clean\.s$" | sort)
 
     echo "${programs[@]}"
 }
@@ -69,6 +75,8 @@ usage() {
     echo "  -s, --scales SCALES        空格分隔的缩放因子列表 (默认: '$DEFAULT_SCALES')"
     echo "  -k, --best-k K             每个缩放因子的变体数 (默认: $DEFAULT_K)"
     echo "  -t, --timeout TIMEOUT      ILP 求解器超时秒数 (默认: $DEFAULT_TIMEOUT)"
+    echo "  -f, --folders FOLDERS      空格分隔的基准文件夹列表 (默认: 所有文件夹)"
+    echo "                             可用: automotive, network, security, embench-iot_1, embench-iot_2, embench-iot_3"
     echo "  -p, --program-parallel N   同时处理的程序数量 (默认: $DEFAULT_PROGRAM_PARALLEL)"
     echo "  -i, --ilp-parallel N       每个程序并行运行的ILP缩放因子数 (默认: $DEFAULT_ILP_PARALLEL)"
     echo "  -sy, --synth-parallel N    并行合成进程数 (默认: $DEFAULT_SYNTH_PARALLEL)"
@@ -85,7 +93,7 @@ usage() {
     echo "  -h, --help                 显示此帮助信息"
     echo ""
     echo "可用基准程序 (自动发现):"
-    local available_programs=$(discover_available_programs)
+    local available_programs=$(discover_available_programs "$DEFAULT_FOLDERS")
     local program_count=$(echo "$available_programs" | wc -w)
     echo "  找到 $program_count 个程序: $available_programs"
     echo ""
@@ -93,6 +101,8 @@ usage() {
     echo "  $0                                                     # 运行所有发现的基准程序"
     echo "  $0 dijkstra_small_O3                                   # 运行单个程序"
     echo "  $0 dijkstra_small_O3 basicmath_small_O3                # 运行2个程序"
+    echo "  $0 -f automotive                                       # 仅运行 automotive 文件夹中的程序"
+    echo "  $0 -f 'embench-iot_1 embench-iot_2'                    # 仅运行 embench-iot_1 和 embench-iot_2"
     echo "  $0 -s '0 1 100' -k 5                                   # 所有程序，3个缩放因子，每个5个变体"
     echo "  $0 -p 4                                                # 同时处理4个程序"
     echo "  $0 -p 6 -i 10                                          # 6个程序并行，每个程序10个ILP并行"
@@ -116,6 +126,7 @@ PROGRAM_NAMES=()
 SCALES="$DEFAULT_SCALES"
 BEST_K="$DEFAULT_K"
 TIMEOUT="$DEFAULT_TIMEOUT"
+FOLDERS="$DEFAULT_FOLDERS"
 PROGRAM_PARALLEL="$DEFAULT_PROGRAM_PARALLEL"
 ILP_PARALLEL="$DEFAULT_ILP_PARALLEL"
 SYNTH_PARALLEL="$DEFAULT_SYNTH_PARALLEL"
@@ -142,6 +153,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -t|--timeout)
             TIMEOUT="$2"
+            shift 2
+            ;;
+        -f|--folders)
+            FOLDERS="$2"
             shift 2
             ;;
         -p|--program-parallel)
@@ -214,11 +229,12 @@ done
 # If no program names provided, discover all available programs
 if [ ${#PROGRAM_NAMES[@]} -eq 0 ]; then
     echo -e "${YELLOW}未指定程序，自动发现所有可用基准程序...${NC}"
+    echo -e "${CYAN}搜索文件夹: ${FOLDERS}${NC}"
 
     # Discover available programs from clean.s files
-    DISCOVERED_PROGRAMS=$(discover_available_programs)
+    DISCOVERED_PROGRAMS=$(discover_available_programs "$FOLDERS")
     if [ -z "$DISCOVERED_PROGRAMS" ]; then
-        echo -e "${RED}错误: 未找到任何 *_clean.s 文件在 benchmark/ 目录${NC}"
+        echo -e "${RED}错误: 未找到任何 *_clean.s 文件在指定文件夹中${NC}"
         echo -e "${RED}请确保 benchmark/ 目录包含正确结构的 clean.s 文件${NC}"
         exit 1
     fi
@@ -245,6 +261,7 @@ TOTAL_PROGRAMS_VARIANTS=$((TOTAL_VARIANTS_PER_PROGRAM * NUM_PROGRAMS))
 echo -e "${CYAN}========================================${NC}"
 echo -e "${CYAN}多缩放因子变体生成 - 批处理模式${NC}"
 echo -e "${CYAN}========================================${NC}"
+echo -e "搜索文件夹: ${GREEN}${FOLDERS}${NC}"
 echo -e "程序数量: ${GREEN}${NUM_PROGRAMS}${NC}"
 echo -e "程序列表: ${GREEN}${PROGRAM_NAMES[*]}${NC}"
 echo -e "缩放因子: ${GREEN}${SCALES}${NC} (${NUM_SCALES} 个)"

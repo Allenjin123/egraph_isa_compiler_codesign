@@ -60,97 +60,69 @@ sha_transform:
 	lw	a3,4(a5)
 	lw	t3,40(a5)
 	lw	a4,8(a5)
-	addi	sp,sp,-16
-	sw	s2,0(sp)
-	sw	s3,4(sp)
-	or	s2,a2,t5
-	or	s3,a2,t5
-	sub	s3,s3,t5
-	sub	a2,a2,s3
-	sub	a2,s2,a2
-	lw	s2,0(sp)
-	lw	s3,4(sp)
-	addi	sp,sp,16
-	addi	sp,sp,-16
-	sw	s2,0(sp)
-	sw	s3,4(sp)
-	or	s2,a3,t4
-	or	s3,a3,t4
-	sub	s3,s3,t4
-	sub	a3,a3,s3
-	sub	a3,s2,a3
-	lw	s2,0(sp)
-	lw	s3,4(sp)
-	addi	sp,sp,16
-	addi	sp,sp,-16
-	sw	s2,0(sp)
-	sw	s3,4(sp)
-	or	s2,a4,t3
-	or	s3,a4,t3
-	sub	s3,s3,t3
-	sub	a4,a4,s3
-	sub	a4,s2,a4
-	lw	s2,0(sp)
-	lw	s3,4(sp)
-	addi	sp,sp,16
-	addi	sp,sp,-16
-	sw	s2,0(sp)
-	sw	s4,4(sp)
-	or	s2,s3,a2
-	or	s4,s3,a2
-	sub	s4,s4,a2
-	sub	a2,s3,s4
-	sub	a2,s2,a2
-	lw	s2,0(sp)
-	lw	s4,4(sp)
-	addi	sp,sp,16
-	addi	sp,sp,-16
-	sw	s2,0(sp)
-	or	s2,t0,a3
-	or	s3,t0,a3
-	sub	s3,s3,a3
-	sub	a3,t0,s3
-	sub	a3,s2,a3
-	lw	s2,0(sp)
-	addi	sp,sp,16
-	or	t0,t6,a4
-	or	s3,t6,a4
-	sub	s3,s3,a4
-	sub	a4,t6,s3
-	sub	a4,t0,a4
-	or	t0,a7,a2
-	or	t6,a7,a2
-	sub	t6,t6,a2
-	sub	a2,a7,t6
-	sub	a2,t0,a2
-	or	t0,a6,a3
-	or	t6,a6,a3
-	sub	t6,t6,a3
-	sub	a3,a6,t6
-	sub	a3,t0,a3
-	or	t0,a1,a4
-	or	t6,a1,a4
-	sub	t6,t6,a4
-	sub	a4,a1,t6
-	sub	a4,t0,a4
-	addi	t6,x0,31
-	srl	t6,a2,t6
-	addi	a7,x0,1
-	sll	a7,a2,a7
-	addi	a6,x0,1
-	sll	a6,a3,a6
-	addi	a2,x0,31
-	srl	a2,a3,a2
-	addi	a1,x0,1
-	sll	a1,a4,a1
-	addi	a3,x0,31
-	srl	a3,a4,a3
-	sub	a7,x0,a7
-	sub	a7,t6,a7
-	sub	a6,x0,a6
-	sub	a6,a2,a6
-	sub	a1,x0,a1
-	sub	a1,a3,a1
+	or	op_0,a2,t5
+	or	op_3,a2,t5
+	sub	op_2,op_3,t5
+	sub	op_1,a2,op_2
+	sub	a2,op_0,op_1
+	or	op_0,a3,t4
+	or	op_3,a3,t4
+	sub	op_2,op_3,t4
+	sub	op_1,a3,op_2
+	sub	a3,op_0,op_1
+	or	op_0,a4,t3
+	or	op_3,a4,t3
+	sub	op_2,op_3,t3
+	sub	op_1,a4,op_2
+	sub	a4,op_0,op_1
+	or	op_0,s3,a2
+	or	op_3,s3,a2
+	sub	op_2,op_3,a2
+	sub	op_1,s3,op_2
+	sub	a2,op_0,op_1
+	or	op_0,t0,a3
+	or	op_3,t0,a3
+	sub	op_2,op_3,a3
+	sub	op_1,t0,op_2
+	sub	a3,op_0,op_1
+	or	op_0,t6,a4
+	or	op_3,t6,a4
+	sub	op_2,op_3,a4
+	sub	op_1,t6,op_2
+	sub	a4,op_0,op_1
+	or	op_0,a7,a2
+	or	op_3,a7,a2
+	sub	op_2,op_3,a2
+	sub	op_1,a7,op_2
+	sub	a2,op_0,op_1
+	or	op_0,a6,a3
+	or	op_3,a6,a3
+	sub	op_2,op_3,a3
+	sub	op_1,a6,op_2
+	sub	a3,op_0,op_1
+	or	op_0,a1,a4
+	or	op_3,a1,a4
+	sub	op_2,op_3,a4
+	sub	op_1,a1,op_2
+	sub	a4,op_0,op_1
+	addi	op_0,x0,31
+	srl	t6,a2,op_0
+	addi	op_0,x0,1
+	sll	a7,a2,op_0
+	addi	op_0,x0,1
+	sll	a6,a3,op_0
+	addi	op_0,x0,31
+	srl	a2,a3,op_0
+	addi	op_0,x0,1
+	sll	a1,a4,op_0
+	addi	op_0,x0,31
+	srl	a3,a4,op_0
+	sub	op_0,x0,a7
+	sub	a7,t6,op_0
+	sub	op_0,x0,a6
+	sub	a6,a2,op_0
+	sub	op_0,x0,a1
+	sub	a1,a3,op_0
 	sw	a7,64(a5)
 	sw	a6,68(a5)
 	sw	a1,72(a5)
@@ -165,32 +137,32 @@ sha_transform:
 	lw	a2,284(sp)
 	lw	a3,260(sp)
 	lw	a4,252(sp)
-	or	t0,a2,a5
-	or	t1,a2,a5
-	sub	t1,t1,a5
-	sub	a5,a2,t1
-	sub	a5,t0,a5
-	or	t0,a3,a5
-	or	t1,a3,a5
-	sub	t1,t1,a5
-	sub	a5,a3,t1
-	sub	a5,t0,a5
-	or	t0,a4,a5
-	or	t1,a4,a5
-	sub	t1,t1,a5
-	sub	a5,a4,t1
-	sub	a5,t0,a5
+	or	op_0,a2,a5
+	or	op_3,a2,a5
+	sub	op_2,op_3,a5
+	sub	op_1,a2,op_2
+	sub	a5,op_0,op_1
+	or	op_0,a3,a5
+	or	op_3,a3,a5
+	sub	op_2,op_3,a5
+	sub	op_1,a3,op_2
+	sub	a5,op_0,op_1
+	or	op_0,a4,a5
+	or	op_3,a4,a5
+	sub	op_2,op_3,a5
+	sub	op_1,a4,op_2
+	sub	a5,op_0,op_1
 	lw	t6,0(a0)
 	lw	t5,4(a0)
 	lw	t4,8(a0)
 	lw	t3,12(a0)
 	lw	t1,16(a0)
-	addi	a4,x0,31
-	srl	a4,a5,a4
-	addi	t0,x0,1
-	sll	a5,a5,t0
-	sub	t0,x0,a4
-	sub	a5,a5,t0
+	addi	op_0,x0,31
+	srl	a4,a5,op_0
+	addi	op_0,x0,1
+	sll	a5,a5,op_0
+	sub	op_0,x0,a4
+	sub	a5,a5,op_0
 	lui	s1,370728
 	sw	a5,316(sp)
 	addi	a6,t6,0
@@ -208,52 +180,40 @@ sha_transform:
 	addi	a7,a2,0
 .L3:
 	lw	a2,0(a3)
-	addi	a4,x0,5
-	sll	a4,a6,a4
-	addi	a5,x0,27
-	srl	a5,a6,a5
-	sub	a5,x0,a5
-	sub	a5,a4,a5
-	addi	sp,sp,-16
-	sw	s2,0(sp)
-	or	a4,t0,a7
-	or	s2,t0,a7
-	sub	s2,s2,a7
-	sub	s2,t0,s2
-	sub	a4,a4,s2
-	lw	s2,0(sp)
-	addi	sp,sp,16
-	addi	sp,sp,-16
-	sw	s2,0(sp)
-	or	s2,a4,a1
-	sub	s2,s2,a1
-	sub	a4,a4,s2
-	lw	s2,0(sp)
-	addi	sp,sp,16
-	sub	a5,x0,a5
-	sub	a5,s1,a5
-	sub	a5,x0,a5
-	sub	a5,a2,a5
-	addi	sp,sp,-16
-	sw	s2,0(sp)
-	or	a2,t0,a4
-	or	s2,t0,a4
-	sub	s2,s2,a4
-	sub	a4,t0,s2
-	sub	a4,a2,a4
-	lw	s2,0(sp)
-	addi	sp,sp,16
-	sub	a5,x0,a5
-	sub	a5,a4,a5
-	addi	a2,x0,30
-	sll	a2,a1,a2
-	addi	a4,x0,2
-	srl	a4,a1,a4
+	addi	op_0,x0,5
+	sll	a4,a6,op_0
+	addi	op_0,x0,27
+	srl	a5,a6,op_0
+	sub	op_0,x0,a5
+	sub	a5,a4,op_0
+	or	op_0,t0,a7
+	or	op_3,t0,a7
+	sub	op_2,op_3,a7
+	sub	op_1,t0,op_2
+	sub	a4,op_0,op_1
+	or	op_1,a4,a1
+	sub	op_0,op_1,a1
+	sub	a4,a4,op_0
+	sub	op_0,x0,a5
+	sub	a5,s1,op_0
+	sub	op_0,x0,a5
+	sub	a5,a2,op_0
+	or	op_0,t0,a4
+	or	op_3,t0,a4
+	sub	op_2,op_3,a4
+	sub	op_1,t0,op_2
+	sub	a4,op_0,op_1
+	sub	op_0,x0,a5
+	sub	a5,a4,op_0
+	addi	op_0,x0,30
+	sll	a2,a1,op_0
+	addi	op_0,x0,2
+	srl	a4,a1,op_0
 	addi	a3,a3,4
-	sub	a1,x0,t2
-	sub	a5,a5,a1
-	sub	a2,x0,a2
-	sub	a2,a4,a2
+	sub	op_0,x0,t2
+	sub	a5,a5,op_0
+	sub	op_0,x0,a2
+	sub	a2,a4,op_0
 	addi	a1,a6,0
 	addi	t2,t0,0
 	beq	s0,a3,.+8
@@ -267,48 +227,38 @@ sha_transform:
 	addi	a5,a3,0
 	addi	a2,a1,0
 .L4:
-	addi	a3,x0,5
-	sll	a3,a5,a3
-	addi	a4,x0,27
-	srl	a4,a5,a4
+	addi	op_0,x0,5
+	sll	a3,a5,op_0
+	addi	op_0,x0,27
+	srl	a4,a5,op_0
 	lw	a1,0(s0)
-	sub	a4,x0,a4
-	sub	a4,a3,a4
-	addi	sp,sp,-16
-	sw	s2,0(sp)
-	or	a3,a2,a6
-	or	s2,a2,a6
-	sub	s2,s2,a6
-	sub	s2,a2,s2
-	sub	a3,a3,s2
-	lw	s2,0(sp)
-	addi	sp,sp,16
-	sub	a4,x0,a4
-	sub	a4,s1,a4
-	addi	sp,sp,-16
-	sw	s2,0(sp)
-	sw	s3,4(sp)
-	or	s2,a7,a3
-	or	s3,a7,a3
-	sub	s3,s3,a3
-	sub	a3,a7,s3
-	sub	a3,s2,a3
-	lw	s2,0(sp)
-	lw	s3,4(sp)
-	addi	sp,sp,16
-	sub	a3,x0,a3
-	sub	a3,a4,a3
-	sub	a3,x0,a3
-	sub	a3,a1,a3
-	addi	a4,x0,2
-	srl	a4,a6,a4
-	addi	a1,x0,30
-	sll	a1,a6,a1
+	sub	op_0,x0,a4
+	sub	a4,a3,op_0
+	or	op_0,a2,a6
+	or	op_3,a2,a6
+	sub	op_2,op_3,a6
+	sub	op_1,a2,op_2
+	sub	a3,op_0,op_1
+	sub	op_0,x0,a4
+	sub	a4,s1,op_0
+	or	op_0,a7,a3
+	or	op_3,a7,a3
+	sub	op_2,op_3,a3
+	sub	op_1,a7,op_2
+	sub	a3,op_0,op_1
+	sub	op_0,x0,a3
+	sub	a3,a4,op_0
+	sub	op_0,x0,a3
+	sub	a3,a1,op_0
+	addi	op_0,x0,2
+	srl	a4,a6,op_0
+	addi	op_0,x0,30
+	sll	a1,a6,op_0
 	addi	s0,s0,4
-	sub	a6,x0,t0
-	sub	a3,a3,a6
-	sub	a1,x0,a1
-	sub	a1,a4,a1
+	sub	op_0,x0,t0
+	sub	a3,a3,op_0
+	sub	op_0,x0,a1
+	sub	a1,a4,op_0
 	addi	a6,a5,0
 	addi	t0,a7,0
 	beq	s0,t2,.+8
@@ -323,34 +273,34 @@ sha_transform:
 	addi	a1,s0,0
 .L5:
 	lw	s2,0(t2)
-	addi	a4,x0,5
-	sll	a4,a3,a4
-	addi	a6,x0,27
-	srl	a6,a3,a6
-	sub	a6,x0,a6
-	sub	a6,a4,a6
+	addi	op_0,x0,5
+	sll	a4,a3,op_0
+	addi	op_0,x0,27
+	srl	a6,a3,op_0
+	sub	op_0,x0,a6
+	sub	a6,a4,op_0
 	or	a4,a1,a2
-	or	s0,a4,a5
-	sub	s0,s0,a5
-	sub	a4,a4,s0
-	sub	s0,a4,a2
-	sub	s0,a1,s0
-	sub	a6,x0,a6
-	sub	a6,s1,a6
-	sub	a6,x0,a6
-	sub	a6,s2,a6
+	or	op_1,a4,a5
+	sub	op_0,op_1,a5
+	sub	a4,a4,op_0
+	sub	op_0,a4,a2
+	sub	s0,a1,op_0
+	sub	op_0,x0,a6
+	sub	a6,s1,op_0
+	sub	op_0,x0,a6
+	sub	a6,s2,op_0
 	or	a4,a4,s0
-	sub	a4,x0,a4
-	sub	a4,a6,a4
-	addi	s0,x0,30
-	sll	s0,a5,s0
-	addi	a6,x0,2
-	srl	a6,a5,a6
+	sub	op_0,x0,a4
+	sub	a4,a6,op_0
+	addi	op_0,x0,30
+	sll	s0,a5,op_0
+	addi	op_0,x0,2
+	srl	a6,a5,op_0
 	addi	t2,t2,4
-	sub	a5,x0,a7
-	sub	a4,a4,a5
-	sub	s0,x0,s0
-	sub	s0,a6,s0
+	sub	op_0,x0,a7
+	sub	a4,a4,op_0
+	sub	op_0,x0,s0
+	sub	s0,a6,op_0
 	addi	a5,a3,0
 	addi	a7,a2,0
 	beq	t2,t0,.+8
@@ -363,64 +313,54 @@ sha_transform:
 	addi	a4,a5,0
 	addi	s0,a6,0
 .L6:
-	addi	a5,x0,5
-	sll	a5,a4,a5
-	addi	a6,x0,27
-	srl	a6,a4,a6
+	addi	op_0,x0,5
+	sll	a5,a4,op_0
+	addi	op_0,x0,27
+	srl	a6,a4,op_0
 	lw	a7,0(t0)
-	sub	a6,x0,a6
-	sub	a6,a5,a6
-	addi	sp,sp,-16
-	sw	s2,0(sp)
-	or	a5,s0,a3
-	or	s2,s0,a3
-	sub	s2,s2,a3
-	sub	s2,s0,s2
-	sub	a5,a5,s2
-	lw	s2,0(sp)
-	addi	sp,sp,16
-	sub	a6,x0,a6
-	sub	a6,t2,a6
-	addi	sp,sp,-16
-	sw	s2,0(sp)
-	sw	s3,4(sp)
-	or	s2,a1,a5
-	or	s3,a1,a5
-	sub	s3,s3,a5
-	sub	a5,a1,s3
-	sub	a5,s2,a5
-	lw	s2,0(sp)
-	lw	s3,4(sp)
-	addi	sp,sp,16
-	sub	a5,x0,a5
-	sub	a5,a6,a5
-	sub	a5,x0,a5
-	sub	a5,a7,a5
-	addi	a6,x0,30
-	sll	a6,a3,a6
-	sub	a7,x0,a2
-	sub	a5,a5,a7
+	sub	op_0,x0,a6
+	sub	a6,a5,op_0
+	or	op_0,s0,a3
+	or	op_3,s0,a3
+	sub	op_2,op_3,a3
+	sub	op_1,s0,op_2
+	sub	a5,op_0,op_1
+	sub	op_0,x0,a6
+	sub	a6,t2,op_0
+	or	op_0,a1,a5
+	or	op_3,a1,a5
+	sub	op_2,op_3,a5
+	sub	op_1,a1,op_2
+	sub	a5,op_0,op_1
+	sub	op_0,x0,a5
+	sub	a5,a6,op_0
+	sub	op_0,x0,a5
+	sub	a5,a7,op_0
+	addi	op_0,x0,30
+	sll	a6,a3,op_0
+	sub	op_0,x0,a2
+	sub	a5,a5,op_0
 	addi	t0,t0,4
-	addi	a2,x0,2
-	srl	a2,a3,a2
+	addi	op_0,x0,2
+	srl	a2,a3,op_0
 	addi	a7,sp,320
-	sub	a6,x0,a6
-	sub	a6,a2,a6
+	sub	op_0,x0,a6
+	sub	a6,a2,op_0
 	addi	a3,a4,0
 	addi	a2,a1,0
 	beq	t0,a7,.+8
 	jal	x0,.L11
-	sub	t3,x0,t3
-	sub	t3,s0,t3
+	sub	op_0,x0,t3
+	sub	t3,s0,op_0
 	lw	s0,332(sp)
-	sub	t6,x0,t6
-	sub	t6,a5,t6
-	sub	t5,x0,t5
-	sub	t5,a4,t5
-	sub	t4,x0,t4
-	sub	t4,a6,t4
-	sub	t1,x0,t1
-	sub	t1,a1,t1
+	sub	op_0,x0,t6
+	sub	t6,a5,op_0
+	sub	op_0,x0,t5
+	sub	t5,a4,op_0
+	sub	op_0,x0,t4
+	sub	t4,a6,op_0
+	sub	op_0,x0,t1
+	sub	t1,a1,op_0
 	sw	t6,0(a0)
 	sw	t5,4(a0)
 	sw	t4,8(a0)
@@ -461,24 +401,24 @@ sha_init:
 sha_update:
 	lw	a4,20(a0)
 	lw	a3,24(a0)
-	addi	a5,x0,3
-	sll	a5,a2,a5
-	sub	t0,x0,a4
-	sub	a5,a5,t0
+	addi	op_0,x0,3
+	sll	a5,a2,op_0
+	sub	op_0,x0,a4
+	sub	a5,a5,op_0
 	bltu	a5,a4,.+12
 	addi	a4,x0,0
 	jal	x0,.+8
 	addi	a4,x0,1
 	addi	sp,sp,-48
-	sub	a3,x0,a3
-	sub	a3,a4,a3
-	addi	a4,x0,29
-	srl	a4,a2,a4
+	sub	op_0,x0,a3
+	sub	a3,a4,op_0
+	addi	op_0,x0,29
+	srl	a4,a2,op_0
 	sw	s0,40(sp)
 	sw	s2,32(sp)
 	sw	ra,44(sp)
-	sub	a4,x0,a4
-	sub	a4,a3,a4
+	sub	op_0,x0,a4
+	sub	a4,a3,op_0
 	sw	a5,20(a0)
 	sw	a4,24(a0)
 	addi	a5,zero,63
@@ -488,34 +428,34 @@ sha_update:
 	sw	s5,20(sp)
 	addi	s5,a2,-64
 	sw	s3,28(sp)
-	addi	s3,x0,6
-	srl	s3,s5,s3
+	addi	op_0,x0,6
+	srl	s3,s5,op_0
 	sw	s4,24(sp)
 	addi	s4,s3,1
-	addi	t0,x0,6
-	sll	s4,s4,t0
+	addi	op_0,x0,6
+	sll	s4,s4,op_0
 	sw	s6,16(sp)
 	sw	s7,12(sp)
 	sw	s1,36(sp)
 	sw	s8,8(sp)
-	sub	t0,x0,a1
-	sub	s4,s4,t0
+	sub	op_0,x0,a1
+	sub	s4,s4,op_0
 	addi	a5,a1,0
 	addi	s7,a0,28
 	addi	s6,a0,27
 .L22:
 	or	a3,s7,a5
-	addi	t0,x0,3
-	or	t0,a3,t0
-	addi	t1,x0,3
-	sub	t0,t0,t1
-	sub	a3,a3,t0
+	addi	op_2,x0,3
+	or	op_1,a3,op_2
+	addi	op_3,x0,3
+	sub	op_0,op_1,op_3
+	sub	a3,a3,op_0
 	addi	a4,s7,0
 	beq	a3,zero,.+8
 	jal	x0,.L31
 	sub	a3,s6,a5
-	addi	t0,x0,3
-	bltu	a3,t0,.+12
+	addi	op_0,x0,3
+	bltu	a3,op_0,.+12
 	addi	a3,x0,0
 	jal	x0,.+8
 	addi	a3,x0,1
@@ -691,12 +631,12 @@ sha_update:
 	beq	s1,s4,.+8
 	jal	x0,.L22
 	sub	a3,zero,s3
-	addi	t0,x0,6
-	sll	a3,a3,t0
+	addi	op_0,x0,6
+	sll	a3,a3,op_0
 	sub	s2,s2,a3
 	lw	s1,36(sp)
-	sub	a3,x0,a3
-	sub	a3,s5,a3
+	sub	op_0,x0,a3
+	sub	a3,s5,op_0
 	lw	s3,28(sp)
 	lw	s4,24(sp)
 	lw	s5,20(sp)
@@ -713,8 +653,8 @@ sha_update:
 	jal	x0,.L24
 	addi	a5,s0,27
 	sub	a5,a5,s2
-	addi	t0,x0,3
-	bltu	a5,t0,.+12
+	addi	op_0,x0,3
+	bltu	a5,op_0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
@@ -722,20 +662,20 @@ sha_update:
 	beq	a5,zero,.+8
 	jal	x0,.L24
 	or	a5,a1,s2
-	addi	t0,x0,3
-	addi	t1,x0,3
-	or	t1,t1,a5
-	sub	a5,t1,a5
-	sub	a5,t0,a5
+	addi	op_0,x0,3
+	addi	op_3,x0,3
+	or	op_2,op_3,a5
+	sub	op_1,op_2,a5
+	sub	a5,op_0,op_1
 	beq	a5,zero,.+8
 	jal	x0,.L24
-	addi	a6,x0,-4
-	or	a6,a3,a6
-	addi	t0,x0,-4
-	sub	a6,a6,t0
-	sub	a6,a3,a6
-	sub	a0,x0,a6
-	sub	a0,s2,a0
+	addi	op_2,x0,-4
+	or	op_1,a3,op_2
+	addi	op_3,x0,-4
+	sub	op_0,op_1,op_3
+	sub	a6,a3,op_0
+	sub	op_0,x0,a6
+	sub	a0,s2,op_0
 	addi	a5,a1,0
 .L25:
 	lw	a2,0(a4)
@@ -746,8 +686,8 @@ sha_update:
 	jal	x0,.L25
 	beq	a6,a3,.L15
 	lbu	a5,0(a0)
-	sub	a1,x0,a1
-	sub	a1,a6,a1
+	sub	op_0,x0,a1
+	sub	a1,a6,op_0
 	sub	a4,a7,a6
 	sb	a5,0(a1)
 	beq	a7,a6,.L15
@@ -774,8 +714,8 @@ sha_update:
 	jal	x0,.L20
 	jal	x0,.L21
 .L24:
-	sub	t0,x0,s2
-	sub	a3,a3,t0
+	sub	op_0,x0,s2
+	sub	a3,a3,op_0
 .L29:
 	lbu	a5,0(s2)
 	addi	s2,s2,1
@@ -799,23 +739,23 @@ sha_final:
 	lw	a7,20(a0)
 	addi	sp,sp,-48
 	addi	a5,a0,28
-	addi	a4,x0,3
-	srl	a4,a7,a4
-	addi	t0,x0,63
-	or	t0,a4,t0
-	addi	t1,x0,63
-	sub	t0,t0,t1
-	sub	a4,a4,t0
+	addi	op_0,x0,3
+	srl	a4,a7,op_0
+	addi	op_2,x0,63
+	or	op_1,a4,op_2
+	addi	op_3,x0,63
+	sub	op_0,op_1,op_3
+	sub	a4,a4,op_0
 	addi	a2,zero,-128
-	sub	a3,x0,a5
-	sub	a3,a4,a3
+	sub	op_0,x0,a5
+	sub	a3,a4,op_0
 	sw	ra,44(sp)
 	lw	t1,24(a0)
 	addi	a1,zero,56
 	sb	a2,0(a3)
 	addi	a3,a4,1
-	sub	a2,x0,a5
-	sub	a2,a3,a2
+	sub	op_0,x0,a5
+	sub	a2,a3,op_0
 	bge	a1,a3,.L56
 	addi	a4,zero,64
 	addi	a6,a5,0
@@ -980,20 +920,20 @@ sha_final:
 	lw	a0,12(sp)
 	lw	a7,16(sp)
 	sub	a3,zero,a5
-	addi	a4,x0,3
-	or	a4,a3,a4
-	addi	t0,x0,3
-	sub	a4,a4,t0
-	sub	a4,a3,a4
+	addi	op_2,x0,3
+	or	op_1,a3,op_2
+	addi	op_3,x0,3
+	sub	op_0,op_1,op_3
+	sub	a4,a3,op_0
 	lw	t1,20(sp)
 	lw	a6,24(sp)
 	beq	a4,zero,.L89
 	sb	zero,28(a0)
-	addi	t0,x0,2
-	addi	t2,x0,2
-	or	t2,t2,a3
-	sub	a3,t2,a3
-	sub	a3,t0,a3
+	addi	op_0,x0,2
+	addi	op_3,x0,2
+	or	op_2,op_3,a3
+	sub	op_1,op_2,a3
+	sub	a3,op_0,op_1
 	beq	a3,zero,.L90
 	sb	zero,29(a0)
 	addi	a5,zero,3
@@ -1004,8 +944,8 @@ sha_final:
 	addi	a3,zero,53
 .L63:
 	addi	a5,a4,28
-	sub	t0,x0,a0
-	sub	a5,a5,t0
+	sub	op_0,x0,a0
+	sub	a5,a5,op_0
 	addi	a2,zero,56
 	sub	a4,a2,a4
 	sw	zero,0(a5)
@@ -1163,22 +1103,22 @@ sha_final:
 	bltu	t3,a5,.+8
 	jal	x0,.L69
 	addi	a4,a4,29
-	sub	a5,x0,a0
-	sub	a5,a4,a5
+	sub	op_0,x0,a0
+	sub	a5,a4,op_0
 	sub	a5,zero,a5
-	addi	t3,x0,3
-	addi	t0,x0,3
-	or	t0,t0,a5
-	sub	t0,t0,a5
-	sub	t3,t3,t0
+	addi	op_0,x0,3
+	addi	op_3,x0,3
+	or	op_2,op_3,a5
+	sub	op_1,op_2,a5
+	sub	t3,op_0,op_1
 	sub	a1,a1,a3
 	beq	t3,zero,.L70
 	sb	zero,0(a2)
-	addi	t0,x0,2
-	or	t0,a5,t0
-	addi	t2,x0,2
-	sub	t0,t0,t2
-	sub	a5,a5,t0
+	addi	op_2,x0,2
+	or	op_1,a5,op_2
+	addi	op_3,x0,2
+	sub	op_0,op_1,op_3
+	sub	a5,a5,op_0
 	beq	a5,zero,.L92
 	sb	zero,1(a2)
 	addi	a5,zero,3
@@ -1189,14 +1129,14 @@ sha_final:
 	sub	a6,a6,a3
 	addi	a2,a2,3
 .L70:
-	sub	a4,x0,a4
-	sub	a4,t3,a4
-	sub	a5,x0,a0
-	sub	a5,a4,a5
+	sub	op_0,x0,a4
+	sub	a4,t3,op_0
+	sub	op_0,x0,a0
+	sub	a5,a4,op_0
 	sub	a1,a1,t3
 	sw	zero,0(a5)
-	addi	a4,x0,2
-	srl	a4,a1,a4
+	addi	op_0,x0,2
+	srl	a4,a1,op_0
 	addi	a3,zero,1
 	beq	a4,a3,.L74
 	sw	zero,4(a5)
@@ -1235,20 +1175,20 @@ sha_final:
 	jal	x0,.L74
 	sw	zero,48(a5)
 .L74:
-	addi	a5,x0,3
-	addi	t0,x0,3
-	or	t0,t0,a1
-	sub	t0,t0,a1
-	sub	a5,a5,t0
+	addi	op_0,x0,3
+	addi	op_3,x0,3
+	or	op_2,op_3,a1
+	sub	op_1,op_2,a1
+	sub	a5,op_0,op_1
 	beq	a5,zero,.L68
-	addi	t0,x0,-4
-	or	t0,a1,t0
-	addi	t2,x0,-4
-	sub	t0,t0,t2
-	sub	a1,a1,t0
+	addi	op_2,x0,-4
+	or	op_1,a1,op_2
+	addi	op_3,x0,-4
+	sub	op_0,op_1,op_3
+	sub	a1,a1,op_0
 	sub	a6,a6,a1
-	sub	a2,x0,a2
-	sub	a2,a1,a2
+	sub	op_0,x0,a2
+	sub	a2,a1,op_0
 .L69:
 	sb	zero,0(a2)
 	beq	a6,zero,.L68
@@ -1277,8 +1217,8 @@ sha_final:
 	jal	x0,.L59
 .L91:
 	addi	a5,a4,28
-	sub	t0,x0,a0
-	sub	a5,a5,t0
+	sub	op_0,x0,a0
+	sub	a5,a5,op_0
 	addi	a3,zero,56
 	sub	a4,a3,a4
 	sw	zero,0(a5)
@@ -1359,8 +1299,8 @@ sha_process_buffer:
 .Lpcrel_4:
 	auipc	ra,%pcrel_hi(sha_update)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_4)
-	sub	s2,x0,s2
-	sub	s2,s1,s2
+	sub	op_0,x0,s2
+	sub	s2,s1,op_0
 	beq	s0,zero,.+8
 	jal	x0,.L97
 	lw	s0,24(sp)
@@ -6652,23 +6592,23 @@ input_small_data_size:
     .text
     .align 2
 __mul:
-	sub	a2,x0,a0
-	sub	a2,x0,a2
+	sub	op_0,x0,a0
+	sub	a2,x0,op_0
 	addi	a0,x0,0
 .Mul_loop:
-	addi	a3,x0,1
-	addi	t0,x0,1
-	or	t0,t0,a1
-	sub	t0,t0,a1
-	sub	a3,a3,t0
+	addi	op_0,x0,1
+	addi	op_3,x0,1
+	or	op_2,op_3,a1
+	sub	op_1,op_2,a1
+	sub	a3,op_0,op_1
 	beq	a3,x0,.Mul_skip
-	sub	a0,x0,a0
-	sub	a0,a2,a0
+	sub	op_0,x0,a0
+	sub	a0,a2,op_0
 .Mul_skip:
-	addi	t0,x0,1
-	srl	a1,a1,t0
-	addi	t0,x0,1
-	sll	a2,a2,t0
+	addi	op_0,x0,1
+	srl	a1,a1,op_0
+	addi	op_0,x0,1
+	sll	a2,a2,op_0
 	beq	a1,x0,.+8
 	jal	x0,.Mul_loop
 	jalr	x0,ra,0
@@ -6697,10 +6637,10 @@ __riscv_div_lib_udivsi3:
 	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	bge	zero,a2,__riscv_div_lib_L2
-	addi	t1,x0,1
-	sll	a2,a2,t1
-	addi	t1,x0,1
-	sll	a3,a3,t1
+	addi	op_0,x0,1
+	sll	a2,a2,op_0
+	addi	op_0,x0,1
+	sll	a3,a3,op_0
 	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
@@ -6709,10 +6649,10 @@ __riscv_div_lib_L3:
 	sub	a1,a1,a2
 	or	a0,a0,a3
 __riscv_div_lib_L4:
-	addi	t1,x0,1
-	srl	a3,a3,t1
-	addi	t1,x0,1
-	srl	a2,a2,t1
+	addi	op_0,x0,1
+	srl	a3,a3,op_0
+	addi	op_0,x0,1
+	srl	a2,a2,op_0
 	beq	a3,zero,.+8
 	jal	x0,__riscv_div_lib_L3
 __riscv_div_lib_L5:

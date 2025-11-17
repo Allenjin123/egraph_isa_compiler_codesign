@@ -22,7 +22,7 @@ fi
 # Dynamically find all *_clean.s files in benchmark directory
 # Structure should be: category/benchmark/benchmark_name_clean.s
 readarray -t WORKLOADS < <(find "$SCRIPT_DIR" -name "*_clean.s" -type f | \
-    grep -E "(automotive|network|security|embench-iot)/[^/]+/[^/]+_clean\.s$" | \
+    grep -E "(automotive|network|security|embench-iot_[0-9]+)/[^/]+/[^/]+_clean\.s$" | \
     sed "s|$SCRIPT_DIR/||" | sort)
 
 echo "Found ${#WORKLOADS[@]} clean.s files to process"
