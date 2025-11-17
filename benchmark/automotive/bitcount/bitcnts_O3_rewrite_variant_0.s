@@ -27,10 +27,8 @@ bitcount:
 	sub	a5,a4,a5
 	lui	a3,61681
 	addi	a3,a3,-241
-	addi	a4,x0,2
+	addi	a4,x0,4
 	srl	a4,a5,a4
-	addi	t0,x0,2
-	srl	a4,a4,t0
 	and	a4,a4,a3
 	and	a5,a5,a3
 	sub	a4,x0,a4
@@ -74,7 +72,7 @@ ntbl_bitcount:
 	addi	a3,x0,12
 	srl	a3,a0,a3
 	addi	t0,x0,15
-	and	a2,t0,a2
+	and	a2,a2,t0
 	lbu	t1,0(a1)
 	sub	t0,x0,a4
 	sub	a2,a2,t0
@@ -82,14 +80,14 @@ ntbl_bitcount:
 	addi	a1,x0,16
 	srl	a1,a0,a1
 	addi	t0,x0,15
-	and	a3,t0,a3
+	and	a3,a3,t0
 	lbu	a7,0(a2)
 	sub	t0,x0,a4
 	sub	a3,a3,t0
 	addi	a2,x0,20
 	srl	a2,a0,a2
 	addi	t0,x0,15
-	and	a1,t0,a1
+	and	a1,a1,t0
 	lbu	a6,0(a3)
 	sub	t0,x0,a4
 	sub	a1,a1,t0
@@ -103,7 +101,7 @@ ntbl_bitcount:
 	sub	t0,x0,a4
 	sub	a2,a2,t0
 	addi	t0,x0,15
-	and	a3,t0,a3
+	and	a3,a3,t0
 	lbu	a2,0(a2)
 	sub	a5,x0,a5
 	sub	a5,a7,a5
@@ -138,7 +136,7 @@ BW_btbl_bitcount:
 	addi	a2,x0,255
 	and	a2,a0,a2
 	addi	t0,x0,255
-	and	a4,t0,a4
+	and	a4,a4,t0
 	sub	t0,x0,a5
 	sub	a4,a4,t0
 	sub	t0,x0,a5
@@ -220,7 +218,7 @@ ntbl_bitcnt:
 	addi	a3,zero,0
 .L8:
 	addi	a4,x0,15
-	and	a4,a4,a5
+	and	a4,a5,a4
 	sub	t0,x0,a2
 	sub	a4,a4,t0
 	addi	t0,x0,4
@@ -244,7 +242,7 @@ bit_shifter:
 	addi	a4,zero,0
 .L15:
 	addi	a3,x0,1
-	and	a3,a3,a5
+	and	a3,a5,a3
 	addi	a4,a4,1
 	addi	t0,x0,1
 	sra	a5,a5,t0
@@ -587,7 +585,7 @@ atoi:
 	sub	a4,a5,a4
 	addi	a3,a2,-48
 	addi	a5,x0,255
-	and	a5,a5,a3
+	and	a5,a3,a5
 	addi	a0,a0,1
 	bltu	a1,a5,.+8
 	jal	x0,.L34
@@ -1717,7 +1715,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	a3,x0,1
-	and	a3,a3,a1
+	and	a3,a1,a3
 	beq	a3,x0,.Mul_skip
 	sub	a0,x0,a0
 	sub	a0,a2,a0

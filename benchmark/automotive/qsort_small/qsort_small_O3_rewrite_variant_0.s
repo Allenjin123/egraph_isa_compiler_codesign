@@ -122,7 +122,9 @@ quicksort_range:
 	jal	x0,.+8
 	addi	a5,x0,1
 	sub	a5,a3,a5
-	bne	a5,s1,.L69
+	bne	a5,s1,.+8
+	jal	x0,.+8
+	jal	x0,.L69
 .L17:
 	lbu	a5,-128(a7)
 	addi	a7,a7,-128
@@ -156,10 +158,10 @@ quicksort_range:
 	jal	x0,.L14
 .L70:
 	addi	a5,x0,3
+	or	a5,t1,a5
 	addi	t0,x0,3
-	or	t0,t0,t1
-	sub	t0,t0,t1
 	sub	a5,a5,t0
+	sub	a5,t1,a5
 	bne	a5,zero,.L19
 	addi	a5,sp,144
 	addi	a4,a5,0
@@ -174,10 +176,10 @@ quicksort_range:
 .L21:
 	or	a4,a7,t1
 	addi	t0,x0,3
+	or	t0,a4,t0
 	addi	t2,x0,3
-	or	t2,t2,a4
-	sub	a4,t2,a4
-	sub	a4,t0,a4
+	sub	t0,t0,t2
+	sub	a4,a4,t0
 	bne	a4,zero,.L23
 	addi	a6,t1,128
 	addi	a4,a7,0
@@ -300,7 +302,9 @@ main:
 	jal	x0,.L74
 	sb	a4,0(a3)
 	addi	a5,a5,1
-	bne	a5,a0,.L73
+	bne	a5,a0,.+8
+	jal	x0,.+8
+	jal	x0,.L73
 .L74:
 	sub	t0,x0,a2
 	sub	a5,a5,t0
@@ -11457,10 +11461,10 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	a3,x0,1
+	or	a3,a1,a3
 	addi	t0,x0,1
-	or	t0,t0,a1
-	sub	t0,t0,a1
 	sub	a3,a3,t0
+	sub	a3,a1,a3
 	bne	a3,x0,.+8
 	jal	x0,.Mul_skip
 	sub	a0,x0,a0

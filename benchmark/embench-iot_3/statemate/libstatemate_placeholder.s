@@ -13,35 +13,41 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	lbu	a4,10(a5)
 	bne	a4,zero,.L2
 	lui	a4,%hi(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)
-	addi	a3, zero, 3
+	addi	a3,zero,3
 	sb	a3,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a4)
 .L2:
 	lbu	a4,19(a5)
-	bne	a4,zero,.L3
+	bne	a4,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L3
 	lui	a4,%hi(BLOCK_ERKENNUNG_CTRL_BLOCK_ERKENNUNG_CTRL_next_state)
-	addi	a3, zero, 1
+	addi	a3,zero,1
 	sb	zero,0(a5)
 	sb	a3,%lo(BLOCK_ERKENNUNG_CTRL_BLOCK_ERKENNUNG_CTRL_next_state)(a4)
 .L3:
 	lui	a2,%hi(B_FH_TUERMODUL_CTRL_next_state)
 	lbu	a3,%lo(B_FH_TUERMODUL_CTRL_next_state)(a2)
-	addi	a4, zero, 1
+	addi	a4,zero,1
 	sb	a4,11(a5)
 	sb	a4,20(a5)
-	addi	a1, zero, 2
-	beq	a3,a1,.L4
-	addi	a0, zero, 3
-	beq	a3,a0,.L5
+	addi	a1,zero,2
+	bne	a3,a1,.+8
+	jal	x0,.L4
+	addi	a0,zero,3
+	bne	a3,a0,.+8
+	jal	x0,.L5
 	bne	a3,a4,.L6
 	lui	a4,%hi(FH_TUERMODUL_CTRL__N)
 	lw	a4,%lo(FH_TUERMODUL_CTRL__N)(a4)
-	addi	a3, zero, 59
-	beq	a4,a3,.L120
+	addi	a3,zero,59
+	bne	a4,a3,.+8
+	jal	x0,.L120
 .L8:
 	lui	a3,%hi(A_FH_TUERMODUL_CTRL_next_state)
 	lbu	a2,%lo(A_FH_TUERMODUL_CTRL_next_state)(a3)
-	addi	a4, zero, 1
-	beq	a2,a4,.L121
+	addi	a4,zero,1
+	bne	a2,a4,.+8
+	jal	x0,.L121
 	lui	a0,%hi(stable)
 	lui	a1,%hi(FH_TUERMODUL_CTRL__N)
 	lui	a2,%hi(WIEDERHOLSPERRE_FH_TUERMODUL_CTRL_next_state)
@@ -54,15 +60,16 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	lbu	a4,6(a5)
 	sb	a3,5(a5)
 	sb	a4,7(a5)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L5:
 	lui	a3,%hi(FH_TUERMODUL_CTRL__N)
 	lw	a1,%lo(FH_TUERMODUL_CTRL__N)(a3)
-	addi	a3, zero, 60
-	bge	a3, a1, .L15
+	addi	a3,zero,60
+	bge	a3,a1,.L15
 	lui	a1,%hi(FH_TUERMODUL_CTRL__N_old)
 	lw	a1,%lo(FH_TUERMODUL_CTRL__N_old)(a1)
-	blt	a3, a1, .L15
+	bge	a3,a1,.+8
+	jal	x0,.L15
 	lui	a3,%hi(FH_TUERMODUL_CTRL__INREVERS1)
 	lui	a1,%hi(FH_TUERMODUL_CTRL__INREVERS2)
 	lbu	a3,%lo(FH_TUERMODUL_CTRL__INREVERS1)(a3)
@@ -76,7 +83,7 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	sb	zero,%lo(stable)(a0)
 	sb	zero,%lo(FH_TUERMODUL__MFHZ_copy)(a1)
 	sb	zero,%lo(FH_TUERMODUL__MFHA_copy)(a3)
-	jal	zero, .L8
+	jal	x0,.L8
 .L15:
 	lui	a4,%hi(FH_TUERMODUL__BLOCK)
 	lbu	a4,%lo(FH_TUERMODUL__BLOCK)(a4)
@@ -84,31 +91,35 @@ generic_FH_TUERMODUL_CTRL.part.0:
 .L16:
 	lui	a3,%hi(INITIALISIERT_FH_TUERMODUL_CTRL_next_state)
 	lbu	a4,%lo(INITIALISIERT_FH_TUERMODUL_CTRL_next_state)(a3)
-	addi	a2, zero, 2
-	beq	a4,a2,.L18
-	addi	a1, zero, 3
-	beq	a4,a1,.L19
-	addi	a0, zero, 1
+	addi	a2,zero,2
+	bne	a4,a2,.+8
+	jal	x0,.L18
+	addi	a1,zero,3
+	bne	a4,a1,.+8
+	jal	x0,.L19
+	addi	a0,zero,1
 	bne	a4,a0,.L20
 	lui	a0,%hi(FH_TUERMODUL__POSITION)
 	lw	a6,%lo(FH_TUERMODUL__POSITION)(a0)
-	addi	a0, zero, 404
-	bge	a0, a6, .L21
+	addi	a0,zero,404
+	bge	a0,a6,.L21
 	lui	a2,%hi(stable)
 	lui	a4,%hi(FH_TUERMODUL__MFHA_copy)
 	sb	a1,%lo(INITIALISIERT_FH_TUERMODUL_CTRL_next_state)(a3)
 	sb	zero,%lo(stable)(a2)
 	sb	zero,%lo(FH_TUERMODUL__MFHA_copy)(a4)
-	jal	zero, .L8
+	jal	x0,.L8
 .L121:
 	lui	a4,%hi(step)
 	lbu	a4,%lo(step)(a4)
-	beq	a4,a2,.L123
+	bne	a4,a2,.+8
+	jal	x0,.L123
 	lui	a4,%hi(WIEDERHOLSPERRE_FH_TUERMODUL_CTRL_next_state)
 	lbu	a3,%lo(WIEDERHOLSPERRE_FH_TUERMODUL_CTRL_next_state)(a4)
-	beq	a3,a2,.L47
+	bne	a3,a2,.+8
+	jal	x0,.L47
 .L49:
-	addi	a3, zero, 1
+	addi	a3,zero,1
 	sb	a3,%lo(WIEDERHOLSPERRE_FH_TUERMODUL_CTRL_next_state)(a4)
 	lbu	a3,4(a5)
 	lbu	a4,6(a5)
@@ -116,21 +127,23 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	sb	zero,%lo(stable)(a2)
 	sb	a3,5(a5)
 	sb	a4,7(a5)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L4:
 	lui	a4,%hi(FH_TUERMODUL__BLOCK)
 	lbu	a4,%lo(FH_TUERMODUL__BLOCK)(a4)
-	beq	a4,zero,.L10
+	bne	a4,zero,.+8
+	jal	x0,.L10
 	lui	a4,%hi(FH_TUERMODUL__BLOCK_old)
 	lbu	a4,%lo(FH_TUERMODUL__BLOCK_old)(a4)
 	bne	a4,zero,.L10
 	lui	a4,%hi(FH_TUERMODUL__MFHZ)
 	lbu	a4,%lo(FH_TUERMODUL__MFHZ)(a4)
-	beq	a4,zero,.L10
+	bne	a4,zero,.+8
+	jal	x0,.L10
 	lui	a4,%hi(time)
 	lw	a7,%lo(time)(a4)
 	lui	a6,%hi(sc_FH_TUERMODUL_CTRL_2329_1)
-	addi	a4, zero, 3
+	addi	a4,zero,3
 	lui	a0,%hi(stable)
 	lui	a1,%hi(FH_TUERMODUL__MFHZ_copy)
 	lui	a3,%hi(INITIALISIERT_FH_TUERMODUL_CTRL_next_state)
@@ -139,15 +152,17 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	sb	zero,%lo(FH_TUERMODUL__MFHZ_copy)(a1)
 	sb	a4,%lo(B_FH_TUERMODUL_CTRL_next_state)(a2)
 	sb	a4,%lo(INITIALISIERT_FH_TUERMODUL_CTRL_next_state)(a3)
-	jal	zero, .L8
+	jal	x0,.L8
 .L10:
 	lui	a3,%hi(NICHT_INITIALISIERT_NICHT_INITIALISIERT_next_state)
 	lbu	a4,%lo(NICHT_INITIALISIERT_NICHT_INITIALISIERT_next_state)(a3)
-	addi	a2, zero, 2
-	beq	a4,a2,.L11
-	addi	a1, zero, 3
-	beq	a4,a1,.L12
-	addi	a2, zero, 1
+	addi	a2,zero,2
+	bne	a4,a2,.+8
+	jal	x0,.L11
+	addi	a1,zero,3
+	bne	a4,a1,.+8
+	jal	x0,.L12
+	addi	a2,zero,1
 	bne	a4,a2,.L13
 	lui	a4,%hi(FH_TUERMODUL__SFHZ)
 	lbu	a4,%lo(FH_TUERMODUL__SFHZ)(a4)
@@ -157,88 +172,94 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	sb	a1,%lo(NICHT_INITIALISIERT_NICHT_INITIALISIERT_next_state)(a3)
 	sb	zero,%lo(stable)(a2)
 	sb	zero,%lo(FH_TUERMODUL__MFHZ_copy)(a4)
-	jal	zero, .L8
+	jal	x0,.L8
 .L6:
 	lui	a4,%hi(stable)
 	sb	a1,%lo(B_FH_TUERMODUL_CTRL_next_state)(a2)
 	sb	zero,%lo(stable)(a4)
-	jal	zero, .L8
+	jal	x0,.L8
 .L122:
 	lui	a4,%hi(FH_TUERMODUL__BLOCK_old)
 	lbu	a4,%lo(FH_TUERMODUL__BLOCK_old)(a4)
 	bne	a4,zero,.L16
 	lui	a4,%hi(FH_TUERMODUL__MFHA)
 	lbu	a4,%lo(FH_TUERMODUL__MFHA)(a4)
-	beq	a4,zero,.L17
+	bne	a4,zero,.+8
+	jal	x0,.L17
 	lui	a4,%hi(time)
 	lw	t1,%lo(time)(a4)
 	lui	a7,%hi(sc_FH_TUERMODUL_CTRL_2375_2)
 	lui	a6,%hi(stable)
 	lui	a0,%hi(FH_TUERMODUL__MFHA_copy)
-	addi	a1, zero, 2
+	addi	a1,zero,2
 	lui	a4,%hi(NICHT_INITIALISIERT_NICHT_INITIALISIERT_next_state)
-	addi	a3, zero, 3
+	addi	a3,zero,3
 	sw	t1,%lo(sc_FH_TUERMODUL_CTRL_2375_2)(a7)
 	sb	zero,%lo(stable)(a6)
 	sb	zero,%lo(FH_TUERMODUL__MFHA_copy)(a0)
 	sb	a1,%lo(B_FH_TUERMODUL_CTRL_next_state)(a2)
 	sb	a3,%lo(NICHT_INITIALISIERT_NICHT_INITIALISIERT_next_state)(a4)
-	jal	zero, .L8
+	jal	x0,.L8
 .L120:
 	lui	a3,%hi(FH_TUERMODUL_CTRL__N_old)
 	lw	a3,%lo(FH_TUERMODUL_CTRL__N_old)(a3)
-	beq	a3,a4,.L8
+	bne	a3,a4,.+8
+	jal	x0,.L8
 	lui	a3,%hi(stable)
 	lui	a4,%hi(INITIALISIERT_FH_TUERMODUL_CTRL_next_state)
 	sb	a0,%lo(B_FH_TUERMODUL_CTRL_next_state)(a2)
 	sb	zero,%lo(stable)(a3)
 	sb	a0,%lo(INITIALISIERT_FH_TUERMODUL_CTRL_next_state)(a4)
-	jal	zero, .L8
+	jal	x0,.L8
 .L11:
 	lui	a4,%hi(FH_TUERMODUL__SFHA)
 	lbu	a4,%lo(FH_TUERMODUL__SFHA)(a4)
 	bne	a4,zero,.L8
 	lui	a1,%hi(stable)
 	lui	a2,%hi(FH_TUERMODUL__MFHA_copy)
-	addi	a4, zero, 3
+	addi	a4,zero,3
 	sb	zero,%lo(stable)(a1)
 	sb	zero,%lo(FH_TUERMODUL__MFHA_copy)(a2)
 	sb	a4,%lo(NICHT_INITIALISIERT_NICHT_INITIALISIERT_next_state)(a3)
-	jal	zero, .L8
+	jal	x0,.L8
 .L17:
 	lui	a4,%hi(FH_TUERMODUL__MFHZ)
 	lbu	a4,%lo(FH_TUERMODUL__MFHZ)(a4)
-	beq	a4,zero,.L16
+	bne	a4,zero,.+8
+	jal	x0,.L16
 	lui	a4,%hi(time)
 	lw	t1,%lo(time)(a4)
 	lui	a7,%hi(sc_FH_TUERMODUL_CTRL_2352_1)
 	lui	a6,%hi(stable)
 	lui	a0,%hi(FH_TUERMODUL__MFHZ_copy)
-	addi	a1, zero, 2
+	addi	a1,zero,2
 	lui	a4,%hi(NICHT_INITIALISIERT_NICHT_INITIALISIERT_next_state)
-	addi	a3, zero, 3
+	addi	a3,zero,3
 	sw	t1,%lo(sc_FH_TUERMODUL_CTRL_2352_1)(a7)
 	sb	zero,%lo(stable)(a6)
 	sb	zero,%lo(FH_TUERMODUL__MFHZ_copy)(a0)
 	sb	a1,%lo(B_FH_TUERMODUL_CTRL_next_state)(a2)
 	sb	a3,%lo(NICHT_INITIALISIERT_NICHT_INITIALISIERT_next_state)(a4)
-	jal	zero, .L8
+	jal	x0,.L8
 .L123:
 	lui	a2,%hi(tm_entered_WIEDERHOLSPERRE_FH_TUERMODUL_CTRLexited_BEREIT_FH_TUERMODUL_CTRL)
 	lw	a2,%lo(tm_entered_WIEDERHOLSPERRE_FH_TUERMODUL_CTRLexited_BEREIT_FH_TUERMODUL_CTRL)(a2)
-	beq	a2,zero,.L46
+	bne	a2,zero,.+8
+	jal	x0,.L46
 	lui	a1,%hi(time)
 	lw	a1,%lo(time)(a1)
 	sub	a2,a1,a2
-	beq	a2,a4,.L124
+	bne	a2,a4,.+8
+	jal	x0,.L124
 .L46:
 	lui	a4,%hi(WIEDERHOLSPERRE_FH_TUERMODUL_CTRL_next_state)
 	lbu	a3,%lo(WIEDERHOLSPERRE_FH_TUERMODUL_CTRL_next_state)(a4)
-	addi	a2, zero, 1
+	addi	a2,zero,1
 	bne	a3,a2,.L49
 	lui	a2,%hi(tm_entered_WIEDERHOLSPERRE_FH_TUERMODUL_CTRL)
 	lw	a2,%lo(tm_entered_WIEDERHOLSPERRE_FH_TUERMODUL_CTRL)(a2)
-	beq	a2,zero,.L47
+	bne	a2,zero,.+8
+	jal	x0,.L47
 	lui	a1,%hi(time)
 	lw	a1,%lo(time)(a1)
 	addi	a1,a1,-3
@@ -251,73 +272,77 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	bne	a2,zero,.L47
 	lui	a1,%hi(FH_TUERMODUL_CTRL__N)
 	lw	a2,%lo(FH_TUERMODUL_CTRL__N)(a1)
-	bge	zero, a2, .L47
+	bge	zero,a2,.L47
 	addi	a2,a2,-1
 	lui	a0,%hi(stable)
 	sw	a2,%lo(FH_TUERMODUL_CTRL__N)(a1)
 	sb	a3,%lo(WIEDERHOLSPERRE_FH_TUERMODUL_CTRL_next_state)(a4)
 	sb	zero,%lo(stable)(a0)
-	jal	zero, .L47
+	jal	x0,.L47
 .L13:
 	lui	a4,%hi(stable)
 	sb	a1,%lo(NICHT_INITIALISIERT_NICHT_INITIALISIERT_next_state)(a3)
 	sb	zero,%lo(stable)(a4)
-	jal	zero, .L8
+	jal	x0,.L8
 .L12:
 	lui	a4,%hi(FH_TUERMODUL__SFHA)
 	lbu	a4,%lo(FH_TUERMODUL__SFHA)(a4)
 	bne	a4,zero,.L125
 	lui	a4,%hi(FH_TUERMODUL__SFHZ)
 	lbu	a4,%lo(FH_TUERMODUL__SFHZ)(a4)
-	beq	a4,zero,.L8
+	bne	a4,zero,.+8
+	jal	x0,.L8
 	lui	a4,%hi(stable)
 	sb	zero,%lo(stable)(a4)
 	lui	a2,%hi(FH_TUERMODUL__MFHZ_copy)
-	addi	a4, zero, 1
+	addi	a4,zero,1
 	sb	a4,%lo(FH_TUERMODUL__MFHZ_copy)(a2)
 	sb	a4,%lo(NICHT_INITIALISIERT_NICHT_INITIALISIERT_next_state)(a3)
-	jal	zero, .L8
+	jal	x0,.L8
 .L20:
 	lui	a4,%hi(stable)
 	sb	a1,%lo(INITIALISIERT_FH_TUERMODUL_CTRL_next_state)(a3)
 	sb	zero,%lo(stable)(a4)
-	jal	zero, .L8
+	jal	x0,.L8
 .L125:
 	lui	a0,%hi(stable)
 	lui	a4,%hi(FH_TUERMODUL__MFHA_copy)
-	addi	a1, zero, 1
+	addi	a1,zero,1
 	sb	a2,%lo(NICHT_INITIALISIERT_NICHT_INITIALISIERT_next_state)(a3)
 	sb	zero,%lo(stable)(a0)
 	sb	a1,%lo(FH_TUERMODUL__MFHA_copy)(a4)
-	jal	zero, .L8
+	jal	x0,.L8
 .L124:
 	lui	a4,%hi(FH_TUERMODUL__MFHZ)
 	lui	a1,%hi(FH_TUERMODUL__MFHA)
 	lbu	a4,%lo(FH_TUERMODUL__MFHZ)(a4)
 	lbu	a1,%lo(FH_TUERMODUL__MFHA)(a1)
 	or	a4,a4,a1
-	beq	a4,zero,.L46
+	bne	a4,zero,.+8
+	jal	x0,.L46
 	sb	a2,%lo(A_FH_TUERMODUL_CTRL_next_state)(a3)
 	lui	a3,%hi(FH_TUERMODUL_CTRL__N)
 	lw	a4,%lo(FH_TUERMODUL_CTRL__N)(a3)
 	lui	a0,%hi(stable)
 	lui	a1,%hi(WIEDERHOLSPERRE_FH_TUERMODUL_CTRL_next_state)
-	add	a4,a4,a2
+	sub	op_0,x0,a4
+	sub	a4,a2,op_0
 	sw	a4,%lo(FH_TUERMODUL_CTRL__N)(a3)
 	sb	zero,%lo(stable)(a0)
 	sb	a2,%lo(WIEDERHOLSPERRE_FH_TUERMODUL_CTRL_next_state)(a1)
-	jal	zero, .L47
+	jal	x0,.L47
 .L19:
 	lui	a4,%hi(FH_TUERMODUL__SFHZ)
 	lbu	a4,%lo(FH_TUERMODUL__SFHZ)(a4)
-	beq	a4,zero,.L43
+	bne	a4,zero,.+8
+	jal	x0,.L43
 	lui	a4,%hi(FH_TUERMODUL__SFHZ_old)
 	lbu	a4,%lo(FH_TUERMODUL__SFHZ_old)(a4)
 	bne	a4,zero,.L43
 	lui	a4,%hi(FH_TUERMODUL__POSITION)
 	lw	a4,%lo(FH_TUERMODUL__POSITION)(a4)
-	bge	zero, a4, .L43
-	addi	a4, zero, 1
+	bge	zero,a4,.L43
+	addi	a4,zero,1
 	lui	a7,%hi(stable)
 	lui	a6,%hi(SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)
 	lui	a0,%hi(MANUELL_SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)
@@ -328,16 +353,18 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	sb	a2,%lo(MANUELL_SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)(a0)
 	sb	a4,17(a5)
 	sb	a4,%lo(FH_TUERMODUL__MFHZ_copy)(a1)
-	jal	zero, .L8
+	jal	x0,.L8
 .L18:
 	lui	a2,%hi(FH_TUERMODUL__POSITION)
 	lw	a2,%lo(FH_TUERMODUL__POSITION)(a2)
-	bge	zero, a2, .L33
+	bge	zero,a2,.L33
 	lui	a0,%hi(SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)
 	lbu	a2,%lo(SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)(a0)
-	addi	a1, zero, 1
-	beq	a2,a1,.L29
-	beq	a2,a4,.L30
+	addi	a1,zero,1
+	bne	a2,a1,.+8
+	jal	x0,.L29
+	bne	a2,a4,.+8
+	jal	x0,.L30
 	lui	a6,%hi(stable)
 	lui	a2,%hi(MANUELL_SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)
 	lui	a3,%hi(FH_TUERMODUL__MFHZ_copy)
@@ -346,71 +373,83 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	sb	zero,%lo(stable)(a6)
 	sb	a4,%lo(MANUELL_SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)(a2)
 	sb	a1,%lo(FH_TUERMODUL__MFHZ_copy)(a3)
-	jal	zero, .L8
+	jal	x0,.L8
 .L43:
 	lui	a4,%hi(FH_TUERMODUL__SFHA)
 	lbu	a4,%lo(FH_TUERMODUL__SFHA)(a4)
-	beq	a4,zero,.L8
+	bne	a4,zero,.+8
+	jal	x0,.L8
 	lui	a4,%hi(FH_TUERMODUL__SFHA_old)
 	lbu	a4,%lo(FH_TUERMODUL__SFHA_old)(a4)
-	bne	a4,zero,.L8
+	bne	a4,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L8
 	lui	a4,%hi(FH_TUERMODUL__POSITION)
 	lw	a2,%lo(FH_TUERMODUL__POSITION)(a4)
-	addi	a4, zero, 404
-	blt	a4, a2, .L8
+	addi	a4,zero,404
+	bge	a4,a2,.+8
+	jal	x0,.L8
 	lui	a4,%hi(stable)
 	sb	zero,%lo(stable)(a4)
 	lui	a0,%hi(FH_TUERMODUL__MFHA_copy)
-	addi	a4, zero, 1
+	addi	a4,zero,1
 	lui	a2,%hi(OEFFNEN_FH_TUERMODUL_CTRL_next_state)
-	addi	a1, zero, 2
+	addi	a1,zero,2
 	sb	a4,%lo(FH_TUERMODUL__MFHA_copy)(a0)
 	sb	a4,%lo(INITIALISIERT_FH_TUERMODUL_CTRL_next_state)(a3)
 	sb	a1,%lo(OEFFNEN_FH_TUERMODUL_CTRL_next_state)(a2)
-	jal	zero, .L8
+	jal	x0,.L8
 .L33:
 	lui	a1,%hi(stable)
 	lui	a2,%hi(FH_TUERMODUL__MFHZ_copy)
-	addi	a4, zero, 3
+	addi	a4,zero,3
 	sb	zero,%lo(stable)(a1)
 	sb	zero,%lo(FH_TUERMODUL__MFHZ_copy)(a2)
 	sb	a4,%lo(INITIALISIERT_FH_TUERMODUL_CTRL_next_state)(a3)
-	jal	zero, .L8
+	jal	x0,.L8
 .L21:
 	lui	a0,%hi(OEFFNEN_FH_TUERMODUL_CTRL_next_state)
 	lbu	a1,%lo(OEFFNEN_FH_TUERMODUL_CTRL_next_state)(a0)
-	beq	a1,a4,.L22
-	beq	a1,a2,.L23
+	bne	a1,a4,.+8
+	jal	x0,.L22
+	bne	a1,a2,.+8
+	jal	x0,.L23
 	lui	a4,%hi(stable)
 	sb	a2,%lo(OEFFNEN_FH_TUERMODUL_CTRL_next_state)(a0)
 	sb	zero,%lo(stable)(a4)
-	jal	zero, .L8
+	jal	x0,.L8
 .L29:
 	lui	a4,%hi(FH_TUERMODUL__SFHA)
 	lbu	a4,%lo(FH_TUERMODUL__SFHA)(a4)
-	beq	a4,zero,.L32
+	bne	a4,zero,.+8
+	jal	x0,.L32
 	lui	a4,%hi(FH_TUERMODUL__SFHA_old)
 	lbu	a4,%lo(FH_TUERMODUL__SFHA_old)(a4)
-	beq	a4,zero,.L33
+	bne	a4,zero,.+8
+	jal	x0,.L33
 .L32:
 	lui	a4,%hi(FH_TUERMODUL__SFHZ)
 	lbu	a4,%lo(FH_TUERMODUL__SFHZ)(a4)
-	beq	a4,zero,.L34
+	bne	a4,zero,.+8
+	jal	x0,.L34
 	lui	a4,%hi(FH_TUERMODUL__SFHZ_old)
 	lbu	a4,%lo(FH_TUERMODUL__SFHZ_old)(a4)
-	beq	a4,zero,.L33
+	bne	a4,zero,.+8
+	jal	x0,.L33
 .L34:
 	lui	a2,%hi(TIPP_SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)
 	lbu	a3,%lo(TIPP_SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)(a2)
-	addi	a4, zero, 1
-	beq	a3,a4,.L35
-	addi	a1, zero, 2
-	beq	a3,a1,.L36
+	addi	a4,zero,1
+	bne	a3,a4,.+8
+	jal	x0,.L35
+	addi	a1,zero,2
+	bne	a3,a1,.+8
+	jal	x0,.L36
 	lui	a3,%hi(stable)
 	sb	a1,%lo(TIPP_SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)(a2)
 	sb	a4,17(a5)
 	sb	zero,%lo(stable)(a3)
-	jal	zero, .L8
+	jal	x0,.L8
 .L30:
 	lui	a4,%hi(FH_TUERMODUL__SFHZ)
 	lbu	a4,%lo(FH_TUERMODUL__SFHZ)(a4)
@@ -421,63 +460,71 @@ generic_FH_TUERMODUL_CTRL.part.0:
 .L38:
 	lui	a2,%hi(MANUELL_SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)
 	lbu	a3,%lo(MANUELL_SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)(a2)
-	addi	a4, zero, 1
-	beq	a3,a4,.L39
-	addi	a1, zero, 2
-	beq	a3,a1,.L40
+	addi	a4,zero,1
+	bne	a3,a4,.+8
+	jal	x0,.L39
+	addi	a1,zero,2
+	bne	a3,a1,.+8
+	jal	x0,.L40
 	lui	a0,%hi(stable)
 	lui	a3,%hi(FH_TUERMODUL__MFHZ_copy)
 	sb	a1,%lo(MANUELL_SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)(a2)
 	sb	a4,17(a5)
 	sb	zero,%lo(stable)(a0)
 	sb	a4,%lo(FH_TUERMODUL__MFHZ_copy)(a3)
-	jal	zero, .L8
+	jal	x0,.L8
 .L23:
 	lui	a2,%hi(FH_TUERMODUL__SFHZ)
 	lbu	a2,%lo(FH_TUERMODUL__SFHZ)(a2)
-	beq	a2,zero,.L27
+	bne	a2,zero,.+8
+	jal	x0,.L27
 	lui	a2,%hi(FH_TUERMODUL__SFHZ_old)
 	lbu	a2,%lo(FH_TUERMODUL__SFHZ_old)(a2)
 	bne	a2,zero,.L27
 	lui	a3,%hi(stable)
 	sb	a4,%lo(OEFFNEN_FH_TUERMODUL_CTRL_next_state)(a0)
 	sb	zero,%lo(stable)(a3)
-	jal	zero, .L8
+	jal	x0,.L8
 .L22:
 	lui	a4,%hi(FH_TUERMODUL__SFHZ)
 	lbu	a4,%lo(FH_TUERMODUL__SFHZ)(a4)
-	beq	a4,zero,.L25
+	bne	a4,zero,.+8
+	jal	x0,.L25
 	lui	a4,%hi(FH_TUERMODUL__SFHZ_old)
 	lbu	a4,%lo(FH_TUERMODUL__SFHZ_old)(a4)
 	bne	a4,zero,.L25
 .L26:
 	lui	a1,%hi(stable)
 	lui	a2,%hi(FH_TUERMODUL__MFHA_copy)
-	addi	a4, zero, 3
+	addi	a4,zero,3
 	sb	zero,%lo(OEFFNEN_FH_TUERMODUL_CTRL_next_state)(a0)
 	sb	zero,%lo(stable)(a1)
 	sb	zero,%lo(FH_TUERMODUL__MFHA_copy)(a2)
 	sb	a4,%lo(INITIALISIERT_FH_TUERMODUL_CTRL_next_state)(a3)
-	jal	zero, .L8
+	jal	x0,.L8
 .L27:
 	lui	a4,%hi(FH_TUERMODUL__SFHA)
 	lbu	a4,%lo(FH_TUERMODUL__SFHA)(a4)
 	bne	a4,zero,.L8
 	lui	a4,%hi(FH_TUERMODUL__SFHA_old)
 	lbu	a4,%lo(FH_TUERMODUL__SFHA_old)(a4)
-	bne	a4,zero,.L26
-	jal	zero, .L8
+	bne	a4,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L26
+	jal	x0,.L8
 .L25:
 	lui	a4,%hi(FH_TUERMODUL__SFHA)
 	lbu	a4,%lo(FH_TUERMODUL__SFHA)(a4)
-	beq	a4,zero,.L8
+	bne	a4,zero,.+8
+	jal	x0,.L8
 	lui	a4,%hi(FH_TUERMODUL__SFHA_old)
 	lbu	a4,%lo(FH_TUERMODUL__SFHA_old)(a4)
 	bne	a4,zero,.L8
-	jal	zero, .L26
+	jal	x0,.L26
 .L40:
 	lbu	a3,24(a5)
-	beq	a3,zero,.L42
+	bne	a3,zero,.+8
+	jal	x0,.L42
 	lui	a3,%hi(time)
 	lw	a7,%lo(time)(a3)
 	sb	a4,%lo(MANUELL_SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)(a2)
@@ -493,14 +540,15 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	sb	zero,%lo(FH_TUERMODUL__MFHZ_copy)(a1)
 	sb	a4,%lo(FH_TUERMODUL_CTRL__INREVERS1_copy)(a2)
 	sb	a4,%lo(FH_TUERMODUL__MFHA_copy)(a3)
-	jal	zero, .L8
+	jal	x0,.L8
 .L39:
 	lbu	a4,22(a5)
 	sb	zero,23(a5)
-	beq	a4,zero,.L8
+	bne	a4,zero,.+8
+	jal	x0,.L8
 	lui	a7,%hi(stable)
 	lui	a6,%hi(FH_TUERMODUL_CTRL__INREVERS1_copy)
-	addi	a0, zero, 2
+	addi	a0,zero,2
 	lui	a1,%hi(FH_TUERMODUL__MFHA_copy)
 	lui	a4,%hi(FH_TUERMODUL__MFHZ_copy)
 	sb	a3,17(a5)
@@ -509,10 +557,11 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	sb	a0,%lo(MANUELL_SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)(a2)
 	sb	zero,%lo(FH_TUERMODUL__MFHA_copy)(a1)
 	sb	a3,%lo(FH_TUERMODUL__MFHZ_copy)(a4)
-	jal	zero, .L8
+	jal	x0,.L8
 .L36:
 	lbu	a3,24(a5)
-	beq	a3,zero,.L8
+	bne	a3,zero,.+8
+	jal	x0,.L8
 	lui	a3,%hi(time)
 	lw	a7,%lo(time)(a3)
 	sb	a4,%lo(TIPP_SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)(a2)
@@ -528,15 +577,16 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	sb	a4,%lo(FH_TUERMODUL_CTRL__INREVERS2_copy)(a1)
 	sb	zero,%lo(FH_TUERMODUL__MFHZ_copy)(a2)
 	sb	a4,%lo(FH_TUERMODUL__MFHA_copy)(a3)
-	jal	zero, .L8
+	jal	x0,.L8
 .L35:
 	lbu	a4,22(a5)
 	sb	zero,23(a5)
-	beq	a4,zero,.L8
+	bne	a4,zero,.+8
+	jal	x0,.L8
 	lui	a7,%hi(stable)
 	lui	a6,%hi(FH_TUERMODUL__MFHZ_copy)
 	lui	a0,%hi(FH_TUERMODUL_CTRL__INREVERS2_copy)
-	addi	a1, zero, 2
+	addi	a1,zero,2
 	lui	a4,%hi(FH_TUERMODUL__MFHA_copy)
 	sb	a3,17(a5)
 	sb	zero,%lo(stable)(a7)
@@ -544,11 +594,12 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	sb	zero,%lo(FH_TUERMODUL_CTRL__INREVERS2_copy)(a0)
 	sb	a1,%lo(TIPP_SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)(a2)
 	sb	zero,%lo(FH_TUERMODUL__MFHA_copy)(a4)
-	jal	zero, .L8
+	jal	x0,.L8
 .L42:
 	lui	a3,%hi(FH_TUERMODUL__SFHA)
 	lbu	a3,%lo(FH_TUERMODUL__SFHA)(a3)
-	beq	a3,zero,.L8
+	bne	a3,zero,.+8
+	jal	x0,.L8
 	lui	a3,%hi(FH_TUERMODUL__SFHA_old)
 	lbu	a3,%lo(FH_TUERMODUL__SFHA_old)(a3)
 	bne	a3,zero,.L8
@@ -556,25 +607,25 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	sb	a4,%lo(SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)(a0)
 	sb	zero,%lo(MANUELL_SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)(a2)
 	sb	zero,%lo(stable)(a3)
-	jal	zero, .L8
+	jal	x0,.L8
 	.size	generic_FH_TUERMODUL_CTRL.part.0, .-generic_FH_TUERMODUL_CTRL.part.0
 	.align	2
 	.globl	initialise_board
 	.type	initialise_board, @function
 initialise_board:
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 	.size	initialise_board, .-initialise_board
 	.align	2
 	.globl	start_trigger
 	.type	start_trigger, @function
 start_trigger:
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 	.size	start_trigger, .-start_trigger
 	.align	2
 	.globl	stop_trigger
 	.type	stop_trigger, @function
 stop_trigger:
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 	.size	stop_trigger, .-stop_trigger
 	.align	2
 	.globl	interface
@@ -589,48 +640,58 @@ interface:
 .L131:
 	lui	a3,%hi(sc_FH_TUERMODUL_CTRL_2375_2)
 	lw	a4,%lo(sc_FH_TUERMODUL_CTRL_2375_2)(a3)
-	beq	a4,zero,.L133
+	bne	a4,zero,.+8
+	jal	x0,.L133
 	lui	a2,%hi(time)
 	lw	a2,%lo(time)(a2)
-	beq	a4,a2,.L133
+	bne	a4,a2,.+8
+	jal	x0,.L133
 	lui	a4,%hi(FH_TUERMODUL__MFHA_copy)
 	sw	zero,%lo(sc_FH_TUERMODUL_CTRL_2375_2)(a3)
 	sb	zero,%lo(FH_TUERMODUL__MFHA_copy)(a4)
 .L133:
 	lui	a3,%hi(sc_FH_TUERMODUL_CTRL_2352_1)
 	lw	a4,%lo(sc_FH_TUERMODUL_CTRL_2352_1)(a3)
-	beq	a4,zero,.L134
+	bne	a4,zero,.+8
+	jal	x0,.L134
 	lui	a2,%hi(time)
 	lw	a2,%lo(time)(a2)
-	beq	a4,a2,.L134
+	bne	a4,a2,.+8
+	jal	x0,.L134
 	lui	a4,%hi(FH_TUERMODUL__MFHZ_copy)
 	sw	zero,%lo(sc_FH_TUERMODUL_CTRL_2352_1)(a3)
 	sb	zero,%lo(FH_TUERMODUL__MFHZ_copy)(a4)
 .L134:
 	lui	a3,%hi(sc_FH_TUERMODUL_CTRL_2329_1)
 	lw	a4,%lo(sc_FH_TUERMODUL_CTRL_2329_1)(a3)
-	beq	a4,zero,.L135
+	bne	a4,zero,.+8
+	jal	x0,.L135
 	lui	a2,%hi(time)
 	lw	a2,%lo(time)(a2)
-	beq	a4,a2,.L135
+	bne	a4,a2,.+8
+	jal	x0,.L135
 	lui	a4,%hi(FH_TUERMODUL__MFHZ_copy)
 	sw	zero,%lo(sc_FH_TUERMODUL_CTRL_2329_1)(a3)
 	sb	zero,%lo(FH_TUERMODUL__MFHZ_copy)(a4)
 .L135:
 	lui	a3,%hi(sc_FH_TUERMODUL_CTRL_1781_10)
 	lw	a4,%lo(sc_FH_TUERMODUL_CTRL_1781_10)(a3)
-	beq	a4,zero,.L136
+	bne	a4,zero,.+8
+	jal	x0,.L136
 	lui	a2,%hi(time)
 	lw	a2,%lo(time)(a2)
-	beq	a4,a2,.L136
+	bne	a4,a2,.+8
+	jal	x0,.L136
 	sw	zero,%lo(sc_FH_TUERMODUL_CTRL_1781_10)(a3)
 .L136:
 	lui	a3,%hi(sc_FH_TUERMODUL_CTRL_1739_10)
 	lw	a4,%lo(sc_FH_TUERMODUL_CTRL_1739_10)(a3)
-	beq	a4,zero,.L137
+	bne	a4,zero,.+8
+	jal	x0,.L137
 	lui	a2,%hi(time)
 	lw	a2,%lo(time)(a2)
-	beq	a4,a2,.L137
+	bne	a4,a2,.+8
+	jal	x0,.L137
 	sw	zero,%lo(sc_FH_TUERMODUL_CTRL_1739_10)(a3)
 .L137:
 	lbu	a5,0(a5)
@@ -639,14 +700,15 @@ interface:
 	lui	a5,%hi(BLOCK_ERKENNUNG_CTRL__N_old)
 	lw	a4,%lo(BLOCK_ERKENNUNG_CTRL__N)(a4)
 	lw	a5,%lo(BLOCK_ERKENNUNG_CTRL__N_old)(a5)
-	beq	a4,a5,.L129
+	bne	a4,a5,.+8
+	jal	x0,.L129
 .L138:
 	lui	a5,%hi(time)
 	lw	a4,%lo(time)(a5)
 	lui	a5,%hi(tm_entered_EINSCHALTSTROM_MESSEN_BLOCK_ERKENNUNG_CTRLch_BLOCK_ERKENNUNG_CTRL__N_copy)
 	sw	a4,%lo(tm_entered_EINSCHALTSTROM_MESSEN_BLOCK_ERKENNUNG_CTRLch_BLOCK_ERKENNUNG_CTRL__N_copy)(a5)
 .L129:
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L130:
 	lui	a4,%hi(time)
 	lw	a4,%lo(time)(a4)
@@ -655,11 +717,11 @@ interface:
 .L132:
 	lui	a3,%hi(tm_entered_WIEDERHOLSPERRE_FH_TUERMODUL_CTRLexited_BEREIT_FH_TUERMODUL_CTRL)
 	sw	a4,%lo(tm_entered_WIEDERHOLSPERRE_FH_TUERMODUL_CTRLexited_BEREIT_FH_TUERMODUL_CTRL)(a3)
-	jal	zero, .L131
+	jal	x0,.L131
 .L158:
 	lui	a4,%hi(time)
 	lw	a4,%lo(time)(a4)
-	jal	zero, .L132
+	jal	x0,.L132
 	.size	interface, .-interface
 	.align	2
 	.globl	init
@@ -703,7 +765,7 @@ init:
 	sb	zero,%lo(EINKLEMMSCHUTZ_CTRL_EINKLEMMSCHUTZ_CTRL_next_state)(a3)
 	sb	zero,%lo(BEWEGUNG_BLOCK_ERKENNUNG_CTRL_next_state)(a4)
 	sb	zero,%lo(BLOCK_ERKENNUNG_CTRL_BLOCK_ERKENNUNG_CTRL_next_state)(a5)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 	.size	init, .-init
 	.align	2
 	.globl	generic_KINDERSICHERUNG_CTRL
@@ -711,24 +773,30 @@ init:
 generic_KINDERSICHERUNG_CTRL:
 	lui	a5,%hi(.LANCHOR0+10)
 	lbu	a5,%lo(.LANCHOR0+10)(a5)
-	beq	a5,zero,.L160
+	bne	a5,zero,.+8
+	jal	x0,.L160
 	lui	a4,%hi(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)
 	lbu	a5,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a4)
-	addi	a3, zero, 2
-	beq	a5,a3,.L162
-	addi	a2, zero, 3
-	beq	a5,a2,.L163
-	addi	a3, zero, 1
+	addi	a3,zero,2
+	bne	a5,a3,.+8
+	jal	x0,.L162
+	addi	a2,zero,3
+	bne	a5,a2,.+8
+	jal	x0,.L163
+	addi	a3,zero,1
 	bne	a5,a3,.L164
 	lui	a3,%hi(FH_TUERMODUL__SFHA_ZENTRAL)
 	lbu	a3,%lo(FH_TUERMODUL__SFHA_ZENTRAL)(a3)
 	bne	a3,zero,.L165
 	lui	a3,%hi(FH_TUERMODUL__SFHZ_ZENTRAL)
 	lbu	a3,%lo(FH_TUERMODUL__SFHZ_ZENTRAL)(a3)
-	beq	a3,zero,.L231
+	bne	a3,zero,.+8
+	jal	x0,.L231
 	lui	a4,%hi(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)
 	lbu	a3,%lo(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)(a4)
-	bne	a3,a5,.L168
+	bne	a3,a5,.+8
+	jal	x0,.+8
+	jal	x0,.L168
 	lui	a5,%hi(FH_TUERMODUL__SFHZ_ZENTRAL_old)
 	lbu	a5,%lo(FH_TUERMODUL__SFHZ_ZENTRAL_old)(a5)
 	bne	a5,zero,.L232
@@ -736,34 +804,36 @@ generic_KINDERSICHERUNG_CTRL:
 	lui	a5,%hi(stable)
 	sb	zero,%lo(stable)(a5)
 	lui	a3,%hi(FH_TUERMODUL__SFHZ_copy)
-	addi	a5, zero, 1
+	addi	a5,zero,1
 	sb	a5,%lo(FH_TUERMODUL__SFHZ_copy)(a3)
 	sb	a5,%lo(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)(a4)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L163:
 	lui	a5,%hi(FH_TUERMODUL__KL_50)
 	lbu	a5,%lo(FH_TUERMODUL__KL_50)(a5)
-	beq	a5,zero,.L233
+	bne	a5,zero,.+8
+	jal	x0,.L233
 	lui	a5,%hi(FH_TUERMODUL__SFHZ_ZENTRAL)
 	lbu	a5,%lo(FH_TUERMODUL__SFHZ_ZENTRAL)(a5)
 	bne	a5,zero,.L234
 .L160:
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L164:
 	lui	a5,%hi(stable)
 	sb	a2,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a4)
 	sb	zero,%lo(stable)(a5)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L162:
 	lui	a5,%hi(FH_TUERMODUL__SFHA_MEC)
 	lbu	a5,%lo(FH_TUERMODUL__SFHA_MEC)(a5)
 	bne	a5,zero,.L171
 	lui	a5,%hi(FH_TUERMODUL__SFHZ_MEC)
 	lbu	a5,%lo(FH_TUERMODUL__SFHZ_MEC)(a5)
-	beq	a5,zero,.L235
+	bne	a5,zero,.+8
+	jal	x0,.L235
 	lui	a5,%hi(MEC_KINDERSICHERUNG_CTRL_next_state)
 	lbu	a4,%lo(MEC_KINDERSICHERUNG_CTRL_next_state)(a5)
-	addi	a3, zero, 1
+	addi	a3,zero,1
 	bne	a4,a3,.L168
 	lui	a3,%hi(FH_TUERMODUL__SFHZ_MEC_old)
 	lbu	a3,%lo(FH_TUERMODUL__SFHZ_MEC_old)(a3)
@@ -772,23 +842,26 @@ generic_KINDERSICHERUNG_CTRL:
 	lui	a4,%hi(stable)
 	sb	zero,%lo(stable)(a4)
 	lui	a3,%hi(FH_TUERMODUL__SFHZ_copy)
-	addi	a4, zero, 1
+	addi	a4,zero,1
 	sb	a4,%lo(FH_TUERMODUL__SFHZ_copy)(a3)
 	sb	a4,%lo(MEC_KINDERSICHERUNG_CTRL_next_state)(a5)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L165:
 	lui	a4,%hi(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)
 	lbu	a3,%lo(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)(a4)
-	beq	a3,a5,.L237
+	bne	a3,a5,.+8
+	jal	x0,.L237
 .L168:
 	lui	a5,%hi(stable)
 	sb	zero,%lo(stable)(a5)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L171:
 	lui	a5,%hi(MEC_KINDERSICHERUNG_CTRL_next_state)
 	lbu	a4,%lo(MEC_KINDERSICHERUNG_CTRL_next_state)(a5)
-	addi	a3, zero, 1
-	bne	a4,a3,.L168
+	addi	a3,zero,1
+	bne	a4,a3,.+8
+	jal	x0,.+8
+	jal	x0,.L168
 	lui	a3,%hi(FH_TUERMODUL__SFHA_MEC_old)
 	lbu	a3,%lo(FH_TUERMODUL__SFHA_MEC_old)(a3)
 	bne	a3,zero,.L174
@@ -797,33 +870,36 @@ generic_KINDERSICHERUNG_CTRL:
 	sb	a4,%lo(MEC_KINDERSICHERUNG_CTRL_next_state)(a5)
 	sb	zero,%lo(stable)(a2)
 	sb	a4,%lo(FH_TUERMODUL__SFHA_copy)(a3)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L233:
 	lui	a5,%hi(FH_TUERMODUL__SFHZ_MEC)
 	lbu	a5,%lo(FH_TUERMODUL__SFHZ_MEC)(a5)
 	lui	a2,%hi(FH_TUERMODUL__SFHA_MEC)
 	lbu	a2,%lo(FH_TUERMODUL__SFHA_MEC)(a2)
-	beq	a5,zero,.L176
-	bne	a2,zero,.L238
+	bne	a5,zero,.+8
+	jal	x0,.L176
+	bne	a2,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L238
 	lui	a1,%hi(stable)
 	lui	a5,%hi(FH_TUERMODUL__SFHZ_copy)
-	addi	a2, zero, 1
+	addi	a2,zero,1
 	sb	a3,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a4)
 	sb	zero,%lo(stable)(a1)
 	sb	a2,%lo(FH_TUERMODUL__SFHZ_copy)(a5)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L235:
 	lui	a0,%hi(stable)
 	lui	a1,%hi(FH_TUERMODUL__SFHZ_copy)
 	lui	a2,%hi(FH_TUERMODUL__SFHA_copy)
-	addi	a3, zero, 3
+	addi	a3,zero,3
 	lui	a5,%hi(MEC_KINDERSICHERUNG_CTRL_next_state)
 	sb	zero,%lo(stable)(a0)
 	sb	zero,%lo(FH_TUERMODUL__SFHZ_copy)(a1)
 	sb	zero,%lo(FH_TUERMODUL__SFHA_copy)(a2)
 	sb	a3,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a4)
 	sb	zero,%lo(MEC_KINDERSICHERUNG_CTRL_next_state)(a5)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L231:
 	lui	a0,%hi(stable)
 	lui	a1,%hi(FH_TUERMODUL__SFHZ_copy)
@@ -834,21 +910,22 @@ generic_KINDERSICHERUNG_CTRL:
 	sb	zero,%lo(FH_TUERMODUL__SFHZ_copy)(a1)
 	sb	zero,%lo(FH_TUERMODUL__SFHA_copy)(a3)
 	sb	zero,%lo(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)(a5)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L176:
-	beq	a2,zero,.L239
+	bne	a2,zero,.+8
+	jal	x0,.L239
 	lui	a1,%hi(stable)
 	lui	a5,%hi(FH_TUERMODUL__SFHA_copy)
-	addi	a2, zero, 1
+	addi	a2,zero,1
 	sb	a3,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a4)
 	sb	zero,%lo(stable)(a1)
 	sb	a2,%lo(FH_TUERMODUL__SFHA_copy)(a5)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L234:
 	lui	a5,%hi(FH_TUERMODUL__SFHA_ZENTRAL)
 	lbu	a5,%lo(FH_TUERMODUL__SFHA_ZENTRAL)(a5)
 	bne	a5,zero,.L186
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L237:
 	lui	a5,%hi(FH_TUERMODUL__SFHA_ZENTRAL_old)
 	lbu	a5,%lo(FH_TUERMODUL__SFHA_ZENTRAL_old)(a5)
@@ -858,19 +935,19 @@ generic_KINDERSICHERUNG_CTRL:
 	sb	a3,%lo(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)(a4)
 	sb	zero,%lo(stable)(a2)
 	sb	a3,%lo(FH_TUERMODUL__SFHA_copy)(a5)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L186:
 	lui	a5,%hi(stable)
 	sb	zero,%lo(stable)(a5)
 	lui	a2,%hi(FH_TUERMODUL__SFHA_copy)
-	addi	a5, zero, 1
+	addi	a5,zero,1
 	lui	a3,%hi(FH_TUERMODUL__SFHZ_copy)
 	sb	a5,%lo(FH_TUERMODUL__SFHA_copy)(a2)
 	sb	a5,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a4)
 	sb	a5,%lo(FH_TUERMODUL__SFHZ_copy)(a3)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L238:
-	addi	a5, zero, 1
+	addi	a5,zero,1
 	lui	a0,%hi(stable)
 	lui	a1,%hi(FH_TUERMODUL__SFHZ_copy)
 	lui	a2,%hi(FH_TUERMODUL__SFHA_copy)
@@ -878,7 +955,7 @@ generic_KINDERSICHERUNG_CTRL:
 	sb	zero,%lo(stable)(a0)
 	sb	a5,%lo(FH_TUERMODUL__SFHZ_copy)(a1)
 	sb	a5,%lo(FH_TUERMODUL__SFHA_copy)(a2)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L239:
 	lui	a5,%hi(FH_TUERMODUL__SFHZ_ZENTRAL)
 	lbu	a5,%lo(FH_TUERMODUL__SFHZ_ZENTRAL)(a5)
@@ -886,7 +963,7 @@ generic_KINDERSICHERUNG_CTRL:
 	lui	a5,%hi(FH_TUERMODUL__SFHA_ZENTRAL)
 	lbu	a5,%lo(FH_TUERMODUL__SFHA_ZENTRAL)(a5)
 	bne	a5,zero,.L179
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L178:
 	lui	a5,%hi(FH_TUERMODUL__SFHA_ZENTRAL)
 	lbu	a5,%lo(FH_TUERMODUL__SFHA_ZENTRAL)(a5)
@@ -894,74 +971,80 @@ generic_KINDERSICHERUNG_CTRL:
 	lui	a5,%hi(stable)
 	sb	zero,%lo(stable)(a5)
 	lui	a3,%hi(FH_TUERMODUL__SFHZ_copy)
-	addi	a5, zero, 1
+	addi	a5,zero,1
 	sb	a5,%lo(FH_TUERMODUL__SFHZ_copy)(a3)
 	sb	a5,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a4)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L179:
 	lui	a5,%hi(stable)
 	sb	zero,%lo(stable)(a5)
 	lui	a3,%hi(FH_TUERMODUL__SFHA_copy)
-	addi	a5, zero, 1
+	addi	a5,zero,1
 	sb	a5,%lo(FH_TUERMODUL__SFHA_copy)(a3)
 	sb	a5,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a4)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L174:
 	lui	a3,%hi(FH_TUERMODUL__SFHZ_MEC)
 	lbu	a3,%lo(FH_TUERMODUL__SFHZ_MEC)(a3)
 	bne	a3,zero,.L240
 	lui	a3,%hi(FH_TUERMODUL__SFHZ_MEC_old)
 	lbu	a3,%lo(FH_TUERMODUL__SFHZ_MEC_old)(a3)
-	beq	a3,zero,.L160
+	bne	a3,zero,.+8
+	jal	x0,.L160
 	lui	a2,%hi(stable)
 	lui	a3,%hi(FH_TUERMODUL__SFHZ_copy)
 	sb	a4,%lo(MEC_KINDERSICHERUNG_CTRL_next_state)(a5)
 	sb	zero,%lo(stable)(a2)
 	sb	zero,%lo(FH_TUERMODUL__SFHZ_copy)(a3)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L170:
 	lui	a5,%hi(FH_TUERMODUL__SFHZ_ZENTRAL)
 	lbu	a5,%lo(FH_TUERMODUL__SFHZ_ZENTRAL)(a5)
 	bne	a5,zero,.L241
 	lui	a5,%hi(FH_TUERMODUL__SFHZ_ZENTRAL_old)
 	lbu	a5,%lo(FH_TUERMODUL__SFHZ_ZENTRAL_old)(a5)
-	beq	a5,zero,.L160
+	bne	a5,zero,.+8
+	jal	x0,.L160
 	lui	a2,%hi(stable)
 	lui	a5,%hi(FH_TUERMODUL__SFHZ_copy)
 	sb	a3,%lo(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)(a4)
 	sb	zero,%lo(stable)(a2)
 	sb	zero,%lo(FH_TUERMODUL__SFHZ_copy)(a5)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L236:
 	lui	a3,%hi(FH_TUERMODUL__SFHA_MEC_old)
 	lbu	a3,%lo(FH_TUERMODUL__SFHA_MEC_old)(a3)
-	beq	a3,zero,.L160
+	bne	a3,zero,.+8
+	jal	x0,.L160
 	lui	a2,%hi(stable)
 	lui	a3,%hi(FH_TUERMODUL__SFHA_copy)
 	sb	a4,%lo(MEC_KINDERSICHERUNG_CTRL_next_state)(a5)
 	sb	zero,%lo(stable)(a2)
 	sb	zero,%lo(FH_TUERMODUL__SFHA_copy)(a3)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L232:
 	lui	a5,%hi(FH_TUERMODUL__SFHA_ZENTRAL_old)
 	lbu	a5,%lo(FH_TUERMODUL__SFHA_ZENTRAL_old)(a5)
-	beq	a5,zero,.L160
+	bne	a5,zero,.+8
+	jal	x0,.L160
 	lui	a2,%hi(stable)
 	lui	a5,%hi(FH_TUERMODUL__SFHA_copy)
 	sb	a3,%lo(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)(a4)
 	sb	zero,%lo(stable)(a2)
 	sb	zero,%lo(FH_TUERMODUL__SFHA_copy)(a5)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L240:
 	lui	a4,%hi(FH_TUERMODUL__SFHZ_MEC_old)
 	lbu	a4,%lo(FH_TUERMODUL__SFHZ_MEC_old)(a4)
-	beq	a4,zero,.L191
-	jalr	zero, ra, 0
+	bne	a4,zero,.+8
+	jal	x0,.L191
+	jalr	zero,ra,0
 .L241:
 	lui	a5,%hi(FH_TUERMODUL__SFHZ_ZENTRAL_old)
 	lbu	a5,%lo(FH_TUERMODUL__SFHZ_ZENTRAL_old)(a5)
-	beq	a5,zero,.L189
-	jalr	zero, ra, 0
+	bne	a5,zero,.+8
+	jal	x0,.L189
+	jalr	zero,ra,0
 	.size	generic_KINDERSICHERUNG_CTRL, .-generic_KINDERSICHERUNG_CTRL
 	.align	2
 	.globl	generic_FH_TUERMODUL_CTRL
@@ -970,25 +1053,27 @@ generic_FH_TUERMODUL_CTRL:
 	lui	a5,%hi(.LANCHOR0)
 	addi	a5,a5,%lo(.LANCHOR0)
 	lbu	a4,13(a5)
-	beq	a4,zero,.L243
+	bne	a4,zero,.+8
+	jal	x0,.L243
 	addi	sp,sp,-16
 	sw	ra,12(sp)
 .Lpcrel_1:
-	auipc	ra, %pcrel_hi(generic_FH_TUERMODUL_CTRL.part.0)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_1)
+	auipc	ra,%pcrel_hi(generic_FH_TUERMODUL_CTRL.part.0)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_1)
 	lw	ra,12(sp)
 	addi	sp,sp,16
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L243:
 	lbu	a4,15(a5)
-	beq	a4,zero,.L249
+	bne	a4,zero,.+8
+	jal	x0,.L249
 	lbu	a4,14(a5)
 	bne	a4,zero,.L249
 	sb	zero,4(a5)
 	sb	zero,6(a5)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L249:
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 	.size	generic_FH_TUERMODUL_CTRL, .-generic_FH_TUERMODUL_CTRL
 	.align	2
 	.globl	generic_EINKLEMMSCHUTZ_CTRL
@@ -997,12 +1082,14 @@ generic_EINKLEMMSCHUTZ_CTRL:
 	lui	a5,%hi(.LANCHOR0)
 	addi	a5,a5,%lo(.LANCHOR0)
 	lbu	a4,16(a5)
-	beq	a4,zero,.L252
+	bne	a4,zero,.+8
+	jal	x0,.L252
 	lui	a3,%hi(EINKLEMMSCHUTZ_CTRL_EINKLEMMSCHUTZ_CTRL_next_state)
 	lbu	a4,%lo(EINKLEMMSCHUTZ_CTRL_EINKLEMMSCHUTZ_CTRL_next_state)(a3)
-	addi	a2, zero, 1
-	beq	a4,a2,.L255
-	addi	a1, zero, 2
+	addi	a2,zero,1
+	bne	a4,a2,.+8
+	jal	x0,.L255
+	addi	a1,zero,2
 	bne	a4,a1,.L269
 	lui	a4,%hi(FH_TUERMODUL__EKS_LEISTE_AKTIV)
 	lbu	a4,%lo(FH_TUERMODUL__EKS_LEISTE_AKTIV)(a4)
@@ -1010,34 +1097,37 @@ generic_EINKLEMMSCHUTZ_CTRL:
 	bne	a4,zero,.L252
 	lui	a5,%hi(FH_TUERMODUL__EKS_LEISTE_AKTIV_old)
 	lbu	a5,%lo(FH_TUERMODUL__EKS_LEISTE_AKTIV_old)(a5)
-	beq	a5,zero,.L252
+	bne	a5,zero,.+8
+	jal	x0,.L252
 .L269:
 	lui	a5,%hi(stable)
 	sb	a2,%lo(EINKLEMMSCHUTZ_CTRL_EINKLEMMSCHUTZ_CTRL_next_state)(a3)
 	sb	zero,%lo(stable)(a5)
 .L252:
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L255:
 	lui	a4,%hi(FH_TUERMODUL__EKS_LEISTE_AKTIV)
 	lbu	a4,%lo(FH_TUERMODUL__EKS_LEISTE_AKTIV)(a4)
-	beq	a4,zero,.L252
+	bne	a4,zero,.+8
+	jal	x0,.L252
 	lui	a4,%hi(FH_TUERMODUL__EKS_LEISTE_AKTIV_old)
 	lbu	a4,%lo(FH_TUERMODUL__EKS_LEISTE_AKTIV_old)(a4)
 	bne	a4,zero,.L252
 	lui	a4,%hi(FH_TUERMODUL__SFHZ)
 	lbu	a4,%lo(FH_TUERMODUL__SFHZ)(a4)
-	beq	a4,zero,.L259
+	bne	a4,zero,.+8
+	jal	x0,.L259
 	lui	a4,%hi(FH_TUERMODUL__SFHA)
 	lbu	a4,%lo(FH_TUERMODUL__SFHA)(a4)
 	bne	a4,zero,.L252
 .L259:
 	lui	a1,%hi(stable)
-	addi	a2, zero, 1
-	addi	a4, zero, 2
+	addi	a2,zero,1
+	addi	a4,zero,2
 	sb	zero,%lo(stable)(a1)
 	sb	a2,24(a5)
 	sb	a4,%lo(EINKLEMMSCHUTZ_CTRL_EINKLEMMSCHUTZ_CTRL_next_state)(a3)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 	.size	generic_EINKLEMMSCHUTZ_CTRL, .-generic_EINKLEMMSCHUTZ_CTRL
 	.align	2
 	.globl	generic_BLOCK_ERKENNUNG_CTRL
@@ -1046,12 +1136,14 @@ generic_BLOCK_ERKENNUNG_CTRL:
 	lui	a5,%hi(.LANCHOR0)
 	addi	a5,a5,%lo(.LANCHOR0)
 	lbu	a4,19(a5)
-	beq	a4,zero,.L271
+	bne	a4,zero,.+8
+	jal	x0,.L271
 	lui	a3,%hi(BLOCK_ERKENNUNG_CTRL_BLOCK_ERKENNUNG_CTRL_next_state)
 	lbu	a4,%lo(BLOCK_ERKENNUNG_CTRL_BLOCK_ERKENNUNG_CTRL_next_state)(a3)
-	addi	a2, zero, 1
-	beq	a4,a2,.L272
-	addi	a1, zero, 2
+	addi	a2,zero,1
+	bne	a4,a2,.+8
+	jal	x0,.L272
+	addi	a1,zero,2
 	bne	a4,a1,.L295
 	lui	a4,%hi(FH_TUERMODUL__MFHA)
 	lbu	a4,%lo(FH_TUERMODUL__MFHA)(a4)
@@ -1065,16 +1157,21 @@ generic_BLOCK_ERKENNUNG_CTRL:
 	bne	a4,zero,.L280
 	lui	a4,%hi(FH_TUERMODUL__MFHZ_old)
 	lbu	a4,%lo(FH_TUERMODUL__MFHZ_old)(a4)
-	bne	a4,zero,.L279
+	bne	a4,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L279
 .L280:
 	lui	a3,%hi(BEWEGUNG_BLOCK_ERKENNUNG_CTRL_next_state)
 	lbu	a4,%lo(BEWEGUNG_BLOCK_ERKENNUNG_CTRL_next_state)(a3)
-	addi	a2, zero, 2
-	beq	a4,a2,.L281
-	addi	a1, zero, 3
-	beq	a4,a1,.L282
-	addi	a0, zero, 1
-	beq	a4,a0,.L270
+	addi	a2,zero,2
+	bne	a4,a2,.+8
+	jal	x0,.L281
+	addi	a1,zero,3
+	bne	a4,a1,.+8
+	jal	x0,.L282
+	addi	a0,zero,1
+	bne	a4,a0,.+8
+	jal	x0,.L270
 	lui	a7,%hi(stable)
 	lui	a6,%hi(BLOCK_ERKENNUNG_CTRL__N)
 	lui	a4,%hi(BLOCK_ERKENNUNG_CTRL__I_EIN_MAX)
@@ -1083,34 +1180,36 @@ generic_BLOCK_ERKENNUNG_CTRL:
 	sb	zero,%lo(stable)(a7)
 	sw	zero,%lo(BLOCK_ERKENNUNG_CTRL__N)(a6)
 	sw	a2,%lo(BLOCK_ERKENNUNG_CTRL__I_EIN_MAX)(a4)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L271:
 	lbu	a4,21(a5)
-	beq	a4,zero,.L270
+	bne	a4,zero,.+8
+	jal	x0,.L270
 	lbu	a4,20(a5)
 	bne	a4,zero,.L270
 	sb	zero,0(a5)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L295:
 	lui	a5,%hi(stable)
 	sb	a2,%lo(BLOCK_ERKENNUNG_CTRL_BLOCK_ERKENNUNG_CTRL_next_state)(a3)
 	sb	zero,%lo(stable)(a5)
 .L270:
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L272:
 	lui	a2,%hi(FH_TUERMODUL__I_EIN)
 	lui	a1,%hi(FH_TUERMODUL__I_EIN_old)
 	lw	a2,%lo(FH_TUERMODUL__I_EIN)(a2)
 	lw	a1,%lo(FH_TUERMODUL__I_EIN_old)(a1)
-	beq	a1,a2,.L270
-	bge	zero, a2, .L270
-	addi	a2, zero, 2
+	bne	a1,a2,.+8
+	jal	x0,.L270
+	bge	zero,a2,.L270
+	addi	a2,zero,2
 	lui	t3,%hi(stable)
 	lui	t1,%hi(FH_TUERMODUL__BLOCK_copy)
 	lui	a7,%hi(BLOCK_ERKENNUNG_CTRL__I_EIN_MAX)
 	lui	a6,%hi(BLOCK_ERKENNUNG_CTRL__N)
 	lui	a1,%hi(BEWEGUNG_BLOCK_ERKENNUNG_CTRL_next_state)
-	addi	a0, zero, 3
+	addi	a0,zero,3
 	sb	a4,0(a5)
 	sb	zero,%lo(stable)(t3)
 	sb	zero,%lo(FH_TUERMODUL__BLOCK_copy)(t1)
@@ -1118,42 +1217,44 @@ generic_BLOCK_ERKENNUNG_CTRL:
 	sw	a2,%lo(BLOCK_ERKENNUNG_CTRL__I_EIN_MAX)(a7)
 	sw	zero,%lo(BLOCK_ERKENNUNG_CTRL__N)(a6)
 	sb	a0,%lo(BEWEGUNG_BLOCK_ERKENNUNG_CTRL_next_state)(a1)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L279:
 	lui	a2,%hi(stable)
-	addi	a4, zero, 1
+	addi	a4,zero,1
 	lui	a5,%hi(BEWEGUNG_BLOCK_ERKENNUNG_CTRL_next_state)
 	sb	zero,%lo(stable)(a2)
 	sb	a4,%lo(BLOCK_ERKENNUNG_CTRL_BLOCK_ERKENNUNG_CTRL_next_state)(a3)
 	sb	zero,%lo(BEWEGUNG_BLOCK_ERKENNUNG_CTRL_next_state)(a5)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L282:
 	sb	zero,0(a5)
 	lui	a5,%hi(BLOCK_ERKENNUNG_CTRL__N)
 	lw	a5,%lo(BLOCK_ERKENNUNG_CTRL__N)(a5)
-	addi	a4, zero, 11
+	addi	a4,zero,11
 	bne	a5,a4,.L270
 	lui	a4,%hi(BLOCK_ERKENNUNG_CTRL__N_old)
 	lw	a4,%lo(BLOCK_ERKENNUNG_CTRL__N_old)(a4)
-	beq	a4,a5,.L270
+	bne	a4,a5,.+8
+	jal	x0,.L270
 	lui	a5,%hi(stable)
 	sb	a2,%lo(BEWEGUNG_BLOCK_ERKENNUNG_CTRL_next_state)(a3)
 	sb	zero,%lo(stable)(a5)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L281:
 	lui	a5,%hi(BLOCK_ERKENNUNG_CTRL__I_EIN_MAX)
 	lw	a5,%lo(BLOCK_ERKENNUNG_CTRL__I_EIN_MAX)(a5)
 	lui	a4,%hi(FH_TUERMODUL__I_EIN)
 	lw	a4,%lo(FH_TUERMODUL__I_EIN)(a4)
 	addi	a5,a5,-1
-	blt	a4, a5, .L270
+	bge	a4,a5,.+8
+	jal	x0,.L270
 	lui	a5,%hi(stable)
 	sb	zero,%lo(stable)(a5)
 	lui	a4,%hi(FH_TUERMODUL__BLOCK_copy)
-	addi	a5, zero, 1
+	addi	a5,zero,1
 	sb	a5,%lo(FH_TUERMODUL__BLOCK_copy)(a4)
 	sb	a5,%lo(BEWEGUNG_BLOCK_ERKENNUNG_CTRL_next_state)(a3)
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 	.size	generic_BLOCK_ERKENNUNG_CTRL, .-generic_BLOCK_ERKENNUNG_CTRL
 	.align	2
 	.globl	FH_DU
@@ -1196,10 +1297,10 @@ FH_DU:
 	lbu	a5,%lo(FH_DU__S_FH_TMBFZUCAN)(a5)
 	lbu	a4,%lo(FH_DU__S_FH_TMBFAUFCAN)(a4)
 	lui	a3,%hi(time)
-	addi	s1, zero, 1
+	addi	s1,zero,1
 	sw	s1,%lo(time)(a3)
 	lui	a6,%hi(stable)
-	addi	a3, zero, 0
+	addi	a3,zero,0
 	lui	s2,%hi(FH_DU__MFHZ)
 	lui	s3,%hi(FH_DU__MFHA)
 	lui	s4,%hi(FH_DU__S_FH_FTAUF)
@@ -1217,27 +1318,30 @@ FH_DU:
 	lui	a3,%hi(FH_STEUERUNG_DUMMY_FH_STEUERUNG_DUMMY_next_state)
 	lbu	a3,%lo(FH_STEUERUNG_DUMMY_FH_STEUERUNG_DUMMY_next_state)(a3)
 	sb	s1,%lo(stable)(a6)
-	addi	a7, zero, 2
-	beq	a3,a7,.L297
-	addi	a7, zero, 3
-	beq	a3,a7,.L298
+	addi	a7,zero,2
+	bne	a3,a7,.+8
+	jal	x0,.L297
+	addi	a7,zero,3
+	bne	a3,a7,.+8
+	jal	x0,.L298
 	bne	a3,s1,.L299
 	lbu	a3,%lo(FH_DU__MFHZ)(s2)
 	bne	a3,zero,.L300
 	lui	a3,%hi(FH_DU__MFHZ_old)
 	lbu	a3,%lo(FH_DU__MFHZ_old)(a3)
-	beq	a3,zero,.L300
+	bne	a3,zero,.+8
+	jal	x0,.L300
 .L299:
 	lui	a3,%hi(FH_DU__MFH)
 	sw	zero,%lo(FH_DU__MFH)(a3)
-	addi	a7, zero, 2
+	addi	a7,zero,2
 	lui	a3,%hi(FH_STEUERUNG_DUMMY_FH_STEUERUNG_DUMMY_next_state)
 	sb	zero,%lo(stable)(a6)
 	sb	a7,%lo(FH_STEUERUNG_DUMMY_FH_STEUERUNG_DUMMY_next_state)(a3)
 .L300:
 	bne	t5,zero,.L303
 	lui	a3,%hi(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)
-	addi	a7, zero, 3
+	addi	a7,zero,3
 	sb	a7,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a3)
 .L303:
 	bne	t4,zero,.L304
@@ -1253,11 +1357,11 @@ FH_DU:
 	lui	a7,%hi(FH_TUERMODUL_CTRL__N)
 	lui	a3,%hi(B_FH_TUERMODUL_CTRL_next_state)
 	sw	zero,%lo(FH_TUERMODUL_CTRL__N)(a7)
-	addi	a7, zero, 2
+	addi	a7,zero,2
 	sb	a7,%lo(B_FH_TUERMODUL_CTRL_next_state)(a3)
 	lui	a3,%hi(A_FH_TUERMODUL_CTRL_next_state)
 	sb	s1,%lo(A_FH_TUERMODUL_CTRL_next_state)(a3)
-	addi	a3, zero, 256
+	addi	a3,zero,256
 	sh	a3,4(s0)
 	lui	a3,%hi(WIEDERHOLSPERRE_FH_TUERMODUL_CTRL_next_state)
 	sb	zero,6(s0)
@@ -1267,15 +1371,18 @@ FH_DU:
 	sb	s1,17(s0)
 	sb	s1,20(s0)
 	sb	s1,14(s0)
-	beq	t0,a5,.L412
+	bne	t0,a5,.+8
+	jal	x0,.L412
 	lui	a3,%hi(FH_DU__DOOR_ID)
 	lbu	a3,%lo(FH_DU__DOOR_ID)(a3)
 	bne	a3,zero,.L310
 	lui	a3,%hi(FH_DU__S_FH_FTZU)
 	sb	a5,%lo(FH_DU__S_FH_FTZU)(a3)
-	beq	a2,t6,.L309
+	bne	a2,t6,.+8
+	jal	x0,.L309
 .L311:
-	beq	a1,a4,.L410
+	bne	a1,a4,.+8
+	jal	x0,.L410
 .L351:
 	sb	a4,%lo(FH_DU__S_FH_FTAUF)(s4)
 .L314:
@@ -1300,13 +1407,16 @@ FH_DU:
 	sb	t0,13(s0)
 	sb	a2,%lo(FH_TUERMODUL__SFHZ_MEC)(a7)
 	lbu	a1,%lo(FH_TUERMODUL__KL_50)(a1)
-	beq	a0,zero,.L317
+	bne	a0,zero,.+8
+	jal	x0,.L317
 	lui	a7,%hi(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)
 	lbu	a0,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a7)
-	addi	t1, zero, 2
-	beq	a0,t1,.L318
-	addi	t1, zero, 3
-	beq	a0,t1,.L319
+	addi	t1,zero,2
+	bne	a0,t1,.+8
+	jal	x0,.L318
+	addi	t1,zero,3
+	bne	a0,t1,.+8
+	jal	x0,.L319
 	bne	a0,s1,.L320
 	lui	a0,%hi(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)
 	bne	a4,zero,.L321
@@ -1315,7 +1425,7 @@ FH_DU:
 	sb	zero,%lo(FH_TUERMODUL__SFHZ_copy)(t1)
 	lui	t1,%hi(FH_TUERMODUL__SFHA_copy)
 	sb	zero,%lo(FH_TUERMODUL__SFHA_copy)(t1)
-	addi	t1, zero, 3
+	addi	t1,zero,3
 	sb	zero,%lo(stable)(a6)
 	sb	t1,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a7)
 	sb	zero,%lo(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)(a0)
@@ -1342,10 +1452,11 @@ FH_DU:
 	sw	t1,%lo(FH_DU__POSITION)(s8)
 	sb	a7,%lo(FH_DU__FT)(s7)
 	sb	a0,%lo(FH_DU__BLOCK)(t2)
-	beq	t0,zero,.L343
+	bne	t0,zero,.+8
+	jal	x0,.L343
 .Lpcrel_2:
-	auipc	ra, %pcrel_hi(generic_FH_TUERMODUL_CTRL.part.0)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_2)
+	auipc	ra,%pcrel_hi(generic_FH_TUERMODUL_CTRL.part.0)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_2)
 	lui	a5,%hi(FH_TUERMODUL__SFHA_MEC)
 	lbu	a3,%lo(FH_TUERMODUL__SFHA_MEC)(a5)
 	lui	a5,%hi(FH_TUERMODUL__SFHA_ZENTRAL)
@@ -1386,8 +1497,8 @@ FH_DU:
 	sw	t1,%lo(FH_DU__POSITION)(s8)
 	sb	a7,%lo(FH_DU__FT)(s7)
 .Lpcrel_3:
-	auipc	ra, %pcrel_hi(generic_EINKLEMMSCHUTZ_CTRL)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_3)
+	auipc	ra,%pcrel_hi(generic_EINKLEMMSCHUTZ_CTRL)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_3)
 	lui	a7,%hi(FH_TUERMODUL__MFHZ)
 	lui	a0,%hi(FH_TUERMODUL__MFHA)
 	lbu	a3,%lo(FH_TUERMODUL__MFHA)(a0)
@@ -1427,8 +1538,8 @@ FH_DU:
 	sb	a4,%lo(FH_DU__KL_50)(a3)
 	sb	a5,%lo(FH_DU__BLOCK)(a1)
 .Lpcrel_4:
-	auipc	ra, %pcrel_hi(generic_BLOCK_ERKENNUNG_CTRL)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_4)
+	auipc	ra,%pcrel_hi(generic_BLOCK_ERKENNUNG_CTRL)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_4)
 	lui	t3,%hi(FH_TUERMODUL__FT)
 	lbu	a4,%lo(FH_TUERMODUL__FT)(t3)
 	lw	a3,%lo(FH_TUERMODUL__POSITION)(s5)
@@ -1560,34 +1671,39 @@ FH_DU:
 	bne	t6,zero,.L296
 	lui	a4,%hi(step)
 	lbu	a3,%lo(step)(a4)
-	addi	t6, a2, 0
-	addi	a4, a1, 0
-	addi	t2, a0, 0
-	addi	t0, a5, 0
-	jal	zero, .L345
+	addi	t6,a2,0
+	addi	a4,a1,0
+	addi	t2,a0,0
+	addi	t0,a5,0
+	jal	x0,.L345
 .L412:
 	lui	a5,%hi(FH_DU__S_FH_FTZU)
 	lbu	a5,%lo(FH_DU__S_FH_FTZU)(a5)
-	beq	a2,t6,.L309
+	bne	a2,t6,.+8
+	jal	x0,.L309
 	lui	a3,%hi(FH_DU__DOOR_ID)
 	lbu	a3,%lo(FH_DU__DOOR_ID)(a3)
-	beq	a3,zero,.L311
+	bne	a3,zero,.+8
+	jal	x0,.L311
 .L353:
 	lui	a3,%hi(FH_DU__S_FH_TMBFZUCAN)
 	sb	t6,%lo(FH_DU__S_FH_TMBFZUCAN)(a3)
 .L309:
-	beq	a1,a4,.L312
+	bne	a1,a4,.+8
+	jal	x0,.L312
 	lui	a3,%hi(FH_DU__DOOR_ID)
 	lbu	a3,%lo(FH_DU__DOOR_ID)(a3)
-	beq	a3,zero,.L351
+	bne	a3,zero,.+8
+	jal	x0,.L351
 .L313:
-	beq	a0,t2,.L410
+	bne	a0,t2,.+8
+	jal	x0,.L410
 .L350:
 	lui	a4,%hi(FH_DU__S_FH_TMBFAUFCAN)
 	sb	a0,%lo(FH_DU__S_FH_TMBFAUFCAN)(a4)
 .L410:
 	lbu	a4,%lo(FH_DU__S_FH_FTAUF)(s4)
-	jal	zero, .L314
+	jal	x0,.L314
 .L310:
 	lui	a5,%hi(FH_DU__S_FH_FTZU)
 	lbu	a5,%lo(FH_DU__S_FH_FTZU)(a5)
@@ -1595,51 +1711,61 @@ FH_DU:
 	bne	a1,a4,.L313
 .L312:
 	lbu	a4,%lo(FH_DU__S_FH_FTAUF)(s4)
-	beq	a0,t2,.L314
+	bne	a0,t2,.+8
+	jal	x0,.L314
 	lui	a3,%hi(FH_DU__DOOR_ID)
 	lbu	a3,%lo(FH_DU__DOOR_ID)(a3)
-	bne	a3,zero,.L350
-	jal	zero, .L314
+	bne	a3,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L350
+	jal	x0,.L314
 .L298:
 	lbu	a3,%lo(FH_DU__MFHA)(s3)
-	bne	a3,zero,.L300
+	bne	a3,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L300
 	lui	a3,%hi(FH_DU__MFHA_old)
 	lbu	a3,%lo(FH_DU__MFHA_old)(a3)
 	bne	a3,zero,.L299
-	jal	zero, .L300
+	jal	x0,.L300
 .L297:
 	lbu	a3,%lo(FH_DU__MFHZ)(s2)
-	beq	a3,zero,.L301
+	bne	a3,zero,.+8
+	jal	x0,.L301
 	lui	a3,%hi(FH_DU__MFHZ_old)
 	lbu	a3,%lo(FH_DU__MFHZ_old)(a3)
 	bne	a3,zero,.L301
 	lui	a7,%hi(FH_STEUERUNG_DUMMY_FH_STEUERUNG_DUMMY_next_state)
-	addi	a3, zero, -100
+	addi	a3,zero,-100
 	sb	s1,%lo(FH_STEUERUNG_DUMMY_FH_STEUERUNG_DUMMY_next_state)(a7)
 	lui	a7,%hi(FH_DU__MFH)
 	sb	zero,%lo(stable)(a6)
 	sw	a3,%lo(FH_DU__MFH)(a7)
-	jal	zero, .L300
+	jal	x0,.L300
 .L301:
 	lbu	a3,%lo(FH_DU__MFHA)(s3)
-	beq	a3,zero,.L300
+	bne	a3,zero,.+8
+	jal	x0,.L300
 	lui	a3,%hi(FH_DU__MFHA_old)
 	lbu	a3,%lo(FH_DU__MFHA_old)(a3)
 	bne	a3,zero,.L300
-	addi	a3, zero, 100
+	addi	a3,zero,100
 	lui	a7,%hi(FH_DU__MFH)
 	sw	a3,%lo(FH_DU__MFH)(a7)
-	addi	a3, zero, 3
+	addi	a3,zero,3
 	lui	a7,%hi(FH_STEUERUNG_DUMMY_FH_STEUERUNG_DUMMY_next_state)
 	sb	zero,%lo(stable)(a6)
 	sb	a3,%lo(FH_STEUERUNG_DUMMY_FH_STEUERUNG_DUMMY_next_state)(a7)
-	jal	zero, .L300
+	jal	x0,.L300
 .L319:
-	beq	a1,zero,.L413
-	beq	a5,zero,.L317
-	beq	a4,zero,.L317
+	bne	a1,zero,.+8
+	jal	x0,.L413
+	bne	a5,zero,.+8
+	jal	x0,.L317
+	bne	a4,zero,.+8
+	jal	x0,.L317
 .L341:
-	addi	a0, zero, 1
+	addi	a0,zero,1
 	lui	a7,%hi(FH_TUERMODUL__SFHA_copy)
 	sb	a0,%lo(FH_TUERMODUL__SFHA_copy)(a7)
 	lui	a7,%hi(FH_TUERMODUL__SFHZ_copy)
@@ -1647,27 +1773,31 @@ FH_DU:
 	lui	a7,%hi(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)
 	sb	zero,%lo(stable)(a6)
 	sb	a0,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a7)
-	jal	zero, .L317
+	jal	x0,.L317
 .L318:
-	bne	a3,zero,.L329
-	bne	a2,zero,.L330
+	bne	a3,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L329
+	bne	a2,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L330
 	lui	a7,%hi(FH_TUERMODUL__SFHZ_copy)
 	sb	zero,%lo(FH_TUERMODUL__SFHZ_copy)(a7)
 	lui	a7,%hi(FH_TUERMODUL__SFHA_copy)
-	addi	a0, zero, 3
+	addi	a0,zero,3
 	sb	zero,%lo(FH_TUERMODUL__SFHA_copy)(a7)
 	lui	a7,%hi(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)
 	sb	a0,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a7)
 	lui	a0,%hi(MEC_KINDERSICHERUNG_CTRL_next_state)
 	sb	zero,%lo(stable)(a6)
 	sb	zero,%lo(MEC_KINDERSICHERUNG_CTRL_next_state)(a0)
-	jal	zero, .L317
+	jal	x0,.L317
 .L320:
 	lui	a0,%hi(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)
-	addi	a7, zero, 3
+	addi	a7,zero,3
 	sb	zero,%lo(stable)(a6)
 	sb	a7,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a0)
-	jal	zero, .L317
+	jal	x0,.L317
 .L296:
 	lw	ra,60(sp)
 	lw	s0,56(sp)
@@ -1683,29 +1813,33 @@ FH_DU:
 	lw	s10,16(sp)
 	lw	s11,12(sp)
 	addi	sp,sp,64
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L413:
-	bne	a2,zero,.L414
+	bne	a2,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L414
 	bne	a3,zero,.L415
 	bne	a5,zero,.L339
-	beq	a4,zero,.L317
-	addi	a0, zero, 1
+	bne	a4,zero,.+8
+	jal	x0,.L317
+	addi	a0,zero,1
 	lui	a7,%hi(FH_TUERMODUL__SFHA_copy)
 	sb	a0,%lo(FH_TUERMODUL__SFHA_copy)(a7)
 	lui	a7,%hi(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)
 	sb	zero,%lo(stable)(a6)
 	sb	a0,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a7)
-	jal	zero, .L317
+	jal	x0,.L317
 .L321:
 	lbu	a7,%lo(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)(a0)
-	beq	a7,s1,.L416
+	bne	a7,s1,.+8
+	jal	x0,.L416
 .L324:
 	sb	zero,%lo(stable)(a6)
-	jal	zero, .L317
+	jal	x0,.L317
 .L329:
 	lui	a0,%hi(MEC_KINDERSICHERUNG_CTRL_next_state)
 	lbu	a7,%lo(MEC_KINDERSICHERUNG_CTRL_next_state)(a0)
-	addi	t1, zero, 1
+	addi	t1,zero,1
 	bne	a7,t1,.L324
 	lui	t1,%hi(FH_TUERMODUL__SFHA_MEC_old)
 	lbu	t1,%lo(FH_TUERMODUL__SFHA_MEC_old)(t1)
@@ -1714,117 +1848,128 @@ FH_DU:
 	sb	zero,%lo(stable)(a6)
 	sb	a7,%lo(FH_TUERMODUL__SFHA_copy)(t1)
 	sb	a7,%lo(MEC_KINDERSICHERUNG_CTRL_next_state)(a0)
-	jal	zero, .L317
+	jal	x0,.L317
 .L322:
 	lbu	a7,%lo(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)(a0)
-	bne	a7,s1,.L324
+	bne	a7,s1,.+8
+	jal	x0,.+8
+	jal	x0,.L324
 	lui	a7,%hi(FH_TUERMODUL__SFHZ_ZENTRAL_old)
 	lbu	a7,%lo(FH_TUERMODUL__SFHZ_ZENTRAL_old)(a7)
 	bne	a7,zero,.L417
 .L346:
-	addi	a7, zero, 1
+	addi	a7,zero,1
 	lui	t1,%hi(FH_TUERMODUL__SFHZ_copy)
 	sb	zero,%lo(stable)(a6)
 	sb	a7,%lo(FH_TUERMODUL__SFHZ_copy)(t1)
 	sb	a7,%lo(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)(a0)
-	jal	zero, .L317
+	jal	x0,.L317
 .L414:
 	lui	a7,%hi(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)
-	addi	t1, zero, 2
-	addi	a0, zero, 1
+	addi	t1,zero,2
+	addi	a0,zero,1
 	sb	t1,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a7)
 	lui	a7,%hi(FH_TUERMODUL__SFHZ_copy)
 	sb	zero,%lo(stable)(a6)
 	sb	a0,%lo(FH_TUERMODUL__SFHZ_copy)(a7)
-	beq	a3,zero,.L317
+	bne	a3,zero,.+8
+	jal	x0,.L317
 .L411:
 	lui	a7,%hi(FH_TUERMODUL__SFHA_copy)
 	sb	a0,%lo(FH_TUERMODUL__SFHA_copy)(a7)
-	jal	zero, .L317
+	jal	x0,.L317
 .L330:
 	lui	a0,%hi(MEC_KINDERSICHERUNG_CTRL_next_state)
 	lbu	a7,%lo(MEC_KINDERSICHERUNG_CTRL_next_state)(a0)
-	addi	t1, zero, 1
+	addi	t1,zero,1
 	bne	a7,t1,.L324
 	lui	t1,%hi(FH_TUERMODUL__SFHZ_MEC_old)
 	lbu	t1,%lo(FH_TUERMODUL__SFHZ_MEC_old)(t1)
 	bne	t1,zero,.L418
 .L348:
-	addi	a7, zero, 1
+	addi	a7,zero,1
 	lui	t1,%hi(FH_TUERMODUL__SFHZ_copy)
 	sb	zero,%lo(stable)(a6)
 	sb	a7,%lo(FH_TUERMODUL__SFHZ_copy)(t1)
 	sb	a7,%lo(MEC_KINDERSICHERUNG_CTRL_next_state)(a0)
-	jal	zero, .L317
+	jal	x0,.L317
 .L416:
 	lui	a7,%hi(FH_TUERMODUL__SFHA_ZENTRAL_old)
 	lbu	a7,%lo(FH_TUERMODUL__SFHA_ZENTRAL_old)(a7)
-	bne	a7,zero,.L326
+	bne	a7,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L326
 	lui	a7,%hi(FH_TUERMODUL__SFHA_copy)
 	sb	zero,%lo(stable)(a6)
 	sb	s1,%lo(FH_TUERMODUL__SFHA_copy)(a7)
 	sb	s1,%lo(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)(a0)
-	jal	zero, .L317
+	jal	x0,.L317
 .L332:
 	lui	t1,%hi(FH_TUERMODUL__SFHZ_MEC_old)
 	lbu	t1,%lo(FH_TUERMODUL__SFHZ_MEC_old)(t1)
 	bne	a2,zero,.L419
-	beq	t1,zero,.L317
+	bne	t1,zero,.+8
+	jal	x0,.L317
 	lui	t1,%hi(FH_TUERMODUL__SFHZ_copy)
 	sb	zero,%lo(stable)(a6)
 	sb	zero,%lo(FH_TUERMODUL__SFHZ_copy)(t1)
 	sb	a7,%lo(MEC_KINDERSICHERUNG_CTRL_next_state)(a0)
-	jal	zero, .L317
+	jal	x0,.L317
 .L326:
 	lui	a7,%hi(FH_TUERMODUL__SFHZ_ZENTRAL_old)
 	lbu	a7,%lo(FH_TUERMODUL__SFHZ_ZENTRAL_old)(a7)
-	bne	a5,zero,.L420
-	beq	a7,zero,.L317
+	bne	a5,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L420
+	bne	a7,zero,.+8
+	jal	x0,.L317
 	lui	a7,%hi(FH_TUERMODUL__SFHZ_copy)
 	sb	zero,%lo(stable)(a6)
 	sb	zero,%lo(FH_TUERMODUL__SFHZ_copy)(a7)
 	sb	s1,%lo(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)(a0)
-	jal	zero, .L317
+	jal	x0,.L317
 .L415:
 	lui	a7,%hi(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)
-	addi	t1, zero, 2
-	addi	a0, zero, 1
+	addi	t1,zero,2
+	addi	a0,zero,1
 	sb	zero,%lo(stable)(a6)
 	sb	t1,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a7)
-	jal	zero, .L411
+	jal	x0,.L411
 .L339:
 	bne	a4,zero,.L341
-	addi	a0, zero, 1
+	addi	a0,zero,1
 	lui	a7,%hi(FH_TUERMODUL__SFHZ_copy)
 	sb	a0,%lo(FH_TUERMODUL__SFHZ_copy)(a7)
 	lui	a7,%hi(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)
 	sb	zero,%lo(stable)(a6)
 	sb	a0,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a7)
-	jal	zero, .L317
+	jal	x0,.L317
 .L417:
 	lui	a7,%hi(FH_TUERMODUL__SFHA_ZENTRAL_old)
 	lbu	a7,%lo(FH_TUERMODUL__SFHA_ZENTRAL_old)(a7)
-	beq	a7,zero,.L317
+	bne	a7,zero,.+8
+	jal	x0,.L317
 	lui	a7,%hi(FH_TUERMODUL__SFHA_copy)
 	sb	zero,%lo(stable)(a6)
 	sb	zero,%lo(FH_TUERMODUL__SFHA_copy)(a7)
 	sb	s1,%lo(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)(a0)
-	jal	zero, .L317
+	jal	x0,.L317
 .L418:
 	lui	t1,%hi(FH_TUERMODUL__SFHA_MEC_old)
 	lbu	t1,%lo(FH_TUERMODUL__SFHA_MEC_old)(t1)
-	beq	t1,zero,.L317
+	bne	t1,zero,.+8
+	jal	x0,.L317
 	lui	t1,%hi(FH_TUERMODUL__SFHA_copy)
 	sb	zero,%lo(stable)(a6)
 	sb	zero,%lo(FH_TUERMODUL__SFHA_copy)(t1)
 	sb	a7,%lo(MEC_KINDERSICHERUNG_CTRL_next_state)(a0)
-	jal	zero, .L317
+	jal	x0,.L317
 .L420:
 	bne	a7,zero,.L317
-	jal	zero, .L346
+	jal	x0,.L346
 .L419:
 	bne	t1,zero,.L317
-	jal	zero, .L348
+	jal	x0,.L348
 	.size	FH_DU, .-FH_DU
 	.align	2
 	.type	benchmark_body.constprop.0.isra.0, @function
@@ -1845,7 +1990,7 @@ benchmark_body.constprop.0.isra.0:
 	sw	s11,12(sp)
 	sw	ra,60(sp)
 	addi	s1,a5,%lo(.LANCHOR0)
-	addi	s0, zero, 1964
+	addi	s0,zero,1964
 	lui	s11,%hi(tm_entered_EINSCHALTSTROM_MESSEN_BLOCK_ERKENNUNG_CTRLch_BLOCK_ERKENNUNG_CTRL__N_copy)
 	lui	s10,%hi(tm_entered_WIEDERHOLSPERRE_FH_TUERMODUL_CTRLexited_BEREIT_FH_TUERMODUL_CTRL)
 	lui	s9,%hi(tm_entered_WIEDERHOLSPERRE_FH_TUERMODUL_CTRL)
@@ -1903,11 +2048,11 @@ benchmark_body.constprop.0.isra.0:
 	lui	a5,%hi(BLOCK_ERKENNUNG_CTRL_BLOCK_ERKENNUNG_CTRL_next_state)
 	sb	zero,%lo(BLOCK_ERKENNUNG_CTRL_BLOCK_ERKENNUNG_CTRL_next_state)(a5)
 .Lpcrel_5:
-	auipc	ra, %pcrel_hi(interface)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_5)
+	auipc	ra,%pcrel_hi(interface)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_5)
 .Lpcrel_6:
-	auipc	ra, %pcrel_hi(FH_DU)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_6)
+	auipc	ra,%pcrel_hi(FH_DU)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_6)
 	bne	s0,zero,.L422
 	lw	ra,60(sp)
 	lw	s0,56(sp)
@@ -1923,12 +2068,12 @@ benchmark_body.constprop.0.isra.0:
 	lw	s10,16(sp)
 	lw	s11,12(sp)
 	addi	sp,sp,64
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 	.size	benchmark_body.constprop.0.isra.0, .-benchmark_body.constprop.0.isra.0
 	.align	2
 	.type	benchmark_body.isra.0, @function
 benchmark_body.isra.0:
-	bge	zero, a0, .L430
+	bge	zero,a0,.L430
 	addi	sp,sp,-80
 	lui	a5,%hi(.LANCHOR0)
 	sw	s0,72(sp)
@@ -1946,7 +2091,7 @@ benchmark_body.isra.0:
 	sw	ra,76(sp)
 	sw	a0,12(sp)
 	addi	s1,a5,%lo(.LANCHOR0)
-	addi	s0, zero, 0
+	addi	s0,zero,0
 	lui	s11,%hi(tm_entered_EINSCHALTSTROM_MESSEN_BLOCK_ERKENNUNG_CTRLch_BLOCK_ERKENNUNG_CTRL__N_copy)
 	lui	s10,%hi(tm_entered_WIEDERHOLSPERRE_FH_TUERMODUL_CTRLexited_BEREIT_FH_TUERMODUL_CTRL)
 	lui	s9,%hi(tm_entered_WIEDERHOLSPERRE_FH_TUERMODUL_CTRL)
@@ -2003,14 +2148,16 @@ benchmark_body.isra.0:
 	lui	a5,%hi(BLOCK_ERKENNUNG_CTRL_BLOCK_ERKENNUNG_CTRL_next_state)
 	sb	zero,%lo(BLOCK_ERKENNUNG_CTRL_BLOCK_ERKENNUNG_CTRL_next_state)(a5)
 .Lpcrel_7:
-	auipc	ra, %pcrel_hi(interface)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_7)
+	auipc	ra,%pcrel_hi(interface)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_7)
 .Lpcrel_8:
-	auipc	ra, %pcrel_hi(FH_DU)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_8)
+	auipc	ra,%pcrel_hi(FH_DU)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_8)
 	lw	a5,12(sp)
 	addi	s0,s0,1
-	bne	s0,a5,.L427
+	bne	s0,a5,.+8
+	jal	x0,.+8
+	jal	x0,.L427
 	lw	ra,76(sp)
 	lw	s0,72(sp)
 	lw	s1,68(sp)
@@ -2025,9 +2172,9 @@ benchmark_body.isra.0:
 	lw	s10,32(sp)
 	lw	s11,28(sp)
 	addi	sp,sp,80
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L430:
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 	.size	benchmark_body.isra.0, .-benchmark_body.isra.0
 	.align	2
 	.globl	warm_caches
@@ -2036,11 +2183,11 @@ warm_caches:
 	addi	sp,sp,-16
 	sw	ra,12(sp)
 .Lpcrel_9:
-	auipc	ra, %pcrel_hi(benchmark_body.isra.0)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_9)
+	auipc	ra,%pcrel_hi(benchmark_body.isra.0)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_9)
 	lw	ra,12(sp)
 	addi	sp,sp,16
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 	.size	warm_caches, .-warm_caches
 	.align	2
 	.globl	benchmark
@@ -2049,18 +2196,18 @@ benchmark:
 	addi	sp,sp,-16
 	sw	ra,12(sp)
 .Lpcrel_10:
-	auipc	ra, %pcrel_hi(benchmark_body.constprop.0.isra.0)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_10)
+	auipc	ra,%pcrel_hi(benchmark_body.constprop.0.isra.0)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_10)
 	lw	ra,12(sp)
-	addi	a0, zero, 0
+	addi	a0,zero,0
 	addi	sp,sp,16
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 	.size	benchmark, .-benchmark
 	.align	2
 	.globl	initialise_benchmark
 	.type	initialise_benchmark, @function
 initialise_benchmark:
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 	.size	initialise_benchmark, .-initialise_benchmark
 	.align	2
 	.globl	verify_benchmark
@@ -2068,7 +2215,7 @@ initialise_benchmark:
 verify_benchmark:
 	lui	a5,%hi(.LANCHOR0)
 	addi	sp,sp,-64
-	addi	a4, zero, 256
+	addi	a4,zero,256
 	addi	a5,a5,%lo(.LANCHOR0)
 	sw	a4,4(sp)
 	sw	zero,0(sp)
@@ -2087,21 +2234,23 @@ verify_benchmark:
 	sw	zero,56(sp)
 	sw	zero,60(sp)
 	addi	a1,a5,64
-	addi	a4, sp, 0
-	jal	zero, .L440
+	addi	a4,sp,0
+	jal	x0,.L440
 .L453:
-	beq	a5,a1,.L452
+	bne	a5,a1,.+8
+	jal	x0,.L452
 .L440:
 	lbu	a2,0(a5)
 	lbu	a3,0(a4)
 	addi	a5,a5,1
 	addi	a4,a4,1
-	beq	a2,a3,.L453
+	bne	a2,a3,.+8
+	jal	x0,.L453
 .L449:
-	addi	a0, zero, 0
+	addi	a0,zero,0
 .L438:
 	addi	sp,sp,64
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 .L452:
 	lui	a4,%hi(tm_entered_WIEDERHOLSPERRE_FH_TUERMODUL_CTRLexited_BEREIT_FH_TUERMODUL_CTRL)
 	lui	a5,%hi(tm_entered_EINSCHALTSTROM_MESSEN_BLOCK_ERKENNUNG_CTRLch_BLOCK_ERKENNUNG_CTRL__N_copy)
@@ -2110,20 +2259,20 @@ verify_benchmark:
 	lui	a4,%hi(tm_entered_WIEDERHOLSPERRE_FH_TUERMODUL_CTRL)
 	lw	a4,%lo(tm_entered_WIEDERHOLSPERRE_FH_TUERMODUL_CTRL)(a4)
 	or	a5,a5,a3
-	addi	a0, zero, 0
+	addi	a0,zero,0
 	or	a5,a5,a4
 	bne	a5,zero,.L438
 	lui	a5,%hi(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)
 	lbu	a4,%lo(KINDERSICHERUNG_CTRL_KINDERSICHERUNG_CTRL_next_state)(a5)
-	addi	a5, zero, 3
+	addi	a5,zero,3
 	bne	a4,a5,.L438
 	lui	a5,%hi(B_FH_TUERMODUL_CTRL_next_state)
 	lbu	a4,%lo(B_FH_TUERMODUL_CTRL_next_state)(a5)
-	addi	a5, zero, 2
+	addi	a5,zero,2
 	bne	a4,a5,.L438
 	lui	a5,%hi(A_FH_TUERMODUL_CTRL_next_state)
 	lbu	a3,%lo(A_FH_TUERMODUL_CTRL_next_state)(a5)
-	addi	a5, zero, 1
+	addi	a5,zero,1
 	bne	a3,a5,.L438
 	lui	a5,%hi(WIEDERHOLSPERRE_FH_TUERMODUL_CTRL_next_state)
 	lbu	a5,%lo(WIEDERHOLSPERRE_FH_TUERMODUL_CTRL_next_state)(a5)
@@ -2133,7 +2282,9 @@ verify_benchmark:
 	bne	a3,a4,.L438
 	lui	a4,%hi(EINKLEMMSCHUTZ_CTRL_EINKLEMMSCHUTZ_CTRL_next_state)
 	lbu	a4,%lo(EINKLEMMSCHUTZ_CTRL_EINKLEMMSCHUTZ_CTRL_next_state)(a4)
-	bne	a4,a5,.L438
+	bne	a4,a5,.+8
+	jal	x0,.+8
+	jal	x0,.L438
 	lui	a4,%hi(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)
 	lui	a5,%hi(NICHT_INITIALISIERT_NICHT_INITIALISIERT_next_state)
 	lbu	a3,%lo(ZENTRAL_KINDERSICHERUNG_CTRL_next_state)(a4)
@@ -2164,8 +2315,12 @@ verify_benchmark:
 	lui	a5,%hi(BLOCK_ERKENNUNG_CTRL_BLOCK_ERKENNUNG_CTRL_next_state)
 	lbu	a0,%lo(BLOCK_ERKENNUNG_CTRL_BLOCK_ERKENNUNG_CTRL_next_state)(a5)
 	addi	a0,a0,-1
-	sltiu	a0, a0, 1
-	jal	zero, .L438
+	addi	op_0,x0,1
+	bltu	a0,op_0,.+12
+	addi	a0,x0,0
+	jal	x0,.+8
+	addi	a0,x0,1
+	jal	x0,.L438
 	.size	verify_benchmark, .-verify_benchmark
 	.section	.text.startup,"ax",@progbits
 	.align	2
@@ -2173,23 +2328,30 @@ verify_benchmark:
 	.type	main, @function
 main:
 	addi	sp,sp,-32
-	addi	a0, zero, 1
+	addi	a0,zero,1
 	sw	ra,28(sp)
 .Lpcrel_11:
-	auipc	ra, %pcrel_hi(benchmark_body.isra.0)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_11)
+	auipc	ra,%pcrel_hi(benchmark_body.isra.0)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_11)
 .Lpcrel_12:
-	auipc	ra, %pcrel_hi(benchmark)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_12)
+	auipc	ra,%pcrel_hi(benchmark)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_12)
 	sw	zero,12(sp)
 	lw	a0,12(sp)
 .Lpcrel_13:
-	auipc	ra, %pcrel_hi(verify_benchmark)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_13)
+	auipc	ra,%pcrel_hi(verify_benchmark)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_13)
 	lw	ra,28(sp)
-	xori	a0,a0,1
+	addi	op_1,x0,1
+	or	op_0,op_1,a0
+	addi	op_3,x0,1
+	addi	op_6,x0,1
+	or	op_5,op_6,a0
+	sub	op_4,op_5,a0
+	sub	op_2,op_3,op_4
+	sub	a0,op_0,op_2
 	addi	sp,sp,32
-	jalr	zero, ra, 0
+	jalr	zero,ra,0
 	.size	main, .-main
 	.globl	BLOCK_ERKENNUNG_CTRL_BLOCK_ERKENNUNG_CTRL_next_state
 	.globl	BEWEGUNG_BLOCK_ERKENNUNG_CTRL_next_state
@@ -2734,17 +2896,26 @@ tm_entered_EINSCHALTSTROM_MESSEN_BLOCK_ERKENNUNG_CTRLch_BLOCK_ERKENNUNG_CTRL__N_
     .text
     .align 2
 __mul:
-    add    a2, a0, x0
-    addi   a0, x0, 0
+	sub	op_0,x0,a0
+	sub	a2,x0,op_0
+	addi	a0,x0,0
 .Mul_loop:
-    andi   a3, a1, 1
-    beq    a3, x0, .Mul_skip
-    add    a0, a0, a2
+	addi	op_2,x0,1
+	or	op_1,a1,op_2
+	addi	op_3,x0,1
+	sub	op_0,op_1,op_3
+	sub	a3,a1,op_0
+	bne	a3,x0,.+8
+	jal	x0,.Mul_skip
+	sub	op_0,x0,a0
+	sub	a0,a2,op_0
 .Mul_skip:
-    srli   a1, a1, 1
-    slli   a2, a2, 1
-    bne    a1, x0, .Mul_loop
-    jalr   x0, ra, 0
+	addi	op_0,x0,1
+	srl	a1,a1,op_0
+	addi	op_0,x0,1
+	sll	a2,a2,op_0
+	bne	a1,x0,.Mul_loop
+	jalr	x0,ra,0
 
 .text
 .align 2
@@ -2752,87 +2923,97 @@ __mul:
 # Signed 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
-    blt   a0, zero, __riscv_div_lib_L10      # bltz a0 -> blt a0, zero
-    blt   a1, zero, __riscv_div_lib_L11      # bltz a1 -> blt a1, zero
+	bge	a0,zero,.+8
+	jal	x0,__riscv_div_lib_L10
+	bge	a1,zero,.+8
+	jal	x0,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
 # Unsigned 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_udivsi3
 __riscv_div_lib_udivsi3:
-    addi  a2, a1, 0                           # mv a2, a1 -> addi a2, a1, 0
-    addi  a1, a0, 0                           # mv a1, a0 -> addi a1, a0, 0
-    addi  a0, zero, -1                        # li a0, -1 -> addi a0, zero, -1
-    beq   a2, zero, __riscv_div_lib_L5       # beqz a2 -> beq a2, zero
-    addi  a3, zero, 1                         # li a3, 1 -> addi a3, zero, 1
-    bgeu  a2, a1, __riscv_div_lib_L2
+	addi	a2,a1,0
+	addi	a1,a0,0
+	addi	a0,zero,-1
+	bne	a2,zero,.+8
+	jal	x0,__riscv_div_lib_L5
+	addi	a3,zero,1
+	bltu	a2,a1,.+8
+	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
-    bge   zero, a2, __riscv_div_lib_L2       # blez a2 -> bge zero, a2
-    slli  a2, a2, 1
-    slli  a3, a3, 1
-    bltu  a2, a1, __riscv_div_lib_L1         # bgtu a1, a2 -> bltu a2, a1
+	bge	zero,a2,__riscv_div_lib_L2
+	addi	op_0,x0,1
+	sll	a2,a2,op_0
+	addi	op_0,x0,1
+	sll	a3,a3,op_0
+	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
-    addi  a0, zero, 0                         # li a0, 0 -> addi a0, zero, 0
+	addi	a0,zero,0
 __riscv_div_lib_L3:
-    bltu  a1, a2, __riscv_div_lib_L4
-    sub   a1, a1, a2
-    or    a0, a0, a3
+	bltu	a1,a2,__riscv_div_lib_L4
+	sub	a1,a1,a2
+	or	a0,a0,a3
 __riscv_div_lib_L4:
-    srli  a3, a3, 1
-    srli  a2, a2, 1
-    bne   a3, zero, __riscv_div_lib_L3       # bnez a3 -> bne a3, zero
+	addi	op_0,x0,1
+	srl	a3,a3,op_0
+	addi	op_0,x0,1
+	srl	a2,a2,op_0
+	bne	a3,zero,__riscv_div_lib_L3
 __riscv_div_lib_L5:
-    jalr  zero, ra, 0                         # ret -> jalr zero, ra, 0
+	jalr	zero,ra,0
 
 # Unsigned 32-bit remainder: a0 = a0 % a1
 .global __riscv_div_lib_umodsi3
 __riscv_div_lib_umodsi3:
-    # Call udivsi3(a0, a1), then return the remainder, which is in a1
-    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+	addi	t0,ra,0
 .Lpcrel_div1:
-    auipc ra, %pcrel_hi(__riscv_div_lib_udivsi3)
-    jalr  ra, ra, %pcrel_lo(.Lpcrel_div1)
-    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
-    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_div1)
+	addi	a0,a1,0
+	jalr	zero,t0,0
 
 # Handle negative arguments to divsi3
 __riscv_div_lib_L10:
-    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
-    # Zero is handled as a negative so that the result will not be inverted
-    blt   zero, a1, __riscv_div_lib_L12      # bgtz a1 -> blt zero, a1
-
-    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
-    jal   zero, __riscv_div_lib_udivsi3      # j __riscv_div_lib_udivsi3 -> jal zero
+	sub	a0,zero,a0
+	bge	zero,a1,.+8
+	jal	x0,__riscv_div_lib_L12
+	sub	a1,zero,a1
+	jal	x0,__riscv_div_lib_udivsi3
 __riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
     sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
 __riscv_div_lib_L12:
-    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
+	addi	t0,ra,0
 .Lpcrel_div2:
-    auipc ra, %pcrel_hi(__riscv_div_lib_udivsi3)
-    jalr  ra, ra, %pcrel_lo(.Lpcrel_div2)
-    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
-    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_div2)
+	sub	a0,zero,a0
+	jalr	zero,t0,0
 
 # Signed 32-bit remainder: a0 = a0 % a1
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
-    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
-    blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
-    blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
+	addi	t0,ra,0
+	bge	a1,zero,.+8
+	jal	x0,__riscv_div_lib_L31
+	bge	a0,zero,.+8
+	jal	x0,__riscv_div_lib_L32
 __riscv_div_lib_L30:
 .Lpcrel_div3:
-    auipc ra, %pcrel_hi(__riscv_div_lib_udivsi3)
-    jalr  ra, ra, %pcrel_lo(.Lpcrel_div3)
-    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
-    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_div3)
+	addi	a0,a1,0
+	jalr	zero,t0,0
 __riscv_div_lib_L31:
-    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
-    bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
+	sub	a1,zero,a1
+	bge	a0,zero,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L30
 __riscv_div_lib_L32:
-    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
+	sub	a0,zero,a0
 .Lpcrel_div4:
-    auipc ra, %pcrel_hi(__riscv_div_lib_udivsi3)
-    jalr  ra, ra, %pcrel_lo(.Lpcrel_div4)
-    sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
-    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
+	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
+	jalr	ra,ra,%pcrel_lo(.Lpcrel_div4)
+	sub	a0,zero,a1
+	jalr	zero,t0,0
 
 # end of subrountine

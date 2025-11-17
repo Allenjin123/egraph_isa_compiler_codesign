@@ -821,7 +821,9 @@ main:
 	sub	t0,x0,a4
 	sub	s0,s0,t0
 	lui	a2,293
-	bltu	s0,a4,.+12
+	bltu	s0,a4,.+8
+	jal	x0,.+8
+	jal	x0,.+12
 	addi	a4,x0,0
 	jal	x0,.+8
 	addi	a4,x0,1
