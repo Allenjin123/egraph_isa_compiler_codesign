@@ -1279,7 +1279,9 @@ montmul:
 	jal	x0,.+8
 	addi	a3,x0,1
 	addi	a2,zero,1
-	bltu	a6,t3,.L16
+	bltu	a6,t3,.+8
+	jal	x0,.+8
+	jal	x0,.L16
 	bne	t3,a6,.+8
 	jal	x0,.L24
 	addi	a2,zero,0
@@ -1313,7 +1315,9 @@ montmul:
 	sra	a3,a4,op_0
 	sub	a0,a1,a0
 	and	a3,a3,a5
-	bltu	a1,a0,.+12
+	bltu	a1,a0,.+8
+	jal	x0,.+8
+	jal	x0,.+12
 	addi	a1,x0,0
 	jal	x0,.+8
 	addi	a1,x0,1
@@ -2375,7 +2379,9 @@ benchmark_body.constprop.0:
 	addi	a4,x0,1
 	sub	op_0,x0,a3
 	sub	s1,s1,op_0
-	bltu	s1,a3,.+12
+	bltu	s1,a3,.+8
+	jal	x0,.+8
+	jal	x0,.+12
 	addi	a3,x0,0
 	jal	x0,.+8
 	addi	a3,x0,1
@@ -2476,7 +2482,7 @@ benchmark_body.constprop.0:
 	srl	t3,a3,op_0
 	and	a0,s4,a4
 	addi	op_0,x0,1
-	and	t1,a4,op_0
+	and	t1,op_0,a4
 	sub	op_0,x0,t5
 	sub	a2,t4,op_0
 	addi	a3,t3,0
@@ -2824,9 +2830,7 @@ benchmark_body.constprop.0:
 	sub	a6,op_0,op_39
 	sub	op_0,x0,a7
 	sub	a2,a2,op_0
-	bltu	a2,a7,.+8
-	jal	x0,.+8
-	jal	x0,.+12
+	bltu	a2,a7,.+12
 	addi	a7,x0,0
 	jal	x0,.+8
 	addi	a7,x0,1
@@ -3261,7 +3265,7 @@ benchmark_body.isra.0:
 	addi	op_0,x0,1
 	srl	a6,a6,op_0
 	addi	op_0,x0,1
-	and	t5,op_0,a4
+	and	t5,a4,op_0
 	sub	op_0,x0,a0
 	sub	a2,t2,op_0
 	sub	op_0,x0,a6
@@ -3396,7 +3400,7 @@ xbinGCD:
 	sub	op_0,x0,a0
 	sub	a5,t1,op_0
 	addi	op_0,x0,1
-	and	a3,op_0,a6
+	and	a3,a6,op_0
 	sub	op_0,x0,t5
 	sub	t5,a4,op_0
 	addi	op_0,x0,1
@@ -3405,7 +3409,9 @@ xbinGCD:
 	sll	s8,a7,op_0
 	addi	op_0,x0,1
 	srl	s7,a6,op_0
-	bltu	a5,t1,.+12
+	bltu	a5,t1,.+8
+	jal	x0,.+8
+	jal	x0,.+12
 	addi	s5,x0,0
 	jal	x0,.+8
 	addi	s5,x0,1
@@ -3596,7 +3602,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	op_0,x0,1
-	and	a3,a1,op_0
+	and	a3,op_0,a1
 	bne	a3,x0,.+8
 	jal	x0,.Mul_skip
 	sub	op_0,x0,a0

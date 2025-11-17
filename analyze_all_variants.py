@@ -77,12 +77,16 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enab
 
                 # Check if this is a shift instruction with immediate
                 if instr.op_name in SHIFT_INSTRUCTIONS and instr.imm is not None:
-                    # Use parse_immediate from data_structure module
-                    parsed_value = ds.parse_immediate(instr.imm)
+                    # Use parse_immediate from text_inst class
+                    if isinstance(instr.imm, str):
+                        parsed_value = ds.text_inst.parse_immediate(instr.imm)
+                    else:
+                        parsed_value = instr.imm
 
                     # Add the parsed value to the set
-                    # If it's a string (couldn't be parsed), still add it
-                    shift_imm_dict[instr.op_name].add(parsed_value)
+                    # If it's None, skip it
+                    if parsed_value is not None:
+                        shift_imm_dict[instr.op_name].add(parsed_value)
 
         # Convert defaultdict to regular dict for cleaner output
         shift_imm_dict = dict(shift_imm_dict)
