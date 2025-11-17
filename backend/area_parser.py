@@ -90,6 +90,11 @@ def create_dsl(isa_subset: set, output_path: Optional[str] = None, shift_imm_dic
     # Get instructions that can be removed (outlawed)
     removable_instructions = get_removed_instructions(isa_subset, required_set)
 
+    # Filter out software subroutine calls - these are NOT hardware instructions
+    # They are used for latency calculation but should not appear in hardware DSL
+    SOFTWARE_CALLS = {'callmul', 'calldiv', 'calldivu', 'callrem', 'callremu'}
+    removable_instructions = [inst for inst in removable_instructions if inst not in SOFTWARE_CALLS]
+
     # Define shift immediate instructions
     SHIFT_IMM_INSTRUCTIONS = {'slli', 'srli', 'srai'}
 
