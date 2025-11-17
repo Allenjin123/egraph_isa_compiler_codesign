@@ -53,7 +53,8 @@ quicksort_range:
 	slli	a5,a5,3
 	sub	op_0,x0,a0
 	sub	a7,a5,op_0
-	bgeu	a6,a3,.L34
+	bltu	a6,a3,.+8
+	jal	x0,.L34
 .L12:
 	sub	op_0,x0,s1
 	sub	a4,a4,op_0
@@ -62,16 +63,14 @@ quicksort_range:
 	lw	a6,20(a4)
 	addi	a4,a4,24
 	addi	s0,s0,1
-	bgeu	a6,a3,.+8
-	jal	x0,.L25
-	beq	a6,a3,.+8
-	jal	x0,.L21
+	bltu	a6,a3,.L25
+	bne	a6,a3,.L21
 	lw	a6,-8(a4)
-	bgeu	a6,t3,.+8
-	jal	x0,.L25
+	bltu	a6,t3,.L25
 .L21:
 	lw	a4,20(a7)
-	bgeu	a3,a4,.L35
+	bltu	a3,a4,.+8
+	jal	x0,.L35
 .L17:
 	sub	op_0,x0,s2
 	sub	a5,a5,op_0
@@ -80,13 +79,10 @@ quicksort_range:
 	lw	a4,20(a5)
 	addi	a5,a5,-24
 	addi	a2,a2,-1
-	bgeu	a3,a4,.+8
-	jal	x0,.L26
-	beq	a4,a3,.+8
-	jal	x0,.L22
+	bltu	a3,a4,.L26
+	bne	a4,a3,.L22
 	lw	a4,40(a5)
-	bgeu	t3,a4,.+8
-	jal	x0,.L26
+	bltu	t3,a4,.L26
 .L22:
 	addi	a7,a6,0
 .L6:
@@ -134,27 +130,20 @@ quicksort_range:
 	addi	a1,s0,0
 	jal	x0,.L2
 .L34:
-	beq	a6,a3,.+8
-	jal	x0,.L14
+	bne	a6,a3,.L14
 	lw	a6,16(t1)
-	bgeu	a6,t3,.+8
-	jal	x0,.L12
+	bltu	a6,t3,.L12
 .L14:
 	lw	a4,20(a7)
-	bgeu	a3,a4,.+8
-	jal	x0,.L17
-	beq	a4,a3,.+8
-	jal	x0,.L19
+	bltu	a3,a4,.L17
+	bne	a4,a3,.L19
 	lw	a4,16(a7)
-	bgeu	t3,a4,.+8
-	jal	x0,.L17
+	bltu	t3,a4,.L17
 	jal	x0,.L19
 .L35:
-	beq	a4,a3,.+8
-	jal	x0,.L6
+	bne	a4,a3,.L6
 	lw	a4,16(a7)
-	bgeu	t3,a4,.+8
-	jal	x0,.L17
+	bltu	t3,a4,.L17
 	blt	a2,s0,.L10
 	jal	x0,.L19
 .L37:
@@ -263,8 +252,7 @@ main:
 	sub	a4,op_0,op_26
 	sub	op_0,x0,a3
 	sub	a5,a5,op_0
-	bgeu	a5,a3,.+8
-	jal	x0,.+12
+	bltu	a5,a3,.+12
 	addi	a3,x0,0
 	jal	x0,.+8
 	addi	a3,x0,1
@@ -373,8 +361,7 @@ main:
 	sub	a1,op_0,op_26
 	sub	op_0,x0,a5
 	sub	a4,a7,op_0
-	bgeu	a4,a5,.+8
-	jal	x0,.+12
+	bltu	a4,a5,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
@@ -388,8 +375,7 @@ main:
 	addi	a5,a5,-128
 	sub	op_0,x0,a5
 	sub	a5,sp,op_0
-	beq	a5,a2,.+8
-	jal	x0,.L40
+	bne	a5,a2,.L40
 	lui	a2,12
 	addi	a0,sp,0
 	addi	a2,a2,847
@@ -415,8 +401,7 @@ main:
 	sub	op_0,x0,a4
 	sub	s0,s0,op_0
 	lui	a2,293
-	bgeu	s0,a4,.+8
-	jal	x0,.+12
+	bltu	s0,a4,.+12
 	addi	a4,x0,0
 	jal	x0,.+8
 	addi	a4,x0,1
@@ -427,8 +412,7 @@ main:
 	sub	a2,sp,op_0
 	addi	a3,s2,0
 	addi	a4,s0,0
-	beq	a2,a5,.+8
-	jal	x0,.L41
+	bne	a2,a5,.L41
 	lui	a0,%hi(.LC0)
 	lui	a1,12
 	addi	a1,a1,848
@@ -451,8 +435,7 @@ main:
 	addi	a5,a5,-128
 	sub	op_0,x0,a5
 	sub	a5,sp,op_0
-	beq	a5,s1,.+8
-	jal	x0,.L42
+	bne	a5,s1,.L42
 	lui	t0,292
 	addi	t0,t0,1968
 	sub	op_0,x0,sp
@@ -466,8 +449,7 @@ main:
 	lw	s2,2016(sp)
 	lw	s3,2012(sp)
 	addi	op_0,x0,1
-	bgeu	a0,op_0,.+8
-	jal	x0,.+12
+	bltu	a0,op_0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
@@ -150492,15 +150474,15 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	op_0,x0,1
-	and	a3,a1,op_0
-	beq	a3,x0,.Mul_skip
+	and	a3,op_0,a1
+	bne	a3,x0,.+8
+	jal	x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
 .Mul_skip:
 	srli	a1,a1,1
 	slli	a2,a2,1
-	beq	a1,x0,.+8
-	jal	x0,.Mul_loop
+	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
 
 .text
@@ -150519,21 +150501,21 @@ __riscv_div_lib_udivsi3:
 	addi	a2,a1,0
 	addi	a1,a0,0
 	addi	a0,zero,-1
-	beq	a2,zero,__riscv_div_lib_L5
+	bne	a2,zero,.+8
+	jal	x0,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bgeu	a2,a1,__riscv_div_lib_L2
+	bltu	a2,a1,.+8
+	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	blt	zero,a2,.+8
 	jal	x0,__riscv_div_lib_L2
 	slli	a2,a2,1
 	slli	a3,a3,1
-	bgeu	a2,a1,.+8
-	jal	x0,__riscv_div_lib_L1
+	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bgeu	a1,a2,.+8
-	jal	x0,__riscv_div_lib_L4
+	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	and	op_1,a0,a3
 	sub	op_0,op_1,a3
@@ -150541,8 +150523,7 @@ __riscv_div_lib_L3:
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1
-	beq	a3,zero,.+8
-	jal	x0,__riscv_div_lib_L3
+	bne	a3,zero,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
 

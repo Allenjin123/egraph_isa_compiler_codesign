@@ -433,7 +433,7 @@ pat_insert:
 	beq	a3,zero,.+8
 	jal	x0,.L51
 	addi	op_0,x0,3
-	and	a3,op_0,a2
+	and	a3,a2,op_0
 	beq	a3,zero,.+8
 	jal	x0,.L51
 	lw	a3,0(a2)
@@ -899,7 +899,7 @@ main:
 .L210:
 	addi	a1,a3,-48
 	addi	op_0,x0,255
-	and	a4,a1,op_0
+	and	a4,op_0,a1
 	addi	a0,zero,9
 	addi	t1,zero,0
 	bgeu	a0,a4,.+8
@@ -914,7 +914,7 @@ main:
 	sub	t1,a4,op_0
 	addi	a1,a3,-48
 	addi	op_0,x0,255
-	and	a4,op_0,a1
+	and	a4,a1,op_0
 	addi	a5,a5,1
 	bgeu	a0,a4,.L211
 .L206:
@@ -44783,7 +44783,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	op_0,x0,1
-	and	a3,a1,op_0
+	and	a3,op_0,a1
 	beq	a3,x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0

@@ -1,5 +1,5 @@
 
-/tmp/tmp.n0hI4XWwk4/patricia_O3_rewrite:     file format elf32-littleriscv
+/tmp/tmp.nJ18JBTPIA/patricia_O3_rewrite:     file format elf32-littleriscv
 
 
 Disassembly of section .text:
@@ -240,7 +240,7 @@ main():
    10444:	00250793          	addi	a5,a0,2
    10448:	fd068593          	addi	a1,a3,-48
    1044c:	0ff00713          	addi	a4,zero,255
-   10450:	00e5f733          	and	a4,a1,a4
+   10450:	00b77733          	and	a4,a4,a1
    10454:	00900513          	addi	a0,zero,9
    10458:	00000313          	addi	t1,zero,0
    1045c:	00e57463          	bgeu	a0,a4,10464 <main+0x384>
@@ -254,7 +254,7 @@ main():
    1047c:	40670333          	sub	t1,a4,t1
    10480:	fd068593          	addi	a1,a3,-48
    10484:	0ff00713          	addi	a4,zero,255
-   10488:	00b77733          	and	a4,a4,a1
+   10488:	00e5f733          	and	a4,a1,a4
    1048c:	00178793          	addi	a5,a5,1
    10490:	fce57ae3          	bgeu	a0,a4,10464 <main+0x384>
    10494:	738ba783          	lw	a5,1848(s7)
@@ -1086,7 +1086,7 @@ pat_insert():
    11134:	00068463          	beq	a3,zero,1113c <pat_insert+0x408>
    11138:	1a80006f          	jal	zero,112e0 <pat_insert+0x5ac>
    1113c:	00300693          	addi	a3,zero,3
-   11140:	00c6f6b3          	and	a3,a3,a2
+   11140:	00d676b3          	and	a3,a2,a3
    11144:	00068463          	beq	a3,zero,1114c <pat_insert+0x418>
    11148:	1980006f          	jal	zero,112e0 <pat_insert+0x5ac>
    1114c:	00062683          	lw	a3,0(a2)
@@ -1311,7 +1311,7 @@ __mul():
 00011490 <.Mul_loop>:
 .Mul_loop():
    11490:	00100693          	addi	a3,zero,1
-   11494:	00d5f6b3          	and	a3,a1,a3
+   11494:	00b6f6b3          	and	a3,a3,a1
    11498:	00068663          	beq	a3,zero,114a4 <.Mul_skip>
    1149c:	40a00533          	sub	a0,zero,a0
    114a0:	40a60533          	sub	a0,a2,a0

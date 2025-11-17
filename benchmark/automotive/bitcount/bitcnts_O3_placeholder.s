@@ -52,7 +52,7 @@ ntbl_bitcount:
 	lui	a4,%hi(.LANCHOR0)
 	addi	a4,a4,%lo(.LANCHOR0)
 	addi	op_0,x0,15
-	and	a1,a0,op_0
+	and	a1,op_0,a0
 	srli	a2,a0,8
 	addi	op_0,x0,15
 	and	a5,a5,op_0
@@ -62,14 +62,14 @@ ntbl_bitcount:
 	sub	a5,a5,op_0
 	srli	a3,a0,12
 	addi	op_0,x0,15
-	and	a2,op_0,a2
+	and	a2,a2,op_0
 	lbu	t1,0(a1)
 	sub	op_0,x0,a4
 	sub	a2,a2,op_0
 	lbu	a5,0(a5)
 	srli	a1,a0,16
 	addi	op_0,x0,15
-	and	a3,a3,op_0
+	and	a3,op_0,a3
 	lbu	a7,0(a2)
 	sub	op_0,x0,a4
 	sub	a3,a3,op_0
@@ -81,7 +81,7 @@ ntbl_bitcount:
 	sub	a1,a1,op_0
 	srli	a3,a0,24
 	addi	op_0,x0,15
-	and	a2,op_0,a2
+	and	a2,a2,op_0
 	lbu	a1,0(a1)
 	sub	op_0,x0,a5
 	sub	a5,t1,op_0
@@ -119,7 +119,7 @@ BW_btbl_bitcount:
 	lui	a5,%hi(.LANCHOR0)
 	addi	a5,a5,%lo(.LANCHOR0)
 	addi	op_0,x0,255
-	and	a2,a0,op_0
+	and	a2,op_0,a0
 	addi	op_0,x0,255
 	and	a4,a4,op_0
 	sub	op_0,x0,a5
@@ -133,7 +133,7 @@ BW_btbl_bitcount:
 	sub	a3,a3,op_0
 	lbu	a4,0(a2)
 	addi	op_0,x0,255
-	and	a0,op_0,a0
+	and	a0,a0,op_0
 	lbu	a3,0(a3)
 	sub	op_0,x0,a5
 	sub	a5,a0,op_0
@@ -154,10 +154,10 @@ AR_btbl_bitcount:
 	lui	a5,%hi(.LANCHOR0)
 	addi	a5,a5,%lo(.LANCHOR0)
 	addi	op_0,x0,255
-	and	a2,op_0,a0
+	and	a2,a0,op_0
 	srli	a4,a0,16
 	addi	op_0,x0,255
-	and	a3,op_0,a3
+	and	a3,a3,op_0
 	sub	op_0,x0,a5
 	sub	a3,a3,op_0
 	sub	op_0,x0,a5
@@ -187,7 +187,7 @@ AR_btbl_bitcount:
 ntbl_bitcnt:
 	lui	a2,%hi(.LANCHOR0)
 	addi	op_0,x0,15
-	and	a4,a0,op_0
+	and	a4,op_0,a0
 	addi	a2,a2,%lo(.LANCHOR0)
 	srai	a5,a0,4
 	sub	op_0,x0,a2
@@ -220,7 +220,7 @@ bit_shifter:
 	addi	a4,zero,0
 .L15:
 	addi	op_0,x0,1
-	and	a3,op_0,a5
+	and	a3,a5,op_0
 	addi	a4,a4,1
 	srai	a5,a5,1
 	addi	a2,a4,-32
@@ -370,7 +370,7 @@ atoi:
 .L33:
 	addi	a3,a2,-48
 	addi	op_0,x0,255
-	and	a5,op_0,a3
+	and	a5,a3,op_0
 	addi	a1,zero,9
 	addi	a4,zero,0
 	bltu	a1,a5,.L42
@@ -384,7 +384,7 @@ atoi:
 	sub	a4,a5,op_0
 	addi	a3,a2,-48
 	addi	op_0,x0,255
-	and	a5,op_0,a3
+	and	a5,a3,op_0
 	addi	a0,a0,1
 	bltu	a1,a5,.+8
 	jal	x0,.L34
@@ -458,7 +458,7 @@ main:
 	addi	a3,zero,0
 	addi	a2,a1,-48
 	addi	op_0,x0,255
-	and	a5,op_0,a2
+	and	a5,a2,op_0
 	bltu	a0,a5,.L47
 .L46:
 	slli	a5,a3,2
@@ -470,7 +470,7 @@ main:
 	sub	a3,a5,op_0
 	addi	a2,a1,-48
 	addi	op_0,x0,255
-	and	a5,op_0,a2
+	and	a5,a2,op_0
 	addi	a4,a4,1
 	bltu	a0,a5,.+8
 	jal	x0,.L46
@@ -1011,7 +1011,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	op_0,x0,1
-	and	a3,a1,op_0
+	and	a3,op_0,a1
 	beq	a3,x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0

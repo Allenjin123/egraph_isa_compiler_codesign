@@ -169,10 +169,10 @@ quicksort_range:
 .L21:
 	or	a4,a7,t1
 	addi	t0,x0,3
+	or	t0,a4,t0
 	addi	t2,x0,3
-	or	t2,t2,a4
-	sub	a4,t2,a4
-	sub	a4,t0,a4
+	sub	t0,t0,t2
+	sub	a4,a4,t0
 	bne	a4,zero,.L23
 	addi	a6,t1,128
 	addi	a4,a7,0
