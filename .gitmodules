@@ -2,19 +2,26 @@
 	path = riscv_greenthumb
 	url = https://github.com/Allenjin123/riscv_greenthumb.git
 	branch = master
+
 [submodule "PdatScorrWrapper"]
 	path = PdatScorrWrapper
 	url = https://github.com/CrucibleComputingGroup/PdatScorrWrapper.git
-	update = none
+	branch = main
 
-[submodule "PdatScorrWrapper/CoreSim"]
-    update = none
+# [submodule "PdatScorrWrapper/CoreSim"]
+# 	path = PdatScorrWrapper/CoreSim
+#     url = https://github.com/CrucibleComputingGroup/PdatCoreSim.git
+# 	branch = main
 
-[submodule "PdatScorrWrapper/PdatDsl"]
-    update = none
+# [submodule "PdatScorrWrapper/PdatDsl"]
+# 	path = PdatScorrWrapper/PdatDsl
+#     url = https://github.com/CrucibleComputingGroup/PdatRiscvDsl.git
+# 	branch = aesip
 
-[submodule "PdatScorrWrapper/ScorrPdat"]
-    update = none
+# [submodule "PdatScorrWrapper/ScorrPdat"]
+# 	path = PdatScorrWrapper/ScorrPdat
+#     url = https://github.com/CrucibleComputingGroup/PdatScorr.git
+# 	branch = feat/aesip
 
 [submodule "egglog"]
 	path = egglog
