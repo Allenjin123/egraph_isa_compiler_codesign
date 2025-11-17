@@ -27,17 +27,21 @@ def create_empty_dsl(output_path: Optional[str] = None) -> str:
     # Build DSL content for full instruction set
     dsl_lines = []
 
+    # Version declaration - must be first
+    dsl_lines.append("version 2")
+    dsl_lines.append("")
+
     # Header comment
     dsl_lines.append("# General-purpose processor DSL (full RV32IM instruction set)")
     dsl_lines.append("# No instruction constraints - all instructions available")
     dsl_lines.append("")
 
-    # Specify full instruction set
-    dsl_lines.append("# Full instruction set extensions")
-    dsl_lines.append("require RV32I")
-    dsl_lines.append("require RV32M")
+    # Include full instruction set
+    dsl_lines.append("# Include full instruction set extensions")
+    dsl_lines.append("include RV32I")
+    dsl_lines.append("include RV32M")
     dsl_lines.append("")
-    dsl_lines.append("# No instructions outlawed - general purpose processor")
+    dsl_lines.append("# No instructions forbidden - general purpose processor")
     dsl_lines.append("")
 
     # Join all lines
@@ -84,29 +88,32 @@ def create_dsl(isa_subset: set, output_path: Optional[str] = None) -> str:
     # Build DSL content
     dsl_lines = []
 
+    # Version declaration - must be first
+    dsl_lines.append("version 2")
+    dsl_lines.append("")
+
     # Header comment
     dsl_lines.append("# Auto-generated DSL file for instruction subset optimization")
     dsl_lines.append("#")
     dsl_lines.append(f"# Program uses {len(isa_subset)} instructions: {sorted(isa_subset)}")
     dsl_lines.append(f"# Required instruction set: {required_set}")
-    dsl_lines.append(f"# Outlawing {len(removable_instructions)} unused instructions")
+    dsl_lines.append(f"# Forbidding {len(removable_instructions)} unused instructions")
     dsl_lines.append("")
 
-    # Specify required instruction extensions
-    dsl_lines.append("# Specify which instruction extensions are valid (positive constraints)")
-    dsl_lines.append("# This tells the optimizer that ONLY instructions from these extensions are valid")
-    dsl_lines.append("require RV32I")
+    # Include required instruction extensions
+    dsl_lines.append("# Include required instruction extensions")
+    dsl_lines.append("include RV32I")
     if required_set == "RV32IM":
-        dsl_lines.append("require RV32M")
+        dsl_lines.append("include RV32M")
     dsl_lines.append("")
 
-    # Outlaw unused instructions
+    # Forbid unused instructions
     if removable_instructions:
-        dsl_lines.append("# Outlaw unused instructions (can be removed from hardware)")
+        dsl_lines.append("# Forbid unused instructions (can be removed from hardware)")
         dsl_lines.append("# These instructions are not used by the program")
         for inst in removable_instructions:
             # DSL format uses uppercase instruction names
-            dsl_lines.append(f"instruction {inst.upper()}")
+            dsl_lines.append(f"forbid {inst.upper()}")
         dsl_lines.append("")
 
     # Join all lines
