@@ -22,6 +22,7 @@ import Saturation.data_structure as ds
 import backend.area_parser as ap
 import backend.latency_parser as lp
 import matplotlib.pyplot as plt
+from collections import defaultdict
 
 
 def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enable_freq_analysis=False):
@@ -63,11 +64,27 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enab
             print(f"Variant {variant_id}: No basic blocks found", file=sys.stderr)
             return None
 
-        # Calculate instruction subset
+        # Calculate instruction subset and analyze shift immediates in single pass
         subset = set()
+        shift_imm_dict = defaultdict(set)
+        SHIFT_INSTRUCTIONS = {'slli', 'srli', 'srai'}
+
         for block in prog.basic_blocks:
             for instr in block.inst_list:
+                # Add to instruction subset
                 subset.add(instr.op_name)
+
+                # Check if this is a shift instruction with immediate
+                if instr.op_name in SHIFT_INSTRUCTIONS and instr.imm is not None:
+                    # Use parse_immediate from data_structure module
+                    parsed_value = ds.parse_immediate(instr.imm)
+
+                    # Add the parsed value to the set
+                    # If it's a string (couldn't be parsed), still add it
+                    shift_imm_dict[instr.op_name].add(parsed_value)
+
+        # Convert defaultdict to regular dict for cleaner output
+        shift_imm_dict = dict(shift_imm_dict)
 
         # Generate DSL file path - include program name to avoid collisions when running in parallel
         dsl_file_path = str(Path(dsl_dir) / f"{program_name}_variant_{variant_id}.dsl")
