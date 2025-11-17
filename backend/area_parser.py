@@ -122,7 +122,7 @@ def create_dsl(isa_subset: set, output_path: Optional[str] = None) -> str:
         # Return DSL content as string
         return dsl_content
 
-def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl: bool = False, enable_freq_analysis: bool = False):
+def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl: bool = False, enable_freq_analysis: bool = False, core_name: str = "ibex"):
     """
     Generate DSL file, run synthesis, and extract chip area and optionally frequency.
 
@@ -137,6 +137,7 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl
         output_path: Optional path for DSL file. If None, generates in temp location.
         use_empty_dsl: If True, create empty DSL (general purpose processor) instead of using isa_subset
         enable_freq_analysis: If True, parse and return frequency information
+        core_name: Name of the core to synthesize (default: "ibex")
 
     Returns:
         Tuple of (chip_area, frequency) where:
@@ -190,7 +191,6 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl
     # So we just pass the base 'output' directory
     synth_output_base = synth_script.parent / "output"
 
-    core_name = "ibex"
     # Run synthesis (use absolute path so it works from any cwd)
     print(f"Running synthesis with {dsl_path_abs}...")
     try:
