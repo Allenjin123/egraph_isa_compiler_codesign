@@ -456,11 +456,14 @@ class text_program():
         """Add a basic block to the program"""
         self.basic_blocks.append(block)
 
-    def _load_execution_counts(self, dir_path: str):
+    def _load_execution_counts(self, dir_path: str, base_program_name: str = None):
         """Load execution counts from block_execution_counts.txt if available
 
         Args:
             dir_path: Path to program directory or variant directory
+            base_program_name: Base program name (e.g., 'dijkstra_small_O3') for finding execution counts.
+                             If provided, will look in output/frontend/{base_program_name}/.
+                             If None, will try to extract from dir_path.
         """
         # Try to find block_execution_counts.txt in several locations
         counts_file = None
@@ -471,22 +474,24 @@ class text_program():
             counts_file = candidate
         else:
             # 2. Try to find in frontend output directory
-            # Extract program name from path
-            # Path patterns:
-            #   - output/backend/{program}/variants/variant_X/
-            #   - output/frontend/{program}/
-            import re
+            # Use base_program_name if provided, otherwise extract from path
+            program_name = base_program_name
 
-            # Get absolute path and split
-            abs_path = os.path.abspath(dir_path)
-            path_parts = abs_path.split(os.sep)
+            if not program_name:
+                # Extract program name from path structure
+                # Path patterns:
+                #   - output/backend/{program_name}/variants/variant_X/
+                #   - output/frontend/{program_name}/
+                abs_path = os.path.abspath(dir_path)
+                path_parts = abs_path.split(os.sep)
 
-            # Look for program name (patterns like qsort_small_O3, dijkstra_small_O3)
-            program_name = None
-            for part in path_parts:
-                if re.match(r'.*_O[0-9]+$', part):
-                    program_name = part
-                    break
+                # Find program name by looking for 'backend' or 'frontend' in path
+                for i, part in enumerate(path_parts):
+                    if part in ['backend', 'frontend']:
+                        # Program name is the next part
+                        if i + 1 < len(path_parts):
+                            program_name = path_parts[i + 1]
+                            break
 
             if program_name:
                 # Find project root (directory containing 'output')
@@ -529,12 +534,14 @@ class text_program():
         except Exception as e:
             print(f"Warning: Failed to load execution counts from {counts_file}: {e}")
 
-    def from_directory(self, dir_path: str, suffix: str = ""):
+    def from_directory(self, dir_path: str, suffix: str = "", base_program_name: str = None):
         """Read all basic block files from basic_blocks{suffix} directory
 
         Args:
             dir_path: Path to program directory (contains basic_blocks/ or basic_blocks_ssa/)
             suffix: Suffix to append to "basic_blocks" directory name (e.g., "", "_ssa")
+            base_program_name: Base program name (e.g., 'dijkstra_small_O3') for finding execution counts.
+                             If None, will try to extract from dir_path.
         """
         if not os.path.exists(dir_path):
             print(f"Error: Directory {dir_path} does not exist")
@@ -569,7 +576,7 @@ class text_program():
             self.add_basic_block(block)
 
         # Load execution counts if available
-        self._load_execution_counts(dir_path)
+        self._load_execution_counts(dir_path, base_program_name)
 
     def __str__(self):
         """String representation of the program"""
