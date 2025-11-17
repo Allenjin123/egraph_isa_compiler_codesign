@@ -211,40 +211,25 @@ rand:
 	lui	a2,313688
 	lui	a1,361759
 	addi	a2,a2,-211
-	addi	a1,a1,1069
+	addi	t0,x0,1069
+	or	t0,x0,t0
+	add	a1,a1,t0
 	addi	sp, sp, -16
 	sw	a0, 0(sp)
 	sw	a2, 4(sp)
 	sw	a3, 8(sp)
 	sw	ra, 12(sp)
 	add	a0, a3, x0
-.Lpcrel_callmul_645:
+.Lpcrel_callmul_651:
 	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_645)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_651)
 	add	a1, a0, x0
 	lw	a0, 0(sp)
 	lw	a2, 4(sp)
 	lw	a3, 8(sp)
 	lw	ra, 12(sp)
 	addi	sp, sp, 16
-	addi	sp, sp, -32
-	sw	a0, 0(sp)
-	sw	a1, 4(sp)
-	sw	a2, 8(sp)
-	sw	a3, 12(sp)
-	sw	ra, 16(sp)
-	add	a0, a3, x0
-	add	a1, a2, x0
-.Lpcrel_callmul_646:
-	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_646)
-	add	a5, a0, x0
-	lw	a0, 0(sp)
-	lw	a1, 4(sp)
-	lw	a2, 8(sp)
-	lw	a3, 12(sp)
-	lw	ra, 16(sp)
-	addi	sp, sp, 32
+	mul	a5,a3,a2
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -253,9 +238,9 @@ rand:
 	sw	ra, 16(sp)
 	add	a0, a4, x0
 	add	a1, a2, x0
-.Lpcrel_callmul_647:
+.Lpcrel_callmul_652:
 	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_647)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_652)
 	add	a4, a0, x0
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
@@ -265,8 +250,7 @@ rand:
 	addi	sp, sp, 32
 	mulhu	a3,a3,a2
 	add	a4,a4,a1
-	addi	a2,x0,1
-	or	a2,x0,a2
+	ori	a2,x0,1
 	add	a2,a5,a2
 	sltu	a5,a2,a5
 	sw	a2,%lo(bitcnts_rand_state)(a6)
@@ -283,32 +267,37 @@ rand:
 atoi:
 	lbu	a2,0(a0)
 	addi	a5,zero,45
-	beq	a2,a5,.L40
-	addi	a5,x0,43
-	or	a5,x0,a5
+	beq	a2,a5,.+8
+	jal	x0,.+8
+	jal	x0,.L40
+	ori	a5,x0,43
 	add	a5,zero,a5
 	addi	a6,zero,1
 	beq	a2,a5,.L41
 .L33:
 	addi	a3,a2,-48
-	andi	a5,a3,255
+	addi	a5,x0,255
+	addi	t0,x0,255
+	xori	t0,t0,-1
+	and	t0,a3,t0
+	addi	t1,x0,255
+	add	t0,t0,t1
+	sub	t0,t0,a3
+	sub	a5,a5,t0
 	addi	a1,zero,9
-	ori	a4,x0,0
-	add	a4,zero,a4
+	addi	a4,zero,0
 	bltu	a1,a5,.L42
 .L34:
 	slli	a5,a4,2
 	lbu	a2,1(a0)
 	add	a5,a5,a4
-	addi	t0,x0,1
-	sll	a5,a5,t0
+	slli	a5,a5,1
 	add	a4,a3,a5
-	addi	a3,a2,-48
+	ori	a3,x0,-48
+	sub	t0,x0,a2
+	sub	a3,a3,t0
 	andi	a5,a3,255
-	addi	t0,x0,1
-	or	t0,x0,t0
-	sub	t1,x0,a0
-	sub	a0,t0,t1
+	addi	a0,a0,1
 	bgeu	a1,a5,.L34
 	addi	sp, sp, -16
 	sw	a1, 0(sp)
@@ -317,9 +306,9 @@ atoi:
 	sw	ra, 12(sp)
 	add	a0, a4, x0
 	add	a1, a6, x0
-.Lpcrel_callmul_648:
+.Lpcrel_callmul_653:
 	auipc	ra, %pcrel_hi(__mul)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_648)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_653)
 	add	a0, a0, x0
 	lw	a1, 0(sp)
 	lw	a2, 4(sp)
@@ -329,24 +318,18 @@ atoi:
 	jalr	zero,ra,0
 .L41:
 	lbu	a2,1(a0)
-	ori	a1,x0,9
-	add	a1,zero,a1
+	addi	a1,zero,9
 	add	a0,a0,a6
 	addi	a3,a2,-48
 	andi	a5,a3,255
-	addi	a4,x0,0
-	or	a4,x0,a4
-	sub	t0,x0,zero
-	sub	a4,a4,t0
+	addi	a4,zero,0
 	bgeu	a1,a5,.L34
 .L42:
 	addi	a0,zero,0
 	jalr	zero,ra,0
 .L40:
 	lbu	a2,1(a0)
-	ori	a6,x0,-1
-	sub	t0,x0,zero
-	sub	a6,a6,t0
+	addi	a6,zero,-1
 	addi	a0,a0,1
 	jal	x0,.L33
 	.size	atoi, .-atoi
@@ -392,15 +375,7 @@ main:
 	addi	a0,zero,9
 	addi	a3,zero,0
 	addi	a2,a1,-48
-	ori	a5,x0,255
-	sub	t0,x0,x0
-	sub	a5,a5,t0
-	or	a5,a2,a5
-	ori	t0,x0,255
-	sub	t1,x0,x0
-	sub	t0,t0,t1
-	xor	t0,a2,t0
-	xor	a5,a5,t0
+	andi	a5,a2,255
 	bltu	a0,a5,.L47
 .L46:
 	slli	a5,a3,2
@@ -409,10 +384,7 @@ main:
 	slli	a5,a5,1
 	add	a3,a2,a5
 	addi	a2,a1,-48
-	ori	a5,x0,255
-	sub	t0,x0,x0
-	sub	a5,a5,t0
-	and	a5,a5,a2
+	andi	a5,a2,255
 	addi	a4,a4,1
 	bgeu	a0,a5,.L46
 .L47:
@@ -686,9 +658,7 @@ __mul:
 	add	a2,a0,x0
 	addi	a0,x0,0
 .Mul_loop:
-	ori	a3,x0,1
-	add	a3,x0,a3
-	and	a3,a3,a1
+	andi	a3,a1,1
 	beq	a3,x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
@@ -710,34 +680,27 @@ __riscv_div_lib_divsi3:
 # Unsigned 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_udivsi3
 __riscv_div_lib_udivsi3:
-	addi	a2,a1,0
-	addi	a1,a0,0
+	ori	a2,x0,0
+	add	a2,a1,a2
+	ori	a1,x0,0
+	add	a1,a0,a1
 	addi	a0,zero,-1
 	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
 	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
-	blt	zero,a2,.+8
-	jal	x0,__riscv_div_lib_L2
-	addi	t0,x0,1
-	sll	a2,a2,t0
+	bge	zero,a2,__riscv_div_lib_L2
+	slli	a2,a2,1
 	slli	a3,a3,1
-	bgeu	a2,a1,.+8
-	jal	x0,__riscv_div_lib_L1
+	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	xori	t0,a0,-1
-	or	t0,a3,t0
-	xori	t1,a0,-1
-	xor	t1,a3,t1
-	xor	t0,t0,t1
-	add	a0,t0,a0
+	or	a0,a0,a3
 __riscv_div_lib_L4:
-	addi	t0,x0,1
-	srl	a3,a3,t0
+	srli	a3,a3,1
 	srli	a2,a2,1
 	bne	a3,zero,__riscv_div_lib_L3
 __riscv_div_lib_L5:
@@ -746,7 +709,8 @@ __riscv_div_lib_L5:
 # Unsigned 32-bit remainder: a0 = a0 % a1
 .global __riscv_div_lib_umodsi3
 __riscv_div_lib_umodsi3:
-	addi	t0,ra,0
+	ori	t0,x0,0
+	add	t0,ra,t0
 .Lpcrel_div1:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_div1)
