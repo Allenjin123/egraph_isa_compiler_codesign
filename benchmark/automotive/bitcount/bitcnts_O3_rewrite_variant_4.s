@@ -346,13 +346,13 @@ rand:
 	sub	t1,t1,t2
 	sub	t1,x0,t1
 	sub	t0,t0,t1
-	lui	t1,16
-	addi	t1,t1,-1
-	and	t1,a3,t1
-	srli	t2,a2,16
-	lui	t3,16
-	addi	t3,t3,-1
-	and	t2,t2,t3
+	srli	t1,a3,16
+	lui	t2,16
+	addi	t2,t2,-1
+	and	t1,t1,t2
+	lui	t2,16
+	addi	t2,t2,-1
+	and	t2,a2,t2
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -374,13 +374,13 @@ rand:
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t1,t1,t2
-	srli	t2,a3,16
-	lui	t3,16
-	addi	t3,t3,-1
-	and	t2,t2,t3
-	lui	t3,16
-	addi	t3,t3,-1
-	and	t3,a2,t3
+	lui	t2,16
+	addi	t2,t2,-1
+	and	t2,a3,t2
+	srli	t3,a2,16
+	lui	t4,16
+	addi	t4,t4,-1
+	and	t3,t3,t4
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -402,7 +402,8 @@ rand:
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t2,t2,t3
-	add	t1,t1,t2
+	sub	t2,x0,t2
+	sub	t1,t1,t2
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,a3,t2
@@ -450,7 +451,9 @@ rand:
 atoi:
 	lbu	a2,0(a0)
 	addi	a5,zero,45
-	beq	a2,a5,.L40
+	beq	a2,a5,.+8
+	jal	x0,.+8
+	jal	x0,.L40
 	addi	a5,zero,43
 	addi	a6,zero,1
 	beq	a2,a5,.L41
@@ -468,12 +471,7 @@ atoi:
 	addi	t0,x0,1
 	sll	a5,a5,t0
 	add	a4,a3,a5
-	addi	a3,x0,-48
-	and	a3,x0,a3
-	addi	t0,x0,-48
-	sub	a3,a3,t0
-	sub	a3,x0,a3
-	add	a3,a2,a3
+	addi	a3,a2,-48
 	andi	a5,a3,255
 	addi	a0,a0,1
 	bltu	a1,a5,.+8
@@ -500,8 +498,7 @@ atoi:
 	addi	a1,zero,9
 	add	a0,a0,a6
 	addi	a3,a2,-48
-	addi	a5,x0,255
-	and	a5,a5,a3
+	andi	a5,a3,255
 	addi	a4,zero,0
 	bltu	a1,a5,.+8
 	jal	x0,.L34
@@ -1368,8 +1365,8 @@ main:
 	lw	s0,104(sp)
 	sub	a0,s1,a0
 	and	t0,s1,a0
-	sub	t0,t0,a0
-	sub	a0,s1,t0
+	sub	a0,t0,a0
+	sub	a0,s1,a0
 	lw	s2,96(sp)
 	lw	s1,100(sp)
 	lw	s3,92(sp)
@@ -1495,7 +1492,8 @@ __riscv_div_lib_udivsi3:
 	addi	a2,a1,0
 	addi	a1,a0,0
 	addi	a0,zero,-1
-	beq	a2,zero,__riscv_div_lib_L5
+	bne	a2,zero,.+8
+	jal	x0,__riscv_div_lib_L5
 	addi	a3,zero,1
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2

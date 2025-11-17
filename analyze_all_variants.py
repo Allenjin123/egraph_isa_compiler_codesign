@@ -63,10 +63,11 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enab
             prog = ds.text_program(f"{program_name}_variant_{variant_id}")
 
         # Load from basic_blocks_ssa if available, otherwise basic_blocks
+        # Pass base program_name to ensure execution counts are found
         if (variant_path / "basic_blocks_ssa").exists():
-            prog.from_directory(str(variant_path), suffix="_ssa")
+            prog.from_directory(str(variant_path), suffix="_ssa", base_program_name=program_name)
         elif (variant_path / "basic_blocks").exists():
-            prog.from_directory(str(variant_path), suffix="")
+            prog.from_directory(str(variant_path), suffix="", base_program_name=program_name)
         else:
             print(f"Variant {variant_id}: No basic blocks found", file=sys.stderr)
             return None
