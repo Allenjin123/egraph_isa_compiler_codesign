@@ -202,7 +202,7 @@ class LivenessAnalyzer:
             }
         
         # 硬编码：最后修改 __riscv_div_lib 相关标签下的所有块
-        for label_name in ['__riscv_div_lib_L3', '__riscv_div_lib_L4']:
+        for label_name in ['__riscv_div_lib_L1', '__riscv_div_lib_L3', '__riscv_div_lib_L4']:
             if label_name in label_metadata:
                 blocks_info = label_metadata[label_name].get('blocks', {})
                 for block_key, block_data in blocks_info.items():

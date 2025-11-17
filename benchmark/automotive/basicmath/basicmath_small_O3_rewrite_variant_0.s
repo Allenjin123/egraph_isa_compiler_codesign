@@ -9,11 +9,12 @@
 	.type	my_cos, @function
 my_cos:
 	addi	a3,zero,637
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a1, a3, x0
 .Lpcrel_callmul_1:
 	auipc	ra, %pcrel_hi(__mul)
@@ -22,8 +23,9 @@ my_cos:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lui	a1,67109
 	addi	a1,a1,-557
 	addi	a4,zero,-1571
@@ -41,7 +43,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, t0, x0
 .Lpcrel_callmul_2:
@@ -52,7 +55,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
@@ -90,7 +94,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_4:
@@ -101,7 +106,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -148,7 +154,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_6:
@@ -159,7 +166,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -174,7 +182,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_7:
@@ -185,7 +194,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -236,7 +246,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_9:
@@ -247,7 +258,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t4,16
 	addi	t4,t4,-1
@@ -265,7 +277,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t4, x0
 	add	a1, t5, x0
 .Lpcrel_callmul_10:
@@ -276,7 +289,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t5,16
 	addi	t5,t5,-1
@@ -300,7 +314,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_11:
@@ -311,7 +326,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t4,x0,16
 	srl	t2,t2,t4
@@ -328,7 +344,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t4, x0
 	add	a1, t5, x0
 .Lpcrel_callmul_12:
@@ -339,7 +356,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t5,x0,16
 	srl	t4,t4,t5
@@ -358,7 +376,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, t5, x0
 .Lpcrel_callmul_13:
@@ -369,7 +388,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	a5,x0,a5
 	sub	a5,t4,a5
@@ -384,7 +404,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a4, x0
 .Lpcrel_callmul_14:
@@ -395,10 +416,11 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t0,x0,3
-	and	a5,t0,a5
+	and	a5,a5,t0
 	sub	t0,x0,a4
 	sub	a0,a0,t0
 	addi	sp, sp, -32
@@ -406,7 +428,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a1, a0, x0
 .Lpcrel_callmul_15:
 	auipc	ra, %pcrel_hi(__mul)
@@ -416,7 +439,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	a4,16
 	addi	a4,a4,-1
@@ -429,7 +453,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a4, x0
 	add	a1, t0, x0
 .Lpcrel_callmul_16:
@@ -440,7 +465,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t0,x0,16
 	srl	a4,a4,t0
@@ -486,7 +512,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_18:
@@ -497,7 +524,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t4,16
 	addi	t4,t4,-1
@@ -549,7 +577,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_20:
@@ -560,7 +589,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t4,x0,16
 	srl	t2,t2,t4
@@ -579,7 +609,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t4, x0
 	add	a1, t5, x0
 .Lpcrel_callmul_21:
@@ -590,7 +621,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t4,x0,t4
 	sub	t2,t2,t4
@@ -600,11 +632,12 @@ my_cos:
 	sub	a4,a4,t0
 	addi	t0,x0,6
 	srl	a4,a4,t0
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a1, a4, x0
 .Lpcrel_callmul_22:
 	auipc	ra, %pcrel_hi(__mul)
@@ -613,13 +646,15 @@ my_cos:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
-	addi	sp, sp, -16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_23:
@@ -629,18 +664,20 @@ my_cos:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lui	a3,16
 	addi	a3,a3,-1
 	and	a3,a2,a3
 	addi	t0,x0,16
 	sra	t0,a7,t0
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a3, x0
 	add	a1, t0, x0
 .Lpcrel_callmul_24:
@@ -650,8 +687,9 @@ my_cos:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a2,t0
@@ -688,7 +726,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_26:
@@ -699,7 +738,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -746,7 +786,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_28:
@@ -757,7 +798,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -772,7 +814,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_29:
@@ -783,7 +826,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -794,14 +838,16 @@ my_cos:
 	addi	t0,x0,18
 	sra	a3,a3,t0
 	sub	a3,a3,a2
-	sub	t0,x0,a3
-	sub	a3,a0,t0
-	beq	a5,t1,.L2
-	addi	sp, sp, -16
+	sub	a3,x0,a3
+	sub	a3,a0,a3
+	bne	a5,t1,.+8
+	jal	x0,.L2
+	addi	sp, sp, -32
 	sw	a1, 0(sp)
 	sw	a2, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a4, x0
 	add	a1, a4, x0
 .Lpcrel_callmul_30:
@@ -811,17 +857,19 @@ my_cos:
 	lw	a1, 0(sp)
 	lw	a2, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	addi	t1,zero,42
 	addi	a4,x0,31
 	sra	a4,a6,a4
 	addi	a2,zero,2
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a1, 0(sp)
 	sw	a2, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a1, t1, x0
 .Lpcrel_callmul_31:
 	auipc	ra, %pcrel_hi(__mul)
@@ -830,8 +878,9 @@ my_cos:
 	lw	a1, 0(sp)
 	lw	a2, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a6,t0
@@ -866,7 +915,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_33:
@@ -877,7 +927,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -891,7 +942,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_34:
@@ -902,7 +954,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
@@ -924,7 +977,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_35:
@@ -935,7 +989,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -949,7 +1004,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_36:
@@ -960,7 +1016,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
@@ -975,7 +1032,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, a6, x0
 .Lpcrel_callmul_37:
@@ -986,7 +1044,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	a6,x0,a6
 	sub	a6,t1,a6
@@ -1031,7 +1090,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_39:
@@ -1042,7 +1102,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t2,16
 	addi	t2,t2,-1
@@ -1060,7 +1121,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_40:
@@ -1071,7 +1133,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t3,16
 	addi	t3,t3,-1
@@ -1095,7 +1158,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_41:
@@ -1106,7 +1170,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -1123,7 +1188,8 @@ my_cos:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_42:
@@ -1134,7 +1200,8 @@ my_cos:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t3,x0,16
 	srl	t2,t2,t3
@@ -1148,11 +1215,12 @@ my_cos:
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a1, 0(sp)
 	sw	a2, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a1, t3, x0
 .Lpcrel_callmul_43:
 	auipc	ra, %pcrel_hi(__mul)
@@ -1161,8 +1229,9 @@ my_cos:
 	lw	a1, 0(sp)
 	lw	a2, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	sub	a0,x0,a0
 	sub	a0,t2,a0
 	sub	a0,x0,a0
@@ -1175,10 +1244,12 @@ my_cos:
 	addi	a4,a4,1000
 	addi	t0,x0,18
 	srl	a0,a0,t0
-	sub	t0,x0,a0
-	sub	a0,a4,t0
-	beq	a5,a2,.L3
-	beq	a5,zero,.L1
+	sub	a0,x0,a0
+	sub	a0,a4,a0
+	bne	a5,a2,.+8
+	jal	x0,.L3
+	bne	a5,zero,.+8
+	jal	x0,.L1
 	addi	a0,a3,0
 	jalr	zero,ra,0
 .L3:
@@ -1200,7 +1271,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a7, x0
 .Lpcrel_callmul_44:
 	auipc	ra, %pcrel_hi(__mul)
@@ -1210,7 +1282,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sw	s9,4(sp)
 	addi	s9,a5,0
@@ -1227,8 +1300,10 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
-	add	a1, s0, x0
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
+	add	a1, a0, x0
+	add	a0, s0, x0
 .Lpcrel_calldiv_45:
 	auipc	ra, %pcrel_hi(__riscv_div_lib_divsi3)
 	jalr	ra, ra, %pcrel_lo(.Lpcrel_calldiv_45)
@@ -1238,17 +1313,19 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
 	lui	a6,310689
 	addi	a6,a6,759
 	sw	ra,44(sp)
 	addi	a1,zero,999
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a2, x0
 	add	a1, a7, x0
 .Lpcrel_callmul_46:
@@ -1258,15 +1335,18 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
-	add	a1, a2, x0
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
+	add	a1, a0, x0
+	add	a0, a2, x0
 .Lpcrel_calldiv_47:
 	auipc	ra, %pcrel_hi(__riscv_div_lib_divsi3)
 	jalr	ra, ra, %pcrel_lo(.Lpcrel_calldiv_47)
@@ -1275,13 +1355,15 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a3, x0
 	add	a1, a7, x0
 .Lpcrel_callmul_48:
@@ -1291,8 +1373,9 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	addi	s2,x0,2
 	sll	s2,a2,s2
 	sub	s2,a2,s2
@@ -1301,7 +1384,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s0, x0
 	add	a1, s0, x0
 .Lpcrel_callmul_49:
@@ -1312,15 +1396,18 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	sp, sp, -32
 	sw	a1, 0(sp)
 	sw	a2, 4(sp)
 	sw	a3, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
-	add	a1, a3, x0
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
+	add	a1, a0, x0
+	add	a0, a3, x0
 .Lpcrel_calldiv_50:
 	auipc	ra, %pcrel_hi(__riscv_div_lib_divsi3)
 	jalr	ra, ra, %pcrel_lo(.Lpcrel_calldiv_50)
@@ -1329,7 +1416,8 @@ SolveCubic:
 	lw	a2, 4(sp)
 	lw	a3, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
@@ -1370,7 +1458,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_52:
@@ -1381,7 +1470,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t3,16
 	addi	t3,t3,-1
@@ -1399,7 +1489,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t3, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_53:
@@ -1410,7 +1501,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t4,16
 	addi	t4,t4,-1
@@ -1434,7 +1526,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_54:
@@ -1445,7 +1538,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t3,x0,16
 	srl	t2,t2,t3
@@ -1462,7 +1556,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t3, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_55:
@@ -1473,7 +1568,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t4,x0,16
 	srl	t3,t3,t4
@@ -1492,7 +1588,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_56:
@@ -1503,7 +1600,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	a5,x0,a5
 	sub	a5,t3,a5
@@ -1519,14 +1617,15 @@ SolveCubic:
 	sub	t3,t3,a0
 	addi	t0,x0,6
 	srl	a5,a5,t0
-	sub	t0,x0,s2
-	sub	s2,a5,t0
+	sub	s2,x0,s2
+	sub	s2,a5,s2
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, s0, x0
 .Lpcrel_callmul_57:
@@ -1537,15 +1636,17 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t4,x0,31
 	sra	t4,s2,t4
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, s0, x0
 	add	a1, a2, x0
 .Lpcrel_callmul_58:
@@ -1555,8 +1656,9 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,s2,t0
@@ -1591,7 +1693,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t6, x0
 .Lpcrel_callmul_60:
@@ -1602,7 +1705,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t6,x0,16
 	srl	t2,t2,t6
@@ -1616,7 +1720,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a1, t6, x0
 .Lpcrel_callmul_61:
 	auipc	ra, %pcrel_hi(__mul)
@@ -1626,7 +1731,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t6,x0,t6
 	sub	t2,t2,t6
@@ -1648,7 +1754,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t6, x0
 .Lpcrel_callmul_62:
@@ -1659,7 +1766,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t6,x0,16
 	srl	t2,t2,t6
@@ -1673,7 +1781,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a1, t6, x0
 .Lpcrel_callmul_63:
 	auipc	ra, %pcrel_hi(__mul)
@@ -1683,7 +1792,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t6,x0,t6
 	sub	t2,t2,t6
@@ -1698,7 +1808,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a1, t6, x0
 .Lpcrel_callmul_64:
 	auipc	ra, %pcrel_hi(__mul)
@@ -1708,7 +1819,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t5,x0,t5
 	sub	t5,t2,t5
@@ -1716,8 +1828,8 @@ SolveCubic:
 	sub	t5,t0,t5
 	addi	a4,x0,3
 	sll	a4,a2,a4
-	sub	t0,x0,a4
-	sub	a4,a2,t0
+	sub	a4,x0,a4
+	sub	a4,a2,a4
 	addi	a0,x0,31
 	sra	a0,a4,a0
 	lui	a3,16
@@ -1725,11 +1837,12 @@ SolveCubic:
 	and	a3,a5,a3
 	addi	t0,x0,16
 	sra	t0,t1,t0
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a3, x0
 	add	a1, t0, x0
 .Lpcrel_callmul_65:
@@ -1739,8 +1852,9 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a5,t0
@@ -1777,7 +1891,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t6, x0
 .Lpcrel_callmul_67:
@@ -1788,7 +1903,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -1835,7 +1951,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t6, x0
 .Lpcrel_callmul_69:
@@ -1846,7 +1963,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -1861,7 +1979,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t6, x0
 .Lpcrel_callmul_70:
@@ -1872,7 +1991,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -1917,7 +2037,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_72:
@@ -1928,7 +2049,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t4,x0,16
 	srl	t2,t2,t4
@@ -1942,7 +2064,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t4, x0
 	add	a1, t6, x0
 .Lpcrel_callmul_73:
@@ -1953,7 +2076,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t4,x0,t4
 	sub	t2,t2,t4
@@ -1975,7 +2099,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_74:
@@ -1986,7 +2111,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t4,x0,16
 	srl	t2,t2,t4
@@ -2000,7 +2126,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t4, x0
 	add	a1, t6, x0
 .Lpcrel_callmul_75:
@@ -2011,7 +2138,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t4,x0,t4
 	sub	t2,t2,t4
@@ -2026,7 +2154,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t4, x0
 	add	a1, a4, x0
 .Lpcrel_callmul_76:
@@ -2037,7 +2166,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	a4,x0,a4
 	sub	a4,t2,a4
@@ -2046,11 +2176,12 @@ SolveCubic:
 	addi	t0,x0,5
 	sra	a3,a3,t0
 	sub	a5,a3,a5
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, t5, x0
 	add	a1, t5, x0
 .Lpcrel_callmul_77:
@@ -2060,15 +2191,16 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	addi	t0,x0,6
 	sra	a4,a4,t0
 	sub	a0,a0,a4
-	sub	t0,x0,a0
-	sub	a0,a5,t0
-	sub	t0,x0,a0
-	sub	a0,t3,t0
+	sub	a0,x0,a0
+	sub	a0,a5,a0
+	sub	a0,x0,a0
+	sub	a0,t3,a0
 	addi	a5,x0,31
 	sra	a5,a0,a5
 	lui	a4,16
@@ -2081,7 +2213,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a4, x0
 	add	a1, t0, x0
 .Lpcrel_callmul_78:
@@ -2092,7 +2225,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
@@ -2130,7 +2264,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_80:
@@ -2141,7 +2276,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -2188,7 +2324,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_82:
@@ -2199,7 +2336,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -2214,7 +2352,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_83:
@@ -2225,7 +2364,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -2270,7 +2410,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_85:
@@ -2281,7 +2422,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t3,16
 	addi	t3,t3,-1
@@ -2299,7 +2441,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t3, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_86:
@@ -2310,7 +2453,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t4,16
 	addi	t4,t4,-1
@@ -2334,7 +2478,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_87:
@@ -2345,7 +2490,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t3,x0,16
 	srl	t2,t2,t3
@@ -2362,7 +2508,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t3, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_88:
@@ -2373,7 +2520,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t4,x0,16
 	srl	t3,t3,t4
@@ -2387,11 +2535,12 @@ SolveCubic:
 	lui	t6,16
 	addi	t6,t6,-1
 	and	t4,t4,t6
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a3, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_89:
@@ -2401,26 +2550,26 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	sub	a3,x0,a3
 	sub	a3,t3,a3
 	sub	a3,x0,a3
 	sub	a3,t2,a3
 	sub	a3,x0,a3
 	sub	a3,t0,a3
-	addi	t0,x0,2
-	sra	t0,a4,t0
-	addi	a4,x0,2
-	sra	a4,t0,a4
+	addi	t0,x0,4
+	sra	a4,a4,t0
 	sub	a4,a4,a5
 	addi	t0,x0,6
 	srl	a3,a3,t0
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a3, x0
 	add	a1, t5, x0
 .Lpcrel_callmul_90:
@@ -2430,14 +2579,16 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a4, x0
 	add	a1, a4, x0
 .Lpcrel_callmul_91:
@@ -2448,7 +2599,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	a2,x0,31
 	sra	a2,a3,a2
@@ -2462,7 +2614,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a6, x0
 	add	a1, t0, x0
 .Lpcrel_callmul_92:
@@ -2473,7 +2626,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
@@ -2511,7 +2665,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_94:
@@ -2522,7 +2677,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -2569,7 +2725,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_96:
@@ -2580,7 +2737,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -2595,7 +2753,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_97:
@@ -2606,7 +2765,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -2651,7 +2811,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_99:
@@ -2662,7 +2823,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t3,16
 	addi	t3,t3,-1
@@ -2680,7 +2842,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t3, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_100:
@@ -2691,7 +2854,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t4,16
 	addi	t4,t4,-1
@@ -2715,7 +2879,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_101:
@@ -2726,7 +2891,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t3,x0,16
 	srl	t2,t2,t3
@@ -2743,7 +2909,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t3, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_102:
@@ -2754,7 +2921,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t4,x0,16
 	srl	t3,t3,t4
@@ -2773,7 +2941,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_103:
@@ -2784,7 +2953,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	a5,x0,a5
 	sub	a5,t3,a5
@@ -2797,18 +2967,17 @@ SolveCubic:
 	sub	a2,a2,a6
 	addi	t0,x0,6
 	srl	a5,a5,t0
-	sub	t0,x0,a5
-	sub	a5,a2,t0
-	bge	a1,a3,.+8
-	jal	x0,.L10
-	bge	zero,a5,.L52
+	sub	a5,x0,a5
+	sub	a5,a2,a5
+	blt	a1,a3,.L10
+	blt	zero,a5,.+8
+	jal	x0,.L52
 .L12:
 	addi	a3,zero,1
 	sw	a3,0(s8)
 	addi	a2,zero,1000
 	addi	a3,a5,0
-	bge	a5,a2,.+8
-	jal	x0,.L53
+	blt	a5,a2,.L53
 .L24:
 	addi	a1,zero,1000
 	addi	sp, sp, -32
@@ -2816,7 +2985,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 .Lpcrel_callmul_104:
 	auipc	ra, %pcrel_hi(__mul)
@@ -2826,7 +2996,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	a6,x0,31
 	sra	a6,a4,a6
@@ -2842,7 +3013,8 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_105:
@@ -2854,10 +3026,11 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a4
-	sub	a4,a3,t0
+	sub	a4,x0,a4
+	sub	a4,a3,a4
 	addi	t0,x0,1
 	sra	a4,a4,t0
 	addi	sp, sp, -32
@@ -2865,7 +3038,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a4, x0
 .Lpcrel_calldiv_106:
@@ -2876,10 +3050,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a3
-	sub	a3,a4,t0
+	sub	a3,x0,a3
+	sub	a3,a4,a3
 	addi	t0,x0,1
 	sra	a3,a3,t0
 	addi	sp, sp, -32
@@ -2888,7 +3063,8 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_107:
@@ -2900,10 +3076,11 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a4
-	sub	a4,a3,t0
+	sub	a4,x0,a4
+	sub	a4,a3,a4
 	addi	t0,x0,1
 	sra	a4,a4,t0
 	addi	sp, sp, -32
@@ -2911,7 +3088,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a4, x0
 .Lpcrel_calldiv_108:
@@ -2922,10 +3100,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a3
-	sub	a3,a4,t0
+	sub	a3,x0,a3
+	sub	a3,a4,a3
 	addi	t0,x0,1
 	sra	a3,a3,t0
 	addi	sp, sp, -32
@@ -2934,7 +3113,8 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_109:
@@ -2946,10 +3126,11 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a4
-	sub	a4,a3,t0
+	sub	a4,x0,a4
+	sub	a4,a3,a4
 	addi	t0,x0,1
 	sra	a4,a4,t0
 	addi	sp, sp, -32
@@ -2957,7 +3138,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a4, x0
 .Lpcrel_calldiv_110:
@@ -2968,10 +3150,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a3
-	sub	a3,a4,t0
+	sub	a3,x0,a3
+	sub	a3,a4,a3
 	addi	t0,x0,1
 	sra	a3,a3,t0
 	addi	sp, sp, -32
@@ -2980,7 +3163,8 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_111:
@@ -2992,10 +3176,11 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a4
-	sub	a4,a3,t0
+	sub	a4,x0,a4
+	sub	a4,a3,a4
 	addi	t0,x0,1
 	sra	a4,a4,t0
 	addi	sp, sp, -32
@@ -3003,7 +3188,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a4, x0
 .Lpcrel_calldiv_112:
@@ -3014,10 +3200,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a3
-	sub	a3,a4,t0
+	sub	a3,x0,a3
+	sub	a3,a4,a3
 	addi	t0,x0,1
 	sra	a3,a3,t0
 	addi	sp, sp, -32
@@ -3026,7 +3213,8 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_113:
@@ -3038,10 +3226,11 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a4
-	sub	a4,a3,t0
+	sub	a4,x0,a4
+	sub	a4,a3,a4
 	addi	t0,x0,1
 	sra	a4,a4,t0
 	addi	sp, sp, -32
@@ -3049,7 +3238,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a4, x0
 .Lpcrel_calldiv_114:
@@ -3060,10 +3250,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a3
-	sub	a3,a4,t0
+	sub	a3,x0,a3
+	sub	a3,a4,a3
 	addi	t0,x0,1
 	sra	a3,a3,t0
 	addi	sp, sp, -32
@@ -3072,7 +3263,8 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_115:
@@ -3084,10 +3276,11 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a4
-	sub	a4,a3,t0
+	sub	a4,x0,a4
+	sub	a4,a3,a4
 	addi	t0,x0,1
 	sra	a4,a4,t0
 	addi	sp, sp, -32
@@ -3096,7 +3289,8 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, a5, x0
 	add	a1, a4, x0
 .Lpcrel_calldiv_116:
@@ -3108,25 +3302,27 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a5
-	sub	a5,a4,t0
+	sub	a5,x0,a5
+	sub	a5,a4,a5
 	addi	t0,x0,1
 	sra	a5,a5,t0
-	sub	t0,x0,a2
-	sub	a2,a5,t0
-	beq	a2,zero,.L25
+	sub	a2,x0,a2
+	sub	a2,a5,a2
+	bne	a2,zero,.+8
+	jal	x0,.L25
 	addi	a3,a2,0
-	bge	a2,a1,.+8
-	jal	x0,.L54
+	blt	a2,a1,.L54
 .L26:
 	addi	a5,zero,1000
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a2, x0
 	add	a1, a5, x0
 .Lpcrel_callmul_117:
@@ -3136,8 +3332,9 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lui	a6,67109
 	lui	a7,349525
 	addi	a6,a6,-557
@@ -3152,7 +3349,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a3, x0
 	add	a1, a3, x0
 .Lpcrel_callmul_118:
@@ -3163,7 +3361,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
@@ -3204,7 +3403,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_120:
@@ -3215,7 +3415,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t2,16
 	addi	t2,t2,-1
@@ -3233,7 +3434,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_121:
@@ -3244,7 +3446,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t3,16
 	addi	t3,t3,-1
@@ -3268,7 +3471,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_122:
@@ -3279,7 +3483,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -3296,7 +3501,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_123:
@@ -3307,7 +3513,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t3,x0,16
 	srl	t2,t2,t3
@@ -3326,7 +3533,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_124:
@@ -3337,7 +3545,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	a5,x0,a5
 	sub	a5,t2,a5
@@ -3347,14 +3556,16 @@ SolveCubic:
 	sub	a5,t0,a5
 	addi	t0,x0,6
 	srl	a5,a5,t0
-	beq	a5,zero,.L27
+	bne	a5,zero,.+8
+	jal	x0,.L27
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, a2, x0
 	add	a1, a5, x0
 .Lpcrel_calldiv_125:
@@ -3366,7 +3577,8 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
 	sub	t0,x0,a4
 	sub	a5,a5,t0
@@ -3375,11 +3587,12 @@ SolveCubic:
 	and	a3,a5,a3
 	addi	t0,x0,16
 	sra	t0,a7,t0
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a3, x0
 	add	a1, t0, x0
 .Lpcrel_callmul_126:
@@ -3389,8 +3602,9 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a5,t0
@@ -3427,7 +3641,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_128:
@@ -3438,7 +3653,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -3485,7 +3701,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_130:
@@ -3496,7 +3713,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -3511,7 +3729,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_131:
@@ -3522,7 +3741,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -3531,18 +3751,19 @@ SolveCubic:
 	addi	t0,x0,31
 	sra	a5,a5,t0
 	sub	a3,a3,a5
-	beq	a1,zero,.+8
-	jal	x0,.L28
+	bne	a1,zero,.L28
 .L27:
 	addi	a2,zero,0
-	beq	a3,zero,.L25
+	bne	a3,zero,.+8
+	jal	x0,.L25
 	addi	a5,zero,1000
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t5, x0
 	add	a1, a5, x0
 .Lpcrel_callmul_132:
@@ -3553,7 +3774,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
@@ -3561,7 +3783,8 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, t5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_133:
@@ -3573,21 +3796,22 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
 	sub	a2,x0,t5
 	sub	a2,a3,a2
 .L25:
 	addi	a4,zero,-53
 	addi	a5,zero,-1000
-	bge	a0,a4,.+8
-	jal	x0,.L55
+	blt	a0,a4,.L55
 .L29:
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a2, x0
 	add	a1, a5, x0
 .Lpcrel_callmul_134:
@@ -3597,8 +3821,9 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lui	a5,67109
 	addi	a5,a5,-557
 	lui	a3,349525
@@ -3642,7 +3867,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_136:
@@ -3653,7 +3879,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -3667,7 +3894,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_137:
@@ -3678,7 +3906,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
@@ -3700,7 +3929,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_138:
@@ -3711,7 +3941,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -3725,7 +3956,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_139:
@@ -3736,7 +3968,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
@@ -3751,7 +3984,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_140:
@@ -3762,7 +3996,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	a5,x0,a5
 	sub	a5,t1,a5
@@ -3804,7 +4039,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_142:
@@ -3815,7 +4051,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -3829,7 +4066,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_143:
@@ -3840,7 +4078,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
@@ -3862,7 +4101,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_144:
@@ -3873,7 +4113,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -3887,7 +4128,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_145:
@@ -3898,7 +4140,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
@@ -3913,7 +4156,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, s0, x0
 .Lpcrel_callmul_146:
@@ -3924,7 +4168,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	s0,x0,s0
 	sub	s0,t1,s0
@@ -3942,15 +4187,13 @@ SolveCubic:
 	addi	sp,sp,48
 	jalr	zero,ra,0
 .L10:
-	bge	zero,a5,.+8
-	jal	x0,.L12
+	blt	zero,a5,.L12
 	sw	s1,36(sp)
 	sw	s3,28(sp)
 	sw	s4,24(sp)
 	sw	s5,20(sp)
 	sub	a1,zero,a2
-	bge	a1,a7,.+8
-	jal	x0,.L56
+	blt	a1,a7,.L56
 .L13:
 	addi	a5,zero,-1000
 	addi	sp, sp, -32
@@ -3958,7 +4201,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a2, x0
 	add	a1, a5, x0
 .Lpcrel_callmul_147:
@@ -3969,7 +4213,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t6,zero,1
 	addi	sp, sp, -32
@@ -3977,7 +4222,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 .Lpcrel_calldiv_148:
 	auipc	ra, %pcrel_hi(__riscv_div_lib_divsi3)
@@ -3987,10 +4233,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a3
-	sub	a3,a1,t0
+	sub	a3,x0,a3
+	sub	a3,a1,a3
 	addi	t0,x0,1
 	sra	a3,a3,t0
 	addi	sp, sp, -32
@@ -3998,7 +4245,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_149:
@@ -4009,10 +4257,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a2
-	sub	a2,a3,t0
+	sub	a2,x0,a2
+	sub	a2,a3,a2
 	addi	t0,x0,1
 	sra	a2,a2,t0
 	addi	sp, sp, -32
@@ -4020,7 +4269,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a2, x0
 .Lpcrel_calldiv_150:
@@ -4031,10 +4281,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a3
-	sub	a3,a2,t0
+	sub	a3,x0,a3
+	sub	a3,a2,a3
 	addi	t0,x0,1
 	sra	a3,a3,t0
 	addi	sp, sp, -32
@@ -4042,7 +4293,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_151:
@@ -4053,10 +4305,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a2
-	sub	a2,a3,t0
+	sub	a2,x0,a2
+	sub	a2,a3,a2
 	addi	t0,x0,1
 	sra	a2,a2,t0
 	addi	sp, sp, -32
@@ -4064,7 +4317,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a2, x0
 .Lpcrel_calldiv_152:
@@ -4075,10 +4329,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a3
-	sub	a3,a2,t0
+	sub	a3,x0,a3
+	sub	a3,a2,a3
 	addi	t0,x0,1
 	sra	a3,a3,t0
 	addi	sp, sp, -32
@@ -4086,7 +4341,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_153:
@@ -4097,10 +4353,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a2
-	sub	a2,a3,t0
+	sub	a2,x0,a2
+	sub	a2,a3,a2
 	addi	t0,x0,1
 	sra	a2,a2,t0
 	addi	sp, sp, -32
@@ -4108,7 +4365,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a2, x0
 .Lpcrel_calldiv_154:
@@ -4119,10 +4377,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a3
-	sub	a3,a2,t0
+	sub	a3,x0,a3
+	sub	a3,a2,a3
 	addi	t0,x0,1
 	sra	a3,a3,t0
 	addi	sp, sp, -32
@@ -4130,7 +4389,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_155:
@@ -4141,10 +4401,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a2
-	sub	a2,a3,t0
+	sub	a2,x0,a2
+	sub	a2,a3,a2
 	addi	t0,x0,1
 	sra	a2,a2,t0
 	addi	sp, sp, -32
@@ -4152,7 +4413,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a2, x0
 .Lpcrel_calldiv_156:
@@ -4163,10 +4425,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a3
-	sub	a3,a2,t0
+	sub	a3,x0,a3
+	sub	a3,a2,a3
 	addi	t0,x0,1
 	sra	a3,a3,t0
 	addi	sp, sp, -32
@@ -4174,7 +4437,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_157:
@@ -4185,10 +4449,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a2
-	sub	a2,a3,t0
+	sub	a2,x0,a2
+	sub	a2,a3,a2
 	addi	t0,x0,1
 	sra	a2,a2,t0
 	addi	sp, sp, -32
@@ -4196,7 +4461,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a2, x0
 .Lpcrel_calldiv_158:
@@ -4207,10 +4473,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a3
-	sub	a3,a2,t0
+	sub	a3,x0,a3
+	sub	a3,a2,a3
 	addi	t0,x0,1
 	sra	a3,a3,t0
 	addi	sp, sp, -32
@@ -4219,7 +4486,8 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_159:
@@ -4231,18 +4499,21 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a5
-	sub	a5,a3,t0
-	bge	t6,a5,.L11
+	sub	a5,x0,a5
+	sub	a5,a3,a5
+	blt	t6,a5,.+8
+	jal	x0,.L11
 	addi	t4,zero,1000
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a4, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_160:
@@ -4253,7 +4524,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t0,x0,1
 	sra	a5,a5,t0
@@ -4264,7 +4536,8 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, t4, x0
 	add	a1, a5, x0
 .Lpcrel_calldiv_161:
@@ -4276,15 +4549,14 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
-	bge	a4,t4,.+8
-	jal	x0,.L30
+	blt	a4,t4,.L30
 	sw	s6,16(sp)
 	sw	s7,12(sp)
 	addi	a5,zero,-999
-	bge	t4,a5,.+8
-	jal	x0,.L32
+	blt	t4,a5,.L32
 	lui	t3,1
 	lui	a0,67109
 	lui	a7,274878
@@ -4303,15 +4575,16 @@ SolveCubic:
 	sub	a3,t3,a3
 	addi	a1,x0,31
 	srl	a1,a3,a1
-	sub	a2,x0,a1
-	sub	a1,a3,a2
+	sub	a1,x0,a1
+	sub	a1,a3,a1
 	addi	a2,x0,1
 	sra	a1,a1,a2
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a4, x0
 .Lpcrel_callmul_162:
 	auipc	ra, %pcrel_hi(__mul)
@@ -4320,18 +4593,20 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lui	a3,16
 	addi	a3,a3,-1
 	and	a3,a2,a3
 	addi	s3,x0,16
 	sra	s3,a0,s3
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a3, x0
 	add	a1, s3, x0
 .Lpcrel_callmul_163:
@@ -4341,8 +4616,9 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lui	s3,16
 	addi	s3,s3,-1
 	and	s3,a2,s3
@@ -4354,7 +4630,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s3, x0
 	add	a1, s4, x0
 .Lpcrel_callmul_164:
@@ -4365,7 +4642,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	s4,x0,16
 	srl	s3,s3,s4
@@ -4379,7 +4657,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s4, x0
 	add	a1, s5, x0
 .Lpcrel_callmul_165:
@@ -4390,7 +4669,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	s4,x0,s4
 	sub	s3,s3,s4
@@ -4412,7 +4692,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s3, x0
 	add	a1, s4, x0
 .Lpcrel_callmul_166:
@@ -4423,7 +4704,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	s4,x0,16
 	srl	s3,s3,s4
@@ -4437,7 +4719,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s4, x0
 	add	a1, s5, x0
 .Lpcrel_callmul_167:
@@ -4448,7 +4731,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	s4,x0,s4
 	sub	s3,s3,s4
@@ -4463,7 +4747,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s4, x0
 	add	a1, s5, x0
 .Lpcrel_callmul_168:
@@ -4474,7 +4759,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	s4,x0,s4
 	sub	s3,s3,s4
@@ -4492,11 +4778,12 @@ SolveCubic:
 	lui	s3,16
 	addi	s3,s3,-1
 	and	s3,a0,s3
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a2, x0
 	add	a1, s3, x0
 .Lpcrel_callmul_169:
@@ -4506,8 +4793,9 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	addi	s3,x0,16
 	srl	a2,a2,s3
 	addi	s3,x0,16
@@ -4523,7 +4811,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s3, x0
 	add	a1, s4, x0
 .Lpcrel_callmul_170:
@@ -4534,7 +4823,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	s4,16
 	addi	s4,s4,-1
@@ -4552,7 +4842,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s4, x0
 	add	a1, s5, x0
 .Lpcrel_callmul_171:
@@ -4563,7 +4854,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	s5,16
 	addi	s5,s5,-1
@@ -4587,7 +4879,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s3, x0
 	add	a1, s4, x0
 .Lpcrel_callmul_172:
@@ -4598,7 +4891,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	s4,x0,16
 	srl	s3,s3,s4
@@ -4615,7 +4909,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s4, x0
 	add	a1, s5, x0
 .Lpcrel_callmul_173:
@@ -4626,7 +4921,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	s5,x0,16
 	srl	s4,s4,s5
@@ -4640,11 +4936,12 @@ SolveCubic:
 	lui	s6,16
 	addi	s6,s6,-1
 	and	s5,s5,s6
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a3, x0
 	add	a1, s5, x0
 .Lpcrel_callmul_174:
@@ -4654,8 +4951,9 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	sub	a3,x0,a3
 	sub	a3,s4,a3
 	sub	a3,x0,a3
@@ -4669,7 +4967,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a3, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_175:
@@ -4680,18 +4979,20 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	a2,x0,3
 	and	a3,a2,a3
-	sub	a2,x0,s3
-	sub	s3,a1,a2
+	sub	s3,x0,s3
+	sub	s3,a1,s3
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s3, x0
 	add	a1, s3, x0
 .Lpcrel_callmul_176:
@@ -4702,7 +5003,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	sp,sp,-16
 	sw	s2,0(sp)
@@ -4713,11 +5015,12 @@ SolveCubic:
 	lui	s2,16
 	addi	s2,s2,-1
 	and	s2,a0,s2
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a2, x0
 	add	a1, s2, x0
 .Lpcrel_callmul_177:
@@ -4727,8 +5030,9 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	addi	s2,x0,16
 	srl	a2,a2,s2
 	addi	s2,x0,16
@@ -4744,7 +5048,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s2, x0
 	add	a1, s3, x0
 .Lpcrel_callmul_178:
@@ -4755,7 +5060,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	s3,16
 	addi	s3,s3,-1
@@ -4773,7 +5079,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s3, x0
 	add	a1, s4, x0
 .Lpcrel_callmul_179:
@@ -4784,7 +5091,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	s4,16
 	addi	s4,s4,-1
@@ -4808,7 +5116,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s2, x0
 	add	a1, s3, x0
 .Lpcrel_callmul_180:
@@ -4819,7 +5128,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	s3,x0,16
 	srl	s2,s2,s3
@@ -4836,7 +5146,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s3, x0
 	add	a1, s4, x0
 .Lpcrel_callmul_181:
@@ -4847,7 +5158,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	s4,x0,16
 	srl	s3,s3,s4
@@ -4866,7 +5178,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s4, x0
 	add	a1, s5, x0
 .Lpcrel_callmul_182:
@@ -4877,7 +5190,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	s4,x0,s4
 	sub	s3,s3,s4
@@ -4897,7 +5211,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s3, x0
 	add	a1, a2, x0
 .Lpcrel_callmul_183:
@@ -4908,14 +5223,16 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s4, x0
 	add	a1, t0, x0
 .Lpcrel_callmul_184:
@@ -4926,12 +5243,13 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	sp,sp,-16
 	sw	s2,0(sp)
 	sw	s3,4(sp)
-	sw	s4,8(sp)
+	sw	s5,8(sp)
 	lui	s7,16
 	addi	s7,s7,-1
 	and	s7,s4,s7
@@ -4942,7 +5260,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s7, x0
 	add	a1, s2, x0
 .Lpcrel_callmul_185:
@@ -4953,7 +5272,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	s2,16
 	addi	s2,s2,-1
@@ -4966,7 +5286,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s2, x0
 	add	a1, s3, x0
 .Lpcrel_callmul_186:
@@ -4977,23 +5298,25 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	s3,x0,16
 	srl	s2,s2,s3
 	addi	s3,x0,16
 	sra	s3,s4,s3
-	lui	s4,16
-	addi	s4,s4,-1
-	and	s4,a7,s4
+	lui	s5,16
+	addi	s5,s5,-1
+	and	s5,a7,s5
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s3, x0
-	add	a1, s4, x0
+	add	a1, s5, x0
 .Lpcrel_callmul_187:
 	auipc	ra, %pcrel_hi(__mul)
 	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_187)
@@ -5002,7 +5325,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	s3,x0,s3
 	sub	s2,s2,s3
@@ -5024,7 +5348,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s2, x0
 	add	a1, s3, x0
 .Lpcrel_callmul_188:
@@ -5035,23 +5360,25 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	s3,x0,16
 	srl	s2,s2,s3
 	addi	s3,x0,16
 	sra	s3,s4,s3
-	lui	s4,16
-	addi	s4,s4,-1
-	and	s4,a7,s4
+	lui	s5,16
+	addi	s5,s5,-1
+	and	s5,a7,s5
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s3, x0
-	add	a1, s4, x0
+	add	a1, s5, x0
 .Lpcrel_callmul_189:
 	auipc	ra, %pcrel_hi(__mul)
 	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_189)
@@ -5060,7 +5387,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	s3,x0,s3
 	sub	s2,s2,s3
@@ -5068,16 +5396,17 @@ SolveCubic:
 	sra	s2,s2,s3
 	addi	s3,x0,16
 	sra	s3,s4,s3
-	addi	s4,x0,16
-	sra	s4,a7,s4
+	addi	s5,x0,16
+	sra	s5,a7,s5
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s3, x0
-	add	a1, s4, x0
+	add	a1, s5, x0
 .Lpcrel_callmul_190:
 	auipc	ra, %pcrel_hi(__mul)
 	jalr	ra, ra, %pcrel_lo(.Lpcrel_callmul_190)
@@ -5086,7 +5415,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	s3,x0,s3
 	sub	s2,s2,s3
@@ -5094,7 +5424,7 @@ SolveCubic:
 	sub	s7,s7,s2
 	lw	s2,0(sp)
 	lw	s3,4(sp)
-	lw	s4,8(sp)
+	lw	s5,8(sp)
 	addi	sp,sp,16
 	addi	sp,sp,-16
 	sw	s2,0(sp)
@@ -5116,12 +5446,14 @@ SolveCubic:
 	lw	s2,0(sp)
 	addi	sp,sp,16
 	sub	s4,zero,s3
-	beq	a3,t6,.L18
-	addi	sp, sp, -16
+	bne	a3,t6,.+8
+	jal	x0,.L18
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a2, x0
 	add	a1, a2, x0
 .Lpcrel_callmul_191:
@@ -5131,13 +5463,15 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
-	addi	sp, sp, -16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a2, x0
 	add	a1, s1, x0
 .Lpcrel_callmul_192:
@@ -5147,8 +5481,9 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	addi	sp,sp,-16
 	sw	s2,0(sp)
 	sw	s3,4(sp)
@@ -5163,7 +5498,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s2, x0
 	add	a1, s3, x0
 .Lpcrel_callmul_193:
@@ -5174,7 +5510,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	s3,16
 	addi	s3,s3,-1
@@ -5187,7 +5524,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s3, x0
 	add	a1, s4, x0
 .Lpcrel_callmul_194:
@@ -5198,7 +5536,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	s4,x0,16
 	srl	s3,s3,s4
@@ -5212,7 +5551,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s4, x0
 	add	a1, s5, x0
 .Lpcrel_callmul_195:
@@ -5223,7 +5563,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	s4,x0,s4
 	sub	s3,s3,s4
@@ -5245,7 +5586,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s3, x0
 	add	a1, s4, x0
 .Lpcrel_callmul_196:
@@ -5256,7 +5598,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	s4,x0,16
 	srl	s3,s3,s4
@@ -5270,7 +5613,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s4, x0
 	add	a1, s5, x0
 .Lpcrel_callmul_197:
@@ -5281,7 +5625,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	s4,x0,s4
 	sub	s3,s3,s4
@@ -5296,7 +5641,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s4, x0
 	add	a1, s6, x0
 .Lpcrel_callmul_198:
@@ -5307,7 +5653,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	s6,x0,s6
 	sub	s6,s3,s6
@@ -5333,7 +5680,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s2, x0
 	add	a1, s3, x0
 .Lpcrel_callmul_199:
@@ -5344,7 +5692,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	s3,x0,16
 	srl	s2,s2,s3
@@ -5361,7 +5710,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s3, x0
 	add	a1, s4, x0
 .Lpcrel_callmul_200:
@@ -5372,7 +5722,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	s4,16
 	addi	s4,s4,-1
@@ -5390,7 +5741,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s4, x0
 	add	a1, s5, x0
 .Lpcrel_callmul_201:
@@ -5401,7 +5753,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	s5,16
 	addi	s5,s5,-1
@@ -5425,7 +5778,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s3, x0
 	add	a1, s4, x0
 .Lpcrel_callmul_202:
@@ -5436,7 +5790,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	s4,x0,16
 	srl	s3,s3,s4
@@ -5453,7 +5808,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s4, x0
 	add	a1, s5, x0
 .Lpcrel_callmul_203:
@@ -5464,7 +5820,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	s5,x0,16
 	srl	s4,s4,s5
@@ -5478,11 +5835,12 @@ SolveCubic:
 	lui	s6,16
 	addi	s6,s6,-1
 	and	s5,s5,s6
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a2, x0
 	add	a1, s5, x0
 .Lpcrel_callmul_204:
@@ -5492,8 +5850,9 @@ SolveCubic:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	sub	a2,x0,a2
 	sub	a2,s4,a2
 	sub	a2,x0,a2
@@ -5513,22 +5872,24 @@ SolveCubic:
 	srl	a2,a2,s4
 	sub	s4,x0,a2
 	sub	s4,s5,s4
-	beq	a3,a5,.L17
-	beq	a3,zero,.L18
+	bne	a3,a5,.+8
+	jal	x0,.L17
+	bne	a3,zero,.+8
+	jal	x0,.L18
 	addi	s4,s3,0
 .L18:
-	bge	t4,s4,.L33
+	blt	t4,s4,.+8
+	jal	x0,.L33
 	addi	t1,a1,0
 .L19:
 	addi	a6,a6,-1
-	beq	a6,zero,.+8
-	jal	x0,.L20
-	sub	t0,x0,t1
-	sub	t1,t3,t0
+	bne	a6,zero,.L20
+	sub	t1,x0,t1
+	sub	t1,t3,t1
 	addi	s3,x0,31
 	srl	s3,t1,s3
-	sub	t0,x0,s3
-	sub	s3,t1,t0
+	sub	s3,x0,s3
+	sub	s3,t1,s3
 	lui	a5,2
 	lui	a2,3
 	addi	t0,x0,1
@@ -5540,8 +5901,8 @@ SolveCubic:
 	sub	t0,x0,s3
 	sub	a5,a5,t0
 	addi	a4,a4,1366
-	sub	t0,x0,s3
-	sub	s3,a2,t0
+	sub	s3,x0,s3
+	sub	s3,a2,s3
 	addi	a3,a3,-1365
 	lui	s1,16
 	addi	s1,s1,-1
@@ -5553,7 +5914,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s1, x0
 	add	a1, t0, x0
 .Lpcrel_callmul_205:
@@ -5564,7 +5926,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
@@ -5602,7 +5965,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_207:
@@ -5613,7 +5977,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -5660,7 +6025,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_209:
@@ -5671,7 +6037,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -5686,7 +6053,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_210:
@@ -5697,7 +6065,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t0,t0,t2
@@ -5745,7 +6114,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_212:
@@ -5756,7 +6126,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t3,x0,16
 	srl	t2,t2,t3
@@ -5770,7 +6141,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t3, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_213:
@@ -5781,7 +6153,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t3,x0,t3
 	sub	t2,t2,t3
@@ -5803,7 +6176,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_214:
@@ -5814,7 +6188,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t3,x0,16
 	srl	t2,t2,t3
@@ -5828,7 +6203,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t3, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_215:
@@ -5839,7 +6215,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t3,x0,t3
 	sub	t2,t2,t3
@@ -5854,7 +6231,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t3, x0
 	add	a1, s3, x0
 .Lpcrel_callmul_216:
@@ -5865,7 +6243,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	s3,x0,s3
 	sub	s3,t2,s3
@@ -5906,7 +6285,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_218:
@@ -5917,7 +6297,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t3,x0,16
 	srl	t2,t2,t3
@@ -5931,7 +6312,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t3, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_219:
@@ -5942,7 +6324,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t3,x0,t3
 	sub	t2,t2,t3
@@ -5964,7 +6347,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_220:
@@ -5975,7 +6359,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t3,x0,16
 	srl	t2,t2,t3
@@ -5989,7 +6374,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t3, x0
 	add	a1, t4, x0
 .Lpcrel_callmul_221:
@@ -6000,7 +6386,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t3,x0,t3
 	sub	t2,t2,t3
@@ -6015,7 +6402,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t3, x0
 	add	a1, t1, x0
 .Lpcrel_callmul_222:
@@ -6026,7 +6414,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t1,t2,t1
@@ -6039,10 +6428,12 @@ SolveCubic:
 	sw	a5,0(s8)
 	addi	a5,zero,8
 	addi	s4,zero,0
-	bge	a5,s2,.L21
+	blt	a5,s2,.+8
+	jal	x0,.L21
 	addi	a5,zero,1000
 	addi	a3,t5,0
-	bge	t5,a5,.L22
+	blt	t5,a5,.+8
+	jal	x0,.L22
 	addi	a3,a5,0
 .L22:
 	addi	a5,zero,1000
@@ -6051,7 +6442,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t5, x0
 	add	a1, a5, x0
 .Lpcrel_callmul_223:
@@ -6062,7 +6454,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
@@ -6070,7 +6463,8 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_224:
@@ -6082,10 +6476,11 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a4
-	sub	a4,a3,t0
+	sub	a4,x0,a4
+	sub	a4,a3,a4
 	addi	t0,x0,1
 	sra	a4,a4,t0
 	addi	sp, sp, -32
@@ -6093,7 +6488,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a4, x0
 .Lpcrel_calldiv_225:
@@ -6104,10 +6500,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a3
-	sub	a3,a4,t0
+	sub	a3,x0,a3
+	sub	a3,a4,a3
 	addi	t0,x0,1
 	sra	a3,a3,t0
 	addi	sp, sp, -32
@@ -6116,7 +6513,8 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_226:
@@ -6128,10 +6526,11 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a4
-	sub	a4,a3,t0
+	sub	a4,x0,a4
+	sub	a4,a3,a4
 	addi	t0,x0,1
 	sra	a4,a4,t0
 	addi	sp, sp, -32
@@ -6139,7 +6538,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a4, x0
 .Lpcrel_calldiv_227:
@@ -6150,10 +6550,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a3
-	sub	a3,a4,t0
+	sub	a3,x0,a3
+	sub	a3,a4,a3
 	addi	t0,x0,1
 	sra	a3,a3,t0
 	addi	sp, sp, -32
@@ -6162,7 +6563,8 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_228:
@@ -6174,10 +6576,11 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a4
-	sub	a4,a3,t0
+	sub	a4,x0,a4
+	sub	a4,a3,a4
 	addi	t0,x0,1
 	sra	a4,a4,t0
 	addi	sp, sp, -32
@@ -6185,7 +6588,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a4, x0
 .Lpcrel_calldiv_229:
@@ -6196,10 +6600,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a3
-	sub	a3,a4,t0
+	sub	a3,x0,a3
+	sub	a3,a4,a3
 	addi	t0,x0,1
 	sra	a3,a3,t0
 	addi	sp, sp, -32
@@ -6208,7 +6613,8 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_230:
@@ -6220,10 +6626,11 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a4
-	sub	a4,a3,t0
+	sub	a4,x0,a4
+	sub	a4,a3,a4
 	addi	t0,x0,1
 	sra	a4,a4,t0
 	addi	sp, sp, -32
@@ -6231,7 +6638,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a4, x0
 .Lpcrel_calldiv_231:
@@ -6242,10 +6650,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a3
-	sub	a3,a4,t0
+	sub	a3,x0,a3
+	sub	a3,a4,a3
 	addi	t0,x0,1
 	sra	a3,a3,t0
 	addi	sp, sp, -32
@@ -6254,7 +6663,8 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_232:
@@ -6266,10 +6676,11 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a4
-	sub	a4,a3,t0
+	sub	a4,x0,a4
+	sub	a4,a3,a4
 	addi	t0,x0,1
 	sra	a4,a4,t0
 	addi	sp, sp, -32
@@ -6277,7 +6688,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a4, x0
 .Lpcrel_calldiv_233:
@@ -6288,10 +6700,11 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a3
-	sub	a3,a4,t0
+	sub	a3,x0,a3
+	sub	a3,a4,a3
 	addi	t0,x0,1
 	sra	a3,a3,t0
 	addi	sp, sp, -32
@@ -6300,7 +6713,8 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, a5, x0
 	add	a1, a3, x0
 .Lpcrel_calldiv_234:
@@ -6312,10 +6726,11 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a4
-	sub	a4,a3,t0
+	sub	a4,x0,a4
+	sub	a4,a3,a4
 	addi	t0,x0,1
 	sra	a4,a4,t0
 	addi	sp, sp, -32
@@ -6324,7 +6739,8 @@ SolveCubic:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, a5, x0
 	add	a1, a4, x0
 .Lpcrel_calldiv_235:
@@ -6336,10 +6752,11 @@ SolveCubic:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a5
-	sub	a5,a4,t0
+	sub	a5,x0,a5
+	sub	a5,a4,a5
 	addi	t0,x0,-2
 	and	a5,t0,a5
 	sub	s4,zero,a5
@@ -6380,7 +6797,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_237:
@@ -6391,7 +6809,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -6405,7 +6824,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_238:
@@ -6416,7 +6836,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
@@ -6438,7 +6859,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_239:
@@ -6449,7 +6871,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -6463,7 +6886,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_240:
@@ -6474,7 +6898,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
@@ -6489,7 +6914,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_241:
@@ -6500,7 +6926,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	s5,x0,s5
 	sub	s5,t1,s5
@@ -6516,7 +6943,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a1, s4, x0
 .Lpcrel_callmul_242:
 	auipc	ra, %pcrel_hi(__mul)
@@ -6526,7 +6954,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	s5,s5,s0
 	lui	s0,67109
@@ -6542,7 +6971,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, t0, x0
 .Lpcrel_callmul_243:
@@ -6553,7 +6983,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
@@ -6591,7 +7022,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_245:
@@ -6602,7 +7034,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -6649,7 +7082,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_247:
@@ -6660,7 +7094,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -6675,7 +7110,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_248:
@@ -6686,7 +7122,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -6707,7 +7144,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a1, s4, x0
 .Lpcrel_callmul_249:
 	auipc	ra, %pcrel_hi(__mul)
@@ -6717,7 +7155,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	a0,s3,0
 	lui	a5,16
@@ -6730,7 +7169,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, t0, x0
 .Lpcrel_callmul_250:
@@ -6741,7 +7181,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
@@ -6779,7 +7220,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_252:
@@ -6790,7 +7232,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -6837,7 +7280,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_254:
@@ -6848,7 +7292,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -6863,7 +7308,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_255:
@@ -6874,7 +7320,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -6890,11 +7337,12 @@ SolveCubic:
 .Lpcrel_3:
 	auipc	ra,%pcrel_hi(my_cos)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_3)
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a1, 0(sp)
 	sw	a2, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a1, s4, x0
 .Lpcrel_callmul_256:
 	auipc	ra, %pcrel_hi(__mul)
@@ -6903,8 +7351,9 @@ SolveCubic:
 	lw	a1, 0(sp)
 	lw	a2, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lw	ra,44(sp)
 	lw	s1,36(sp)
 	lw	s3,28(sp)
@@ -6921,7 +7370,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, t0, x0
 .Lpcrel_callmul_257:
@@ -6932,7 +7382,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
@@ -6970,7 +7421,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_259:
@@ -6981,7 +7433,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -7028,7 +7481,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_261:
@@ -7039,7 +7493,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -7054,7 +7509,8 @@ SolveCubic:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_262:
@@ -7065,7 +7521,8 @@ SolveCubic:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -7097,8 +7554,7 @@ SolveCubic:
 .L11:
 	addi	a5,zero,-53
 	lui	s3,1
-	bge	a0,a5,.+8
-	jal	x0,.L57
+	blt	a0,a5,.L57
 	lui	s1,1
 	addi	s3,s3,93
 	addi	s1,s1,-2002
@@ -7210,7 +7666,8 @@ main:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_6)
 	lw	s5,16(sp)
 	addi	s0,zero,0
-	bge	zero,s5,.L59
+	blt	zero,s5,.+8
+	jal	x0,.L59
 	lui	a5,%hi(.LC2)
 	lui	s4,67109
 	addi	s1,a5,%lo(.LC2)
@@ -7227,11 +7684,12 @@ main:
 	and	a1,a5,a1
 	addi	t0,x0,16
 	sra	t0,s4,t0
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a2, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, t0, x0
 .Lpcrel_callmul_263:
 	auipc	ra, %pcrel_hi(__mul)
@@ -7240,8 +7698,9 @@ main:
 	lw	a0, 0(sp)
 	lw	a2, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a5,t0
@@ -7278,7 +7737,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_265:
@@ -7289,7 +7749,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -7336,7 +7797,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_267:
@@ -7347,7 +7809,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -7362,7 +7825,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_268:
@@ -7373,7 +7837,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -7381,8 +7846,8 @@ main:
 	sub	a1,a1,t0
 	addi	a4,x0,31
 	sra	a4,a5,a4
-	sub	t0,x0,s0
-	sub	s0,a5,t0
+	sub	s0,x0,s0
+	sub	s0,a5,s0
 	addi	s3,s3,4
 	addi	t0,x0,6
 	sra	a1,a1,t0
@@ -7392,7 +7857,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s6, x0
 .Lpcrel_callmul_269:
 	auipc	ra, %pcrel_hi(__mul)
@@ -7402,7 +7868,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	a5,a5,a4
 	addi	a2,x0,31
@@ -7410,14 +7877,13 @@ main:
 	and	t0,a5,a2
 	sub	t0,t0,a2
 	sub	t0,a5,t0
-	and	t1,a5,a2
-	sub	a5,t0,t1
+	and	a5,a5,a2
+	sub	a5,t0,a5
 	sub	a2,a5,a2
 .Lpcrel_7:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_7)
-	beq	s2,s5,.+8
-	jal	x0,.L60
+	bne	s2,s5,.L60
 .L59:
 	addi	a0,zero,10
 .Lpcrel_8:
@@ -7441,7 +7907,8 @@ main:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_10)
 	lw	s5,16(sp)
-	bge	zero,s5,.L61
+	blt	zero,s5,.+8
+	jal	x0,.L61
 	lui	a5,%hi(.LC2)
 	lui	s4,67109
 	addi	s1,a5,%lo(.LC2)
@@ -7458,11 +7925,12 @@ main:
 	and	a1,a5,a1
 	addi	t0,x0,16
 	sra	t0,s4,t0
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a2, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, t0, x0
 .Lpcrel_callmul_270:
 	auipc	ra, %pcrel_hi(__mul)
@@ -7471,8 +7939,9 @@ main:
 	lw	a0, 0(sp)
 	lw	a2, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a5,t0
@@ -7509,7 +7978,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_272:
@@ -7520,7 +7990,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -7567,7 +8038,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_274:
@@ -7578,7 +8050,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -7593,7 +8066,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_275:
@@ -7604,7 +8078,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -7612,8 +8087,8 @@ main:
 	sub	a1,a1,t0
 	addi	a4,x0,31
 	sra	a4,a5,a4
-	sub	t0,x0,s0
-	sub	s0,a5,t0
+	sub	s0,x0,s0
+	sub	s0,a5,s0
 	addi	s3,s3,4
 	addi	t0,x0,6
 	sra	a1,a1,t0
@@ -7623,7 +8098,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s6, x0
 .Lpcrel_callmul_276:
 	auipc	ra, %pcrel_hi(__mul)
@@ -7633,7 +8109,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	a5,a5,a4
 	addi	a2,x0,31
@@ -7641,14 +8118,13 @@ main:
 	and	t0,a5,a2
 	sub	t0,t0,a2
 	sub	t0,a5,t0
-	and	t1,a5,a2
-	sub	a5,t0,t1
+	and	a5,a5,a2
+	sub	a5,t0,a5
 	sub	a2,a5,a2
 .Lpcrel_11:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_11)
-	beq	s2,s5,.+8
-	jal	x0,.L62
+	bne	s2,s5,.L62
 .L61:
 	addi	a0,zero,10
 .Lpcrel_12:
@@ -7672,7 +8148,8 @@ main:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_14)
 	lw	s5,16(sp)
-	bge	zero,s5,.L63
+	blt	zero,s5,.+8
+	jal	x0,.L63
 	lui	a5,%hi(.LC2)
 	lui	s4,67109
 	addi	s1,a5,%lo(.LC2)
@@ -7689,11 +8166,12 @@ main:
 	and	a1,a5,a1
 	addi	t0,x0,16
 	sra	t0,s4,t0
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a2, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, t0, x0
 .Lpcrel_callmul_277:
 	auipc	ra, %pcrel_hi(__mul)
@@ -7702,8 +8180,9 @@ main:
 	lw	a0, 0(sp)
 	lw	a2, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a5,t0
@@ -7740,7 +8219,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_279:
@@ -7751,7 +8231,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -7798,7 +8279,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_281:
@@ -7809,7 +8291,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -7824,7 +8307,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_282:
@@ -7835,7 +8319,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -7843,8 +8328,8 @@ main:
 	sub	a1,a1,t0
 	addi	a4,x0,31
 	sra	a4,a5,a4
-	sub	t0,x0,s0
-	sub	s0,a5,t0
+	sub	s0,x0,s0
+	sub	s0,a5,s0
 	addi	s3,s3,4
 	addi	t0,x0,6
 	sra	a1,a1,t0
@@ -7854,7 +8339,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s6, x0
 .Lpcrel_callmul_283:
 	auipc	ra, %pcrel_hi(__mul)
@@ -7864,7 +8350,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	a5,a5,a4
 	addi	a2,x0,31
@@ -7872,14 +8359,13 @@ main:
 	and	t0,a5,a2
 	sub	t0,t0,a2
 	sub	t0,a5,t0
-	and	t1,a5,a2
-	sub	a5,t0,t1
+	and	a5,a5,a2
+	sub	a5,t0,a5
 	sub	a2,a5,a2
 .Lpcrel_15:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_15)
-	beq	s2,s5,.+8
-	jal	x0,.L64
+	bne	s2,s5,.L64
 .L63:
 	addi	a0,zero,10
 .Lpcrel_16:
@@ -7902,7 +8388,8 @@ main:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_18)
 	lw	s5,16(sp)
-	bge	zero,s5,.L65
+	blt	zero,s5,.+8
+	jal	x0,.L65
 	lui	a5,%hi(.LC2)
 	lui	s4,67109
 	addi	s1,a5,%lo(.LC2)
@@ -7919,11 +8406,12 @@ main:
 	and	a1,a5,a1
 	addi	t0,x0,16
 	sra	t0,s4,t0
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a2, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, t0, x0
 .Lpcrel_callmul_284:
 	auipc	ra, %pcrel_hi(__mul)
@@ -7932,8 +8420,9 @@ main:
 	lw	a0, 0(sp)
 	lw	a2, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a5,t0
@@ -7970,7 +8459,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_286:
@@ -7981,7 +8471,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -8028,7 +8519,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_288:
@@ -8039,7 +8531,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -8054,7 +8547,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_289:
@@ -8065,7 +8559,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -8073,8 +8568,8 @@ main:
 	sub	a1,a1,t0
 	addi	a4,x0,31
 	sra	a4,a5,a4
-	sub	t0,x0,s0
-	sub	s0,a5,t0
+	sub	s0,x0,s0
+	sub	s0,a5,s0
 	addi	s3,s3,4
 	addi	t0,x0,6
 	sra	a1,a1,t0
@@ -8084,7 +8579,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, s6, x0
 .Lpcrel_callmul_290:
 	auipc	ra, %pcrel_hi(__mul)
@@ -8094,7 +8590,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	a5,a5,a4
 	addi	a2,x0,31
@@ -8102,14 +8599,13 @@ main:
 	and	t0,a5,a2
 	sub	t0,t0,a2
 	sub	t0,a5,t0
-	and	t1,a5,a2
-	sub	a5,t0,t1
+	and	a5,a5,a2
+	sub	a5,t0,a5
 	sub	a2,a5,a2
 .Lpcrel_19:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_19)
-	beq	s2,s5,.+8
-	jal	x0,.L66
+	bne	s2,s5,.L66
 .L65:
 	addi	a0,zero,10
 .Lpcrel_20:
@@ -8149,7 +8645,8 @@ main:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_22)
 	lw	s1,16(sp)
-	bge	zero,s1,.L68
+	blt	zero,s1,.+8
+	jal	x0,.L68
 	addi	s10,sp,20
 	addi	s11,zero,0
 .L69:
@@ -8161,11 +8658,12 @@ main:
 	and	a1,a2,a1
 	addi	t0,x0,16
 	sra	t0,s3,t0
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a2, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, t0, x0
 .Lpcrel_callmul_291:
 	auipc	ra, %pcrel_hi(__mul)
@@ -8174,8 +8672,9 @@ main:
 	lw	a0, 0(sp)
 	lw	a2, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a2,t0
@@ -8212,7 +8711,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_293:
@@ -8223,7 +8723,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -8270,7 +8771,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_295:
@@ -8281,7 +8783,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -8296,7 +8799,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_296:
@@ -8307,7 +8811,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
@@ -8315,17 +8820,18 @@ main:
 	sub	a1,a1,t0
 	addi	a3,x0,31
 	sra	a3,a2,a3
-	sub	t0,x0,s0
-	sub	s0,a2,t0
+	sub	s0,x0,s0
+	sub	s0,a2,s0
 	addi	s10,s10,4
 	addi	t0,x0,6
 	sra	a1,a1,t0
 	sub	a1,a1,a3
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, s5, x0
 .Lpcrel_callmul_297:
 	auipc	ra, %pcrel_hi(__mul)
@@ -8334,45 +8840,41 @@ main:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	sub	a2,a2,a3
 	addi	a3,x0,31
 	sra	a3,a2,a3
 	and	t0,a2,a3
 	sub	t0,t0,a3
 	sub	t0,a2,t0
-	and	t1,a2,a3
-	sub	a2,t0,t1
+	and	a2,a2,a3
+	sub	a2,t0,a2
 	sub	a2,a2,a3
 .Lpcrel_23:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_23)
-	beq	s11,s1,.+8
-	jal	x0,.L69
+	bne	s11,s1,.L69
 .L68:
 	addi	a0,zero,10
 	addi	s2,s2,-1000
 .Lpcrel_24:
 	auipc	ra,%pcrel_hi(putchar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_24)
-	beq	s2,s7,.+8
-	jal	x0,.L70
+	bne	s2,s7,.L70
 	lui	a5,4
 	addi	s6,s6,500
 	addi	a5,a5,-1384
-	beq	s6,a5,.+8
-	jal	x0,.L73
+	bne	s6,a5,.L73
 	addi	s9,s9,-1000
-	beq	s9,zero,.+8
-	jal	x0,.L75
+	bne	s9,zero,.L75
 	lw	a4,12(sp)
 	lui	a5,2
 	addi	a5,a5,1808
 	addi	a4,a4,1000
 	sw	a4,12(sp)
-	beq	a4,a5,.+8
-	jal	x0,.L67
+	bne	a4,a5,.L67
 	lui	a0,%hi(.LC3)
 	addi	a0,a0,%lo(.LC3)
 	lui	s3,%hi(.LC4)
@@ -8406,18 +8908,16 @@ main:
 	sub	a5,a5,a4
 	addi	a2,a2,1
 .L76:
-	beq	s1,zero,.+8
-	jal	x0,.L77
+	bne	s1,zero,.L77
 	addi	a1,s2,0
 	addi	a0,s3,0
 	addi	s2,s2,1
-	sub	t0,x0,s0
-	sub	s0,a2,t0
+	sub	s0,x0,s0
+	sub	s0,a2,s0
 .Lpcrel_26:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_26)
-	beq	s2,s4,.+8
-	jal	x0,.L78
+	bne	s2,s4,.L78
 	lui	a5,261840
 	addi	a5,a5,361
 	addi	a2,zero,0
@@ -8441,8 +8941,7 @@ main:
 	sub	s1,s1,a4
 	addi	a2,a2,1
 .L79:
-	beq	s2,zero,.+8
-	jal	x0,.L80
+	bne	s2,zero,.L80
 	lui	a0,%hi(.LC5)
 	lui	a1,261840
 	addi	a1,a1,361
@@ -8514,7 +9013,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_299:
@@ -8525,7 +9025,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t2,16
 	addi	t2,t2,-1
@@ -8543,7 +9044,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_300:
@@ -8554,7 +9056,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t3,16
 	addi	t3,t3,-1
@@ -8578,7 +9081,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_301:
@@ -8589,7 +9093,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -8606,7 +9111,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_302:
@@ -8617,7 +9123,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t3,x0,16
 	srl	t2,t2,t3
@@ -8636,7 +9143,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_303:
@@ -8647,7 +9155,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	a5,x0,a5
 	sub	a5,t2,a5
@@ -8658,8 +9167,8 @@ main:
 	addi	a2,x0,5
 	srl	a2,s3,a2
 	addi	a0,s4,0
-	sub	t0,x0,s3
-	sub	s3,s7,t0
+	sub	s3,x0,s3
+	sub	s3,s7,s3
 	addi	t0,x0,2
 	srl	a5,a5,t0
 	lui	a3,16
@@ -8668,11 +9177,12 @@ main:
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,s5,t0
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a3, x0
 	add	a1, t0, x0
 .Lpcrel_callmul_304:
@@ -8682,8 +9192,9 @@ main:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	addi	t0,x0,16
 	srl	a3,a3,t0
 	addi	t0,x0,16
@@ -8728,7 +9239,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_306:
@@ -8739,7 +9251,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t2,16
 	addi	t2,t2,-1
@@ -8791,7 +9304,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_308:
@@ -8802,7 +9316,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -8821,7 +9336,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_309:
@@ -8832,7 +9348,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
@@ -8840,8 +9357,8 @@ main:
 	sub	t0,t0,t1
 	sub	t0,x0,t0
 	sub	a3,a3,t0
-	sub	t0,x0,s0
-	sub	s0,a5,t0
+	sub	s0,x0,s0
+	sub	s0,a5,s0
 	addi	t0,x0,6
 	srl	a3,a3,t0
 	lui	a1,16
@@ -8850,11 +9367,12 @@ main:
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,s5,t0
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a2, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, t0, x0
 .Lpcrel_callmul_310:
 	auipc	ra, %pcrel_hi(__mul)
@@ -8863,8 +9381,9 @@ main:
 	lw	a0, 0(sp)
 	lw	a2, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	addi	t0,x0,16
 	srl	a1,a1,t0
 	addi	t0,x0,16
@@ -8909,7 +9428,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_312:
@@ -8920,7 +9440,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t2,16
 	addi	t2,t2,-1
@@ -8972,7 +9493,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_314:
@@ -8983,7 +9505,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -9002,7 +9525,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_315:
@@ -9013,7 +9537,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
@@ -9022,11 +9547,12 @@ main:
 	sub	t0,x0,t0
 	sub	a1,a1,t0
 	addi	s1,s1,1000
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a3, x0
 	add	a1, s11, x0
 .Lpcrel_callmul_316:
@@ -9036,8 +9562,9 @@ main:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	addi	t0,x0,6
 	srl	a1,a1,t0
 	lui	t0,16
@@ -9079,7 +9606,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_318:
@@ -9090,7 +9618,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t2,16
 	addi	t2,t2,-1
@@ -9108,7 +9637,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_319:
@@ -9119,7 +9649,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t3,16
 	addi	t3,t3,-1
@@ -9143,7 +9674,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_320:
@@ -9154,7 +9686,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -9171,7 +9704,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_321:
@@ -9182,7 +9716,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t3,x0,16
 	srl	t2,t2,t3
@@ -9196,11 +9731,12 @@ main:
 	lui	t4,16
 	addi	t4,t4,-1
 	and	t3,t3,t4
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_322:
@@ -9210,8 +9746,9 @@ main:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	sub	a2,x0,a2
 	sub	a2,t2,a2
 	sub	a2,x0,a2
@@ -9224,8 +9761,7 @@ main:
 .Lpcrel_29:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_29)
-	beq	s1,s6,.+8
-	jal	x0,.L81
+	bne	s1,s6,.L81
 	addi	a0,zero,10
 	lui	s4,%hi(.LC8)
 	lui	s7,683477
@@ -9250,11 +9786,12 @@ main:
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,s5,t0
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a2, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, t0, x0
 .Lpcrel_callmul_323:
 	auipc	ra, %pcrel_hi(__mul)
@@ -9263,8 +9800,9 @@ main:
 	lw	a0, 0(sp)
 	lw	a2, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	addi	t0,x0,16
 	srl	a1,a1,t0
 	addi	t0,x0,16
@@ -9309,7 +9847,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_325:
@@ -9320,7 +9859,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t2,16
 	addi	t2,t2,-1
@@ -9372,7 +9912,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_327:
@@ -9383,7 +9924,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -9402,7 +9944,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_328:
@@ -9413,7 +9956,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
@@ -9426,15 +9970,16 @@ main:
 	addi	a4,x0,4
 	srl	a4,s2,a4
 	addi	a0,s4,0
-	sub	t0,x0,s2
-	sub	s2,s3,t0
+	sub	s2,x0,s2
+	sub	s2,s3,s2
 	addi	t0,x0,6
 	srl	a1,a1,t0
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, s8, x0
 .Lpcrel_callmul_329:
 	auipc	ra, %pcrel_hi(__mul)
@@ -9443,8 +9988,9 @@ main:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a4,t0
@@ -9484,7 +10030,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_331:
@@ -9495,7 +10042,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t2,16
 	addi	t2,t2,-1
@@ -9513,7 +10061,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_332:
@@ -9524,7 +10073,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t3,16
 	addi	t3,t3,-1
@@ -9548,7 +10098,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_333:
@@ -9559,7 +10110,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -9576,7 +10128,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_334:
@@ -9587,7 +10140,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t3,x0,16
 	srl	t2,t2,t3
@@ -9606,7 +10160,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a4, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_335:
@@ -9617,7 +10172,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	a4,x0,a4
 	sub	a4,t2,a4
@@ -9666,7 +10222,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_337:
@@ -9677,7 +10234,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t2,16
 	addi	t2,t2,-1
@@ -9695,7 +10253,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_338:
@@ -9706,7 +10265,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t3,16
 	addi	t3,t3,-1
@@ -9730,7 +10290,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_339:
@@ -9741,7 +10302,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -9758,7 +10320,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_340:
@@ -9769,7 +10332,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t3,x0,16
 	srl	t2,t2,t3
@@ -9788,7 +10352,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_341:
@@ -9799,7 +10364,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	a5,x0,a5
 	sub	a5,t2,a5
@@ -9811,13 +10377,12 @@ main:
 	srl	a3,a4,a3
 	addi	t0,x0,10
 	srl	a5,a5,t0
-	sub	t0,x0,s0
-	sub	s0,a5,t0
+	sub	s0,x0,s0
+	sub	s0,a5,s0
 .Lpcrel_31:
 	auipc	ra,%pcrel_hi(printf)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_31)
-	beq	s9,s1,.+8
-	jal	x0,.L82
+	bne	s9,s1,.L82
 	lw	ra,92(sp)
 	addi	a0,x0,1
 	bltu	s0,a0,.+12
@@ -9851,17 +10416,17 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	a3,x0,1
-	and	a3,a3,a1
-	beq	a3,x0,.Mul_skip
-	sub	t0,x0,a0
-	sub	a0,a2,t0
+	and	a3,a1,a3
+	bne	a3,x0,.+8
+	jal	x0,.Mul_skip
+	sub	a0,x0,a0
+	sub	a0,a2,a0
 .Mul_skip:
 	addi	t0,x0,1
 	srl	a1,a1,t0
 	addi	t0,x0,1
 	sll	a2,a2,t0
-	beq	a1,x0,.+8
-	jal	x0,.Mul_loop
+	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
 
 .text
@@ -9870,10 +10435,8 @@ __mul:
 # Signed 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
-	bge	a0,zero,.+8
-	jal	x0,__riscv_div_lib_L10
-	bge	a1,zero,.+8
-	jal	x0,__riscv_div_lib_L11
+	blt	a0,zero,__riscv_div_lib_L10
+	blt	a1,zero,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
 # Unsigned 32-bit division: a0 = a0 / a1
@@ -9882,32 +10445,33 @@ __riscv_div_lib_udivsi3:
 	addi	a2,a1,0
 	addi	a1,a0,0
 	addi	a0,zero,-1
-	beq	a2,zero,__riscv_div_lib_L5
+	bne	a2,zero,.+8
+	jal	x0,__riscv_div_lib_L5
 	addi	a3,zero,1
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
-	bge	zero,a2,__riscv_div_lib_L2
-	addi	t0,x0,1
-	sll	a2,a2,t0
-	addi	t0,x0,1
-	sll	a3,a3,t0
+	blt	zero,a2,.+8
+	jal	x0,__riscv_div_lib_L2
+	addi	t1,x0,1
+	sll	a2,a2,t1
+	addi	t1,x0,1
+	sll	a3,a3,t1
 	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	and	t0,a0,a3
-	sub	t0,t0,a3
-	sub	a0,a0,t0
+	and	t1,a0,a3
+	sub	t1,t1,a3
+	sub	a0,a0,t1
 __riscv_div_lib_L4:
-	addi	t0,x0,1
-	srl	a3,a3,t0
-	addi	t0,x0,1
-	srl	a2,a2,t0
-	beq	a3,zero,.+8
-	jal	x0,__riscv_div_lib_L3
+	addi	t1,x0,1
+	srl	a3,a3,t1
+	addi	t1,x0,1
+	srl	a2,a2,t1
+	bne	a3,zero,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
 
@@ -9924,8 +10488,7 @@ __riscv_div_lib_umodsi3:
 # Handle negative arguments to divsi3
 __riscv_div_lib_L10:
 	sub	a0,zero,a0
-	bge	zero,a1,.+8
-	jal	x0,__riscv_div_lib_L12
+	blt	zero,a1,__riscv_div_lib_L12
 	sub	a1,zero,a1
 	jal	x0,__riscv_div_lib_udivsi3
 __riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
@@ -9942,10 +10505,8 @@ __riscv_div_lib_L12:
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
 	addi	t0,ra,0
-	bge	a1,zero,.+8
-	jal	x0,__riscv_div_lib_L31
-	bge	a0,zero,.+8
-	jal	x0,__riscv_div_lib_L32
+	blt	a1,zero,__riscv_div_lib_L31
+	blt	a0,zero,__riscv_div_lib_L32
 __riscv_div_lib_L30:
 .Lpcrel_div3:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
@@ -9954,8 +10515,7 @@ __riscv_div_lib_L30:
 	jalr	zero,t0,0
 __riscv_div_lib_L31:
 	sub	a1,zero,a1
-	bge	a0,zero,.+8
-	jal	x0,.+8
+	blt	a0,zero,.+8
 	jal	x0,__riscv_div_lib_L30
 __riscv_div_lib_L32:
 	sub	a0,zero,a0

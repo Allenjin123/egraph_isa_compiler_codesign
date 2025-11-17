@@ -57,12 +57,17 @@ def _is_t0(reg: str) -> bool:
     return reg in {"t0", "x5"}
 
 
+def _is_t1(reg: str) -> bool:
+    return reg in {"t1", "x6"}
+
+
 def replace_m_extension(asm: str) -> str:
     """将所有 M 扩展伪指令替换为调用软件实现。
 
     支持的伪指令：callmul, calldiv, calldivu, callrem, callremu
     根据 rd 是否为 a0/a1 决定是否保留对应的压栈与出栈指令。
-    对于 div/divu 操作，额外保存 t0 寄存器。
+    对于 mul 操作，额外保存 t0 寄存器。
+    对于 div/divu/rem/remu 操作，额外保存 t0 和 t1 寄存器。
     """
 
     if not asm:
@@ -95,10 +100,12 @@ def replace_m_extension(asm: str) -> str:
         save_a1 = not _is_a1(rd)
         save_a2 = not _is_a2(rd)
         save_a3 = not _is_a3(rd)
-        save_t0 = needs_t0 and not _is_t0(rd)
+        # mul 需要保存 t0，其他操作需要保存 t0 和 t1
+        save_t0 = (op == "callmul" or needs_t0) and not _is_t0(rd)
+        save_t1 = needs_t0 and not _is_t1(rd)
         
         # ra 始终保存，a0-a3 根据 rd 决定是否保存
-        stack_slots = int(save_a0) + int(save_a1) + int(save_a2) + int(save_a3) + int(save_t0) + 1
+        stack_slots = int(save_a0) + int(save_a1) + int(save_a2) + int(save_a3) + int(save_t0) + int(save_t1) + 1
         # RISC-V ABI 要求栈指针保持 16 字节对齐
         stack_frame = ((4 * stack_slots + 15) // 16) * 16
 
@@ -121,6 +128,9 @@ def replace_m_extension(asm: str) -> str:
                 offset += 4
             if save_t0:
                 new_lines.append(f"{indent}sw\tt0, {offset}(sp)")
+                offset += 4
+            if save_t1:
+                new_lines.append(f"{indent}sw\tt1, {offset}(sp)")
                 offset += 4
             # 始终保存 ra
             new_lines.append(f"{indent}sw\tra, {offset}(sp)")
@@ -213,6 +223,9 @@ def replace_m_extension(asm: str) -> str:
                 offset += 4
             if save_t0:
                 new_lines.append(f"{indent}lw\tt0, {offset}(sp)")
+                offset += 4
+            if save_t1:
+                new_lines.append(f"{indent}lw\tt1, {offset}(sp)")
                 offset += 4
             # 始终恢复 ra
             new_lines.append(f"{indent}lw\tra, {offset}(sp)")

@@ -8,7 +8,8 @@
 	.align	2
 	.type	quicksort_range, @function
 quicksort_range:
-	bge	a1,a2,.L33
+	blt	a1,a2,.+8
+	jal	x0,.L33
 	addi	sp,sp,-80
 	sw	s1,68(sp)
 	sw	s2,64(sp)
@@ -23,14 +24,14 @@ quicksort_range:
 	sub	a4,a1,a4
 	addi	a5,x0,31
 	srl	a5,a4,a5
-	sub	t0,x0,a5
-	sub	a5,a4,t0
+	sub	a5,x0,a5
+	sub	a5,a4,a5
 	addi	a4,x0,1
 	sra	a4,a5,a4
 	addi	t0,x0,-2
-	and	a5,t0,a5
-	sub	t0,x0,a5
-	sub	a5,a4,t0
+	and	a5,a5,t0
+	sub	a5,x0,a5
+	sub	a5,a4,a5
 	addi	t0,x0,3
 	sll	a5,a5,t0
 	sub	t0,x0,a0
@@ -40,13 +41,12 @@ quicksort_range:
 	addi	a2,s3,0
 	addi	s0,a1,0
 .L10:
-	bge	a2,s0,.+8
-	jal	x0,.L11
+	blt	a2,s0,.L11
 .L36:
 	addi	a4,x0,1
 	sll	a4,s0,a4
-	sub	t0,x0,a4
-	sub	a4,s0,t0
+	sub	a4,x0,a4
+	sub	a4,s0,a4
 	addi	t0,x0,3
 	sll	a4,a4,t0
 	sub	t1,x0,a0
@@ -54,8 +54,8 @@ quicksort_range:
 	addi	a5,x0,1
 	sll	a5,a2,a5
 	lw	a6,20(t1)
-	sub	t0,x0,a5
-	sub	a5,a2,t0
+	sub	a5,x0,a5
+	sub	a5,a2,a5
 	addi	t0,x0,3
 	sll	a5,a5,t0
 	sub	a7,x0,a0
@@ -87,16 +87,13 @@ quicksort_range:
 	addi	a5,a5,-24
 	addi	a2,a2,-1
 	bltu	a3,a4,.L26
-	bne	a4,a3,.+8
-	jal	x0,.+8
-	jal	x0,.L22
+	bne	a4,a3,.L22
 	lw	a4,40(a5)
 	bltu	t3,a4,.L26
 .L22:
 	addi	a7,a6,0
 .L6:
-	bge	a2,s0,.+8
-	jal	x0,.L10
+	blt	a2,s0,.L10
 .L19:
 	lw	t5,0(a7)
 	lw	t4,4(a7)
@@ -130,20 +127,19 @@ quicksort_range:
 	sw	a6,12(a7)
 	sw	a4,16(a7)
 	sw	a5,20(a7)
-	bge	a2,s0,.L36
+	blt	a2,s0,.+8
+	jal	x0,.L36
 .L11:
-	bge	a1,a2,.+8
-	jal	x0,.L37
-	bge	s0,s3,.L38
+	blt	a1,a2,.L37
+	blt	s0,s3,.+8
+	jal	x0,.L38
 .L20:
 	addi	a1,s0,0
 	jal	x0,.L2
 .L34:
 	bne	a6,a3,.L14
 	lw	a6,16(t1)
-	bltu	a6,t3,.+8
-	jal	x0,.+8
-	jal	x0,.L12
+	bltu	a6,t3,.L12
 .L14:
 	lw	a4,20(a7)
 	bltu	a3,a4,.L17
@@ -152,13 +148,10 @@ quicksort_range:
 	bltu	t3,a4,.L17
 	jal	x0,.L19
 .L35:
-	bne	a4,a3,.+8
-	jal	x0,.+8
-	jal	x0,.L6
+	bne	a4,a3,.L6
 	lw	a4,16(a7)
 	bltu	t3,a4,.L17
-	bge	a2,s0,.+8
-	jal	x0,.L10
+	blt	a2,s0,.L10
 	jal	x0,.L19
 .L37:
 	sw	a0,12(sp)
@@ -166,8 +159,7 @@ quicksort_range:
 	auipc	ra,%pcrel_hi(quicksort_range)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_1)
 	lw	a0,12(sp)
-	bge	s0,s3,.+8
-	jal	x0,.L20
+	blt	s0,s3,.L20
 .L38:
 	lw	ra,76(sp)
 	lw	s0,72(sp)
@@ -209,11 +201,12 @@ main:
 	lw	a4,0(a6)
 	lw	a0,4(a6)
 	lw	a1,8(a6)
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a4, x0
 	add	a1, a4, x0
 .Lpcrel_callmul_1:
@@ -223,8 +216,9 @@ main:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	sw	a4,0(a2)
 	sw	a0,4(a2)
 	sw	a1,8(a2)
@@ -235,7 +229,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a1, a0, x0
 .Lpcrel_callmul_2:
 	auipc	ra, %pcrel_hi(__mul)
@@ -245,7 +240,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	t0,16
 	addi	t0,t0,-1
@@ -281,7 +277,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_4:
@@ -292,7 +289,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -306,7 +304,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_5:
@@ -317,7 +316,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
@@ -339,7 +339,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_6:
@@ -350,7 +351,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -364,7 +366,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_7:
@@ -375,7 +378,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
@@ -390,7 +394,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_8:
@@ -401,7 +406,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	a4,x0,a4
 	sub	a4,t1,a4
@@ -447,7 +453,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_10:
@@ -458,7 +465,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -472,7 +480,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_11:
@@ -483,7 +492,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
@@ -505,7 +515,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_12:
@@ -516,7 +527,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -530,7 +542,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_13:
@@ -541,7 +554,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
@@ -551,11 +565,12 @@ main:
 	sra	t2,a0,t2
 	addi	t3,x0,16
 	sra	t3,a0,t3
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a1, 0(sp)
 	sw	a2, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_14:
@@ -565,8 +580,9 @@ main:
 	lw	a1, 0(sp)
 	lw	a2, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	sub	a0,x0,a0
 	sub	a0,t1,a0
 	sub	a0,x0,a0
@@ -576,7 +592,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a1, x0
 .Lpcrel_callmul_15:
 	auipc	ra, %pcrel_hi(__mul)
@@ -586,12 +603,13 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	sub	t0,x0,a4
-	sub	a4,a0,t0
-	sub	t0,x0,a3
-	sub	a3,a4,t0
+	sub	a4,x0,a4
+	sub	a4,a0,a4
+	sub	a3,x0,a3
+	sub	a3,a4,a3
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a1,t0
@@ -626,7 +644,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_17:
@@ -637,7 +656,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -651,7 +671,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_18:
@@ -662,7 +683,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
@@ -684,7 +706,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t1, x0
 	add	a1, t2, x0
 .Lpcrel_callmul_19:
@@ -695,7 +718,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	t2,x0,16
 	srl	t1,t1,t2
@@ -709,7 +733,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_20:
@@ -720,7 +745,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
@@ -730,11 +756,12 @@ main:
 	sra	t2,a1,t2
 	addi	t3,x0,16
 	sra	t3,a1,t3
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a2, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, t2, x0
 	add	a1, t3, x0
 .Lpcrel_callmul_21:
@@ -744,8 +771,9 @@ main:
 	lw	a0, 0(sp)
 	lw	a2, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	sub	a1,x0,a1
 	sub	a1,t1,a1
 	sub	a1,x0,a1
@@ -757,15 +785,15 @@ main:
 	jal	x0,.+8
 	addi	a5,x0,1
 	sw	a4,-8(a2)
-	sub	t0,x0,a3
-	sub	a3,a1,t0
-	sub	t0,x0,a5
-	sub	a5,a3,t0
+	sub	a3,x0,a3
+	sub	a3,a1,a3
+	sub	a5,x0,a5
+	sub	a5,a3,a5
 	sw	a5,-4(a2)
 	lui	a5,293
 	addi	a5,a5,-128
-	sub	t0,x0,a5
-	sub	a5,sp,t0
+	sub	a5,x0,a5
+	sub	a5,sp,a5
 	bne	a5,a2,.L40
 	lui	a2,12
 	addi	a0,sp,0
@@ -782,14 +810,14 @@ main:
 	lw	a1,4(a5)
 	lw	a2,8(a5)
 	addi	a5,a5,24
-	sub	t0,x0,s0
-	sub	s0,a1,t0
-	sub	t0,x0,s0
-	sub	s0,a2,t0
+	sub	s0,x0,s0
+	sub	s0,a1,s0
+	sub	s0,x0,s0
+	sub	s0,a2,s0
 	addi	a2,x0,31
 	sra	a2,s0,a2
-	sub	t0,x0,a3
-	sub	a3,a2,t0
+	sub	a3,x0,a3
+	sub	a3,a2,a3
 	sub	t0,x0,a4
 	sub	s0,s0,t0
 	lui	a2,293
@@ -800,8 +828,8 @@ main:
 	addi	a2,a2,-128
 	sub	s2,x0,a4
 	sub	s2,a3,s2
-	sub	t0,x0,a2
-	sub	a2,sp,t0
+	sub	a2,x0,a2
+	sub	a2,sp,a2
 	addi	a3,s2,0
 	addi	a4,s0,0
 	bne	a2,a5,.L41
@@ -825,8 +853,8 @@ main:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_4)
 	lui	a5,293
 	addi	a5,a5,-128
-	sub	t0,x0,a5
-	sub	a5,sp,t0
+	sub	a5,x0,a5
+	sub	a5,sp,a5
 	bne	a5,s1,.L42
 	lui	t0,292
 	addi	t0,t0,1968
@@ -150869,16 +150897,14 @@ __mul:
 	and	a3,a1,a3
 	bne	a3,x0,.+8
 	jal	x0,.Mul_skip
-	sub	t0,x0,a0
-	sub	a0,a2,t0
+	sub	a0,x0,a0
+	sub	a0,a2,a0
 .Mul_skip:
 	addi	t0,x0,1
 	srl	a1,a1,t0
 	addi	t0,x0,1
 	sll	a2,a2,t0
-	bne	a1,x0,.+8
-	jal	x0,.+8
-	jal	x0,.Mul_loop
+	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
 
 .text
@@ -150887,10 +150913,8 @@ __mul:
 # Signed 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
-	bge	a0,zero,.+8
-	jal	x0,__riscv_div_lib_L10
-	bge	a1,zero,.+8
-	jal	x0,__riscv_div_lib_L11
+	blt	a0,zero,__riscv_div_lib_L10
+	blt	a1,zero,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
 # Unsigned 32-bit division: a0 = a0 / a1
@@ -150905,25 +150929,26 @@ __riscv_div_lib_udivsi3:
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
-	bge	zero,a2,__riscv_div_lib_L2
-	addi	t0,x0,1
-	sll	a2,a2,t0
-	addi	t0,x0,1
-	sll	a3,a3,t0
+	blt	zero,a2,.+8
+	jal	x0,__riscv_div_lib_L2
+	addi	t1,x0,1
+	sll	a2,a2,t1
+	addi	t1,x0,1
+	sll	a3,a3,t1
 	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	and	t0,a0,a3
-	sub	t0,t0,a3
-	sub	a0,a0,t0
+	and	t1,a0,a3
+	sub	t1,t1,a3
+	sub	a0,a0,t1
 __riscv_div_lib_L4:
-	addi	t0,x0,1
-	srl	a3,a3,t0
-	addi	t0,x0,1
-	srl	a2,a2,t0
+	addi	t1,x0,1
+	srl	a3,a3,t1
+	addi	t1,x0,1
+	srl	a2,a2,t1
 	bne	a3,zero,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
@@ -150941,8 +150966,7 @@ __riscv_div_lib_umodsi3:
 # Handle negative arguments to divsi3
 __riscv_div_lib_L10:
 	sub	a0,zero,a0
-	bge	zero,a1,.+8
-	jal	x0,__riscv_div_lib_L12
+	blt	zero,a1,__riscv_div_lib_L12
 	sub	a1,zero,a1
 	jal	x0,__riscv_div_lib_udivsi3
 __riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
@@ -150959,10 +150983,8 @@ __riscv_div_lib_L12:
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
 	addi	t0,ra,0
-	bge	a1,zero,.+8
-	jal	x0,__riscv_div_lib_L31
-	bge	a0,zero,.+8
-	jal	x0,__riscv_div_lib_L32
+	blt	a1,zero,__riscv_div_lib_L31
+	blt	a0,zero,__riscv_div_lib_L32
 __riscv_div_lib_L30:
 .Lpcrel_div3:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
@@ -150971,8 +150993,7 @@ __riscv_div_lib_L30:
 	jalr	zero,t0,0
 __riscv_div_lib_L31:
 	sub	a1,zero,a1
-	bge	a0,zero,.+8
-	jal	x0,.+8
+	blt	a0,zero,.+8
 	jal	x0,__riscv_div_lib_L30
 __riscv_div_lib_L32:
 	sub	a0,zero,a0

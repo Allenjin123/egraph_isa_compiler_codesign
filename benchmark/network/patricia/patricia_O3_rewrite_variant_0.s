@@ -183,7 +183,8 @@ pat_insert:
 	and	a3,a3,t1
 	sub	a3,t0,a3
 	sw	ra,28(sp)
-	slli	a5,a3,1
+	addi	a5,x0,1
+	sll	a5,a3,a5
 	addi	a2,zero,1
 	addi	a6,zero,32
 	lui	a7,524288
@@ -349,7 +350,8 @@ pat_insert:
 	addi	a6,a6,-288
 	blt	a6,a5,.L125
 	lui	a6,%hi(static_masks)
-	slli	a1,a1,3
+	addi	t0,x0,3
+	sll	a1,a1,t0
 	addi	a6,a6,%lo(static_masks)
 	sw	a5,%lo(mask_count)(t1)
 	sub	t3,x0,a1
@@ -395,7 +397,8 @@ pat_insert:
 	bgeu	a6,a7,.L126
 	lbu	a2,0(a3)
 	addi	a1,a1,1
-	slli	t1,a1,3
+	addi	t1,x0,3
+	sll	t1,a1,t1
 	sb	a2,0(a5)
 	lbu	a2,1(a3)
 	addi	a5,a5,8
@@ -433,7 +436,7 @@ pat_insert:
 	beq	a3,zero,.+8
 	jal	x0,.L51
 	addi	a3,x0,3
-	and	a3,a2,a3
+	and	a3,a3,a2
 	beq	a3,zero,.+8
 	jal	x0,.L51
 	lw	a3,0(a2)
@@ -545,7 +548,8 @@ pat_insert:
 	addi	a0,a3,1
 	blt	a5,a0,.L95
 	lui	a6,%hi(static_masks)
-	slli	a5,a3,3
+	addi	a5,x0,3
+	sll	a5,a3,a5
 	addi	a3,a6,%lo(static_masks)
 	sub	a5,x0,a5
 	sub	a5,a3,a5
@@ -703,14 +707,16 @@ main:
 	addi	a4,a4,-289
 	blt	a4,a5,.L180
 	sw	s3,44(sp)
-	slli	s3,a5,2
+	addi	s3,x0,2
+	sll	s3,a5,s3
 	sw	s8,24(sp)
 	sw	s9,20(sp)
 	sub	s3,x0,s3
 	sub	s3,a5,s3
 	lui	s8,%hi(static_nodes)
 	lui	s9,%hi(mask_count)
-	slli	s3,s3,2
+	addi	t0,x0,2
+	sll	s3,s3,t0
 	addi	s8,s8,%lo(static_nodes)
 	lw	a2,%lo(mask_count)(s9)
 	sub	t0,x0,s8
@@ -727,7 +733,8 @@ main:
 	sw	s10,16(sp)
 	lui	s1,%hi(static_masks)
 	lui	s10,%hi(data_count)
-	slli	a3,a2,3
+	addi	a3,x0,3
+	sll	a3,a2,a3
 	addi	s1,s1,%lo(static_masks)
 	lw	a1,%lo(data_count)(s10)
 	sub	t0,x0,s1
@@ -744,7 +751,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a4, x0
 .Lpcrel_callmul_1:
@@ -755,13 +763,15 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sw	s2,48(sp)
 	lui	s2,%hi(static_data)
 	sw	s0,56(sp)
 	sw	s6,32(sp)
-	slli	a4,a1,4
+	addi	a4,x0,4
+	sll	a4,a1,a4
 	addi	a2,zero,1
 	addi	s2,s2,%lo(static_data)
 	lui	s6,%hi(test_data)
@@ -837,10 +847,12 @@ main:
 	addi	a0,zero,9
 	jal	x0,.L193
 .L258:
-	slli	a4,a7,2
+	addi	a4,x0,2
+	sll	a4,a7,a4
 	sub	a4,x0,a4
 	sub	a4,a7,a4
-	slli	a4,a4,1
+	addi	t0,x0,1
+	sll	a4,a4,t0
 	beq	t3,zero,.+8
 	jal	x0,.L190
 	sub	a7,x0,a1
@@ -874,11 +886,12 @@ main:
 	jal	x0,.L263
 	lui	a4,244
 	addi	a4,a4,576
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a2, x0
 	add	a1, a4, x0
 .Lpcrel_callmul_2:
@@ -888,8 +901,9 @@ main:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 .L195:
 	addi	t0,x0,223
 	and	t4,t4,t0
@@ -903,7 +917,7 @@ main:
 	lbu	a4,1(a5)
 	addi	a5,a5,1
 	addi	a3,x0,223
-	and	a3,a4,a3
+	and	a3,a3,a4
 	addi	a1,a4,-9
 	beq	a3,zero,.+8
 	jal	x0,.L264
@@ -931,22 +945,24 @@ main:
 .L210:
 	addi	a1,a3,-48
 	addi	a4,x0,255
-	and	a4,a4,a1
+	and	a4,a1,a4
 	addi	a0,zero,9
 	addi	t1,zero,0
 	bgeu	a0,a4,.+8
 	jal	x0,.L206
 .L211:
-	slli	a4,t1,2
+	addi	a4,x0,2
+	sll	a4,t1,a4
 	lbu	a3,1(a5)
 	sub	a4,x0,a4
 	sub	a4,t1,a4
-	slli	a4,a4,1
+	addi	t0,x0,1
+	sll	a4,a4,t0
 	sub	t1,x0,a1
 	sub	t1,a4,t1
 	addi	a1,a3,-48
 	addi	a4,x0,255
-	and	a4,a1,a4
+	and	a4,a4,a1
 	addi	a5,a5,1
 	bgeu	a0,a4,.L211
 .L206:
@@ -954,11 +970,13 @@ main:
 	lui	a4,3
 	addi	a4,a4,-289
 	blt	a4,a5,.L255
-	slli	a0,a5,2
+	addi	a0,x0,2
+	sll	a0,a5,a0
 	addi	a3,a5,1
 	sub	a0,x0,a0
 	sub	a0,a5,a0
-	slli	a0,a0,2
+	addi	t0,x0,2
+	sll	a0,a0,t0
 	sw	a3,%lo(node_count)(s7)
 	lw	a3,%lo(mask_count)(s9)
 	sub	t0,x0,s8
@@ -969,7 +987,8 @@ main:
 	sw	zero,12(a0)
 	sw	zero,16(a0)
 	blt	a4,a3,.L213
-	slli	a5,a3,3
+	addi	a5,x0,3
+	sll	a5,a3,a5
 	lw	a1,%lo(data_count)(s10)
 	sub	t0,x0,s1
 	sub	a5,a5,t0
@@ -979,11 +998,12 @@ main:
 	sw	zero,4(a5)
 	sw	a3,%lo(mask_count)(s9)
 	blt	a4,a1,.L255
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, t3, x0
 	add	a1, t1, x0
 .Lpcrel_callmul_3:
@@ -993,9 +1013,11 @@ main:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
-	slli	a4,a1,4
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
+	addi	a4,x0,4
+	sll	a4,a1,a4
 	sub	t0,x0,s2
 	sub	a4,a4,t0
 	sb	zero,0(a4)
@@ -1090,10 +1112,12 @@ main:
 	addi	a0,x0,1
 	jal	x0,.L178
 .L190:
-	slli	a4,a2,2
+	addi	a4,x0,2
+	sll	a4,a2,a4
 	sub	a4,x0,a4
 	sub	a4,a2,a4
-	slli	a4,a4,1
+	addi	t0,x0,1
+	sll	a4,a4,t0
 	blt	s5,t1,.L191
 	sub	a2,x0,a1
 	sub	a2,a4,a2
@@ -1109,7 +1133,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a4, x0
 .Lpcrel_callmul_4:
@@ -1120,7 +1145,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	sub	s8,x0,s8
 	sub	s8,a5,s8
@@ -1162,7 +1188,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a7, x0
 .Lpcrel_callmul_5:
 	auipc	ra, %pcrel_hi(__mul)
@@ -1172,7 +1199,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lui	a0,%hi(.LC0)
 	addi	a0,a0,%lo(.LC0)
@@ -1183,7 +1211,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a7, x0
 	add	a1, a6, x0
 .Lpcrel_callmul_6:
@@ -1194,7 +1223,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
@@ -1202,7 +1232,8 @@ main:
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
 	sw	t0, 16(sp)
-	sw	ra, 20(sp)
+	sw	t1, 20(sp)
+	sw	ra, 24(sp)
 	add	a0, a6, x0
 .Lpcrel_callrem_7:
 	auipc	ra, %pcrel_hi(__riscv_div_lib_modsi3)
@@ -1213,14 +1244,16 @@ main:
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
 	lw	t0, 16(sp)
-	lw	ra, 20(sp)
+	lw	t1, 20(sp)
+	lw	ra, 24(sp)
 	addi	sp, sp, 32
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a2, 4(sp)
 	sw	a3, 8(sp)
 	sw	t0, 12(sp)
-	sw	ra, 16(sp)
+	sw	t1, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a6, x0
 .Lpcrel_calldiv_8:
 	auipc	ra, %pcrel_hi(__riscv_div_lib_divsi3)
@@ -1230,9 +1263,11 @@ main:
 	lw	a2, 4(sp)
 	lw	a3, 8(sp)
 	lw	t0, 12(sp)
-	lw	ra, 16(sp)
+	lw	t1, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
-	srai	a2,a4,31
+	addi	a2,x0,31
+	sra	a2,a4,a2
 	and	t0,a4,a2
 	sub	t0,t0,a2
 	sub	t0,a4,t0
@@ -1248,18 +1283,21 @@ main:
 	sw	a5,%lo(found_count)(a4)
 	jal	x0,.L223
 .L259:
-	slli	a4,a2,2
+	addi	a4,x0,2
+	sll	a4,a2,a4
 	sub	a4,x0,a4
 	sub	a4,a2,a4
-	slli	a2,a4,1
+	addi	a2,x0,1
+	sll	a2,a4,a2
 	jal	x0,.L195
 .L260:
 	addi	a4,zero,100
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a2, x0
 	add	a1, a4, x0
 .Lpcrel_callmul_9:
@@ -1269,8 +1307,9 @@ main:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	jal	x0,.L195
 .L224:
 	addi	a4,t4,0
@@ -1285,11 +1324,12 @@ main:
 	jal	x0,.L206
 .L261:
 	addi	a4,zero,1000
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a2, x0
 	add	a1, a4, x0
 .Lpcrel_callmul_10:
@@ -1299,17 +1339,19 @@ main:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	jal	x0,.L195
 .L262:
 	lui	a4,2
 	addi	a4,a4,1808
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a2, x0
 	add	a1, a4, x0
 .Lpcrel_callmul_11:
@@ -1319,17 +1361,19 @@ main:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	jal	x0,.L195
 .L263:
 	lui	a4,24
 	addi	a4,a4,1696
-	addi	sp, sp, -16
+	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
 	sw	a3, 8(sp)
-	sw	ra, 12(sp)
+	sw	t0, 12(sp)
+	sw	ra, 16(sp)
 	add	a0, a2, x0
 	add	a1, a4, x0
 .Lpcrel_callmul_12:
@@ -1339,8 +1383,9 @@ main:
 	lw	a0, 0(sp)
 	lw	a1, 4(sp)
 	lw	a3, 8(sp)
-	lw	ra, 12(sp)
-	addi	sp, sp, 16
+	lw	t0, 12(sp)
+	lw	ra, 16(sp)
+	addi	sp, sp, 32
 	jal	x0,.L195
 .L256:
 	addi	a4,zero,20
@@ -1349,7 +1394,8 @@ main:
 	sw	a1, 4(sp)
 	sw	a2, 8(sp)
 	sw	a3, 12(sp)
-	sw	ra, 16(sp)
+	sw	t0, 16(sp)
+	sw	ra, 20(sp)
 	add	a0, a5, x0
 	add	a1, a4, x0
 .Lpcrel_callmul_13:
@@ -1360,7 +1406,8 @@ main:
 	lw	a1, 4(sp)
 	lw	a2, 8(sp)
 	lw	a3, 12(sp)
-	lw	ra, 16(sp)
+	lw	t0, 16(sp)
+	lw	ra, 20(sp)
 	addi	sp, sp, 32
 	lw	s3,44(sp)
 	lw	s9,20(sp)
@@ -44998,7 +45045,8 @@ __mul:
 .Mul_skip:
 	addi	t0,x0,1
 	srl	a1,a1,t0
-	slli	a2,a2,1
+	addi	t0,x0,1
+	sll	a2,a2,t0
 	beq	a1,x0,.+8
 	jal	x0,.Mul_loop
 	jalr	x0,ra,0
@@ -45025,8 +45073,10 @@ __riscv_div_lib_udivsi3:
 __riscv_div_lib_L1:
 	blt	zero,a2,.+8
 	jal	x0,__riscv_div_lib_L2
-	slli	a2,a2,1
-	slli	a3,a3,1
+	addi	t1,x0,1
+	sll	a2,a2,t1
+	addi	t1,x0,1
+	sll	a3,a3,t1
 	bgeu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L1
 __riscv_div_lib_L2:

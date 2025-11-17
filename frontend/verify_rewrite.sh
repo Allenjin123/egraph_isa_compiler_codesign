@@ -185,6 +185,14 @@ echo "Rewrite file: $REWRITE_ASM"
 echo "Clean file:   $CLEAN_ASM"
 echo ""
 
+# Check if this is an embench-iot program
+IS_EMBENCH_IOT=0
+if [[ "$REWRITE_ASM" == *"embench-iot"* ]] || [[ "$CLEAN_ASM" == *"embench-iot"* ]]; then
+    IS_EMBENCH_IOT=1
+    echo -e "${YELLOW}Detected embench-iot program - compilation-only mode${NC}"
+    echo ""
+fi
+
 # Parse program name
 parse_result=$(parse_program_name "$PROGRAM_NAME")
 prog_name="${parse_result%|*}"
@@ -194,26 +202,29 @@ echo "Program: $prog_name"
 echo "Size:    $size_type"
 echo ""
 
-# Find mibench directory
-if ! mibench_dir=$(find_mibench_dir "$prog_name"); then
-    echo -e "${RED}Error: Cannot find mibench directory for $prog_name${NC}"
-    exit 1
-fi
+# For embench-iot, skip reference output check
+if [ $IS_EMBENCH_IOT -eq 0 ]; then
+    # Find mibench directory
+    if ! mibench_dir=$(find_mibench_dir "$prog_name"); then
+        echo -e "${RED}Error: Cannot find mibench directory for $prog_name${NC}"
+        exit 1
+    fi
 
-REF_OUTPUT="$mibench_dir/old_output/output_${size_type}.txt"
-if [ ! -f "$REF_OUTPUT" ]; then
-    echo -e "${RED}Error: Reference output not found: $REF_OUTPUT${NC}"
-    exit 1
-fi
+    REF_OUTPUT="$mibench_dir/old_output/output_${size_type}.txt"
+    if [ ! -f "$REF_OUTPUT" ]; then
+        echo -e "${RED}Error: Reference output not found: $REF_OUTPUT${NC}"
+        exit 1
+    fi
 
-echo "Reference:    $REF_OUTPUT"
-echo ""
-
-# Get program arguments
-prog_args=$(get_program_args "$prog_name" "$size_type")
-if [ -n "$prog_args" ]; then
-    echo "Arguments:    $prog_args"
+    echo "Reference:    $REF_OUTPUT"
     echo ""
+
+    # Get program arguments
+    prog_args=$(get_program_args "$prog_name" "$size_type")
+    if [ -n "$prog_args" ]; then
+        echo "Arguments:    $prog_args"
+        echo ""
+    fi
 fi
 
 # Generate diff (optional)
@@ -273,46 +284,52 @@ if ! riscv32-unknown-elf-gcc \
 fi
 echo -e "${GREEN}✓ Compilation succeeded${NC}"
 
-# Disassemble clean executable
-CLEAN_ASM_DIR=$(dirname "$CLEAN_ASM")
-CLEAN_DISASM="$CLEAN_ASM_DIR/${PROGRAM_NAME}_clean.dis"
-echo "Disassembling clean executable..."
-#riscv32-unknown-elf-objdump -d -M no-aliases -l "$CLEAN_EXE" > "$CLEAN_DISASM" 2>&1
-echo -e "${GREEN}✓ Disassembly saved to: $CLEAN_DISASM${NC}"
-
-echo "Running with spike..."
-CLEAN_OUTPUT="$BUILD_DIR/output_clean.txt"
-
-if [ -n "$prog_args" ]; then
-    if ! timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$CLEAN_EXE" $prog_args < /dev/null > "$CLEAN_OUTPUT" 2>/dev/null; then
-        exit_code=$?
-        if [ $exit_code -eq 124 ]; then
-            echo -e "${RED}✗ Execution timeout${NC}"
-            exit 1
-        fi
-        echo -e "${YELLOW}⚠ Exited with code $exit_code${NC}"
-    fi
+# For embench-iot, skip execution and output verification
+if [ $IS_EMBENCH_IOT -eq 1 ]; then
+    echo -e "${GREEN}✓ Clean version compiled successfully (embench-iot: compilation-only)${NC}"
+    echo ""
 else
-    if ! timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$CLEAN_EXE" < /dev/null > "$CLEAN_OUTPUT" 2>/dev/null; then
-        exit_code=$?
-        if [ $exit_code -eq 124 ]; then
-            echo -e "${RED}✗ Execution timeout${NC}"
-            exit 1
-        fi
-        echo -e "${YELLOW}⚠ Exited with code $exit_code${NC}"
-    fi
-fi
-echo -e "${GREEN}✓ Execution completed${NC}"
+    # Disassemble clean executable
+    CLEAN_ASM_DIR=$(dirname "$CLEAN_ASM")
+    CLEAN_DISASM="$CLEAN_ASM_DIR/${PROGRAM_NAME}_clean.dis"
+    echo "Disassembling clean executable..."
+    #riscv32-unknown-elf-objdump -d -M no-aliases -l "$CLEAN_EXE" > "$CLEAN_DISASM" 2>&1
+    echo -e "${GREEN}✓ Disassembly saved to: $CLEAN_DISASM${NC}"
 
-echo "Comparing with reference..."
-if diff -q "$CLEAN_OUTPUT" "$REF_OUTPUT" > /dev/null 2>&1; then
-    echo -e "${GREEN}✓ Clean output matches reference${NC}"
-else
-    echo -e "${RED}✗ Clean output differs from reference${NC}"
-    echo "First differences:"
-    diff "$CLEAN_OUTPUT" "$REF_OUTPUT" | head -10
+    echo "Running with spike..."
+    CLEAN_OUTPUT="$BUILD_DIR/output_clean.txt"
+
+    if [ -n "$prog_args" ]; then
+        if ! timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$CLEAN_EXE" $prog_args < /dev/null > "$CLEAN_OUTPUT" 2>/dev/null; then
+            exit_code=$?
+            if [ $exit_code -eq 124 ]; then
+                echo -e "${RED}✗ Execution timeout${NC}"
+                exit 1
+            fi
+            echo -e "${YELLOW}⚠ Exited with code $exit_code${NC}"
+        fi
+    else
+        if ! timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$CLEAN_EXE" < /dev/null > "$CLEAN_OUTPUT" 2>/dev/null; then
+            exit_code=$?
+            if [ $exit_code -eq 124 ]; then
+                echo -e "${RED}✗ Execution timeout${NC}"
+                exit 1
+            fi
+            echo -e "${YELLOW}⚠ Exited with code $exit_code${NC}"
+        fi
+    fi
+    echo -e "${GREEN}✓ Execution completed${NC}"
+
+    echo "Comparing with reference..."
+    if diff -q "$CLEAN_OUTPUT" "$REF_OUTPUT" > /dev/null 2>&1; then
+        echo -e "${GREEN}✓ Clean output matches reference${NC}"
+    else
+        echo -e "${RED}✗ Clean output differs from reference${NC}"
+        echo "First differences:"
+        diff "$CLEAN_OUTPUT" "$REF_OUTPUT" | head -10
+    fi
+    echo ""
 fi
-echo ""
 
 ###############################################################################
 # Test Rewrite version
@@ -334,71 +351,80 @@ if ! riscv32-unknown-elf-gcc \
 fi
 echo -e "${GREEN}✓ Compilation succeeded${NC}"
 
-# Disassemble rewrite executable
-REWRITE_ASM_DIR=$(dirname "$REWRITE_ASM")
-REWRITE_DISASM="$REWRITE_ASM_DIR/${PROGRAM_NAME}_rewrite_variant_0.dis"
-echo "Disassembling rewrite executable..."
-#riscv32-unknown-elf-objdump -d -M no-aliases -l "$REWRITE_EXE" > "$REWRITE_DISASM" 2>&1
-echo -e "${GREEN}✓ Disassembly saved to: $REWRITE_DISASM${NC}"
-
-echo "Running with spike..."
-REWRITE_OUTPUT="$BUILD_DIR/output_rewrite.txt"
-
-if [ -n "$prog_args" ]; then
-    if ! timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$REWRITE_EXE" $prog_args < /dev/null > "$REWRITE_OUTPUT" 2>/dev/null; then
-        exit_code=$?
-        if [ $exit_code -eq 124 ]; then
-            echo -e "${RED}✗ Execution timeout${NC}"
-            exit 1
-        fi
-        echo -e "${YELLOW}⚠ Exited with code $exit_code${NC}"
-    fi
-else
-    if ! timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$REWRITE_EXE" < /dev/null > "$REWRITE_OUTPUT" 2>/dev/null; then
-        exit_code=$?
-        if [ $exit_code -eq 124 ]; then
-            echo -e "${RED}✗ Execution timeout${NC}"
-            exit 1
-        fi
-        echo -e "${YELLOW}⚠ Exited with code $exit_code${NC}"
-    fi
-fi
-echo -e "${GREEN}✓ Execution completed${NC}"
-
-echo "Comparing with reference..."
-if diff -q "$REWRITE_OUTPUT" "$REF_OUTPUT" > /dev/null 2>&1; then
-    echo -e "${GREEN}✓ Rewrite output matches reference${NC}"
+# For embench-iot, skip execution and output verification
+if [ $IS_EMBENCH_IOT -eq 1 ]; then
+    echo -e "${GREEN}✓ Rewrite version compiled successfully (embench-iot: compilation-only)${NC}"
     REWRITE_PASS=1
+    echo ""
 else
-    echo -e "${RED}✗ Rewrite output differs from reference${NC}"
-    echo "First differences:"
-    diff "$REWRITE_OUTPUT" "$REF_OUTPUT" | head -10
-    REWRITE_PASS=0
+    # Disassemble rewrite executable
+    REWRITE_ASM_DIR=$(dirname "$REWRITE_ASM")
+    REWRITE_DISASM="$REWRITE_ASM_DIR/${PROGRAM_NAME}_rewrite_variant_0.dis"
+    echo "Disassembling rewrite executable..."
+    #riscv32-unknown-elf-objdump -d -M no-aliases -l "$REWRITE_EXE" > "$REWRITE_DISASM" 2>&1
+    echo -e "${GREEN}✓ Disassembly saved to: $REWRITE_DISASM${NC}"
+
+    echo "Running with spike..."
+    REWRITE_OUTPUT="$BUILD_DIR/output_rewrite.txt"
+
+    if [ -n "$prog_args" ]; then
+        if ! timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$REWRITE_EXE" $prog_args < /dev/null > "$REWRITE_OUTPUT" 2>/dev/null; then
+            exit_code=$?
+            if [ $exit_code -eq 124 ]; then
+                echo -e "${RED}✗ Execution timeout${NC}"
+                exit 1
+            fi
+            echo -e "${YELLOW}⚠ Exited with code $exit_code${NC}"
+        fi
+    else
+        if ! timeout 300 spike --isa="$SPIKE_ISA" "$PK" "$REWRITE_EXE" < /dev/null > "$REWRITE_OUTPUT" 2>/dev/null; then
+            exit_code=$?
+            if [ $exit_code -eq 124 ]; then
+                echo -e "${RED}✗ Execution timeout${NC}"
+                exit 1
+            fi
+            echo -e "${YELLOW}⚠ Exited with code $exit_code${NC}"
+        fi
+    fi
+    echo -e "${GREEN}✓ Execution completed${NC}"
+
+    echo "Comparing with reference..."
+    if diff -q "$REWRITE_OUTPUT" "$REF_OUTPUT" > /dev/null 2>&1; then
+        echo -e "${GREEN}✓ Rewrite output matches reference${NC}"
+        REWRITE_PASS=1
+    else
+        echo -e "${RED}✗ Rewrite output differs from reference${NC}"
+        echo "First differences:"
+        diff "$REWRITE_OUTPUT" "$REF_OUTPUT" | head -10
+        REWRITE_PASS=0
+    fi
+    echo ""
 fi
-echo ""
 
 ###############################################################################
 # Compare Clean vs Rewrite
 ###############################################################################
-echo "========================================="
-echo "Comparing CLEAN vs REWRITE outputs"
-echo "========================================="
+if [ $IS_EMBENCH_IOT -eq 0 ]; then
+    echo "========================================="
+    echo "Comparing CLEAN vs REWRITE outputs"
+    echo "========================================="
 
-if diff -q "$CLEAN_OUTPUT" "$REWRITE_OUTPUT" > /dev/null 2>&1; then
-    echo -e "${GREEN}✓ Clean and Rewrite outputs are IDENTICAL${NC}"
-else
-    echo -e "${YELLOW}⚠ Clean and Rewrite outputs differ${NC}"
+    if diff -q "$CLEAN_OUTPUT" "$REWRITE_OUTPUT" > /dev/null 2>&1; then
+        echo -e "${GREEN}✓ Clean and Rewrite outputs are IDENTICAL${NC}"
+    else
+        echo -e "${YELLOW}⚠ Clean and Rewrite outputs differ${NC}"
+        echo ""
+        echo "--- CLEAN OUTPUT ---"
+        cat "$CLEAN_OUTPUT"
+        echo ""
+        echo "--- REWRITE OUTPUT ---"
+        cat "$REWRITE_OUTPUT"
+        echo ""
+        echo "--- DIFF (Clean vs Rewrite) ---"
+        diff "$CLEAN_OUTPUT" "$REWRITE_OUTPUT"
+    fi
     echo ""
-    echo "--- CLEAN OUTPUT ---"
-    cat "$CLEAN_OUTPUT"
-    echo ""
-    echo "--- REWRITE OUTPUT ---"
-    cat "$REWRITE_OUTPUT"
-    echo ""
-    echo "--- DIFF (Clean vs Rewrite) ---"
-    diff "$CLEAN_OUTPUT" "$REWRITE_OUTPUT"
 fi
-echo ""
 
 ###############################################################################
 # Summary
@@ -406,15 +432,30 @@ echo ""
 echo "========================================="
 echo "Summary"
 echo "========================================="
-echo "Clean version:   ✓ (baseline)"
-if [ $REWRITE_PASS -eq 1 ]; then
-    echo -e "Rewrite version: ${GREEN}✓ PASSED${NC}"
-    echo ""
-    echo -e "${GREEN}Rewrite version produces correct output!${NC}"
-    exit 0
+if [ $IS_EMBENCH_IOT -eq 1 ]; then
+    echo "Clean version:   ✓ (compiled successfully)"
+    if [ $REWRITE_PASS -eq 1 ]; then
+        echo -e "Rewrite version: ${GREEN}✓ PASSED (compiled successfully)${NC}"
+        echo ""
+        echo -e "${GREEN}Both versions compiled successfully!${NC}"
+        exit 0
+    else
+        echo -e "Rewrite version: ${RED}✗ FAILED (compilation failed)${NC}"
+        echo ""
+        echo -e "${RED}Rewrite version compilation failed${NC}"
+        exit 1
+    fi
 else
-    echo -e "Rewrite version: ${RED}✗ FAILED${NC}"
-    echo ""
-    echo -e "${RED}Rewrite version output is incorrect${NC}"
-    exit 1
+    echo "Clean version:   ✓ (baseline)"
+    if [ $REWRITE_PASS -eq 1 ]; then
+        echo -e "Rewrite version: ${GREEN}✓ PASSED${NC}"
+        echo ""
+        echo -e "${GREEN}Rewrite version produces correct output!${NC}"
+        exit 0
+    else
+        echo -e "Rewrite version: ${RED}✗ FAILED${NC}"
+        echo ""
+        echo -e "${RED}Rewrite version output is incorrect${NC}"
+        exit 1
+    fi
 fi
