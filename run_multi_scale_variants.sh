@@ -21,6 +21,7 @@ DEFAULT_CLEAN=true             # Clean old outputs by default
 DEFAULT_RUN_SATURATION=true    # Run saturation by default
 DEFAULT_FREQ_ANALYSIS=false    # Frequency analysis disabled by default
 DEFAULT_SHIFT_CONSTRAINTS=false # Shift immediate constraints disabled by default
+DEFAULT_CACHE_LATENCIES=false  # Cache latency parameters disabled by default
 DEFAULT_CORE_NAME="ibex"       # Default core name
 # DEFAULT_PROGRAMS is now dynamically determined from available clean.s files
 
@@ -78,6 +79,7 @@ usage() {
     echo "  --skip-saturation          跳过饱和步骤（使用现有 JSON 文件）"
     echo "  --enable-freq-analysis     启用频率分析（延迟以秒计算而不是周期）"
     echo "  --enable-shift-constraints 启用移位立即数约束优化（v2 DSL 格式）"
+    echo "  --enable-cache-latencies   启用缓存延迟参数（仅用于 uarchaware 运行）"
     echo "  --core-name CORE           指定核心名称 (默认: ibex)"
     echo "  -r, --reconstruct-only     仅重建汇编文件（跳过 ILP 提取）"
     echo "  -h, --help                 显示此帮助信息"
@@ -124,6 +126,7 @@ SKIP_FRONTEND=false
 RUN_SATURATION="$DEFAULT_RUN_SATURATION"
 ENABLE_FREQ_ANALYSIS="$DEFAULT_FREQ_ANALYSIS"
 ENABLE_SHIFT_CONSTRAINTS="$DEFAULT_SHIFT_CONSTRAINTS"
+ENABLE_CACHE_LATENCIES="$DEFAULT_CACHE_LATENCIES"
 CORE_NAME="$DEFAULT_CORE_NAME"
 
 # Parse all arguments
@@ -179,6 +182,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --enable-shift-constraints)
             ENABLE_SHIFT_CONSTRAINTS=true
+            shift
+            ;;
+        --enable-cache-latencies)
+            ENABLE_CACHE_LATENCIES=true
             shift
             ;;
         --core-name)
@@ -251,6 +258,7 @@ echo -e "合成并行数: ${GREEN}${SYNTH_PARALLEL}${NC} (并行合成进程数)
 echo -e "核心名称: ${GREEN}${CORE_NAME}${NC}"
 echo -e "频率分析: ${GREEN}$([ "$ENABLE_FREQ_ANALYSIS" = true ] && echo "启用 (延迟以秒计算)" || echo "禁用 (延迟以周期计算)")${NC}"
 echo -e "移位约束: ${GREEN}$([ "$ENABLE_SHIFT_CONSTRAINTS" = true ] && echo "启用 (v2 DSL 格式)" || echo "禁用")${NC}"
+echo -e "缓存延迟: ${GREEN}$([ "$ENABLE_CACHE_LATENCIES" = true ] && echo "启用 (uarchaware 运行)" || echo "禁用")${NC}"
 echo -e "输出基础目录: ${GREEN}${OUTPUT_BASE_DIR}${NC}"
 echo -e "${CYAN}========================================${NC}"
 echo ""
@@ -754,7 +762,12 @@ SHIFT_FLAG=""
 if [ "$ENABLE_SHIFT_CONSTRAINTS" = true ]; then
     SHIFT_FLAG="--enable-shift-constraints"
 fi
-python3 "$SCRIPT_DIR/analyze_all_variants.py" "$FINAL_OUTPUT" "$PROGRAM_NAME" "$OUTPUT_DIR" "$SYNTH_PARALLEL" $FREQ_FLAG $CORE_FLAG $SHIFT_FLAG
+# Add cache latencies flag
+CACHE_FLAG=""
+if [ "$ENABLE_CACHE_LATENCIES" = true ]; then
+    CACHE_FLAG="--enable-cache-latencies"
+fi
+python3 "$SCRIPT_DIR/analyze_all_variants.py" "$FINAL_OUTPUT" "$PROGRAM_NAME" "$OUTPUT_DIR" "$SYNTH_PARALLEL" $FREQ_FLAG $CORE_FLAG $SHIFT_FLAG $CACHE_FLAG
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓ Pareto 分析完成${NC}"

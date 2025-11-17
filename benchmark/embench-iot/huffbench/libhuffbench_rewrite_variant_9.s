@@ -167,11 +167,11 @@ compdecomp.constprop.0:
 	sw	a4,%lo(heap_ptr)(a2)
 	sub	a3,zero,a5
 	addi	a5,x0,3
-	and	a5,a5,a3
+	and	a5,a3,a5
 	beq	a5,zero,.L82
 	lw	a4,8(sp)
 	addi	t0,x0,2
-	and	a3,a3,t0
+	and	a3,t0,a3
 	sb	zero,0(a4)
 	beq	a3,zero,.L83
 	sb	zero,1(a4)
@@ -203,9 +203,7 @@ compdecomp.constprop.0:
 	beq	a4,a3,.L27
 	sb	zero,1(a5)
 	addi	a3,zero,2
-	beq	a4,a3,.+8
-	jal	x0,.+8
-	jal	x0,.L27
+	beq	a4,a3,.L27
 	sb	zero,2(a5)
 .L27:
 	lui	a5,1
@@ -664,8 +662,18 @@ compdecomp.constprop.0:
 	sw	a5,8(sp)
 	jal	x0,.L78
 .L88:
-	addi	a6,a0,0
-	addi	a0,zero,0
+	addi	a6,x0,0
+	and	a6,x0,a6
+	addi	t0,x0,0
+	sub	a6,a6,t0
+	sub	a6,x0,a6
+	add	a6,a0,a6
+	addi	a0,x0,0
+	and	a0,x0,a0
+	addi	t0,x0,0
+	sub	a0,a0,t0
+	sub	a0,x0,a0
+	add	a0,zero,a0
 	jal	x0,.L67
 	.size	compdecomp.constprop.0, .-compdecomp.constprop.0
 	.align	2
@@ -857,7 +865,7 @@ compdecomp:
 	beq	a5,zero,.L229
 	lw	a3,4(sp)
 	addi	t0,x0,2
-	and	a4,t0,a4
+	and	a4,a4,t0
 	sb	zero,0(a3)
 	addi	a3,zero,1
 	beq	a4,zero,.L168
@@ -959,11 +967,21 @@ compdecomp:
 	beq	a5,zero,.L181
 .L180:
 	lbu	a5,0(a4)
-	addi	a4,a4,1
+	addi	t0,x0,1
+	and	t0,x0,t0
+	addi	t1,x0,1
+	sub	t0,t0,t1
+	sub	t0,x0,t0
+	add	a4,a4,t0
 	slli	a5,a5,2
 	add	a5,s9,a5
 	lw	a3,0(a5)
-	addi	a3,a3,1
+	addi	t0,x0,1
+	and	t0,x0,t0
+	addi	t1,x0,1
+	sub	t0,t0,t1
+	sub	t0,x0,t0
+	add	a3,a3,t0
 	sw	a3,0(a5)
 	bne	a2,a4,.L180
 .L181:
@@ -976,17 +994,14 @@ compdecomp:
 	lw	a2,0(a3)
 	slli	a4,s10,2
 	add	a4,a1,a4
-	bne	a2,zero,.+8
-	jal	x0,.L182
+	beq	a2,zero,.L182
 	sw	a5,1024(a4)
 	addi	s10,s10,1
 .L182:
 	addi	a5,a5,1
 	addi	a3,a3,4
 	bne	a5,a0,.L179
-	beq	s10,zero,.+8
-	jal	x0,.+8
-	jal	x0,.L183
+	beq	s10,zero,.L183
 	addi	s3,s10,0
 .L184:
 	addi	a3,s3,0
@@ -999,9 +1014,7 @@ compdecomp:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_6)
 	bne	s3,zero,.L184
 	addi	a5,zero,1
-	beq	s10,a5,.+8
-	jal	x0,.+8
-	jal	x0,.L185
+	beq	s10,a5,.L185
 	slli	a4,s10,2
 	addi	a7,sp,524
 	addi	s8,s9,1020
@@ -1020,11 +1033,9 @@ compdecomp:
 	auipc	ra,%pcrel_hi(heap_adjust.constprop.0)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_7)
 	lw	a4,528(sp)
-	addi	a3,x0,2
-	sll	a3,s2,a3
+	slli	a3,s2,2
 	add	a0,s9,a3
-	addi	t0,x0,2
-	sll	a4,a4,t0
+	slli	a4,a4,2
 	add	a1,s9,a4
 	lw	a0,0(a0)
 	lw	a1,0(a1)
@@ -1044,18 +1055,8 @@ compdecomp:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_8)
 	addi	s10,s10,-1
 	addi	a5,zero,256
-	addi	t0,x0,-4
-	and	t0,x0,t0
-	addi	t1,x0,-4
-	sub	t0,t0,t1
-	sub	t0,x0,t0
-	add	s3,s3,t0
-	addi	t0,x0,-4
-	and	t0,x0,t0
-	addi	t1,x0,-4
-	sub	t0,t0,t1
-	sub	t0,x0,t0
-	add	s8,s8,t0
+	addi	s3,s3,-4
+	addi	s8,s8,-4
 	bne	s10,a5,.L186
 .L185:
 	addi	a5,zero,257
@@ -1063,13 +1064,7 @@ compdecomp:
 	slli	a5,a5,2
 	add	a5,s5,a5
 	sw	zero,0(a5)
-	addi	t1,x0,1024
-	and	t1,x0,t1
-	addi	t0,x0,1024
-	sub	t1,t1,t0
-	sub	t1,x0,t1
-	sub	t0,x0,s9
-	sub	t1,t1,t0
+	addi	t1,s9,1024
 	addi	a0,s1,0
 	addi	a7,s0,0
 	addi	t3,zero,0
@@ -1089,9 +1084,7 @@ compdecomp:
 	beq	a2,zero,.L187
 	lw	a5,0(s7)
 	addi	a2,zero,0
-	beq	a5,zero,.+8
-	jal	x0,.+8
-	jal	x0,.L187
+	beq	a5,zero,.L187
 	addi	a1,zero,1
 	addi	a6,zero,0
 .L192:
@@ -1104,8 +1097,7 @@ compdecomp:
 	slli	a1,a1,1
 	bne	a5,zero,.L192
 .L190:
-	bltu	t4,a2,.+8
-	jal	x0,.L193
+	bgeu	t4,a2,.L193
 	addi	t4,a2,0
 .L193:
 	addi	a4,a6,0
@@ -1117,7 +1109,9 @@ compdecomp:
 	addi	a7,a7,4
 	addi	a0,a0,1
 	addi	s7,s7,4
-	bne	t1,s6,.L195
+	bne	t1,s6,.+8
+	jal	x0,.+8
+	jal	x0,.L195
 .L295:
 	addi	t0,x0,33
 	bltu	t3,t0,.+12
@@ -1137,12 +1131,7 @@ compdecomp:
 	addi	a3,zero,0
 	addi	a7,zero,0
 	addi	t5,zero,1
-	addi	t1,x0,7
-	and	t1,x0,t1
-	addi	t0,x0,7
-	sub	t1,t1,t0
-	sub	t1,x0,t1
-	add	t1,zero,t1
+	addi	t1,zero,7
 .L203:
 	lbu	a0,0(t3)
 	add	a5,t4,a0
@@ -1172,7 +1161,8 @@ compdecomp:
 	bltu	a2,a6,.L202
 .L198:
 	addi	t3,t3,1
-	bne	t3,t6,.L203
+	beq	t3,t6,.+8
+	jal	x0,.L203
 	lw	a4,4(sp)
 	addi	a5,zero,7
 	sub	a5,a5,a1
@@ -1189,25 +1179,25 @@ compdecomp:
 	addi	a5,a5,4
 	bne	a5,a4,.L204
 	addi	t1,sp,272
-	addi	t3,t5,0
-	addi	a6,zero,0
+	addi	t3,x0,0
+	and	t3,x0,t3
+	addi	t0,x0,0
+	sub	t3,t3,t0
+	sub	t3,x0,t3
+	add	t3,t5,t3
+	addi	a6,x0,0
+	and	a6,x0,a6
+	addi	t0,x0,0
+	sub	a6,a6,t0
+	sub	a6,x0,a6
+	add	a6,zero,a6
 	addi	t6,zero,1
 	addi	t4,zero,256
 	jal	x0,.L210
 .L205:
-	addi	t0,x0,1
-	and	t0,x0,t0
-	addi	t2,x0,1
-	sub	t0,t0,t2
-	sub	t0,x0,t0
-	add	a6,a6,t0
+	addi	a6,a6,1
 	addi	s0,s0,4
-	addi	t0,x0,1
-	and	t0,x0,t0
-	addi	t2,x0,1
-	sub	t0,t0,t2
-	sub	t0,x0,t0
-	add	s1,s1,t0
+	addi	s1,s1,1
 	addi	t3,t3,4
 	beq	a6,t4,.L298
 .L210:
@@ -1219,8 +1209,7 @@ compdecomp:
 	sub	a5,a5,a1
 	sub	a5,a0,a5
 	beq	a5,zero,.L205
-	bne	a1,zero,.+8
-	jal	x0,.L235
+	beq	a1,zero,.L235
 	addi	a3,a1,-1
 	sll	a3,t6,a3
 	addi	a5,zero,0
@@ -1260,16 +1249,14 @@ compdecomp:
 	addi	a3,a7,0
 .L211:
 	lw	a2,-4(a5)
-	bltu	a0,a2,.+8
-	jal	x0,.L212
+	bgeu	a0,a2,.L212
 	lbu	a1,-1(a4)
 	sw	a2,0(a5)
 	addi	a3,a3,-1
 	sb	a1,0(a4)
 	addi	a5,a5,-4
 	addi	a4,a4,-1
-	beq	a3,zero,.+8
-	jal	x0,.L211
+	bne	a3,zero,.L211
 .L212:
 	slli	a5,a3,2
 	add	a5,s9,a5
@@ -1279,9 +1266,12 @@ compdecomp:
 	sb	t3,768(a3)
 	addi	t1,t1,4
 	addi	a6,a6,1
-	bne	a7,t6,.L214
+	beq	a7,t6,.+8
+	jal	x0,.L214
 	lw	a1,-1024(s9)
-	bne	a1,zero,.L236
+	bne	a1,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L236
 	addi	a5,t5,0
 .L216:
 	lw	a6,0(a5)
@@ -1290,8 +1280,7 @@ compdecomp:
 	beq	a6,zero,.L216
 .L215:
 	lw	a5,8(sp)
-	bne	a5,zero,.+8
-	jal	x0,.L163
+	beq	a5,zero,.L163
 	addi	t1,sp,-496
 	addi	a3,a6,0
 	addi	a4,a1,0
@@ -1316,9 +1305,10 @@ compdecomp:
 	addi	a4,a4,1
 	bltu	a3,a2,.L219
 .L220:
-	beq	a2,a3,.L299
-	bne	a0,t3,.+8
-	jal	x0,.L223
+	beq	a2,a3,.+8
+	jal	x0,.+8
+	jal	x0,.L299
+	beq	a0,t3,.L223
 .L300:
 	srli	a0,a0,1
 .L224:
@@ -1356,7 +1346,8 @@ compdecomp:
 	lw	a4,8(sp)
 	addi	a5,zero,5
 	sw	zero,4(sp)
-	bgeu	a5,a4,.L228
+	bltu	a5,a4,.+8
+	jal	x0,.L228
 	addi	a5,zero,0
 	addi	a3,zero,0
 	jal	x0,.L168
@@ -1396,17 +1387,11 @@ compdecomp:
 .L223:
 	lw	a5,4(sp)
 	addi	a0,zero,128
-	addi	t0,x0,1
-	and	t0,x0,t0
-	addi	t2,x0,1
-	sub	t0,t0,t2
-	sub	t0,x0,t0
-	add	a5,a5,t0
+	addi	a5,a5,1
 	sw	a5,4(sp)
 	jal	x0,.L224
 .L217:
-	addi	t0,x0,1
-	sll	a2,a2,t0
+	slli	a2,a2,1
 	addi	a2,a2,1
 	jal	x0,.L218
 .L228:
@@ -1575,7 +1560,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	a3,x0,1
-	and	a3,a1,a3
+	and	a3,a3,a1
 	beq	a3,x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
@@ -1591,37 +1576,30 @@ __mul:
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
 	blt	a0,zero,__riscv_div_lib_L10
-	blt	a1,zero,__riscv_div_lib_L11
+	blt	a1,zero,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
 # Unsigned 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_udivsi3
 __riscv_div_lib_udivsi3:
-	addi	a2,x0,0
-	and	a2,x0,a2
-	addi	t0,x0,0
-	sub	a2,a2,t0
-	sub	a2,x0,a2
-	sub	t0,x0,a1
-	sub	a2,a2,t0
-	addi	a1,x0,0
-	and	a1,x0,a1
-	addi	t0,x0,0
-	sub	a1,a1,t0
-	sub	a1,x0,a1
-	add	a1,a0,a1
+	addi	a2,a1,0
+	addi	a1,a0,0
 	addi	a0,zero,-1
 	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bgeu	a2,a1,__riscv_div_lib_L2
+	bgeu	a2,a1,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	blt	zero,a2,.+8
 	jal	x0,__riscv_div_lib_L2
-	addi	t0,x0,1
-	sll	a2,a2,t0
-	addi	t0,x0,1
-	sll	a3,a3,t0
-	bltu	a2,a1,__riscv_div_lib_L1
+	slli	a2,a2,1
+	slli	a3,a3,1
+	bltu	a2,a1,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
@@ -1667,12 +1645,8 @@ __riscv_div_lib_L12:
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
 	addi	t0,ra,0
-	blt	a1,zero,.+8
-	jal	x0,.+8
-	jal	x0,__riscv_div_lib_L31
-	blt	a0,zero,.+8
-	jal	x0,.+8
-	jal	x0,__riscv_div_lib_L32
+	blt	a1,zero,__riscv_div_lib_L31
+	blt	a0,zero,__riscv_div_lib_L32
 __riscv_div_lib_L30:
 .Lpcrel_div3:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
