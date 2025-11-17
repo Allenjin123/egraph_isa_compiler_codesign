@@ -480,7 +480,7 @@ def main():
         # Plot original program with distinct marker
         if original_area is not None:
             plt.scatter([original_area], [original_latency], color='red', marker='*',
-                       label='Original Program', s=100, edgecolors='black', linewidths=1.5, zorder=10)
+                       label='Original Program', s=150, edgecolors='black', linewidths=1.5, zorder=10)
 
         # Plot general purpose processor with distinct marker
         if gp_area is not None:
