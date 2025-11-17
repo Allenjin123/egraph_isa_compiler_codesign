@@ -12,92 +12,68 @@ gmul:
 	sub	a3,zero,a3
 	slli	a5,a0,1
 	addi	op_0,x0,27
-	addi	op_3,x0,27
-	or	op_2,op_3,a3
+	and	a3,a3,op_0
+	and	op_2,a5,a3
 	sub	op_1,op_2,a3
-	sub	a3,op_0,op_1
-	or	op_0,a5,a3
-	or	op_3,a5,a3
-	sub	op_2,op_3,a3
-	sub	op_1,a5,op_2
-	sub	a3,op_0,op_1
+	sub	op_0,a5,op_1
+	and	op_3,a5,a3
+	sub	a3,op_0,op_3
 	slli	a5,a3,24
 	srai	a4,a5,31
 	addi	op_0,x0,27
-	addi	op_3,x0,27
-	or	op_2,op_3,a4
-	sub	op_1,op_2,a4
-	sub	a4,op_0,op_1
+	and	a4,op_0,a4
 	slli	a5,a3,1
-	or	op_0,a5,a4
-	or	op_3,a5,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a5,op_2
-	sub	a4,op_0,op_1
+	and	op_2,a5,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a5,op_1
+	and	op_3,a5,a4
+	sub	a4,op_0,op_3
 	srli	a5,a1,1
-	addi	op_2,x0,1
-	or	op_1,a5,op_2
-	addi	op_3,x0,1
-	sub	op_0,op_1,op_3
-	sub	a5,a5,op_0
+	addi	op_0,x0,1
+	and	a5,a5,op_0
 	callmul	a5,a5,a3
-	addi	op_2,x0,1
-	or	op_1,a1,op_2
-	addi	op_3,x0,1
-	sub	op_0,op_1,op_3
-	sub	a3,a1,op_0
+	addi	op_0,x0,1
+	and	a3,op_0,a1
 	srli	a1,a1,2
-	addi	op_2,x0,1
-	or	op_1,a1,op_2
-	addi	op_3,x0,1
-	sub	op_0,op_1,op_3
-	sub	a1,a1,op_0
+	addi	op_0,x0,1
+	and	a1,a1,op_0
 	slli	a2,a4,24
 	callmul	a0,a0,a3
 	srai	a3,a2,31
-	addi	op_2,x0,27
-	or	op_1,a3,op_2
-	addi	op_3,x0,27
-	sub	op_0,op_1,op_3
-	sub	a3,a3,op_0
+	addi	op_0,x0,27
+	and	a3,a3,op_0
 	callmul	a1,a1,a4
-	or	op_0,a0,a5
-	or	op_3,a0,a5
-	sub	op_2,op_3,a5
-	sub	op_1,a0,op_2
-	sub	a5,op_0,op_1
+	and	op_2,a0,a5
+	sub	op_1,op_2,a5
+	sub	op_0,a0,op_1
+	and	op_3,a0,a5
+	sub	a5,op_0,op_3
 	slli	a4,a4,1
-	or	op_0,a4,a3
-	or	op_3,a4,a3
-	sub	op_2,op_3,a3
-	sub	op_1,a4,op_2
-	sub	a4,op_0,op_1
-	or	op_0,a1,a5
-	or	op_3,a1,a5
-	sub	op_2,op_3,a5
-	sub	op_1,a1,op_2
-	sub	a5,op_0,op_1
-	or	op_0,a4,a5
-	or	op_3,a4,a5
-	sub	op_2,op_3,a5
-	sub	op_1,a4,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a4,a3
+	sub	op_1,op_2,a3
+	sub	op_0,a4,op_1
+	and	op_3,a4,a3
+	sub	a4,op_0,op_3
+	and	op_2,a1,a5
+	sub	op_1,op_2,a5
+	sub	op_0,a1,op_1
+	and	op_3,a1,a5
+	sub	a5,op_0,op_3
+	and	op_2,a4,a5
+	sub	op_1,op_2,a5
+	sub	op_0,a4,op_1
+	and	op_3,a4,a5
+	sub	a0,op_0,op_3
 	addi	op_0,x0,255
-	addi	op_3,x0,255
-	or	op_2,op_3,a0
-	sub	op_1,op_2,a0
-	sub	a0,op_0,op_1
+	and	a0,op_0,a0
 	jalr	zero,ra,0
 	.size	gmul, .-gmul
 	.align	2
 	.type	hex_value, @function
 hex_value:
 	addi	a5,a0,-48
-	addi	op_2,x0,255
-	or	op_1,a5,op_2
-	addi	op_3,x0,255
-	sub	op_0,op_1,op_3
-	sub	a2,a5,op_0
+	addi	op_0,x0,255
+	and	a2,a5,op_0
 	addi	a3,zero,9
 	addi	a4,a0,0
 	bltu	a3,a2,.L3
@@ -106,21 +82,15 @@ hex_value:
 .L3:
 	addi	a5,a0,-65
 	addi	op_0,x0,255
-	addi	op_3,x0,255
-	or	op_2,op_3,a5
-	sub	op_1,op_2,a5
-	sub	a5,op_0,op_1
+	and	a5,op_0,a5
 	addi	a3,zero,5
 	bltu	a3,a5,.L5
 	addi	a0,a0,-55
 	jalr	zero,ra,0
 .L5:
 	addi	a5,a0,-97
-	addi	op_2,x0,255
-	or	op_1,a5,op_2
-	addi	op_3,x0,255
-	sub	op_0,op_1,op_3
-	sub	a5,a5,op_0
+	addi	op_0,x0,255
+	and	a5,op_0,a5
 	addi	a0,zero,-1
 	bltu	a3,a5,.L2
 	addi	a0,a4,-87
@@ -132,8 +102,7 @@ hex_value:
 my_memcpy.isra.0:
 	addi	a5,zero,0
 .L8:
-	beq	a2,a5,.+8
-	jal	x0,.L9
+	bne	a2,a5,.L9
 	jalr	zero,ra,0
 .L9:
 	sub	op_0,x0,a1
@@ -171,8 +140,7 @@ set_key:
 	slli	a6,s3,2
 	addi	s2,zero,0
 .L11:
-	beq	a6,s2,.+8
-	jal	x0,.L12
+	bne	a6,s2,.L12
 	addi	op_0,x0,7
 	bltu	s3,op_0,.+12
 	addi	t1,x0,0
@@ -183,13 +151,13 @@ set_key:
 	addi	t3,s2,28
 	addi	a5,zero,0
 	addi	op_1,x0,1
-	or	op_0,op_1,t1
-	addi	op_3,x0,1
+	addi	op_4,x0,1
+	and	op_3,op_4,t1
+	sub	op_2,op_3,t1
+	sub	op_0,op_1,op_2
 	addi	op_6,x0,1
-	or	op_5,op_6,t1
-	sub	op_4,op_5,t1
-	sub	op_2,op_3,op_4
-	sub	t1,op_0,op_2
+	and	op_5,op_6,t1
+	sub	t1,op_0,op_5
 	sub	op_0,x0,s7
 	sub	a7,s2,op_0
 	sub	t4,zero,s2
@@ -198,12 +166,10 @@ set_key:
 .L13:
 	bltu	a6,t3,.L16
 	addi	op_0,x0,2
-	addi	op_3,x0,2
-	or	op_2,op_3,a2
-	sub	op_1,op_2,a2
-	sub	a2,op_0,op_1
+	and	a2,a2,op_0
 	addi	s0,a5,0
-	beq	a2,zero,.L33
+	bne	a2,zero,.+8
+	jal	x0,.L33
 	addi	a5,a3,248
 	addi	a4,a3,264
 	slli	s3,s3,4
@@ -213,8 +179,7 @@ set_key:
 	lw	a2,-144(a2)
 	addi	a5,a5,4
 	sw	a2,-4(a5)
-	beq	a4,a5,.+8
-	jal	x0,.L18
+	bne	a4,a5,.L18
 	lui	s5,1048560
 	lui	s6,1044496
 	addi	s1,a3,0
@@ -234,27 +199,18 @@ set_key:
 	lw	a5,8(s9)
 	addi	a1,zero,14
 	addi	s11,s11,1
-	addi	op_2,x0,255
-	or	op_1,a5,op_2
-	addi	op_3,x0,255
-	sub	op_0,op_1,op_3
-	sub	a4,a5,op_0
+	addi	op_0,x0,255
+	and	a4,op_0,a5
 	sw	a4,12(sp)
 	srli	a2,a5,8
 	lw	a0,12(sp)
-	addi	op_2,x0,255
-	or	op_1,a2,op_2
-	addi	op_3,x0,255
-	sub	op_0,op_1,op_3
-	sub	a4,a2,op_0
+	addi	op_0,x0,255
+	and	a4,a2,op_0
 	srli	a2,a5,16
 	sw	a4,8(sp)
 	srli	a5,a5,24
-	addi	op_2,x0,255
-	or	op_1,a2,op_2
-	addi	op_3,x0,255
-	sub	op_0,op_1,op_3
-	sub	a4,a2,op_0
+	addi	op_0,x0,255
+	and	a4,a2,op_0
 	sw	a4,4(sp)
 	sw	a5,0(sp)
 .Lpcrel_1:
@@ -267,45 +223,41 @@ set_key:
 .Lpcrel_2:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_2)
-	or	op_0,a0,s4
-	or	op_3,a0,s4
-	sub	op_2,op_3,s4
-	sub	op_1,a0,op_2
-	sub	s4,op_0,op_1
+	and	op_2,a0,s4
+	sub	op_1,op_2,s4
+	sub	op_0,a0,op_1
+	and	op_3,a0,s4
+	sub	s4,op_0,op_3
 	lw	a0,4(sp)
 	addi	a1,zero,13
 	addi	s8,s8,4
 .Lpcrel_3:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_3)
-	or	op_0,a0,s4
-	or	op_3,a0,s4
-	sub	op_2,op_3,s4
-	sub	op_1,a0,op_2
-	sub	s4,op_0,op_1
+	and	op_2,a0,s4
+	sub	op_1,op_2,s4
+	sub	op_0,a0,op_1
+	and	op_3,a0,s4
+	sub	s4,op_0,op_3
 	lw	a0,0(sp)
 	addi	a1,zero,9
 .Lpcrel_4:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_4)
-	or	op_0,a0,s4
-	or	op_3,a0,s4
-	sub	op_2,op_3,s4
-	sub	op_1,a0,op_2
-	sub	s4,op_0,op_1
+	and	op_2,a0,s4
+	sub	op_1,op_2,s4
+	sub	op_0,a0,op_1
+	and	op_3,a0,s4
+	sub	s4,op_0,op_3
 	lw	a0,12(sp)
 	addi	op_0,x0,-256
-	addi	op_3,x0,-256
-	or	op_2,op_3,s0
-	sub	op_1,op_2,s0
-	sub	a5,op_0,op_1
+	and	a5,op_0,s0
 	addi	op_0,x0,255
-	addi	op_3,x0,255
-	or	op_2,op_3,s4
-	sub	op_1,op_2,s4
-	sub	s4,op_0,op_1
+	and	s4,s4,op_0
 	addi	a1,zero,9
-	or	s0,a5,s4
+	and	op_1,a5,s4
+	sub	op_0,op_1,s4
+	sub	s0,a5,op_0
 .Lpcrel_5:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_5)
@@ -315,43 +267,40 @@ set_key:
 .Lpcrel_6:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_6)
-	or	op_0,a0,s4
-	or	op_3,a0,s4
-	sub	op_2,op_3,s4
-	sub	op_1,a0,op_2
-	sub	s4,op_0,op_1
+	and	op_2,a0,s4
+	sub	op_1,op_2,s4
+	sub	op_0,a0,op_1
+	and	op_3,a0,s4
+	sub	s4,op_0,op_3
 	lw	a0,4(sp)
 	addi	a1,zero,11
 .Lpcrel_7:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_7)
-	or	op_0,a0,s4
-	or	op_3,a0,s4
-	sub	op_2,op_3,s4
-	sub	op_1,a0,op_2
-	sub	s4,op_0,op_1
+	and	op_2,a0,s4
+	sub	op_1,op_2,s4
+	sub	op_0,a0,op_1
+	and	op_3,a0,s4
+	sub	s4,op_0,op_3
 	lw	a0,0(sp)
 	addi	a1,zero,13
 .Lpcrel_8:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_8)
-	or	op_0,a0,s4
-	or	op_3,a0,s4
-	sub	op_2,op_3,s4
-	sub	op_1,a0,op_2
-	sub	s4,op_0,op_1
+	and	op_2,a0,s4
+	sub	op_1,op_2,s4
+	sub	op_0,a0,op_1
+	and	op_3,a0,s4
+	sub	s4,op_0,op_3
 	lw	a0,12(sp)
-	addi	op_2,x0,255
-	or	op_1,s4,op_2
-	addi	op_3,x0,255
-	sub	op_0,op_1,op_3
-	sub	s4,s4,op_0
-	or	op_1,s0,s5
-	sub	op_0,op_1,s5
-	sub	a5,s0,op_0
+	addi	op_0,x0,255
+	and	s4,s4,op_0
+	and	a5,s0,s5
 	slli	s4,s4,8
 	addi	a1,zero,13
-	or	s0,a5,s4
+	and	op_1,a5,s4
+	sub	op_0,op_1,s4
+	sub	s0,a5,op_0
 .Lpcrel_9:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_9)
@@ -361,43 +310,40 @@ set_key:
 .Lpcrel_10:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_10)
-	or	op_0,a0,s4
-	or	op_3,a0,s4
-	sub	op_2,op_3,s4
-	sub	op_1,a0,op_2
-	sub	s4,op_0,op_1
+	and	op_2,a0,s4
+	sub	op_1,op_2,s4
+	sub	op_0,a0,op_1
+	and	op_3,a0,s4
+	sub	s4,op_0,op_3
 	lw	a0,4(sp)
 	addi	a1,zero,14
 .Lpcrel_11:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_11)
-	or	op_0,a0,s4
-	or	op_3,a0,s4
-	sub	op_2,op_3,s4
-	sub	op_1,a0,op_2
-	sub	s4,op_0,op_1
+	and	op_2,a0,s4
+	sub	op_1,op_2,s4
+	sub	op_0,a0,op_1
+	and	op_3,a0,s4
+	sub	s4,op_0,op_3
 	lw	a0,0(sp)
 	addi	a1,zero,11
 .Lpcrel_12:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_12)
-	or	op_0,a0,s4
-	or	op_3,a0,s4
-	sub	op_2,op_3,s4
-	sub	op_1,a0,op_2
-	sub	s4,op_0,op_1
+	and	op_2,a0,s4
+	sub	op_1,op_2,s4
+	sub	op_0,a0,op_1
+	and	op_3,a0,s4
+	sub	s4,op_0,op_3
 	lw	a0,12(sp)
-	addi	op_2,x0,255
-	or	op_1,s4,op_2
-	addi	op_3,x0,255
-	sub	op_0,op_1,op_3
-	sub	s4,s4,op_0
-	or	op_1,s0,s6
-	sub	op_0,op_1,s6
-	sub	a5,s0,op_0
+	addi	op_0,x0,255
+	and	s4,op_0,s4
+	and	a5,s0,s6
 	slli	s4,s4,16
 	addi	a1,zero,11
-	or	s0,a5,s4
+	and	op_1,a5,s4
+	sub	op_0,op_1,s4
+	sub	s0,a5,op_0
 .Lpcrel_13:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_13)
@@ -407,47 +353,45 @@ set_key:
 .Lpcrel_14:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_14)
-	or	op_0,a0,s4
-	or	op_3,a0,s4
-	sub	op_2,op_3,s4
-	sub	op_1,a0,op_2
-	sub	s4,op_0,op_1
+	and	op_2,a0,s4
+	sub	op_1,op_2,s4
+	sub	op_0,a0,op_1
+	and	op_3,a0,s4
+	sub	s4,op_0,op_3
 	lw	a0,4(sp)
 	addi	a1,zero,9
 .Lpcrel_15:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_15)
-	or	op_0,a0,s4
-	or	op_3,a0,s4
-	sub	op_2,op_3,s4
-	sub	op_1,a0,op_2
-	sub	s4,op_0,op_1
+	and	op_2,a0,s4
+	sub	op_1,op_2,s4
+	sub	op_0,a0,op_1
+	and	op_3,a0,s4
+	sub	s4,op_0,op_3
 	lw	a0,0(sp)
 	addi	a1,zero,14
 .Lpcrel_16:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_16)
 	lui	a5,4096
-	or	op_0,a0,s4
-	or	op_3,a0,s4
-	sub	op_2,op_3,s4
-	sub	op_1,a0,op_2
-	sub	s4,op_0,op_1
+	and	op_2,a0,s4
+	sub	op_1,op_2,s4
+	sub	op_0,a0,op_1
+	and	op_3,a0,s4
+	sub	s4,op_0,op_3
 	addi	a4,a5,-1
 	slli	s4,s4,24
-	or	op_1,s0,a4
-	sub	op_0,op_1,a4
-	sub	a5,s0,op_0
-	or	s0,a5,s4
+	and	a5,s0,a4
+	and	op_1,a5,s4
+	sub	op_0,op_1,s4
+	sub	s0,a5,op_0
 	sw	s0,244(s8)
 	addi	a3,zero,4
-	beq	s11,a3,.+8
-	jal	x0,.L20
+	bne	s11,a3,.L20
 	addi	s2,s2,-4
 	sub	op_0,x0,s10
 	sub	s10,a3,op_0
-	beq	s2,zero,.+8
-	jal	x0,.L19
+	bne	s2,zero,.L19
 	addi	s1,s1,24
 .L22:
 	lw	a4,0(s7)
@@ -455,8 +399,7 @@ set_key:
 	sub	a5,s3,op_0
 	addi	s7,s7,4
 	sw	a4,336(a5)
-	beq	s7,s1,.+8
-	jal	x0,.L22
+	bne	s7,s1,.L22
 .L33:
 	lw	ra,76(sp)
 	lw	s0,72(sp)
@@ -480,13 +423,19 @@ set_key:
 	lbu	a5,1(a1)
 	lbu	a4,0(a1)
 	slli	a5,a5,8
-	or	a5,a5,a4
+	and	op_1,a5,a4
+	sub	op_0,op_1,a4
+	sub	a5,a5,op_0
 	lbu	a4,2(a1)
 	slli	a4,a4,16
-	or	a4,a4,a5
+	and	op_1,a4,a5
+	sub	op_0,op_1,a5
+	sub	a4,a4,op_0
 	lbu	a5,3(a1)
 	slli	a5,a5,24
-	or	a5,a5,a4
+	and	op_1,a5,a4
+	sub	op_0,op_1,a4
+	sub	a5,a5,op_0
 	sub	op_0,x0,a3
 	sub	a4,s2,op_0
 	sw	a5,8(a4)
@@ -495,15 +444,11 @@ set_key:
 .L16:
 	callremu	a4,a6,s3
 	lw	a5,-4(a7)
-	beq	a4,zero,.+8
-	jal	x0,.L14
+	bne	a4,zero,.L14
 	srli	a4,a5,16
 	srli	a1,a5,24
 	addi	op_0,x0,255
-	addi	op_3,x0,255
-	or	op_2,op_3,a4
-	sub	op_1,op_2,a4
-	sub	a4,op_0,op_1
+	and	a4,op_0,a4
 	sub	op_0,x0,a0
 	sub	a4,a4,op_0
 	sub	op_0,x0,a0
@@ -512,70 +457,64 @@ set_key:
 	lbu	a1,0(a1)
 	slli	a4,a4,8
 	slli	a1,a1,16
-	or	a4,a4,a1
+	and	op_1,a4,a1
+	sub	op_0,op_1,a1
+	sub	a4,a4,op_0
 	srli	a1,a5,8
 	addi	op_0,x0,255
-	addi	op_3,x0,255
-	or	op_2,op_3,a1
-	sub	op_1,op_2,a1
-	sub	a1,op_0,op_1
+	and	a1,a1,op_0
 	addi	op_0,x0,255
-	addi	op_3,x0,255
-	or	op_2,op_3,a5
-	sub	op_1,op_2,a5
-	sub	a5,op_0,op_1
+	and	a5,a5,op_0
 	sub	op_0,x0,a0
 	sub	a1,a1,op_0
 	sub	op_0,x0,a0
 	sub	a5,a5,op_0
 	lbu	a1,0(a1)
 	lbu	a5,0(a5)
-	or	a4,a4,a1
+	and	op_1,a4,a1
+	sub	op_0,op_1,a1
+	sub	a4,a4,op_0
 	slli	a5,a5,24
-	or	a4,a4,a5
+	and	op_1,a4,a5
+	sub	op_0,op_1,a5
+	sub	a4,a4,op_0
 	calldivu	a5,a6,s3
 	addi	a5,a5,-1
 	slli	a5,a5,2
 	sub	op_0,x0,a0
 	sub	a5,a5,op_0
 	lw	a5,256(a5)
-	or	op_0,a5,a4
-	or	op_3,a5,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a5,op_2
-	sub	a5,op_0,op_1
+	and	op_2,a5,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a5,op_1
+	and	op_3,a5,a4
+	sub	a5,op_0,op_3
 .L15:
 	sub	op_0,x0,a7
 	sub	a4,t4,op_0
 	lw	a4,0(a4)
 	addi	a6,a6,1
 	addi	a7,a7,4
-	or	op_0,a5,a4
-	or	op_3,a5,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a5,op_2
-	sub	a4,op_0,op_1
+	and	op_2,a5,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a5,op_1
+	and	op_3,a5,a4
+	sub	a4,op_0,op_3
 	sw	a4,-4(a7)
 	jal	x0,.L13
 .L14:
 	addi	a4,a4,-4
-	beq	a4,zero,.+8
+	bne	a4,zero,.L15
+	bne	t1,zero,.+8
 	jal	x0,.L15
-	beq	t1,zero,.L15
 	srli	a1,a5,8
 	srli	t5,a5,16
 	lui	a4,%hi(.LANCHOR0)
 	addi	a4,a4,%lo(.LANCHOR0)
-	addi	op_2,x0,255
-	or	op_1,a1,op_2
-	addi	op_3,x0,255
-	sub	op_0,op_1,op_3
-	sub	a1,a1,op_0
 	addi	op_0,x0,255
-	addi	op_3,x0,255
-	or	op_2,op_3,t5
-	sub	op_1,op_2,t5
-	sub	t5,op_0,op_1
+	and	a1,a1,op_0
+	addi	op_0,x0,255
+	and	t5,t5,op_0
 	sub	op_0,x0,a4
 	sub	a1,a1,op_0
 	sub	op_0,x0,a4
@@ -584,12 +523,11 @@ set_key:
 	lbu	t5,0(t5)
 	slli	a1,a1,8
 	slli	t5,t5,16
-	or	a1,a1,t5
-	addi	op_2,x0,255
-	or	op_1,a5,op_2
-	addi	op_3,x0,255
-	sub	op_0,op_1,op_3
-	sub	t5,a5,op_0
+	and	op_1,a1,t5
+	sub	op_0,op_1,t5
+	sub	a1,a1,op_0
+	addi	op_0,x0,255
+	and	t5,op_0,a5
 	srli	a5,a5,24
 	sub	op_0,x0,a4
 	sub	t5,t5,op_0
@@ -597,9 +535,13 @@ set_key:
 	sub	a4,a5,op_0
 	lbu	t5,0(t5)
 	lbu	a5,0(a4)
-	or	a1,a1,t5
+	and	op_1,a1,t5
+	sub	op_0,op_1,t5
+	sub	a1,a1,op_0
 	slli	a5,a5,24
-	or	a5,a1,a5
+	and	op_1,a1,a5
+	sub	op_0,op_1,a5
+	sub	a5,a1,op_0
 	jal	x0,.L15
 	.size	set_key, .-set_key
 	.align	2
@@ -627,14 +569,13 @@ encrypt:
 	sub	op_0,x0,a1
 	sub	a6,a5,op_0
 	addi	a5,a5,4
-	or	op_0,a7,a4
-	or	op_3,a7,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a7,op_2
-	sub	a4,op_0,op_1
+	and	op_2,a7,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a7,op_1
+	and	op_3,a7,a4
+	sub	a4,op_0,op_3
 	sw	a4,0(a6)
-	beq	a5,a3,.+8
-	jal	x0,.L36
+	bne	a5,a3,.L36
 	lw	t6,4(a2)
 	lui	a5,%hi(.LANCHOR0)
 	addi	t4,a2,24
@@ -750,139 +691,126 @@ encrypt:
 	sub	a3,zero,a3
 	slli	a4,a6,1
 	addi	op_0,x0,27
-	addi	op_3,x0,27
-	or	op_2,op_3,a3
+	and	a3,a3,op_0
+	and	op_2,a4,a3
 	sub	op_1,op_2,a3
-	sub	a3,op_0,op_1
-	or	op_0,a4,a3
-	or	op_3,a4,a3
-	sub	op_2,op_3,a3
-	sub	op_1,a4,op_2
-	sub	a3,op_0,op_1
+	sub	op_0,a4,op_1
+	and	op_3,a4,a3
+	sub	a3,op_0,op_3
 	srli	a4,s0,7
 	lbu	a7,3(t1)
 	sub	a4,zero,a4
 	slli	a2,s0,1
 	addi	op_0,x0,27
-	addi	op_3,x0,27
-	or	op_2,op_3,a4
+	and	a4,op_0,a4
+	and	op_2,s2,s0
+	sub	op_1,op_2,s0
+	sub	op_0,s2,op_1
+	and	op_3,s2,s0
+	sub	s1,op_0,op_3
+	and	op_2,a2,a4
 	sub	op_1,op_2,a4
-	sub	a4,op_0,op_1
-	or	op_0,s2,s0
-	or	op_3,s2,s0
-	sub	op_2,op_3,s0
-	sub	op_1,s2,op_2
-	sub	s1,op_0,op_1
-	or	op_0,a2,a4
-	or	op_3,a2,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a2,op_2
-	sub	a4,op_0,op_1
-	or	op_0,a4,a3
-	or	op_3,a4,a3
-	sub	op_2,op_3,a3
-	sub	op_1,a4,op_2
-	sub	s3,op_0,op_1
-	or	op_0,s1,a7
-	or	op_3,s1,a7
-	sub	op_2,op_3,a7
-	sub	op_1,s1,op_2
-	sub	a2,op_0,op_1
-	or	op_0,s3,a2
-	or	op_3,s3,a2
-	sub	op_2,op_3,a2
-	sub	op_1,s3,op_2
-	sub	a2,op_0,op_1
+	sub	op_0,a2,op_1
+	and	op_3,a2,a4
+	sub	a4,op_0,op_3
+	and	op_2,a4,a3
+	sub	op_1,op_2,a3
+	sub	op_0,a4,op_1
+	and	op_3,a4,a3
+	sub	s3,op_0,op_3
+	and	op_2,s1,a7
+	sub	op_1,op_2,a7
+	sub	op_0,s1,op_1
+	and	op_3,s1,a7
+	sub	a2,op_0,op_3
+	and	op_2,s3,a2
+	sub	op_1,op_2,a2
+	sub	op_0,s3,op_1
+	and	op_3,s3,a2
+	sub	a2,op_0,op_3
 	sb	a2,0(t3)
 	srli	a2,s2,7
 	sub	a2,zero,a2
 	slli	s3,s2,1
 	addi	op_0,x0,27
-	addi	op_3,x0,27
-	or	op_2,op_3,a2
+	and	a2,a2,op_0
+	and	op_2,s3,a2
 	sub	op_1,op_2,a2
-	sub	a2,op_0,op_1
-	or	op_0,s3,a2
-	or	op_3,s3,a2
-	sub	op_2,op_3,a2
-	sub	op_1,s3,op_2
-	sub	a2,op_0,op_1
-	or	op_0,a2,a4
-	or	op_3,a2,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a2,op_2
-	sub	a4,op_0,op_1
-	or	op_0,a7,s2
-	or	op_3,a7,s2
-	sub	op_2,op_3,s2
-	sub	op_1,a7,op_2
-	sub	s2,op_0,op_1
-	or	op_0,a4,a6
-	or	op_3,a4,a6
-	sub	op_2,op_3,a6
-	sub	op_1,a4,op_2
-	sub	a4,op_0,op_1
-	or	op_0,s2,a4
-	or	op_3,s2,a4
-	sub	op_2,op_3,a4
-	sub	op_1,s2,op_2
-	sub	a4,op_0,op_1
+	sub	op_0,s3,op_1
+	and	op_3,s3,a2
+	sub	a2,op_0,op_3
+	and	op_2,a2,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a2,op_1
+	and	op_3,a2,a4
+	sub	a4,op_0,op_3
+	and	op_2,a7,s2
+	sub	op_1,op_2,s2
+	sub	op_0,a7,op_1
+	and	op_3,a7,s2
+	sub	s2,op_0,op_3
+	and	op_2,a4,a6
+	sub	op_1,op_2,a6
+	sub	op_0,a4,op_1
+	and	op_3,a4,a6
+	sub	a4,op_0,op_3
+	and	op_2,s2,a4
+	sub	op_1,op_2,a4
+	sub	op_0,s2,op_1
+	and	op_3,s2,a4
+	sub	a4,op_0,op_3
 	sb	a4,1(t3)
 	srli	a4,a7,7
 	sub	a4,zero,a4
 	slli	s2,a7,1
-	addi	op_2,x0,27
-	or	op_1,a4,op_2
-	addi	op_3,x0,27
-	sub	op_0,op_1,op_3
-	sub	a4,a4,op_0
-	or	op_0,s2,a4
-	or	op_3,s2,a4
-	sub	op_2,op_3,a4
-	sub	op_1,s2,op_2
-	sub	a4,op_0,op_1
-	or	op_0,s0,a6
-	or	op_3,s0,a6
-	sub	op_2,op_3,a6
-	sub	op_1,s0,op_2
-	sub	s0,op_0,op_1
-	or	op_0,a4,a2
-	or	op_3,a4,a2
-	sub	op_2,op_3,a2
-	sub	op_1,a4,op_2
-	sub	a2,op_0,op_1
-	or	op_0,a4,a3
-	or	op_3,a4,a3
-	sub	op_2,op_3,a3
-	sub	op_1,a4,op_2
-	sub	a3,op_0,op_1
-	or	op_0,s0,a7
-	or	op_3,s0,a7
-	sub	op_2,op_3,a7
-	sub	op_1,s0,op_2
-	sub	a7,op_0,op_1
-	or	op_0,s1,a6
-	or	op_3,s1,a6
-	sub	op_2,op_3,a6
-	sub	op_1,s1,op_2
-	sub	a6,op_0,op_1
-	or	op_0,a2,a7
-	or	op_3,a2,a7
-	sub	op_2,op_3,a7
-	sub	op_1,a2,op_2
-	sub	a7,op_0,op_1
-	or	op_0,a3,a6
-	or	op_3,a3,a6
-	sub	op_2,op_3,a6
-	sub	op_1,a3,op_2
-	sub	a6,op_0,op_1
+	addi	op_0,x0,27
+	and	a4,a4,op_0
+	and	op_2,s2,a4
+	sub	op_1,op_2,a4
+	sub	op_0,s2,op_1
+	and	op_3,s2,a4
+	sub	a4,op_0,op_3
+	and	op_2,s0,a6
+	sub	op_1,op_2,a6
+	sub	op_0,s0,op_1
+	and	op_3,s0,a6
+	sub	s0,op_0,op_3
+	and	op_2,a4,a2
+	sub	op_1,op_2,a2
+	sub	op_0,a4,op_1
+	and	op_3,a4,a2
+	sub	a2,op_0,op_3
+	and	op_2,a4,a3
+	sub	op_1,op_2,a3
+	sub	op_0,a4,op_1
+	and	op_3,a4,a3
+	sub	a3,op_0,op_3
+	and	op_2,s0,a7
+	sub	op_1,op_2,a7
+	sub	op_0,s0,op_1
+	and	op_3,s0,a7
+	sub	a7,op_0,op_3
+	and	op_2,s1,a6
+	sub	op_1,op_2,a6
+	sub	op_0,s1,op_1
+	and	op_3,s1,a6
+	sub	a6,op_0,op_3
+	and	op_2,a2,a7
+	sub	op_1,op_2,a7
+	sub	op_0,a2,op_1
+	and	op_3,a2,a7
+	sub	a7,op_0,op_3
+	and	op_2,a3,a6
+	sub	op_1,op_2,a6
+	sub	op_0,a3,op_1
+	and	op_3,a3,a6
+	sub	a6,op_0,op_3
 	sb	a7,2(t3)
 	sb	a6,3(t3)
 	addi	t1,t1,4
 	addi	a4,sp,32
 	addi	t3,t3,4
-	beq	a4,t1,.+8
-	jal	x0,.L39
+	bne	a4,t1,.L39
 .L41:
 	addi	a4,t4,0
 	addi	a3,a1,0
@@ -892,14 +820,13 @@ encrypt:
 	lw	a6,0(a4)
 	addi	a4,a4,4
 	addi	a3,a3,4
-	or	op_0,a6,a2
-	or	op_3,a6,a2
-	sub	op_2,op_3,a2
-	sub	op_1,a6,op_2
-	sub	a2,op_0,op_1
+	and	op_2,a6,a2
+	sub	op_1,op_2,a2
+	sub	op_0,a6,op_1
+	and	op_3,a6,a2
+	sub	a2,op_0,op_3
 	sw	a2,-4(a3)
-	beq	t4,a4,.+8
-	jal	x0,.L40
+	bne	t4,a4,.L40
 	addi	t5,t5,1
 	jal	x0,.L37
 .L43:
@@ -912,8 +839,7 @@ encrypt:
 	sub	a3,a4,op_0
 	addi	a4,a4,1
 	sb	a2,0(a3)
-	beq	a4,t2,.+8
-	jal	x0,.L38
+	bne	a4,t2,.L38
 	jal	x0,.L41
 	.size	encrypt, .-encrypt
 	.align	2
@@ -948,14 +874,13 @@ decrypt:
 	sub	op_0,x0,s4
 	sub	a1,a5,op_0
 	addi	a5,a5,4
-	or	op_0,a6,a4
-	or	op_3,a6,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a6,op_2
-	sub	a4,op_0,op_1
+	and	op_2,a6,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a6,op_1
+	and	op_3,a6,a4
+	sub	a4,op_0,op_3
 	sw	a4,0(a1)
-	beq	a5,a3,.+8
-	jal	x0,.L50
+	bne	a5,a3,.L50
 	lw	s7,4(a2)
 	lui	s0,%hi(.LANCHOR0)
 	addi	s5,a2,264
@@ -1095,31 +1020,31 @@ decrypt:
 .Lpcrel_20:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_20)
-	or	op_0,a0,s2
-	or	op_3,a0,s2
-	sub	op_2,op_3,s2
-	sub	op_1,a0,op_2
-	sub	s2,op_0,op_1
+	and	op_2,a0,s2
+	sub	op_1,op_2,s2
+	sub	op_0,a0,op_1
+	and	op_3,a0,s2
+	sub	s2,op_0,op_3
 	lw	a0,4(sp)
 	addi	a1,zero,13
 .Lpcrel_21:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_21)
-	or	op_0,a0,s2
-	or	op_3,a0,s2
-	sub	op_2,op_3,s2
-	sub	op_1,a0,op_2
-	sub	s2,op_0,op_1
+	and	op_2,a0,s2
+	sub	op_1,op_2,s2
+	sub	op_0,a0,op_1
+	and	op_3,a0,s2
+	sub	s2,op_0,op_3
 	lw	a0,8(sp)
 	addi	a1,zero,9
 .Lpcrel_22:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_22)
-	or	op_0,a0,s2
-	or	op_3,a0,s2
-	sub	op_2,op_3,s2
-	sub	op_1,a0,op_2
-	sub	s2,op_0,op_1
+	and	op_2,a0,s2
+	sub	op_1,op_2,s2
+	sub	op_0,a0,op_1
+	and	op_3,a0,s2
+	sub	s2,op_0,op_3
 	sb	s2,-4(s3)
 	addi	a1,zero,9
 	addi	a0,s10,0
@@ -1132,31 +1057,31 @@ decrypt:
 .Lpcrel_24:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_24)
-	or	op_0,a0,s2
-	or	op_3,a0,s2
-	sub	op_2,op_3,s2
-	sub	op_1,a0,op_2
-	sub	s2,op_0,op_1
+	and	op_2,a0,s2
+	sub	op_1,op_2,s2
+	sub	op_0,a0,op_1
+	and	op_3,a0,s2
+	sub	s2,op_0,op_3
 	lw	a0,4(sp)
 	addi	a1,zero,11
 .Lpcrel_25:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_25)
-	or	op_0,a0,s2
-	or	op_3,a0,s2
-	sub	op_2,op_3,s2
-	sub	op_1,a0,op_2
-	sub	s2,op_0,op_1
+	and	op_2,a0,s2
+	sub	op_1,op_2,s2
+	sub	op_0,a0,op_1
+	and	op_3,a0,s2
+	sub	s2,op_0,op_3
 	lw	a0,8(sp)
 	addi	a1,zero,13
 .Lpcrel_26:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_26)
-	or	op_0,a0,s2
-	or	op_3,a0,s2
-	sub	op_2,op_3,s2
-	sub	op_1,a0,op_2
-	sub	s2,op_0,op_1
+	and	op_2,a0,s2
+	sub	op_1,op_2,s2
+	sub	op_0,a0,op_1
+	and	op_3,a0,s2
+	sub	s2,op_0,op_3
 	sb	s2,-3(s3)
 	addi	a1,zero,13
 	addi	a0,s10,0
@@ -1169,31 +1094,31 @@ decrypt:
 .Lpcrel_28:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_28)
-	or	op_0,a0,s2
-	or	op_3,a0,s2
-	sub	op_2,op_3,s2
-	sub	op_1,a0,op_2
-	sub	s2,op_0,op_1
+	and	op_2,a0,s2
+	sub	op_1,op_2,s2
+	sub	op_0,a0,op_1
+	and	op_3,a0,s2
+	sub	s2,op_0,op_3
 	lw	a0,4(sp)
 	addi	a1,zero,14
 .Lpcrel_29:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_29)
-	or	op_0,a0,s2
-	or	op_3,a0,s2
-	sub	op_2,op_3,s2
-	sub	op_1,a0,op_2
-	sub	s2,op_0,op_1
+	and	op_2,a0,s2
+	sub	op_1,op_2,s2
+	sub	op_0,a0,op_1
+	and	op_3,a0,s2
+	sub	s2,op_0,op_3
 	lw	a0,8(sp)
 	addi	a1,zero,11
 .Lpcrel_30:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_30)
-	or	op_0,a0,s2
-	or	op_3,a0,s2
-	sub	op_2,op_3,s2
-	sub	op_1,a0,op_2
-	sub	s2,op_0,op_1
+	and	op_2,a0,s2
+	sub	op_1,op_2,s2
+	sub	op_0,a0,op_1
+	and	op_3,a0,s2
+	sub	s2,op_0,op_3
 	sb	s2,-2(s3)
 	addi	a1,zero,11
 	addi	a0,s10,0
@@ -1206,35 +1131,34 @@ decrypt:
 .Lpcrel_32:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_32)
-	or	op_0,a0,s2
-	or	op_3,a0,s2
-	sub	op_2,op_3,s2
-	sub	op_1,a0,op_2
-	sub	s2,op_0,op_1
+	and	op_2,a0,s2
+	sub	op_1,op_2,s2
+	sub	op_0,a0,op_1
+	and	op_3,a0,s2
+	sub	s2,op_0,op_3
 	lw	a0,4(sp)
 	addi	a1,zero,9
 .Lpcrel_33:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_33)
-	or	op_0,a0,s2
-	or	op_3,a0,s2
-	sub	op_2,op_3,s2
-	sub	op_1,a0,op_2
-	sub	s2,op_0,op_1
+	and	op_2,a0,s2
+	sub	op_1,op_2,s2
+	sub	op_0,a0,op_1
+	and	op_3,a0,s2
+	sub	s2,op_0,op_3
 	lw	a0,8(sp)
 	addi	a1,zero,14
 .Lpcrel_34:
 	auipc	ra,%pcrel_hi(gmul)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_34)
-	or	op_0,a0,s2
-	or	op_3,a0,s2
-	sub	op_2,op_3,s2
-	sub	op_1,a0,op_2
-	sub	s2,op_0,op_1
+	and	op_2,a0,s2
+	sub	op_1,op_2,s2
+	sub	op_0,a0,op_1
+	and	op_3,a0,s2
+	sub	s2,op_0,op_3
 	sb	s2,-1(s3)
 	addi	a5,sp,48
-	beq	a5,s1,.+8
-	jal	x0,.L53
+	bne	a5,s1,.L53
 .L54:
 	addi	a5,s5,0
 	addi	a4,s4,0
@@ -1244,14 +1168,13 @@ decrypt:
 	lw	a2,0(a5)
 	addi	a5,a5,4
 	addi	a4,a4,4
-	or	op_0,a2,a3
-	or	op_3,a2,a3
-	sub	op_2,op_3,a3
-	sub	op_1,a2,op_2
-	sub	a3,op_0,op_1
+	and	op_2,a2,a3
+	sub	op_1,op_2,a3
+	sub	op_0,a2,op_1
+	and	op_3,a2,a3
+	sub	a3,op_0,op_3
 	sw	a3,-4(a4)
-	beq	s5,a5,.+8
-	jal	x0,.L55
+	bne	s5,a5,.L55
 	addi	s6,s6,1
 	jal	x0,.L51
 .L57:
@@ -1264,8 +1187,7 @@ decrypt:
 	sub	a4,a5,op_0
 	addi	a5,a5,1
 	sb	a3,0(a4)
-	beq	a5,s9,.+8
-	jal	x0,.L52
+	bne	a5,s9,.L52
 	jal	x0,.L54
 	.size	decrypt, .-decrypt
 	.align	2
@@ -1289,11 +1211,13 @@ fillrand:
 	addi	t1,t1,1616
 	addi	t2,t6,%lo(r.2)
 	blt	t4,a1,.L82
-	beq	t5,zero,.L78
+	bne	t5,zero,.+8
+	jal	x0,.L78
 	sw	a4,4(a2)
 	sw	a5,0(a2)
 .L78:
-	beq	t4,zero,.L80
+	bne	t4,zero,.+8
+	jal	x0,.L80
 	sw	a3,%lo(count.4)(t3)
 	jalr	zero,ra,0
 .L80:
@@ -1302,8 +1226,7 @@ fillrand:
 	addi	sp,sp,-16
 	sw	s0,12(sp)
 .L66:
-	beq	a3,t0,.+8
-	jal	x0,.L65
+	bne	a3,t0,.L65
 	slli	a3,a5,16
 	srli	a3,a3,16
 	callmul	a3,a3,a7
@@ -1333,11 +1256,13 @@ fillrand:
 	addi	a3,a3,1
 	addi	t4,zero,1
 	blt	a6,a1,.L66
-	beq	t5,zero,.L67
+	bne	t5,zero,.+8
+	jal	x0,.L67
 	sw	a4,4(a2)
 	sw	a5,0(a2)
 .L67:
-	beq	t4,zero,.L63
+	bne	t4,zero,.+8
+	jal	x0,.L63
 	sw	a3,%lo(count.4)(t3)
 .L63:
 	lw	s0,12(sp)
@@ -1349,11 +1274,8 @@ fillrand:
 	.type	enc_buffer, @function
 enc_buffer:
 	addi	a6,a1,15
-	addi	op_2,x0,-16
-	or	op_1,a6,op_2
-	addi	op_3,x0,-16
-	sub	op_0,op_1,op_3
-	sub	a6,a6,op_0
+	addi	op_0,x0,-16
+	and	a6,a6,op_0
 	addi	a6,a6,48
 	bltu	a4,a6,.L91
 	addi	sp,sp,-112
@@ -1393,13 +1315,10 @@ enc_buffer:
 	addi	s2,zero,0
 	addi	s4,sp,32
 	addi	s7,s3,0
-	or	op_1,s0,s11
-	sub	op_0,op_1,s11
-	sub	s10,s0,op_0
+	and	s10,s0,s11
 .L85:
 	bltu	s2,s0,.L92
-	beq	s1,zero,.+8
-	jal	x0,.L92
+	bne	s1,zero,.L92
 .L90:
 	lw	ra,108(sp)
 	lw	s0,104(sp)
@@ -1425,21 +1344,20 @@ enc_buffer:
 	sub	a4,s5,op_0
 	sb	zero,0(a4)
 	addi	s5,s5,1
-	beq	s5,s7,.+8
-	jal	x0,.L86
-	beq	s1,zero,.L87
+	bne	s5,s7,.L86
+	bne	s1,zero,.+8
+	jal	x0,.L87
 	addi	a1,zero,1
 	addi	a0,s4,0
 .Lpcrel_37:
 	auipc	ra,%pcrel_hi(fillrand)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_37)
 	lbu	a4,32(sp)
-	addi	op_2,x0,-16
-	or	op_1,a4,op_2
-	addi	op_3,x0,-16
-	sub	op_0,op_1,op_3
+	addi	op_0,x0,-16
+	and	a4,op_0,a4
+	and	op_1,a4,s10
+	sub	op_0,op_1,s10
 	sub	a4,a4,op_0
-	or	a4,a4,s10
 	sb	a4,32(sp)
 .L87:
 	sub	a2,s0,s2
@@ -1468,14 +1386,13 @@ enc_buffer:
 	lbu	a2,0(a2)
 	addi	a4,a4,1
 	addi	a3,a3,1
-	or	op_0,a1,a2
-	or	op_3,a1,a2
-	sub	op_2,op_3,a2
-	sub	op_1,a1,op_2
-	sub	a2,op_0,op_1
+	and	op_2,a1,a2
+	sub	op_1,op_2,a2
+	sub	op_0,a1,op_1
+	and	op_3,a1,a2
+	sub	a2,op_0,op_3
 	sb	a2,-1(a3)
-	beq	a4,s7,.+8
-	jal	x0,.L89
+	bne	a4,s7,.L89
 	lw	a2,8(sp)
 	addi	a1,s6,0
 	addi	a0,s4,0
@@ -1495,25 +1412,22 @@ enc_buffer:
 	jal	x0,.+8
 	addi	a4,x0,1
 	addi	op_1,x0,1
-	or	op_0,op_1,s1
-	addi	op_3,x0,1
+	addi	op_4,x0,1
+	and	op_3,op_4,s1
+	sub	op_2,op_3,s1
+	sub	op_0,op_1,op_2
 	addi	op_6,x0,1
-	or	op_5,op_6,s1
-	sub	op_4,op_5,s1
-	sub	op_2,op_3,op_4
-	sub	s1,op_0,op_2
+	and	op_5,op_6,s1
+	sub	s1,op_0,op_5
 	addi	op_0,x0,1
 	bltu	a4,op_0,.+12
 	addi	a4,x0,0
 	jal	x0,.+8
 	addi	a4,x0,1
-	or	op_1,a4,s1
-	sub	op_0,op_1,s1
-	sub	a4,a4,op_0
+	and	a4,a4,s1
 	addi	s3,s3,16
 	addi	s1,zero,0
-	beq	a4,zero,.+8
-	jal	x0,.L90
+	bne	a4,zero,.L90
 	addi	s11,s5,0
 	jal	x0,.L85
 .L91:
@@ -1572,14 +1486,13 @@ dec_buffer:
 	lbu	a3,0(a3)
 	addi	a5,a5,1
 	addi	a4,a4,1
-	or	op_0,a1,a3
-	or	op_3,a1,a3
-	sub	op_2,op_3,a3
-	sub	op_1,a1,op_2
-	sub	a3,op_0,op_1
+	and	op_2,a1,a3
+	sub	op_1,op_2,a3
+	sub	op_0,a1,op_1
+	and	op_3,a1,a3
+	sub	a3,op_0,op_3
 	sb	a3,-1(a4)
-	beq	a5,a2,.+8
-	jal	x0,.L104
+	bne	a5,a2,.L104
 	lbu	s8,48(sp)
 	addi	s11,zero,15
 	addi	a5,zero,0
@@ -1588,18 +1501,16 @@ dec_buffer:
 .L105:
 	bltu	s5,s4,.L107
 	addi	s11,s11,-15
-	addi	op_2,x0,15
-	or	op_1,s8,op_2
-	addi	op_3,x0,15
-	sub	op_0,op_1,op_3
-	sub	s8,s8,op_0
+	addi	op_0,x0,15
+	and	s8,s8,op_0
 	bltu	zero,s11,.+12
 	addi	a2,x0,0
 	jal	x0,.+8
 	addi	a2,x0,1
 	sub	op_0,x0,a2
 	sub	a2,s8,op_0
-	beq	a2,zero,.L108
+	bne	a2,zero,.+8
+	jal	x0,.L108
 	sub	op_0,x0,a2
 	sub	s1,a5,op_0
 	bltu	s3,s1,.L108
@@ -1673,14 +1584,13 @@ dec_buffer:
 	lbu	a4,0(a4)
 	addi	s11,s11,1
 	addi	a5,a5,1
-	or	op_0,a3,a4
-	or	op_3,a3,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a3,op_2
-	sub	a4,op_0,op_1
+	and	op_2,a3,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a3,op_1
+	and	op_3,a3,a4
+	sub	a4,op_0,op_3
 	sb	a4,-1(a5)
-	beq	s11,s9,.+8
-	jal	x0,.L106
+	bne	s11,s9,.L106
 	addi	a2,s11,0
 	addi	a1,sp,32
 	addi	a0,s6,0
@@ -1734,18 +1644,21 @@ main:
 	auipc	ra,%pcrel_hi(hex_value)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_49)
 	addi	a5,s2,1
-	beq	a5,zero,.L121
+	bne	a5,zero,.+8
+	jal	x0,.L121
 	addi	a5,a0,1
-	beq	a5,zero,.L121
+	bne	a5,zero,.+8
+	jal	x0,.L121
 	slli	s2,s2,4
 	sub	op_0,x0,s3
 	sub	a5,s1,op_0
-	or	s2,s2,a0
+	and	op_1,s2,a0
+	sub	op_0,op_1,a0
+	sub	s2,s2,op_0
 	sb	s2,0(a5)
 	addi	s1,s1,1
 	addi	s0,s0,2
-	beq	s1,s4,.+8
-	jal	x0,.L122
+	bne	s1,s4,.L122
 	addi	a3,sp,52
 	addi	a2,zero,1
 	addi	a1,s1,0
@@ -1767,8 +1680,7 @@ main:
 	auipc	ra,%pcrel_hi(enc_buffer)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_51)
 	addi	s0,zero,-2
-	beq	a0,zero,.+8
-	jal	x0,.L120
+	bne	a0,zero,.L120
 	addi	a3,sp,52
 	addi	a2,zero,2
 	addi	a1,s1,0
@@ -1788,8 +1700,7 @@ main:
 	auipc	ra,%pcrel_hi(dec_buffer)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_53)
 	addi	s0,a0,0
-	beq	a0,zero,.+8
-	jal	x0,.L128
+	bne	a0,zero,.L128
 	lui	s3,%hi(.LC1)
 	addi	s1,zero,0
 	addi	s2,s2,%lo(plain_buffer.0)
@@ -7120,18 +7031,15 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	op_0,x0,1
-	addi	op_3,x0,1
-	or	op_2,op_3,a1
-	sub	op_1,op_2,a1
-	sub	a3,op_0,op_1
-	beq	a3,x0,.Mul_skip
+	and	a3,op_0,a1
+	bne	a3,x0,.+8
+	jal	x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
 .Mul_skip:
 	srli	a1,a1,1
 	slli	a2,a2,1
-	beq	a1,x0,.+8
-	jal	x0,.Mul_loop
+	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
 
 .text
@@ -7150,7 +7058,8 @@ __riscv_div_lib_udivsi3:
 	addi	a2,a1,0
 	addi	a1,a0,0
 	addi	a0,zero,-1
-	beq	a2,zero,__riscv_div_lib_L5
+	bne	a2,zero,.+8
+	jal	x0,__riscv_div_lib_L5
 	addi	a3,zero,1
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
@@ -7165,12 +7074,13 @@ __riscv_div_lib_L2:
 __riscv_div_lib_L3:
 	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	or	a0,a0,a3
+	and	op_1,a0,a3
+	sub	op_0,op_1,a3
+	sub	a0,a0,op_0
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1
-	beq	a3,zero,.+8
-	jal	x0,__riscv_div_lib_L3
+	bne	a3,zero,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
 
