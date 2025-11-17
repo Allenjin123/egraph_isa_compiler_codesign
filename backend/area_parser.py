@@ -57,33 +57,40 @@ def create_empty_dsl(output_path: Optional[str] = None) -> str:
         # Return DSL content as string
         return dsl_content
 
-def create_dsl(isa_subset: set, output_path: Optional[str] = None) -> str:
+def create_dsl(isa_subset: set, output_path: Optional[str] = None, shift_imm_dict: Optional[dict] = None) -> tuple[str, bool]:
     """
-    Create a DSL file for PdatScorrWrapper based on the instruction subset.
+    Create a DSL file (version 2) for PdatScorrWrapper based on the instruction subset.
 
-    The DSL file specifies:
-    1. Required instruction set extensions (RV32I, RV32M)
-    2. Instructions that can be outlawed (removed from hardware)
+    The DSL file uses version 2 format with include/forbid semantics and
+    supports fine-grained shift immediate constraints.
 
     Args:
         isa_subset: Set of instruction opcodes used by the program
         output_path: Optional path to write DSL file. If None, returns DSL as string.
+        shift_imm_dict: Optional dict mapping shift instructions to sets of immediate values
+                       e.g., {'slli': {0, 1, 2}, 'srai': {4, 8}}
 
     Returns:
-        Path to created DSL file, or DSL content as string if output_path is None
+        Tuple of (dsl_path_or_content, has_shift_constraints) where:
+        - dsl_path_or_content: Path to created DSL file, or DSL content as string if output_path is None
+        - has_shift_constraints: True if shift immediate constraints were applied
 
     Raises:
         ValueError: If isa_subset contains unknown instructions
 
     Example:
-        >>> create_dsl({'add', 'sub', 'mul', 'lw'}, 'workload/my_program.dsl')
-        'workload/my_program.dsl'
+        >>> path, has_constraints = create_dsl({'add', 'sub', 'slli'}, 'workload/my_program.dsl', {'slli': {1, 2, 3}})
+        >>> print(path, has_constraints)
+        'workload/my_program.dsl' True
     """
     # Determine the required instruction set (RV32I or RV32IM)
     required_set = get_required_set(isa_subset)
 
     # Get instructions that can be removed (outlawed)
     removable_instructions = get_removed_instructions(isa_subset, required_set)
+
+    # Define shift immediate instructions
+    SHIFT_IMM_INSTRUCTIONS = {'slli', 'srli', 'srai'}
 
     # Build DSL content
     dsl_lines = []
@@ -107,29 +114,67 @@ def create_dsl(isa_subset: set, output_path: Optional[str] = None) -> str:
         dsl_lines.append("include RV32M")
     dsl_lines.append("")
 
+    # Process shift instructions that are USED and have immediate constraints
+    shifts_to_constrain = {}
+    if shift_imm_dict:
+        for shift_inst in SHIFT_IMM_INSTRUCTIONS:
+            shift_lower = shift_inst.lower()
+            # Only process shifts that are actually used in the program
+            if shift_lower in isa_subset and shift_lower in shift_imm_dict:
+                imm_set = shift_imm_dict[shift_lower]
+                # Only constrain if all values are integers (no symbolic values)
+                if imm_set and not any(isinstance(v, str) for v in imm_set):
+                    int_values = sorted([v for v in imm_set if isinstance(v, int)])
+                    if int_values:
+                        shifts_to_constrain[shift_lower] = int_values
+
     # Forbid unused instructions
     if removable_instructions:
         dsl_lines.append("# Forbid unused instructions (can be removed from hardware)")
         dsl_lines.append("# These instructions are not used by the program")
         for inst in removable_instructions:
-            # DSL format uses uppercase instruction names
+            # Note: shifts in removable_instructions are those never used at all
+            # They will be forbidden here normally
             dsl_lines.append(f"forbid {inst.upper()}")
         dsl_lines.append("")
 
+    # Apply shift immediate constraints for USED shift instructions
+    if shifts_to_constrain:
+        dsl_lines.append("# Shift immediate constraints")
+        dsl_lines.append("# Restrict USED shift instructions to specific immediate values")
+        dsl_lines.append("")
+
+        for shift_inst, int_values in sorted(shifts_to_constrain.items()):
+            # Forbid all variants first
+            dsl_lines.append(f"# Restrict {shift_inst.upper()} to specific shift amounts")
+            dsl_lines.append(f"forbid {shift_inst.upper()}")
+
+            # Then include back specific immediate values
+            for imm_val in int_values:
+                # Ensure immediate is within valid range (0-31 for 32-bit shifts)
+                if 0 <= imm_val <= 31:
+                    # Format as 5-bit binary for shift amounts
+                    binary_str = format(imm_val, '05b')
+                    dsl_lines.append(f"include {shift_inst.upper()} {{shamt = 5'b{binary_str}}}  # shift={imm_val}")
+            dsl_lines.append("")
+
     # Join all lines
     dsl_content = "\n".join(dsl_lines)
+
+    # Determine if shift constraints were applied
+    has_shift_constraints = bool(shifts_to_constrain)
 
     # Write to file if output_path is specified
     if output_path:
         output_file = Path(output_path)
         output_file.parent.mkdir(parents=True, exist_ok=True)
         output_file.write_text(dsl_content)
-        return str(output_file)
+        return str(output_file), has_shift_constraints
     else:
         # Return DSL content as string
-        return dsl_content
+        return dsl_content, has_shift_constraints
 
-def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl: bool = False, enable_freq_analysis: bool = False, core_name: str = "ibex"):
+def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl: bool = False, enable_freq_analysis: bool = False, core_name: str = "ibex", shift_imm_dict: Optional[dict] = None):
     """
     Generate DSL file, run synthesis, and extract chip area and optionally frequency.
 
@@ -145,6 +190,7 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl
         use_empty_dsl: If True, create empty DSL (general purpose processor) instead of using isa_subset
         enable_freq_analysis: If True, parse and return frequency information
         core_name: Name of the core to synthesize (default: "ibex")
+        shift_imm_dict: Optional dict mapping shift instructions to sets of immediate values
 
     Returns:
         Tuple of (chip_area, frequency) where:
@@ -167,6 +213,7 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl
     from pathlib import Path
 
     # Step 1: Create DSL file
+    has_shift_constraints = False  # Track if shift constraints are applied
     if output_path is None:
         # Create temporary DSL file
         with tempfile.NamedTemporaryFile(mode='w', suffix='.dsl', delete=False, dir='/tmp') as f:
@@ -174,13 +221,13 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl
             if use_empty_dsl:
                 dsl_content = create_empty_dsl()
             else:
-                dsl_content = create_dsl(isa_subset)
+                dsl_content, has_shift_constraints = create_dsl(isa_subset, shift_imm_dict=shift_imm_dict)
             f.write(dsl_content)
     else:
         if use_empty_dsl:
             dsl_path = create_empty_dsl(output_path)
         else:
-            dsl_path = create_dsl(isa_subset, output_path)
+            dsl_path, has_shift_constraints = create_dsl(isa_subset, output_path, shift_imm_dict=shift_imm_dict)
 
     # Convert to absolute path for synthesis (which runs from different cwd)
     dsl_path_abs = str(Path(dsl_path).absolute())
@@ -199,14 +246,28 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl
     synth_output_base = synth_script.parent / "output"
 
     # Run synthesis (use absolute path so it works from any cwd)
-    print(f"Running synthesis with {dsl_path_abs}...")
+    # Build command arguments - add --odc-analysis only if shift constraints are applied
+    synth_args = [
+        str(synth_script),
+        "--gates"
+    ]
+
+    # Only add --odc-analysis if there are actual shift constraints
+    if has_shift_constraints:
+        synth_args.append("--odc-analysis")
+        print(f"Running synthesis with shift constraints (ODC analysis enabled)...")
+    else:
+        print(f"Running synthesis with {dsl_path_abs}...")
+
+    synth_args.extend([
+        "--config", f"configs/{core_name}.yaml",
+        dsl_path_abs,
+        str(synth_output_base)
+    ])
+
     try:
         result = subprocess.run(
-            [str(synth_script), 
-             "--gates", 
-             "--config", f"configs/{core_name}.yaml",
-             dsl_path_abs, 
-             str(synth_output_base)],
+            synth_args,
             capture_output=True,
             text=True,
             timeout=600,  # 10 minute timeout for synthesis
