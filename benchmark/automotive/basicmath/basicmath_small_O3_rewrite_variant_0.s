@@ -6758,7 +6758,7 @@ SolveCubic:
 	sub	a5,x0,a5
 	sub	a5,a4,a5
 	addi	t0,x0,-2
-	and	a5,t0,a5
+	and	a5,a5,t0
 	sub	s4,zero,a5
 .L21:
 	lui	s5,349525
@@ -8868,7 +8868,9 @@ main:
 	addi	a5,a5,-1384
 	bne	s6,a5,.L73
 	addi	s9,s9,-1000
-	bne	s9,zero,.L75
+	bne	s9,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L75
 	lw	a4,12(sp)
 	lui	a5,2
 	addi	a5,a5,1808
@@ -10426,7 +10428,9 @@ __mul:
 	srl	a1,a1,t0
 	addi	t0,x0,1
 	sll	a2,a2,t0
-	bne	a1,x0,.Mul_loop
+	bne	a1,x0,.+8
+	jal	x0,.+8
+	jal	x0,.Mul_loop
 	jalr	x0,ra,0
 
 .text
@@ -10435,7 +10439,9 @@ __mul:
 # Signed 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
-	blt	a0,zero,__riscv_div_lib_L10
+	blt	a0,zero,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L10
 	blt	a1,zero,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
@@ -10457,7 +10463,9 @@ __riscv_div_lib_L1:
 	sll	a2,a2,t1
 	addi	t1,x0,1
 	sll	a3,a3,t1
-	bltu	a2,a1,__riscv_div_lib_L1
+	bltu	a2,a1,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
