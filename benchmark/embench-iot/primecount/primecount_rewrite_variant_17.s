@@ -199,7 +199,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	a3,x0,1
-	and	a3,a1,a3
+	and	a3,a3,a1
 	beq	a3,x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
@@ -230,8 +230,7 @@ __riscv_div_lib_udivsi3:
 	addi	a3,zero,1
 	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
-	blt	zero,a2,.+8
-	jal	x0,__riscv_div_lib_L2
+	bge	zero,a2,__riscv_div_lib_L2
 	addi	t0,x0,1
 	sll	a2,a2,t0
 	addi	t0,x0,1

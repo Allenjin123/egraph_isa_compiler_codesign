@@ -14,7 +14,8 @@
 	.globl	print_path
 	.type	print_path, @function
 print_path:
-	slli	a5,a1,3
+	addi	a5,x0,3
+	sll	a5,a1,a5
 	sub	t0,x0,a0
 	sub	a5,a5,t0
 	lw	a2,4(a5)
@@ -28,7 +29,8 @@ print_path:
 	auipc	t1,%pcrel_hi(printf)
 	jalr	zero,t1,%pcrel_lo(.Lpcrel_1)
 .L9:
-	slli	a1,a2,3
+	addi	a1,x0,3
+	sll	a1,a2,a1
 	sub	t0,x0,a0
 	sub	a1,a1,t0
 	lw	a6,4(a1)
@@ -54,7 +56,8 @@ print_path:
 	auipc	t1,%pcrel_hi(printf)
 	jalr	zero,t1,%pcrel_lo(.Lpcrel_3)
 .L10:
-	slli	a1,a6,3
+	addi	a1,x0,3
+	sll	a1,a6,a1
 	sub	t0,x0,a0
 	sub	a1,a1,t0
 	lw	a7,4(a1)
@@ -74,7 +77,8 @@ print_path:
 	lw	a5,0(sp)
 	jal	x0,.L3
 .L11:
-	slli	a1,a7,3
+	addi	a1,x0,3
+	sll	a1,a7,a1
 	sub	a4,x0,a0
 	sub	a4,a1,a4
 	lw	a1,4(a4)
@@ -120,7 +124,8 @@ enqueue:
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a3,t0
-	srai	t1,a5,16
+	addi	t1,x0,16
+	sra	t1,a5,t1
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -163,8 +168,10 @@ enqueue:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
-	srai	t2,a3,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
+	addi	t2,x0,16
+	sra	t2,a3,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t3,a5,t3
@@ -193,7 +200,8 @@ enqueue:
 	and	t1,t1,t2
 	sub	t1,x0,t1
 	sub	t0,t0,t1
-	srai	t0,t0,16
+	addi	t1,x0,16
+	sra	t0,t0,t1
 	lui	t1,16
 	addi	t1,t1,-1
 	and	t1,a3,t1
@@ -218,8 +226,10 @@ enqueue:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
-	srai	t2,a3,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
+	addi	t2,x0,16
+	sra	t2,a3,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t3,a5,t3
@@ -243,9 +253,12 @@ enqueue:
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
-	srai	t1,t1,16
-	srai	t2,a3,16
-	srai	t3,a5,16
+	addi	t2,x0,16
+	sra	t1,t1,t2
+	addi	t2,x0,16
+	sra	t2,a3,t2
+	addi	t3,x0,16
+	sra	t3,a5,t3
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -268,17 +281,21 @@ enqueue:
 	sub	a5,t1,a5
 	sub	a5,x0,a5
 	sub	a5,t0,a5
-	srai	t5,a3,31
+	addi	t5,x0,31
+	sra	t5,a3,t5
 	lui	t1,2
 	addi	t1,t1,1808
 	lui	t3,%hi(g_qCount)
 	lw	a7,%lo(g_qCount)(t3)
-	slli	a6,a4,1
+	addi	a6,x0,1
+	sll	a6,a4,a6
 	sub	a6,x0,a6
 	sub	a6,a4,a6
 	lui	a4,%hi(queue)
-	slli	a6,a6,2
-	srai	a5,a5,12
+	addi	t0,x0,2
+	sll	a6,a6,t0
+	addi	t0,x0,12
+	sra	a5,a5,t0
 	sub	a5,a5,t5
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
@@ -322,10 +339,12 @@ dequeue:
 	lw	a3,%lo(qFront)(a6)
 	lui	a4,%hi(queue)
 	addi	a4,a4,%lo(queue)
-	slli	a5,a3,1
+	addi	a5,x0,1
+	sll	a5,a3,a5
 	sub	a5,x0,a5
 	sub	a5,a3,a5
-	slli	a5,a5,2
+	addi	t0,x0,2
+	sll	a5,a5,t0
 	sub	t0,x0,a4
 	sub	a5,a5,t0
 	lw	a3,0(a5)
@@ -335,19 +354,23 @@ dequeue:
 	lw	t1,%lo(qFront)(a6)
 	lui	a0,2
 	addi	a0,a0,1808
-	slli	a3,t1,1
+	addi	a3,x0,1
+	sll	a3,t1,a3
 	sub	a3,x0,a3
 	sub	a3,t1,a3
-	slli	a3,a3,2
+	addi	t0,x0,2
+	sll	a3,a3,t0
 	sub	t0,x0,a4
 	sub	a3,a3,t0
 	lw	a3,4(a3)
 	sw	a3,0(a1)
 	lw	a1,%lo(qFront)(a6)
-	slli	a3,a1,1
+	addi	a3,x0,1
+	sll	a3,a1,a3
 	sub	a3,x0,a3
 	sub	a3,a1,a3
-	slli	a3,a3,2
+	addi	t0,x0,2
+	sll	a3,a3,t0
 	sub	a4,x0,a4
 	sub	a4,a3,a4
 	lw	a4,8(a4)
@@ -358,7 +381,8 @@ dequeue:
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a4,t0
-	srai	t1,a5,16
+	addi	t1,x0,16
+	sra	t1,a5,t1
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -401,8 +425,10 @@ dequeue:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
-	srai	t2,a4,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
+	addi	t2,x0,16
+	sra	t2,a4,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t3,a5,t3
@@ -431,7 +457,8 @@ dequeue:
 	and	t1,t1,t2
 	sub	t1,x0,t1
 	sub	t0,t0,t1
-	srai	t0,t0,16
+	addi	t1,x0,16
+	sra	t0,t0,t1
 	lui	t1,16
 	addi	t1,t1,-1
 	and	t1,a4,t1
@@ -456,8 +483,10 @@ dequeue:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t1,t1,16
-	srai	t2,a4,16
+	addi	t2,x0,16
+	srl	t1,t1,t2
+	addi	t2,x0,16
+	sra	t2,a4,t2
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t3,a5,t3
@@ -481,9 +510,12 @@ dequeue:
 	addi	sp, sp, 32
 	sub	t2,x0,t2
 	sub	t1,t1,t2
-	srai	t1,t1,16
-	srai	t2,a4,16
-	srai	t3,a5,16
+	addi	t2,x0,16
+	sra	t1,t1,t2
+	addi	t2,x0,16
+	sra	t2,a4,t2
+	addi	t3,x0,16
+	sra	t3,a5,t3
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -506,10 +538,12 @@ dequeue:
 	sub	a5,t1,a5
 	sub	a5,x0,a5
 	sub	a5,t0,a5
-	srai	a2,a4,31
+	addi	a2,x0,31
+	sra	a2,a4,a2
 	addi	a3,a3,-1
 	sw	a3,%lo(g_qCount)(a7)
-	srai	a5,a5,12
+	addi	t0,x0,12
+	sra	a5,a5,t0
 	sub	a5,a5,a2
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
@@ -587,7 +621,8 @@ dijkstra:
 	lui	a4,16
 	addi	a4,a4,-1
 	and	a4,a6,a4
-	srai	t0,s2,16
+	addi	t0,x0,16
+	sra	t0,s2,t0
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -630,8 +665,10 @@ dijkstra:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
-	srai	t1,a6,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
+	addi	t1,x0,16
+	sra	t1,a6,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,s2,t2
@@ -660,7 +697,8 @@ dijkstra:
 	and	t0,t0,t1
 	sub	t0,x0,t0
 	sub	a4,a4,t0
-	srai	a4,a4,16
+	addi	t0,x0,16
+	sra	a4,a4,t0
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a6,t0
@@ -685,8 +723,10 @@ dijkstra:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
-	srai	t1,a6,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
+	addi	t1,x0,16
+	sra	t1,a6,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,s2,t2
@@ -710,9 +750,12 @@ dijkstra:
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
-	srai	t0,t0,16
-	srai	t1,a6,16
-	srai	t2,s2,16
+	addi	t1,x0,16
+	sra	t0,t0,t1
+	addi	t1,x0,16
+	sra	t1,a6,t1
+	addi	t2,x0,16
+	sra	t2,s2,t2
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -736,16 +779,19 @@ dijkstra:
 	sub	t0,x0,t0
 	sub	a4,a4,t0
 	sw	s3,60(sp)
-	srai	a7,a6,31
+	addi	a7,x0,31
+	sra	a7,a6,a7
 	lui	s3,2
 	addi	s3,s3,1808
 	sw	s8,40(sp)
 	lui	s8,%hi(g_qCount)
 	lw	t0,%lo(g_qCount)(s8)
-	slli	a5,a1,1
+	addi	a5,x0,1
+	sll	a5,a1,a5
 	sub	a5,x0,a5
 	sub	a5,a1,a5
-	srai	a4,a4,12
+	addi	t1,x0,12
+	sra	a4,a4,t1
 	sub	a4,a4,a7
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
@@ -766,9 +812,11 @@ dijkstra:
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
 	lui	t2,%hi(queue)
-	slli	a5,a5,2
+	addi	t1,x0,2
+	sll	a5,a5,t1
 	addi	t2,t2,%lo(queue)
-	slli	a1,a0,3
+	addi	a1,x0,3
+	sll	a1,a0,a1
 	sw	s1,68(sp)
 	sw	s4,56(sp)
 	sub	t1,x0,t2
@@ -804,7 +852,8 @@ dijkstra:
 	lui	a3,16
 	addi	a3,a3,-1
 	and	a3,a6,a3
-	srai	t3,s2,16
+	addi	t3,x0,16
+	sra	t3,s2,t3
 	addi	sp, sp, -16
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -845,8 +894,10 @@ dijkstra:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t3,t3,16
-	srai	t6,a6,16
+	addi	t6,x0,16
+	srl	t3,t3,t6
+	addi	t6,x0,16
+	sra	t6,a6,t6
 	lui	a0,16
 	addi	a0,a0,-1
 	and	a0,s2,a0
@@ -874,7 +925,8 @@ dijkstra:
 	and	t3,t3,t6
 	sub	t3,x0,t3
 	sub	a3,a3,t3
-	srai	a3,a3,16
+	addi	t3,x0,16
+	sra	a3,a3,t3
 	lui	t3,16
 	addi	t3,t3,-1
 	and	t3,a6,t3
@@ -899,8 +951,10 @@ dijkstra:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t3,t3,16
-	srai	t6,a6,16
+	addi	t6,x0,16
+	srl	t3,t3,t6
+	addi	t6,x0,16
+	sra	t6,a6,t6
 	lui	a0,16
 	addi	a0,a0,-1
 	and	a0,s2,a0
@@ -923,9 +977,12 @@ dijkstra:
 	addi	sp, sp, 32
 	sub	t6,x0,t6
 	sub	t3,t3,t6
-	srai	t3,t3,16
-	srai	t6,a6,16
-	srai	a0,s2,16
+	addi	t6,x0,16
+	sra	t3,t3,t6
+	addi	t6,x0,16
+	sra	t6,a6,t6
+	addi	a0,x0,16
+	sra	a0,s2,a0
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -947,19 +1004,23 @@ dijkstra:
 	sub	t3,t3,t6
 	sub	t3,x0,t3
 	sub	a3,a3,t3
-	slli	a5,t1,1
+	addi	a5,x0,1
+	sll	a5,t1,a5
 	sub	a5,x0,a5
 	sub	a5,t1,a5
-	slli	a5,a5,2
+	addi	t1,x0,2
+	sll	a5,a5,t1
 	sub	t1,x0,t2
 	sub	a5,a5,t1
 	lw	t3,0(a5)
 	lw	s1,4(a5)
 	lw	a5,8(a5)
-	srai	t1,a6,31
+	addi	t1,x0,31
+	sra	t1,a6,t1
 	addi	t0,t0,-1
 	sw	a5,12(sp)
-	srai	a5,a3,12
+	addi	a5,x0,12
+	sra	a5,a3,a5
 	sub	t1,a5,t1
 	addi	sp, sp, -16
 	sw	a1, 0(sp)
@@ -1001,13 +1062,16 @@ dijkstra:
 	sub	a0,a0,t6
 	sub	t1,a6,t1
 .L27:
-	slli	a5,a4,1
+	addi	a5,x0,1
+	sll	a5,a4,a5
 	lw	a7,0(a0)
 	sub	a5,x0,a5
 	sub	a5,a4,a5
 	addi	a1,a4,1
-	slli	a5,a5,2
-	srai	s11,a1,31
+	addi	t6,x0,2
+	sll	a5,a5,t6
+	addi	s11,x0,31
+	sra	s11,a1,s11
 	sub	t6,x0,t2
 	sub	a5,a5,t6
 	bne	a7,t5,.+8
@@ -1025,7 +1089,8 @@ dijkstra:
 	lui	a4,16
 	addi	a4,a4,-1
 	and	a4,a1,a4
-	srai	t6,s2,16
+	addi	t6,x0,16
+	sra	t6,s2,t6
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -1068,8 +1133,10 @@ dijkstra:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t6,t6,16
-	srai	s3,a1,16
+	addi	s3,x0,16
+	srl	t6,t6,s3
+	addi	s3,x0,16
+	sra	s3,a1,s3
 	lui	s4,16
 	addi	s4,s4,-1
 	and	s4,s2,s4
@@ -1098,7 +1165,8 @@ dijkstra:
 	and	t6,t6,s3
 	sub	t6,x0,t6
 	sub	a4,a4,t6
-	srai	a4,a4,16
+	addi	t6,x0,16
+	sra	a4,a4,t6
 	lui	t6,16
 	addi	t6,t6,-1
 	and	t6,a1,t6
@@ -1123,8 +1191,10 @@ dijkstra:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t6,t6,16
-	srai	s3,a1,16
+	addi	s3,x0,16
+	srl	t6,t6,s3
+	addi	s3,x0,16
+	sra	s3,a1,s3
 	lui	s4,16
 	addi	s4,s4,-1
 	and	s4,s2,s4
@@ -1148,9 +1218,12 @@ dijkstra:
 	addi	sp, sp, 32
 	sub	s3,x0,s3
 	sub	t6,t6,s3
-	srai	t6,t6,16
-	srai	s3,a1,16
-	srai	s4,s2,16
+	addi	s3,x0,16
+	sra	t6,t6,s3
+	addi	s3,x0,16
+	sra	s3,a1,s3
+	addi	s4,x0,16
+	sra	s4,s2,s4
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -1182,7 +1255,8 @@ dijkstra:
 	sw	t3,8(a5)
 	addi	t0,t0,1
 	addi	s4,zero,1
-	srai	a4,a4,12
+	addi	t6,x0,12
+	sra	a4,a4,t6
 	sub	a4,a4,s11
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
@@ -1232,7 +1306,8 @@ dijkstra:
 	lw	s11,28(sp)
 	sw	a4,%lo(qRear)(s9)
 .L24:
-	slli	s0,a3,3
+	addi	s0,x0,3
+	sll	s0,a3,s0
 	sub	s2,x0,s5
 	sub	s2,s0,s2
 	lw	a1,0(s2)
@@ -1282,7 +1357,8 @@ dijkstra:
 	addi	sp,sp,80
 	jalr	zero,ra,0
 .L41:
-	slli	a4,s2,3
+	addi	a4,x0,3
+	sll	a4,s2,a4
 	sub	t0,x0,s5
 	sub	a4,a4,t0
 	lw	s4,4(a4)
@@ -1312,7 +1388,8 @@ dijkstra:
 	auipc	t1,%pcrel_hi(puts)
 	jalr	zero,t1,%pcrel_lo(.Lpcrel_12)
 .L42:
-	slli	a4,s4,3
+	addi	a4,x0,3
+	sll	a4,s4,a4
 	sub	t0,x0,s5
 	sub	a4,a4,t0
 	lw	a1,4(a4)
@@ -1401,7 +1478,8 @@ main:
 	lui	s0,16
 	addi	s0,s0,-1
 	and	s0,a5,s0
-	srai	t0,s2,16
+	addi	t0,x0,16
+	sra	t0,s2,t0
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -1444,8 +1522,10 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
-	srai	t1,a5,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
+	addi	t1,x0,16
+	sra	t1,a5,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,s2,t2
@@ -1474,7 +1554,8 @@ main:
 	and	t0,t0,t1
 	sub	t0,x0,t0
 	sub	s0,s0,t0
-	srai	s0,s0,16
+	addi	t0,x0,16
+	sra	s0,s0,t0
 	lui	t0,16
 	addi	t0,t0,-1
 	and	t0,a5,t0
@@ -1499,8 +1580,10 @@ main:
 	lw	a3, 12(sp)
 	lw	ra, 16(sp)
 	addi	sp, sp, 32
-	srli	t0,t0,16
-	srai	t1,a5,16
+	addi	t1,x0,16
+	srl	t0,t0,t1
+	addi	t1,x0,16
+	sra	t1,a5,t1
 	lui	t2,16
 	addi	t2,t2,-1
 	and	t2,s2,t2
@@ -1524,9 +1607,12 @@ main:
 	addi	sp, sp, 32
 	sub	t1,x0,t1
 	sub	t0,t0,t1
-	srai	t0,t0,16
-	srai	t1,a5,16
-	srai	t2,s2,16
+	addi	t1,x0,16
+	sra	t0,t0,t1
+	addi	t1,x0,16
+	sra	t1,a5,t1
+	addi	t2,x0,16
+	sra	t2,s2,t2
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -1549,10 +1635,12 @@ main:
 	sub	t0,t0,t1
 	sub	t0,x0,t0
 	sub	s0,s0,t0
-	srai	a4,a5,31
+	addi	a4,x0,31
+	sra	a4,a5,a4
 	addi	a0,s1,0
 	addi	s1,s1,1
-	srai	s0,s0,5
+	addi	t0,x0,5
+	sra	s0,s0,t0
 	sub	s0,s0,a4
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
@@ -1578,7 +1666,9 @@ main:
 	auipc	ra,%pcrel_hi(dijkstra)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_15)
 	addi	a5,s0,1
-	bne	s1,s3,.L49
+	bne	s1,s3,.+8
+	jal	x0,.+8
+	jal	x0,.L49
 	lui	t0,9
 	lui	a5,%hi(result_sink)
 	addi	t0,t0,1136
@@ -11690,8 +11780,10 @@ __mul:
 	sub	a0,x0,a0
 	sub	a0,a2,a0
 .Mul_skip:
-	srli	a1,a1,1
-	slli	a2,a2,1
+	addi	t0,x0,1
+	srl	a1,a1,t0
+	addi	t0,x0,1
+	sll	a2,a2,t0
 	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
 
@@ -11719,8 +11811,10 @@ __riscv_div_lib_udivsi3:
 __riscv_div_lib_L1:
 	blt	zero,a2,.+8
 	jal	x0,__riscv_div_lib_L2
-	slli	a2,a2,1
-	slli	a3,a3,1
+	addi	t0,x0,1
+	sll	a2,a2,t0
+	addi	t0,x0,1
+	sll	a3,a3,t0
 	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
@@ -11731,9 +11825,13 @@ __riscv_div_lib_L3:
 	sub	t0,t0,a3
 	sub	a0,a0,t0
 __riscv_div_lib_L4:
-	srli	a3,a3,1
-	srli	a2,a2,1
-	bne	a3,zero,__riscv_div_lib_L3
+	addi	t0,x0,1
+	srl	a3,a3,t0
+	addi	t0,x0,1
+	srl	a2,a2,t0
+	bne	a3,zero,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
 

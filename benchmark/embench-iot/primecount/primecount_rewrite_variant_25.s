@@ -93,18 +93,13 @@ benchmark_body.constprop.0:
 	.align	2
 	.type	benchmark_body.isra.0, @function
 benchmark_body.isra.0:
-	blt	zero,a0,.+8
-	jal	x0,.L29
-	ori	t0,x0,-16
-	add	sp,sp,t0
+	bge	zero,a0,.L29
+	addi	sp,sp,-16
 	sw	s0,8(sp)
 	sw	s1,4(sp)
 	sw	ra,12(sp)
-	ori	s1,x0,0
-	add	s1,a0,s1
-	ori	s0,x0,0
-	sub	t0,x0,zero
-	sub	s0,s0,t0
+	addi	s1,a0,0
+	addi	s0,zero,0
 .L26:
 	addi	s0,s0,1
 .Lpcrel_2:
@@ -197,8 +192,7 @@ __mul:
 	beq	a3,x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
-	addi	t0,x0,1
-	srl	a1,a1,t0
+	srli	a1,a1,1
 	slli	a2,a2,1
 	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
@@ -216,8 +210,7 @@ __riscv_div_lib_divsi3:
 # Unsigned 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_udivsi3
 __riscv_div_lib_udivsi3:
-	ori	a2,x0,0
-	add	a2,a1,a2
+	addi	a2,a1,0
 	addi	a1,a0,0
 	addi	a0,zero,-1
 	beq	a2,zero,__riscv_div_lib_L5
@@ -237,7 +230,9 @@ __riscv_div_lib_L3:
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1
-	bne	a3,zero,__riscv_div_lib_L3
+	bne	a3,zero,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
 

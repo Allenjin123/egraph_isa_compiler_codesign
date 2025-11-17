@@ -93,9 +93,7 @@ benchmark_body.constprop.0:
 	.align	2
 	.type	benchmark_body.isra.0, @function
 benchmark_body.isra.0:
-	bge	zero,a0,.+8
-	jal	x0,.+8
-	jal	x0,.L29
+	bge	zero,a0,.L29
 	addi	sp,sp,-16
 	sw	s0,8(sp)
 	sw	s1,4(sp)
@@ -120,7 +118,8 @@ benchmark_body.isra.0:
 	.globl	warm_caches
 	.type	warm_caches, @function
 warm_caches:
-	addi	sp,sp,-16
+	ori	t0,x0,-16
+	add	sp,sp,t0
 	sw	ra,12(sp)
 .Lpcrel_3:
 	auipc	ra,%pcrel_hi(benchmark_body.isra.0)
@@ -220,8 +219,7 @@ __riscv_div_lib_udivsi3:
 	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	bge	zero,a2,__riscv_div_lib_L2
-	addi	t0,x0,1
-	sll	a2,a2,t0
+	slli	a2,a2,1
 	slli	a3,a3,1
 	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
@@ -233,16 +231,16 @@ __riscv_div_lib_L3:
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1
-	bne	a3,zero,__riscv_div_lib_L3
+	bne	a3,zero,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
 
 # Unsigned 32-bit remainder: a0 = a0 % a1
 .global __riscv_div_lib_umodsi3
 __riscv_div_lib_umodsi3:
-	ori	t0,x0,0
-	sub	t1,x0,ra
-	sub	t0,t0,t1
+	addi	t0,ra,0
 .Lpcrel_div1:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_div1)
@@ -268,9 +266,7 @@ __riscv_div_lib_L12:
 # Signed 32-bit remainder: a0 = a0 % a1
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
-	ori	t0,x0,0
-	sub	t1,x0,ra
-	sub	t0,t0,t1
+	addi	t0,ra,0
 	blt	a1,zero,__riscv_div_lib_L31
 	blt	a0,zero,__riscv_div_lib_L32
 __riscv_div_lib_L30:

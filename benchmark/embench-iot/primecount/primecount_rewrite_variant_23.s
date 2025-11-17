@@ -105,8 +105,7 @@ benchmark_body.isra.0:
 .Lpcrel_2:
 	auipc	ra,%pcrel_hi(countPrimes)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_2)
-	beq	s0,s1,.+8
-	jal	x0,.L26
+	bne	s0,s1,.L26
 	lw	ra,12(sp)
 	lw	s0,8(sp)
 	lw	s1,4(sp)
@@ -176,8 +175,7 @@ initialise_benchmark:
 verify_benchmark:
 	addi	a0,a0,-2048
 	addi	a0,a0,-1464
-	addi	t0,x0,1
-	sltu	a0,a0,t0
+	sltiu	a0,a0,1
 	jalr	zero,ra,0
 	.size	verify_benchmark, .-verify_benchmark
 	.ident	"GCC: (g1b306039a) 15.1.0"
@@ -218,8 +216,7 @@ __riscv_div_lib_udivsi3:
 	addi	a0,zero,-1
 	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bgeu	a2,a1,.+8
-	jal	x0,.+8
+	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	bge	zero,a2,__riscv_div_lib_L2
@@ -229,9 +226,7 @@ __riscv_div_lib_L1:
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bltu	a1,a2,.+8
-	jal	x0,.+8
-	jal	x0,__riscv_div_lib_L4
+	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	or	a0,a0,a3
 __riscv_div_lib_L4:

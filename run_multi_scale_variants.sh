@@ -19,6 +19,7 @@ DEFAULT_ILP_PARALLEL=24        # Number of ILP scaling factors to run in paralle
 DEFAULT_SYNTH_PARALLEL=38      # Number of synthesis processes to run in parallel
 DEFAULT_CLEAN=true             # Clean old outputs by default
 DEFAULT_RUN_SATURATION=true    # Run saturation by default
+DEFAULT_FREQ_ANALYSIS=false    # Frequency analysis disabled by default
 # DEFAULT_PROGRAMS is now dynamically determined from available clean.s files
 
 # Color codes for output
@@ -73,6 +74,7 @@ usage() {
     echo "  --no-clean                 不清理旧输出"
     echo "  --skip-frontend            skip front end processing"
     echo "  --skip-saturation          跳过饱和步骤（使用现有 JSON 文件）"
+    echo "  --enable-freq-analysis     启用频率分析（延迟以秒计算而不是周期）"
     echo "  -r, --reconstruct-only     仅重建汇编文件（跳过 ILP 提取）"
     echo "  -h, --help                 显示此帮助信息"
     echo ""
@@ -91,6 +93,7 @@ usage() {
     echo "  $0 dijkstra_small_O3 -i 10 -t 300                      # 单个程序，10个ILP并行任务，300秒超时"
     echo "  $0 dijkstra_small_O3 -sy 72                            # 单个程序，72个并行合成进程"
     echo "  $0 --skip-saturation --no-clean                        # 所有程序，跳过清理和饱和"
+    echo "  $0 dijkstra_small_O3 --enable-freq-analysis            # 启用频率分析，延迟以秒计算"
     echo ""
     exit 1
 }
@@ -113,6 +116,7 @@ RECONSTRUCT_ONLY=false
 CLEAN_OUTPUTS="$DEFAULT_CLEAN"
 SKIP_FRONTEND=false
 RUN_SATURATION="$DEFAULT_RUN_SATURATION"
+ENABLE_FREQ_ANALYSIS="$DEFAULT_FREQ_ANALYSIS"
 
 # Parse all arguments
 while [[ $# -gt 0 ]]; do
@@ -159,6 +163,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --skip-saturation)
             RUN_SATURATION=false
+            shift
+            ;;
+        --enable-freq-analysis)
+            ENABLE_FREQ_ANALYSIS=true
             shift
             ;;
         -r|--reconstruct-only)
@@ -224,6 +232,7 @@ echo -e "ILP 超时: ${GREEN}${TIMEOUT}秒${NC}"
 echo -e "程序并行数: ${GREEN}${PROGRAM_PARALLEL}${NC} (同时处理的程序数)"
 echo -e "ILP 并行数: ${GREEN}${ILP_PARALLEL}${NC} (每个程序的缩放因子并行数)"
 echo -e "合成并行数: ${GREEN}${SYNTH_PARALLEL}${NC} (并行合成进程数)"
+echo -e "频率分析: ${GREEN}$([ "$ENABLE_FREQ_ANALYSIS" = true ] && echo "启用 (延迟以秒计算)" || echo "禁用 (延迟以周期计算)")${NC}"
 echo -e "输出基础目录: ${GREEN}${OUTPUT_BASE_DIR}${NC}"
 echo -e "${CYAN}========================================${NC}"
 echo ""
@@ -712,7 +721,12 @@ echo ""
 echo -e "${BLUE}步骤 6/6: 并行分析所有变体的面积和延迟 (${SYNTH_PARALLEL} 个进程)...${NC}"
 
 # Use parallel analysis with configurable number of synthesis processes
-python3 "$SCRIPT_DIR/analyze_all_variants.py" "$FINAL_OUTPUT" "$PROGRAM_NAME" "$OUTPUT_DIR" "$SYNTH_PARALLEL"
+# Add frequency analysis flag if enabled
+FREQ_FLAG=""
+if [ "$ENABLE_FREQ_ANALYSIS" = true ]; then
+    FREQ_FLAG="--enable-freq-analysis"
+fi
+python3 "$SCRIPT_DIR/analyze_all_variants.py" "$FINAL_OUTPUT" "$PROGRAM_NAME" "$OUTPUT_DIR" "$SYNTH_PARALLEL" $FREQ_FLAG
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓ Pareto 分析完成${NC}"

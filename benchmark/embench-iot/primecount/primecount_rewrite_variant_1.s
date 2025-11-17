@@ -67,8 +67,8 @@ countPrimes:
 	blt	a5,a4,.+8
 	jal	x0,.L10
 .L9:
-	sub	t0,x0,a5
-	sub	a5,a3,t0
+	sub	a5,x0,a5
+	sub	a5,a3,a5
 	blt	a5,a4,.L9
 	sw	a5,0(a2)
 .L10:
@@ -198,8 +198,7 @@ main:
 	lw	ra,28(sp)
 	addi	a0,a0,-2048
 	addi	a0,a0,-1464
-	bltu	zero,a0,.+8
-	jal	x0,.+8
+	bgeu	zero,a0,.+8
 	jal	x0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
@@ -221,7 +220,8 @@ verify_benchmark:
 	addi	a0,a0,-2048
 	addi	a0,a0,-1464
 	addi	t0,x0,1
-	bltu	a0,t0,.+12
+	bgeu	a0,t0,.+8
+	jal	x0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
@@ -245,8 +245,8 @@ __mul:
 	sub	a3,a1,a3
 	bne	a3,x0,.+8
 	jal	x0,.Mul_skip
-	sub	t0,x0,a0
-	sub	a0,a2,t0
+	sub	a0,x0,a0
+	sub	a0,a2,a0
 .Mul_skip:
 	addi	t0,x0,1
 	srl	a1,a1,t0
@@ -274,8 +274,7 @@ __riscv_div_lib_udivsi3:
 	bne	a2,zero,.+8
 	jal	x0,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bltu	a2,a1,.+8
-	jal	x0,__riscv_div_lib_L2
+	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	blt	zero,a2,.+8
 	jal	x0,__riscv_div_lib_L2
@@ -283,11 +282,13 @@ __riscv_div_lib_L1:
 	sll	a2,a2,t0
 	addi	t0,x0,1
 	sll	a3,a3,t0
-	bltu	a2,a1,__riscv_div_lib_L1
+	bgeu	a2,a1,.+8
+	jal	x0,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bltu	a1,a2,__riscv_div_lib_L4
+	bgeu	a1,a2,.+8
+	jal	x0,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	or	a0,a0,a3
 __riscv_div_lib_L4:
