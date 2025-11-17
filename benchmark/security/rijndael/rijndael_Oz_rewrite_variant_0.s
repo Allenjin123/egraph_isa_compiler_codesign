@@ -30,7 +30,7 @@ gmul:
 	sub	a4,t0,a4
 	srli	a5,a1,1
 	addi	t0,x0,1
-	and	a5,a5,t0
+	and	a5,t0,a5
 	addi	sp, sp, -32
 	sw	a0, 0(sp)
 	sw	a1, 4(sp)
@@ -53,7 +53,7 @@ gmul:
 	and	a3,a3,a1
 	srli	a1,a1,2
 	addi	t0,x0,1
-	and	a1,a1,t0
+	and	a1,t0,a1
 	slli	a2,a4,24
 	addi	sp, sp, -16
 	sw	a1, 0(sp)
@@ -72,7 +72,7 @@ gmul:
 	addi	sp, sp, 16
 	srai	a3,a2,31
 	addi	t0,x0,27
-	and	a3,a3,t0
+	and	a3,t0,a3
 	addi	sp, sp, -16
 	sw	a0, 0(sp)
 	sw	a2, 4(sp)
@@ -127,7 +127,7 @@ hex_value:
 .L3:
 	addi	a5,a0,-65
 	addi	t0,x0,255
-	and	a5,t0,a5
+	and	a5,a5,t0
 	addi	a3,zero,5
 	bltu	a3,a5,.L5
 	addi	a0,a0,-55
@@ -135,7 +135,7 @@ hex_value:
 .L5:
 	addi	a5,a0,-97
 	addi	t0,x0,255
-	and	a5,t0,a5
+	and	a5,a5,t0
 	addi	a0,zero,-1
 	bltu	a3,a5,.L2
 	addi	a0,a4,-87
@@ -211,7 +211,7 @@ set_key:
 .L13:
 	bltu	a6,t3,.L16
 	addi	t0,x0,2
-	and	a2,a2,t0
+	and	a2,t0,a2
 	addi	s0,a5,0
 	bne	a2,zero,.+8
 	jal	x0,.L33
@@ -250,12 +250,12 @@ set_key:
 	srli	a2,a5,8
 	lw	a0,12(sp)
 	addi	a4,x0,255
-	and	a4,a2,a4
+	and	a4,a4,a2
 	srli	a2,a5,16
 	sw	a4,8(sp)
 	srli	a5,a5,24
 	addi	a4,x0,255
-	and	a4,a2,a4
+	and	a4,a4,a2
 	sw	a4,4(sp)
 	sw	a5,0(sp)
 .Lpcrel_1:
@@ -296,9 +296,9 @@ set_key:
 	sub	s4,t0,s4
 	lw	a0,12(sp)
 	addi	a5,x0,-256
-	and	a5,a5,s0
+	and	a5,s0,a5
 	addi	t0,x0,255
-	and	s4,s4,t0
+	and	s4,t0,s4
 	addi	a1,zero,9
 	and	s0,a5,s4
 	sub	s0,s0,s4
@@ -339,7 +339,7 @@ set_key:
 	sub	s4,t0,s4
 	lw	a0,12(sp)
 	addi	t0,x0,255
-	and	s4,s4,t0
+	and	s4,t0,s4
 	and	a5,s0,s5
 	slli	s4,s4,8
 	addi	a1,zero,13
@@ -526,9 +526,9 @@ set_key:
 	sub	a4,a4,t0
 	srli	a1,a5,8
 	addi	t0,x0,255
-	and	a1,a1,t0
+	and	a1,t0,a1
 	addi	t0,x0,255
-	and	a5,a5,t0
+	and	a5,t0,a5
 	sub	t0,x0,a0
 	sub	a1,a1,t0
 	sub	t0,x0,a0
@@ -610,7 +610,7 @@ set_key:
 	sub	t0,t0,t5
 	sub	a1,a1,t0
 	addi	t5,x0,255
-	and	t5,t5,a5
+	and	t5,a5,t5
 	srli	a5,a5,24
 	sub	t0,x0,a4
 	sub	t5,t5,t0
@@ -826,7 +826,7 @@ encrypt:
 	addi	sp,sp,-16
 	sw	s2,0(sp)
 	addi	s2,x0,27
-	and	a2,a2,s2
+	and	a2,s2,a2
 	lw	s2,0(sp)
 	addi	sp,sp,16
 	addi	sp,sp,-16
@@ -881,7 +881,7 @@ encrypt:
 	addi	sp,sp,-16
 	sw	s2,0(sp)
 	addi	s2,x0,27
-	and	a4,a4,s2
+	and	a4,s2,a4
 	lw	s2,0(sp)
 	addi	sp,sp,16
 	addi	sp,sp,-16
@@ -7196,7 +7196,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	a3,x0,1
-	and	a3,a3,a1
+	and	a3,a1,a3
 	bne	a3,x0,.+8
 	jal	x0,.Mul_skip
 	sub	a0,x0,a0

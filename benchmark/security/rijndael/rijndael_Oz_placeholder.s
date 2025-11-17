@@ -30,18 +30,18 @@ gmul:
 	sub	a4,op_0,op_3
 	srli	a5,a1,1
 	addi	op_0,x0,1
-	and	a5,a5,op_0
+	and	a5,op_0,a5
 	callmul	a5,a5,a3
 	addi	op_0,x0,1
 	and	a3,op_0,a1
 	srli	a1,a1,2
 	addi	op_0,x0,1
-	and	a1,a1,op_0
+	and	a1,op_0,a1
 	slli	a2,a4,24
 	callmul	a0,a0,a3
 	srai	a3,a2,31
 	addi	op_0,x0,27
-	and	a3,a3,op_0
+	and	a3,op_0,a3
 	callmul	a1,a1,a4
 	and	op_2,a0,a5
 	sub	op_1,op_2,a5
@@ -82,7 +82,7 @@ hex_value:
 .L3:
 	addi	a5,a0,-65
 	addi	op_0,x0,255
-	and	a5,op_0,a5
+	and	a5,a5,op_0
 	addi	a3,zero,5
 	bltu	a3,a5,.L5
 	addi	a0,a0,-55
@@ -90,7 +90,7 @@ hex_value:
 .L5:
 	addi	a5,a0,-97
 	addi	op_0,x0,255
-	and	a5,op_0,a5
+	and	a5,a5,op_0
 	addi	a0,zero,-1
 	bltu	a3,a5,.L2
 	addi	a0,a4,-87
@@ -166,7 +166,7 @@ set_key:
 .L13:
 	bltu	a6,t3,.L16
 	addi	op_0,x0,2
-	and	a2,a2,op_0
+	and	a2,op_0,a2
 	addi	s0,a5,0
 	bne	a2,zero,.+8
 	jal	x0,.L33
@@ -205,12 +205,12 @@ set_key:
 	srli	a2,a5,8
 	lw	a0,12(sp)
 	addi	op_0,x0,255
-	and	a4,a2,op_0
+	and	a4,op_0,a2
 	srli	a2,a5,16
 	sw	a4,8(sp)
 	srli	a5,a5,24
 	addi	op_0,x0,255
-	and	a4,a2,op_0
+	and	a4,op_0,a2
 	sw	a4,4(sp)
 	sw	a5,0(sp)
 .Lpcrel_1:
@@ -251,9 +251,9 @@ set_key:
 	sub	s4,op_0,op_3
 	lw	a0,12(sp)
 	addi	op_0,x0,-256
-	and	a5,op_0,s0
+	and	a5,s0,op_0
 	addi	op_0,x0,255
-	and	s4,s4,op_0
+	and	s4,op_0,s4
 	addi	a1,zero,9
 	and	op_1,a5,s4
 	sub	op_0,op_1,s4
@@ -294,7 +294,7 @@ set_key:
 	sub	s4,op_0,op_3
 	lw	a0,12(sp)
 	addi	op_0,x0,255
-	and	s4,s4,op_0
+	and	s4,op_0,s4
 	and	a5,s0,s5
 	slli	s4,s4,8
 	addi	a1,zero,13
@@ -462,9 +462,9 @@ set_key:
 	sub	a4,a4,op_0
 	srli	a1,a5,8
 	addi	op_0,x0,255
-	and	a1,a1,op_0
+	and	a1,op_0,a1
 	addi	op_0,x0,255
-	and	a5,a5,op_0
+	and	a5,op_0,a5
 	sub	op_0,x0,a0
 	sub	a1,a1,op_0
 	sub	op_0,x0,a0
@@ -527,7 +527,7 @@ set_key:
 	sub	op_0,op_1,t5
 	sub	a1,a1,op_0
 	addi	op_0,x0,255
-	and	t5,op_0,a5
+	and	t5,a5,op_0
 	srli	a5,a5,24
 	sub	op_0,x0,a4
 	sub	t5,t5,op_0
@@ -733,7 +733,7 @@ encrypt:
 	sub	a2,zero,a2
 	slli	s3,s2,1
 	addi	op_0,x0,27
-	and	a2,a2,op_0
+	and	a2,op_0,a2
 	and	op_2,s3,a2
 	sub	op_1,op_2,a2
 	sub	op_0,s3,op_1
@@ -764,7 +764,7 @@ encrypt:
 	sub	a4,zero,a4
 	slli	s2,a7,1
 	addi	op_0,x0,27
-	and	a4,a4,op_0
+	and	a4,op_0,a4
 	and	op_2,s2,a4
 	sub	op_1,op_2,a4
 	sub	op_0,s2,op_1
@@ -7031,7 +7031,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	op_0,x0,1
-	and	a3,op_0,a1
+	and	a3,a1,op_0
 	bne	a3,x0,.+8
 	jal	x0,.Mul_skip
 	sub	op_0,x0,a0

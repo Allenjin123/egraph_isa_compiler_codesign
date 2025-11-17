@@ -168,11 +168,11 @@ quicksort_range:
 	bne	a4,a6,.L20
 .L21:
 	or	a4,a7,t1
-	addi	op_0,x0,3
+	addi	op_2,x0,3
+	or	op_1,a4,op_2
 	addi	op_3,x0,3
-	or	op_2,op_3,a4
-	sub	op_1,op_2,a4
-	sub	a4,op_0,op_1
+	sub	op_0,op_1,op_3
+	sub	a4,a4,op_0
 	bne	a4,zero,.L23
 	addi	a6,t1,128
 	addi	a4,a7,0

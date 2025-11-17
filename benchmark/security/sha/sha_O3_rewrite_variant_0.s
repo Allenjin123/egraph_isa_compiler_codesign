@@ -419,7 +419,8 @@ sha_update:
 	slli	a5,a2,3
 	sub	t0,x0,a4
 	sub	a5,a5,t0
-	bltu	a5,a4,.+12
+	bgeu	a5,a4,.+8
+	jal	x0,.+12
 	addi	a4,x0,0
 	jal	x0,.+8
 	addi	a4,x0,1
@@ -460,13 +461,14 @@ sha_update:
 	sub	a3,a3,a5
 	sub	a3,s7,a3
 	addi	t0,x0,3
-	and	a3,t0,a3
+	and	a3,a3,t0
 	addi	a4,s7,0
 	beq	a3,zero,.+8
 	jal	x0,.L31
 	sub	a3,s6,a5
 	addi	t0,x0,3
-	bltu	a3,t0,.+12
+	bgeu	a3,t0,.+8
+	jal	x0,.+12
 	addi	a3,x0,0
 	jal	x0,.+8
 	addi	a3,x0,1
@@ -659,12 +661,12 @@ sha_update:
 	addi	a7,a3,-1
 	addi	a5,zero,6
 	addi	a1,s0,28
-	bltu	a5,a7,.+8
-	jal	x0,.L24
+	bgeu	a5,a7,.L24
 	addi	a5,s0,27
 	sub	a5,a5,s2
 	addi	t0,x0,3
-	bltu	a5,t0,.+12
+	bgeu	a5,t0,.+8
+	jal	x0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
@@ -679,7 +681,7 @@ sha_update:
 	beq	a5,zero,.+8
 	jal	x0,.L24
 	addi	a6,x0,-4
-	and	a6,a3,a6
+	and	a6,a6,a3
 	sub	a0,x0,a6
 	sub	a0,s2,a0
 	addi	a5,a1,0
@@ -747,7 +749,7 @@ sha_final:
 	addi	a5,a0,28
 	srli	a4,a7,3
 	addi	t0,x0,63
-	and	a4,t0,a4
+	and	a4,a4,t0
 	addi	a2,zero,-128
 	sub	a3,x0,a5
 	sub	a3,a4,a3
@@ -930,7 +932,7 @@ sha_final:
 	beq	a4,zero,.L89
 	sb	zero,28(a0)
 	addi	t0,x0,2
-	and	a3,t0,a3
+	and	a3,a3,t0
 	beq	a3,zero,.L90
 	sb	zero,29(a0)
 	addi	a5,zero,3
@@ -1097,14 +1099,13 @@ sha_final:
 	addi	a5,a4,-49
 	addi	t3,zero,5
 	sub	a6,a6,a3
-	bltu	t3,a5,.+8
-	jal	x0,.L69
+	bgeu	t3,a5,.L69
 	addi	a4,a4,29
 	sub	a5,x0,a0
 	sub	a5,a4,a5
 	sub	a5,zero,a5
 	addi	t3,x0,3
-	and	t3,t3,a5
+	and	t3,a5,t3
 	sub	a1,a1,a3
 	beq	t3,zero,.L70
 	sb	zero,0(a2)
@@ -1272,8 +1273,7 @@ sha_process_buffer:
 	addi	a1,s2,0
 	addi	a0,s3,0
 	addi	s1,s0,0
-	bltu	s4,s0,.+8
-	jal	x0,.L96
+	bgeu	s4,s0,.L96
 	lui	s1,2
 .L96:
 	addi	a2,s1,0
@@ -6579,7 +6579,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	a3,x0,1
-	and	a3,a1,a3
+	and	a3,a3,a1
 	beq	a3,x0,.Mul_skip
 	sub	a0,x0,a0
 	sub	a0,a2,a0
@@ -6608,22 +6608,23 @@ __riscv_div_lib_udivsi3:
 	addi	a0,zero,-1
 	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bltu	a2,a1,.+8
-	jal	x0,__riscv_div_lib_L2
+	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	blt	zero,a2,.+8
 	jal	x0,__riscv_div_lib_L2
 	slli	a2,a2,1
 	slli	a3,a3,1
-	bltu	a2,a1,__riscv_div_lib_L1
+	bgeu	a2,a1,.+8
+	jal	x0,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bltu	a1,a2,__riscv_div_lib_L4
+	bgeu	a1,a2,.+8
+	jal	x0,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	and	t0,a0,a3
-	sub	t0,t0,a3
-	sub	a0,a0,t0
+	and	t1,a0,a3
+	sub	t1,t1,a3
+	sub	a0,a0,t1
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1

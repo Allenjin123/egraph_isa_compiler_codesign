@@ -1,5 +1,5 @@
 
-/tmp/tmp.WEC1KWOYuo/rijndael_Oz_rewrite:     file format elf32-littleriscv
+/tmp/tmp.Fa4v7kEbX7/rijndael_Oz_rewrite:     file format elf32-littleriscv
 
 
 Disassembly of section .text:
@@ -213,7 +213,7 @@ gmul():
    1039c:	40e28733          	sub	a4,t0,a4
    103a0:	0015d793          	srli	a5,a1,0x1
    103a4:	00100293          	addi	t0,zero,1
-   103a8:	0057f7b3          	and	a5,a5,t0
+   103a8:	00f2f7b3          	and	a5,t0,a5
    103ac:	fe010113          	addi	sp,sp,-32
    103b0:	00a12023          	sw	a0,0(sp)
    103b4:	00b12223          	sw	a1,4(sp)
@@ -235,7 +235,7 @@ gmul():
    103f4:	00b6f6b3          	and	a3,a3,a1
    103f8:	0025d593          	srli	a1,a1,0x2
    103fc:	00100293          	addi	t0,zero,1
-   10400:	0055f5b3          	and	a1,a1,t0
+   10400:	00b2f5b3          	and	a1,t0,a1
    10404:	01871613          	slli	a2,a4,0x18
    10408:	ff010113          	addi	sp,sp,-16
    1040c:	00b12023          	sw	a1,0(sp)
@@ -253,7 +253,7 @@ gmul():
    1043c:	01010113          	addi	sp,sp,16
    10440:	41f65693          	srai	a3,a2,0x1f
    10444:	01b00293          	addi	t0,zero,27
-   10448:	0056f6b3          	and	a3,a3,t0
+   10448:	00d2f6b3          	and	a3,t0,a3
    1044c:	ff010113          	addi	sp,sp,-16
    10450:	00a12023          	sw	a0,0(sp)
    10454:	00c12223          	sw	a2,4(sp)
@@ -305,14 +305,14 @@ hex_value():
    10500:	00008067          	jalr	zero,0(ra)
    10504:	fbf50793          	addi	a5,a0,-65
    10508:	0ff00293          	addi	t0,zero,255
-   1050c:	00f2f7b3          	and	a5,t0,a5
+   1050c:	0057f7b3          	and	a5,a5,t0
    10510:	00500693          	addi	a3,zero,5
    10514:	00f6e663          	bltu	a3,a5,10520 <hex_value+0x3c>
    10518:	fc950513          	addi	a0,a0,-55
    1051c:	00008067          	jalr	zero,0(ra)
    10520:	f9f50793          	addi	a5,a0,-97
    10524:	0ff00293          	addi	t0,zero,255
-   10528:	00f2f7b3          	and	a5,t0,a5
+   10528:	0057f7b3          	and	a5,a5,t0
    1052c:	fff00513          	addi	a0,zero,-1
    10530:	00f6e463          	bltu	a3,a5,10538 <hex_value+0x54>
    10534:	fa970513          	addi	a0,a4,-87
@@ -380,7 +380,7 @@ set_key():
    10614:	60c50513          	addi	a0,a0,1548 # 2260c <s_box>
    10618:	3fc86e63          	bltu	a6,t3,10a14 <set_key+0x4ac>
    1061c:	00200293          	addi	t0,zero,2
-   10620:	00567633          	and	a2,a2,t0
+   10620:	00c2f633          	and	a2,t0,a2
    10624:	00078413          	addi	s0,a5,0
    10628:	00061463          	bne	a2,zero,10630 <set_key+0xc8>
    1062c:	34c0006f          	jal	zero,10978 <set_key+0x410>
@@ -416,12 +416,12 @@ set_key():
    106a4:	0087d613          	srli	a2,a5,0x8
    106a8:	00c12503          	lw	a0,12(sp)
    106ac:	0ff00713          	addi	a4,zero,255
-   106b0:	00e67733          	and	a4,a2,a4
+   106b0:	00c77733          	and	a4,a4,a2
    106b4:	0107d613          	srli	a2,a5,0x10
    106b8:	00e12423          	sw	a4,8(sp)
    106bc:	0187d793          	srli	a5,a5,0x18
    106c0:	0ff00713          	addi	a4,zero,255
-   106c4:	00e67733          	and	a4,a2,a4
+   106c4:	00c77733          	and	a4,a4,a2
    106c8:	00e12223          	sw	a4,4(sp)
    106cc:	00f12023          	sw	a5,0(sp)
    106d0:	00000097          	auipc	ra,0x0
@@ -458,9 +458,9 @@ set_key():
    1074c:	41428a33          	sub	s4,t0,s4
    10750:	00c12503          	lw	a0,12(sp)
    10754:	f0000793          	addi	a5,zero,-256
-   10758:	0087f7b3          	and	a5,a5,s0
+   10758:	00f477b3          	and	a5,s0,a5
    1075c:	0ff00293          	addi	t0,zero,255
-   10760:	005a7a33          	and	s4,s4,t0
+   10760:	0142fa33          	and	s4,t0,s4
    10764:	00900593          	addi	a1,zero,9
    10768:	0147f433          	and	s0,a5,s4
    1076c:	41440433          	sub	s0,s0,s4
@@ -497,7 +497,7 @@ set_key():
    107e8:	41428a33          	sub	s4,t0,s4
    107ec:	00c12503          	lw	a0,12(sp)
    107f0:	0ff00293          	addi	t0,zero,255
-   107f4:	005a7a33          	and	s4,s4,t0
+   107f4:	0142fa33          	and	s4,t0,s4
    107f8:	015477b3          	and	a5,s0,s5
    107fc:	008a1a13          	slli	s4,s4,0x8
    10800:	00d00593          	addi	a1,zero,13
@@ -671,9 +671,9 @@ set_key():
    10aa0:	40570733          	sub	a4,a4,t0
    10aa4:	0087d593          	srli	a1,a5,0x8
    10aa8:	0ff00293          	addi	t0,zero,255
-   10aac:	0055f5b3          	and	a1,a1,t0
+   10aac:	00b2f5b3          	and	a1,t0,a1
    10ab0:	0ff00293          	addi	t0,zero,255
-   10ab4:	0057f7b3          	and	a5,a5,t0
+   10ab4:	00f2f7b3          	and	a5,t0,a5
    10ab8:	40a002b3          	sub	t0,zero,a0
    10abc:	405585b3          	sub	a1,a1,t0
    10ac0:	40a002b3          	sub	t0,zero,a0
@@ -752,7 +752,7 @@ set_key():
    10be4:	41e282b3          	sub	t0,t0,t5
    10be8:	405585b3          	sub	a1,a1,t0
    10bec:	0ff00f13          	addi	t5,zero,255
-   10bf0:	00ff7f33          	and	t5,t5,a5
+   10bf0:	01e7ff33          	and	t5,a5,t5
    10bf4:	0187d793          	srli	a5,a5,0x18
    10bf8:	40e002b3          	sub	t0,zero,a4
    10bfc:	405f0f33          	sub	t5,t5,t0
@@ -961,7 +961,7 @@ encrypt():
    10f1c:	ff010113          	addi	sp,sp,-16
    10f20:	01212023          	sw	s2,0(sp)
    10f24:	01b00913          	addi	s2,zero,27
-   10f28:	01267633          	and	a2,a2,s2
+   10f28:	00c97633          	and	a2,s2,a2
    10f2c:	00012903          	lw	s2,0(sp)
    10f30:	01010113          	addi	sp,sp,16
    10f34:	ff010113          	addi	sp,sp,-16
@@ -1016,7 +1016,7 @@ encrypt():
    10ff8:	ff010113          	addi	sp,sp,-16
    10ffc:	01212023          	sw	s2,0(sp)
    11000:	01b00913          	addi	s2,zero,27
-   11004:	01277733          	and	a4,a4,s2
+   11004:	00e97733          	and	a4,s2,a4
    11008:	00012903          	lw	s2,0(sp)
    1100c:	01010113          	addi	sp,sp,16
    11010:	ff010113          	addi	sp,sp,-16
@@ -1840,7 +1840,7 @@ __mul():
 00011c98 <.Mul_loop>:
 .Mul_loop():
    11c98:	00100693          	addi	a3,zero,1
-   11c9c:	00b6f6b3          	and	a3,a3,a1
+   11c9c:	00d5f6b3          	and	a3,a1,a3
    11ca0:	00069463          	bne	a3,zero,11ca8 <.Mul_loop+0x10>
    11ca4:	00c0006f          	jal	zero,11cb0 <.Mul_skip>
    11ca8:	40a00533          	sub	a0,zero,a0
