@@ -151,7 +151,7 @@ compdecomp.constprop.0:
 	lw	a5,%lo(heap_requested)(a3)
 	addi	a4,a4,501
 	addi	a0,x0,3
-	and	a0,a0,a4
+	and	a0,a4,a0
 	addi	a5,a5,501
 	beq	a0,zero,.L23
 	addi	a1,zero,4
@@ -487,12 +487,7 @@ compdecomp.constprop.0:
 	sw	a5,0(t3)
 	jal	x0,.L57
 .L83:
-	addi	a3,x0,1
-	and	a3,x0,a3
-	addi	t0,x0,1
-	sub	a3,a3,t0
-	sub	a3,x0,a3
-	add	a3,zero,a3
+	addi	a3,zero,1
 	addi	a0,zero,500
 	jal	x0,.L24
 .L140:
@@ -542,7 +537,12 @@ compdecomp.constprop.0:
 	jal	x0,.L57
 .L84:
 	addi	a3,zero,2
-	addi	a0,zero,499
+	addi	a0,x0,499
+	and	a0,x0,a0
+	addi	t0,x0,499
+	sub	a0,a0,t0
+	sub	a0,x0,a0
+	add	a0,zero,a0
 	jal	x0,.L24
 .L81:
 	sw	zero,8(sp)
@@ -663,8 +663,10 @@ compdecomp.constprop.0:
 	sw	a5,8(sp)
 	jal	x0,.L78
 .L88:
-	addi	a6,a0,0
-	addi	a0,zero,0
+	ori	a6,x0,0
+	add	a6,a0,a6
+	ori	a0,x0,0
+	add	a0,zero,a0
 	jal	x0,.L67
 	.size	compdecomp.constprop.0, .-compdecomp.constprop.0
 	.align	2
@@ -835,8 +837,7 @@ compdecomp:
 	sw	a5,4(sp)
 	lw	a4,4(sp)
 	lw	a5,%lo(heap_requested)(a3)
-	sub	t0,x0,a4
-	sub	a4,a2,t0
+	add	a4,a4,a2
 	addi	a0,x0,3
 	and	a0,a0,a4
 	add	a5,a2,a5
@@ -857,7 +858,7 @@ compdecomp:
 	beq	a5,zero,.L229
 	lw	a3,4(sp)
 	addi	t0,x0,2
-	and	a4,t0,a4
+	and	a4,a4,t0
 	sb	zero,0(a3)
 	addi	a3,zero,1
 	beq	a4,zero,.L168
@@ -865,7 +866,8 @@ compdecomp:
 	addi	a3,zero,2
 	sb	zero,1(a4)
 	addi	a4,zero,3
-	bne	a5,a4,.L168
+	beq	a5,a4,.+8
+	jal	x0,.L168
 	lw	a4,4(sp)
 	addi	a3,a5,0
 	sb	zero,2(a4)
@@ -873,7 +875,7 @@ compdecomp:
 	lw	a4,4(sp)
 	sub	a0,a2,a5
 	addi	a1,x0,-4
-	and	a1,a1,a0
+	and	a1,a0,a1
 	add	a5,a4,a5
 	add	a4,a5,a1
 .L170:
@@ -914,8 +916,20 @@ compdecomp:
 	lui	a4,1
 	addi	s9,s9,-2048
 	addi	a4,a4,1552
-	addi	s6,s9,0
-	addi	a5,s9,0
+	addi	s6,x0,0
+	and	s6,x0,s6
+	addi	t0,x0,0
+	sub	s6,s6,t0
+	sub	s6,x0,s6
+	sub	t0,x0,s9
+	sub	s6,s6,t0
+	addi	a5,x0,0
+	and	a5,x0,a5
+	addi	t0,x0,0
+	sub	a5,a5,t0
+	sub	a5,x0,a5
+	sub	t0,x0,s9
+	sub	a5,a5,t0
 	add	s5,a4,sp
 .L173:
 	sw	zero,0(a5)
@@ -967,25 +981,15 @@ compdecomp:
 	sw	a3,0(a5)
 	bne	a2,a4,.L180
 .L181:
-	addi	a1,sp,-496
-	addi	a3,x0,0
-	and	a3,x0,a3
-	addi	t0,x0,0
-	sub	a3,a3,t0
-	sub	a3,x0,a3
-	add	a3,s9,a3
-	addi	s10,x0,0
-	and	s10,x0,s10
-	addi	t0,x0,0
-	sub	s10,s10,t0
-	sub	s10,x0,s10
-	add	s10,zero,s10
-	addi	a5,x0,0
-	and	a5,x0,a5
-	addi	t0,x0,0
-	sub	a5,a5,t0
-	sub	a5,x0,a5
-	add	a5,zero,a5
+	addi	a1,x0,-496
+	and	a1,x0,a1
+	addi	t0,x0,-496
+	sub	a1,a1,t0
+	sub	a1,x0,a1
+	add	a1,sp,a1
+	addi	a3,s9,0
+	addi	s10,zero,0
+	addi	a5,zero,0
 	addi	a0,zero,256
 .L179:
 	lw	a2,0(a3)
@@ -1001,25 +1005,10 @@ compdecomp:
 	beq	s10,zero,.L183
 	addi	s3,s10,0
 .L184:
-	addi	a3,x0,0
-	and	a3,x0,a3
-	addi	t0,x0,0
-	sub	a3,a3,t0
-	sub	a3,x0,a3
-	add	a3,s3,a3
-	addi	a2,x0,0
-	and	a2,x0,a2
-	addi	t0,x0,0
-	sub	a2,a2,t0
-	sub	a2,x0,a2
-	add	a2,s10,a2
+	addi	a3,s3,0
+	addi	a2,s10,0
 	addi	a1,sp,528
-	addi	a0,x0,0
-	and	a0,x0,a0
-	addi	t0,x0,0
-	sub	a0,a0,t0
-	sub	a0,x0,a0
-	add	a0,s9,a0
+	addi	a0,s9,0
 	addi	s3,s3,-1
 .Lpcrel_6:
 	auipc	ra,%pcrel_hi(heap_adjust)
@@ -1067,8 +1056,10 @@ compdecomp:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_8)
 	addi	s10,s10,-1
 	addi	a5,zero,256
-	addi	s3,s3,-4
-	addi	s8,s8,-4
+	ori	t0,x0,-4
+	add	s3,s3,t0
+	ori	t0,x0,-4
+	add	s8,s8,t0
 	bne	s10,a5,.L186
 .L185:
 	addi	a5,zero,257
@@ -1086,25 +1077,15 @@ compdecomp:
 	sw	a2,0(a7)
 	sb	a4,0(a0)
 	addi	s6,s6,4
-	addi	t0,x0,4
-	and	t0,x0,t0
-	addi	t2,x0,4
-	sub	t0,t0,t2
-	sub	t0,x0,t0
-	add	a7,a7,t0
+	addi	a7,a7,4
 	addi	a0,a0,1
-	addi	t0,x0,4
-	and	t0,x0,t0
-	addi	t2,x0,4
-	sub	t0,t0,t2
-	sub	t0,x0,t0
-	add	s7,s7,t0
-	bne	t1,s6,.+8
-	jal	x0,.L295
+	addi	s7,s7,4
+	beq	t1,s6,.L295
 .L195:
 	lw	a2,0(s6)
 	addi	a4,zero,0
-	beq	a2,zero,.L187
+	bne	a2,zero,.+8
+	jal	x0,.L187
 	lw	a5,0(s7)
 	addi	a2,zero,0
 	beq	a5,zero,.L187
@@ -1118,11 +1099,17 @@ compdecomp:
 	lw	a5,0(a4)
 	addi	a6,a6,1
 	slli	a1,a1,1
-	beq	a5,zero,.+8
+	bne	a5,zero,.+8
+	jal	x0,.+8
 	jal	x0,.L192
 .L190:
 	bgeu	t4,a2,.L193
-	addi	t4,a2,0
+	addi	t4,x0,0
+	and	t4,x0,t4
+	addi	t0,x0,0
+	sub	t4,t4,t0
+	sub	t4,x0,t4
+	add	t4,a2,t4
 .L193:
 	addi	a4,a6,0
 	bgeu	t3,a6,.L187
@@ -1140,21 +1127,20 @@ compdecomp:
 	addi	t3,x0,0
 	jal	x0,.+8
 	addi	t3,x0,1
-	beq	t3,zero,.L163
+	bne	t3,zero,.+8
+	jal	x0,.L163
 	beq	t4,zero,.L163
 	lw	a5,8(sp)
-	beq	a5,zero,.L234
+	bne	a5,zero,.+8
+	jal	x0,.L234
 	addi	a4,a5,0
 	lw	a5,12(sp)
 	addi	t4,sp,-496
 	addi	a1,zero,-1
 	add	t6,a5,a4
-	ori	t3,x0,0
-	add	t3,a5,t3
-	ori	a3,x0,0
-	add	a3,zero,a3
-	ori	a7,x0,0
-	add	a7,zero,a7
+	addi	t3,a5,0
+	addi	a3,zero,0
+	addi	a7,zero,0
 	addi	t5,zero,1
 	addi	t1,zero,7
 .L203:
@@ -1179,7 +1165,8 @@ compdecomp:
 	ori	a3,a3,1
 .L201:
 	srli	a4,a4,1
-	bltu	a2,a6,.L202
+	bgeu	a2,a6,.+8
+	jal	x0,.L202
 .L198:
 	addi	t3,t3,1
 	bne	t3,t6,.L203
@@ -1189,9 +1176,7 @@ compdecomp:
 	add	a7,a4,a7
 	sll	a3,a3,a5
 .L197:
-	ori	t5,x0,2047
-	sub	t0,x0,sp
-	sub	t5,t5,t0
+	addi	t5,sp,2047
 	addi	t5,t5,529
 	sb	a3,0(a7)
 	addi	a4,t5,1024
@@ -1199,11 +1184,20 @@ compdecomp:
 .L204:
 	sw	zero,0(a5)
 	addi	a5,a5,4
-	beq	a5,a4,.+8
-	jal	x0,.L204
+	bne	a5,a4,.L204
 	addi	t1,sp,272
-	addi	t3,t5,0
-	addi	a6,zero,0
+	addi	t3,x0,0
+	and	t3,x0,t3
+	addi	t0,x0,0
+	sub	t3,t3,t0
+	sub	t3,x0,t3
+	add	t3,t5,t3
+	addi	a6,x0,0
+	and	a6,x0,a6
+	addi	t0,x0,0
+	sub	a6,a6,t0
+	sub	a6,x0,a6
+	add	a6,zero,a6
 	addi	t6,zero,1
 	addi	t4,zero,256
 	jal	x0,.L210
@@ -1244,7 +1238,8 @@ compdecomp:
 	lw	a5,0(a3)
 	add	a2,a2,a1
 	addi	a6,a6,1
-	beq	a5,zero,.L190
+	bne	a5,zero,.+8
+	jal	x0,.L190
 	slli	a1,a1,1
 	jal	x0,.L192
 .L298:
@@ -1290,14 +1285,10 @@ compdecomp:
 	beq	a6,zero,.L216
 .L215:
 	lw	a5,8(sp)
-	beq	a5,zero,.L163
+	bne	a5,zero,.+8
+	jal	x0,.L163
 	addi	t1,sp,-496
-	addi	a3,x0,0
-	and	a3,x0,a3
-	addi	t0,x0,0
-	sub	a3,a3,t0
-	sub	a3,x0,a3
-	add	a3,a6,a3
+	addi	a3,a6,0
 	addi	a4,x0,0
 	and	a4,x0,a4
 	addi	t0,x0,0
@@ -1328,7 +1319,8 @@ compdecomp:
 .L218:
 	slli	a5,a4,2
 	add	a5,a5,t5
-	bltu	a3,a2,.+8
+	bgeu	a3,a2,.+8
+	jal	x0,.+8
 	jal	x0,.L220
 .L219:
 	lw	a3,0(a5)
@@ -1342,15 +1334,12 @@ compdecomp:
 	srli	a0,a0,1
 .L224:
 	lw	a5,8(sp)
-	bltu	a7,a5,.L225
+	bltu	a7,a5,.+8
+	jal	x0,.+8
+	jal	x0,.L225
 .L163:
 	lui	t0,1
-	addi	t1,x0,1632
-	and	t1,x0,t1
-	addi	t2,x0,1632
-	sub	t1,t1,t2
-	sub	t1,x0,t1
-	add	t0,t0,t1
+	addi	t0,t0,1632
 	add	sp,sp,t0
 	lw	ra,2028(sp)
 	lw	s0,2024(sp)
@@ -1416,7 +1405,8 @@ compdecomp:
 	addi	a2,zero,0
 	addi	a5,a5,1
 	sw	a5,12(sp)
-	bne	a0,t3,.L300
+	beq	a0,t3,.+8
+	jal	x0,.L300
 .L223:
 	lw	a5,4(sp)
 	addi	a0,zero,128
@@ -1438,8 +1428,18 @@ compdecomp:
 	addi	a3,zero,0
 	jal	x0,.L197
 .L236:
-	addi	a6,a1,0
-	addi	a1,zero,0
+	addi	a6,x0,0
+	and	a6,x0,a6
+	addi	t0,x0,0
+	sub	a6,a6,t0
+	sub	a6,x0,a6
+	add	a6,a1,a6
+	addi	a1,x0,0
+	and	a1,x0,a1
+	addi	t0,x0,0
+	sub	a1,a1,t0
+	sub	a1,x0,a1
+	add	a1,zero,a1
 	jal	x0,.L215
 	.size	compdecomp, .-compdecomp
 	.align	2
@@ -1450,7 +1450,12 @@ verify_benchmark:
 	addi	a5,a5,%lo(.LANCHOR0)
 	lui	a4,%hi(.LANCHOR1+1)
 	addi	a1,a5,500
-	addi	a4,a4,%lo(.LANCHOR1+1)
+	addi	t0,x0,%lo(.LANCHOR1+1)
+	and	t0,x0,t0
+	addi	t1,x0,%lo(.LANCHOR1+1)
+	sub	t0,t0,t1
+	sub	t0,x0,t0
+	add	a4,a4,t0
 	addi	a3,zero,74
 	jal	x0,.L303
 .L306:
@@ -1593,7 +1598,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	a3,x0,1
-	and	a3,a1,a3
+	and	a3,a3,a1
 	beq	a3,x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:

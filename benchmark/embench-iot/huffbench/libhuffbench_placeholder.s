@@ -35,7 +35,8 @@ heap_adjust:
 	addi	op_0,x0,2
 	sll	a3,a3,op_0
 	sub	a5,a5,a3
-	bltu	t3,a6,.L2
+	bgeu	t3,a6,.+8
+	jal	x0,.L2
 .L11:
 	sw	a7,0(a5)
 	blt	t5,a4,.L9
@@ -67,14 +68,14 @@ heap_adjust:
 	sub	op_0,x0,a0
 	sub	t4,t4,op_0
 	lw	t4,0(t4)
-	bltu	t4,a6,.L10
+	bgeu	t4,a6,.+8
+	jal	x0,.L10
 	lw	t3,0(t6)
 	addi	op_0,x0,2
 	sll	a3,a3,op_0
 	addi	t1,a5,0
 	sub	a5,a5,a3
-	bltu	t3,a6,.+8
-	jal	x0,.L11
+	bgeu	t3,a6,.L11
 .L2:
 	sw	t2,0(a5)
 	jalr	zero,ra,0
@@ -107,7 +108,8 @@ heap_adjust.constprop.0:
 	addi	op_0,x0,2
 	sll	a5,a5,op_0
 	sub	a1,a1,a5
-	bltu	t1,a3,.L13
+	bgeu	t1,a3,.+8
+	jal	x0,.L13
 .L21:
 	sw	a6,0(a1)
 	blt	t0,a4,.L19
@@ -139,13 +141,15 @@ heap_adjust.constprop.0:
 	sub	op_0,x0,a0
 	sub	t3,t3,op_0
 	lw	t3,0(t3)
-	bltu	t3,a3,.L20
+	bgeu	t3,a3,.+8
+	jal	x0,.L20
 	lw	t1,0(t5)
 	addi	op_0,x0,2
 	sll	a5,a5,op_0
 	addi	a7,a1,0
 	sub	a1,a1,a5
-	bltu	t1,a3,.+8
+	bgeu	t1,a3,.+8
+	jal	x0,.+8
 	jal	x0,.L21
 .L13:
 	sw	t2,0(a1)
@@ -184,7 +188,7 @@ compdecomp.constprop.0:
 	lw	a5,%lo(heap_requested)(a3)
 	addi	a4,a4,501
 	addi	op_0,x0,3
-	and	a0,a4,op_0
+	and	a0,op_0,a4
 	addi	a5,a5,501
 	beq	a0,zero,.L23
 	addi	a1,zero,4
@@ -197,7 +201,8 @@ compdecomp.constprop.0:
 	lui	a1,%hi(heap_end)
 	lw	a1,%lo(heap_end)(a1)
 	sw	a5,%lo(heap_requested)(a3)
-	bltu	a1,a4,.L81
+	bgeu	a1,a4,.+8
+	jal	x0,.L81
 	lw	a5,8(sp)
 	sw	a4,%lo(heap_ptr)(a2)
 	sub	a3,zero,a5
@@ -206,7 +211,7 @@ compdecomp.constprop.0:
 	beq	a5,zero,.L82
 	lw	a4,8(sp)
 	addi	op_0,x0,2
-	and	a3,a3,op_0
+	and	a3,op_0,a3
 	sb	zero,0(a4)
 	beq	a3,zero,.L83
 	sb	zero,1(a4)
@@ -222,7 +227,7 @@ compdecomp.constprop.0:
 	addi	a2,zero,501
 	sub	a2,a2,a5
 	addi	op_0,x0,-4
-	and	a1,a2,op_0
+	and	a1,op_0,a2
 	sub	op_0,x0,a4
 	sub	a5,a5,op_0
 	sub	op_0,x0,a5
@@ -450,12 +455,10 @@ compdecomp.constprop.0:
 	jal	x0,.L45
 .L43:
 	addi	a4,a6,0
-	bltu	t4,a2,.+8
-	jal	x0,.L46
+	bgeu	t4,a2,.L46
 	addi	t4,a2,0
 .L46:
-	bltu	t3,a6,.+8
-	jal	x0,.L40
+	bgeu	t3,a6,.L40
 	sw	a2,0(a7)
 	sb	a4,0(a0)
 	addi	s6,s6,4
@@ -467,7 +470,8 @@ compdecomp.constprop.0:
 	jal	x0,.L48
 .L139:
 	addi	op_0,x0,33
-	bltu	t3,op_0,.+12
+	bgeu	t3,op_0,.+8
+	jal	x0,.+12
 	addi	t3,x0,0
 	jal	x0,.+8
 	addi	t3,x0,1
@@ -513,7 +517,8 @@ compdecomp.constprop.0:
 .L53:
 	addi	op_0,x0,1
 	srl	a4,a4,op_0
-	bltu	a2,a6,.L54
+	bgeu	a2,a6,.+8
+	jal	x0,.L54
 .L50:
 	lw	a5,12(sp)
 	addi	t3,t3,1
@@ -661,8 +666,7 @@ compdecomp.constprop.0:
 	addi	a3,a7,0
 .L63:
 	lw	a2,-4(a5)
-	bltu	a0,a2,.+8
-	jal	x0,.L64
+	bgeu	a0,a2,.L64
 	lbu	a1,-1(a4)
 	sw	a2,0(a5)
 	addi	a3,a3,-1
@@ -719,13 +723,15 @@ compdecomp.constprop.0:
 	sll	a5,a4,op_0
 	sub	op_0,x0,a5
 	sub	a5,t5,op_0
-	bltu	a3,a2,.+8
+	bgeu	a3,a2,.+8
+	jal	x0,.+8
 	jal	x0,.L72
 .L71:
 	lw	a3,0(a5)
 	addi	a5,a5,4
 	addi	a4,a4,1
-	bltu	a3,a2,.L71
+	bgeu	a3,a2,.+8
+	jal	x0,.L71
 .L72:
 	beq	a2,a3,.L74
 	beq	a1,t4,.L75
@@ -959,13 +965,13 @@ compdecomp:
 	lui	a0,%hi(heap_end)
 	lw	a0,%lo(heap_end)(a0)
 	sw	a5,%lo(heap_requested)(a3)
-	bltu	a0,a4,.L294
+	bgeu	a0,a4,.+8
+	jal	x0,.L294
 .L166:
 	sw	a4,%lo(heap_ptr)(a1)
 	lw	a4,8(sp)
 	addi	a5,zero,5
-	bltu	a5,a4,.+8
-	jal	x0,.L228
+	bgeu	a5,a4,.L228
 	lw	a5,4(sp)
 	sub	a4,zero,a5
 	addi	op_0,x0,3
@@ -1009,33 +1015,30 @@ compdecomp:
 	sub	a4,a5,op_0
 	sb	zero,0(a4)
 	addi	a4,a5,1
-	bltu	a4,a2,.+8
-	jal	x0,.L164
+	bgeu	a4,a2,.L164
 	lw	a3,4(sp)
 	sub	op_0,x0,a3
 	sub	a4,a4,op_0
 	sb	zero,0(a4)
 	addi	a4,a5,2
-	bltu	a4,a2,.+8
-	jal	x0,.L164
+	bgeu	a4,a2,.L164
 	sub	op_0,x0,a3
 	sub	a4,a4,op_0
 	sb	zero,0(a4)
 	addi	a4,a5,3
-	bltu	a4,a2,.+8
+	bgeu	a4,a2,.+8
+	jal	x0,.+8
 	jal	x0,.L164
 	sub	op_0,x0,a3
 	sub	a4,a4,op_0
 	sb	zero,0(a4)
 	addi	a4,a5,4
-	bltu	a4,a2,.+8
-	jal	x0,.L164
+	bgeu	a4,a2,.L164
 	sub	op_0,x0,a3
 	sub	a4,a4,op_0
 	sb	zero,0(a4)
 	addi	a5,a5,5
-	bltu	a5,a2,.+8
-	jal	x0,.L164
+	bgeu	a5,a2,.L164
 	sub	op_0,x0,a3
 	sub	a5,a5,op_0
 	sb	zero,0(a5)
@@ -1097,7 +1100,9 @@ compdecomp:
 	sub	a2,a4,op_0
 	addi	a4,a5,0
 	lw	a5,8(sp)
-	beq	a5,zero,.L181
+	beq	a5,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L181
 .L180:
 	lbu	a5,0(a4)
 	addi	a4,a4,1
@@ -1244,13 +1249,11 @@ compdecomp:
 	beq	a5,zero,.+8
 	jal	x0,.L192
 .L190:
-	bltu	t4,a2,.+8
-	jal	x0,.L193
+	bgeu	t4,a2,.L193
 	addi	t4,a2,0
 .L193:
 	addi	a4,a6,0
-	bltu	t3,a6,.+8
-	jal	x0,.L187
+	bgeu	t3,a6,.L187
 	sw	a2,0(a7)
 	sb	a4,0(a0)
 	addi	s6,s6,4
@@ -1262,7 +1265,8 @@ compdecomp:
 	jal	x0,.L195
 .L295:
 	addi	op_0,x0,33
-	bltu	t3,op_0,.+12
+	bgeu	t3,op_0,.+8
+	jal	x0,.+12
 	addi	t3,x0,0
 	jal	x0,.+8
 	addi	t3,x0,1
@@ -1312,7 +1316,8 @@ compdecomp:
 .L201:
 	addi	op_0,x0,1
 	srl	a4,a4,op_0
-	bltu	a2,a6,.L202
+	bgeu	a2,a6,.+8
+	jal	x0,.L202
 .L198:
 	addi	t3,t3,1
 	beq	t3,t6,.+8
@@ -1401,8 +1406,7 @@ compdecomp:
 	addi	a3,a7,0
 .L211:
 	lw	a2,-4(a5)
-	bltu	a0,a2,.+8
-	jal	x0,.L212
+	bgeu	a0,a2,.L212
 	lbu	a1,-1(a4)
 	sw	a2,0(a5)
 	addi	a3,a3,-1
@@ -1457,13 +1461,15 @@ compdecomp:
 	sll	a5,a4,op_0
 	sub	op_0,x0,a5
 	sub	a5,t5,op_0
-	bltu	a3,a2,.+8
+	bgeu	a3,a2,.+8
+	jal	x0,.+8
 	jal	x0,.L220
 .L219:
 	lw	a3,0(a5)
 	addi	a5,a5,4
 	addi	a4,a4,1
-	bltu	a3,a2,.L219
+	bgeu	a3,a2,.+8
+	jal	x0,.L219
 .L220:
 	beq	a2,a3,.L299
 	beq	a0,t3,.L223
@@ -1472,7 +1478,8 @@ compdecomp:
 	srl	a0,a0,op_0
 .L224:
 	lw	a5,8(sp)
-	bltu	a7,a5,.L225
+	bgeu	a7,a5,.+8
+	jal	x0,.L225
 .L163:
 	lui	t0,1
 	addi	t0,t0,1632
@@ -1503,14 +1510,12 @@ compdecomp:
 	lui	a0,%hi(heap_end)
 	lw	a0,%lo(heap_end)(a0)
 	sw	a5,%lo(heap_requested)(a3)
-	bltu	a0,a4,.+8
-	jal	x0,.L166
+	bgeu	a0,a4,.L166
 .L294:
 	lw	a4,8(sp)
 	addi	a5,zero,5
 	sw	zero,4(sp)
-	bltu	a5,a4,.+8
-	jal	x0,.L228
+	bgeu	a5,a4,.L228
 	addi	a5,zero,0
 	addi	a3,zero,0
 	jal	x0,.L168
@@ -1670,7 +1675,8 @@ main:
 	addi	a0,zero,0
 .L314:
 	lw	ra,28(sp)
-	bltu	zero,a0,.+12
+	bgeu	zero,a0,.+8
+	jal	x0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
@@ -1733,7 +1739,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	op_0,x0,1
-	and	a3,a1,op_0
+	and	a3,op_0,a1
 	beq	a3,x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
@@ -1753,7 +1759,9 @@ __mul:
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
 	blt	a0,zero,__riscv_div_lib_L10
-	blt	a1,zero,__riscv_div_lib_L11
+	blt	a1,zero,.+8
+	jal	x0,.+8
+	jal	x0,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
 # Unsigned 32-bit division: a0 = a0 / a1
@@ -1764,8 +1772,7 @@ __riscv_div_lib_udivsi3:
 	addi	a0,zero,-1
 	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bltu	a2,a1,.+8
-	jal	x0,__riscv_div_lib_L2
+	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	blt	zero,a2,.+8
 	jal	x0,__riscv_div_lib_L2
@@ -1773,11 +1780,13 @@ __riscv_div_lib_L1:
 	sll	a2,a2,op_0
 	addi	op_0,x0,1
 	sll	a3,a3,op_0
-	bltu	a2,a1,__riscv_div_lib_L1
+	bgeu	a2,a1,.+8
+	jal	x0,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bltu	a1,a2,__riscv_div_lib_L4
+	bgeu	a1,a2,.+8
+	jal	x0,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	and	op_1,a0,a3
 	sub	op_0,op_1,a3

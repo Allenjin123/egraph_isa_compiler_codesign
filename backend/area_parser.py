@@ -57,7 +57,7 @@ def create_empty_dsl(output_path: Optional[str] = None) -> str:
         # Return DSL content as string
         return dsl_content
 
-def create_dsl(isa_subset: set, output_path: Optional[str] = None, shift_imm_dict: Optional[dict] = None) -> tuple[str, bool]:
+def create_dsl(isa_subset: set, output_path: Optional[str] = None, shift_imm_dict: Optional[dict] = None, add_cache_latencies: bool = False) -> tuple[str, bool]:
     """
     Create a DSL file (version 2) for PdatScorrWrapper based on the instruction subset.
 
@@ -69,6 +69,7 @@ def create_dsl(isa_subset: set, output_path: Optional[str] = None, shift_imm_dic
         output_path: Optional path to write DSL file. If None, returns DSL as string.
         shift_imm_dict: Optional dict mapping shift instructions to sets of immediate values
                        e.g., {'slli': {0, 1, 2}, 'srai': {4, 8}}
+        add_cache_latencies: If True, add cache latency parameters at end of DSL
 
     Returns:
         Tuple of (dsl_path_or_content, has_shift_constraints) where:
@@ -158,6 +159,15 @@ def create_dsl(isa_subset: set, output_path: Optional[str] = None, shift_imm_dic
                     dsl_lines.append(f"include {shift_inst.upper()} {{shamt = 5'b{binary_str}}}  # shift={imm_val}")
             dsl_lines.append("")
 
+    # Add cache latency parameters if requested (for uarch-aware analysis)
+    if add_cache_latencies:
+        dsl_lines.append("# Cache latency parameters")
+        dsl_lines.append("instr_hit_latency 1")
+        dsl_lines.append("instr_miss_latency 5")
+        dsl_lines.append("data_hit_latency 1")
+        dsl_lines.append("data_miss_latency 5")
+        dsl_lines.append("")
+
     # Join all lines
     dsl_content = "\n".join(dsl_lines)
 
@@ -174,7 +184,7 @@ def create_dsl(isa_subset: set, output_path: Optional[str] = None, shift_imm_dic
         # Return DSL content as string
         return dsl_content, has_shift_constraints
 
-def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl: bool = False, enable_freq_analysis: bool = False, core_name: str = "ibex", shift_imm_dict: Optional[dict] = None):
+def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl: bool = False, enable_freq_analysis: bool = False, core_name: str = "ibex", shift_imm_dict: Optional[dict] = None, add_cache_latencies: bool = False):
     """
     Generate DSL file, run synthesis, and extract chip area and optionally frequency.
 
@@ -191,6 +201,7 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl
         enable_freq_analysis: If True, parse and return frequency information
         core_name: Name of the core to synthesize (default: "ibex")
         shift_imm_dict: Optional dict mapping shift instructions to sets of immediate values
+        add_cache_latencies: If True, add cache latency parameters to DSL (for uarch-aware runs)
 
     Returns:
         Tuple of (chip_area, frequency) where:
@@ -221,13 +232,13 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl
             if use_empty_dsl:
                 dsl_content = create_empty_dsl()
             else:
-                dsl_content, has_shift_constraints = create_dsl(isa_subset, shift_imm_dict=shift_imm_dict)
+                dsl_content, has_shift_constraints = create_dsl(isa_subset, shift_imm_dict=shift_imm_dict, add_cache_latencies=add_cache_latencies)
             f.write(dsl_content)
     else:
         if use_empty_dsl:
             dsl_path = create_empty_dsl(output_path)
         else:
-            dsl_path, has_shift_constraints = create_dsl(isa_subset, output_path, shift_imm_dict=shift_imm_dict)
+            dsl_path, has_shift_constraints = create_dsl(isa_subset, output_path, shift_imm_dict=shift_imm_dict, add_cache_latencies=add_cache_latencies)
 
     # Convert to absolute path for synthesis (which runs from different cwd)
     dsl_path_abs = str(Path(dsl_path).absolute())
