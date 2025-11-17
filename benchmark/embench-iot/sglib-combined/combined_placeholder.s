@@ -713,7 +713,9 @@ sglib___rbtree_consistency_check_recursive:
 	blt	a4,zero,.L268
 .L155:
 	lw	a5,12(a5)
-	bne	a5,zero,.L164
+	bne	a5,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L164
 	jal	x0,.L149
 .L248:
 	lw	a3,0(a1)
@@ -975,7 +977,9 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L199
 .L271:
 	lw	a3,0(a1)
-	blt	a3,zero,.L279
+	blt	a3,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L279
 	lw	a4,12(a4)
 	bne	a4,zero,.L181
 	jal	x0,.L174
@@ -983,7 +987,9 @@ sglib___rbtree_consistency_check_recursive:
 	lw	a4,0(s0)
 	blt	a4,zero,.L280
 	lw	a5,12(a5)
-	bne	a5,zero,.L171
+	bne	a5,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L171
 	lw	s2,32(sp)
 	jal	x0,.L149
 .L274:
@@ -997,7 +1003,9 @@ sglib___rbtree_consistency_check_recursive:
 	lw	a3,0(a1)
 	blt	a3,zero,.L282
 	lw	a4,12(a4)
-	bne	a4,zero,.L162
+	bne	a4,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L162
 .L228:
 	lw	s2,32(sp)
 	jal	x0,.L155
@@ -2030,7 +2038,9 @@ sglib___rbtree_add_recursive.constprop.0:
 	lw	a5,0(sp)
 	lw	a3,4(sp)
 	lbu	a5,4(a5)
-	bne	a5,zero,.L417
+	bne	a5,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L417
 	lw	a5,0(a3)
 	lw	a4,12(a5)
 	lw	a2,8(a5)
@@ -2382,7 +2392,9 @@ sglib___rbtree_add_recursive.constprop.0:
 	jal	x0,.L448
 .L447:
 	lw	a0,8(a2)
-	bne	a0,zero,.L574
+	bne	a0,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L574
 	jal	x0,.L423
 .L593:
 	bne	a6,a7,.L427
@@ -2756,7 +2768,9 @@ sglib_dllist_delete:
 	jal	x0,.L707
 .L720:
 	addi	a3,a4,0
-	bne	a4,zero,.L705
+	bne	a4,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L705
 	jal	x0,.L706
 	.size	sglib_dllist_delete, .-sglib_dllist_delete
 	.align	2
@@ -3331,7 +3345,9 @@ sglib_ilist_is_member:
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
-	bne	a1,a5,.L966
+	bne	a1,a5,.+8
+	jal	x0,.+8
+	jal	x0,.L966
 .L953:
 	jalr	zero,ra,0
 	.size	sglib_ilist_is_member, .-sglib_ilist_is_member
@@ -3368,7 +3384,9 @@ sglib_ilist_add_if_not_member:
 	jal	x0,.L976
 .L977:
 	lw	a4,0(a5)
-	bne	a4,a3,.L978
+	bne	a4,a3,.+8
+	jal	x0,.+8
+	jal	x0,.L978
 	sw	a5,0(a2)
 	addi	a0,zero,0
 	jalr	zero,ra,0
@@ -3494,7 +3512,9 @@ sglib_ilist_sort:
 	jal	x0,.+8
 	addi	a7,x0,1
 	and	a5,a5,a7
-	bne	a5,zero,.L1017
+	bne	a5,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L1017
 	bne	a4,zero,.+8
 	jal	x0,.L1062
 	lw	a5,4(a4)
@@ -3535,7 +3555,9 @@ sglib_ilist_sort:
 	bne	a5,zero,.L1032
 	addi	a3,a3,4
 	addi	t1,zero,1
-	bne	a7,zero,.L1015
+	bne	a7,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L1015
 	lw	a1,12(sp)
 	sw	zero,12(sp)
 	addi	op_0,x0,1
@@ -3643,7 +3665,9 @@ sglib_ilist_it_init_on_equal:
 	sw	s2,16(sp)
 	addi	s1,a2,0
 	addi	s2,a3,0
-	bne	a1,zero,.L1081
+	bne	a1,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L1081
 	jal	x0,.L1092
 .L1084:
 	lw	s0,4(s0)
@@ -3973,8 +3997,10 @@ sglib_hashed_ilist_add_if_not_member:
 	sub	op_40,op_41,op_52
 	sub	op_39,x0,op_40
 	sub	a4,op_0,op_39
-	addi	op_0,x0,4
-	srl	a4,a4,op_0
+	addi	op_1,x0,2
+	srl	op_0,a4,op_1
+	addi	op_2,x0,2
+	srl	a4,op_0,op_2
 	addi	op_0,x0,2
 	sll	a5,a4,op_0
 	sub	op_0,x0,a5
@@ -4213,8 +4239,10 @@ sglib_hashed_ilist_delete_if_member:
 	sub	op_40,op_41,op_52
 	sub	op_39,x0,op_40
 	sub	a4,op_0,op_39
-	addi	op_0,x0,4
-	srl	a4,a4,op_0
+	addi	op_1,x0,2
+	srl	op_0,a4,op_1
+	addi	op_2,x0,2
+	srl	a4,op_0,op_2
 	addi	op_0,x0,2
 	sll	a5,a4,op_0
 	sub	op_0,x0,a5
@@ -4559,7 +4587,9 @@ sglib_hashed_ilist_it_next:
 	sw	s3,12(s1)
 	bne	s2,zero,.+8
 	jal	x0,.L1181
-	bne	s0,zero,.L1182
+	bne	s0,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L1182
 	jal	x0,.L1202
 .L1185:
 	lw	s0,4(s0)
@@ -4625,7 +4655,9 @@ sglib_hashed_ilist_it_init_on_equal:
 	sw	s3,12(sp)
 	addi	s1,a2,0
 	addi	s3,a3,0
-	bne	s0,zero,.L1205
+	bne	s0,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L1205
 	jal	x0,.L1207
 .L1208:
 	lw	s0,4(s0)
@@ -5935,7 +5967,9 @@ sglib_rbtree_delete:
 	auipc	ra,%pcrel_hi(sglib___rbtree_fix_right_deletion_discrepancy)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_145)
 	lw	a5,0(s0)
-	bne	a5,zero,.L1490
+	bne	a5,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L1490
 	jal	x0,.L1484
 .L1488:
 	bne	a4,zero,.L1511
@@ -6324,7 +6358,9 @@ sglib__rbtree_it_compute_current_elem:
 	sub	op_0,x0,s1
 	sub	s6,s6,op_0
 	lw	a5,128(s6)
-	bne	a4,zero,.L1624
+	bne	a4,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L1624
 	lw	s0,8(a5)
 .L1625:
 	bne	s2,zero,.+8
@@ -6341,7 +6377,9 @@ sglib__rbtree_it_compute_current_elem:
 	bne	a0,zero,.+8
 	jal	x0,.L1633
 	lw	s0,12(s0)
-	bne	s0,zero,.L1628
+	bne	s0,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L1628
 .L1635:
 	lh	a5,644(s1)
 .L1658:
@@ -6352,7 +6390,9 @@ sglib__rbtree_it_compute_current_elem:
 	jal	x0,.L1623
 .L1660:
 	lw	s0,8(s0)
-	bne	s0,zero,.L1628
+	bne	s0,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L1628
 	jal	x0,.L1635
 .L1626:
 	lh	a5,644(s1)
@@ -6678,7 +6718,9 @@ benchmark_body:
 	sw	zero,4(a5)
 	addi	a4,a4,4
 	addi	a3,zero,1
-	bne	s6,a4,.L1691
+	bne	s6,a4,.+8
+	jal	x0,.+8
+	jal	x0,.L1691
 .L1829:
 	addi	a0,s9,%lo(the_list)
 	sw	a2,12(sp)
@@ -6695,7 +6737,9 @@ benchmark_body:
 .L1692:
 	addi	a4,a5,0
 	lw	a5,8(a5)
-	bne	a5,zero,.L1692
+	bne	a5,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L1692
 .L1694:
 	lw	a5,20(sp)
 	lw	a4,4(a4)
@@ -6793,10 +6837,8 @@ benchmark_body:
 	sub	op_40,op_41,op_52
 	sub	op_39,x0,op_40
 	sub	a5,op_0,op_39
-	addi	op_1,x0,2
-	srl	op_0,a5,op_1
-	addi	op_2,x0,2
-	srl	a5,op_0,op_2
+	addi	op_0,x0,4
+	srl	a5,a5,op_0
 	addi	op_0,x0,2
 	sll	a3,a5,op_0
 	sub	op_0,x0,a3
@@ -7070,9 +7112,7 @@ benchmark_body:
 	sub	op_0,x0,s0
 	sub	a4,a4,op_0
 	lw	a0,0(a4)
-	blt	a0,a1,.+8
-	jal	x0,.+8
-	jal	x0,.L1722
+	blt	a0,a1,.L1722
 .L1721:
 	bne	a6,t3,.+8
 	jal	x0,.L1832
@@ -7162,7 +7202,7 @@ benchmark_body:
 	lw	a1,%lo(heap_ptr)(s4)
 	lw	a5,%lo(heap_requested)(s3)
 	addi	op_0,x0,3
-	and	a4,a1,op_0
+	and	a4,op_0,a1
 	addi	a2,a1,16
 	addi	a5,a5,16
 	bne	a4,zero,.+8
@@ -7347,7 +7387,9 @@ benchmark_body:
 	sw	a5,0(sp)
 	lw	a4,0(sp)
 	lw	a5,8(sp)
-	bne	a5,a4,.L1663
+	bne	a5,a4,.+8
+	jal	x0,.+8
+	jal	x0,.L1663
 	jal	x0,.L1837
 .L1809:
 	addi	a1,a3,0
@@ -7426,7 +7468,9 @@ sglib__rbtree_it_init:
 	sb	zero,4(s3)
 	sw	s0,132(s3)
 	sh	a5,644(s3)
-	bne	s4,zero,.L1851
+	bne	s4,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L1851
 .L1875:
 	sw	s0,0(s3)
 	lw	ra,28(sp)
@@ -8330,8 +8374,10 @@ verify_benchmark:
 	sub	op_40,op_41,op_52
 	sub	op_39,x0,op_40
 	sub	a4,op_0,op_39
-	addi	op_0,x0,4
-	srl	a4,a4,op_0
+	addi	op_1,x0,2
+	srl	op_0,a4,op_1
+	addi	op_2,x0,2
+	srl	a4,op_0,op_2
 	addi	op_0,x0,2
 	sll	a5,a4,op_0
 	sub	op_0,x0,a5
@@ -8378,8 +8424,12 @@ verify_benchmark:
 .L2033:
 	lbu	a2,0(a1)
 	addi	a1,a1,1
-	bne	a2,a4,.L2034
-	bne	a3,a1,.L2048
+	bne	a2,a4,.+8
+	jal	x0,.+8
+	jal	x0,.L2034
+	bne	a3,a1,.+8
+	jal	x0,.+8
+	jal	x0,.L2048
 	addi	a5,zero,1
 	jal	x0,.L2024
 	.size	verify_benchmark, .-verify_benchmark
