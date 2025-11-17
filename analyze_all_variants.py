@@ -25,7 +25,7 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 
 
-def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enable_freq_analysis=False):
+def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enable_freq_analysis=False, core_name="ibex"):
     """
     Analyze a single variant (to be called in parallel).
 
@@ -35,6 +35,7 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enab
         program_name: Name of the program
         dsl_dir: Directory to save DSL files
         enable_freq_analysis: If True, parse frequency and calculate latency in seconds
+        core_name: Name of the core to synthesize (default: "ibex")
 
     Returns:
         Tuple of (variant_id, subset, area, latency, frequency, num_blocks) or None on error
@@ -95,12 +96,12 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enab
         if variant_id == "gp":
             print(f"Variant {variant_id}: Starting synthesis with EMPTY DSL (general purpose processor, full RV32IM)...")
             start_time = time.time()
-            area, frequency = ap.parse_area(subset, dsl_file_path, use_empty_dsl=True, enable_freq_analysis=enable_freq_analysis)
+            area, frequency = ap.parse_area(subset, dsl_file_path, use_empty_dsl=True, enable_freq_analysis=enable_freq_analysis, core_name=core_name)
             synthesis_time = time.time() - start_time
         else:
             print(f"Variant {variant_id}: Starting synthesis with {len(subset)} instructions...")
             start_time = time.time()
-            area, frequency = ap.parse_area(subset, dsl_file_path, enable_freq_analysis=enable_freq_analysis)
+            area, frequency = ap.parse_area(subset, dsl_file_path, enable_freq_analysis=enable_freq_analysis, core_name=core_name)
             synthesis_time = time.time() - start_time
 
         # Calculate latency (passing frequency from synthesis if freq analysis enabled)
@@ -127,9 +128,10 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enab
 
 def main():
     if len(sys.argv) < 4:
-        print("Usage: python analyze_all_variants.py <variants_dir> <program_name> <output_dir> [num_processes] [--enable-freq-analysis]")
+        print("Usage: python analyze_all_variants.py <variants_dir> <program_name> <output_dir> [num_processes] [--enable-freq-analysis] [--core-name CORE]")
         print("Example: python analyze_all_variants.py output/backend/dijkstra_small_O3/variants dijkstra_small_O3 output/backend/dijkstra_small_O3 72")
         print("         python analyze_all_variants.py output/backend/dijkstra_small_O3/variants dijkstra_small_O3 output/backend/dijkstra_small_O3 72 --enable-freq-analysis")
+        print("         python analyze_all_variants.py output/backend/dijkstra_small_O3/variants dijkstra_small_O3 output/backend/dijkstra_small_O3 72 --core-name rocket")
         sys.exit(1)
 
     variants_dir = sys.argv[1]
@@ -139,9 +141,19 @@ def main():
     # Check for frequency analysis flag
     enable_freq_analysis = "--enable-freq-analysis" in sys.argv
 
-    # Parse num_processes (skip the flag if present)
-    args_without_flag = [arg for arg in sys.argv[4:] if arg != "--enable-freq-analysis"]
-    num_processes = int(args_without_flag[0]) if len(args_without_flag) > 0 else 72  # Default to 72
+    # Check for core name
+    core_name = "ibex"  # default
+    for i, arg in enumerate(sys.argv):
+        if arg == "--core-name" and i + 1 < len(sys.argv):
+            core_name = sys.argv[i + 1]
+            break
+
+    # Parse num_processes (skip the flags if present)
+    args_without_flags = [arg for i, arg in enumerate(sys.argv[4:], 4)
+                         if arg != "--enable-freq-analysis" and
+                         (i == 4 or sys.argv[i-1] != "--core-name") and
+                         arg != "--core-name"]
+    num_processes = int(args_without_flags[0]) if len(args_without_flags) > 0 else 72  # Default to 72
 
     variants_path = Path(variants_dir)
     output_path = Path(output_dir)
@@ -160,6 +172,7 @@ def main():
     print(f"Variants directory: {variants_path}")
     print(f"Program name: {program_name}")
     print(f"Output directory: {output_path}")
+    print(f"Core name: {core_name}")
     print(f"Parallel processes: {num_processes}")
     print(f"Frequency analysis: {'ENABLED (latency in seconds)' if enable_freq_analysis else 'DISABLED (latency in cycles)'}")
     print(f"DSL files: {dsl_dir}")
@@ -213,7 +226,8 @@ def main():
                               variants_dir=str(variants_path),
                               program_name=program_name,
                               dsl_dir=str(dsl_dir),
-                              enable_freq_analysis=enable_freq_analysis)
+                              enable_freq_analysis=enable_freq_analysis,
+                              core_name=core_name)
 
         # Run analysis in parallel
         overall_start = time.time()
