@@ -1,3 +1,0 @@
-	lui	a7,%hi(g_qCount)
-	lw	a5,%lo(g_qCount)(a7)
-	bge	zero, a5, .L17

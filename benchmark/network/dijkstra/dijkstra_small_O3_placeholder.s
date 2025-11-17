@@ -21,7 +21,8 @@ print_path:
 	lui	a5,2
 	addi	a5,a5,1807
 	addi	a3,a1,0
-	bne	a2,a5,.L9
+	beq	a2,a5,.+8
+	jal	x0,.L9
 	lui	a5,%hi(.LC1)
 	addi	a0,a5,%lo(.LC1)
 .Lpcrel_1:
@@ -34,7 +35,8 @@ print_path:
 	lw	a6,4(a1)
 	addi	sp,sp,-32
 	sw	ra,28(sp)
-	bne	a6,a5,.L10
+	beq	a6,a5,.+8
+	jal	x0,.L10
 	lui	a5,%hi(.LC1)
 .L3:
 	addi	a1,a2,0
@@ -58,7 +60,8 @@ print_path:
 	sub	op_0,x0,a0
 	sub	a1,a1,op_0
 	lw	a7,4(a1)
-	bne	a7,a5,.L11
+	beq	a7,a5,.+8
+	jal	x0,.L11
 	lui	a5,%hi(.LC1)
 .L4:
 	addi	a0,a5,%lo(.LC1)
@@ -78,8 +81,7 @@ print_path:
 	sub	op_0,x0,a0
 	sub	a4,a1,op_0
 	lw	a1,4(a4)
-	bne	a1,a5,.+8
-	jal	x0,.L5
+	beq	a1,a5,.L5
 	sw	a3,12(sp)
 	sw	a7,8(sp)
 	sw	a6,4(sp)
@@ -334,12 +336,12 @@ dijkstra:
 	sw	a2,0(a5)
 	sw	a2,4(a5)
 	addi	a5,a5,8
-	bne	a5,a4,.L21
+	beq	a5,a4,.+8
+	jal	x0,.L21
 	lui	a5,%hi(ch)
 	addi	s0,zero,100
 	sw	s0,%lo(ch)(a5)
-	bne	a0,a3,.+8
-	jal	x0,.L45
+	beq	a0,a3,.L45
 	sw	s9,36(sp)
 	lui	s9,%hi(qRear)
 	lw	a1,%lo(qRear)(s9)
@@ -525,13 +527,11 @@ dijkstra:
 	srai	s11,a1,31
 	sub	op_0,x0,t2
 	sub	a5,a5,op_0
-	bne	a7,t5,.+8
-	jal	x0,.L25
+	beq	a7,t5,.L25
 	lw	t6,0(a3)
 	sub	op_0,x0,a7
 	sub	a6,s1,op_0
-	bne	t6,t5,.+8
-	jal	x0,.L26
+	beq	t6,t5,.L26
 	blt	a6,t6,.+8
 	jal	x0,.L25
 .L26:
@@ -599,8 +599,10 @@ dijkstra:
 	addi	a2,a2,1
 	addi	a0,a0,4
 	addi	a3,a3,8
-	bne	a2,s0,.L27
-	bne	t0,zero,.L28
+	beq	a2,s0,.+8
+	jal	x0,.L27
+	beq	t0,zero,.+8
+	jal	x0,.L28
 	addi	a1,t3,0
 	lw	t3,12(sp)
 	lui	a5,%hi(i)
@@ -616,8 +618,7 @@ dijkstra:
 	sw	a1,%lo(iNode)(a0)
 	sw	a7,%lo(iCost)(a5)
 	addi	a3,t4,0
-	bne	s4,zero,.+8
-	jal	x0,.L44
+	beq	s4,zero,.L44
 	lw	s6,48(sp)
 	lw	s7,44(sp)
 	lw	s10,32(sp)
@@ -642,7 +643,8 @@ dijkstra:
 	lw	s2,4(s2)
 	lui	a5,2
 	addi	a5,a5,1807
-	bne	s2,a5,.L41
+	beq	s2,a5,.+8
+	jal	x0,.L41
 	lui	s3,%hi(.LC1)
 .L30:
 	addi	a1,s1,0
@@ -678,7 +680,8 @@ dijkstra:
 	sub	op_0,x0,s5
 	sub	a4,a4,op_0
 	lw	s4,4(a4)
-	bne	s4,a5,.L42
+	beq	s4,a5,.+8
+	jal	x0,.L42
 	lui	s3,%hi(.LC1)
 .L31:
 	addi	a1,s2,0
@@ -708,8 +711,7 @@ dijkstra:
 	sub	op_0,x0,s5
 	sub	a4,a4,op_0
 	lw	a1,4(a4)
-	bne	a1,a5,.+8
-	jal	x0,.L32
+	beq	a1,a5,.L32
 	addi	a0,s5,0
 .Lpcrel_13:
 	auipc	ra,%pcrel_hi(print_path)
@@ -763,7 +765,8 @@ main:
 	sw	a2,12(a4)
 	addi	a5,a5,16
 	addi	a4,a4,16
-	bne	a5,a3,.L47
+	beq	a5,a3,.+8
+	jal	x0,.L47
 	lui	a3,10
 	addi	a3,a3,-960
 	lui	a4,%hi(AdjMatrix)
@@ -782,7 +785,8 @@ main:
 	addi	a5,a5,16
 	addi	a4,a4,16
 	sw	a2,-4(a4)
-	bne	a5,a3,.L48
+	beq	a5,a3,.+8
+	jal	x0,.L48
 	lui	s2,335544
 	addi	s2,s2,1311
 	addi	a5,zero,50
@@ -851,7 +855,8 @@ main:
 	auipc	ra,%pcrel_hi(dijkstra)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_15)
 	addi	a5,s0,1
-	bne	s1,s3,.L49
+	beq	s1,s3,.+8
+	jal	x0,.L49
 	lui	t0,9
 	lui	a5,%hi(result_sink)
 	addi	t0,t0,1136
@@ -10957,15 +10962,15 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	op_0,x0,1
-	and	a3,a1,op_0
-	bne	a3,x0,.+8
-	jal	x0,.Mul_skip
+	and	a3,op_0,a1
+	beq	a3,x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
 .Mul_skip:
 	srli	a1,a1,1
 	slli	a2,a2,1
-	bne	a1,x0,.Mul_loop
+	beq	a1,x0,.+8
+	jal	x0,.Mul_loop
 	jalr	x0,ra,0
 
 .text
@@ -10984,8 +10989,7 @@ __riscv_div_lib_udivsi3:
 	addi	a2,a1,0
 	addi	a1,a0,0
 	addi	a0,zero,-1
-	bne	a2,zero,.+8
-	jal	x0,__riscv_div_lib_L5
+	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
@@ -11006,7 +11010,8 @@ __riscv_div_lib_L3:
 __riscv_div_lib_L4:
 	srli	a3,a3,1
 	srli	a2,a2,1
-	bne	a3,zero,__riscv_div_lib_L3
+	beq	a3,zero,.+8
+	jal	x0,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
 

@@ -1,3 +1,0 @@
-addi a0_0, s5_0, 0
-auipc ra_0, %pcrel_hi(print_path)
-jalr ra_1, ra_0, %pcrel_lo(.Lpcrel_13)
