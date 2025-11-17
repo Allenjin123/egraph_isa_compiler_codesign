@@ -122,22 +122,26 @@ def create_dsl(isa_subset: set, output_path: Optional[str] = None) -> str:
         # Return DSL content as string
         return dsl_content
 
-def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl: bool = False) -> float:
+def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl: bool = False, enable_freq_analysis: bool = False):
     """
-    Generate DSL file, run synthesis, and extract chip area.
+    Generate DSL file, run synthesis, and extract chip area and optionally frequency.
 
     This function:
     1. Creates a DSL file from the instruction subset (or empty DSL if use_empty_dsl=True)
     2. Runs synthesis with the DSL constraints using synth_ibex_with_constraints.sh
     3. Parses the chip area from the synthesis log
+    4. Optionally parses frequency from synthesis log if enable_freq_analysis is True
 
     Args:
         isa_subset: Set of instruction opcodes used by the program
         output_path: Optional path for DSL file. If None, generates in temp location.
         use_empty_dsl: If True, create empty DSL (general purpose processor) instead of using isa_subset
+        enable_freq_analysis: If True, parse and return frequency information
 
     Returns:
-        Chip area in µm² (micrometers squared)
+        Tuple of (chip_area, frequency) where:
+        - chip_area: Area in µm² (micrometers squared)
+        - frequency: Frequency in MHz if enable_freq_analysis=True, otherwise None
 
     Raises:
         ValueError: If synthesis fails or area cannot be parsed
@@ -176,7 +180,7 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl
 
     # Step 2: Call synthesis script
     # Path to synthesis script
-    synth_script = Path(__file__).parent.parent / "PdatScorrWrapper" / "ScorrPdat" / "synth_ibex_with_constraints.sh"
+    synth_script = Path(__file__).parent.parent / "PdatScorrWrapper" / "ScorrPdat" / "synth_core_simplified.sh"
 
     if not synth_script.exists():
         raise FileNotFoundError(f"Synthesis script not found: {synth_script}")
@@ -186,11 +190,16 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl
     # So we just pass the base 'output' directory
     synth_output_base = synth_script.parent / "output"
 
+    core_name = "ibex"
     # Run synthesis (use absolute path so it works from any cwd)
     print(f"Running synthesis with {dsl_path_abs}...")
     try:
         result = subprocess.run(
-            [str(synth_script), "--gates", dsl_path_abs, str(synth_output_base)],
+            [str(synth_script), 
+             "--gates", 
+             "--config", f"configs/{core_name}.yaml",
+             dsl_path_abs, 
+             str(synth_output_base)],
             capture_output=True,
             text=True,
             timeout=600,  # 10 minute timeout for synthesis
@@ -211,13 +220,13 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl
         raise ValueError(f"Failed to run synthesis: {e}")
 
     # Step 3: Parse chip area from output
-    # Looking for line: "Chip area: 59283.107200 µm²"
-    area_pattern = r'Chip area:\s+([\d.]+)\s+µm²'
+    # Looking for line: "Total chip area: 59283.107200 µm²"
+    area_pattern = r'Total chip area:\s+([\d.]+)\s+µm²'
     match = re.search(area_pattern, synthesis_output)
 
     if not match:
         # Try alternate pattern without µm² symbol
-        area_pattern_alt = r'Chip area:\s+([\d.]+)'
+        area_pattern_alt = r'Total chip area:\s+([\d.]+)'
         match = re.search(area_pattern_alt, synthesis_output)
 
     if not match:
@@ -232,6 +241,19 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl
     print(f"PDK: Skywater SKY130 (sky130_fd_sc_hd, tt corner)")
     print(f"Corner: tt_025C_1v80 (typical, 25°C, 1.8V)")
 
+    # Step 4: Parse frequency from output if enabled
+    frequency = None
+    if enable_freq_analysis:
+        # Looking for pattern: "Timing (10ns target period):" followed by "Optimized: XX.XX MHz"
+        frequency_pattern = r'Timing \(\d+ns target period\):\s*\n\s*Optimized:\s+([\d.]+)\s+MHz'
+        freq_match = re.search(frequency_pattern, synthesis_output, re.MULTILINE)
+
+        if freq_match:
+            frequency = float(freq_match.group(1))
+            print(f"Parsed frequency: {frequency} MHz")
+        else:
+            print("Warning: Could not parse frequency from synthesis output")
+
     # Clean up temporary file if created
     if output_path is None:
         try:
@@ -239,4 +261,4 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl
         except:
             pass
 
-    return chip_area
+    return chip_area, frequency

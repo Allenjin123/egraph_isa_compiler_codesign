@@ -24,7 +24,7 @@ import backend.latency_parser as lp
 import matplotlib.pyplot as plt
 
 
-def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir):
+def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enable_freq_analysis=False):
     """
     Analyze a single variant (to be called in parallel).
 
@@ -33,9 +33,10 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir):
         variants_dir: Path to variants directory
         program_name: Name of the program
         dsl_dir: Directory to save DSL files
+        enable_freq_analysis: If True, parse frequency and calculate latency in seconds
 
     Returns:
-        Tuple of (variant_id, subset, area, latency, num_blocks) or None on error
+        Tuple of (variant_id, subset, area, latency, frequency, num_blocks) or None on error
     """
     try:
         variant_path = Path(variants_dir) / f"variant_{variant_id}"
@@ -77,21 +78,28 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir):
         if variant_id == "gp":
             print(f"Variant {variant_id}: Starting synthesis with EMPTY DSL (general purpose processor, full RV32IM)...")
             start_time = time.time()
-            area = ap.parse_area(subset, dsl_file_path, use_empty_dsl=True)
+            area, frequency = ap.parse_area(subset, dsl_file_path, use_empty_dsl=True, enable_freq_analysis=enable_freq_analysis)
             synthesis_time = time.time() - start_time
         else:
             print(f"Variant {variant_id}: Starting synthesis with {len(subset)} instructions...")
             start_time = time.time()
-            area = ap.parse_area(subset, dsl_file_path)
+            area, frequency = ap.parse_area(subset, dsl_file_path, enable_freq_analysis=enable_freq_analysis)
             synthesis_time = time.time() - start_time
 
-        # Calculate latency
-        latency = lp.parse_latency(prog)
+        # Calculate latency (passing frequency from synthesis if freq analysis enabled)
+        latency = lp.parse_latency(prog, frequency if enable_freq_analysis else None)
 
+        # Format output based on whether frequency analysis is enabled
+        if enable_freq_analysis and frequency:
+            latency_str = f"Latency={latency:.2e}s"
+            freq_str = f", Frequency={frequency:.2f} MHz"
+        else:
+            latency_str = f"Latency={latency} cycles"
+            freq_str = ""
         print(f"Variant {variant_id}: ✓ Complete in {synthesis_time:.1f}s - "
-              f"Area={area:.2f} µm², Latency={latency}, Instructions={len(subset)}")
+              f"Area={area:.2f} µm², {latency_str}{freq_str}, Instructions={len(subset)}")
 
-        return (variant_id, subset, area, latency, len(prog.basic_blocks))
+        return (variant_id, subset, area, latency, frequency, len(prog.basic_blocks))
 
     except Exception as e:
         print(f"Variant {variant_id}: ✗ Error - {e}", file=sys.stderr)
@@ -102,14 +110,21 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir):
 
 def main():
     if len(sys.argv) < 4:
-        print("Usage: python analyze_all_variants.py <variants_dir> <program_name> <output_dir> [num_processes]")
+        print("Usage: python analyze_all_variants.py <variants_dir> <program_name> <output_dir> [num_processes] [--enable-freq-analysis]")
         print("Example: python analyze_all_variants.py output/backend/dijkstra_small_O3/variants dijkstra_small_O3 output/backend/dijkstra_small_O3 72")
+        print("         python analyze_all_variants.py output/backend/dijkstra_small_O3/variants dijkstra_small_O3 output/backend/dijkstra_small_O3 72 --enable-freq-analysis")
         sys.exit(1)
 
     variants_dir = sys.argv[1]
     program_name = sys.argv[2]
     output_dir = sys.argv[3]
-    num_processes = int(sys.argv[4]) if len(sys.argv) > 4 else 72  # Default to 72
+
+    # Check for frequency analysis flag
+    enable_freq_analysis = "--enable-freq-analysis" in sys.argv
+
+    # Parse num_processes (skip the flag if present)
+    args_without_flag = [arg for arg in sys.argv[4:] if arg != "--enable-freq-analysis"]
+    num_processes = int(args_without_flag[0]) if len(args_without_flag) > 0 else 72  # Default to 72
 
     variants_path = Path(variants_dir)
     output_path = Path(output_dir)
@@ -129,6 +144,7 @@ def main():
     print(f"Program name: {program_name}")
     print(f"Output directory: {output_path}")
     print(f"Parallel processes: {num_processes}")
+    print(f"Frequency analysis: {'ENABLED (latency in seconds)' if enable_freq_analysis else 'DISABLED (latency in cycles)'}")
     print(f"DSL files: {dsl_dir}")
     print("=" * 80)
     print()
@@ -179,7 +195,8 @@ def main():
         analyze_func = partial(analyze_single_variant,
                               variants_dir=str(variants_path),
                               program_name=program_name,
-                              dsl_dir=str(dsl_dir))
+                              dsl_dir=str(dsl_dir),
+                              enable_freq_analysis=enable_freq_analysis)
 
         # Run analysis in parallel
         overall_start = time.time()
@@ -207,23 +224,33 @@ def main():
         subsets = {}
         areas = {}
         latencies = {}
+        frequencies = {}
         num_blocks = {}
 
-        for variant_id, subset, area, latency, blocks in valid_results:
+        for variant_id, subset, area, latency, frequency, blocks in valid_results:
             subsets[variant_id] = subset
             areas[variant_id] = area
             latencies[variant_id] = latency
+            frequencies[variant_id] = frequency
             num_blocks[variant_id] = blocks
 
         # Show baseline stats if available
         if "original" in areas:
             print(f"Original Program Baseline:")
-            print(f"  Area = {areas['original']:.2f} µm², Latency = {latencies['original']}, Instructions = {len(subsets['original'])}")
+            if enable_freq_analysis and frequencies.get('original'):
+                latency_str = f"{latencies['original']:.2e} seconds"
+            else:
+                latency_str = f"{latencies['original']} cycles"
+            print(f"  Area = {areas['original']:.2f} µm², Latency = {latency_str}, Instructions = {len(subsets['original'])}")
             print()
 
         if "gp" in areas:
             print(f"General Purpose Processor Baseline (Full RV32IM):")
-            print(f"  Area = {areas['gp']:.2f} µm², Latency = {latencies['gp']}, Instructions = {len(subsets['gp'])}")
+            if enable_freq_analysis and frequencies.get('gp'):
+                latency_str = f"{latencies['gp']:.2e} seconds"
+            else:
+                latency_str = f"{latencies['gp']} cycles"
+            print(f"  Area = {areas['gp']:.2f} µm², Latency = {latency_str}, Instructions = {len(subsets['gp'])}")
             print()
 
         # Calculate Pareto frontier
@@ -248,7 +275,11 @@ def main():
                 marker = " [GENERAL PURPOSE]"
             else:
                 marker = ""
-            print(f"  Variant {variant_id}: Area = {area:.2f} µm², Latency = {latency}{marker}")
+            if enable_freq_analysis and frequencies.get(variant_id):
+                latency_str = f"{latency:.2e} seconds"
+            else:
+                latency_str = f"{latency} cycles"
+            print(f"  Variant {variant_id}: Area = {area:.2f} µm², Latency = {latency_str}{marker}")
         print()
 
         # Generate visualization (matching backend_parser style)
@@ -297,7 +328,10 @@ def main():
 
         plt.title('Pareto Frontier of Program Variants')
         plt.xlabel('Area (µm²)')
-        plt.ylabel('Latency')
+        if enable_freq_analysis:
+            plt.ylabel('Latency (seconds)')
+        else:
+            plt.ylabel('Latency (cycles)')
         plt.legend()
         plt.grid(True)
         plt.savefig(str(plot_path))
@@ -326,17 +360,19 @@ def main():
                 return (1, 0, x)
 
         for variant_id in sorted(subsets.keys(), key=sort_key):
-            results_data["variants"].append({
+            variant_data = {
                 "variant_id": variant_id,
                 "area": areas[variant_id],
                 "latency": latencies[variant_id],
+                "frequency": frequencies[variant_id],
                 "instruction_subset": sorted(list(subsets[variant_id])),
                 "num_instructions": len(subsets[variant_id]),
                 "num_blocks": num_blocks[variant_id],
                 "is_pareto_optimal": any(p[0] == variant_id for p in pareto_frontier),
                 "is_original": variant_id == "original",
                 "is_general_purpose": variant_id == "gp"
-            })
+            }
+            results_data["variants"].append(variant_data)
 
         results_data["pareto_frontier"] = [
             {

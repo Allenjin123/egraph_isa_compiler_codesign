@@ -106,7 +106,8 @@ benchmark_body.isra.0:
 .Lpcrel_2:
 	auipc	ra,%pcrel_hi(countPrimes)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_2)
-	bne	s0,s1,.L26
+	beq	s0,s1,.+8
+	jal	x0,.L26
 	lw	ra,12(sp)
 	lw	s0,8(sp)
 	lw	s1,4(sp)
@@ -159,7 +160,8 @@ main:
 	lw	ra,28(sp)
 	addi	a0,a0,-2048
 	addi	a0,a0,-1464
-	bltu	zero,a0,.+12
+	bgeu	zero,a0,.+8
+	jal	x0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
@@ -180,7 +182,8 @@ verify_benchmark:
 	addi	a0,a0,-2048
 	addi	a0,a0,-1464
 	addi	t0,x0,1
-	bltu	a0,t0,.+12
+	bgeu	a0,t0,.+8
+	jal	x0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
@@ -197,7 +200,10 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	a3,x0,1
-	and	a3,a1,a3
+	or	a3,a1,a3
+	addi	t0,x0,1
+	sub	a3,a3,t0
+	sub	a3,a1,a3
 	beq	a3,x0,.Mul_skip
 	add	a0,a0,a2
 .Mul_skip:
@@ -205,8 +211,7 @@ __mul:
 	srl	a1,a1,t0
 	addi	t0,x0,1
 	sll	a2,a2,t0
-	beq	a1,x0,.+8
-	jal	x0,.Mul_loop
+	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
 
 .text
@@ -227,23 +232,22 @@ __riscv_div_lib_udivsi3:
 	addi	a0,zero,-1
 	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bltu	a2,a1,.+8
-	jal	x0,__riscv_div_lib_L2
+	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	bge	zero,a2,__riscv_div_lib_L2
 	addi	t0,x0,1
 	sll	a2,a2,t0
 	addi	t0,x0,1
 	sll	a3,a3,t0
-	bltu	a2,a1,__riscv_div_lib_L1
+	bgeu	a2,a1,.+8
+	jal	x0,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bltu	a1,a2,__riscv_div_lib_L4
+	bgeu	a1,a2,.+8
+	jal	x0,__riscv_div_lib_L4
 	sub	a1,a1,a2
-	and	t0,a0,a3
-	sub	t0,t0,a3
-	sub	a0,a0,t0
+	or	a0,a0,a3
 __riscv_div_lib_L4:
 	addi	t0,x0,1
 	srl	a3,a3,t0

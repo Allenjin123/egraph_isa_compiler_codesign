@@ -14,7 +14,7 @@
 ; ============================================
 ; Run saturation to apply rewrite rules
 ; ============================================
-(run 6)
+(run 3)
 
 ; ============================================
 ; Print eclass IDs for each instruction

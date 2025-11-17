@@ -106,7 +106,8 @@ benchmark_body.isra.0:
 .Lpcrel_2:
 	auipc	ra,%pcrel_hi(countPrimes)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_2)
-	bne	s0,s1,.L26
+	beq	s0,s1,.+8
+	jal	x0,.L26
 	lw	ra,12(sp)
 	lw	s0,8(sp)
 	lw	s1,4(sp)
