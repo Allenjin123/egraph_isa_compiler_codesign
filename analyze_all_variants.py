@@ -464,35 +464,35 @@ def main():
         # Plot baseline variants (no shift constraints)
         if baseline_areas:
             plt.scatter(baseline_areas, baseline_latencies, color='blue', marker='o',
-                       label='Baseline (no constraints)', alpha=0.6, s=50)
+                       label='ISA constraint', alpha=0.6, s=20)
 
         # Plot uarchaware variants (with shift constraints)
         if uarchaware_areas:
             plt.scatter(uarchaware_areas, uarchaware_latencies, color='green', marker='^',
-                       label='Uarch-aware (shift constraints)', alpha=0.6, s=50)
+                       label='microarch-aware constraint', alpha=0.6, s=20)
 
         # Plot single variants (when shift constraints disabled)
         if single_areas:
             plt.scatter(single_areas, single_latencies, color='blue', marker='o',
-                       label='Optimized Variants', alpha=0.6, s=50)
+                       label='Rewritten Variants', alpha=0.6, s=20)
 
         # Plot original program with distinct marker
         if original_area is not None:
             plt.scatter([original_area], [original_latency], color='red', marker='*',
-                       label='Original Program', s=300, edgecolors='black', linewidths=1.5, zorder=10)
+                       label='Original Program', s=100, edgecolors='black', linewidths=1.5, zorder=10)
 
         # Plot general purpose processor with distinct marker
         if gp_area is not None:
             plt.scatter([gp_area], [gp_latency], color='orange', marker='s',
-                       label='General Purpose (RV32IM)', s=200, edgecolors='black', linewidths=1.5, zorder=10)
+                       label='General Purpose (RV32IM)', s=100, edgecolors='black', linewidths=1.5, zorder=10)
 
         # Highlight Pareto frontier with black edge
         pareto_areas = [p[1] for p in pareto_frontier]
         pareto_latencies = [p[2] for p in pareto_frontier]
         plt.scatter(pareto_areas, pareto_latencies, facecolors='none', edgecolors='red',
-                   label='Pareto Frontier', s=150, linewidths=2, zorder=5)
+                   label='Pareto Frontier', s=100, linewidths=2, zorder=5)
 
-        plt.title('Pareto Frontier of Program Variants')
+        plt.title(f'Pareto Frontier for {program_name}')
         plt.xlabel('Area (µm²)')
         if enable_freq_analysis:
             plt.ylabel('Latency (seconds)')
