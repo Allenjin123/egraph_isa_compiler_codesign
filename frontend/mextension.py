@@ -84,6 +84,7 @@ def replace_m_extension(asm: str) -> str:
 
         function_name = _OP_TO_FUNCTION[op]
         needs_t0 = op in _OPS_NEED_T0
+        is_commutative = (op == "callmul")  # 只有乘法是可交换的
 
         rs1_is_a0 = _is_a0(rs1)
         rs2_is_a1 = _is_a1(rs2)
@@ -124,30 +125,70 @@ def replace_m_extension(asm: str) -> str:
             # 始终保存 ra
             new_lines.append(f"{indent}sw\tra, {offset}(sp)")
 
-        # 处理参数准备：检查参数中有没有 a0
-        if rs1_is_a0 or rs2_is_a0:
-            # 有 a0，检查另一个是不是 a1
-            if rs1_is_a1 or rs2_is_a1:
-                # 两个都已经在正确位置，不需要移动
-                pass
+        # 处理参数准备
+        if is_commutative:
+            # 乘法是可交换的，可以灵活调整参数位置以减少移动
+            if rs1_is_a0 or rs2_is_a0:
+                # 有 a0，检查另一个是不是 a1
+                if rs1_is_a1 or rs2_is_a1:
+                    # 两个都已经在正确位置，不需要移动
+                    pass
+                else:
+                    # 有 a0 但没有 a1，需要移动非 a0 的那个到 a1
+                    if rs1_is_a0:
+                        new_lines.append(f"{indent}add\ta1, {rs2}, x0")
+                    else:
+                        new_lines.append(f"{indent}add\ta1, {rs1}, x0")
             else:
-                # 有 a0 但没有 a1，需要移动非 a0 的那个到 a1
-                if rs1_is_a0:
-                    new_lines.append(f"{indent}add\ta1, {rs2}, x0")
+                # 没有 a0，检查有没有 a1
+                if rs1_is_a1 or rs2_is_a1:
+                    # 有 a1，把非 a1 的那个移到 a0
+                    if rs1_is_a1:
+                        new_lines.append(f"{indent}add\ta0, {rs2}, x0")
+                    else:
+                        new_lines.append(f"{indent}add\ta0, {rs1}, x0")
                 else:
-                    new_lines.append(f"{indent}add\ta1, {rs1}, x0")
-        else:
-            # 没有 a0，检查有没有 a1
-            if rs1_is_a1 or rs2_is_a1:
-                # 有 a1，把非 a1 的那个移到 a0
-                if rs1_is_a1:
-                    new_lines.append(f"{indent}add\ta0, {rs2}, x0")
-                else:
+                    # 既没有 a0 也没有 a1，两个都需要移动
                     new_lines.append(f"{indent}add\ta0, {rs1}, x0")
+                    new_lines.append(f"{indent}add\ta1, {rs2}, x0")
+        else:
+            # 除法/取模不可交换，必须严格保持参数顺序：a0 = rs1, a1 = rs2
+            # 需要考虑 rs1 和 rs2 可能相互覆盖的情况
+            if rs1_is_a0 and rs2_is_a1:
+                # 已经在正确位置
+                pass
+                
+            # 先处理相反逻辑    
+            elif rs1_is_a1 and rs2_is_a0:
+                # 需要交换 a0 和 a1，使用临时寄存器或通过栈
+                # 这里假设已经保存了 a0 和 a1 到栈上（如果需要），可以安全覆盖
+                # 先保存 a0 到临时位置，然后移动
+                new_lines.append(f"{indent}add\tt0, a0, x0")  # t0 = a0 (rs2)
+                new_lines.append(f"{indent}add\ta0, a1, x0")  # a0 = a1 (rs1)
+                new_lines.append(f"{indent}add\ta1, t0, x0")  # a1 = t0 (rs2)
+            elif (not rs1_is_a1) and rs2_is_a0:
+                # rs2 在 a0，rs1 不在 a1
+                # 先移动 a0(rs2) 到 a1，再移动 rs1 到 a0
+                new_lines.append(f"{indent}add\ta1, a0, x0")  # a1 = a0 (rs2)
+                new_lines.append(f"{indent}add\ta0, {rs1}, x0")  # a0 = rs1
+            
+            elif rs1_is_a1 and (not rs2_is_a0):
+                # rs1 在 a1，rs2 不在 a0（且不在 a1）
+                new_lines.append(f"{indent}add\ta0, a1, x0")  # a0 = a1 (从 a1)
+                new_lines.append(f"{indent}add\ta1, {rs2}, x0")  # a1 = rs2
+            
+            # 再处理只有一个相同的
+            elif rs1_is_a0:
+                # rs1 在 a0，rs2 不在 a1（且不在 a0）
+                new_lines.append(f"{indent}add\ta1, {rs2}, x0")  # a1 = rs2
+            elif rs2_is_a1:
+                # rs2 在 a1，rs1 不在 a0（且不在 a1）
+                # rs2 已经在正确位置，只需移动 rs1 到 a0
+                new_lines.append(f"{indent}add\ta0, {rs1}, x0")  # a0 = rs1
             else:
-                # 既没有 a0 也没有 a1，两个都需要移动
-                new_lines.append(f"{indent}add\ta0, {rs1}, x0")
-                new_lines.append(f"{indent}add\ta1, {rs2}, x0")
+                # rs1 和 rs2 都不在 a0 或 a1
+                new_lines.append(f"{indent}add\ta0, {rs1}, x0")  # a0 = rs1
+                new_lines.append(f"{indent}add\ta1, {rs2}, x0")  # a1 = rs2
 
         label = f".Lpcrel_{op}_{next(_LABEL_COUNTER)}"
         new_lines.append(f"{label}:")

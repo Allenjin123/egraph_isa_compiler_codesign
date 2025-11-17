@@ -286,7 +286,7 @@ class BlockGraph:
             self._add_node_recursive(child_eclass, visited)
 
 class RewriteBlock:
-    def __init__(self, program_name: str, block_num: int, egraph: EGraph, choices: Dict[str, str], merged_data: Dict = None, print_graph: bool = False):
+    def __init__(self, program_name: str, block_num: int, egraph: EGraph, choices: Dict[str, str], merged_data: Dict = None, print_graph: bool = False, global_div_free_regs: Dict = None):
         self.program_name = program_name
         self.block_num = block_num
         self.block_graph = BlockGraph(program_name, block_num, egraph, choices, merged_data=merged_data, print_graph=print_graph)
@@ -305,6 +305,7 @@ class RewriteBlock:
         self.free_regs: List[str] = []
         self.temp_counter: int = 0  # 临时寄存器计数器
         self.current_line_idx: int = 0  # 当前处理的行索引
+        self.global_div_free_regs: Dict = global_div_free_regs if global_div_free_regs is not None else {}  # 全局 div free regs
 
     def get_placeholder_reg(self) -> str:
         """获取一个可用的寄存器
@@ -314,6 +315,14 @@ class RewriteBlock:
         placeholder = f"op_{self.temp_counter}"
         self.temp_counter += 1
         return placeholder
+    
+    def update_div_free_regs(self, line_idx: int):
+        """更新全局 div/divu 调用点的 free registers 交集"""
+        current_free = set(self.free_regs_per_line[line_idx])
+        if self.program_name not in self.global_div_free_regs:
+            self.global_div_free_regs[self.program_name] = current_free
+        else:
+            self.global_div_free_regs[self.program_name] &= current_free
             
     def rewrite_line(self, eclass_id: str, rd: str, line_idx: int):
         """以 eclass_id 展开后序遍历，生成指令，最后更新 rd
@@ -370,6 +379,11 @@ class RewriteBlock:
         # 生成指令
         inst_str = format_instruction(node.op, rd, child_operands)
         self.block_lines[line_idx].append(inst_str)
+        
+        # 如果是 calldiv/calldivu/callrem/callremu，更新 free registers 交集
+        op_lower = node.op.lower()
+        if op_lower in ['calldiv', 'calldivu', 'callrem', 'callremu']:
+            self.update_div_free_regs(line_idx)
 
     def rewrite_block(self):
         """重写整个 block，按顺序处理每一行"""
@@ -561,7 +575,7 @@ def get_all_blocks(program_name: str) -> List[int]:
     return sorted(block_nums)
 
 
-def rewrite_program(program_name: str, solution_file: str = None, output_dir: str = None, print_graph: bool = False):
+def rewrite_program(program_name: str, solution_file: str = None, output_dir: str = None, print_graph: bool = False, global_div_free_regs: Dict = None):
     """处理整个 program，重写所有 basic blocks
     
     Args:
@@ -633,12 +647,16 @@ def rewrite_program(program_name: str, solution_file: str = None, output_dir: st
         'errors': []
     }
     
+    # 创建或使用全局 div free registers dict
+    if global_div_free_regs is None:
+        global_div_free_regs = {}
+    
     for block_num in block_nums:
         try:
             print(f"\n处理 block {block_num}...", end=" ")
             
-            # 创建 RewriteBlock 实例（传入 merged_data）
-            rewriter = RewriteBlock(program_name, block_num, egraph, choices, merged_data=merged_data, print_graph=print_graph)
+            # 创建 RewriteBlock 实例（传入 merged_data 和 global_div_free_regs）
+            rewriter = RewriteBlock(program_name, block_num, egraph, choices, merged_data=merged_data, print_graph=print_graph, global_div_free_regs=global_div_free_regs)
             
             # 重写 block
             rewriter.rewrite_block()
@@ -680,6 +698,18 @@ def rewrite_program(program_name: str, solution_file: str = None, output_dir: st
     print(f"失败:         {stats['failed_blocks']}")
     print(f"总指令行数:   {stats['total_lines']}")
     
+    # 保存并打印全局 div/divu free registers 交集
+    if program_name in global_div_free_regs:
+        intersection = sorted(global_div_free_regs[program_name])
+        print(f"\n程序 {program_name} 的 div/divu free_regs 交集: {intersection}")
+        print(f"  可用于 div 库函数的寄存器数: {len(intersection)}")
+        
+        # 保存到文件
+        div_reg_file = output_dir / 'div_reg.txt'
+        with open(div_reg_file, 'w') as f:
+            f.write('\n'.join(intersection))
+        print(f"  已保存到: {div_reg_file}")
+    
     if stats['errors']:
         print(f"\n错误详情:")
         for error in stats['errors']:
@@ -720,6 +750,9 @@ def rewrite_program_all_variants(program_name: str, num_variants: int = 5, print
 
     # Process each variant
     all_stats = []
+    
+    # 创建全局 div free registers dict，所有 variant 共享
+    global_div_free_regs = {}
 
     for variant_num in range(num_variants):
         # Check if solution file exists
@@ -755,7 +788,7 @@ def rewrite_program_all_variants(program_name: str, num_variants: int = 5, print
             variant_dir.mkdir(parents=True, exist_ok=True)
 
             # Rewrite with this solution
-            stats = rewrite_program(program_name, str(solution_file), str(variant_dir), print_graph=print_graph)
+            stats = rewrite_program(program_name, str(solution_file), str(variant_dir), print_graph=print_graph, global_div_free_regs=global_div_free_regs)
             stats['variant'] = variant_num
             all_stats.append(stats)
 
@@ -799,6 +832,21 @@ def rewrite_program_all_variants(program_name: str, num_variants: int = 5, print
         if variant_dir.exists():
             num_files = len(list(variant_dir.glob("*.txt")))
             print(f"    variant_{i}/  ({num_files} 个文件)")
+    
+    # 保存并打印全局 div/divu free registers 交集
+    if program_name in global_div_free_regs:
+        intersection = sorted(global_div_free_regs[program_name])
+        print(f"\n程序 {program_name} 的 div/divu free_regs 交集: {intersection}")
+        print(f"  可用于 div 库函数的寄存器数: {len(intersection)}")
+        
+        # 为每个 variant 保存 div_reg.txt
+        for i in range(len(all_stats)):
+            variant_dir = base_output_dir / f"variant_{i}"
+            if variant_dir.exists():
+                div_reg_file = variant_dir / 'div_reg.txt'
+                with open(div_reg_file, 'w') as f:
+                    f.write('\n'.join(intersection))
+        print(f"  已保存到各 variant 的 div_reg.txt")
 
     print(f"{'='*70}\n")
 
