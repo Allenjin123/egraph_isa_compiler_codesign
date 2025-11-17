@@ -1,0 +1,22 @@
+; EGraph for dijkstra_small_O3 - Block 3
+; Total instructions: 1
+; Input registers: 0, Output registers: 1
+
+(include "../../../../Saturation/base.egg")
+
+; ============================================
+; Instruction sequence as a DAG
+; ============================================
+
+;; Step 1:     lui rd=a5_0 imm=%hi(.LC1)
+(let a5_0_val (Lui (ImmLabel "%hi(.LC1)")))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 3)
+
+; ============================================
+; Print eclass IDs for each instruction
+; ============================================
+(print-eclass-id a5_0_val)
