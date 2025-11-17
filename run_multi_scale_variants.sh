@@ -279,72 +279,13 @@ if [ "$CLEAN_OUTPUTS" = true ]; then
     # Clean synthesis outputs
     SYNTH_OUTPUT_DIR="$SCRIPT_DIR/PdatScorrWrapper/ScorrPdat/output"
     if [ -d "$SYNTH_OUTPUT_DIR" ]; then
-        echo -e "${CYAN}  清理合成输出: PdatScorrWrapper/ScorrPdat/output/variant_*${NC}"
-        rm -rf "$SYNTH_OUTPUT_DIR"/variant_*
+        echo -e "${CYAN}  清理合成输出: PdatScorrWrapper/ScorrPdat/output/${PROGRAM_NAME}_variant_*"
+        rm -rf "$SYNTH_OUTPUT_DIR/${PROGRAM_NAME}_variant_*"
     fi
 
     echo -e "${GREEN}  ✓ 清理完成${NC}"
     echo ""
 fi
-
-# ============================================================================
-# Step 0.4: Run frontend analysis 
-# ============================================================================
-FRONTEND_OUTPUT_DIR="$OUTPUT_BASE/frontend/$PROGRAM_NAME"
-
-echo -e "${BLUE}步骤 0.4: 运行前端分析（生成 SSA 基本块）...${NC}"
-echo -e "${YELLOW}  前端输出不存在，开始分析...${NC}"
-
-FRONTEND_SCRIPT="$FRONTEND_DIR/run_full_analysis.sh"
-if [ ! -f "$FRONTEND_SCRIPT" ]; then
-    echo -e "${RED}错误: 前端分析脚本未找到: $FRONTEND_SCRIPT${NC}"
-    PROGRAM_FAILED=1
-else
-    echo -e "${CYAN}  运行: cd frontend && ./run_full_analysis.sh $PROGRAM_NAME${NC}"
-
-    # Run frontend analysis
-    if ! (cd "$FRONTEND_DIR" && bash run_full_analysis.sh "$PROGRAM_NAME"); then
-        echo -e "${RED}✗ 程序 ${PROGRAM_NAME} 前端分析失败，跳过此程序${NC}"
-        PROGRAM_FAILED=1
-    else
-        echo -e "${GREEN}  ✓ 前端分析完成${NC}"
-    fi
-fi
-
-# Check if program failed
-if [ $PROGRAM_FAILED -eq 1 ]; then
-    echo -e "${RED}程序 ${PROGRAM_NAME} 失败${NC}"
-    # Restore file descriptors before returning
-    exec 1>&3 2>&4
-    exec 3>&- 4>&-
-    return 2  # Return failure status
-fi
-echo ""
-
-# ============================================================================
-# Step 0.45: Run complete analysis (spike instruction count + block execution)
-# ============================================================================
-echo -e "${BLUE}步骤 0.45: 运行完整分析（Spike 指令计数 + 块执行分析）...${NC}"
-
-# Check if run_complete_analysis.sh exists
-COMPLETE_ANALYSIS_SCRIPT="$BENCHMARK_DIR/run_complete_analysis.sh"
-if [ "$SKIP_FRONTEND" = false ]; then
-    if [ -f "$COMPLETE_ANALYSIS_SCRIPT" ]; then
-        echo -e "${CYAN}  运行: cd benchmark && ./run_complete_analysis.sh${NC}"
-
-        # Run the complete analysis script
-        if (cd "$BENCHMARK_DIR" && bash run_complete_analysis.sh); then
-            echo -e "${GREEN}  ✓ 完整分析完成${NC}"
-        else
-            echo -e "${YELLOW}  ⚠ 完整分析失败（非致命错误，继续）${NC}"
-        fi
-    else
-        echo -e "${YELLOW}  ⚠ 完整分析脚本不存在: $COMPLETE_ANALYSIS_SCRIPT${NC}"
-        echo -e "${YELLOW}  跳过完整分析${NC}"
-    fi
-fi
-
-echo ""
 
 # ============================================================================
 # Step 0.5: Run saturation (if enabled)
@@ -464,7 +405,7 @@ if [ \$? -eq 0 ]; then
         DST_SOL="$OUTPUT_BASE/ilp/$PROGRAM_NAME/sol/solution_\${VARIANT_ID}.sol"
 
         if [ -f "\$SRC_SOL" ]; then
-            mkdir -p "$(dirname "\$DST_SOL")"
+            mkdir -p "\$(dirname "\$DST_SOL")"
             cp "\$SRC_SOL" "\$DST_SOL"
             echo "  复制: \$(basename \$SRC_SOL) -> solution_\${VARIANT_ID}.sol"
         fi
@@ -883,6 +824,50 @@ echo -e "${YELLOW}汇总报告已保存至: $SUMMARY_FILE${NC}"
         return 1
     fi
 }
+
+# ============================================================================
+# Step -1: Run frontend & complete analysis (spike instruction count + block execution)
+# ============================================================================
+echo -e "front end; once for all"
+
+FRONTEND_SCRIPT="$FRONTEND_DIR/run_full_analysis.sh"
+if [ ! -f "$FRONTEND_SCRIPT" ]; then
+    echo -e "${RED}错误: 前端分析脚本未找到: $FRONTEND_SCRIPT${NC}"
+    PROGRAM_FAILED=1
+else
+    echo -e "${CYAN}  运行: cd frontend && ./run_full_analysis.sh"
+
+    # Run frontend analysis
+    if ! (cd "$FRONTEND_DIR" && bash run_full_analysis.sh); then
+        echo -e "${RED}✗ Front end fails${NC}"
+        PROGRAM_FAILED=1
+    else
+        echo -e "${GREEN}  ✓ Front end success${NC}"
+    fi
+fi
+
+echo -e "${BLUE} Spike analysis (once for all)${NC}"
+
+# Check if run_complete_analysis.sh exists
+COMPLETE_ANALYSIS_SCRIPT="$BENCHMARK_DIR/run_complete_analysis.sh"
+if [ "$SKIP_FRONTEND" = false ]; then
+    if [ -f "$COMPLETE_ANALYSIS_SCRIPT" ]; then
+        echo -e "${CYAN}  运行: cd benchmark && ./run_complete_analysis.sh${NC}"
+
+        # Run the complete analysis script
+        if (cd "$BENCHMARK_DIR" && bash run_complete_analysis.sh); then
+            echo -e "${GREEN}  ✓ 完整分析完成${NC}"
+        else
+            echo -e "${YELLOW}  ⚠ 完整分析失败（非致命错误，继续）${NC}"
+        fi
+    else
+        echo -e "${YELLOW}  ⚠ 完整分析脚本不存在: $COMPLETE_ANALYSIS_SCRIPT${NC}"
+        echo -e "${YELLOW}  跳过完整分析${NC}"
+    fi
+fi
+
+echo ""
+
 
 # ============================================================================
 # Main processing with program-level parallelism
