@@ -29,10 +29,10 @@ OP_TYPE_WEIGHTS = {
     'Op_Mulh': 3000,
     'Op_Mulhsu': 3000,
     'Op_Mulhu': 3000,
-    'Op_Div': 5000,      # Division is especially expensive
-    'Op_Divu': 5000,
-    'Op_Rem': 4000,
-    'Op_Remu': 4000,
+    'Op_Div': 3000,      # Division is especially expensive
+    'Op_Divu': 3000,
+    'Op_Rem': 3000,
+    'Op_Remu': 3000,
 
     # Memory operations (medium cost)
     'Op_Lw': 150,
@@ -54,6 +54,13 @@ OP_TYPE_WEIGHTS = {
     'Op_Jal': 110,
     'Op_Jalr': 110,
 
+    # Immediate loads (High cost so that they will be rewritten if possible
+    'Op_Ori': 200,
+    'Op_Andi': 200,
+    'Op_Xori': 200,
+    'Op_Slli': 200,
+    'Op_Srli': 200,
+    'Op_Srai': 200,
     # Default weight for unlisted operations (cheap ALU ops like Add, Sub, And, etc.)
 }
 DEFAULT_OP_WEIGHT = 100
