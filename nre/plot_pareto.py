@@ -13,7 +13,11 @@ from pathlib import Path
 from typing import List, Tuple, Dict
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
 
+import scienceplots
+
+plt.style.use(['science','no-latex'])
 
 def compute_pareto_frontier(points: List[Tuple[float, float]]) -> List[Tuple[float, float]]:
     """
@@ -93,12 +97,77 @@ def extract_points_for_num_chip(results: Dict, num_chip: str) -> List[Tuple[floa
     return points
 
 
+def print_pareto_points(
+    results: Dict,
+    num_chips_range: Tuple[int, int] = None
+):
+    """
+    打印每个 num_chip 的帕累托点详细信息
+    
+    Args:
+        results: 结果字典
+        num_chips_range: (min, max) 元组，指定要打印的 num_chip 范围
+    """
+    # 获取所有 num_chip 键，按数值排序
+    num_chip_keys = [k for k in results.keys() if k.startswith('num_chip_')]
+    num_chip_keys = sorted(num_chip_keys, key=lambda x: int(x.split('_')[-1]))
+    
+    if not num_chip_keys:
+        print("错误: 没有找到任何 num_chip 数据", file=sys.stderr)
+        return
+    
+    # 过滤 num_chip 范围
+    if num_chips_range:
+        min_chip, max_chip = num_chips_range
+        num_chip_keys = [
+            k for k in num_chip_keys
+            if min_chip <= int(k.split('_')[-1]) <= max_chip
+        ]
+        num_chip_keys = sorted(num_chip_keys, key=lambda x: int(x.split('_')[-1]))
+    
+    print("\n" + "="*80)
+    print("帕累托点详细信息")
+    print("="*80)
+    
+    for num_chip_key in num_chip_keys:
+        num_chip_value = int(num_chip_key.split('_')[-1])
+        display_num = num_chip_value - 1
+        
+        # 提取所有点
+        all_points = extract_points_for_num_chip(results, num_chip_key)
+        
+        if not all_points:
+            print(f"\n{num_chip_key} (显示编号: {display_num}): 没有有效数据点")
+            continue
+        
+        # 计算帕累托前沿
+        pareto_points = compute_pareto_frontier(all_points)
+        
+        if not pareto_points:
+            print(f"\n{num_chip_key} (显示编号: {display_num}): 没有帕累托点")
+            continue
+        
+        # 按 area 排序（已经在 compute_pareto_frontier 中排序了）
+        print(f"\n{num_chip_key} (显示编号: {display_num}):")
+        print(f"  总点数: {len(all_points)}, 帕累托点数: {len(pareto_points)}")
+        print(f"  帕累托点列表 (Area, Latency):")
+        
+        for idx, (area, latency) in enumerate(pareto_points, 1):
+            # 显示原始值和除以22后的值
+            area_normalized = area / 22.0
+            latency_normalized = latency / 22.0
+            print(f"    [{idx}] Area: {area:8.2f} ({area_normalized:6.2f}), "
+                  f"Latency: {latency:8.2f} ({latency_normalized:6.2f})")
+    
+    print("="*80)
+
+
 def plot_pareto_curves(
     results: Dict,
     output_file: str,
     num_chips_range: Tuple[int, int] = None,
-    figsize: Tuple[int, int] = (12, 8),
-    dpi: int = 300
+    figsize: Tuple[int, int] = (8, 6),
+    dpi: int = 400
 ):
     """
     绘制所有 num_chip 的帕累托曲线
@@ -131,8 +200,9 @@ def plot_pareto_curves(
     # 创建图形
     fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
     
-    # 颜色和标记样式
-    colors = plt.cm.tab10(np.linspace(0, 1, len(num_chip_keys)))
+    # 使用 seaborn Set2 调色板（与 parse_instruction_counts.py 保持一致）
+    sns.set_palette("Set2")
+    colors = sns.color_palette("Set2", len(num_chip_keys))
     markers = ['o', 's', '^', 'v', 'D', 'p', '*', 'h', 'X', 'P']
     
     # 为每个 num_chip 绘制帕累托曲线
@@ -172,16 +242,16 @@ def plot_pareto_curves(
         ax.scatter(
             pareto_areas, pareto_latencies,
             color=colors[idx], s=100, marker='o',
-            label=f'num_chip={display_num} (Pareto)',
+            label=f'num-chip={display_num} (Pareto)',
             alpha=0.8, edgecolors='black', linewidths=1
         )
         
         print(f"{num_chip_key}: {len(all_points)} 个总点, {len(pareto_points)} 个帕累托点")
     
     # 设置标签和标题
-    ax.set_xlabel('Area', fontsize=12)
-    ax.set_ylabel('Latency', fontsize=12)
-    ax.set_title('Pareto Frontiers for Different num_chip Values', fontsize=14, fontweight='bold')
+    ax.set_xlabel('Area', fontsize=14, fontweight='bold')
+    ax.set_ylabel('Latency', fontsize=14, fontweight='bold')
+    ax.tick_params(axis='both', which='major', labelsize=12)
     ax.grid(True, alpha=0.3)
     
     # 获取图例并按显示编号排序
@@ -201,7 +271,7 @@ def plot_pareto_curves(
     sorted_handles = [item[1] for item in legend_items]
     sorted_labels = [item[2] for item in legend_items]
     
-    ax.legend(sorted_handles, sorted_labels, loc='best', fontsize=10)
+    ax.legend(sorted_handles, sorted_labels, loc='best', fontsize=12, prop={'weight': 'bold'})
     
     # 保存图片
     output_path = Path(output_file)
@@ -219,19 +289,25 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 示例:
-  python nre/plot_pareto.py --input nre/sweep_results.json --output nre/pareto_curves.png
-  python nre/plot_pareto.py --input nre/sweep_results.json --output nre/pareto_curves.png --num-chips-min 1 --num-chips-max 5
+  python nre/plot_pareto.py --input nre/sweep_results.json --output nre/pareto_curves.pdf
+  python nre/plot_pareto.py --input nre/sweep_results.json --output nre/pareto_curves.pdf --num-chips-min 1 --num-chips-max 5
         """
     )
     parser.add_argument('--input', '-i', required=True, help='输入JSON文件路径（sweep_results.json）')
-    parser.add_argument('--output', '-o', required=True, help='输出图片文件路径（支持 .png, .pdf, .svg）')
+    parser.add_argument('--output', '-o', required=True, help='输出图片文件路径（默认使用 PDF 格式，如果没有扩展名则自动添加 .pdf）')
     parser.add_argument('--num-chips-min', type=int, default=None, help='最小芯片数量（可选）')
     parser.add_argument('--num-chips-max', type=int, default=None, help='最大芯片数量（可选）')
-    parser.add_argument('--figsize', type=int, nargs=2, default=[12, 8], 
-                       help='图片大小（宽 高），默认: 12 8')
-    parser.add_argument('--dpi', type=int, default=300, help='图片分辨率，默认: 300')
+    parser.add_argument('--figsize', type=int, nargs=2, default=[8, 6], 
+                       help='图片大小（宽 高），默认: 8 6')
+    parser.add_argument('--dpi', type=int, default=400, help='图片分辨率，默认: 400')
     
     args = parser.parse_args()
+    
+    # 如果没有扩展名，自动添加 .pdf
+    output_path = Path(args.output)
+    if not output_path.suffix:
+        output_path = output_path.with_suffix('.pdf')
+        args.output = str(output_path)
     
     # 加载数据
     input_path = Path(args.input)
@@ -254,6 +330,9 @@ def main():
         min_chip = args.num_chips_min if args.num_chips_min is not None else 1
         max_chip = args.num_chips_max if args.num_chips_max is not None else 10
         num_chips_range = (min_chip, max_chip)
+    
+    # 打印帕累托点信息
+    print_pareto_points(results, num_chips_range)
     
     # 绘制
     print("\n计算帕累托前沿...")

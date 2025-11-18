@@ -1,0 +1,20 @@
+; EGraph for basicmath_small_O3 - Block 0
+; Total instructions: 30
+; Input registers: 2, Output registers: 29
+
+(include "base.egg")
+
+; Input register declarations (used but not defined in this block)
+(let a0_0 (RegVal "a0_0"))
+(let t0_0 (RegVal "t0_0"))
+
+;; andi a1_0, a0_0, 255
+(let a1_0_val (Andi a0_0 (ImmVal 255)))
+
+;; sltiu a2_0, t0_0, a1_0 (注意：第二个操作数是寄存器，使用Sltu而非Sltiu)
+(let a2_0_val (Sltu t0_0 a1_0_val))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 1)

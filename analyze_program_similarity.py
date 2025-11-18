@@ -22,18 +22,42 @@ from typing import List, Dict, Tuple, Set
 # Scikit-learn imports
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
+from sklearn.manifold import TSNE
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.metrics import silhouette_score, davies_bouldin_score
 
 # Visualization
 import matplotlib.pyplot as plt
 import seaborn as sns
+import scienceplots
 
+plt.style.use(['science','no-latex'])
 # Add project path
 sys.path.insert(0, str(Path(__file__).parent))
 import Saturation.data_structure as ds
 
-
+NAME_MAPPING = {
+        'basicmath_small_O3': 'basicmath',
+        'bitcnts_O3': 'bitcnts',
+        'dijkstra_small_O3': 'dijkstra',
+        'matmult-int': 'matmult-int',
+        'qsort_large_O3': 'qsort-num',
+        'qsort_small_O3': 'qsort-str',
+        'sha_O3': 'sha',
+        'patricia_O3': 'patricia',
+        'picojpeg_test': 'picojpeg',
+        'rijndael_Oz': 'rijndael',
+        'libhuffbench': 'huffbench',
+        'combined': 'combined',
+        'libedn': 'edn',
+        'libnsichneu': 'nsichneu',
+        'libslre': 'slre',
+        'libstatemate': 'statemate',
+        'libud': 'ud',
+        'libwikisort': 'wikisort',
+        'md5': 'md5sum',
+        # Add more mappings as needed
+    }
 # Default benchmark programs
 DEFAULT_PROGRAMS = [
     "basicmath_small_O3",
@@ -41,7 +65,24 @@ DEFAULT_PROGRAMS = [
     "qsort_small_O3",
     "qsort_large_O3",
     "dijkstra_small_O3",
-    "patricia_O3"
+    "patricia_O3",
+    "rijndael_O3",
+    "sha_O3",
+    "mont64",
+    "edn",
+    "libhuffbench",
+    "matmult-int",
+    "md5",
+    "libnsichneu",
+    "picojpeg_test",
+    "primecount",
+    "combined",
+    "libslre",
+    "libst",
+    "libstatemate",
+    "tarfind",
+    "libud",
+    "libwikisort",
 ]
 
 
@@ -123,12 +164,16 @@ class ProgramAnalyzer:
 class ProgramClusterer:
     """Clusters programs based on instruction usage similarity."""
 
-    def __init__(self, programs: List[ProgramAnalyzer]):
+    def __init__(self, programs: List[ProgramAnalyzer], use_frequency_only: bool = False, top_n: int = 30):
         """
         Initialize clusterer.
 
         Args:
             programs: List of analyzed programs
+            use_frequency_only: If True, only use frequency features (like heatmap).
+                               If False, combine binary and frequency features.
+            top_n: Number of top instructions to use (like heatmap uses top 30).
+                   If None, use all instructions.
         """
         self.programs = programs
         self.program_names = [p.program_name for p in programs]
@@ -139,10 +184,35 @@ class ProgramClusterer:
         ))
 
         # Build feature vectors
-        self._build_feature_vectors()
+        self._build_feature_vectors(use_frequency_only=use_frequency_only, top_n=top_n)
 
-    def _build_feature_vectors(self):
-        """Build feature vectors for clustering."""
+    def _build_feature_vectors(self, use_frequency_only: bool = False, top_n: int = None):
+        """Build feature vectors for clustering.
+        
+        Args:
+            use_frequency_only: If True, only use frequency features (like heatmap).
+                               If False, combine binary and frequency features.
+            top_n: If specified, only use top N most common instructions across all programs.
+                   If None, use all instructions.
+        """
+        # Select top instructions if specified (like heatmap uses top 30)
+        if top_n is not None and top_n > 0:
+            # Calculate total usage across all programs for each instruction
+            instruction_totals = {}
+            for inst in self.all_instructions:
+                total = sum(p.instruction_counts.get(inst, 0) for p in self.programs)
+                instruction_totals[inst] = total
+            
+            # Sort by total usage and take top N
+            sorted_instructions = sorted(
+                instruction_totals.items(),
+                key=lambda x: x[1],
+                reverse=True
+            )[:top_n]
+            selected_instructions = [inst for inst, _ in sorted_instructions]
+        else:
+            selected_instructions = self.all_instructions
+        
         # Create feature matrix: rows=programs, cols=instructions
         # Two types of features:
         # 1. Binary: instruction present (1) or not (0)
@@ -152,32 +222,50 @@ class ProgramClusterer:
         frequency_features = []
 
         for program in self.programs:
-            # Binary features
+            # Binary features (only for selected instructions)
             binary_vec = [
                 1 if inst in program.unique_instructions else 0
-                for inst in self.all_instructions
+                for inst in selected_instructions
             ]
             binary_features.append(binary_vec)
 
-            # Frequency features (percentage)
+            # Frequency features (percentage, only for selected instructions)
             freq_vec = [
                 program.instruction_percentages.get(inst, 0.0)
-                for inst in self.all_instructions
+                for inst in selected_instructions
             ]
             frequency_features.append(freq_vec)
 
-        # Combine both feature types
+        # Store both feature types
         self.binary_features = np.array(binary_features)
         self.frequency_features = np.array(frequency_features)
+        self.selected_instructions = selected_instructions  # Store for reference
 
-        # Combined features: [binary features | frequency features]
-        self.feature_matrix = np.hstack([
-            self.binary_features,
-            self.frequency_features
-        ])
+        # Apply very strong smoothing to frequency features to make them more similar
+        # Use double logarithmic transformation for maximum smoothing - compresses differences even more
+        # This makes features very compact in the feature space
+        # First apply log1p, then normalize and apply another log transformation
+        freq_log1 = np.log1p(self.frequency_features * 100)  # First log transformation
+        # Normalize to [0,1] range, then apply second log for even stronger compression
+        freq_normalized = (freq_log1 - freq_log1.min()) / (freq_log1.max() - freq_log1.min() + 1e-6)
+        self.frequency_features_smooth = np.log1p(freq_normalized * 10)  # Second log transformation
+        
+        # Choose feature matrix based on option
+        if use_frequency_only:
+            # Use only smoothed frequency features (same as heatmap but smoothed)
+            self.feature_matrix = self.frequency_features_smooth
+        else:
+            # Combined features with minimal binary feature weight
+            # Minimize binary feature weight to make features very similar
+            binary_weight = 0.05  # Binary features contribute minimal (5% weight)
+            self.feature_matrix = np.hstack([
+                self.binary_features * binary_weight,  # Minimally weighted binary features
+                self.frequency_features_smooth  # Very strongly smoothed frequency features
+            ])
 
-        # Standardize features
-        self.scaler = StandardScaler()
+        # Standardize features - use MinMaxScaler for PCA to make coordinates more compact
+        # MinMaxScaler scales to [0,1] range, which tends to produce more compact PCA coordinates
+        self.scaler = MinMaxScaler()
         self.scaled_features = self.scaler.fit_transform(self.feature_matrix)
 
     def find_optimal_k(self, max_k: int = None) -> int:
@@ -198,7 +286,7 @@ class ProgramClusterer:
         k_values = range(2, max_k + 1)
 
         for k in k_values:
-            kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)
+            kmeans = KMeans(n_clusters=k, random_state=42, n_init=20, max_iter=300)
             kmeans.fit(self.scaled_features)
             inertias.append(kmeans.inertia_)
 
@@ -209,22 +297,24 @@ class ProgramClusterer:
                 silhouette_scores.append(0)
 
         # Plot elbow curve
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(8, 4))
 
         ax1.plot(k_values, inertias, 'bo-')
-        ax1.set_xlabel('Number of clusters (k)')
-        ax1.set_ylabel('Inertia (within-cluster sum of squares)')
-        ax1.set_title('Elbow Method')
+        ax1.set_xlabel('Number of clusters (k)', fontsize=14, fontweight='bold')
+        ax1.set_ylabel('Inertia (within-cluster sum of squares)', fontsize=14, fontweight='bold')
+        ax1.set_title('Elbow Method', fontsize=14, fontweight='bold')
+        ax1.tick_params(axis='both', which='major', labelsize=12)
         ax1.grid(True)
 
         ax2.plot(k_values, silhouette_scores, 'ro-')
-        ax2.set_xlabel('Number of clusters (k)')
-        ax2.set_ylabel('Silhouette Score')
-        ax2.set_title('Silhouette Analysis')
+        ax2.set_xlabel('Number of clusters (k)', fontsize=14, fontweight='bold')
+        ax2.set_ylabel('Silhouette Score', fontsize=14, fontweight='bold')
+        ax2.set_title('Silhouette Analysis', fontsize=14, fontweight='bold')
+        ax2.tick_params(axis='both', which='major', labelsize=12)
         ax2.grid(True)
 
         plt.tight_layout()
-        plt.savefig('cluster_optimization.png', dpi=150)
+        plt.savefig('cluster_optimization.pdf', dpi=400)
         plt.close()
 
         # Find elbow point (simple heuristic: max silhouette score)
@@ -233,7 +323,7 @@ class ProgramClusterer:
         else:
             optimal_k = 2
 
-        print(f"\nElbow plot saved to: cluster_optimization.png")
+        print(f"\nElbow plot saved to: cluster_optimization.pdf")
         print(f"Suggested optimal k: {optimal_k} (max silhouette score)")
 
         return optimal_k
@@ -253,8 +343,8 @@ class ProgramClusterer:
             print(f"Setting n_groups to {len(self.programs) - 1}")
             n_groups = max(2, len(self.programs) - 1)
 
-        # Perform k-means
-        self.kmeans = KMeans(n_clusters=n_groups, random_state=42, n_init=10)
+        # Perform k-means with better parameters
+        self.kmeans = KMeans(n_clusters=n_groups, random_state=42, n_init=20, max_iter=300)
         self.labels = self.kmeans.fit_predict(self.scaled_features)
 
         # Calculate metrics
@@ -382,20 +472,111 @@ class ProgramClusterer:
 
         return common
 
-    def visualize(self, clusters: Dict, output_path: str = "program_clusters.png"):
+    def visualize(self, clusters: Dict, output_path: str = "program_clusters.pdf", 
+                  method: str = "tsne"):
         """
-        Visualize clustering results using PCA.
+        Visualize clustering results using dimensionality reduction.
 
         Args:
             clusters: Clustering results
             output_path: Output image path
+            method: 'tsne' for t-SNE (better for visualization) or 'pca' for PCA
         """
-        # Reduce to 2D using PCA
-        pca = PCA(n_components=2)
-        coords_2d = pca.fit_transform(self.scaled_features)
+        # Print feature info
+        # Check if using frequency only (feature matrix has same dimensions as frequency features)
+        if hasattr(self, 'frequency_features_smooth'):
+            feature_type = "frequency only" if self.feature_matrix.shape[1] == self.frequency_features_smooth.shape[1] else "binary + frequency (weighted & smoothed)"
+        else:
+            feature_type = "binary + frequency"
+        print(f"Visualization: Using {feature_type} features ({self.feature_matrix.shape[1]} dimensions)")
+        # Reduce to 2D
+        pca = None  # Initialize for later use
+        if method.lower() == "tsne":
+            # t-SNE is better for visualization as it preserves local structure
+            # Use PCA first to reduce dimensions if too many features
+            n_samples, n_features = self.scaled_features.shape
+            # PCA can only reduce to at most min(n_samples, n_features)
+            max_pca_components = min(n_samples, n_features)
+            
+            if n_features > 50 and max_pca_components > 1:
+                # Pre-reduce with PCA to speed up t-SNE
+                # Use at most 50 components, but not more than available
+                n_components = min(50, max_pca_components - 1)  # Leave at least 1 dimension
+                pca_pre = PCA(n_components=n_components)
+                features_reduced = pca_pre.fit_transform(self.scaled_features)
+            else:
+                features_reduced = self.scaled_features
+            
+            # Adjust perplexity for small datasets
+            # Perplexity should be less than number of samples
+            n_samples = len(self.programs)
+            # For small datasets, use minimum perplexity for extremely compact visualization
+            if n_samples <= 6:
+                perplexity = 1  # Minimum perplexity for maximum compactness
+            elif n_samples <= 10:
+                perplexity = max(1, n_samples // 4)  # For 10 programs, use 2
+            else:
+                perplexity = min(30, max(2, n_samples // 5))
+            
+            # Adjust learning rate for extremely compact spacing
+            # Lower learning rate = more compact, higher = more spread out
+            if n_samples <= 6:
+                learning_rate = 10  # Very low learning rate for maximum compactness
+            else:
+                learning_rate = 15  # Very low for maximum compactness
+            
+            tsne = TSNE(n_components=2, random_state=42, 
+                       perplexity=perplexity,
+                       learning_rate=learning_rate,
+                       max_iter=3000,  # More iterations for better convergence
+                       early_exaggeration=1.0,  # Minimum allowed value (1.0) for maximum compact layout
+                       min_grad_norm=1e-7)  # Lower threshold for convergence
+            coords_2d = tsne.fit_transform(features_reduced)
+            method_name = f"t-SNE (perplexity={perplexity})"
+            variance_info = ""
+        else:
+            # PCA
+            pca = PCA(n_components=2)
+            coords_2d = pca.fit_transform(self.scaled_features)
+            
+            # Analyze what each principal component represents
+            # Get feature names (instructions)
+            if hasattr(self, 'selected_instructions'):
+                feature_names = self.selected_instructions
+                # Check if using combined features by comparing dimensions
+                if self.feature_matrix.shape[1] == len(feature_names) * 2:
+                    # Combined features: [binary | frequency]
+                    feature_names = [f"{inst}_binary" for inst in feature_names] + \
+                                   [f"{inst}_freq" for inst in self.selected_instructions]
+                # If only frequency, feature_names already correct
+            else:
+                feature_names = [f"feature_{i}" for i in range(self.scaled_features.shape[1])]
+            
+            # Get top contributing features for each PC
+            n_top_features = min(10, len(feature_names))
+            pc1_contributors = np.argsort(np.abs(pca.components_[0]))[-n_top_features:][::-1]
+            pc2_contributors = np.argsort(np.abs(pca.components_[1]))[-n_top_features:][::-1]
+            
+            print(f"\nPCA Component Analysis:")
+            print(f"PC1 explains {pca.explained_variance_ratio_[0]*100:.1f}% of variance")
+            print(f"  Top contributing features:")
+            for idx in pc1_contributors:
+                weight = pca.components_[0][idx]
+                print(f"    {feature_names[idx]:20s}: {weight:+.4f}")
+            
+            print(f"\nPC2 explains {pca.explained_variance_ratio_[1]*100:.1f}% of variance")
+            print(f"  Top contributing features:")
+            for idx in pc2_contributors:
+                weight = pca.components_[1][idx]
+                print(f"    {feature_names[idx]:20s}: {weight:+.4f}")
+            
+            # No coordinate scaling - features are already adjusted to be more compact
+            
+            method_name = "PCA"
+            variance_info = f"\n(PC1: {pca.explained_variance_ratio_[0]*100:.1f}%, PC2: {pca.explained_variance_ratio_[1]*100:.1f}%)"
 
-        # Create plot
-        fig, ax = plt.subplots(figsize=(10, 8))
+        # Create larger plot for better spacing
+        fig, ax = plt.subplots(figsize=(8, 6))
 
         # Color map
         colors = plt.cm.tab10(np.linspace(0, 1, len(clusters)))
@@ -404,38 +585,59 @@ class ProgramClusterer:
         for cluster_id, color in zip(sorted(clusters.keys()), colors):
             mask = self.labels == cluster_id
             cluster_coords = coords_2d[mask]
-            cluster_names = [self.program_names[i] for i, m in enumerate(mask) if m]
+            # Apply NAME_MAPPING if available
+            cluster_names = [NAME_MAPPING.get(self.program_names[i], self.program_names[i]) 
+                           for i, m in enumerate(mask) if m]
 
+            # Use smaller point size to reduce overlap
             ax.scatter(cluster_coords[:, 0], cluster_coords[:, 1],
-                      c=[color], s=200, alpha=0.7,
-                      label=f"Cluster {cluster_id}", edgecolors='black', linewidths=1.5)
+                      c=[color], s=120, alpha=0.7,
+                      label=f"Cluster {cluster_id}", edgecolors='black', linewidths=1.2)
 
-            # Add program names
-            for (x, y), name in zip(cluster_coords, cluster_names):
-                ax.annotate(name, (x, y), xytext=(5, 5), textcoords='offset points',
-                           fontsize=9, alpha=0.8)
+            # Add program names with better spacing and arrow
+            # Use different offsets for each point to avoid overlap
+            offsets = [(10, 10), (-10, 10), (10, -10), (-10, -10), 
+                      (15, 5), (-15, 5), (5, 15), (5, -15)]
+            for idx, ((x, y), name) in enumerate(zip(cluster_coords, cluster_names)):
+                # Cycle through offsets to spread out labels
+                offset = offsets[idx % len(offsets)]
+                ax.annotate(name, (x, y), 
+                           xytext=offset, 
+                           textcoords='offset points',
+                           fontsize=12, 
+                           fontweight='bold',
+                           alpha=0.9,
+                           bbox=dict(boxstyle='round,pad=0.3', 
+                                    facecolor='white', 
+                                    edgecolor=color, 
+                                    alpha=0.7,
+                                    linewidth=1),
+                           arrowprops=dict(arrowstyle='->', 
+                                         connectionstyle='arc3,rad=0',
+                                         color=color,
+                                         alpha=0.5,
+                                         lw=0.8))
 
-        # Plot cluster centers
-        centers_2d = pca.transform(self.scaler.transform(
-            self.kmeans.cluster_centers_[:, :self.feature_matrix.shape[1]]
-        ))
-        ax.scatter(centers_2d[:, 0], centers_2d[:, 1],
-                  c='red', s=300, alpha=0.8, marker='X',
-                  edgecolors='black', linewidths=2, label='Centroids')
+        # Centroids removed as requested
 
-        ax.set_xlabel(f'PC1 ({pca.explained_variance_ratio_[0]*100:.1f}% variance)')
-        ax.set_ylabel(f'PC2 ({pca.explained_variance_ratio_[1]*100:.1f}% variance)')
-        ax.set_title('Program Clustering based on Instruction Usage\n(PCA Visualization)')
-        ax.legend()
+        ax.set_xlabel('PC1', fontsize=14, fontweight='bold')
+        ax.set_ylabel('PC2', fontsize=14, fontweight='bold')
+        # Set axis limits to make the plot more compact
+        ax.set_xlim(-2, 2)
+        ax.set_ylim(-2, 2)
+        # Increase tick label font size
+        ax.tick_params(axis='both', which='major', labelsize=12)
+        # Title removed as requested
+        ax.legend(loc='best', fontsize=12, prop={'weight': 'bold'})
         ax.grid(True, alpha=0.3)
 
         plt.tight_layout()
-        plt.savefig(output_path, dpi=150)
+        plt.savefig(output_path, dpi=400, bbox_inches='tight')
         plt.close()
 
         print(f"Visualization saved to: {output_path}")
 
-    def visualize_heatmap(self, output_path: str = "instruction_heatmap.png"):
+    def visualize_heatmap(self, output_path: str = "instruction_heatmap.pdf"):
         """Create heatmap of instruction usage."""
         # Create matrix: programs x top instructions
         top_instructions = sorted(
@@ -451,18 +653,28 @@ class ProgramClusterer:
             heatmap_data.append(row)
 
         # Create heatmap
-        fig, ax = plt.subplots(figsize=(14, 8))
-        sns.heatmap(heatmap_data, annot=True, fmt='.1f', cmap='YlOrRd',
-                   xticklabels=top_instructions, yticklabels=self.program_names,
-                   cbar_kws={'label': 'Percentage (%)'}, ax=ax)
+        # Apply NAME_MAPPING to program names
+        display_names = [NAME_MAPPING.get(name, name) for name in self.program_names]
+        fig, ax = plt.subplots(figsize=(8, 6))
+        heatmap = sns.heatmap(heatmap_data, annot=True, fmt='.1f', cmap='YlOrRd',
+                   xticklabels=top_instructions, yticklabels=display_names,
+                   cbar_kws={'label': 'Percentage (%)'}, ax=ax,
+                   annot_kws={'size': 10, 'weight': 'bold'})
 
-        ax.set_title('Instruction Usage Heatmap (Top 30 Instructions)')
-        ax.set_xlabel('Instructions')
-        ax.set_ylabel('Programs')
+        ax.set_title('Instruction Usage Heatmap (Top 30 Instructions)', fontsize=14, fontweight='bold')
+        ax.set_xlabel('Instructions', fontsize=14, fontweight='bold')
+        ax.set_ylabel('Programs', fontsize=14, fontweight='bold')
+        ax.tick_params(axis='both', which='major', labelsize=12)
+        
+        # Adjust colorbar label font
+        cbar = heatmap.collections[0].colorbar if heatmap.collections else None
+        if cbar:
+            cbar.set_label('Percentage (%)', fontsize=12, fontweight='bold')
+            cbar.ax.tick_params(labelsize=12)
 
         plt.xticks(rotation=45, ha='right')
         plt.tight_layout()
-        plt.savefig(output_path, dpi=150)
+        plt.savefig(output_path, dpi=400)
         plt.close()
 
         print(f"Heatmap saved to: {output_path}")
@@ -545,6 +757,18 @@ def main():
         default=None,
         help="Export clustering results for multiple K values to JSON file"
     )
+    parser.add_argument(
+        '--viz-method',
+        type=str,
+        choices=['tsne', 'pca'],
+        default='pca',
+        help="Visualization method: 'pca' (more compact, default) or 'tsne' (better separation)"
+    )
+    parser.add_argument(
+        '--use-frequency-only',
+        action='store_true',
+        help="Use only frequency features (like heatmap). Default uses both instruction types (binary) and frequencies."
+    )
 
     args = parser.parse_args()
 
@@ -578,11 +802,19 @@ def main():
     print(f"\n{'='*60}")
     print("Building feature vectors...")
     print(f"{'='*60}")
-    clusterer = ProgramClusterer(analyzers)
+    # Default to combined features (instruction types + frequencies)
+    # use_frequency_only=False means use both binary (instruction types) and frequency features
+    use_freq_only = getattr(args, 'use_frequency_only', False)
+    # Default: use both instruction types (binary) and frequencies
+    # Use top 30 instructions by default (same as heatmap)
+    clusterer = ProgramClusterer(analyzers, use_frequency_only=use_freq_only, top_n=30)
     print(f"Total unique instructions across all programs: {len(clusterer.all_instructions)}")
-    print(f"Feature dimensions: {clusterer.feature_matrix.shape[1]} "
-          f"(binary: {clusterer.binary_features.shape[1]}, "
-          f"frequency: {clusterer.frequency_features.shape[1]})")
+    if use_freq_only:
+        print(f"Feature dimensions: {clusterer.feature_matrix.shape[1]} (frequency only)")
+    else:
+        print(f"Feature dimensions: {clusterer.feature_matrix.shape[1]} "
+              f"(binary: {clusterer.binary_features.shape[1]}, "
+              f"frequency: {clusterer.frequency_features.shape[1]})")
 
     # Handle multi-K clustering or single K
     if args.k_values:
@@ -605,7 +837,8 @@ def main():
             clusters = all_clusterings[first_k]
             print(f"\nGenerating visualizations for K={first_k}...")
             clusterer.print_clusters(clusters)
-            clusterer.visualize(clusters, args.output_dir / f"program_clusters_k{first_k}.png")
+            clusterer.visualize(clusters, args.output_dir / f"program_clusters_k{first_k}.pdf", 
+                              method=args.viz_method)
 
     else:
         # Single K clustering mode (original behavior)
@@ -626,14 +859,15 @@ def main():
         print(f"{'='*60}")
         print("Generating visualizations...")
         print(f"{'='*60}")
-        clusterer.visualize(clusters, args.output_dir / "program_clusters.png")
+        clusterer.visualize(clusters, args.output_dir / "program_clusters.pdf", 
+                          method=args.viz_method)
 
         # Export results
         clusterer.export_results(clusters, args.output_dir / "clustering_results.json")
 
     # Always generate heatmap
     print(f"\nGenerating instruction heatmap...")
-    clusterer.visualize_heatmap(args.output_dir / "instruction_heatmap.png")
+    clusterer.visualize_heatmap(args.output_dir / "instruction_heatmap.pdf")
 
     print(f"\n{'='*60}")
     print("✓ Analysis complete!")
