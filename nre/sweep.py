@@ -56,7 +56,7 @@ def calculate_total_area_latency(solution: Dict) -> Tuple[float, float]:
 def sweep_parameters(
     programs: List[Dict],
     chip_metadata: Optional[Dict],
-    num_chips_range: range,
+    num_chips_range,
     best_k: int,
     alpha_values: List[float],
     timeout: Optional[int] = None,
@@ -68,7 +68,7 @@ def sweep_parameters(
     Args:
         programs: 程序列表
         chip_metadata: 芯片元数据
-        num_chips_range: num_chip 的范围（例如 range(1, 11)）
+        num_chips_range: num_chip 的范围（range 对象或列表，例如 range(1, 11) 或 [1, 2, ..., 22]）
         best_k: best_k 的值（每个 alpha 会返回 best_k 个解）
         alpha_values: alpha 的值列表（0 到 1）
         timeout: 求解超时时间（秒）
@@ -77,12 +77,24 @@ def sweep_parameters(
     Returns:
         收集到的数据字典
     """
+    # 转换为列表以便统一处理
+    if isinstance(num_chips_range, range):
+        num_chips_list = list(num_chips_range)
+    else:
+        num_chips_list = num_chips_range
+    
     results = {}
-    total_combinations = len(num_chips_range) * len(alpha_values)
+    total_combinations = len(num_chips_list) * len(alpha_values)
     current_combination = 0
     
     print(f"开始参数扫描...")
-    print(f"  - num_chip 范围: {num_chips_range.start} 到 {num_chips_range.stop - 1}")
+    if isinstance(num_chips_range, range):
+        print(f"  - num_chip 范围: {num_chips_range.start} 到 {num_chips_range.stop - 1}")
+    else:
+        if len(num_chips_list) <= 15:
+            print(f"  - num_chip 值: {num_chips_list}")
+        else:
+            print(f"  - num_chip 值: {num_chips_list[:5]} ... {num_chips_list[-5:]} (共 {len(num_chips_list)} 个)")
     print(f"  - best_k: {best_k} (每个 alpha 将返回 {best_k} 个解)")
     print(f"  - alpha 值: {alpha_values}")
     print(f"  - 总组合数: {total_combinations}")
@@ -90,7 +102,7 @@ def sweep_parameters(
     
     start_time = time.time()
     
-    for num_chips in num_chips_range:
+    for num_chips in num_chips_list:
         num_chips_key = f"num_chip_{num_chips}"
         results[num_chips_key] = []
         
@@ -330,6 +342,13 @@ def main():
     
     # 执行扫描
     num_chips_range = range(args.num_chips_min, args.num_chips_max + 1)
+    # 确保包含 num_chip=22
+    num_chips_list = list(num_chips_range)
+    if 22 not in num_chips_list:
+        num_chips_list.append(22)
+        num_chips_list.sort()
+    num_chips_range = num_chips_list
+    
     results = sweep_parameters(
         programs=programs,
         chip_metadata=chip_metadata,

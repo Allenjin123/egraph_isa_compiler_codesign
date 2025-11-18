@@ -116,12 +116,12 @@ def print_pareto_points(
         print("错误: 没有找到任何 num_chip 数据", file=sys.stderr)
         return
     
-    # 过滤 num_chip 范围
+    # 过滤 num_chip 范围（同时包含 22，如果数据中有的话）
     if num_chips_range:
         min_chip, max_chip = num_chips_range
         num_chip_keys = [
             k for k in num_chip_keys
-            if min_chip <= int(k.split('_')[-1]) <= max_chip
+            if min_chip <= int(k.split('_')[-1]) <= max_chip or int(k.split('_')[-1]) == 22
         ]
         num_chip_keys = sorted(num_chip_keys, key=lambda x: int(x.split('_')[-1]))
     
@@ -131,24 +131,23 @@ def print_pareto_points(
     
     for num_chip_key in num_chip_keys:
         num_chip_value = int(num_chip_key.split('_')[-1])
-        display_num = num_chip_value - 1
         
         # 提取所有点
         all_points = extract_points_for_num_chip(results, num_chip_key)
         
         if not all_points:
-            print(f"\n{num_chip_key} (显示编号: {display_num}): 没有有效数据点")
+            print(f"\n{num_chip_key} (显示编号: {num_chip_value}): 没有有效数据点")
             continue
         
         # 计算帕累托前沿
         pareto_points = compute_pareto_frontier(all_points)
         
         if not pareto_points:
-            print(f"\n{num_chip_key} (显示编号: {display_num}): 没有帕累托点")
+            print(f"\n{num_chip_key} (显示编号: {num_chip_value}): 没有帕累托点")
             continue
         
         # 按 area 排序（已经在 compute_pareto_frontier 中排序了）
-        print(f"\n{num_chip_key} (显示编号: {display_num}):")
+        print(f"\n{num_chip_key} (显示编号: {num_chip_value}):")
         print(f"  总点数: {len(all_points)}, 帕累托点数: {len(pareto_points)}")
         print(f"  帕累托点列表 (Area, Latency):")
         
@@ -187,12 +186,12 @@ def plot_pareto_curves(
         print("错误: 没有找到任何 num_chip 数据", file=sys.stderr)
         sys.exit(1)
     
-    # 过滤 num_chip 范围
+    # 过滤 num_chip 范围（同时包含 22，如果数据中有的话）
     if num_chips_range:
         min_chip, max_chip = num_chips_range
         num_chip_keys = [
             k for k in num_chip_keys
-            if min_chip <= int(k.split('_')[-1]) <= max_chip
+            if min_chip <= int(k.split('_')[-1]) <= max_chip or int(k.split('_')[-1]) == 22
         ]
         # 重新按数值排序
         num_chip_keys = sorted(num_chip_keys, key=lambda x: int(x.split('_')[-1]))
@@ -208,8 +207,6 @@ def plot_pareto_curves(
     # 为每个 num_chip 绘制帕累托曲线
     for idx, num_chip_key in enumerate(num_chip_keys):
         num_chip_value = int(num_chip_key.split('_')[-1])
-        # 将编号改为0~9（1->0, 2->1, ..., 10->9）
-        display_num = num_chip_value - 1
         
         # 提取所有点
         all_points = extract_points_for_num_chip(results, num_chip_key)
@@ -242,7 +239,7 @@ def plot_pareto_curves(
         ax.scatter(
             pareto_areas, pareto_latencies,
             color=colors[idx], s=100, marker='o',
-            label=f'num-chip={display_num} (Pareto)',
+            label=f'num-chip={num_chip_value} (Pareto)',
             alpha=0.8, edgecolors='black', linewidths=1
         )
         
@@ -254,19 +251,19 @@ def plot_pareto_curves(
     ax.tick_params(axis='both', which='major', labelsize=12)
     ax.grid(True, alpha=0.3)
     
-    # 获取图例并按显示编号排序
+    # 获取图例并按显示编号排序（按 int 大小排序）
     handles, labels = ax.get_legend_handles_labels()
     # 提取编号并排序
     legend_items = []
     for handle, label in zip(handles, labels):
-        # 从标签中提取编号，例如 "num_chip=0 (Pareto)" -> 0
+        # 从标签中提取编号，例如 "num-chip=1 (Pareto)" -> 1
         try:
             num = int(label.split('=')[1].split()[0])
             legend_items.append((num, handle, label))
         except:
             legend_items.append((999, handle, label))  # 无法解析的放在最后
     
-    # 按编号排序
+    # 按编号排序（按 int 大小，不是字典序）
     legend_items.sort(key=lambda x: x[0])
     sorted_handles = [item[1] for item in legend_items]
     sorted_labels = [item[2] for item in legend_items]
