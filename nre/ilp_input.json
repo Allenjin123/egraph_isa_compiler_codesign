@@ -1,0 +1,9072 @@
+{
+  "programs": [
+    {
+      "name": "basicmath",
+      "implementations": [
+        {
+          "chip_id": "chip_96",
+          "area": 70.58327714093055,
+          "latency": 24618.903154771426,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_133",
+          "area": 97.39300305422236,
+          "latency": 103.23795777450562,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_33",
+          "area": 97.80651303002658,
+          "latency": 103.72469967820439,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_33",
+          "area": 97.80651303002658,
+          "latency": 103.72469967820439,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_33",
+          "area": 97.80651303002658,
+          "latency": 103.72469967820439,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_133",
+          "area": 97.39300305422236,
+          "latency": 103.23795777450562,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_33",
+          "area": 97.80651303002658,
+          "latency": 103.72469967820439,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_33",
+          "area": 97.80651303002658,
+          "latency": 103.72469967820439,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_133",
+          "area": 97.39300305422236,
+          "latency": 103.23795777450562,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_133",
+          "area": 97.39300305422236,
+          "latency": 103.23795777450562,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_133",
+          "area": 97.39300305422236,
+          "latency": 103.23795777450562,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_96",
+          "area": 70.58327714093055,
+          "latency": 24618.903154771426,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_133",
+          "area": 97.39300305422236,
+          "latency": 103.23795777450562,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_133",
+          "area": 97.39300305422236,
+          "latency": 103.23795777450562,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_33",
+          "area": 97.80651303002658,
+          "latency": 103.72469967820439,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_133",
+          "area": 97.39300305422236,
+          "latency": 103.23795777450562,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_3",
+          "area": 97.68255920034906,
+          "latency": 116.6489925768823,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_123",
+          "area": 97.58736265915672,
+          "latency": 103.28638497652582,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_3",
+          "area": 97.68255920034906,
+          "latency": 116.6489925768823,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_96",
+          "area": 70.58327714093055,
+          "latency": 24618.903154771426,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_77",
+          "area": 98.03954622982032,
+          "latency": 106.08563652674555,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_77",
+          "area": 98.03954622982032,
+          "latency": 106.08563652674555,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_77",
+          "area": 98.03954622982032,
+          "latency": 106.08563652674555,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_67",
+          "area": 98.40248304311609,
+          "latency": 105.78046326046653,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_67",
+          "area": 98.40248304311609,
+          "latency": 105.78046326046653,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_67",
+          "area": 98.40248304311609,
+          "latency": 105.78046326046653,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_33",
+          "area": 97.80651303002658,
+          "latency": 103.72469967820439,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "bitcnts",
+      "implementations": [
+        {
+          "chip_id": "chip_95",
+          "area": 70.77069533140296,
+          "latency": 130.2318353794664,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_38",
+          "area": 68.89453016540399,
+          "latency": 80.6554982179829,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_38",
+          "area": 68.89453016540399,
+          "latency": 80.6554982179829,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_38",
+          "area": 68.89453016540399,
+          "latency": 80.6554982179829,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_38",
+          "area": 68.89453016540399,
+          "latency": 80.6554982179829,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_38",
+          "area": 68.89453016540399,
+          "latency": 80.6554982179829,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_38",
+          "area": 68.89453016540399,
+          "latency": 80.6554982179829,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_38",
+          "area": 68.89453016540399,
+          "latency": 80.6554982179829,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_38",
+          "area": 68.89453016540399,
+          "latency": 80.6554982179829,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_23",
+          "area": 86.50489865534887,
+          "latency": 92.90908989188435,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_23",
+          "area": 86.50489865534887,
+          "latency": 92.90908989188435,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_95",
+          "area": 70.77069533140296,
+          "latency": 130.2318353794664,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_23",
+          "area": 86.50489865534887,
+          "latency": 92.90910314543284,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_30",
+          "area": 85.91884494863353,
+          "latency": 90.83740870474625,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_31",
+          "area": 86.84899448653366,
+          "latency": 95.98961774995438,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_30",
+          "area": 85.91884494863353,
+          "latency": 90.83740870474625,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_11",
+          "area": 86.04081551703622,
+          "latency": 93.22039217695392,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_11",
+          "area": 86.04081551703622,
+          "latency": 93.22039217695392,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_11",
+          "area": 86.04081551703622,
+          "latency": 93.22039217695392,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_95",
+          "area": 70.77069533140296,
+          "latency": 130.2318353794664,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_37",
+          "area": 70.3006624092658,
+          "latency": 80.91671637531066,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_37",
+          "area": 70.3006624092658,
+          "latency": 80.91671637531066,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_37",
+          "area": 70.3006624092658,
+          "latency": 80.91671637531066,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_38",
+          "area": 68.89453016540399,
+          "latency": 80.6554982179829,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_38",
+          "area": 68.89453016540399,
+          "latency": 80.6554982179829,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_38",
+          "area": 68.89453016540399,
+          "latency": 80.6554982179829,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_38",
+          "area": 68.89453016540399,
+          "latency": 80.6554982179829,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "combined",
+      "implementations": [
+        {
+          "chip_id": "chip_118",
+          "area": 71.83669826662964,
+          "latency": 903.7361058987291,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_58",
+          "area": 85.981317678791,
+          "latency": 119.78923230058265,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_58",
+          "area": 85.981317678791,
+          "latency": 119.78923230058265,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_51",
+          "area": 86.0983300940066,
+          "latency": 109.8871095693821,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_51",
+          "area": 86.0983300940066,
+          "latency": 109.8871095693821,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_51",
+          "area": 86.0983300940066,
+          "latency": 109.8871095693821,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_51",
+          "area": 86.0983300940066,
+          "latency": 109.8871095693821,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_51",
+          "area": 86.0983300940066,
+          "latency": 109.8871095693821,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_51",
+          "area": 86.0983300940066,
+          "latency": 109.8871095693821,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_8",
+          "area": 91.4868509777478,
+          "latency": 90.05350293259366,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_8",
+          "area": 91.4868509777478,
+          "latency": 90.05350293259366,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_93",
+          "area": 71.07512593709096,
+          "latency": 923.6393991028838,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_8",
+          "area": 91.4868509777478,
+          "latency": 90.05350293259366,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_8",
+          "area": 91.4868509777478,
+          "latency": 90.05350293259366,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_8",
+          "area": 91.4868509777478,
+          "latency": 90.05350293259366,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_7",
+          "area": 92.08282099083733,
+          "latency": 95.77740864794355,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_6",
+          "area": 92.70853992304946,
+          "latency": 90.49773755656109,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_6",
+          "area": 92.70853992304946,
+          "latency": 90.49773755656109,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_6",
+          "area": 92.70853992304946,
+          "latency": 90.49773755656109,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_93",
+          "area": 71.07512593709096,
+          "latency": 923.6393991028838,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_68",
+          "area": 88.05779223354885,
+          "latency": 136.64075480869874,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_68",
+          "area": 88.05779223354885,
+          "latency": 136.64075480869874,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_68",
+          "area": 88.05779223354885,
+          "latency": 136.64075480869874,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_69",
+          "area": 86.5167982229979,
+          "latency": 123.11534680821417,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_69",
+          "area": 86.5167982229979,
+          "latency": 123.11534680821417,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_69",
+          "area": 86.5167982229979,
+          "latency": 123.11534680821417,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_58",
+          "area": 85.981317678791,
+          "latency": 119.78923230058265,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "dijkstra",
+      "implementations": [
+        {
+          "chip_id": "chip_1",
+          "area": 70.43651580659237,
+          "latency": 453.6709282222494,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_66",
+          "area": 85.25643568283687,
+          "latency": 104.64333563467041,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_84",
+          "area": 85.0858752132006,
+          "latency": 100.51923708865264,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_84",
+          "area": 85.0858752132006,
+          "latency": 100.51923708865264,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_84",
+          "area": 85.0858752132006,
+          "latency": 100.51923708865264,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_84",
+          "area": 85.0858752132006,
+          "latency": 100.51923708865264,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_64",
+          "area": 91.78830669152353,
+          "latency": 99.72803484111057,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_81",
+          "area": 91.75558288048867,
+          "latency": 101.66360668183452,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_145",
+          "area": 91.51164174368331,
+          "latency": 95.44470492819518,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_132",
+          "area": 91.67228590694539,
+          "latency": 96.44894557627791,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_28",
+          "area": 91.78235690769903,
+          "latency": 100.04549561595721,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_0",
+          "area": 70.83911784538496,
+          "latency": 378.7743996038284,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_80",
+          "area": 91.75855777240093,
+          "latency": 95.52759220993917,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_60",
+          "area": 91.87160366506684,
+          "latency": 99.54753161062891,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_132",
+          "area": 91.67228590694539,
+          "latency": 96.44894557627791,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_127",
+          "area": 91.89639443100234,
+          "latency": 92.55365791312154,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_56",
+          "area": 90.77684344135496,
+          "latency": 88.70967741935483,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_19",
+          "area": 91.05747491174488,
+          "latency": 90.9466721785862,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_19",
+          "area": 91.05747491174488,
+          "latency": 90.9466721785862,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_1",
+          "area": 70.43651580659237,
+          "latency": 453.67115251969886,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_83",
+          "area": 85.75522589345921,
+          "latency": 103.85566696536097,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_65",
+          "area": 85.88017135377414,
+          "latency": 103.9484781065275,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_65",
+          "area": 85.88017135377414,
+          "latency": 103.9484781065275,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_65",
+          "area": 85.88017135377414,
+          "latency": 103.9484781065275,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_83",
+          "area": 85.75522589345921,
+          "latency": 103.85566696536097,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_65",
+          "area": 85.88017135377414,
+          "latency": 103.9484781065275,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_66",
+          "area": 85.25643568283687,
+          "latency": 104.64333563467041,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "edn",
+      "implementations": [
+        {
+          "chip_id": "chip_152",
+          "area": 70.87779144024434,
+          "latency": 4804.410439263695,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_156",
+          "area": 88.5218753718615,
+          "latency": 94.69642714423675,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_164",
+          "area": 88.00424417912816,
+          "latency": 95.65865342487821,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_157",
+          "area": 85.94165245329421,
+          "latency": 93.09865094887863,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_157",
+          "area": 85.94165245329421,
+          "latency": 93.09865094887863,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_165",
+          "area": 86.10923803101821,
+          "latency": 92.7849504500675,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_157",
+          "area": 85.94165245329421,
+          "latency": 93.09865094887863,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_157",
+          "area": 85.94165245329421,
+          "latency": 93.09865094887863,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_157",
+          "area": 85.94165245329421,
+          "latency": 93.09865094887863,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_158",
+          "area": 87.13260084883584,
+          "latency": 90.31203959229343,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_158",
+          "area": 87.13260084883584,
+          "latency": 90.31203959229343,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_116",
+          "area": 71.83669826662964,
+          "latency": 4854.541219097647,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_158",
+          "area": 87.13260084883584,
+          "latency": 90.31203959229343,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_109",
+          "area": 86.00214192217683,
+          "latency": 90.46065835405716,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_109",
+          "area": 86.00214192217683,
+          "latency": 90.46065835405716,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_155",
+          "area": 86.33731307762484,
+          "latency": 94.82761388940233,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_149",
+          "area": 85.99520050771488,
+          "latency": 89.46726311508742,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_86",
+          "area": 86.02296616556266,
+          "latency": 93.73668512995313,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_149",
+          "area": 85.99520050771488,
+          "latency": 89.46726311508742,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_159",
+          "area": 71.6472968148824,
+          "latency": 4704.099962608346,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_156",
+          "area": 88.5218753718615,
+          "latency": 94.69642714423675,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_156",
+          "area": 88.5218753718615,
+          "latency": 94.69642714423675,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_156",
+          "area": 88.5218753718615,
+          "latency": 94.69642714423675,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_156",
+          "area": 88.5218753718615,
+          "latency": 94.69642714423675,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_156",
+          "area": 88.5218753718615,
+          "latency": 94.69642714423675,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_164",
+          "area": 88.00424417912816,
+          "latency": 95.65865342487821,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_156",
+          "area": 88.5218753718615,
+          "latency": 94.69642714423675,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "huffbench",
+      "implementations": [
+        {
+          "chip_id": "chip_183",
+          "area": 70.5565031137202,
+          "latency": 110.35719486921604,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_88",
+          "area": 69.7007258736266,
+          "latency": 82.51869746724617,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_88",
+          "area": 69.7007258736266,
+          "latency": 82.51869746724617,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_87",
+          "area": 69.70667565745113,
+          "latency": 79.76529777108595,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_87",
+          "area": 69.70667565745113,
+          "latency": 79.76529777108595,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_87",
+          "area": 69.70667565745113,
+          "latency": 79.76656116127623,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_87",
+          "area": 69.70667565745113,
+          "latency": 79.76529777108595,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_87",
+          "area": 69.70667565745113,
+          "latency": 79.76529777108595,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_87",
+          "area": 69.70667565745113,
+          "latency": 79.76614003121281,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_55",
+          "area": 68.99170996787117,
+          "latency": 82.24615341969785,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_55",
+          "area": 68.99170996787117,
+          "latency": 82.24615341969785,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_183",
+          "area": 70.5565031137202,
+          "latency": 110.3837971049096,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_55",
+          "area": 68.99170996787117,
+          "latency": 82.24615341969785,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_53",
+          "area": 69.02344214826861,
+          "latency": 79.71151905509736,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_53",
+          "area": 69.02344214826861,
+          "latency": 79.71151905509736,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_54",
+          "area": 69.01550910316926,
+          "latency": 82.36844870643213,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_13",
+          "area": 68.82709928205942,
+          "latency": 78.88131946934386,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_13",
+          "area": 68.82709928205942,
+          "latency": 78.88131946934386,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_14",
+          "area": 69.02542540954344,
+          "latency": 83.14436885865459,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_183",
+          "area": 70.5565031137202,
+          "latency": 110.53809007193212,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_172",
+          "area": 70.94224743167665,
+          "latency": 98.18774519272048,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_172",
+          "area": 70.94224743167665,
+          "latency": 98.18774519272048,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_172",
+          "area": 70.94224743167665,
+          "latency": 98.18774519272048,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_88",
+          "area": 69.7007258736266,
+          "latency": 82.51869746724617,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_88",
+          "area": 69.7007258736266,
+          "latency": 82.51869746724617,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_88",
+          "area": 69.7007258736266,
+          "latency": 82.51869746724617,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_88",
+          "area": 69.7007258736266,
+          "latency": 82.51869746724617,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "nsichneu",
+      "implementations": [
+        {
+          "chip_id": "chip_171",
+          "area": 70.4137083019317,
+          "latency": 99.29620737638302,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_177",
+          "area": 70.34032763476262,
+          "latency": 82.30497885985997,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_177",
+          "area": 70.34032763476262,
+          "latency": 82.30497885985997,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_167",
+          "area": 70.56542778945699,
+          "latency": 83.33379109560822,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_167",
+          "area": 70.56542778945699,
+          "latency": 83.33379109560822,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_167",
+          "area": 70.56542778945699,
+          "latency": 83.33379109560822,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_177",
+          "area": 70.34032763476262,
+          "latency": 82.30497885985997,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_177",
+          "area": 70.34032763476262,
+          "latency": 82.30497885985997,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_177",
+          "area": 70.34032763476262,
+          "latency": 82.30497885985997,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_177",
+          "area": 70.34032763476262,
+          "latency": 82.30497885985997,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_177",
+          "area": 70.34032763476262,
+          "latency": 82.30497885985997,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_171",
+          "area": 70.4137083019317,
+          "latency": 99.29620737638302,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_177",
+          "area": 70.34032763476262,
+          "latency": 82.30497885985997,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_178",
+          "area": 68.79338384038714,
+          "latency": 78.09746159557325,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_176",
+          "area": 70.53369560905955,
+          "latency": 81.36139367322697,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_175",
+          "area": 69.19796914045456,
+          "latency": 80.20443639833096,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_57",
+          "area": 68.80627503867359,
+          "latency": 79.22218221101907,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_57",
+          "area": 68.80627503867359,
+          "latency": 79.22218221101907,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_166",
+          "area": 68.85684820118202,
+          "latency": 78.26396300249021,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_171",
+          "area": 70.4137083019317,
+          "latency": 98.47744806029336,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_177",
+          "area": 70.34032763476262,
+          "latency": 82.30497885985997,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_167",
+          "area": 70.56542778945699,
+          "latency": 83.33379109560822,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_177",
+          "area": 70.34032763476262,
+          "latency": 82.30497885985997,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_167",
+          "area": 70.56542778945699,
+          "latency": 83.33379109560822,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_167",
+          "area": 70.56542778945699,
+          "latency": 83.33379109560822,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_167",
+          "area": 70.56542778945699,
+          "latency": 83.33379109560822,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_177",
+          "area": 70.34032763476262,
+          "latency": 82.30497885985997,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "slre",
+      "implementations": [
+        {
+          "chip_id": "chip_174",
+          "area": 71.12272420768711,
+          "latency": 112.42815868329261,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_72",
+          "area": 70.95216373805086,
+          "latency": 84.93351104639784,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_72",
+          "area": 70.95216373805086,
+          "latency": 84.93351104639784,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_73",
+          "area": 69.93574233469518,
+          "latency": 81.44731157640551,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_73",
+          "area": 69.93574233469518,
+          "latency": 81.44731157640551,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_73",
+          "area": 69.93574233469518,
+          "latency": 81.44731157640551,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_35",
+          "area": 69.80881361310539,
+          "latency": 77.574047954866,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_35",
+          "area": 69.80881361310539,
+          "latency": 77.574047954866,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_35",
+          "area": 69.80881361310539,
+          "latency": 77.574047954866,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_35",
+          "area": 69.80881361310539,
+          "latency": 77.574047954866,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_35",
+          "area": 69.80881361310539,
+          "latency": 77.574047954866,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_174",
+          "area": 71.12272420768711,
+          "latency": 111.95795686831289,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_35",
+          "area": 69.80881361310539,
+          "latency": 77.574047954866,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_35",
+          "area": 69.80881361310539,
+          "latency": 77.574047954866,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_34",
+          "area": 69.8187299194796,
+          "latency": 79.36507936507937,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_35",
+          "area": 69.80881361310539,
+          "latency": 77.574047954866,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_18",
+          "area": 69.0135258418944,
+          "latency": 79.0513833992095,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_18",
+          "area": 69.0135258418944,
+          "latency": 79.0513833992095,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_18",
+          "area": 69.0135258418944,
+          "latency": 79.0513833992095,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_174",
+          "area": 71.12272420768711,
+          "latency": 111.52507265769663,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_79",
+          "area": 70.94323906231406,
+          "latency": 93.2028530672045,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_79",
+          "area": 70.94323906231406,
+          "latency": 93.2028530672045,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_79",
+          "area": 70.94323906231406,
+          "latency": 93.2028530672045,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_71",
+          "area": 70.97596287334895,
+          "latency": 90.85455726205008,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_71",
+          "area": 70.97596287334895,
+          "latency": 90.85455726205008,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_71",
+          "area": 70.97596287334895,
+          "latency": 90.85455726205008,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_72",
+          "area": 70.95216373805086,
+          "latency": 84.93351104639784,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "statemate",
+      "implementations": [
+        {
+          "chip_id": "chip_184",
+          "area": 71.04240212605609,
+          "latency": 84.37235429974415,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_182",
+          "area": 70.81333544881203,
+          "latency": 81.06183374325518,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_168",
+          "area": 70.9987703780096,
+          "latency": 80.67645520581321,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_179",
+          "area": 70.81928523263656,
+          "latency": 82.15148072476786,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_179",
+          "area": 70.81928523263656,
+          "latency": 82.15148072476786,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_179",
+          "area": 70.81928523263656,
+          "latency": 82.15148072476786,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_179",
+          "area": 70.81928523263656,
+          "latency": 82.15148072476786,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_179",
+          "area": 70.81928523263656,
+          "latency": 82.15148072476786,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_168",
+          "area": 70.9987703780096,
+          "latency": 80.67645520581321,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_179",
+          "area": 70.81928523263656,
+          "latency": 82.15148072476786,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_179",
+          "area": 70.81928523263656,
+          "latency": 82.15148072476786,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_184",
+          "area": 71.04240212605609,
+          "latency": 84.37213083366855,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_168",
+          "area": 70.9987703780096,
+          "latency": 80.67645520581321,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_179",
+          "area": 70.81928523263656,
+          "latency": 82.15148072476786,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_179",
+          "area": 70.81928523263656,
+          "latency": 82.15148072476786,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_168",
+          "area": 70.9987703780096,
+          "latency": 80.67645520581321,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_70",
+          "area": 69.37249613264052,
+          "latency": 82.48968878890139,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_70",
+          "area": 69.37249613264052,
+          "latency": 82.48968878890139,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_70",
+          "area": 69.37249613264052,
+          "latency": 82.48968878890139,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_184",
+          "area": 71.04240212605609,
+          "latency": 84.37213083366855,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_180",
+          "area": 70.78061163777717,
+          "latency": 84.3854663397492,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_180",
+          "area": 70.78061163777717,
+          "latency": 84.3854663397492,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_180",
+          "area": 70.78061163777717,
+          "latency": 84.3854663397492,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_169",
+          "area": 70.9987703780096,
+          "latency": 83.04416146099045,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_169",
+          "area": 70.9987703780096,
+          "latency": 83.04416146099045,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_169",
+          "area": 70.9987703780096,
+          "latency": 83.04416146099045,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_179",
+          "area": 70.81928523263656,
+          "latency": 82.15148072476786,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "ud",
+      "implementations": [
+        {
+          "chip_id": "chip_163",
+          "area": 70.70128118678355,
+          "latency": 5559.443321658148,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_148",
+          "area": 97.44952600055531,
+          "latency": 102.31112375434857,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_85",
+          "area": 97.69049224544841,
+          "latency": 100.64752824614777,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 97.25020824243387,
+          "latency": 107.42332050091687,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 97.25020824243387,
+          "latency": 107.42332050091687,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 97.25020824243387,
+          "latency": 107.42332050091687,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 97.25020824243387,
+          "latency": 107.42332050091687,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 97.25020824243387,
+          "latency": 107.42332050091687,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 97.25020824243387,
+          "latency": 107.42332050091687,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 97.25020824243387,
+          "latency": 107.42332050091687,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 97.25020824243387,
+          "latency": 107.42332050091687,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_121",
+          "area": 70.77367022331522,
+          "latency": 5747.719750740179,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 97.25020824243387,
+          "latency": 107.42332050091687,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_76",
+          "area": 97.5764547221451,
+          "latency": 108.42925598121131,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_61",
+          "area": 98.46793066518585,
+          "latency": 110.83218331582982,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_75",
+          "area": 98.45008131371227,
+          "latency": 107.16169526832817,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_163",
+          "area": 70.70128118678355,
+          "latency": 5559.443321658148,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_148",
+          "area": 97.44952600055531,
+          "latency": 102.31112375434857,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_148",
+          "area": 97.44952600055531,
+          "latency": 102.31112375434857,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_148",
+          "area": 97.44952600055531,
+          "latency": 102.31112375434857,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_148",
+          "area": 97.44952600055531,
+          "latency": 102.31112375434857,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_148",
+          "area": 97.44952600055531,
+          "latency": 102.31112375434857,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_148",
+          "area": 97.44952600055531,
+          "latency": 102.31112375434857,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_85",
+          "area": 97.69049224544841,
+          "latency": 100.64752824614777,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "wikisort",
+      "implementations": [
+        {
+          "chip_id": "chip_94",
+          "area": 70.78358652968943,
+          "latency": 806.0608265489199,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_108",
+          "area": 88.15695529729088,
+          "latency": 132.60801180887444,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_108",
+          "area": 88.15695529729088,
+          "latency": 132.60801180887444,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_108",
+          "area": 88.15695529729088,
+          "latency": 129.311661600645,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_108",
+          "area": 88.15695529729088,
+          "latency": 129.311661600645,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_108",
+          "area": 88.15695529729088,
+          "latency": 129.311661600645,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_108",
+          "area": 88.15695529729088,
+          "latency": 129.311661600645,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_108",
+          "area": 88.15695529729088,
+          "latency": 129.311661600645,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_108",
+          "area": 88.15695529729088,
+          "latency": 129.311661600645,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_21",
+          "area": 98.06433699575582,
+          "latency": 100.17949518686284,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_21",
+          "area": 98.06433699575582,
+          "latency": 100.17949518686284,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_120",
+          "area": 70.96505493633731,
+          "latency": 802.7856497278141,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_21",
+          "area": 98.06433699575582,
+          "latency": 100.17949518686284,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_22",
+          "area": 97.60818690254254,
+          "latency": 103.29271300640761,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_22",
+          "area": 97.60818690254254,
+          "latency": 103.29271300640761,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_22",
+          "area": 97.60818690254254,
+          "latency": 103.29271300640761,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_2",
+          "area": 98.89234857800166,
+          "latency": 100.22779043280184,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_2",
+          "area": 98.89234857800166,
+          "latency": 100.22779043280184,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_2",
+          "area": 98.89234857800166,
+          "latency": 100.22779043280184,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_120",
+          "area": 70.96505493633731,
+          "latency": 802.7856497278141,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_120",
+          "area": 70.96505493633731,
+          "latency": 802.7856497278141,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_120",
+          "area": 70.96505493633731,
+          "latency": 802.7856497278141,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_120",
+          "area": 70.96505493633731,
+          "latency": 802.7856497278141,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_119",
+          "area": 87.62444964499623,
+          "latency": 141.15728539042843,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_119",
+          "area": 87.62444964499623,
+          "latency": 141.15728539042843,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_119",
+          "area": 87.62444964499623,
+          "latency": 141.15728539042843,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_108",
+          "area": 88.15695529729088,
+          "latency": 132.60801180887444,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "matmult-int",
+      "implementations": [
+        {
+          "chip_id": "chip_117",
+          "area": 71.02752766649478,
+          "latency": 3556.7164574195617,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_112",
+          "area": 88.03002657570109,
+          "latency": 95.62656997257011,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_112",
+          "area": 88.03002657570109,
+          "latency": 95.62656997257011,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_103",
+          "area": 87.82674229502994,
+          "latency": 90.69376152963088,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_112",
+          "area": 88.03002657570109,
+          "latency": 95.62656997257011,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_112",
+          "area": 88.03002657570109,
+          "latency": 95.62656997257011,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_103",
+          "area": 87.82674229502994,
+          "latency": 90.69376152963088,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_103",
+          "area": 87.82674229502994,
+          "latency": 90.69376152963088,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_103",
+          "area": 87.82674229502994,
+          "latency": 90.69376152963088,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_104",
+          "area": 85.48351909880607,
+          "latency": 92.52593136238154,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_113",
+          "area": 85.61838086549523,
+          "latency": 97.51308717201036,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_151",
+          "area": 70.75582087184166,
+          "latency": 3620.733982852006,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_104",
+          "area": 85.48351909880607,
+          "latency": 92.52593136238154,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_154",
+          "area": 91.68716036650669,
+          "latency": 93.53763336570005,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_154",
+          "area": 91.68716036650669,
+          "latency": 93.53763336570005,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_100",
+          "area": 93.25790329618025,
+          "latency": 93.61714618264475,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_52",
+          "area": 91.25381777795405,
+          "latency": 89.39455505891914,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_143",
+          "area": 91.40157074292968,
+          "latency": 91.40008309098462,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_143",
+          "area": 91.40157074292968,
+          "latency": 91.40008309098462,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_161",
+          "area": 70.99976200864701,
+          "latency": 3574.234600610828,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_112",
+          "area": 88.03002657570109,
+          "latency": 95.62656997257011,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_103",
+          "area": 87.82674229502994,
+          "latency": 90.69376152963088,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_103",
+          "area": 87.82674229502994,
+          "latency": 90.69376152963088,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_103",
+          "area": 87.82674229502994,
+          "latency": 90.69376152963088,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_112",
+          "area": 88.03002657570109,
+          "latency": 95.62656997257011,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_112",
+          "area": 88.03002657570109,
+          "latency": 95.62656997257011,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_112",
+          "area": 88.03002657570109,
+          "latency": 95.62656997257011,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "md5",
+      "implementations": [
+        {
+          "chip_id": "chip_173",
+          "area": 70.66855737574868,
+          "latency": 137.55009357268816,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_59",
+          "area": 70.851017413034,
+          "latency": 84.87234626147585,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_59",
+          "area": 70.851017413034,
+          "latency": 84.87234626147585,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_26",
+          "area": 70.83812621474753,
+          "latency": 81.50948817203547,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_26",
+          "area": 70.83812621474753,
+          "latency": 81.50948817203547,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_26",
+          "area": 70.83812621474753,
+          "latency": 81.50948817203547,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_27",
+          "area": 70.66260759192417,
+          "latency": 79.27040016200903,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_27",
+          "area": 70.66260759192417,
+          "latency": 79.27040016200903,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_27",
+          "area": 70.66260759192417,
+          "latency": 79.27040016200903,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_25",
+          "area": 70.66260759192417,
+          "latency": 78.6929862670777,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_25",
+          "area": 70.66260759192417,
+          "latency": 78.6929862670777,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_173",
+          "area": 70.66855737574868,
+          "latency": 137.55009357268816,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_25",
+          "area": 70.66260759192417,
+          "latency": 78.6929862670777,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_24",
+          "area": 70.67153226766094,
+          "latency": 78.45947354964852,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_24",
+          "area": 70.67153226766094,
+          "latency": 78.45947354964852,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_24",
+          "area": 70.67153226766094,
+          "latency": 78.45947354964852,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_15",
+          "area": 70.69334814168418,
+          "latency": 78.5433773652267,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_15",
+          "area": 70.69334814168418,
+          "latency": 78.5433773652267,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_15",
+          "area": 70.69334814168418,
+          "latency": 78.5433773652267,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_173",
+          "area": 70.66855737574868,
+          "latency": 137.55009357268816,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_106",
+          "area": 70.8758081789695,
+          "latency": 92.92096624372606,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_106",
+          "area": 70.8758081789695,
+          "latency": 92.92096624372606,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_106",
+          "area": 70.8758081789695,
+          "latency": 92.92096624372606,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_63",
+          "area": 71.1564396493594,
+          "latency": 89.57770159310009,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_63",
+          "area": 71.1564396493594,
+          "latency": 89.57770159310009,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_63",
+          "area": 71.1564396493594,
+          "latency": 89.57770159310009,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_59",
+          "area": 70.851017413034,
+          "latency": 84.87234626147585,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "mont64",
+      "implementations": [
+        {
+          "chip_id": "chip_107",
+          "area": 70.66260759192417,
+          "latency": 864.9796159775476,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_82",
+          "area": 85.11859902423546,
+          "latency": 108.36460660714033,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_82",
+          "area": 85.11859902423546,
+          "latency": 108.36460660714033,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_40",
+          "area": 85.6907699020269,
+          "latency": 116.3466324913574,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_40",
+          "area": 85.6907699020269,
+          "latency": 116.3466324913574,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_40",
+          "area": 85.6907699020269,
+          "latency": 116.3466324913574,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_40",
+          "area": 85.6907699020269,
+          "latency": 116.3466324913574,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_40",
+          "area": 85.6907699020269,
+          "latency": 116.3466324913574,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_40",
+          "area": 85.6907699020269,
+          "latency": 116.3466324913574,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_39",
+          "area": 85.73142675816112,
+          "latency": 89.79591836734694,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_39",
+          "area": 85.73142675816112,
+          "latency": 89.79591836734694,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_107",
+          "area": 70.66260759192417,
+          "latency": 864.9796159775476,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_47",
+          "area": 85.63623021696878,
+          "latency": 89.68611861106444,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_47",
+          "area": 85.63623021696878,
+          "latency": 89.68611861106444,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_47",
+          "area": 85.63623021696878,
+          "latency": 89.68611861106444,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_39",
+          "area": 85.73142675816112,
+          "latency": 89.79595832893152,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_29",
+          "area": 87.24862163341398,
+          "latency": 97.00176366843034,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_29",
+          "area": 87.24862163341398,
+          "latency": 97.00176366843034,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_29",
+          "area": 87.24862163341398,
+          "latency": 97.00176366843034,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_0",
+          "area": 70.83911784538496,
+          "latency": 859.4089893083681,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_115",
+          "area": 87.65122367220658,
+          "latency": 157.41729826578654,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_115",
+          "area": 87.65122367220658,
+          "latency": 157.41729826578654,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_115",
+          "area": 87.65122367220658,
+          "latency": 157.41729826578654,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_82",
+          "area": 85.11859902423546,
+          "latency": 108.36460660714033,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_82",
+          "area": 85.11859902423546,
+          "latency": 108.36460660714033,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_82",
+          "area": 85.11859902423546,
+          "latency": 108.36460660714033,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_82",
+          "area": 85.11859902423546,
+          "latency": 108.36460660714033,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "patricia",
+      "implementations": [
+        {
+          "chip_id": "chip_91",
+          "area": 70.85795882749593,
+          "latency": 442.81406963649647,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_91",
+          "area": 70.85795882749593,
+          "latency": 438.82520727737784,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_91",
+          "area": 70.85795882749593,
+          "latency": 438.47756788319475,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_45",
+          "area": 86.69033358454644,
+          "latency": 270.40346277674007,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_45",
+          "area": 86.69033358454644,
+          "latency": 270.40346277674007,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_45",
+          "area": 86.69033358454644,
+          "latency": 270.40346277674007,
+          "variant_id": "5_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "picojpeg_test",
+      "implementations": [
+        {
+          "chip_id": "chip_101",
+          "area": 71.3478243623815,
+          "latency": 967.1349037583941,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_140",
+          "area": 87.67601443814208,
+          "latency": 95.23335530610446,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_140",
+          "area": 87.67601443814208,
+          "latency": 95.23335530610446,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_139",
+          "area": 88.72813454444488,
+          "latency": 93.89002492495476,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_139",
+          "area": 88.72813454444488,
+          "latency": 93.89002492495476,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_139",
+          "area": 88.72813454444488,
+          "latency": 93.89002492495476,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_139",
+          "area": 88.72813454444488,
+          "latency": 93.95775649273789,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_139",
+          "area": 88.72813454444488,
+          "latency": 93.95775649273789,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_139",
+          "area": 88.72813454444488,
+          "latency": 93.95775649273789,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_138",
+          "area": 88.0111855935901,
+          "latency": 90.2793420488673,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_138",
+          "area": 88.0111855935901,
+          "latency": 90.2793420488673,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_101",
+          "area": 71.3478243623815,
+          "latency": 966.3610208884402,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_138",
+          "area": 88.0111855935901,
+          "latency": 90.2793420488673,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_5",
+          "area": 88.06671690928563,
+          "latency": 100.27347310847767,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_5",
+          "area": 88.06671690928563,
+          "latency": 100.27347310847767,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_5",
+          "area": 88.06671690928563,
+          "latency": 100.27347310847767,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_101",
+          "area": 71.3478243623815,
+          "latency": 966.3607330926536,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_150",
+          "area": 87.78410217762088,
+          "latency": 129.03013142840211,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_150",
+          "area": 87.78410217762088,
+          "latency": 129.03013142840211,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_89",
+          "area": 88.5129506961247,
+          "latency": 113.5795349696185,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_140",
+          "area": 87.67601443814208,
+          "latency": 95.7003993627196,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_140",
+          "area": 87.67601443814208,
+          "latency": 95.63179402106992,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_140",
+          "area": 87.67601443814208,
+          "latency": 95.7003993627196,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_140",
+          "area": 87.67601443814208,
+          "latency": 95.14627929554909,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "primecount",
+      "implementations": [
+        {
+          "chip_id": "chip_153",
+          "area": 70.40974177938202,
+          "latency": 925.9952363091205,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_74",
+          "area": 87.06219507357899,
+          "latency": 94.34148861540132,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_146",
+          "area": 87.06814485740352,
+          "latency": 95.11645112456371,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_146",
+          "area": 87.06814485740352,
+          "latency": 95.11645112456371,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_146",
+          "area": 87.06814485740352,
+          "latency": 95.11645112456371,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_146",
+          "area": 87.06814485740352,
+          "latency": 95.11645112456371,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_146",
+          "area": 87.06814485740352,
+          "latency": 95.11645112456371,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_146",
+          "area": 87.06814485740352,
+          "latency": 95.11645112456371,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_146",
+          "area": 87.06814485740352,
+          "latency": 95.11645112456371,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_74",
+          "area": 87.06219507357899,
+          "latency": 94.34148861540132,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_146",
+          "area": 87.06814485740352,
+          "latency": 95.11645112456371,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_153",
+          "area": 70.40974177938202,
+          "latency": 925.9951803190994,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_146",
+          "area": 87.06814485740352,
+          "latency": 95.11645112456371,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_137",
+          "area": 86.48903256515014,
+          "latency": 99.09909909909909,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_137",
+          "area": 86.48903256515014,
+          "latency": 99.09909909909909,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_136",
+          "area": 86.71016619729484,
+          "latency": 97.25906277630415,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_128",
+          "area": 85.33477450319306,
+          "latency": 97.13024282560707,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_144",
+          "area": 85.08091706001349,
+          "latency": 90.64688916357643,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_144",
+          "area": 85.08091706001349,
+          "latency": 90.64688916357643,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_153",
+          "area": 70.40974177938202,
+          "latency": 925.9951243290784,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_146",
+          "area": 87.06814485740352,
+          "latency": 95.11645112456371,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_146",
+          "area": 87.06814485740352,
+          "latency": 95.11645112456371,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_146",
+          "area": 87.06814485740352,
+          "latency": 95.11645112456371,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_74",
+          "area": 87.06219507357899,
+          "latency": 94.34148861540132,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_74",
+          "area": 87.06219507357899,
+          "latency": 94.34148861540132,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_74",
+          "area": 87.06219507357899,
+          "latency": 94.34148861540132,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_146",
+          "area": 87.06814485740352,
+          "latency": 95.11645112456371,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "qsort_num",
+      "implementations": [
+        {
+          "chip_id": "chip_122",
+          "area": 70.64773313236287,
+          "latency": 1807.255008249065,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_97",
+          "area": 91.36983856253222,
+          "latency": 97.25032452946796,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_97",
+          "area": 91.36983856253222,
+          "latency": 97.25032452946796,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_141",
+          "area": 90.92757129824284,
+          "latency": 93.57720666841215,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_141",
+          "area": 90.92757129824284,
+          "latency": 93.57720666841215,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_141",
+          "area": 90.92757129824284,
+          "latency": 93.57720666841215,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_141",
+          "area": 90.92757129824284,
+          "latency": 93.57720666841215,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_141",
+          "area": 90.92757129824284,
+          "latency": 93.57720666841215,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_141",
+          "area": 90.92757129824284,
+          "latency": 93.57720666841215,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_141",
+          "area": 90.92757129824284,
+          "latency": 93.57720666841215,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_141",
+          "area": 90.92757129824284,
+          "latency": 93.57720666841215,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_1",
+          "area": 70.43651580659237,
+          "latency": 2335.165389329938,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_126",
+          "area": 91.17547895759787,
+          "latency": 92.1273085751411,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_141",
+          "area": 90.92757129824284,
+          "latency": 93.57720666841215,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_141",
+          "area": 90.92757129824284,
+          "latency": 93.57720666841215,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_141",
+          "area": 90.92757129824284,
+          "latency": 93.57720666841215,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_20",
+          "area": 90.59339177343223,
+          "latency": 91.9732441471572,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_20",
+          "area": 90.59339177343223,
+          "latency": 91.9732441471572,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_125",
+          "area": 90.75106104478205,
+          "latency": 89.14100486223661,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_122",
+          "area": 70.64773313236287,
+          "latency": 1807.255008249065,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_98",
+          "area": 85.76216730792116,
+          "latency": 141.83159827487216,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_98",
+          "area": 85.76216730792116,
+          "latency": 141.83159827487216,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_98",
+          "area": 85.76216730792116,
+          "latency": 141.83159827487216,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_99",
+          "area": 85.32485819681885,
+          "latency": 128.38609158674097,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_99",
+          "area": 85.32485819681885,
+          "latency": 128.38609158674097,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_99",
+          "area": 85.32485819681885,
+          "latency": 128.38609158674097,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_97",
+          "area": 91.36983856253222,
+          "latency": 97.25032452946796,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "qsort_str",
+      "implementations": [
+        {
+          "chip_id": "chip_185",
+          "area": 70.84407599857205,
+          "latency": 88.35476697104161,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_129",
+          "area": 69.48256713339416,
+          "latency": 79.20520067560274,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_134",
+          "area": 69.63527825155687,
+          "latency": 80.59730965854997,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_134",
+          "area": 69.63527825155687,
+          "latency": 80.59730965854997,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_129",
+          "area": 69.48256713339416,
+          "latency": 79.20520067560274,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_134",
+          "area": 69.63527825155687,
+          "latency": 80.59730965854997,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_135",
+          "area": 68.78247590337551,
+          "latency": 78.26397615207345,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_130",
+          "area": 68.81321645313554,
+          "latency": 78.0141975047796,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_130",
+          "area": 68.81321645313554,
+          "latency": 78.0141975047796,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_131",
+          "area": 68.79239220974972,
+          "latency": 77.95889702079933,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_124",
+          "area": 68.9490698504621,
+          "latency": 82.30452951466357,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_185",
+          "area": 70.84407599857205,
+          "latency": 88.11743029486787,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_124",
+          "area": 68.9490698504621,
+          "latency": 82.30452951466357,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_135",
+          "area": 68.78247590337551,
+          "latency": 78.26397615207345,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_130",
+          "area": 68.81321645313554,
+          "latency": 78.0141975047796,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_135",
+          "area": 68.78247590337551,
+          "latency": 78.26397615207345,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_12",
+          "area": 69.30506524929595,
+          "latency": 81.87569780424265,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_16",
+          "area": 68.9391535440879,
+          "latency": 80.61561011359473,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_12",
+          "area": 69.30506524929595,
+          "latency": 81.87569780424265,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_185",
+          "area": 70.84407599857205,
+          "latency": 88.11743029486787,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_90",
+          "area": 71.29725119987307,
+          "latency": 84.91010800446472,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_92",
+          "area": 71.25956923565111,
+          "latency": 83.04290846206314,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_92",
+          "area": 71.25956923565111,
+          "latency": 83.04290846206314,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_129",
+          "area": 69.48256713339416,
+          "latency": 79.20520067560274,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_134",
+          "area": 69.63527825155687,
+          "latency": 80.59730965854997,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_134",
+          "area": 69.63527825155687,
+          "latency": 80.59730965854997,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_134",
+          "area": 69.63527825155687,
+          "latency": 80.59730965854997,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "rijndael",
+      "implementations": [
+        {
+          "chip_id": "chip_50",
+          "area": 85.7988576415057,
+          "latency": 93.84745964384564,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_44",
+          "area": 85.6372218476062,
+          "latency": 90.69602658536178,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_44",
+          "area": 85.6372218476062,
+          "latency": 90.69602658536178,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_43",
+          "area": 85.56979096426163,
+          "latency": 93.86341190612794,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_43",
+          "area": 85.56979096426163,
+          "latency": 93.86341190612794,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_43",
+          "area": 85.56979096426163,
+          "latency": 93.86341190612794,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_42",
+          "area": 89.7713299750109,
+          "latency": 99.055325991161,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_42",
+          "area": 89.7713299750109,
+          "latency": 99.055325991161,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_42",
+          "area": 89.7713299750109,
+          "latency": 99.055325991161,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_41",
+          "area": 91.34603942723415,
+          "latency": 98.6989681471512,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_41",
+          "area": 91.34603942723415,
+          "latency": 98.6989681471512,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_50",
+          "area": 85.7988576415057,
+          "latency": 93.84745964384564,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_41",
+          "area": 91.34603942723415,
+          "latency": 98.6989681471512,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_4",
+          "area": 91.51362500495816,
+          "latency": 98.30205540661305,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_4",
+          "area": 91.51362500495816,
+          "latency": 98.30205540661305,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_4",
+          "area": 91.51362500495816,
+          "latency": 98.30205540661305,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_50",
+          "area": 85.7988576415057,
+          "latency": 93.84745964384564,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_142",
+          "area": 85.42302962992345,
+          "latency": 96.51192190723944,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_142",
+          "area": 85.42302962992345,
+          "latency": 96.51192190723944,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_142",
+          "area": 85.42302962992345,
+          "latency": 96.51192190723944,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_49",
+          "area": 85.44682876522153,
+          "latency": 93.87151459771376,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_49",
+          "area": 85.44682876522153,
+          "latency": 93.87151459771376,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_49",
+          "area": 85.44682876522153,
+          "latency": 93.87151459771376,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_44",
+          "area": 85.6372218476062,
+          "latency": 90.69602658536178,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "sha",
+      "implementations": [
+        {
+          "chip_id": "chip_181",
+          "area": 70.44246559041689,
+          "latency": 193.52251849398615,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_105",
+          "area": 69.03534171591765,
+          "latency": 80.91376366197424,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_105",
+          "area": 69.03534171591765,
+          "latency": 80.91376366197424,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_105",
+          "area": 69.03534171591765,
+          "latency": 80.91376366197424,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_105",
+          "area": 69.03534171591765,
+          "latency": 80.91376366197424,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_105",
+          "area": 69.03534171591765,
+          "latency": 80.91376366197424,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_105",
+          "area": 69.03534171591765,
+          "latency": 80.91376366197424,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_105",
+          "area": 69.03534171591765,
+          "latency": 80.91376366197424,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_105",
+          "area": 69.03534171591765,
+          "latency": 80.91376366197424,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_48",
+          "area": 69.13252151838482,
+          "latency": 80.29325777295652,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_48",
+          "area": 69.13252151838482,
+          "latency": 80.29325777295652,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_170",
+          "area": 70.6943397723216,
+          "latency": 179.24527881530787,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_48",
+          "area": 69.13252151838482,
+          "latency": 80.29325777295652,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_32",
+          "area": 68.97386061639762,
+          "latency": 78.57142857142857,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_32",
+          "area": 68.97386061639762,
+          "latency": 78.57142857142857,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_32",
+          "area": 68.97386061639762,
+          "latency": 78.57142857142857,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_17",
+          "area": 68.9242790845266,
+          "latency": 78.06955287437899,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_17",
+          "area": 68.9242790845266,
+          "latency": 78.06955287437899,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_17",
+          "area": 68.9242790845266,
+          "latency": 78.06955287437899,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_181",
+          "area": 70.44246559041689,
+          "latency": 193.52251849398615,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_114",
+          "area": 69.01253421125699,
+          "latency": 81.0341096901252,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_114",
+          "area": 69.01253421125699,
+          "latency": 81.0341096901252,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_114",
+          "area": 69.01253421125699,
+          "latency": 81.0341096901252,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_114",
+          "area": 69.01253421125699,
+          "latency": 81.0341096901252,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_114",
+          "area": 69.01253421125699,
+          "latency": 81.0341096901252,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_114",
+          "area": 69.01253421125699,
+          "latency": 81.03412821059737,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_105",
+          "area": 69.03534171591765,
+          "latency": 80.91376366197424,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "tarfind",
+      "implementations": [
+        {
+          "chip_id": "chip_160",
+          "area": 70.87283328705723,
+          "latency": 11967.743694404744,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_111",
+          "area": 85.81670699297925,
+          "latency": 372.74814068518856,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_111",
+          "area": 85.81670699297925,
+          "latency": 372.74814068518856,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_78",
+          "area": 86.61496965610249,
+          "latency": 89.8142575879326,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_62",
+          "area": 86.69430010709611,
+          "latency": 90.84765354408961,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_62",
+          "area": 86.69430010709611,
+          "latency": 90.84765354408961,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_78",
+          "area": 86.61496965610249,
+          "latency": 89.8142575879326,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_78",
+          "area": 86.61496965610249,
+          "latency": 89.8142575879326,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_78",
+          "area": 86.61496965610249,
+          "latency": 89.8142575879326,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_36",
+          "area": 86.08246400380787,
+          "latency": 96.40740705823144,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_36",
+          "area": 86.08246400380787,
+          "latency": 96.40740705823144,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_162",
+          "area": 70.85200904367142,
+          "latency": 12095.848555385797,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_36",
+          "area": 86.08246400380787,
+          "latency": 96.40740705823144,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_36",
+          "area": 86.08246400380787,
+          "latency": 96.40740705823144,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_36",
+          "area": 86.08246400380787,
+          "latency": 96.40740705823144,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_46",
+          "area": 86.78156360318908,
+          "latency": 96.5337808445915,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_10",
+          "area": 86.80635436912458,
+          "latency": 96.15384615384616,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_10",
+          "area": 86.80635436912458,
+          "latency": 96.15384615384616,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_9",
+          "area": 85.92479473245805,
+          "latency": 89.72962033802678,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_162",
+          "area": 70.85200904367142,
+          "latency": 12009.489558164236,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_110",
+          "area": 87.55007734718973,
+          "latency": 444.8880394062276,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_110",
+          "area": 87.55007734718973,
+          "latency": 444.8880394062276,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_110",
+          "area": 87.55007734718973,
+          "latency": 444.8880394062276,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_110",
+          "area": 87.55007734718973,
+          "latency": 444.8880394062276,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_102",
+          "area": 87.53520288762842,
+          "latency": 438.613940368689,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_102",
+          "area": 87.53520288762842,
+          "latency": 438.613940368689,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_111",
+          "area": 85.81670699297925,
+          "latency": 372.74814068518856,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    }
+  ],
+  "chip_metadata": {
+    "chip_0": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 2,
+      "programs": [
+        "dijkstra",
+        "mont64"
+      ]
+    },
+    "chip_1": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "or",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 2,
+      "programs": [
+        "dijkstra",
+        "qsort_num"
+      ]
+    },
+    "chip_2": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "div",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "mulhu",
+        "or",
+        "ori",
+        "sb",
+        "sll",
+        "slli",
+        "slt",
+        "sltiu",
+        "sltu",
+        "sra",
+        "srai",
+        "srl",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "wikisort"
+      ]
+    },
+    "chip_3": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "div",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "mulhu",
+        "or",
+        "ori",
+        "slli",
+        "sltiu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "basicmath"
+      ]
+    },
+    "chip_4": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "divu",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "ori",
+        "remu",
+        "sb",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "rijndael"
+      ]
+    },
+    "chip_5": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lb",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "ori",
+        "sb",
+        "sh",
+        "sll",
+        "slli",
+        "sltiu",
+        "sltu",
+        "sra",
+        "srai",
+        "srl",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
+    },
+    "chip_6": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "mulhu",
+        "or",
+        "ori",
+        "sb",
+        "sh",
+        "sll",
+        "slli",
+        "slt",
+        "sltiu",
+        "sltu",
+        "sra",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "combined"
+      ]
+    },
+    "chip_7": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "mulhu",
+        "ori",
+        "sb",
+        "sh",
+        "slli",
+        "slt",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "combined"
+      ]
+    },
+    "chip_8": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "mulhu",
+        "sb",
+        "sh",
+        "slli",
+        "slt",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "combined"
+      ]
+    },
+    "chip_9": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "mulhu",
+        "or",
+        "ori",
+        "sb",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srai",
+        "srl",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "tarfind"
+      ]
+    },
+    "chip_10": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "mulhu",
+        "or",
+        "ori",
+        "sb",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "tarfind"
+      ]
+    },
+    "chip_11": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "mulhu",
+        "or",
+        "ori",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "bitcnts"
+      ]
+    },
+    "chip_12": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "ori",
+        "sb",
+        "sll",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srai",
+        "srl",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
+    },
+    "chip_13": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "ori",
+        "sb",
+        "sll",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "huffbench"
+      ]
+    },
+    "chip_14": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "ori",
+        "sb",
+        "sll",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "huffbench"
+      ]
+    },
+    "chip_15": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "ori",
+        "sb",
+        "sll",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srl",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "md5"
+      ]
+    },
+    "chip_16": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "ori",
+        "sb",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srai",
+        "srl",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
+    },
+    "chip_17": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "ori",
+        "sb",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "sha"
+      ]
+    },
+    "chip_18": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "ori",
+        "slli",
+        "slt",
+        "sltiu",
+        "sltu",
+        "sra",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "slre"
+      ]
+    },
+    "chip_19": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "or",
+        "ori",
+        "slli",
+        "slti",
+        "srai",
+        "srl",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "dijkstra"
+      ]
+    },
+    "chip_20": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "or",
+        "ori",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_num"
+      ]
+    },
+    "chip_21": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bne",
+        "div",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "mulhu",
+        "sb",
+        "slli",
+        "sltiu",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "wikisort"
+      ]
+    },
+    "chip_22": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bne",
+        "div",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "mulhu",
+        "sb",
+        "slli",
+        "sltiu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "wikisort"
+      ]
+    },
+    "chip_23": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "slli",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "bitcnts"
+      ]
+    },
+    "chip_24": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "sll",
+        "slli",
+        "sltiu",
+        "srl",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "md5"
+      ]
+    },
+    "chip_25": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "sll",
+        "slli",
+        "srl",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "md5"
+      ]
+    },
+    "chip_26": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "sll",
+        "slli",
+        "srl",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "md5"
+      ]
+    },
+    "chip_27": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "sll",
+        "slli",
+        "srl",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "md5"
+      ]
+    },
+    "chip_28": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "slli",
+        "srai",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "dijkstra"
+      ]
+    },
+    "chip_29": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulhu",
+        "or",
+        "ori",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srai",
+        "srl",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "mont64"
+      ]
+    },
+    "chip_30": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "mulhu",
+        "or",
+        "ori",
+        "slli",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "bitcnts"
+      ]
+    },
+    "chip_31": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "mulhu",
+        "ori",
+        "slli",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "bitcnts"
+      ]
+    },
+    "chip_32": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "sha"
+      ]
+    },
+    "chip_33": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "div",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "mulhu",
+        "slli",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "basicmath"
+      ]
+    },
+    "chip_34": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "slli",
+        "slt",
+        "sltiu",
+        "sltu",
+        "sra",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "slre"
+      ]
+    },
+    "chip_35": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "slli",
+        "slt",
+        "sltiu",
+        "sltu",
+        "sra",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "slre"
+      ]
+    },
+    "chip_36": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "mulhu",
+        "sb",
+        "sll",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "tarfind"
+      ]
+    },
+    "chip_37": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sll",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "bitcnts"
+      ]
+    },
+    "chip_38": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "slli",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "bitcnts"
+      ]
+    },
+    "chip_39": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulhu",
+        "or",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "mont64"
+      ]
+    },
+    "chip_40": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "slli",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "mont64"
+      ]
+    },
+    "chip_41": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "divu",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "remu",
+        "sb",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "rijndael"
+      ]
+    },
+    "chip_42": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "remu",
+        "sb",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "rijndael"
+      ]
+    },
+    "chip_43": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "sb",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "rijndael"
+      ]
+    },
+    "chip_44": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "sb",
+        "slli",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "rijndael"
+      ]
+    },
+    "chip_45": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "sb",
+        "slli",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "patricia"
+      ]
+    },
+    "chip_46": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "mulhu",
+        "or",
+        "sb",
+        "sll",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "tarfind"
+      ]
+    },
+    "chip_47": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "beq",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulhu",
+        "or",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "mont64"
+      ]
+    },
+    "chip_48": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "slli",
+        "sltiu",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "sha"
+      ]
+    },
+    "chip_49": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "sb",
+        "slli",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "rijndael"
+      ]
+    },
+    "chip_50": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "andi",
+        "auipc",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "sb",
+        "slli",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "rijndael"
+      ]
+    },
+    "chip_51": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lui",
+        "lw",
+        "mul",
+        "sb",
+        "sh",
+        "slli",
+        "slt",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "combined"
+      ]
+    },
+    "chip_52": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "or",
+        "ori",
+        "slli",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
+    },
+    "chip_53": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "ori",
+        "sb",
+        "sll",
+        "slli",
+        "sltiu",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "huffbench"
+      ]
+    },
+    "chip_54": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "ori",
+        "sb",
+        "sll",
+        "slli",
+        "sltiu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "huffbench"
+      ]
+    },
+    "chip_55": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "ori",
+        "sb",
+        "sll",
+        "slli",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "huffbench"
+      ]
+    },
+    "chip_56": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "or",
+        "ori",
+        "slli",
+        "slti",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "dijkstra"
+      ]
+    },
+    "chip_57": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "or",
+        "ori",
+        "sll",
+        "slli",
+        "sltiu",
+        "srl",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "nsichneu"
+      ]
+    },
+    "chip_58": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lui",
+        "lw",
+        "mul",
+        "sb",
+        "sh",
+        "slli",
+        "slt",
+        "sltu",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "combined"
+      ]
+    },
+    "chip_59": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "sll",
+        "srl",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "md5"
+      ]
+    },
+    "chip_60": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "slli",
+        "srai",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "dijkstra"
+      ]
+    },
+    "chip_61": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bne",
+        "div",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "sll",
+        "sltiu",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "ud"
+      ]
+    },
+    "chip_62": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "mulhu",
+        "sb",
+        "sll",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "tarfind"
+      ]
+    },
+    "chip_63": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "sll",
+        "srl",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "md5"
+      ]
+    },
+    "chip_64": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "slli",
+        "srai",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "dijkstra"
+      ]
+    },
+    "chip_65": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "slli",
+        "srai",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "dijkstra"
+      ]
+    },
+    "chip_66": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "slli",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "dijkstra"
+      ]
+    },
+    "chip_67": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "div",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "mulhu",
+        "slli",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "basicmath"
+      ]
+    },
+    "chip_68": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lui",
+        "lw",
+        "mul",
+        "sb",
+        "sh",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "combined"
+      ]
+    },
+    "chip_69": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lui",
+        "lw",
+        "mul",
+        "sb",
+        "sh",
+        "slli",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "combined"
+      ]
+    },
+    "chip_70": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "ori",
+        "sb",
+        "sh",
+        "slli",
+        "sltiu",
+        "srl",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "statemate"
+      ]
+    },
+    "chip_71": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sll",
+        "slt",
+        "sltu",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "slre"
+      ]
+    },
+    "chip_72": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sll",
+        "slt",
+        "sltu",
+        "sra",
+        "srl",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "slre"
+      ]
+    },
+    "chip_73": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "slli",
+        "slt",
+        "sltiu",
+        "sltu",
+        "sra",
+        "srli",
+        "sub",
+        "sw",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "slre"
+      ]
+    },
+    "chip_74": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lw",
+        "mul",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "primecount"
+      ]
+    },
+    "chip_75": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "div",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "ud"
+      ]
+    },
+    "chip_76": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "div",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "ud"
+      ]
+    },
+    "chip_77": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "div",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "mulhu",
+        "slli",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "basicmath"
+      ]
+    },
+    "chip_78": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "mulhu",
+        "sb",
+        "sll",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "tarfind"
+      ]
+    },
+    "chip_79": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sll",
+        "slt",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "slre"
+      ]
+    },
+    "chip_80": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "or",
+        "ori",
+        "slli",
+        "srai",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "dijkstra"
+      ]
+    },
+    "chip_81": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "slli",
+        "srai",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "dijkstra"
+      ]
+    },
+    "chip_82": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "slli",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "mont64"
+      ]
+    },
+    "chip_83": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "slli",
+        "srai",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "dijkstra"
+      ]
+    },
+    "chip_84": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "slli",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "dijkstra"
+      ]
+    },
+    "chip_85": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "div",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "ud"
+      ]
+    },
+    "chip_86": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "ori",
+        "sh",
+        "slli",
+        "sltiu",
+        "sra",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "edn"
+      ]
+    },
+    "chip_87": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "ori",
+        "sb",
+        "sll",
+        "slli",
+        "sra",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "huffbench"
+      ]
+    },
+    "chip_88": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sb",
+        "sll",
+        "slli",
+        "sra",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "huffbench"
+      ]
+    },
+    "chip_89": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bgeu",
+        "blt",
+        "bne",
+        "jal",
+        "jalr",
+        "lb",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "sb",
+        "sh",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
+    },
+    "chip_90": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bgeu",
+        "blt",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sb",
+        "sll",
+        "sltu",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
+    },
+    "chip_91": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bgeu",
+        "blt",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sb",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "patricia"
+      ]
+    },
+    "chip_92": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sb",
+        "sll",
+        "sltu",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
+    },
+    "chip_93": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "blt",
+        "bltu",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lui",
+        "lw",
+        "sb",
+        "sh",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "combined"
+      ]
+    },
+    "chip_94": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "blt",
+        "bltu",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sb",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "wikisort"
+      ]
+    },
+    "chip_95": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "blt",
+        "bltu",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "bitcnts"
+      ]
+    },
+    "chip_96": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "blt",
+        "bltu",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "basicmath"
+      ]
+    },
+    "chip_97": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "slli",
+        "sltu",
+        "srai",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_num"
+      ]
+    },
+    "chip_98": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "slli",
+        "sltu",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_num"
+      ]
+    },
+    "chip_99": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "slli",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_num"
+      ]
+    },
+    "chip_100": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bgeu",
+        "blt",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "or",
+        "slli",
+        "sltiu",
+        "srai",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
+    },
+    "chip_101": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lb",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "sb",
+        "sh",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
+    },
+    "chip_102": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "sb",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "tarfind"
+      ]
+    },
+    "chip_103": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
+    },
+    "chip_104": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "slli",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
+    },
+    "chip_105": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "slli",
+        "sltiu",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "sha"
+      ]
+    },
+    "chip_106": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sb",
+        "sll",
+        "srl",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "md5"
+      ]
+    },
+    "chip_107": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "mont64"
+      ]
+    },
+    "chip_108": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "sb",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "wikisort"
+      ]
+    },
+    "chip_109": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "blt",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "sh",
+        "slli",
+        "sltiu",
+        "sra",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "edn"
+      ]
+    },
+    "chip_110": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "sb",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "tarfind"
+      ]
+    },
+    "chip_111": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "sb",
+        "sll",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "tarfind"
+      ]
+    },
+    "chip_112": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
+    },
+    "chip_113": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "slli",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
+    },
+    "chip_114": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "slli",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "sha"
+      ]
+    },
+    "chip_115": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "sll",
+        "sltu",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "mont64"
+      ]
+    },
+    "chip_116": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "sh",
+        "sll",
+        "sltu",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "edn"
+      ]
+    },
+    "chip_117": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "bgeu",
+        "blt",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
+    },
+    "chip_118": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lui",
+        "lw",
+        "sb",
+        "sh",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "combined"
+      ]
+    },
+    "chip_119": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "sb",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "wikisort"
+      ]
+    },
+    "chip_120": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sb",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "wikisort"
+      ]
+    },
+    "chip_121": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "ud"
+      ]
+    },
+    "chip_122": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "and",
+        "auipc",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_num"
+      ]
+    },
+    "chip_123": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "div",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "mulhu",
+        "or",
+        "ori",
+        "slli",
+        "sltiu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "basicmath"
+      ]
+    },
+    "chip_124": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "slli",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
+    },
+    "chip_125": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "or",
+        "ori",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_num"
+      ]
+    },
+    "chip_126": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "or",
+        "slli",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_num"
+      ]
+    },
+    "chip_127": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "or",
+        "slli",
+        "srai",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "dijkstra"
+      ]
+    },
+    "chip_128": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lw",
+        "mul",
+        "or",
+        "sll",
+        "slli",
+        "sltu",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "primecount"
+      ]
+    },
+    "chip_129": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "slli",
+        "sltu",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
+    },
+    "chip_130": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "slli",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
+    },
+    "chip_131": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "slli",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
+    },
+    "chip_132": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "or",
+        "slli",
+        "srai",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "dijkstra"
+      ]
+    },
+    "chip_133": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "div",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "mulhu",
+        "or",
+        "slli",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "basicmath"
+      ]
+    },
+    "chip_134": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "slli",
+        "sltu",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
+    },
+    "chip_135": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "slli",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
+    },
+    "chip_136": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lw",
+        "mul",
+        "or",
+        "sll",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "primecount"
+      ]
+    },
+    "chip_137": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lw",
+        "mul",
+        "or",
+        "slli",
+        "sltu",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "primecount"
+      ]
+    },
+    "chip_138": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lb",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "sb",
+        "sh",
+        "sll",
+        "slli",
+        "sra",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
+    },
+    "chip_139": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lb",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "sb",
+        "sh",
+        "sll",
+        "slli",
+        "sra",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
+    },
+    "chip_140": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bgeu",
+        "blt",
+        "bne",
+        "jal",
+        "jalr",
+        "lb",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "sb",
+        "sh",
+        "sll",
+        "slli",
+        "sra",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
+    },
+    "chip_141": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "or",
+        "slli",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_num"
+      ]
+    },
+    "chip_142": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "andi",
+        "auipc",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "sb",
+        "slli",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "rijndael"
+      ]
+    },
+    "chip_143": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "or",
+        "ori",
+        "sll",
+        "slli",
+        "sltu",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
+    },
+    "chip_144": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lw",
+        "mul",
+        "or",
+        "ori",
+        "sll",
+        "slli",
+        "sltiu",
+        "sltu",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "primecount"
+      ]
+    },
+    "chip_145": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "or",
+        "slli",
+        "srai",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "dijkstra"
+      ]
+    },
+    "chip_146": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lw",
+        "mul",
+        "or",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "primecount"
+      ]
+    },
+    "chip_147": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "div",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "ud"
+      ]
+    },
+    "chip_148": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "div",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "ud"
+      ]
+    },
+    "chip_149": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "beq",
+        "bge",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "ori",
+        "sh",
+        "slli",
+        "sltiu",
+        "sra",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "edn"
+      ]
+    },
+    "chip_150": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "beq",
+        "bgeu",
+        "blt",
+        "bne",
+        "jal",
+        "jalr",
+        "lb",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "mul",
+        "or",
+        "sb",
+        "sh",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
+    },
+    "chip_151": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "beq",
+        "bgeu",
+        "blt",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
+    },
+    "chip_152": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "beq",
+        "blt",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "sh",
+        "sll",
+        "sltu",
+        "sra",
+        "srl",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "edn"
+      ]
+    },
+    "chip_153": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "bge",
+        "bgeu",
+        "bne",
+        "jal",
+        "jalr",
+        "lw",
+        "or",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "primecount"
+      ]
+    },
+    "chip_154": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "mul",
+        "mulh",
+        "or",
+        "slli",
+        "sltiu",
+        "srai",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
+    },
+    "chip_155": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "bge",
+        "blt",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "mul",
+        "sh",
+        "slli",
+        "sltiu",
+        "sra",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "edn"
+      ]
+    },
+    "chip_156": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "bge",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "mul",
+        "sh",
+        "sll",
+        "sltiu",
+        "sra",
+        "srl",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "edn"
+      ]
+    },
+    "chip_157": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "bge",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "mul",
+        "sh",
+        "slli",
+        "sltiu",
+        "sra",
+        "srai",
+        "srl",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "edn"
+      ]
+    },
+    "chip_158": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "bge",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "mul",
+        "sh",
+        "slli",
+        "sltiu",
+        "sra",
+        "srai",
+        "srli",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "edn"
+      ]
+    },
+    "chip_159": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "bge",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "sh",
+        "sll",
+        "sltu",
+        "sra",
+        "srl",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "edn"
+      ]
+    },
+    "chip_160": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "bgeu",
+        "blt",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "tarfind"
+      ]
+    },
+    "chip_161": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "bgeu",
+        "blt",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
+    },
+    "chip_162": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "tarfind"
+      ]
+    },
+    "chip_163": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "ud"
+      ]
+    },
+    "chip_164": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "blt",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "mul",
+        "sh",
+        "sll",
+        "sltiu",
+        "sra",
+        "srl",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "edn"
+      ]
+    },
+    "chip_165": {
+      "instruction_subset": [
+        "add",
+        "addi",
+        "auipc",
+        "blt",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lh",
+        "lhu",
+        "lui",
+        "lw",
+        "mul",
+        "sh",
+        "slli",
+        "sltiu",
+        "sra",
+        "srai",
+        "srl",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "edn"
+      ]
+    },
+    "chip_166": {
+      "instruction_subset": [
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "or",
+        "ori",
+        "sll",
+        "slli",
+        "sltiu",
+        "srl",
+        "srli",
+        "sub",
+        "sw",
+        "xor",
+        "xori"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "nsichneu"
+      ]
+    },
+    "chip_167": {
+      "instruction_subset": [
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "nsichneu"
+      ]
+    },
+    "chip_168": {
+      "instruction_subset": [
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sb",
+        "sh",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "statemate"
+      ]
+    },
+    "chip_169": {
+      "instruction_subset": [
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sb",
+        "sh",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "statemate"
+      ]
+    },
+    "chip_170": {
+      "instruction_subset": [
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sb",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "sha"
+      ]
+    },
+    "chip_171": {
+      "instruction_subset": [
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "nsichneu"
+      ]
+    },
+    "chip_172": {
+      "instruction_subset": [
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bgeu",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sb",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "huffbench"
+      ]
+    },
+    "chip_173": {
+      "instruction_subset": [
+        "addi",
+        "and",
+        "auipc",
+        "beq",
+        "bgeu",
+        "blt",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sb",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "md5"
+      ]
+    },
+    "chip_174": {
+      "instruction_subset": [
+        "addi",
+        "and",
+        "auipc",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "slre"
+      ]
+    },
+    "chip_175": {
+      "instruction_subset": [
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "bgeu",
+        "blt",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "or",
+        "slli",
+        "sltiu",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "nsichneu"
+      ]
+    },
+    "chip_176": {
+      "instruction_subset": [
+        "addi",
+        "andi",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "or",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "nsichneu"
+      ]
+    },
+    "chip_177": {
+      "instruction_subset": [
+        "addi",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "or",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "nsichneu"
+      ]
+    },
+    "chip_178": {
+      "instruction_subset": [
+        "addi",
+        "auipc",
+        "beq",
+        "bge",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lui",
+        "lw",
+        "or",
+        "slli",
+        "srl",
+        "sub",
+        "sw",
+        "xor"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "nsichneu"
+      ]
+    },
+    "chip_179": {
+      "instruction_subset": [
+        "addi",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "sh",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "statemate"
+      ]
+    },
+    "chip_180": {
+      "instruction_subset": [
+        "addi",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "sh",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "statemate"
+      ]
+    },
+    "chip_181": {
+      "instruction_subset": [
+        "addi",
+        "auipc",
+        "beq",
+        "bge",
+        "bltu",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "sha"
+      ]
+    },
+    "chip_182": {
+      "instruction_subset": [
+        "addi",
+        "auipc",
+        "beq",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "sh",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "statemate"
+      ]
+    },
+    "chip_183": {
+      "instruction_subset": [
+        "addi",
+        "auipc",
+        "beq",
+        "blt",
+        "bltu",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "huffbench"
+      ]
+    },
+    "chip_184": {
+      "instruction_subset": [
+        "addi",
+        "auipc",
+        "bge",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "sh",
+        "sll",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "statemate"
+      ]
+    },
+    "chip_185": {
+      "instruction_subset": [
+        "addi",
+        "auipc",
+        "blt",
+        "bltu",
+        "bne",
+        "jal",
+        "jalr",
+        "lbu",
+        "lui",
+        "lw",
+        "or",
+        "sb",
+        "sll",
+        "sra",
+        "srl",
+        "sub",
+        "sw"
+      ],
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
+    }
+  },
+  "statistics": {
+    "num_programs": 22,
+    "num_chips": 186,
+    "total_variants": 564,
+    "program_stats": {
+      "basicmath": 27,
+      "bitcnts": 27,
+      "combined": 27,
+      "dijkstra": 27,
+      "edn": 27,
+      "huffbench": 27,
+      "nsichneu": 27,
+      "slre": 27,
+      "statemate": 27,
+      "ud": 24,
+      "wikisort": 27,
+      "matmult-int": 27,
+      "md5": 27,
+      "mont64": 27,
+      "patricia": 6,
+      "picojpeg_test": 24,
+      "primecount": 27,
+      "qsort_num": 27,
+      "qsort_str": 27,
+      "rijndael": 24,
+      "sha": 27,
+      "tarfind": 27
+    }
+  }
+}
