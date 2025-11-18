@@ -185,7 +185,7 @@ def generate_csv(summaries: List[Dict], output_path: str):
     print(f"Total programs: {len(summaries)}")
 
 
-def visualize_results(summaries: List[Dict], output_path: str = "instruction_analysis.png"):
+def visualize_results(summaries: List[Dict], output_path: str = "instruction_analysis.pdf"):
     """Create bar chart visualization of instruction counts and mul/div percentages.
 
     Args:
@@ -203,15 +203,24 @@ def visualize_results(summaries: List[Dict], output_path: str = "instruction_ana
     # Customize this dictionary to rename benchmarks in the plot
     NAME_MAPPING = {
         'basicmath_small_O3': 'basicmath',
-        'bitcnts_O3': 'bitvnts',
+        'bitcnts_O3': 'bitcnts',
         'dijkstra_small_O3': 'dijkstra',
-        'matmult-int': 'matmult',
-        'qsort_large_O3': 'qsort_large',
-        'qsort_small_O3': 'qsort_small',
+        'matmult-int': 'matmult-int',
+        'qsort_large_O3': 'qsort-num',
+        'qsort_small_O3': 'qsort-str',
         'sha_O3': 'sha',
         'patricia_O3': 'patricia',
         'picojpeg_test': 'picojpeg',
         'rijndael_Oz': 'rijndael',
+        'libhuffbench': 'huffbench',
+        'combined': 'combined',
+        'libedn': 'edn',
+        'libnsichneu': 'nsichneu',
+        'libslre': 'slre',
+        'libstatemate': 'statemate',
+        'libud': 'ud',
+        'libwikisort': 'wikisort',
+        'md5': 'md5sum',
         # Add more mappings as needed
     }
 
@@ -361,7 +370,7 @@ def main():
     print()
 
     # Generate visualization
-    plot_path = output_csv.replace('.csv', '.png')
+    plot_path = output_csv.replace('.csv', '.pdf')
     visualize_results(summaries, plot_path)
 
     print()
