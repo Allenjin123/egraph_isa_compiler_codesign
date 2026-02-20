@@ -270,8 +270,18 @@ def visualize_results(summaries: List[Dict], output_path: str = "instruction_ana
     rewr_branch = [s['min_instr_cats']['Branch'] if s['min_instr_cats'] else 0 for s in summaries]
     rewr_memory = [s['min_instr_cats']['Memory'] if s['min_instr_cats'] else 0 for s in summaries]
 
-    # Sort by original instruction count (ascending)
-    sorted_indices = np.argsort(orig_instr)
+    # Fixed benchmark order: sorted by code-size blowup ratio (ascending),
+    # shared across all plots so figures are consistent
+    BENCHMARK_ORDER = [
+        'qsort-str', 'sha', 'rijndael', 'statemate', 'huffbench',
+        'nsichneu', 'md5sum', 'slre', 'patricia', 'primecount',
+        'wikisort', 'picojpeg', 'combined', 'edn', 'bitcnts',
+        'matmult-int', 'qsort-num', 'tarfind', 'ud', 'dijkstra',
+        'mont64', 'basicmath',
+    ]
+    order_map = {name: i for i, name in enumerate(BENCHMARK_ORDER)}
+    sorted_indices = sorted(range(len(applications)),
+                            key=lambda i: order_map.get(applications[i], 999))
     applications = [applications[i] for i in sorted_indices]
     orig_instr = [orig_instr[i] for i in sorted_indices]
     min_instr = [min_instr[i] for i in sorted_indices]
@@ -283,6 +293,17 @@ def visualize_results(summaries: List[Dict], output_path: str = "instruction_ana
     rewr_complex = [rewr_complex[i] for i in sorted_indices]
     rewr_branch = [rewr_branch[i] for i in sorted_indices]
     rewr_memory = [rewr_memory[i] for i in sorted_indices]
+
+    # Append "Average" at the end
+    n = len(applications)
+    applications.append('Average')
+    avg = lambda lst: sum(lst) / len(lst)
+    orig_instr.append(avg(orig_instr))
+    min_instr.append(avg(min_instr))
+    orig_simple.append(avg(orig_simple)); orig_complex.append(avg(orig_complex))
+    orig_branch.append(avg(orig_branch)); orig_memory.append(avg(orig_memory))
+    rewr_simple.append(avg(rewr_simple)); rewr_complex.append(avg(rewr_complex))
+    rewr_branch.append(avg(rewr_branch)); rewr_memory.append(avg(rewr_memory))
 
     # Color = instruction category, Texture = original vs rewritten
     cat_colors = sns.color_palette("Set2", 4)
@@ -315,10 +336,14 @@ def visualize_results(summaries: List[Dict], output_path: str = "instruction_ana
                edgecolor='black', linewidth=0.5, alpha=0.85)
         rewr_bottom += np.array(data)
 
+    # Vertical separator before Average
+    ax.axvline(x=len(applications) - 1.5, color='black', linestyle='-', linewidth=0.8, alpha=0.4)
+
     # Configure axes
     ax.set_ylabel('Number of Unique Instructions', fontsize=16, fontweight='bold')
     ax.set_xticks(x)
-    ax.set_xticklabels(applications, rotation=45, ha='right', fontsize=14)
+    xlabels = ax.set_xticklabels(applications, rotation=45, ha='right', fontsize=14)
+    xlabels[-1].set_fontweight('bold')
     ax.tick_params(axis='y', labelsize=14)
     ax.grid(axis='y', alpha=0.3, linestyle='--')
 
