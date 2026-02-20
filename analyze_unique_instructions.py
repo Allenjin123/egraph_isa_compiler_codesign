@@ -266,33 +266,39 @@ def visualize_results(summaries: List[Dict], output_path: str):
     norm_rewr_32      = rewr_32 / orig_32
     norm_rewr_minimal = rewr_minimal / orig_32
 
-    # Fixed benchmark order: sorted by code-size blowup ratio (ascending),
-    # shared across all plots so figures are consistent
-    BENCHMARK_ORDER = [
-        'qsort-str', 'sha', 'rijndael', 'statemate', 'huffbench',
-        'nsichneu', 'md5sum', 'slre', 'patricia', 'primecount',
-        'wikisort', 'picojpeg', 'combined', 'edn', 'bitcnts',
-        'matmult-int', 'qsort-num', 'tarfind', 'ud', 'dijkstra',
-        'mont64', 'basicmath',
-    ]
-    order_map = {name: i for i, name in enumerate(BENCHMARK_ORDER)}
-    idx = sorted(range(len(apps)), key=lambda i: order_map.get(apps[i], 999))
-    apps              = [apps[i] for i in idx]
-    norm_orig_32      = norm_orig_32[idx]
-    norm_orig_minimal = norm_orig_minimal[idx]
-    norm_rewr_32      = norm_rewr_32[idx]
-    norm_rewr_minimal = norm_rewr_minimal[idx]
+    # Compute geometric mean over ALL programs before filtering
+    def _gmean(arr):
+        return np.exp(np.mean(np.log(arr)))
+    avg_orig_32      = _gmean(norm_orig_32)
+    avg_orig_minimal = _gmean(norm_orig_minimal)
+    avg_rewr_32      = _gmean(norm_rewr_32)
+    avg_rewr_minimal = _gmean(norm_rewr_minimal)
 
-    # Append "Average" at the end
-    apps.append('Average')
-    norm_orig_32      = np.append(norm_orig_32,      np.mean(norm_orig_32))
-    norm_orig_minimal = np.append(norm_orig_minimal,  np.mean(norm_orig_minimal))
-    norm_rewr_32      = np.append(norm_rewr_32,      np.mean(norm_rewr_32))
-    norm_rewr_minimal = np.append(norm_rewr_minimal,  np.mean(norm_rewr_minimal))
+    # Select 8 representative benchmarks (low→high code blowup),
+    # covering different program sizes and benchmark suites
+    SELECTED = [
+        'statemate', 'rijndael', 'nsichneu', 'sha', 'qsort-str',
+        'slre', 'patricia', 'picojpeg', 'edn', 'dijkstra', 'basicmath',
+    ]
+    sel_idx = [i for i, a in enumerate(apps) if a in SELECTED]
+    # Sort selected by blowup ratio (ascending)
+    sel_idx.sort(key=lambda i: norm_rewr_32[i])
+    apps              = [apps[i] for i in sel_idx]
+    norm_orig_32      = norm_orig_32[sel_idx]
+    norm_orig_minimal = norm_orig_minimal[sel_idx]
+    norm_rewr_32      = norm_rewr_32[sel_idx]
+    norm_rewr_minimal = norm_rewr_minimal[sel_idx]
+
+    # Append "Geomean" (computed over all 22 programs)
+    apps.append('Geomean')
+    norm_orig_32      = np.append(norm_orig_32,      avg_orig_32)
+    norm_orig_minimal = np.append(norm_orig_minimal,  avg_orig_minimal)
+    norm_rewr_32      = np.append(norm_rewr_32,      avg_rewr_32)
+    norm_rewr_minimal = np.append(norm_rewr_minimal,  avg_rewr_minimal)
 
     sns.set_palette("Set2")
     colors = sns.color_palette("Set2", 4)
-    fig, ax = plt.subplots(figsize=(16, 6))
+    fig, ax = plt.subplots(figsize=(10, 5))
     x = np.arange(len(apps))
     w = 0.2
 
@@ -314,14 +320,15 @@ def visualize_results(summaries: List[Dict], output_path: str):
                    color=colors[3], edgecolor='black', linewidth=0.5, alpha=0.85, hatch='//')
 
     # Annotate bars that exceed Y_MAX with their actual value
+    # Nudge adjacent clipped labels slightly apart to avoid overlap
     for bars, vals, offset in [(bars1, norm_orig_32, -1.5*w),
                                 (bars2, norm_orig_minimal, -0.5*w),
-                                (bars3, norm_rewr_32, 0.5*w),
-                                (bars4, norm_rewr_minimal, 1.5*w)]:
+                                (bars3, norm_rewr_32, 0.5*w - 0.06),
+                                (bars4, norm_rewr_minimal, 1.5*w + 0.06)]:
         for i, val in enumerate(vals):
             if val > Y_MAX:
-                ax.text(x[i] + offset, Y_MAX + 0.05, f'{val:.1f}',
-                        ha='center', va='bottom', fontsize=8, fontweight='bold')
+                ax.text(x[i] + offset, Y_MAX + 0.03, f'{val:.1f}',
+                        ha='center', va='bottom', fontsize=7, fontweight='bold')
 
     # Reference line at 1.0
     ax.axhline(y=1.0, color='black', linestyle='--', linewidth=0.8, alpha=0.5)
@@ -331,14 +338,14 @@ def visualize_results(summaries: List[Dict], output_path: str):
     ax.axvline(x=avg_idx - 0.5, color='black', linestyle='-', linewidth=0.8, alpha=0.4)
 
     # Bold the "Average" x-tick label
-    ax.set_ylim(0, Y_MAX + 0.3)
-    ax.set_ylabel('Normalized Code Size\n(1.0 = Original 32-bit)', fontsize=16, fontweight='bold')
+    ax.set_ylim(0, Y_MAX + 0.25)
+    ax.set_ylabel('Normalized Code Size\n(1.0 = Original 32-bit)', fontsize=11, fontweight='bold')
     ax.set_xticks(x)
-    xlabels = ax.set_xticklabels(apps, rotation=45, ha='right', fontsize=14)
+    xlabels = ax.set_xticklabels(apps, rotation=45, ha='right', fontsize=10)
     xlabels[-1].set_fontweight('bold')
-    ax.tick_params(axis='y', labelsize=14)
+    ax.tick_params(axis='y', labelsize=10)
     ax.grid(axis='y', alpha=0.3, linestyle='--')
-    ax.legend(loc='upper left', framealpha=0.9, fontsize=13)
+    ax.legend(loc='upper left', framealpha=0.9, fontsize=9)
 
     plt.tight_layout()
     plt.savefig(output_path, dpi=300, bbox_inches='tight')

@@ -270,47 +270,56 @@ def visualize_results(summaries: List[Dict], output_path: str = "instruction_ana
     rewr_branch = [s['min_instr_cats']['Branch'] if s['min_instr_cats'] else 0 for s in summaries]
     rewr_memory = [s['min_instr_cats']['Memory'] if s['min_instr_cats'] else 0 for s in summaries]
 
-    # Fixed benchmark order: sorted by code-size blowup ratio (ascending),
-    # shared across all plots so figures are consistent
-    BENCHMARK_ORDER = [
-        'qsort-str', 'sha', 'rijndael', 'statemate', 'huffbench',
-        'nsichneu', 'md5sum', 'slre', 'patricia', 'primecount',
-        'wikisort', 'picojpeg', 'combined', 'edn', 'bitcnts',
-        'matmult-int', 'qsort-num', 'tarfind', 'ud', 'dijkstra',
-        'mont64', 'basicmath',
-    ]
-    order_map = {name: i for i, name in enumerate(BENCHMARK_ORDER)}
-    sorted_indices = sorted(range(len(applications)),
-                            key=lambda i: order_map.get(applications[i], 999))
-    applications = [applications[i] for i in sorted_indices]
-    orig_instr = [orig_instr[i] for i in sorted_indices]
-    min_instr = [min_instr[i] for i in sorted_indices]
-    orig_simple = [orig_simple[i] for i in sorted_indices]
-    orig_complex = [orig_complex[i] for i in sorted_indices]
-    orig_branch = [orig_branch[i] for i in sorted_indices]
-    orig_memory = [orig_memory[i] for i in sorted_indices]
-    rewr_simple = [rewr_simple[i] for i in sorted_indices]
-    rewr_complex = [rewr_complex[i] for i in sorted_indices]
-    rewr_branch = [rewr_branch[i] for i in sorted_indices]
-    rewr_memory = [rewr_memory[i] for i in sorted_indices]
+    # Compute geometric mean over ALL programs before filtering
+    def _gmean(lst):
+        arr = np.array(lst, dtype=float)
+        if np.any(arr <= 0):
+            return 0.0
+        return np.exp(np.mean(np.log(arr)))
+    avg_orig_instr = _gmean(orig_instr); avg_min_instr = _gmean(min_instr)
+    avg_orig_simple = _gmean(orig_simple); avg_orig_complex = _gmean(orig_complex)
+    avg_orig_branch = _gmean(orig_branch); avg_orig_memory = _gmean(orig_memory)
+    avg_rewr_simple = _gmean(rewr_simple); avg_rewr_complex = _gmean(rewr_complex)
+    avg_rewr_branch = _gmean(rewr_branch); avg_rewr_memory = _gmean(rewr_memory)
 
-    # Append "Average" at the end
-    n = len(applications)
-    applications.append('Average')
-    avg = lambda lst: sum(lst) / len(lst)
-    orig_instr.append(avg(orig_instr))
-    min_instr.append(avg(min_instr))
-    orig_simple.append(avg(orig_simple)); orig_complex.append(avg(orig_complex))
-    orig_branch.append(avg(orig_branch)); orig_memory.append(avg(orig_memory))
-    rewr_simple.append(avg(rewr_simple)); rewr_complex.append(avg(rewr_complex))
-    rewr_branch.append(avg(rewr_branch)); rewr_memory.append(avg(rewr_memory))
+    # Select 8 representative benchmarks (same as unique_instructions plot)
+    SELECTED = [
+        'statemate', 'rijndael', 'nsichneu', 'sha', 'qsort-str',
+        'slre', 'patricia', 'picojpeg', 'edn', 'dijkstra', 'basicmath',
+    ]
+    # Match ordering from unique_instructions plot (sorted by code-size blowup ascending)
+    BLOWUP_ORDER = {
+        'statemate': 0, 'rijndael': 1, 'nsichneu': 2, 'sha': 3, 'qsort-str': 4,
+        'slre': 5, 'patricia': 6, 'picojpeg': 7, 'edn': 8, 'dijkstra': 9, 'basicmath': 10,
+    }
+    sel_idx = [i for i, a in enumerate(applications) if a in SELECTED]
+    sel_idx.sort(key=lambda i: BLOWUP_ORDER.get(applications[i], 999))
+    applications = [applications[i] for i in sel_idx]
+    orig_instr = [orig_instr[i] for i in sel_idx]
+    min_instr = [min_instr[i] for i in sel_idx]
+    orig_simple = [orig_simple[i] for i in sel_idx]
+    orig_complex = [orig_complex[i] for i in sel_idx]
+    orig_branch = [orig_branch[i] for i in sel_idx]
+    orig_memory = [orig_memory[i] for i in sel_idx]
+    rewr_simple = [rewr_simple[i] for i in sel_idx]
+    rewr_complex = [rewr_complex[i] for i in sel_idx]
+    rewr_branch = [rewr_branch[i] for i in sel_idx]
+    rewr_memory = [rewr_memory[i] for i in sel_idx]
+
+    # Append "Geomean" (computed over all programs)
+    applications.append('Geomean')
+    orig_instr.append(avg_orig_instr); min_instr.append(avg_min_instr)
+    orig_simple.append(avg_orig_simple); orig_complex.append(avg_orig_complex)
+    orig_branch.append(avg_orig_branch); orig_memory.append(avg_orig_memory)
+    rewr_simple.append(avg_rewr_simple); rewr_complex.append(avg_rewr_complex)
+    rewr_branch.append(avg_rewr_branch); rewr_memory.append(avg_rewr_memory)
 
     # Color = instruction category, Texture = original vs rewritten
     cat_colors = sns.color_palette("Set2", 4)
     ORIG_HATCH = ''        # solid fill for original
     REWR_HATCH = '///'     # hatched for rewritten
 
-    fig, ax = plt.subplots(figsize=(16, 6))
+    fig, ax = plt.subplots(figsize=(10, 5))
 
     x = np.arange(len(applications))
     width = 0.35
@@ -340,11 +349,11 @@ def visualize_results(summaries: List[Dict], output_path: str = "instruction_ana
     ax.axvline(x=len(applications) - 1.5, color='black', linestyle='-', linewidth=0.8, alpha=0.4)
 
     # Configure axes
-    ax.set_ylabel('Number of Unique Instructions', fontsize=16, fontweight='bold')
+    ax.set_ylabel('Number of Unique Instructions', fontsize=11, fontweight='bold')
     ax.set_xticks(x)
-    xlabels = ax.set_xticklabels(applications, rotation=45, ha='right', fontsize=14)
+    xlabels = ax.set_xticklabels(applications, rotation=45, ha='right', fontsize=10)
     xlabels[-1].set_fontweight('bold')
-    ax.tick_params(axis='y', labelsize=14)
+    ax.tick_params(axis='y', labelsize=10)
     ax.grid(axis='y', alpha=0.3, linestyle='--')
 
     # Build two-column legend (matplotlib ncol fills column-major):
@@ -361,7 +370,7 @@ def visualize_results(summaries: List[Dict], output_path: str = "instruction_ana
             blank, blank]
     # Column-major: first 4 items → col 1, next 4 → col 2
     ax.legend(handles=col1 + col2, loc='upper left',
-              framealpha=0.9, fontsize=14, ncol=2)
+              framealpha=0.9, fontsize=9, ncol=2)
 
     plt.tight_layout()
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
