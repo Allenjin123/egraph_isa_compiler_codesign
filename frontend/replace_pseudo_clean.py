@@ -205,10 +205,10 @@ def process_all_benchmark_files():
     # Find all .s files recursively in benchmark directory
     s_files = list(benchmark_dir.rglob("*.s"))
     
-    # Filter out files that are already _clean files or contain rewrite in the stem
+    # Filter out files that are already _clean files, contain rewrite, or are placeholders
     s_files = [
         f for f in s_files
-        if not f.stem.endswith('_clean') and 'rewrite' not in f.stem.lower()
+        if not f.stem.endswith('_clean') and 'rewrite' not in f.stem.lower() and 'placeholder' not in f.stem.lower()
     ]
     
     if not s_files:

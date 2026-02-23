@@ -119,6 +119,23 @@ def main():
     for i, inst in enumerate(sorted(all_pseudo), 1):
         print(f"  {i:2d}. {inst}")
 
+    # Save rem/div/mul presence report to benchmark directory (JSON format)
+    import json
+    rdm_output = BENCHMARK_DIR / "rem_div_mul_report.json"
+    report = {}
+    for file, insts in sorted(file_stats.items()):
+        name = Path(file).stem
+        if "placeholder" in name:
+            continue
+        report[name] = {
+            "rem": any(i in insts for i in ["rem", "remu"]),
+            "div": any(i in insts for i in ["div", "divu"]),
+            "mul": any(i in insts for i in ["mul", "mulh", "mulhsu", "mulhu"]),
+        }
+    with open(rdm_output, 'w', encoding='utf-8') as f:
+        json.dump(report, f, indent=2)
+    print(f"\nrem/div/mul report saved to: {rdm_output}")
+
     # Save results
     output_file = Path(__file__).parent / "instruction_stats.txt"
     output_file.parent.mkdir(exist_ok=True)

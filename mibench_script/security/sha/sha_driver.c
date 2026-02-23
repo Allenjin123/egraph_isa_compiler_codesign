@@ -1,3 +1,6 @@
+#include <stdint.h>
+
+volatile unsigned long sha_sink = 0;
 /* NIST Secure Hash Algorithm */
 
 #include <stdio.h>
@@ -224,9 +227,14 @@ void sha_process_buffer(SHA_INFO *sha_info, const BYTE *buffer, size_t length)
 /* print a SHA digest */
 void sha_print(SHA_INFO *sha_info)
 {
-    printf("%08lx %08lx %08lx %08lx %08lx\n",
-	sha_info->digest[0], sha_info->digest[1], sha_info->digest[2],
-	sha_info->digest[3], sha_info->digest[4]);
+    sha_sink += sha_info->digest[0];
+    sha_sink += sha_info->digest[1];
+    sha_sink += sha_info->digest[2];
+    sha_sink += sha_info->digest[3];
+    sha_sink += sha_info->digest[4];
+    // printf("%08lx %08lx %08lx %08lx %08lx\n",
+    // sha_info->digest[0], sha_info->digest[1], sha_info->digest[2],
+    // sha_info->digest[3], sha_info->digest[4]);
 }
 
 

@@ -213,13 +213,6 @@ quicksort_range:
 .L60:
 	jalr	zero, ra, 0
 	.size	quicksort_range, .-quicksort_range
-	.section	.rodata.str1.4,"aMS",@progbits,1
-	.align	2
-.LC0:
-	.string	"\nSorting %d elements.\n\n"
-	.align	2
-.LC1:
-	.string	"%s\n"
 	.section	.text.startup,"ax",@progbits
 	.align	2
 	.globl	main
@@ -230,8 +223,6 @@ main:
 	addi	t0,t0,-32
 	sw	s0,2024(sp)
 	sw	ra,2028(sp)
-	sw	s1,2020(sp)
-	sw	s2,2016(sp)
 	lui	a6,%hi(input_data)
 	add	sp,sp,t0
 	addi	s0, sp, 0
@@ -257,7 +248,7 @@ main:
 	addi	a2,a2,128
 	add	a5,a5,sp
 	addi	a6,a6,4
-	bne	a5,a2,.L76
+	bne	a2,a5,.L76
 	lui	a2, 2
 	addi	a0, sp, 0
 	addi	a2,a2,1807
@@ -265,12 +256,11 @@ main:
 .Lpcrel_2:
 	auipc	ra, %pcrel_hi(quicksort_range)
 	jalr	ra, ra, %pcrel_lo(.Lpcrel_2)
-	addi	a6, s0, 0
 	addi	a4, zero, 0
 	addi	a5, zero, 0
 .L79:
-	lbu	a2,0(a6)
-	addi	a1, a6, 0
+	lbu	a2,0(s0)
+	addi	a1, s0, 0
 	beq	a2,zero,.L77
 .L78:
 	addi	a1,a1,1
@@ -284,36 +274,16 @@ main:
 .L77:
 	lui	a3, 313
 	addi	a3,a3,-2048
-	addi	a6,a6,128
-	add	a3,a3,sp
-	bne	a6,a3,.L79
-	lui	s2,%hi(qsort_checksum)
-	lui	a0,%hi(.LC0)
-	lui	a1, 2
-	sw	a4,%lo(qsort_checksum)(s2)
-	addi	a1,a1,1808
-	addi	a0,a0,%lo(.LC0)
-	lui	s1,%hi(.LC1)
-	sw	a5,%lo(qsort_checksum+4)(s2)
-	addi	s1,s1,%lo(.LC1)
-.Lpcrel_3:
-	auipc	ra, %pcrel_hi(printf)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_3)
-.L80:
-	addi	a1, s0, 0
-	addi	a0, s1, 0
-.Lpcrel_4:
-	auipc	ra, %pcrel_hi(printf)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_4)
-	lui	a5, 313
-	addi	a5,a5,-2048
 	addi	s0,s0,128
-	add	a5,a5,sp
-	bne	a5,s0,.L80
+	add	a3,a3,sp
+	bne	a3,s0,.L79
+	lui	a3,%hi(qsort_checksum)
+	sw	a4,%lo(qsort_checksum)(a3)
+	sw	a5,%lo(qsort_checksum+4)(a3)
 	lui	t0, 312
-	lw	a4,%lo(qsort_checksum)(s2)
+	lw	a4,%lo(qsort_checksum)(a3)
 	addi	t0,t0,32
-	lw	a5,%lo(qsort_checksum+4)(s2)
+	lw	a5,%lo(qsort_checksum+4)(a3)
 	lui	a0, 2
 	add	sp,sp,t0
 	lw	ra,2028(sp)
@@ -321,1053 +291,1053 @@ main:
 	xor	a0,a4,a0
 	or	a0,a0,a5
 	lw	s0,2024(sp)
-	lw	s1,2020(sp)
-	lw	s2,2016(sp)
 	sltiu	a0, a0, 1
 	addi	sp,sp,2032
 	jalr	zero, ra, 0
 	.size	main, .-main
-	.section	.rodata.str1.4
+	.section	.rodata.str1.4,"aMS",@progbits,1
 	.align	2
-.LC2:
+.LC0:
 	.string	"Kurt"
 	.align	2
-.LC3:
+.LC1:
 	.string	"Vonneguts"
 	.align	2
-.LC4:
+.LC2:
 	.string	"Commencement"
 	.align	2
-.LC5:
+.LC3:
 	.string	"Address"
 	.align	2
-.LC6:
+.LC4:
 	.string	"at"
 	.align	2
-.LC7:
+.LC5:
 	.string	"MIT"
 	.align	2
-.LC8:
+.LC6:
 	.string	"Ladies"
 	.align	2
-.LC9:
+.LC7:
 	.string	"and"
 	.align	2
-.LC10:
+.LC8:
 	.string	"gentlemen"
 	.align	2
-.LC11:
+.LC9:
 	.string	"of"
 	.align	2
-.LC12:
+.LC10:
 	.string	"the"
 	.align	2
-.LC13:
+.LC11:
 	.string	"class"
 	.align	2
-.LC14:
+.LC12:
 	.string	"97"
 	.align	2
-.LC15:
+.LC13:
 	.string	"Wear"
 	.align	2
-.LC16:
+.LC14:
 	.string	"sunscreen"
 	.align	2
-.LC17:
+.LC15:
 	.string	"If"
 	.align	2
-.LC18:
+.LC16:
 	.string	"I"
 	.align	2
-.LC19:
+.LC17:
 	.string	"could"
 	.align	2
-.LC20:
+.LC18:
 	.string	"offer"
 	.align	2
-.LC21:
+.LC19:
 	.string	"you"
 	.align	2
-.LC22:
+.LC20:
 	.string	"only"
 	.align	2
-.LC23:
+.LC21:
 	.string	"one"
 	.align	2
-.LC24:
+.LC22:
 	.string	"tip"
 	.align	2
-.LC25:
+.LC23:
 	.string	"for"
 	.align	2
-.LC26:
+.LC24:
 	.string	"future"
 	.align	2
-.LC27:
+.LC25:
 	.string	"would"
 	.align	2
-.LC28:
+.LC26:
 	.string	"be"
 	.align	2
-.LC29:
+.LC27:
 	.string	"it"
 	.align	2
-.LC30:
+.LC28:
 	.string	"The"
 	.align	2
-.LC31:
+.LC29:
 	.string	"longterm"
 	.align	2
-.LC32:
+.LC30:
 	.string	"benefits"
 	.align	2
-.LC33:
+.LC31:
 	.string	"have"
 	.align	2
-.LC34:
+.LC32:
 	.string	"been"
 	.align	2
-.LC35:
+.LC33:
 	.string	"proved"
 	.align	2
-.LC36:
+.LC34:
 	.string	"by"
 	.align	2
-.LC37:
+.LC35:
 	.string	"scientists"
 	.align	2
-.LC38:
+.LC36:
 	.string	"whereas"
 	.align	2
-.LC39:
+.LC37:
 	.string	"rest"
 	.align	2
-.LC40:
+.LC38:
 	.string	"my"
 	.align	2
-.LC41:
+.LC39:
 	.string	"advice"
 	.align	2
-.LC42:
+.LC40:
 	.string	"has"
 	.align	2
-.LC43:
+.LC41:
 	.string	"no"
 	.align	2
-.LC44:
+.LC42:
 	.string	"basis"
 	.align	2
-.LC45:
+.LC43:
 	.string	"more"
 	.align	2
-.LC46:
+.LC44:
 	.string	"reliable"
 	.align	2
-.LC47:
+.LC45:
 	.string	"than"
 	.align	2
-.LC48:
+.LC46:
 	.string	"own"
 	.align	2
-.LC49:
+.LC47:
 	.string	"meandering"
 	.align	2
-.LC50:
+.LC48:
 	.string	"experience"
 	.align	2
-.LC51:
+.LC49:
 	.string	"will"
 	.align	2
-.LC52:
+.LC50:
 	.string	"dispense"
 	.align	2
-.LC53:
+.LC51:
 	.string	"this"
 	.align	2
-.LC54:
+.LC52:
 	.string	"now"
 	.align	2
-.LC55:
+.LC53:
 	.string	"Enjoy"
 	.align	2
-.LC56:
+.LC54:
 	.string	"power"
 	.align	2
-.LC57:
+.LC55:
 	.string	"beauty"
 	.align	2
-.LC58:
+.LC56:
 	.string	"your"
 	.align	2
-.LC59:
+.LC57:
 	.string	"youth"
 	.align	2
-.LC60:
+.LC58:
 	.string	"Oh"
 	.align	2
-.LC61:
+.LC59:
 	.string	"never"
 	.align	2
-.LC62:
+.LC60:
 	.string	"mind"
 	.align	2
-.LC63:
+.LC61:
 	.string	"You"
 	.align	2
-.LC64:
+.LC62:
 	.string	"not"
 	.align	2
-.LC65:
+.LC63:
 	.string	"understand"
 	.align	2
-.LC66:
+.LC64:
 	.string	"until"
 	.align	2
-.LC67:
+.LC65:
 	.string	"theyve"
 	.align	2
-.LC68:
+.LC66:
 	.string	"faded"
 	.align	2
-.LC69:
+.LC67:
 	.string	"But"
 	.align	2
-.LC70:
+.LC68:
 	.string	"trust"
 	.align	2
-.LC71:
+.LC69:
 	.string	"me"
 	.align	2
-.LC72:
+.LC70:
 	.string	"in"
 	.align	2
-.LC73:
+.LC71:
 	.string	"20"
 	.align	2
-.LC74:
+.LC72:
 	.string	"years"
 	.align	2
-.LC75:
+.LC73:
 	.string	"youll"
 	.align	2
-.LC76:
+.LC74:
 	.string	"look"
 	.align	2
-.LC77:
+.LC75:
 	.string	"back"
 	.align	2
-.LC78:
+.LC76:
 	.string	"photos"
 	.align	2
-.LC79:
+.LC77:
 	.string	"yourself"
 	.align	2
-.LC80:
+.LC78:
 	.string	"recall"
 	.align	2
-.LC81:
+.LC79:
 	.string	"a"
 	.align	2
-.LC82:
+.LC80:
 	.string	"way"
 	.align	2
-.LC83:
+.LC81:
 	.string	"cant"
 	.align	2
-.LC84:
+.LC82:
 	.string	"grasp"
 	.align	2
-.LC85:
+.LC83:
 	.string	"how"
 	.align	2
-.LC86:
+.LC84:
 	.string	"much"
 	.align	2
-.LC87:
+.LC85:
 	.string	"possibility"
 	.align	2
-.LC88:
+.LC86:
 	.string	"lay"
 	.align	2
-.LC89:
+.LC87:
 	.string	"before"
 	.align	2
-.LC90:
+.LC88:
 	.string	"fabulous"
 	.align	2
-.LC91:
+.LC89:
 	.string	"really"
 	.align	2
-.LC92:
+.LC90:
 	.string	"looked"
 	.align	2
-.LC93:
+.LC91:
 	.string	"are"
 	.align	2
-.LC94:
+.LC92:
 	.string	"as"
 	.align	2
-.LC95:
+.LC93:
 	.string	"fat"
 	.align	2
-.LC96:
+.LC94:
 	.string	"imagine"
 	.align	2
-.LC97:
+.LC95:
 	.string	"Dont"
 	.align	2
-.LC98:
+.LC96:
 	.string	"worry"
 	.align	2
-.LC99:
+.LC97:
 	.string	"about"
 	.align	2
-.LC100:
+.LC98:
 	.string	"Or"
 	.align	2
-.LC101:
+.LC99:
 	.string	"but"
 	.align	2
-.LC102:
+.LC100:
 	.string	"know"
 	.align	2
-.LC103:
+.LC101:
 	.string	"that"
 	.align	2
-.LC104:
+.LC102:
 	.string	"worrying"
 	.align	2
-.LC105:
+.LC103:
 	.string	"is"
 	.align	2
-.LC106:
+.LC104:
 	.string	"effective"
 	.align	2
-.LC107:
+.LC105:
 	.string	"trying"
 	.align	2
-.LC108:
+.LC106:
 	.string	"to"
 	.align	2
-.LC109:
+.LC107:
 	.string	"solve"
 	.align	2
-.LC110:
+.LC108:
 	.string	"an"
 	.align	2
-.LC111:
+.LC109:
 	.string	"algebra"
 	.align	2
-.LC112:
+.LC110:
 	.string	"equation"
 	.align	2
-.LC113:
+.LC111:
 	.string	"chewing"
 	.align	2
-.LC114:
+.LC112:
 	.string	"bubble"
 	.align	2
-.LC115:
+.LC113:
 	.string	"gum"
 	.align	2
-.LC116:
+.LC114:
 	.string	"real"
 	.align	2
-.LC117:
+.LC115:
 	.string	"troubles"
 	.align	2
-.LC118:
+.LC116:
 	.string	"life"
 	.align	2
-.LC119:
+.LC117:
 	.string	"apt"
 	.align	2
-.LC120:
+.LC118:
 	.string	"things"
 	.align	2
-.LC121:
+.LC119:
 	.string	"crossed"
 	.align	2
-.LC122:
+.LC120:
 	.string	"worried"
 	.align	2
-.LC123:
+.LC121:
 	.string	"kind"
 	.align	2
-.LC124:
+.LC122:
 	.string	"blindside"
 	.align	2
-.LC125:
+.LC123:
 	.string	"4"
 	.align	2
-.LC126:
+.LC124:
 	.string	"pm"
 	.align	2
-.LC127:
+.LC125:
 	.string	"on"
 	.align	2
-.LC128:
+.LC126:
 	.string	"some"
 	.align	2
-.LC129:
+.LC127:
 	.string	"idle"
 	.align	2
-.LC130:
+.LC128:
 	.string	"Tuesday"
 	.align	2
-.LC131:
+.LC129:
 	.string	"Do"
 	.align	2
-.LC132:
+.LC130:
 	.string	"thing"
 	.align	2
-.LC133:
+.LC131:
 	.string	"every"
 	.align	2
-.LC134:
+.LC132:
 	.string	"day"
 	.align	2
-.LC135:
+.LC133:
 	.string	"scares"
 	.align	2
-.LC136:
+.LC134:
 	.string	"Sing"
 	.align	2
-.LC137:
+.LC135:
 	.string	"reckless"
 	.align	2
-.LC138:
+.LC136:
 	.string	"with"
 	.align	2
-.LC139:
+.LC137:
 	.string	"other"
 	.align	2
-.LC140:
+.LC138:
 	.string	"peoples"
 	.align	2
-.LC141:
+.LC139:
 	.string	"hearts"
 	.align	2
-.LC142:
+.LC140:
 	.string	"put"
 	.align	2
-.LC143:
+.LC141:
 	.string	"up"
 	.align	2
-.LC144:
+.LC142:
 	.string	"people"
 	.align	2
-.LC145:
+.LC143:
 	.string	"who"
 	.align	2
-.LC146:
+.LC144:
 	.string	"yours"
 	.align	2
-.LC147:
+.LC145:
 	.string	"Floss"
 	.align	2
-.LC148:
+.LC146:
 	.string	"waste"
 	.align	2
-.LC149:
+.LC147:
 	.string	"time"
 	.align	2
-.LC150:
+.LC148:
 	.string	"jealousy"
 	.align	2
-.LC151:
+.LC149:
 	.string	"Sometimes"
 	.align	2
-.LC152:
+.LC150:
 	.string	"youre"
 	.align	2
-.LC153:
+.LC151:
 	.string	"ahead"
 	.align	2
-.LC154:
+.LC152:
 	.string	"sometimes"
 	.align	2
-.LC155:
+.LC153:
 	.string	"behind"
 	.align	2
-.LC156:
+.LC154:
 	.string	"race"
 	.align	2
-.LC157:
+.LC155:
 	.string	"long"
 	.align	2
-.LC158:
+.LC156:
 	.string	"end"
 	.align	2
-.LC159:
+.LC157:
 	.string	"its"
 	.align	2
-.LC160:
+.LC158:
 	.string	"Remember"
 	.align	2
-.LC161:
+.LC159:
 	.string	"compliments"
 	.align	2
-.LC162:
+.LC160:
 	.string	"receive"
 	.align	2
-.LC163:
+.LC161:
 	.string	"Forget"
 	.align	2
-.LC164:
+.LC162:
 	.string	"insults"
 	.align	2
-.LC165:
+.LC163:
 	.string	"succeed"
 	.align	2
-.LC166:
+.LC164:
 	.string	"doing"
 	.align	2
-.LC167:
+.LC165:
 	.string	"tell"
 	.align	2
-.LC168:
+.LC166:
 	.string	"Keep"
 	.align	2
-.LC169:
+.LC167:
 	.string	"old"
 	.align	2
-.LC170:
+.LC168:
 	.string	"love"
 	.align	2
-.LC171:
+.LC169:
 	.string	"letters"
 	.align	2
-.LC172:
+.LC170:
 	.string	"Throw"
 	.align	2
-.LC173:
+.LC171:
 	.string	"away"
 	.align	2
-.LC174:
+.LC172:
 	.string	"bank"
 	.align	2
-.LC175:
+.LC173:
 	.string	"statements"
 	.align	2
-.LC176:
+.LC174:
 	.string	"Stretch"
 	.align	2
-.LC177:
+.LC175:
 	.string	"feel"
 	.align	2
-.LC178:
+.LC176:
 	.string	"guilty"
 	.align	2
-.LC179:
+.LC177:
 	.string	"if"
 	.align	2
-.LC180:
+.LC178:
 	.string	"dont"
 	.align	2
-.LC181:
+.LC179:
 	.string	"what"
 	.align	2
-.LC182:
+.LC180:
 	.string	"want"
 	.align	2
-.LC183:
+.LC181:
 	.string	"do"
 	.align	2
-.LC184:
+.LC182:
 	.string	"most"
 	.align	2
-.LC185:
+.LC183:
 	.string	"interesting"
 	.align	2
-.LC186:
+.LC184:
 	.string	"didnt"
 	.align	2
-.LC187:
+.LC185:
 	.string	"22"
 	.align	2
-.LC188:
+.LC186:
 	.string	"they"
 	.align	2
-.LC189:
+.LC187:
 	.string	"wanted"
 	.align	2
-.LC190:
+.LC188:
 	.string	"their"
 	.align	2
-.LC191:
+.LC189:
 	.string	"lives"
 	.align	2
-.LC192:
+.LC190:
 	.string	"Some"
 	.align	2
-.LC193:
+.LC191:
 	.string	"40yearolds"
 	.align	2
-.LC194:
+.LC192:
 	.string	"still"
 	.align	2
-.LC195:
+.LC193:
 	.string	"Get"
 	.align	2
-.LC196:
+.LC194:
 	.string	"plenty"
 	.align	2
-.LC197:
+.LC195:
 	.string	"calcium"
 	.align	2
-.LC198:
+.LC196:
 	.string	"Be"
 	.align	2
-.LC199:
+.LC197:
 	.string	"knees"
 	.align	2
-.LC200:
+.LC198:
 	.string	"Youll"
 	.align	2
-.LC201:
+.LC199:
 	.string	"miss"
 	.align	2
-.LC202:
+.LC200:
 	.string	"them"
 	.align	2
-.LC203:
+.LC201:
 	.string	"when"
 	.align	2
-.LC204:
+.LC202:
 	.string	"theyre"
 	.align	2
-.LC205:
+.LC203:
 	.string	"gone"
 	.align	2
-.LC206:
+.LC204:
 	.string	"Maybe"
 	.align	2
-.LC207:
+.LC205:
 	.string	"marry"
 	.align	2
-.LC208:
+.LC206:
 	.string	"maybe"
 	.align	2
-.LC209:
+.LC207:
 	.string	"wont"
 	.align	2
-.LC210:
+.LC208:
 	.string	"children"
 	.align	2
-.LC211:
+.LC209:
 	.string	"divorce"
 	.align	2
-.LC212:
+.LC210:
 	.string	"40"
 	.align	2
-.LC213:
+.LC211:
 	.string	"dance"
 	.align	2
-.LC214:
+.LC212:
 	.string	"funky"
 	.align	2
-.LC215:
+.LC213:
 	.string	"chicken"
 	.align	2
-.LC216:
+.LC214:
 	.string	"75th"
 	.align	2
-.LC217:
+.LC215:
 	.string	"wedding"
 	.align	2
-.LC218:
+.LC216:
 	.string	"anniversary"
 	.align	2
-.LC219:
+.LC217:
 	.string	"Whatever"
 	.align	2
-.LC220:
+.LC218:
 	.string	"congratulate"
 	.align	2
-.LC221:
+.LC219:
 	.string	"too"
 	.align	2
-.LC222:
+.LC220:
 	.string	"or"
 	.align	2
-.LC223:
+.LC221:
 	.string	"berate"
 	.align	2
-.LC224:
+.LC222:
 	.string	"either"
 	.align	2
-.LC225:
+.LC223:
 	.string	"Your"
 	.align	2
-.LC226:
+.LC224:
 	.string	"choices"
 	.align	2
-.LC227:
+.LC225:
 	.string	"half"
 	.align	2
-.LC228:
+.LC226:
 	.string	"chance"
 	.align	2
-.LC229:
+.LC227:
 	.string	"So"
 	.align	2
-.LC230:
+.LC228:
 	.string	"everybody"
 	.align	2
-.LC231:
+.LC229:
 	.string	"elses"
 	.align	2
-.LC232:
+.LC230:
 	.string	"body"
 	.align	2
-.LC233:
+.LC231:
 	.string	"Use"
 	.align	2
-.LC234:
+.LC232:
 	.string	"can"
 	.align	2
-.LC235:
+.LC233:
 	.string	"afraid"
 	.align	2
-.LC236:
+.LC234:
 	.string	"think"
 	.align	2
-.LC237:
+.LC235:
 	.string	"Its"
 	.align	2
-.LC238:
+.LC236:
 	.string	"greatest"
 	.align	2
-.LC239:
+.LC237:
 	.string	"instrument"
 	.align	2
-.LC240:
+.LC238:
 	.string	"ever"
 	.align	2
-.LC241:
+.LC239:
 	.string	"Dance"
 	.align	2
-.LC242:
+.LC240:
 	.string	"even"
 	.align	2
-.LC243:
+.LC241:
 	.string	"nowhere"
 	.align	2
-.LC244:
+.LC242:
 	.string	"living"
 	.align	2
-.LC245:
+.LC243:
 	.string	"room"
 	.align	2
-.LC246:
+.LC244:
 	.string	"Read"
 	.align	2
-.LC247:
+.LC245:
 	.string	"directions"
 	.align	2
-.LC248:
+.LC246:
 	.string	"follow"
 	.align	2
-.LC249:
+.LC247:
 	.string	"read"
 	.align	2
-.LC250:
+.LC248:
 	.string	"magazines"
 	.align	2
-.LC251:
+.LC249:
 	.string	"They"
 	.align	2
-.LC252:
+.LC250:
 	.string	"make"
 	.align	2
-.LC253:
+.LC251:
 	.string	"ugly"
 	.align	2
-.LC254:
+.LC252:
 	.string	"parents"
 	.align	2
-.LC255:
+.LC253:
 	.string	"theyll"
 	.align	2
-.LC256:
+.LC254:
 	.string	"good"
 	.align	2
-.LC257:
+.LC255:
 	.string	"nice"
 	.align	2
-.LC258:
+.LC256:
 	.string	"siblings"
 	.align	2
-.LC259:
+.LC257:
 	.string	"Theyre"
 	.align	2
-.LC260:
+.LC258:
 	.string	"best"
 	.align	2
-.LC261:
+.LC259:
 	.string	"link"
 	.align	2
-.LC262:
+.LC260:
 	.string	"past"
 	.align	2
-.LC263:
+.LC261:
 	.string	"likely"
 	.align	2
-.LC264:
+.LC262:
 	.string	"stick"
 	.align	2
-.LC265:
+.LC263:
 	.string	"Understand"
 	.align	2
-.LC266:
+.LC264:
 	.string	"friends"
 	.align	2
-.LC267:
+.LC265:
 	.string	"come"
 	.align	2
-.LC268:
+.LC266:
 	.string	"go"
 	.align	2
-.LC269:
+.LC267:
 	.string	"precious"
 	.align	2
-.LC270:
+.LC268:
 	.string	"few"
 	.align	2
-.LC271:
+.LC269:
 	.string	"should"
 	.align	2
-.LC272:
+.LC270:
 	.string	"hold"
 	.align	2
-.LC273:
+.LC271:
 	.string	"Work"
 	.align	2
-.LC274:
+.LC272:
 	.string	"hard"
 	.align	2
-.LC275:
+.LC273:
 	.string	"bridge"
 	.align	2
-.LC276:
+.LC274:
 	.string	"gaps"
 	.align	2
-.LC277:
+.LC275:
 	.string	"geography"
 	.align	2
-.LC278:
+.LC276:
 	.string	"lifestyle"
 	.align	2
-.LC279:
+.LC277:
 	.string	"because"
 	.align	2
-.LC280:
+.LC278:
 	.string	"older"
 	.align	2
-.LC281:
+.LC279:
 	.string	"get"
 	.align	2
-.LC282:
+.LC280:
 	.string	"need"
 	.align	2
-.LC283:
+.LC281:
 	.string	"knew"
 	.align	2
-.LC284:
+.LC282:
 	.string	"were"
 	.align	2
-.LC285:
+.LC283:
 	.string	"young"
 	.align	2
-.LC286:
+.LC284:
 	.string	"Live"
 	.align	2
-.LC287:
+.LC285:
 	.string	"New"
 	.align	2
-.LC288:
+.LC286:
 	.string	"York"
 	.align	2
-.LC289:
+.LC287:
 	.string	"City"
 	.align	2
-.LC290:
+.LC288:
 	.string	"once"
 	.align	2
-.LC291:
+.LC289:
 	.string	"leave"
 	.align	2
-.LC292:
+.LC290:
 	.string	"makes"
 	.align	2
-.LC293:
+.LC291:
 	.string	"Northern"
 	.align	2
-.LC294:
+.LC292:
 	.string	"California"
 	.align	2
-.LC295:
+.LC293:
 	.string	"soft"
 	.align	2
-.LC296:
+.LC294:
 	.string	"Travel"
 	.align	2
-.LC297:
+.LC295:
 	.string	"Accept"
 	.align	2
-.LC298:
+.LC296:
 	.string	"certain"
 	.align	2
-.LC299:
+.LC297:
 	.string	"inalienable"
 	.align	2
-.LC300:
+.LC298:
 	.string	"truths"
 	.align	2
-.LC301:
+.LC299:
 	.string	"Prices"
 	.align	2
-.LC302:
+.LC300:
 	.string	"rise"
 	.align	2
-.LC303:
+.LC301:
 	.string	"Politicians"
 	.align	2
-.LC304:
+.LC302:
 	.string	"philander"
 	.align	2
-.LC305:
+.LC303:
 	.string	"And"
 	.align	2
-.LC306:
+.LC304:
 	.string	"fantasize"
 	.align	2
-.LC307:
+.LC305:
 	.string	"prices"
 	.align	2
-.LC308:
+.LC306:
 	.string	"reasonable"
 	.align	2
-.LC309:
+.LC307:
 	.string	"politicians"
 	.align	2
-.LC310:
+.LC308:
 	.string	"noble"
 	.align	2
-.LC311:
+.LC309:
 	.string	"respected"
 	.align	2
-.LC312:
+.LC310:
 	.string	"elders"
 	.align	2
-.LC313:
+.LC311:
 	.string	"Respect"
 	.align	2
-.LC314:
+.LC312:
 	.string	"expect"
 	.align	2
-.LC315:
+.LC313:
 	.string	"anyone"
 	.align	2
-.LC316:
+.LC314:
 	.string	"else"
 	.align	2
-.LC317:
+.LC315:
 	.string	"support"
 	.align	2
-.LC318:
+.LC316:
 	.string	"fund"
 	.align	2
-.LC319:
+.LC317:
 	.string	"wealthy"
 	.align	2
-.LC320:
+.LC318:
 	.string	"spouse"
 	.align	2
-.LC321:
+.LC319:
 	.string	"might"
 	.align	2
-.LC322:
+.LC320:
 	.string	"run"
 	.align	2
-.LC323:
+.LC321:
 	.string	"out"
 	.align	2
-.LC324:
+.LC322:
 	.string	"mess"
 	.align	2
-.LC325:
+.LC323:
 	.string	"hair"
 	.align	2
-.LC326:
+.LC324:
 	.string	"85"
 	.align	2
-.LC327:
+.LC325:
 	.string	"careful"
 	.align	2
-.LC328:
+.LC326:
 	.string	"whose"
 	.align	2
-.LC329:
+.LC327:
 	.string	"buy"
 	.align	2
-.LC330:
+.LC328:
 	.string	"patient"
 	.align	2
-.LC331:
+.LC329:
 	.string	"those"
 	.align	2
-.LC332:
+.LC330:
 	.string	"supply"
 	.align	2
-.LC333:
+.LC331:
 	.string	"Advice"
 	.align	2
-.LC334:
+.LC332:
 	.string	"form"
 	.align	2
-.LC335:
+.LC333:
 	.string	"nostalgia"
 	.align	2
-.LC336:
+.LC334:
 	.string	"Dispensing"
 	.align	2
-.LC337:
+.LC335:
 	.string	"fishing"
 	.align	2
-.LC338:
+.LC336:
 	.string	"from"
 	.align	2
-.LC339:
+.LC337:
 	.string	"disposal"
 	.align	2
-.LC340:
+.LC338:
 	.string	"wiping"
 	.align	2
-.LC341:
+.LC339:
 	.string	"off"
 	.align	2
-.LC342:
+.LC340:
 	.string	"painting"
 	.align	2
-.LC343:
+.LC341:
 	.string	"over"
 	.align	2
-.LC344:
+.LC342:
 	.string	"parts"
 	.align	2
-.LC345:
+.LC343:
 	.string	"recycling"
 	.align	2
-.LC346:
+.LC344:
 	.string	"worth"
 	.section	.rodata
 	.align	2
 	.type	input_data, @object
 	.size	input_data, 40000
 input_data:
+	.word	.LC0
+	.word	.LC1
 	.word	.LC2
 	.word	.LC3
 	.word	.LC4
@@ -1378,9 +1348,9 @@ input_data:
 	.word	.LC9
 	.word	.LC10
 	.word	.LC11
+	.word	.LC9
 	.word	.LC12
 	.word	.LC13
-	.word	.LC11
 	.word	.LC14
 	.word	.LC15
 	.word	.LC16
@@ -1391,68 +1361,68 @@ input_data:
 	.word	.LC21
 	.word	.LC22
 	.word	.LC23
+	.word	.LC10
 	.word	.LC24
+	.word	.LC14
 	.word	.LC25
-	.word	.LC12
 	.word	.LC26
-	.word	.LC16
 	.word	.LC27
 	.word	.LC28
 	.word	.LC29
 	.word	.LC30
+	.word	.LC9
+	.word	.LC14
 	.word	.LC31
 	.word	.LC32
-	.word	.LC11
-	.word	.LC16
 	.word	.LC33
 	.word	.LC34
 	.word	.LC35
 	.word	.LC36
+	.word	.LC10
 	.word	.LC37
+	.word	.LC9
 	.word	.LC38
-	.word	.LC12
 	.word	.LC39
-	.word	.LC11
 	.word	.LC40
 	.word	.LC41
 	.word	.LC42
 	.word	.LC43
 	.word	.LC44
 	.word	.LC45
+	.word	.LC38
 	.word	.LC46
 	.word	.LC47
-	.word	.LC40
 	.word	.LC48
+	.word	.LC16
 	.word	.LC49
 	.word	.LC50
-	.word	.LC18
 	.word	.LC51
+	.word	.LC39
 	.word	.LC52
 	.word	.LC53
-	.word	.LC41
+	.word	.LC10
 	.word	.LC54
+	.word	.LC7
 	.word	.LC55
-	.word	.LC12
-	.word	.LC56
 	.word	.LC9
+	.word	.LC56
 	.word	.LC57
-	.word	.LC11
 	.word	.LC58
 	.word	.LC59
 	.word	.LC60
 	.word	.LC61
+	.word	.LC49
 	.word	.LC62
 	.word	.LC63
-	.word	.LC51
+	.word	.LC10
+	.word	.LC54
+	.word	.LC7
+	.word	.LC55
+	.word	.LC9
+	.word	.LC56
+	.word	.LC57
 	.word	.LC64
 	.word	.LC65
-	.word	.LC12
-	.word	.LC56
-	.word	.LC9
-	.word	.LC57
-	.word	.LC11
-	.word	.LC58
-	.word	.LC59
 	.word	.LC66
 	.word	.LC67
 	.word	.LC68
@@ -1463,592 +1433,592 @@ input_data:
 	.word	.LC73
 	.word	.LC74
 	.word	.LC75
+	.word	.LC4
 	.word	.LC76
-	.word	.LC77
-	.word	.LC6
-	.word	.LC78
-	.word	.LC11
-	.word	.LC79
 	.word	.LC9
+	.word	.LC77
+	.word	.LC7
+	.word	.LC78
+	.word	.LC70
+	.word	.LC79
 	.word	.LC80
-	.word	.LC72
+	.word	.LC19
 	.word	.LC81
 	.word	.LC82
-	.word	.LC21
+	.word	.LC52
 	.word	.LC83
 	.word	.LC84
-	.word	.LC54
 	.word	.LC85
 	.word	.LC86
 	.word	.LC87
+	.word	.LC19
+	.word	.LC7
+	.word	.LC83
 	.word	.LC88
+	.word	.LC19
 	.word	.LC89
-	.word	.LC21
-	.word	.LC9
-	.word	.LC85
 	.word	.LC90
-	.word	.LC21
+	.word	.LC61
 	.word	.LC91
+	.word	.LC62
 	.word	.LC92
-	.word	.LC63
 	.word	.LC93
-	.word	.LC64
+	.word	.LC92
+	.word	.LC19
 	.word	.LC94
 	.word	.LC95
-	.word	.LC94
-	.word	.LC21
 	.word	.LC96
 	.word	.LC97
+	.word	.LC10
+	.word	.LC24
 	.word	.LC98
+	.word	.LC96
 	.word	.LC99
-	.word	.LC12
-	.word	.LC26
 	.word	.LC100
-	.word	.LC98
 	.word	.LC101
 	.word	.LC102
 	.word	.LC103
+	.word	.LC92
 	.word	.LC104
+	.word	.LC92
 	.word	.LC105
-	.word	.LC94
 	.word	.LC106
-	.word	.LC94
 	.word	.LC107
 	.word	.LC108
 	.word	.LC109
 	.word	.LC110
+	.word	.LC34
 	.word	.LC111
 	.word	.LC112
-	.word	.LC36
 	.word	.LC113
+	.word	.LC28
 	.word	.LC114
 	.word	.LC115
-	.word	.LC30
+	.word	.LC70
+	.word	.LC56
 	.word	.LC116
+	.word	.LC91
 	.word	.LC117
-	.word	.LC72
-	.word	.LC58
+	.word	.LC106
+	.word	.LC26
 	.word	.LC118
-	.word	.LC93
+	.word	.LC101
+	.word	.LC59
 	.word	.LC119
-	.word	.LC108
-	.word	.LC28
+	.word	.LC56
 	.word	.LC120
-	.word	.LC103
-	.word	.LC61
+	.word	.LC60
+	.word	.LC10
 	.word	.LC121
-	.word	.LC58
+	.word	.LC101
 	.word	.LC122
-	.word	.LC62
-	.word	.LC12
+	.word	.LC19
+	.word	.LC4
 	.word	.LC123
-	.word	.LC103
 	.word	.LC124
-	.word	.LC21
-	.word	.LC6
 	.word	.LC125
 	.word	.LC126
 	.word	.LC127
 	.word	.LC128
 	.word	.LC129
+	.word	.LC21
 	.word	.LC130
 	.word	.LC131
-	.word	.LC23
 	.word	.LC132
+	.word	.LC101
 	.word	.LC133
+	.word	.LC19
 	.word	.LC134
-	.word	.LC103
+	.word	.LC95
+	.word	.LC26
 	.word	.LC135
-	.word	.LC21
 	.word	.LC136
-	.word	.LC97
-	.word	.LC28
 	.word	.LC137
 	.word	.LC138
 	.word	.LC139
+	.word	.LC95
 	.word	.LC140
 	.word	.LC141
-	.word	.LC97
+	.word	.LC136
 	.word	.LC142
 	.word	.LC143
-	.word	.LC138
+	.word	.LC91
+	.word	.LC135
+	.word	.LC136
 	.word	.LC144
 	.word	.LC145
-	.word	.LC93
-	.word	.LC137
-	.word	.LC138
+	.word	.LC95
 	.word	.LC146
+	.word	.LC56
 	.word	.LC147
-	.word	.LC97
+	.word	.LC125
 	.word	.LC148
-	.word	.LC58
 	.word	.LC149
-	.word	.LC127
 	.word	.LC150
 	.word	.LC151
 	.word	.LC152
+	.word	.LC150
 	.word	.LC153
+	.word	.LC28
 	.word	.LC154
-	.word	.LC152
+	.word	.LC103
 	.word	.LC155
-	.word	.LC30
+	.word	.LC7
+	.word	.LC70
+	.word	.LC10
 	.word	.LC156
-	.word	.LC105
 	.word	.LC157
-	.word	.LC9
-	.word	.LC72
-	.word	.LC12
+	.word	.LC20
+	.word	.LC136
+	.word	.LC77
 	.word	.LC158
 	.word	.LC159
-	.word	.LC22
-	.word	.LC138
-	.word	.LC79
+	.word	.LC19
 	.word	.LC160
 	.word	.LC161
-	.word	.LC21
+	.word	.LC10
 	.word	.LC162
+	.word	.LC15
+	.word	.LC19
 	.word	.LC163
-	.word	.LC12
+	.word	.LC70
 	.word	.LC164
-	.word	.LC17
-	.word	.LC21
+	.word	.LC51
 	.word	.LC165
-	.word	.LC72
+	.word	.LC69
+	.word	.LC83
 	.word	.LC166
-	.word	.LC53
+	.word	.LC56
 	.word	.LC167
-	.word	.LC71
-	.word	.LC85
 	.word	.LC168
-	.word	.LC58
 	.word	.LC169
 	.word	.LC170
 	.word	.LC171
+	.word	.LC56
+	.word	.LC167
 	.word	.LC172
 	.word	.LC173
-	.word	.LC58
-	.word	.LC169
 	.word	.LC174
+	.word	.LC95
 	.word	.LC175
 	.word	.LC176
-	.word	.LC97
 	.word	.LC177
+	.word	.LC19
 	.word	.LC178
+	.word	.LC100
 	.word	.LC179
-	.word	.LC21
+	.word	.LC19
 	.word	.LC180
-	.word	.LC102
+	.word	.LC106
 	.word	.LC181
-	.word	.LC21
+	.word	.LC136
+	.word	.LC56
+	.word	.LC116
+	.word	.LC28
 	.word	.LC182
-	.word	.LC108
 	.word	.LC183
-	.word	.LC138
-	.word	.LC58
-	.word	.LC118
-	.word	.LC30
+	.word	.LC142
+	.word	.LC16
+	.word	.LC100
 	.word	.LC184
+	.word	.LC100
+	.word	.LC4
 	.word	.LC185
-	.word	.LC144
-	.word	.LC18
-	.word	.LC102
+	.word	.LC179
 	.word	.LC186
-	.word	.LC102
-	.word	.LC6
 	.word	.LC187
+	.word	.LC106
 	.word	.LC181
+	.word	.LC136
 	.word	.LC188
 	.word	.LC189
-	.word	.LC108
-	.word	.LC183
-	.word	.LC138
 	.word	.LC190
+	.word	.LC9
+	.word	.LC10
+	.word	.LC182
+	.word	.LC183
 	.word	.LC191
+	.word	.LC16
+	.word	.LC100
 	.word	.LC192
-	.word	.LC11
-	.word	.LC12
-	.word	.LC184
-	.word	.LC185
+	.word	.LC178
 	.word	.LC193
-	.word	.LC18
-	.word	.LC102
 	.word	.LC194
-	.word	.LC180
+	.word	.LC9
 	.word	.LC195
 	.word	.LC196
-	.word	.LC11
+	.word	.LC121
+	.word	.LC106
+	.word	.LC56
 	.word	.LC197
 	.word	.LC198
-	.word	.LC123
-	.word	.LC108
-	.word	.LC58
 	.word	.LC199
 	.word	.LC200
 	.word	.LC201
 	.word	.LC202
 	.word	.LC203
 	.word	.LC204
+	.word	.LC73
 	.word	.LC205
 	.word	.LC206
-	.word	.LC75
+	.word	.LC19
 	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
 	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
-	.word	.LC33
+	.word	.LC19
+	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC209
+	.word	.LC4
 	.word	.LC210
-	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
+	.word	.LC73
 	.word	.LC211
-	.word	.LC6
+	.word	.LC10
 	.word	.LC212
-	.word	.LC208
-	.word	.LC75
 	.word	.LC213
-	.word	.LC12
+	.word	.LC125
+	.word	.LC56
 	.word	.LC214
 	.word	.LC215
-	.word	.LC127
-	.word	.LC58
 	.word	.LC216
 	.word	.LC217
+	.word	.LC19
+	.word	.LC181
+	.word	.LC178
 	.word	.LC218
+	.word	.LC77
 	.word	.LC219
-	.word	.LC21
-	.word	.LC183
-	.word	.LC180
+	.word	.LC84
 	.word	.LC220
-	.word	.LC79
 	.word	.LC221
-	.word	.LC86
+	.word	.LC77
 	.word	.LC222
 	.word	.LC223
-	.word	.LC79
 	.word	.LC224
+	.word	.LC91
 	.word	.LC225
 	.word	.LC226
-	.word	.LC93
 	.word	.LC227
+	.word	.LC91
 	.word	.LC228
 	.word	.LC229
-	.word	.LC93
+	.word	.LC53
+	.word	.LC56
 	.word	.LC230
 	.word	.LC231
-	.word	.LC55
-	.word	.LC58
-	.word	.LC232
-	.word	.LC233
-	.word	.LC29
-	.word	.LC133
-	.word	.LC82
-	.word	.LC21
-	.word	.LC234
-	.word	.LC97
-	.word	.LC28
-	.word	.LC235
-	.word	.LC11
-	.word	.LC29
-	.word	.LC222
-	.word	.LC11
-	.word	.LC181
-	.word	.LC139
-	.word	.LC144
-	.word	.LC236
-	.word	.LC11
-	.word	.LC29
-	.word	.LC237
-	.word	.LC12
-	.word	.LC238
-	.word	.LC239
-	.word	.LC75
-	.word	.LC240
-	.word	.LC48
-	.word	.LC241
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC33
-	.word	.LC243
-	.word	.LC108
-	.word	.LC183
-	.word	.LC29
-	.word	.LC101
-	.word	.LC58
-	.word	.LC244
-	.word	.LC245
-	.word	.LC246
-	.word	.LC12
-	.word	.LC247
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC180
-	.word	.LC248
-	.word	.LC202
+	.word	.LC27
 	.word	.LC131
-	.word	.LC64
-	.word	.LC249
-	.word	.LC57
-	.word	.LC250
-	.word	.LC251
-	.word	.LC51
-	.word	.LC22
-	.word	.LC252
-	.word	.LC21
+	.word	.LC80
+	.word	.LC19
+	.word	.LC232
+	.word	.LC95
+	.word	.LC26
+	.word	.LC233
+	.word	.LC9
+	.word	.LC27
+	.word	.LC220
+	.word	.LC9
+	.word	.LC179
+	.word	.LC137
+	.word	.LC142
+	.word	.LC234
+	.word	.LC9
+	.word	.LC27
+	.word	.LC235
+	.word	.LC10
+	.word	.LC236
+	.word	.LC237
+	.word	.LC73
+	.word	.LC238
+	.word	.LC46
+	.word	.LC239
+	.word	.LC240
 	.word	.LC177
-	.word	.LC253
-	.word	.LC195
-	.word	.LC108
-	.word	.LC102
-	.word	.LC58
-	.word	.LC254
-	.word	.LC63
+	.word	.LC19
+	.word	.LC31
+	.word	.LC241
+	.word	.LC106
+	.word	.LC181
+	.word	.LC27
+	.word	.LC99
+	.word	.LC56
+	.word	.LC242
+	.word	.LC243
+	.word	.LC244
+	.word	.LC10
+	.word	.LC245
+	.word	.LC240
+	.word	.LC177
+	.word	.LC19
+	.word	.LC178
+	.word	.LC246
+	.word	.LC200
+	.word	.LC129
+	.word	.LC62
+	.word	.LC247
+	.word	.LC55
+	.word	.LC248
+	.word	.LC249
+	.word	.LC49
+	.word	.LC20
+	.word	.LC250
+	.word	.LC19
+	.word	.LC175
+	.word	.LC251
+	.word	.LC193
+	.word	.LC106
+	.word	.LC100
+	.word	.LC56
+	.word	.LC252
 	.word	.LC61
-	.word	.LC102
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC253
+	.word	.LC26
 	.word	.LC203
+	.word	.LC23
+	.word	.LC254
+	.word	.LC196
 	.word	.LC255
-	.word	.LC28
-	.word	.LC205
-	.word	.LC25
+	.word	.LC106
+	.word	.LC56
 	.word	.LC256
-	.word	.LC198
 	.word	.LC257
-	.word	.LC108
-	.word	.LC58
+	.word	.LC56
 	.word	.LC258
 	.word	.LC259
-	.word	.LC58
+	.word	.LC106
+	.word	.LC56
 	.word	.LC260
+	.word	.LC7
+	.word	.LC10
+	.word	.LC142
+	.word	.LC182
 	.word	.LC261
-	.word	.LC108
-	.word	.LC58
+	.word	.LC106
 	.word	.LC262
-	.word	.LC9
-	.word	.LC12
-	.word	.LC144
-	.word	.LC184
+	.word	.LC136
+	.word	.LC19
+	.word	.LC70
+	.word	.LC10
+	.word	.LC24
 	.word	.LC263
-	.word	.LC108
-	.word	.LC264
-	.word	.LC138
-	.word	.LC21
-	.word	.LC72
-	.word	.LC12
-	.word	.LC26
-	.word	.LC265
-	.word	.LC103
-	.word	.LC266
-	.word	.LC267
-	.word	.LC9
-	.word	.LC268
 	.word	.LC101
-	.word	.LC138
-	.word	.LC81
+	.word	.LC264
+	.word	.LC265
+	.word	.LC7
+	.word	.LC266
+	.word	.LC99
+	.word	.LC136
+	.word	.LC79
+	.word	.LC267
+	.word	.LC268
+	.word	.LC19
 	.word	.LC269
 	.word	.LC270
-	.word	.LC21
+	.word	.LC125
 	.word	.LC271
 	.word	.LC272
-	.word	.LC127
+	.word	.LC106
 	.word	.LC273
+	.word	.LC10
 	.word	.LC274
-	.word	.LC108
+	.word	.LC70
 	.word	.LC275
-	.word	.LC12
+	.word	.LC7
 	.word	.LC276
-	.word	.LC72
 	.word	.LC277
-	.word	.LC9
+	.word	.LC10
 	.word	.LC278
+	.word	.LC19
 	.word	.LC279
-	.word	.LC12
+	.word	.LC10
+	.word	.LC43
+	.word	.LC19
 	.word	.LC280
-	.word	.LC21
+	.word	.LC10
+	.word	.LC142
+	.word	.LC143
 	.word	.LC281
-	.word	.LC12
-	.word	.LC45
-	.word	.LC21
+	.word	.LC19
+	.word	.LC201
+	.word	.LC19
 	.word	.LC282
-	.word	.LC12
-	.word	.LC144
-	.word	.LC145
 	.word	.LC283
-	.word	.LC21
-	.word	.LC203
-	.word	.LC21
 	.word	.LC284
+	.word	.LC70
 	.word	.LC285
 	.word	.LC286
-	.word	.LC72
 	.word	.LC287
 	.word	.LC288
+	.word	.LC99
 	.word	.LC289
+	.word	.LC87
+	.word	.LC27
 	.word	.LC290
-	.word	.LC101
+	.word	.LC19
+	.word	.LC272
+	.word	.LC284
+	.word	.LC70
 	.word	.LC291
-	.word	.LC89
-	.word	.LC29
 	.word	.LC292
-	.word	.LC21
-	.word	.LC274
-	.word	.LC286
-	.word	.LC72
+	.word	.LC288
+	.word	.LC99
+	.word	.LC289
+	.word	.LC87
+	.word	.LC27
+	.word	.LC290
+	.word	.LC19
 	.word	.LC293
 	.word	.LC294
-	.word	.LC290
-	.word	.LC101
-	.word	.LC291
-	.word	.LC89
-	.word	.LC29
-	.word	.LC292
-	.word	.LC21
 	.word	.LC295
 	.word	.LC296
 	.word	.LC297
 	.word	.LC298
 	.word	.LC299
+	.word	.LC49
 	.word	.LC300
 	.word	.LC301
-	.word	.LC51
+	.word	.LC49
 	.word	.LC302
+	.word	.LC61
+	.word	.LC219
+	.word	.LC49
+	.word	.LC279
+	.word	.LC167
 	.word	.LC303
-	.word	.LC51
+	.word	.LC201
+	.word	.LC19
+	.word	.LC181
+	.word	.LC73
 	.word	.LC304
-	.word	.LC63
-	.word	.LC221
-	.word	.LC51
-	.word	.LC281
-	.word	.LC169
+	.word	.LC101
+	.word	.LC201
+	.word	.LC19
+	.word	.LC282
+	.word	.LC283
 	.word	.LC305
-	.word	.LC203
-	.word	.LC21
-	.word	.LC183
-	.word	.LC75
+	.word	.LC282
 	.word	.LC306
-	.word	.LC103
-	.word	.LC203
-	.word	.LC21
-	.word	.LC284
-	.word	.LC285
 	.word	.LC307
-	.word	.LC284
+	.word	.LC282
 	.word	.LC308
+	.word	.LC7
+	.word	.LC208
 	.word	.LC309
-	.word	.LC284
+	.word	.LC188
 	.word	.LC310
-	.word	.LC9
-	.word	.LC210
 	.word	.LC311
-	.word	.LC190
+	.word	.LC56
+	.word	.LC310
+	.word	.LC95
 	.word	.LC312
 	.word	.LC313
-	.word	.LC58
-	.word	.LC312
-	.word	.LC97
 	.word	.LC314
+	.word	.LC106
 	.word	.LC315
+	.word	.LC19
+	.word	.LC204
+	.word	.LC19
+	.word	.LC31
+	.word	.LC79
+	.word	.LC68
 	.word	.LC316
-	.word	.LC108
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
+	.word	.LC79
 	.word	.LC317
-	.word	.LC21
-	.word	.LC206
-	.word	.LC21
-	.word	.LC33
-	.word	.LC81
-	.word	.LC70
 	.word	.LC318
-	.word	.LC206
-	.word	.LC75
-	.word	.LC33
-	.word	.LC81
+	.word	.LC67
+	.word	.LC19
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC222
+	.word	.LC21
 	.word	.LC319
 	.word	.LC320
-	.word	.LC69
-	.word	.LC21
-	.word	.LC61
-	.word	.LC102
-	.word	.LC203
-	.word	.LC224
-	.word	.LC23
 	.word	.LC321
+	.word	.LC95
 	.word	.LC322
+	.word	.LC219
+	.word	.LC84
+	.word	.LC136
+	.word	.LC56
 	.word	.LC323
-	.word	.LC97
+	.word	.LC220
+	.word	.LC34
+	.word	.LC10
+	.word	.LC147
+	.word	.LC150
+	.word	.LC210
+	.word	.LC27
+	.word	.LC49
+	.word	.LC74
 	.word	.LC324
-	.word	.LC221
-	.word	.LC86
-	.word	.LC138
-	.word	.LC58
+	.word	.LC196
 	.word	.LC325
-	.word	.LC222
-	.word	.LC36
-	.word	.LC12
-	.word	.LC149
-	.word	.LC152
-	.word	.LC212
-	.word	.LC29
-	.word	.LC51
-	.word	.LC76
 	.word	.LC326
-	.word	.LC198
+	.word	.LC39
+	.word	.LC19
 	.word	.LC327
+	.word	.LC99
+	.word	.LC26
 	.word	.LC328
-	.word	.LC41
-	.word	.LC21
+	.word	.LC136
 	.word	.LC329
-	.word	.LC101
-	.word	.LC28
+	.word	.LC143
 	.word	.LC330
-	.word	.LC138
+	.word	.LC27
 	.word	.LC331
-	.word	.LC145
+	.word	.LC103
+	.word	.LC79
 	.word	.LC332
-	.word	.LC29
+	.word	.LC9
 	.word	.LC333
-	.word	.LC105
-	.word	.LC81
 	.word	.LC334
-	.word	.LC11
+	.word	.LC27
+	.word	.LC103
+	.word	.LC79
+	.word	.LC80
+	.word	.LC9
 	.word	.LC335
+	.word	.LC10
+	.word	.LC260
 	.word	.LC336
-	.word	.LC29
-	.word	.LC105
-	.word	.LC81
-	.word	.LC82
-	.word	.LC11
+	.word	.LC10
 	.word	.LC337
-	.word	.LC12
-	.word	.LC262
 	.word	.LC338
-	.word	.LC12
+	.word	.LC27
 	.word	.LC339
 	.word	.LC340
-	.word	.LC29
 	.word	.LC341
+	.word	.LC10
+	.word	.LC251
 	.word	.LC342
+	.word	.LC7
 	.word	.LC343
-	.word	.LC12
-	.word	.LC253
-	.word	.LC344
-	.word	.LC9
-	.word	.LC345
-	.word	.LC29
-	.word	.LC25
+	.word	.LC27
+	.word	.LC23
+	.word	.LC43
 	.word	.LC45
-	.word	.LC47
-	.word	.LC159
-	.word	.LC346
+	.word	.LC157
+	.word	.LC344
+	.word	.LC67
+	.word	.LC68
 	.word	.LC69
-	.word	.LC70
-	.word	.LC71
-	.word	.LC127
-	.word	.LC12
-	.word	.LC16
+	.word	.LC125
+	.word	.LC10
+	.word	.LC14
+	.word	.LC0
+	.word	.LC1
 	.word	.LC2
 	.word	.LC3
 	.word	.LC4
@@ -2059,9 +2029,9 @@ input_data:
 	.word	.LC9
 	.word	.LC10
 	.word	.LC11
+	.word	.LC9
 	.word	.LC12
 	.word	.LC13
-	.word	.LC11
 	.word	.LC14
 	.word	.LC15
 	.word	.LC16
@@ -2072,68 +2042,68 @@ input_data:
 	.word	.LC21
 	.word	.LC22
 	.word	.LC23
+	.word	.LC10
 	.word	.LC24
+	.word	.LC14
 	.word	.LC25
-	.word	.LC12
 	.word	.LC26
-	.word	.LC16
 	.word	.LC27
 	.word	.LC28
 	.word	.LC29
 	.word	.LC30
+	.word	.LC9
+	.word	.LC14
 	.word	.LC31
 	.word	.LC32
-	.word	.LC11
-	.word	.LC16
 	.word	.LC33
 	.word	.LC34
 	.word	.LC35
 	.word	.LC36
+	.word	.LC10
 	.word	.LC37
+	.word	.LC9
 	.word	.LC38
-	.word	.LC12
 	.word	.LC39
-	.word	.LC11
 	.word	.LC40
 	.word	.LC41
 	.word	.LC42
 	.word	.LC43
 	.word	.LC44
 	.word	.LC45
+	.word	.LC38
 	.word	.LC46
 	.word	.LC47
-	.word	.LC40
 	.word	.LC48
+	.word	.LC16
 	.word	.LC49
 	.word	.LC50
-	.word	.LC18
 	.word	.LC51
+	.word	.LC39
 	.word	.LC52
 	.word	.LC53
-	.word	.LC41
+	.word	.LC10
 	.word	.LC54
+	.word	.LC7
 	.word	.LC55
-	.word	.LC12
-	.word	.LC56
 	.word	.LC9
+	.word	.LC56
 	.word	.LC57
-	.word	.LC11
 	.word	.LC58
 	.word	.LC59
 	.word	.LC60
 	.word	.LC61
+	.word	.LC49
 	.word	.LC62
 	.word	.LC63
-	.word	.LC51
+	.word	.LC10
+	.word	.LC54
+	.word	.LC7
+	.word	.LC55
+	.word	.LC9
+	.word	.LC56
+	.word	.LC57
 	.word	.LC64
 	.word	.LC65
-	.word	.LC12
-	.word	.LC56
-	.word	.LC9
-	.word	.LC57
-	.word	.LC11
-	.word	.LC58
-	.word	.LC59
 	.word	.LC66
 	.word	.LC67
 	.word	.LC68
@@ -2144,592 +2114,592 @@ input_data:
 	.word	.LC73
 	.word	.LC74
 	.word	.LC75
+	.word	.LC4
 	.word	.LC76
-	.word	.LC77
-	.word	.LC6
-	.word	.LC78
-	.word	.LC11
-	.word	.LC79
 	.word	.LC9
+	.word	.LC77
+	.word	.LC7
+	.word	.LC78
+	.word	.LC70
+	.word	.LC79
 	.word	.LC80
-	.word	.LC72
+	.word	.LC19
 	.word	.LC81
 	.word	.LC82
-	.word	.LC21
+	.word	.LC52
 	.word	.LC83
 	.word	.LC84
-	.word	.LC54
 	.word	.LC85
 	.word	.LC86
 	.word	.LC87
+	.word	.LC19
+	.word	.LC7
+	.word	.LC83
 	.word	.LC88
+	.word	.LC19
 	.word	.LC89
-	.word	.LC21
-	.word	.LC9
-	.word	.LC85
 	.word	.LC90
-	.word	.LC21
+	.word	.LC61
 	.word	.LC91
+	.word	.LC62
 	.word	.LC92
-	.word	.LC63
 	.word	.LC93
-	.word	.LC64
+	.word	.LC92
+	.word	.LC19
 	.word	.LC94
 	.word	.LC95
-	.word	.LC94
-	.word	.LC21
 	.word	.LC96
 	.word	.LC97
+	.word	.LC10
+	.word	.LC24
 	.word	.LC98
+	.word	.LC96
 	.word	.LC99
-	.word	.LC12
-	.word	.LC26
 	.word	.LC100
-	.word	.LC98
 	.word	.LC101
 	.word	.LC102
 	.word	.LC103
+	.word	.LC92
 	.word	.LC104
+	.word	.LC92
 	.word	.LC105
-	.word	.LC94
 	.word	.LC106
-	.word	.LC94
 	.word	.LC107
 	.word	.LC108
 	.word	.LC109
 	.word	.LC110
+	.word	.LC34
 	.word	.LC111
 	.word	.LC112
-	.word	.LC36
 	.word	.LC113
+	.word	.LC28
 	.word	.LC114
 	.word	.LC115
-	.word	.LC30
+	.word	.LC70
+	.word	.LC56
 	.word	.LC116
+	.word	.LC91
 	.word	.LC117
-	.word	.LC72
-	.word	.LC58
+	.word	.LC106
+	.word	.LC26
 	.word	.LC118
-	.word	.LC93
+	.word	.LC101
+	.word	.LC59
 	.word	.LC119
-	.word	.LC108
-	.word	.LC28
+	.word	.LC56
 	.word	.LC120
-	.word	.LC103
-	.word	.LC61
+	.word	.LC60
+	.word	.LC10
 	.word	.LC121
-	.word	.LC58
+	.word	.LC101
 	.word	.LC122
-	.word	.LC62
-	.word	.LC12
+	.word	.LC19
+	.word	.LC4
 	.word	.LC123
-	.word	.LC103
 	.word	.LC124
-	.word	.LC21
-	.word	.LC6
 	.word	.LC125
 	.word	.LC126
 	.word	.LC127
 	.word	.LC128
 	.word	.LC129
+	.word	.LC21
 	.word	.LC130
 	.word	.LC131
-	.word	.LC23
 	.word	.LC132
+	.word	.LC101
 	.word	.LC133
+	.word	.LC19
 	.word	.LC134
-	.word	.LC103
+	.word	.LC95
+	.word	.LC26
 	.word	.LC135
-	.word	.LC21
 	.word	.LC136
-	.word	.LC97
-	.word	.LC28
 	.word	.LC137
 	.word	.LC138
 	.word	.LC139
+	.word	.LC95
 	.word	.LC140
 	.word	.LC141
-	.word	.LC97
+	.word	.LC136
 	.word	.LC142
 	.word	.LC143
-	.word	.LC138
+	.word	.LC91
+	.word	.LC135
+	.word	.LC136
 	.word	.LC144
 	.word	.LC145
-	.word	.LC93
-	.word	.LC137
-	.word	.LC138
+	.word	.LC95
 	.word	.LC146
+	.word	.LC56
 	.word	.LC147
-	.word	.LC97
+	.word	.LC125
 	.word	.LC148
-	.word	.LC58
 	.word	.LC149
-	.word	.LC127
 	.word	.LC150
 	.word	.LC151
 	.word	.LC152
+	.word	.LC150
 	.word	.LC153
+	.word	.LC28
 	.word	.LC154
-	.word	.LC152
+	.word	.LC103
 	.word	.LC155
-	.word	.LC30
+	.word	.LC7
+	.word	.LC70
+	.word	.LC10
 	.word	.LC156
-	.word	.LC105
 	.word	.LC157
-	.word	.LC9
-	.word	.LC72
-	.word	.LC12
+	.word	.LC20
+	.word	.LC136
+	.word	.LC77
 	.word	.LC158
 	.word	.LC159
-	.word	.LC22
-	.word	.LC138
-	.word	.LC79
+	.word	.LC19
 	.word	.LC160
 	.word	.LC161
-	.word	.LC21
+	.word	.LC10
 	.word	.LC162
+	.word	.LC15
+	.word	.LC19
 	.word	.LC163
-	.word	.LC12
+	.word	.LC70
 	.word	.LC164
-	.word	.LC17
-	.word	.LC21
+	.word	.LC51
 	.word	.LC165
-	.word	.LC72
+	.word	.LC69
+	.word	.LC83
 	.word	.LC166
-	.word	.LC53
+	.word	.LC56
 	.word	.LC167
-	.word	.LC71
-	.word	.LC85
 	.word	.LC168
-	.word	.LC58
 	.word	.LC169
 	.word	.LC170
 	.word	.LC171
+	.word	.LC56
+	.word	.LC167
 	.word	.LC172
 	.word	.LC173
-	.word	.LC58
-	.word	.LC169
 	.word	.LC174
+	.word	.LC95
 	.word	.LC175
 	.word	.LC176
-	.word	.LC97
 	.word	.LC177
+	.word	.LC19
 	.word	.LC178
+	.word	.LC100
 	.word	.LC179
-	.word	.LC21
+	.word	.LC19
 	.word	.LC180
-	.word	.LC102
+	.word	.LC106
 	.word	.LC181
-	.word	.LC21
+	.word	.LC136
+	.word	.LC56
+	.word	.LC116
+	.word	.LC28
 	.word	.LC182
-	.word	.LC108
 	.word	.LC183
-	.word	.LC138
-	.word	.LC58
-	.word	.LC118
-	.word	.LC30
+	.word	.LC142
+	.word	.LC16
+	.word	.LC100
 	.word	.LC184
+	.word	.LC100
+	.word	.LC4
 	.word	.LC185
-	.word	.LC144
-	.word	.LC18
-	.word	.LC102
+	.word	.LC179
 	.word	.LC186
-	.word	.LC102
-	.word	.LC6
 	.word	.LC187
+	.word	.LC106
 	.word	.LC181
+	.word	.LC136
 	.word	.LC188
 	.word	.LC189
-	.word	.LC108
-	.word	.LC183
-	.word	.LC138
 	.word	.LC190
+	.word	.LC9
+	.word	.LC10
+	.word	.LC182
+	.word	.LC183
 	.word	.LC191
+	.word	.LC16
+	.word	.LC100
 	.word	.LC192
-	.word	.LC11
-	.word	.LC12
-	.word	.LC184
-	.word	.LC185
+	.word	.LC178
 	.word	.LC193
-	.word	.LC18
-	.word	.LC102
 	.word	.LC194
-	.word	.LC180
+	.word	.LC9
 	.word	.LC195
 	.word	.LC196
-	.word	.LC11
+	.word	.LC121
+	.word	.LC106
+	.word	.LC56
 	.word	.LC197
 	.word	.LC198
-	.word	.LC123
-	.word	.LC108
-	.word	.LC58
 	.word	.LC199
 	.word	.LC200
 	.word	.LC201
 	.word	.LC202
 	.word	.LC203
 	.word	.LC204
+	.word	.LC73
 	.word	.LC205
 	.word	.LC206
-	.word	.LC75
+	.word	.LC19
 	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
 	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
-	.word	.LC33
+	.word	.LC19
+	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC209
+	.word	.LC4
 	.word	.LC210
-	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
+	.word	.LC73
 	.word	.LC211
-	.word	.LC6
+	.word	.LC10
 	.word	.LC212
-	.word	.LC208
-	.word	.LC75
 	.word	.LC213
-	.word	.LC12
+	.word	.LC125
+	.word	.LC56
 	.word	.LC214
 	.word	.LC215
-	.word	.LC127
-	.word	.LC58
 	.word	.LC216
 	.word	.LC217
+	.word	.LC19
+	.word	.LC181
+	.word	.LC178
 	.word	.LC218
+	.word	.LC77
 	.word	.LC219
-	.word	.LC21
-	.word	.LC183
-	.word	.LC180
+	.word	.LC84
 	.word	.LC220
-	.word	.LC79
 	.word	.LC221
-	.word	.LC86
+	.word	.LC77
 	.word	.LC222
 	.word	.LC223
-	.word	.LC79
 	.word	.LC224
+	.word	.LC91
 	.word	.LC225
 	.word	.LC226
-	.word	.LC93
 	.word	.LC227
+	.word	.LC91
 	.word	.LC228
 	.word	.LC229
-	.word	.LC93
+	.word	.LC53
+	.word	.LC56
 	.word	.LC230
 	.word	.LC231
-	.word	.LC55
-	.word	.LC58
-	.word	.LC232
-	.word	.LC233
-	.word	.LC29
-	.word	.LC133
-	.word	.LC82
-	.word	.LC21
-	.word	.LC234
-	.word	.LC97
-	.word	.LC28
-	.word	.LC235
-	.word	.LC11
-	.word	.LC29
-	.word	.LC222
-	.word	.LC11
-	.word	.LC181
-	.word	.LC139
-	.word	.LC144
-	.word	.LC236
-	.word	.LC11
-	.word	.LC29
-	.word	.LC237
-	.word	.LC12
-	.word	.LC238
-	.word	.LC239
-	.word	.LC75
-	.word	.LC240
-	.word	.LC48
-	.word	.LC241
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC33
-	.word	.LC243
-	.word	.LC108
-	.word	.LC183
-	.word	.LC29
-	.word	.LC101
-	.word	.LC58
-	.word	.LC244
-	.word	.LC245
-	.word	.LC246
-	.word	.LC12
-	.word	.LC247
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC180
-	.word	.LC248
-	.word	.LC202
+	.word	.LC27
 	.word	.LC131
-	.word	.LC64
-	.word	.LC249
-	.word	.LC57
-	.word	.LC250
-	.word	.LC251
-	.word	.LC51
-	.word	.LC22
-	.word	.LC252
-	.word	.LC21
+	.word	.LC80
+	.word	.LC19
+	.word	.LC232
+	.word	.LC95
+	.word	.LC26
+	.word	.LC233
+	.word	.LC9
+	.word	.LC27
+	.word	.LC220
+	.word	.LC9
+	.word	.LC179
+	.word	.LC137
+	.word	.LC142
+	.word	.LC234
+	.word	.LC9
+	.word	.LC27
+	.word	.LC235
+	.word	.LC10
+	.word	.LC236
+	.word	.LC237
+	.word	.LC73
+	.word	.LC238
+	.word	.LC46
+	.word	.LC239
+	.word	.LC240
 	.word	.LC177
-	.word	.LC253
-	.word	.LC195
-	.word	.LC108
-	.word	.LC102
-	.word	.LC58
-	.word	.LC254
-	.word	.LC63
+	.word	.LC19
+	.word	.LC31
+	.word	.LC241
+	.word	.LC106
+	.word	.LC181
+	.word	.LC27
+	.word	.LC99
+	.word	.LC56
+	.word	.LC242
+	.word	.LC243
+	.word	.LC244
+	.word	.LC10
+	.word	.LC245
+	.word	.LC240
+	.word	.LC177
+	.word	.LC19
+	.word	.LC178
+	.word	.LC246
+	.word	.LC200
+	.word	.LC129
+	.word	.LC62
+	.word	.LC247
+	.word	.LC55
+	.word	.LC248
+	.word	.LC249
+	.word	.LC49
+	.word	.LC20
+	.word	.LC250
+	.word	.LC19
+	.word	.LC175
+	.word	.LC251
+	.word	.LC193
+	.word	.LC106
+	.word	.LC100
+	.word	.LC56
+	.word	.LC252
 	.word	.LC61
-	.word	.LC102
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC253
+	.word	.LC26
 	.word	.LC203
+	.word	.LC23
+	.word	.LC254
+	.word	.LC196
 	.word	.LC255
-	.word	.LC28
-	.word	.LC205
-	.word	.LC25
+	.word	.LC106
+	.word	.LC56
 	.word	.LC256
-	.word	.LC198
 	.word	.LC257
-	.word	.LC108
-	.word	.LC58
+	.word	.LC56
 	.word	.LC258
 	.word	.LC259
-	.word	.LC58
+	.word	.LC106
+	.word	.LC56
 	.word	.LC260
+	.word	.LC7
+	.word	.LC10
+	.word	.LC142
+	.word	.LC182
 	.word	.LC261
-	.word	.LC108
-	.word	.LC58
+	.word	.LC106
 	.word	.LC262
-	.word	.LC9
-	.word	.LC12
-	.word	.LC144
-	.word	.LC184
+	.word	.LC136
+	.word	.LC19
+	.word	.LC70
+	.word	.LC10
+	.word	.LC24
 	.word	.LC263
-	.word	.LC108
-	.word	.LC264
-	.word	.LC138
-	.word	.LC21
-	.word	.LC72
-	.word	.LC12
-	.word	.LC26
-	.word	.LC265
-	.word	.LC103
-	.word	.LC266
-	.word	.LC267
-	.word	.LC9
-	.word	.LC268
 	.word	.LC101
-	.word	.LC138
-	.word	.LC81
+	.word	.LC264
+	.word	.LC265
+	.word	.LC7
+	.word	.LC266
+	.word	.LC99
+	.word	.LC136
+	.word	.LC79
+	.word	.LC267
+	.word	.LC268
+	.word	.LC19
 	.word	.LC269
 	.word	.LC270
-	.word	.LC21
+	.word	.LC125
 	.word	.LC271
 	.word	.LC272
-	.word	.LC127
+	.word	.LC106
 	.word	.LC273
+	.word	.LC10
 	.word	.LC274
-	.word	.LC108
+	.word	.LC70
 	.word	.LC275
-	.word	.LC12
+	.word	.LC7
 	.word	.LC276
-	.word	.LC72
 	.word	.LC277
-	.word	.LC9
+	.word	.LC10
 	.word	.LC278
+	.word	.LC19
 	.word	.LC279
-	.word	.LC12
+	.word	.LC10
+	.word	.LC43
+	.word	.LC19
 	.word	.LC280
-	.word	.LC21
+	.word	.LC10
+	.word	.LC142
+	.word	.LC143
 	.word	.LC281
-	.word	.LC12
-	.word	.LC45
-	.word	.LC21
+	.word	.LC19
+	.word	.LC201
+	.word	.LC19
 	.word	.LC282
-	.word	.LC12
-	.word	.LC144
-	.word	.LC145
 	.word	.LC283
-	.word	.LC21
-	.word	.LC203
-	.word	.LC21
 	.word	.LC284
+	.word	.LC70
 	.word	.LC285
 	.word	.LC286
-	.word	.LC72
 	.word	.LC287
 	.word	.LC288
+	.word	.LC99
 	.word	.LC289
+	.word	.LC87
+	.word	.LC27
 	.word	.LC290
-	.word	.LC101
+	.word	.LC19
+	.word	.LC272
+	.word	.LC284
+	.word	.LC70
 	.word	.LC291
-	.word	.LC89
-	.word	.LC29
 	.word	.LC292
-	.word	.LC21
-	.word	.LC274
-	.word	.LC286
-	.word	.LC72
+	.word	.LC288
+	.word	.LC99
+	.word	.LC289
+	.word	.LC87
+	.word	.LC27
+	.word	.LC290
+	.word	.LC19
 	.word	.LC293
 	.word	.LC294
-	.word	.LC290
-	.word	.LC101
-	.word	.LC291
-	.word	.LC89
-	.word	.LC29
-	.word	.LC292
-	.word	.LC21
 	.word	.LC295
 	.word	.LC296
 	.word	.LC297
 	.word	.LC298
 	.word	.LC299
+	.word	.LC49
 	.word	.LC300
 	.word	.LC301
-	.word	.LC51
+	.word	.LC49
 	.word	.LC302
+	.word	.LC61
+	.word	.LC219
+	.word	.LC49
+	.word	.LC279
+	.word	.LC167
 	.word	.LC303
-	.word	.LC51
+	.word	.LC201
+	.word	.LC19
+	.word	.LC181
+	.word	.LC73
 	.word	.LC304
-	.word	.LC63
-	.word	.LC221
-	.word	.LC51
-	.word	.LC281
-	.word	.LC169
+	.word	.LC101
+	.word	.LC201
+	.word	.LC19
+	.word	.LC282
+	.word	.LC283
 	.word	.LC305
-	.word	.LC203
-	.word	.LC21
-	.word	.LC183
-	.word	.LC75
+	.word	.LC282
 	.word	.LC306
-	.word	.LC103
-	.word	.LC203
-	.word	.LC21
-	.word	.LC284
-	.word	.LC285
 	.word	.LC307
-	.word	.LC284
+	.word	.LC282
 	.word	.LC308
+	.word	.LC7
+	.word	.LC208
 	.word	.LC309
-	.word	.LC284
+	.word	.LC188
 	.word	.LC310
-	.word	.LC9
-	.word	.LC210
 	.word	.LC311
-	.word	.LC190
+	.word	.LC56
+	.word	.LC310
+	.word	.LC95
 	.word	.LC312
 	.word	.LC313
-	.word	.LC58
-	.word	.LC312
-	.word	.LC97
 	.word	.LC314
+	.word	.LC106
 	.word	.LC315
+	.word	.LC19
+	.word	.LC204
+	.word	.LC19
+	.word	.LC31
+	.word	.LC79
+	.word	.LC68
 	.word	.LC316
-	.word	.LC108
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
+	.word	.LC79
 	.word	.LC317
-	.word	.LC21
-	.word	.LC206
-	.word	.LC21
-	.word	.LC33
-	.word	.LC81
-	.word	.LC70
 	.word	.LC318
-	.word	.LC206
-	.word	.LC75
-	.word	.LC33
-	.word	.LC81
+	.word	.LC67
+	.word	.LC19
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC222
+	.word	.LC21
 	.word	.LC319
 	.word	.LC320
-	.word	.LC69
-	.word	.LC21
-	.word	.LC61
-	.word	.LC102
-	.word	.LC203
-	.word	.LC224
-	.word	.LC23
 	.word	.LC321
+	.word	.LC95
 	.word	.LC322
+	.word	.LC219
+	.word	.LC84
+	.word	.LC136
+	.word	.LC56
 	.word	.LC323
-	.word	.LC97
+	.word	.LC220
+	.word	.LC34
+	.word	.LC10
+	.word	.LC147
+	.word	.LC150
+	.word	.LC210
+	.word	.LC27
+	.word	.LC49
+	.word	.LC74
 	.word	.LC324
-	.word	.LC221
-	.word	.LC86
-	.word	.LC138
-	.word	.LC58
+	.word	.LC196
 	.word	.LC325
-	.word	.LC222
-	.word	.LC36
-	.word	.LC12
-	.word	.LC149
-	.word	.LC152
-	.word	.LC212
-	.word	.LC29
-	.word	.LC51
-	.word	.LC76
 	.word	.LC326
-	.word	.LC198
+	.word	.LC39
+	.word	.LC19
 	.word	.LC327
+	.word	.LC99
+	.word	.LC26
 	.word	.LC328
-	.word	.LC41
-	.word	.LC21
+	.word	.LC136
 	.word	.LC329
-	.word	.LC101
-	.word	.LC28
+	.word	.LC143
 	.word	.LC330
-	.word	.LC138
+	.word	.LC27
 	.word	.LC331
-	.word	.LC145
+	.word	.LC103
+	.word	.LC79
 	.word	.LC332
-	.word	.LC29
+	.word	.LC9
 	.word	.LC333
-	.word	.LC105
-	.word	.LC81
 	.word	.LC334
-	.word	.LC11
+	.word	.LC27
+	.word	.LC103
+	.word	.LC79
+	.word	.LC80
+	.word	.LC9
 	.word	.LC335
+	.word	.LC10
+	.word	.LC260
 	.word	.LC336
-	.word	.LC29
-	.word	.LC105
-	.word	.LC81
-	.word	.LC82
-	.word	.LC11
+	.word	.LC10
 	.word	.LC337
-	.word	.LC12
-	.word	.LC262
 	.word	.LC338
-	.word	.LC12
+	.word	.LC27
 	.word	.LC339
 	.word	.LC340
-	.word	.LC29
 	.word	.LC341
+	.word	.LC10
+	.word	.LC251
 	.word	.LC342
+	.word	.LC7
 	.word	.LC343
-	.word	.LC12
-	.word	.LC253
-	.word	.LC344
-	.word	.LC9
-	.word	.LC345
-	.word	.LC29
-	.word	.LC25
+	.word	.LC27
+	.word	.LC23
+	.word	.LC43
 	.word	.LC45
-	.word	.LC47
-	.word	.LC159
-	.word	.LC346
+	.word	.LC157
+	.word	.LC344
+	.word	.LC67
+	.word	.LC68
 	.word	.LC69
-	.word	.LC70
-	.word	.LC71
-	.word	.LC127
-	.word	.LC12
-	.word	.LC16
+	.word	.LC125
+	.word	.LC10
+	.word	.LC14
+	.word	.LC0
+	.word	.LC1
 	.word	.LC2
 	.word	.LC3
 	.word	.LC4
@@ -2740,9 +2710,9 @@ input_data:
 	.word	.LC9
 	.word	.LC10
 	.word	.LC11
+	.word	.LC9
 	.word	.LC12
 	.word	.LC13
-	.word	.LC11
 	.word	.LC14
 	.word	.LC15
 	.word	.LC16
@@ -2753,68 +2723,68 @@ input_data:
 	.word	.LC21
 	.word	.LC22
 	.word	.LC23
+	.word	.LC10
 	.word	.LC24
+	.word	.LC14
 	.word	.LC25
-	.word	.LC12
 	.word	.LC26
-	.word	.LC16
 	.word	.LC27
 	.word	.LC28
 	.word	.LC29
 	.word	.LC30
+	.word	.LC9
+	.word	.LC14
 	.word	.LC31
 	.word	.LC32
-	.word	.LC11
-	.word	.LC16
 	.word	.LC33
 	.word	.LC34
 	.word	.LC35
 	.word	.LC36
+	.word	.LC10
 	.word	.LC37
+	.word	.LC9
 	.word	.LC38
-	.word	.LC12
 	.word	.LC39
-	.word	.LC11
 	.word	.LC40
 	.word	.LC41
 	.word	.LC42
 	.word	.LC43
 	.word	.LC44
 	.word	.LC45
+	.word	.LC38
 	.word	.LC46
 	.word	.LC47
-	.word	.LC40
 	.word	.LC48
+	.word	.LC16
 	.word	.LC49
 	.word	.LC50
-	.word	.LC18
 	.word	.LC51
+	.word	.LC39
 	.word	.LC52
 	.word	.LC53
-	.word	.LC41
+	.word	.LC10
 	.word	.LC54
+	.word	.LC7
 	.word	.LC55
-	.word	.LC12
-	.word	.LC56
 	.word	.LC9
+	.word	.LC56
 	.word	.LC57
-	.word	.LC11
 	.word	.LC58
 	.word	.LC59
 	.word	.LC60
 	.word	.LC61
+	.word	.LC49
 	.word	.LC62
 	.word	.LC63
-	.word	.LC51
+	.word	.LC10
+	.word	.LC54
+	.word	.LC7
+	.word	.LC55
+	.word	.LC9
+	.word	.LC56
+	.word	.LC57
 	.word	.LC64
 	.word	.LC65
-	.word	.LC12
-	.word	.LC56
-	.word	.LC9
-	.word	.LC57
-	.word	.LC11
-	.word	.LC58
-	.word	.LC59
 	.word	.LC66
 	.word	.LC67
 	.word	.LC68
@@ -2825,592 +2795,592 @@ input_data:
 	.word	.LC73
 	.word	.LC74
 	.word	.LC75
+	.word	.LC4
 	.word	.LC76
-	.word	.LC77
-	.word	.LC6
-	.word	.LC78
-	.word	.LC11
-	.word	.LC79
 	.word	.LC9
+	.word	.LC77
+	.word	.LC7
+	.word	.LC78
+	.word	.LC70
+	.word	.LC79
 	.word	.LC80
-	.word	.LC72
+	.word	.LC19
 	.word	.LC81
 	.word	.LC82
-	.word	.LC21
+	.word	.LC52
 	.word	.LC83
 	.word	.LC84
-	.word	.LC54
 	.word	.LC85
 	.word	.LC86
 	.word	.LC87
+	.word	.LC19
+	.word	.LC7
+	.word	.LC83
 	.word	.LC88
+	.word	.LC19
 	.word	.LC89
-	.word	.LC21
-	.word	.LC9
-	.word	.LC85
 	.word	.LC90
-	.word	.LC21
+	.word	.LC61
 	.word	.LC91
+	.word	.LC62
 	.word	.LC92
-	.word	.LC63
 	.word	.LC93
-	.word	.LC64
+	.word	.LC92
+	.word	.LC19
 	.word	.LC94
 	.word	.LC95
-	.word	.LC94
-	.word	.LC21
 	.word	.LC96
 	.word	.LC97
+	.word	.LC10
+	.word	.LC24
 	.word	.LC98
+	.word	.LC96
 	.word	.LC99
-	.word	.LC12
-	.word	.LC26
 	.word	.LC100
-	.word	.LC98
 	.word	.LC101
 	.word	.LC102
 	.word	.LC103
+	.word	.LC92
 	.word	.LC104
+	.word	.LC92
 	.word	.LC105
-	.word	.LC94
 	.word	.LC106
-	.word	.LC94
 	.word	.LC107
 	.word	.LC108
 	.word	.LC109
 	.word	.LC110
+	.word	.LC34
 	.word	.LC111
 	.word	.LC112
-	.word	.LC36
 	.word	.LC113
+	.word	.LC28
 	.word	.LC114
 	.word	.LC115
-	.word	.LC30
+	.word	.LC70
+	.word	.LC56
 	.word	.LC116
+	.word	.LC91
 	.word	.LC117
-	.word	.LC72
-	.word	.LC58
+	.word	.LC106
+	.word	.LC26
 	.word	.LC118
-	.word	.LC93
+	.word	.LC101
+	.word	.LC59
 	.word	.LC119
-	.word	.LC108
-	.word	.LC28
+	.word	.LC56
 	.word	.LC120
-	.word	.LC103
-	.word	.LC61
+	.word	.LC60
+	.word	.LC10
 	.word	.LC121
-	.word	.LC58
+	.word	.LC101
 	.word	.LC122
-	.word	.LC62
-	.word	.LC12
+	.word	.LC19
+	.word	.LC4
 	.word	.LC123
-	.word	.LC103
 	.word	.LC124
-	.word	.LC21
-	.word	.LC6
 	.word	.LC125
 	.word	.LC126
 	.word	.LC127
 	.word	.LC128
 	.word	.LC129
+	.word	.LC21
 	.word	.LC130
 	.word	.LC131
-	.word	.LC23
 	.word	.LC132
+	.word	.LC101
 	.word	.LC133
+	.word	.LC19
 	.word	.LC134
-	.word	.LC103
+	.word	.LC95
+	.word	.LC26
 	.word	.LC135
-	.word	.LC21
 	.word	.LC136
-	.word	.LC97
-	.word	.LC28
 	.word	.LC137
 	.word	.LC138
 	.word	.LC139
+	.word	.LC95
 	.word	.LC140
 	.word	.LC141
-	.word	.LC97
+	.word	.LC136
 	.word	.LC142
 	.word	.LC143
-	.word	.LC138
+	.word	.LC91
+	.word	.LC135
+	.word	.LC136
 	.word	.LC144
 	.word	.LC145
-	.word	.LC93
-	.word	.LC137
-	.word	.LC138
+	.word	.LC95
 	.word	.LC146
+	.word	.LC56
 	.word	.LC147
-	.word	.LC97
+	.word	.LC125
 	.word	.LC148
-	.word	.LC58
 	.word	.LC149
-	.word	.LC127
 	.word	.LC150
 	.word	.LC151
 	.word	.LC152
+	.word	.LC150
 	.word	.LC153
+	.word	.LC28
 	.word	.LC154
-	.word	.LC152
+	.word	.LC103
 	.word	.LC155
-	.word	.LC30
+	.word	.LC7
+	.word	.LC70
+	.word	.LC10
 	.word	.LC156
-	.word	.LC105
 	.word	.LC157
-	.word	.LC9
-	.word	.LC72
-	.word	.LC12
+	.word	.LC20
+	.word	.LC136
+	.word	.LC77
 	.word	.LC158
 	.word	.LC159
-	.word	.LC22
-	.word	.LC138
-	.word	.LC79
+	.word	.LC19
 	.word	.LC160
 	.word	.LC161
-	.word	.LC21
+	.word	.LC10
 	.word	.LC162
+	.word	.LC15
+	.word	.LC19
 	.word	.LC163
-	.word	.LC12
+	.word	.LC70
 	.word	.LC164
-	.word	.LC17
-	.word	.LC21
+	.word	.LC51
 	.word	.LC165
-	.word	.LC72
+	.word	.LC69
+	.word	.LC83
 	.word	.LC166
-	.word	.LC53
+	.word	.LC56
 	.word	.LC167
-	.word	.LC71
-	.word	.LC85
 	.word	.LC168
-	.word	.LC58
 	.word	.LC169
 	.word	.LC170
 	.word	.LC171
+	.word	.LC56
+	.word	.LC167
 	.word	.LC172
 	.word	.LC173
-	.word	.LC58
-	.word	.LC169
 	.word	.LC174
+	.word	.LC95
 	.word	.LC175
 	.word	.LC176
-	.word	.LC97
 	.word	.LC177
+	.word	.LC19
 	.word	.LC178
+	.word	.LC100
 	.word	.LC179
-	.word	.LC21
+	.word	.LC19
 	.word	.LC180
-	.word	.LC102
+	.word	.LC106
 	.word	.LC181
-	.word	.LC21
+	.word	.LC136
+	.word	.LC56
+	.word	.LC116
+	.word	.LC28
 	.word	.LC182
-	.word	.LC108
 	.word	.LC183
-	.word	.LC138
-	.word	.LC58
-	.word	.LC118
-	.word	.LC30
+	.word	.LC142
+	.word	.LC16
+	.word	.LC100
 	.word	.LC184
+	.word	.LC100
+	.word	.LC4
 	.word	.LC185
-	.word	.LC144
-	.word	.LC18
-	.word	.LC102
+	.word	.LC179
 	.word	.LC186
-	.word	.LC102
-	.word	.LC6
 	.word	.LC187
+	.word	.LC106
 	.word	.LC181
+	.word	.LC136
 	.word	.LC188
 	.word	.LC189
-	.word	.LC108
-	.word	.LC183
-	.word	.LC138
 	.word	.LC190
+	.word	.LC9
+	.word	.LC10
+	.word	.LC182
+	.word	.LC183
 	.word	.LC191
+	.word	.LC16
+	.word	.LC100
 	.word	.LC192
-	.word	.LC11
-	.word	.LC12
-	.word	.LC184
-	.word	.LC185
+	.word	.LC178
 	.word	.LC193
-	.word	.LC18
-	.word	.LC102
 	.word	.LC194
-	.word	.LC180
+	.word	.LC9
 	.word	.LC195
 	.word	.LC196
-	.word	.LC11
+	.word	.LC121
+	.word	.LC106
+	.word	.LC56
 	.word	.LC197
 	.word	.LC198
-	.word	.LC123
-	.word	.LC108
-	.word	.LC58
 	.word	.LC199
 	.word	.LC200
 	.word	.LC201
 	.word	.LC202
 	.word	.LC203
 	.word	.LC204
+	.word	.LC73
 	.word	.LC205
 	.word	.LC206
-	.word	.LC75
+	.word	.LC19
 	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
 	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
-	.word	.LC33
+	.word	.LC19
+	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC209
+	.word	.LC4
 	.word	.LC210
-	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
+	.word	.LC73
 	.word	.LC211
-	.word	.LC6
+	.word	.LC10
 	.word	.LC212
-	.word	.LC208
-	.word	.LC75
 	.word	.LC213
-	.word	.LC12
+	.word	.LC125
+	.word	.LC56
 	.word	.LC214
 	.word	.LC215
-	.word	.LC127
-	.word	.LC58
 	.word	.LC216
 	.word	.LC217
+	.word	.LC19
+	.word	.LC181
+	.word	.LC178
 	.word	.LC218
+	.word	.LC77
 	.word	.LC219
-	.word	.LC21
-	.word	.LC183
-	.word	.LC180
+	.word	.LC84
 	.word	.LC220
-	.word	.LC79
 	.word	.LC221
-	.word	.LC86
+	.word	.LC77
 	.word	.LC222
 	.word	.LC223
-	.word	.LC79
 	.word	.LC224
+	.word	.LC91
 	.word	.LC225
 	.word	.LC226
-	.word	.LC93
 	.word	.LC227
+	.word	.LC91
 	.word	.LC228
 	.word	.LC229
-	.word	.LC93
+	.word	.LC53
+	.word	.LC56
 	.word	.LC230
 	.word	.LC231
-	.word	.LC55
-	.word	.LC58
-	.word	.LC232
-	.word	.LC233
-	.word	.LC29
-	.word	.LC133
-	.word	.LC82
-	.word	.LC21
-	.word	.LC234
-	.word	.LC97
-	.word	.LC28
-	.word	.LC235
-	.word	.LC11
-	.word	.LC29
-	.word	.LC222
-	.word	.LC11
-	.word	.LC181
-	.word	.LC139
-	.word	.LC144
-	.word	.LC236
-	.word	.LC11
-	.word	.LC29
-	.word	.LC237
-	.word	.LC12
-	.word	.LC238
-	.word	.LC239
-	.word	.LC75
-	.word	.LC240
-	.word	.LC48
-	.word	.LC241
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC33
-	.word	.LC243
-	.word	.LC108
-	.word	.LC183
-	.word	.LC29
-	.word	.LC101
-	.word	.LC58
-	.word	.LC244
-	.word	.LC245
-	.word	.LC246
-	.word	.LC12
-	.word	.LC247
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC180
-	.word	.LC248
-	.word	.LC202
+	.word	.LC27
 	.word	.LC131
-	.word	.LC64
-	.word	.LC249
-	.word	.LC57
-	.word	.LC250
-	.word	.LC251
-	.word	.LC51
-	.word	.LC22
-	.word	.LC252
-	.word	.LC21
+	.word	.LC80
+	.word	.LC19
+	.word	.LC232
+	.word	.LC95
+	.word	.LC26
+	.word	.LC233
+	.word	.LC9
+	.word	.LC27
+	.word	.LC220
+	.word	.LC9
+	.word	.LC179
+	.word	.LC137
+	.word	.LC142
+	.word	.LC234
+	.word	.LC9
+	.word	.LC27
+	.word	.LC235
+	.word	.LC10
+	.word	.LC236
+	.word	.LC237
+	.word	.LC73
+	.word	.LC238
+	.word	.LC46
+	.word	.LC239
+	.word	.LC240
 	.word	.LC177
-	.word	.LC253
-	.word	.LC195
-	.word	.LC108
-	.word	.LC102
-	.word	.LC58
-	.word	.LC254
-	.word	.LC63
+	.word	.LC19
+	.word	.LC31
+	.word	.LC241
+	.word	.LC106
+	.word	.LC181
+	.word	.LC27
+	.word	.LC99
+	.word	.LC56
+	.word	.LC242
+	.word	.LC243
+	.word	.LC244
+	.word	.LC10
+	.word	.LC245
+	.word	.LC240
+	.word	.LC177
+	.word	.LC19
+	.word	.LC178
+	.word	.LC246
+	.word	.LC200
+	.word	.LC129
+	.word	.LC62
+	.word	.LC247
+	.word	.LC55
+	.word	.LC248
+	.word	.LC249
+	.word	.LC49
+	.word	.LC20
+	.word	.LC250
+	.word	.LC19
+	.word	.LC175
+	.word	.LC251
+	.word	.LC193
+	.word	.LC106
+	.word	.LC100
+	.word	.LC56
+	.word	.LC252
 	.word	.LC61
-	.word	.LC102
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC253
+	.word	.LC26
 	.word	.LC203
+	.word	.LC23
+	.word	.LC254
+	.word	.LC196
 	.word	.LC255
-	.word	.LC28
-	.word	.LC205
-	.word	.LC25
+	.word	.LC106
+	.word	.LC56
 	.word	.LC256
-	.word	.LC198
 	.word	.LC257
-	.word	.LC108
-	.word	.LC58
+	.word	.LC56
 	.word	.LC258
 	.word	.LC259
-	.word	.LC58
+	.word	.LC106
+	.word	.LC56
 	.word	.LC260
+	.word	.LC7
+	.word	.LC10
+	.word	.LC142
+	.word	.LC182
 	.word	.LC261
-	.word	.LC108
-	.word	.LC58
+	.word	.LC106
 	.word	.LC262
-	.word	.LC9
-	.word	.LC12
-	.word	.LC144
-	.word	.LC184
+	.word	.LC136
+	.word	.LC19
+	.word	.LC70
+	.word	.LC10
+	.word	.LC24
 	.word	.LC263
-	.word	.LC108
-	.word	.LC264
-	.word	.LC138
-	.word	.LC21
-	.word	.LC72
-	.word	.LC12
-	.word	.LC26
-	.word	.LC265
-	.word	.LC103
-	.word	.LC266
-	.word	.LC267
-	.word	.LC9
-	.word	.LC268
 	.word	.LC101
-	.word	.LC138
-	.word	.LC81
+	.word	.LC264
+	.word	.LC265
+	.word	.LC7
+	.word	.LC266
+	.word	.LC99
+	.word	.LC136
+	.word	.LC79
+	.word	.LC267
+	.word	.LC268
+	.word	.LC19
 	.word	.LC269
 	.word	.LC270
-	.word	.LC21
+	.word	.LC125
 	.word	.LC271
 	.word	.LC272
-	.word	.LC127
+	.word	.LC106
 	.word	.LC273
+	.word	.LC10
 	.word	.LC274
-	.word	.LC108
+	.word	.LC70
 	.word	.LC275
-	.word	.LC12
+	.word	.LC7
 	.word	.LC276
-	.word	.LC72
 	.word	.LC277
-	.word	.LC9
+	.word	.LC10
 	.word	.LC278
+	.word	.LC19
 	.word	.LC279
-	.word	.LC12
+	.word	.LC10
+	.word	.LC43
+	.word	.LC19
 	.word	.LC280
-	.word	.LC21
+	.word	.LC10
+	.word	.LC142
+	.word	.LC143
 	.word	.LC281
-	.word	.LC12
-	.word	.LC45
-	.word	.LC21
+	.word	.LC19
+	.word	.LC201
+	.word	.LC19
 	.word	.LC282
-	.word	.LC12
-	.word	.LC144
-	.word	.LC145
 	.word	.LC283
-	.word	.LC21
-	.word	.LC203
-	.word	.LC21
 	.word	.LC284
+	.word	.LC70
 	.word	.LC285
 	.word	.LC286
-	.word	.LC72
 	.word	.LC287
 	.word	.LC288
+	.word	.LC99
 	.word	.LC289
+	.word	.LC87
+	.word	.LC27
 	.word	.LC290
-	.word	.LC101
+	.word	.LC19
+	.word	.LC272
+	.word	.LC284
+	.word	.LC70
 	.word	.LC291
-	.word	.LC89
-	.word	.LC29
 	.word	.LC292
-	.word	.LC21
-	.word	.LC274
-	.word	.LC286
-	.word	.LC72
+	.word	.LC288
+	.word	.LC99
+	.word	.LC289
+	.word	.LC87
+	.word	.LC27
+	.word	.LC290
+	.word	.LC19
 	.word	.LC293
 	.word	.LC294
-	.word	.LC290
-	.word	.LC101
-	.word	.LC291
-	.word	.LC89
-	.word	.LC29
-	.word	.LC292
-	.word	.LC21
 	.word	.LC295
 	.word	.LC296
 	.word	.LC297
 	.word	.LC298
 	.word	.LC299
+	.word	.LC49
 	.word	.LC300
 	.word	.LC301
-	.word	.LC51
+	.word	.LC49
 	.word	.LC302
+	.word	.LC61
+	.word	.LC219
+	.word	.LC49
+	.word	.LC279
+	.word	.LC167
 	.word	.LC303
-	.word	.LC51
+	.word	.LC201
+	.word	.LC19
+	.word	.LC181
+	.word	.LC73
 	.word	.LC304
-	.word	.LC63
-	.word	.LC221
-	.word	.LC51
-	.word	.LC281
-	.word	.LC169
+	.word	.LC101
+	.word	.LC201
+	.word	.LC19
+	.word	.LC282
+	.word	.LC283
 	.word	.LC305
-	.word	.LC203
-	.word	.LC21
-	.word	.LC183
-	.word	.LC75
+	.word	.LC282
 	.word	.LC306
-	.word	.LC103
-	.word	.LC203
-	.word	.LC21
-	.word	.LC284
-	.word	.LC285
 	.word	.LC307
-	.word	.LC284
+	.word	.LC282
 	.word	.LC308
+	.word	.LC7
+	.word	.LC208
 	.word	.LC309
-	.word	.LC284
+	.word	.LC188
 	.word	.LC310
-	.word	.LC9
-	.word	.LC210
 	.word	.LC311
-	.word	.LC190
+	.word	.LC56
+	.word	.LC310
+	.word	.LC95
 	.word	.LC312
 	.word	.LC313
-	.word	.LC58
-	.word	.LC312
-	.word	.LC97
 	.word	.LC314
+	.word	.LC106
 	.word	.LC315
+	.word	.LC19
+	.word	.LC204
+	.word	.LC19
+	.word	.LC31
+	.word	.LC79
+	.word	.LC68
 	.word	.LC316
-	.word	.LC108
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
+	.word	.LC79
 	.word	.LC317
-	.word	.LC21
-	.word	.LC206
-	.word	.LC21
-	.word	.LC33
-	.word	.LC81
-	.word	.LC70
 	.word	.LC318
-	.word	.LC206
-	.word	.LC75
-	.word	.LC33
-	.word	.LC81
+	.word	.LC67
+	.word	.LC19
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC222
+	.word	.LC21
 	.word	.LC319
 	.word	.LC320
-	.word	.LC69
-	.word	.LC21
-	.word	.LC61
-	.word	.LC102
-	.word	.LC203
-	.word	.LC224
-	.word	.LC23
 	.word	.LC321
+	.word	.LC95
 	.word	.LC322
+	.word	.LC219
+	.word	.LC84
+	.word	.LC136
+	.word	.LC56
 	.word	.LC323
-	.word	.LC97
+	.word	.LC220
+	.word	.LC34
+	.word	.LC10
+	.word	.LC147
+	.word	.LC150
+	.word	.LC210
+	.word	.LC27
+	.word	.LC49
+	.word	.LC74
 	.word	.LC324
-	.word	.LC221
-	.word	.LC86
-	.word	.LC138
-	.word	.LC58
+	.word	.LC196
 	.word	.LC325
-	.word	.LC222
-	.word	.LC36
-	.word	.LC12
-	.word	.LC149
-	.word	.LC152
-	.word	.LC212
-	.word	.LC29
-	.word	.LC51
-	.word	.LC76
 	.word	.LC326
-	.word	.LC198
+	.word	.LC39
+	.word	.LC19
 	.word	.LC327
+	.word	.LC99
+	.word	.LC26
 	.word	.LC328
-	.word	.LC41
-	.word	.LC21
+	.word	.LC136
 	.word	.LC329
-	.word	.LC101
-	.word	.LC28
+	.word	.LC143
 	.word	.LC330
-	.word	.LC138
+	.word	.LC27
 	.word	.LC331
-	.word	.LC145
+	.word	.LC103
+	.word	.LC79
 	.word	.LC332
-	.word	.LC29
+	.word	.LC9
 	.word	.LC333
-	.word	.LC105
-	.word	.LC81
 	.word	.LC334
-	.word	.LC11
+	.word	.LC27
+	.word	.LC103
+	.word	.LC79
+	.word	.LC80
+	.word	.LC9
 	.word	.LC335
+	.word	.LC10
+	.word	.LC260
 	.word	.LC336
-	.word	.LC29
-	.word	.LC105
-	.word	.LC81
-	.word	.LC82
-	.word	.LC11
+	.word	.LC10
 	.word	.LC337
-	.word	.LC12
-	.word	.LC262
 	.word	.LC338
-	.word	.LC12
+	.word	.LC27
 	.word	.LC339
 	.word	.LC340
-	.word	.LC29
 	.word	.LC341
+	.word	.LC10
+	.word	.LC251
 	.word	.LC342
+	.word	.LC7
 	.word	.LC343
-	.word	.LC12
-	.word	.LC253
-	.word	.LC344
-	.word	.LC9
-	.word	.LC345
-	.word	.LC29
-	.word	.LC25
+	.word	.LC27
+	.word	.LC23
+	.word	.LC43
 	.word	.LC45
-	.word	.LC47
-	.word	.LC159
-	.word	.LC346
+	.word	.LC157
+	.word	.LC344
+	.word	.LC67
+	.word	.LC68
 	.word	.LC69
-	.word	.LC70
-	.word	.LC71
-	.word	.LC127
-	.word	.LC12
-	.word	.LC16
+	.word	.LC125
+	.word	.LC10
+	.word	.LC14
+	.word	.LC0
+	.word	.LC1
 	.word	.LC2
 	.word	.LC3
 	.word	.LC4
@@ -3421,9 +3391,9 @@ input_data:
 	.word	.LC9
 	.word	.LC10
 	.word	.LC11
+	.word	.LC9
 	.word	.LC12
 	.word	.LC13
-	.word	.LC11
 	.word	.LC14
 	.word	.LC15
 	.word	.LC16
@@ -3434,68 +3404,68 @@ input_data:
 	.word	.LC21
 	.word	.LC22
 	.word	.LC23
+	.word	.LC10
 	.word	.LC24
+	.word	.LC14
 	.word	.LC25
-	.word	.LC12
 	.word	.LC26
-	.word	.LC16
 	.word	.LC27
 	.word	.LC28
 	.word	.LC29
 	.word	.LC30
+	.word	.LC9
+	.word	.LC14
 	.word	.LC31
 	.word	.LC32
-	.word	.LC11
-	.word	.LC16
 	.word	.LC33
 	.word	.LC34
 	.word	.LC35
 	.word	.LC36
+	.word	.LC10
 	.word	.LC37
+	.word	.LC9
 	.word	.LC38
-	.word	.LC12
 	.word	.LC39
-	.word	.LC11
 	.word	.LC40
 	.word	.LC41
 	.word	.LC42
 	.word	.LC43
 	.word	.LC44
 	.word	.LC45
+	.word	.LC38
 	.word	.LC46
 	.word	.LC47
-	.word	.LC40
 	.word	.LC48
+	.word	.LC16
 	.word	.LC49
 	.word	.LC50
-	.word	.LC18
 	.word	.LC51
+	.word	.LC39
 	.word	.LC52
 	.word	.LC53
-	.word	.LC41
+	.word	.LC10
 	.word	.LC54
+	.word	.LC7
 	.word	.LC55
-	.word	.LC12
-	.word	.LC56
 	.word	.LC9
+	.word	.LC56
 	.word	.LC57
-	.word	.LC11
 	.word	.LC58
 	.word	.LC59
 	.word	.LC60
 	.word	.LC61
+	.word	.LC49
 	.word	.LC62
 	.word	.LC63
-	.word	.LC51
+	.word	.LC10
+	.word	.LC54
+	.word	.LC7
+	.word	.LC55
+	.word	.LC9
+	.word	.LC56
+	.word	.LC57
 	.word	.LC64
 	.word	.LC65
-	.word	.LC12
-	.word	.LC56
-	.word	.LC9
-	.word	.LC57
-	.word	.LC11
-	.word	.LC58
-	.word	.LC59
 	.word	.LC66
 	.word	.LC67
 	.word	.LC68
@@ -3506,592 +3476,592 @@ input_data:
 	.word	.LC73
 	.word	.LC74
 	.word	.LC75
+	.word	.LC4
 	.word	.LC76
-	.word	.LC77
-	.word	.LC6
-	.word	.LC78
-	.word	.LC11
-	.word	.LC79
 	.word	.LC9
+	.word	.LC77
+	.word	.LC7
+	.word	.LC78
+	.word	.LC70
+	.word	.LC79
 	.word	.LC80
-	.word	.LC72
+	.word	.LC19
 	.word	.LC81
 	.word	.LC82
-	.word	.LC21
+	.word	.LC52
 	.word	.LC83
 	.word	.LC84
-	.word	.LC54
 	.word	.LC85
 	.word	.LC86
 	.word	.LC87
+	.word	.LC19
+	.word	.LC7
+	.word	.LC83
 	.word	.LC88
+	.word	.LC19
 	.word	.LC89
-	.word	.LC21
-	.word	.LC9
-	.word	.LC85
 	.word	.LC90
-	.word	.LC21
+	.word	.LC61
 	.word	.LC91
+	.word	.LC62
 	.word	.LC92
-	.word	.LC63
 	.word	.LC93
-	.word	.LC64
+	.word	.LC92
+	.word	.LC19
 	.word	.LC94
 	.word	.LC95
-	.word	.LC94
-	.word	.LC21
 	.word	.LC96
 	.word	.LC97
+	.word	.LC10
+	.word	.LC24
 	.word	.LC98
+	.word	.LC96
 	.word	.LC99
-	.word	.LC12
-	.word	.LC26
 	.word	.LC100
-	.word	.LC98
 	.word	.LC101
 	.word	.LC102
 	.word	.LC103
+	.word	.LC92
 	.word	.LC104
+	.word	.LC92
 	.word	.LC105
-	.word	.LC94
 	.word	.LC106
-	.word	.LC94
 	.word	.LC107
 	.word	.LC108
 	.word	.LC109
 	.word	.LC110
+	.word	.LC34
 	.word	.LC111
 	.word	.LC112
-	.word	.LC36
 	.word	.LC113
+	.word	.LC28
 	.word	.LC114
 	.word	.LC115
-	.word	.LC30
+	.word	.LC70
+	.word	.LC56
 	.word	.LC116
+	.word	.LC91
 	.word	.LC117
-	.word	.LC72
-	.word	.LC58
+	.word	.LC106
+	.word	.LC26
 	.word	.LC118
-	.word	.LC93
+	.word	.LC101
+	.word	.LC59
 	.word	.LC119
-	.word	.LC108
-	.word	.LC28
+	.word	.LC56
 	.word	.LC120
-	.word	.LC103
-	.word	.LC61
+	.word	.LC60
+	.word	.LC10
 	.word	.LC121
-	.word	.LC58
+	.word	.LC101
 	.word	.LC122
-	.word	.LC62
-	.word	.LC12
+	.word	.LC19
+	.word	.LC4
 	.word	.LC123
-	.word	.LC103
 	.word	.LC124
-	.word	.LC21
-	.word	.LC6
 	.word	.LC125
 	.word	.LC126
 	.word	.LC127
 	.word	.LC128
 	.word	.LC129
+	.word	.LC21
 	.word	.LC130
 	.word	.LC131
-	.word	.LC23
 	.word	.LC132
+	.word	.LC101
 	.word	.LC133
+	.word	.LC19
 	.word	.LC134
-	.word	.LC103
+	.word	.LC95
+	.word	.LC26
 	.word	.LC135
-	.word	.LC21
 	.word	.LC136
-	.word	.LC97
-	.word	.LC28
 	.word	.LC137
 	.word	.LC138
 	.word	.LC139
+	.word	.LC95
 	.word	.LC140
 	.word	.LC141
-	.word	.LC97
+	.word	.LC136
 	.word	.LC142
 	.word	.LC143
-	.word	.LC138
+	.word	.LC91
+	.word	.LC135
+	.word	.LC136
 	.word	.LC144
 	.word	.LC145
-	.word	.LC93
-	.word	.LC137
-	.word	.LC138
+	.word	.LC95
 	.word	.LC146
+	.word	.LC56
 	.word	.LC147
-	.word	.LC97
+	.word	.LC125
 	.word	.LC148
-	.word	.LC58
 	.word	.LC149
-	.word	.LC127
 	.word	.LC150
 	.word	.LC151
 	.word	.LC152
+	.word	.LC150
 	.word	.LC153
+	.word	.LC28
 	.word	.LC154
-	.word	.LC152
+	.word	.LC103
 	.word	.LC155
-	.word	.LC30
+	.word	.LC7
+	.word	.LC70
+	.word	.LC10
 	.word	.LC156
-	.word	.LC105
 	.word	.LC157
-	.word	.LC9
-	.word	.LC72
-	.word	.LC12
+	.word	.LC20
+	.word	.LC136
+	.word	.LC77
 	.word	.LC158
 	.word	.LC159
-	.word	.LC22
-	.word	.LC138
-	.word	.LC79
+	.word	.LC19
 	.word	.LC160
 	.word	.LC161
-	.word	.LC21
+	.word	.LC10
 	.word	.LC162
+	.word	.LC15
+	.word	.LC19
 	.word	.LC163
-	.word	.LC12
+	.word	.LC70
 	.word	.LC164
-	.word	.LC17
-	.word	.LC21
+	.word	.LC51
 	.word	.LC165
-	.word	.LC72
+	.word	.LC69
+	.word	.LC83
 	.word	.LC166
-	.word	.LC53
+	.word	.LC56
 	.word	.LC167
-	.word	.LC71
-	.word	.LC85
 	.word	.LC168
-	.word	.LC58
 	.word	.LC169
 	.word	.LC170
 	.word	.LC171
+	.word	.LC56
+	.word	.LC167
 	.word	.LC172
 	.word	.LC173
-	.word	.LC58
-	.word	.LC169
 	.word	.LC174
+	.word	.LC95
 	.word	.LC175
 	.word	.LC176
-	.word	.LC97
 	.word	.LC177
+	.word	.LC19
 	.word	.LC178
+	.word	.LC100
 	.word	.LC179
-	.word	.LC21
+	.word	.LC19
 	.word	.LC180
-	.word	.LC102
+	.word	.LC106
 	.word	.LC181
-	.word	.LC21
+	.word	.LC136
+	.word	.LC56
+	.word	.LC116
+	.word	.LC28
 	.word	.LC182
-	.word	.LC108
 	.word	.LC183
-	.word	.LC138
-	.word	.LC58
-	.word	.LC118
-	.word	.LC30
+	.word	.LC142
+	.word	.LC16
+	.word	.LC100
 	.word	.LC184
+	.word	.LC100
+	.word	.LC4
 	.word	.LC185
-	.word	.LC144
-	.word	.LC18
-	.word	.LC102
+	.word	.LC179
 	.word	.LC186
-	.word	.LC102
-	.word	.LC6
 	.word	.LC187
+	.word	.LC106
 	.word	.LC181
+	.word	.LC136
 	.word	.LC188
 	.word	.LC189
-	.word	.LC108
-	.word	.LC183
-	.word	.LC138
 	.word	.LC190
+	.word	.LC9
+	.word	.LC10
+	.word	.LC182
+	.word	.LC183
 	.word	.LC191
+	.word	.LC16
+	.word	.LC100
 	.word	.LC192
-	.word	.LC11
-	.word	.LC12
-	.word	.LC184
-	.word	.LC185
+	.word	.LC178
 	.word	.LC193
-	.word	.LC18
-	.word	.LC102
 	.word	.LC194
-	.word	.LC180
+	.word	.LC9
 	.word	.LC195
 	.word	.LC196
-	.word	.LC11
+	.word	.LC121
+	.word	.LC106
+	.word	.LC56
 	.word	.LC197
 	.word	.LC198
-	.word	.LC123
-	.word	.LC108
-	.word	.LC58
 	.word	.LC199
 	.word	.LC200
 	.word	.LC201
 	.word	.LC202
 	.word	.LC203
 	.word	.LC204
+	.word	.LC73
 	.word	.LC205
 	.word	.LC206
-	.word	.LC75
+	.word	.LC19
 	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
 	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
-	.word	.LC33
+	.word	.LC19
+	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC209
+	.word	.LC4
 	.word	.LC210
-	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
+	.word	.LC73
 	.word	.LC211
-	.word	.LC6
+	.word	.LC10
 	.word	.LC212
-	.word	.LC208
-	.word	.LC75
 	.word	.LC213
-	.word	.LC12
+	.word	.LC125
+	.word	.LC56
 	.word	.LC214
 	.word	.LC215
-	.word	.LC127
-	.word	.LC58
 	.word	.LC216
 	.word	.LC217
+	.word	.LC19
+	.word	.LC181
+	.word	.LC178
 	.word	.LC218
+	.word	.LC77
 	.word	.LC219
-	.word	.LC21
-	.word	.LC183
-	.word	.LC180
+	.word	.LC84
 	.word	.LC220
-	.word	.LC79
 	.word	.LC221
-	.word	.LC86
+	.word	.LC77
 	.word	.LC222
 	.word	.LC223
-	.word	.LC79
 	.word	.LC224
+	.word	.LC91
 	.word	.LC225
 	.word	.LC226
-	.word	.LC93
 	.word	.LC227
+	.word	.LC91
 	.word	.LC228
 	.word	.LC229
-	.word	.LC93
+	.word	.LC53
+	.word	.LC56
 	.word	.LC230
 	.word	.LC231
-	.word	.LC55
-	.word	.LC58
-	.word	.LC232
-	.word	.LC233
-	.word	.LC29
-	.word	.LC133
-	.word	.LC82
-	.word	.LC21
-	.word	.LC234
-	.word	.LC97
-	.word	.LC28
-	.word	.LC235
-	.word	.LC11
-	.word	.LC29
-	.word	.LC222
-	.word	.LC11
-	.word	.LC181
-	.word	.LC139
-	.word	.LC144
-	.word	.LC236
-	.word	.LC11
-	.word	.LC29
-	.word	.LC237
-	.word	.LC12
-	.word	.LC238
-	.word	.LC239
-	.word	.LC75
-	.word	.LC240
-	.word	.LC48
-	.word	.LC241
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC33
-	.word	.LC243
-	.word	.LC108
-	.word	.LC183
-	.word	.LC29
-	.word	.LC101
-	.word	.LC58
-	.word	.LC244
-	.word	.LC245
-	.word	.LC246
-	.word	.LC12
-	.word	.LC247
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC180
-	.word	.LC248
-	.word	.LC202
+	.word	.LC27
 	.word	.LC131
-	.word	.LC64
-	.word	.LC249
-	.word	.LC57
-	.word	.LC250
-	.word	.LC251
-	.word	.LC51
-	.word	.LC22
-	.word	.LC252
-	.word	.LC21
+	.word	.LC80
+	.word	.LC19
+	.word	.LC232
+	.word	.LC95
+	.word	.LC26
+	.word	.LC233
+	.word	.LC9
+	.word	.LC27
+	.word	.LC220
+	.word	.LC9
+	.word	.LC179
+	.word	.LC137
+	.word	.LC142
+	.word	.LC234
+	.word	.LC9
+	.word	.LC27
+	.word	.LC235
+	.word	.LC10
+	.word	.LC236
+	.word	.LC237
+	.word	.LC73
+	.word	.LC238
+	.word	.LC46
+	.word	.LC239
+	.word	.LC240
 	.word	.LC177
-	.word	.LC253
-	.word	.LC195
-	.word	.LC108
-	.word	.LC102
-	.word	.LC58
-	.word	.LC254
-	.word	.LC63
+	.word	.LC19
+	.word	.LC31
+	.word	.LC241
+	.word	.LC106
+	.word	.LC181
+	.word	.LC27
+	.word	.LC99
+	.word	.LC56
+	.word	.LC242
+	.word	.LC243
+	.word	.LC244
+	.word	.LC10
+	.word	.LC245
+	.word	.LC240
+	.word	.LC177
+	.word	.LC19
+	.word	.LC178
+	.word	.LC246
+	.word	.LC200
+	.word	.LC129
+	.word	.LC62
+	.word	.LC247
+	.word	.LC55
+	.word	.LC248
+	.word	.LC249
+	.word	.LC49
+	.word	.LC20
+	.word	.LC250
+	.word	.LC19
+	.word	.LC175
+	.word	.LC251
+	.word	.LC193
+	.word	.LC106
+	.word	.LC100
+	.word	.LC56
+	.word	.LC252
 	.word	.LC61
-	.word	.LC102
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC253
+	.word	.LC26
 	.word	.LC203
+	.word	.LC23
+	.word	.LC254
+	.word	.LC196
 	.word	.LC255
-	.word	.LC28
-	.word	.LC205
-	.word	.LC25
+	.word	.LC106
+	.word	.LC56
 	.word	.LC256
-	.word	.LC198
 	.word	.LC257
-	.word	.LC108
-	.word	.LC58
+	.word	.LC56
 	.word	.LC258
 	.word	.LC259
-	.word	.LC58
+	.word	.LC106
+	.word	.LC56
 	.word	.LC260
+	.word	.LC7
+	.word	.LC10
+	.word	.LC142
+	.word	.LC182
 	.word	.LC261
-	.word	.LC108
-	.word	.LC58
+	.word	.LC106
 	.word	.LC262
-	.word	.LC9
-	.word	.LC12
-	.word	.LC144
-	.word	.LC184
+	.word	.LC136
+	.word	.LC19
+	.word	.LC70
+	.word	.LC10
+	.word	.LC24
 	.word	.LC263
-	.word	.LC108
-	.word	.LC264
-	.word	.LC138
-	.word	.LC21
-	.word	.LC72
-	.word	.LC12
-	.word	.LC26
-	.word	.LC265
-	.word	.LC103
-	.word	.LC266
-	.word	.LC267
-	.word	.LC9
-	.word	.LC268
 	.word	.LC101
-	.word	.LC138
-	.word	.LC81
+	.word	.LC264
+	.word	.LC265
+	.word	.LC7
+	.word	.LC266
+	.word	.LC99
+	.word	.LC136
+	.word	.LC79
+	.word	.LC267
+	.word	.LC268
+	.word	.LC19
 	.word	.LC269
 	.word	.LC270
-	.word	.LC21
+	.word	.LC125
 	.word	.LC271
 	.word	.LC272
-	.word	.LC127
+	.word	.LC106
 	.word	.LC273
+	.word	.LC10
 	.word	.LC274
-	.word	.LC108
+	.word	.LC70
 	.word	.LC275
-	.word	.LC12
+	.word	.LC7
 	.word	.LC276
-	.word	.LC72
 	.word	.LC277
-	.word	.LC9
+	.word	.LC10
 	.word	.LC278
+	.word	.LC19
 	.word	.LC279
-	.word	.LC12
+	.word	.LC10
+	.word	.LC43
+	.word	.LC19
 	.word	.LC280
-	.word	.LC21
+	.word	.LC10
+	.word	.LC142
+	.word	.LC143
 	.word	.LC281
-	.word	.LC12
-	.word	.LC45
-	.word	.LC21
+	.word	.LC19
+	.word	.LC201
+	.word	.LC19
 	.word	.LC282
-	.word	.LC12
-	.word	.LC144
-	.word	.LC145
 	.word	.LC283
-	.word	.LC21
-	.word	.LC203
-	.word	.LC21
 	.word	.LC284
+	.word	.LC70
 	.word	.LC285
 	.word	.LC286
-	.word	.LC72
 	.word	.LC287
 	.word	.LC288
+	.word	.LC99
 	.word	.LC289
+	.word	.LC87
+	.word	.LC27
 	.word	.LC290
-	.word	.LC101
+	.word	.LC19
+	.word	.LC272
+	.word	.LC284
+	.word	.LC70
 	.word	.LC291
-	.word	.LC89
-	.word	.LC29
 	.word	.LC292
-	.word	.LC21
-	.word	.LC274
-	.word	.LC286
-	.word	.LC72
+	.word	.LC288
+	.word	.LC99
+	.word	.LC289
+	.word	.LC87
+	.word	.LC27
+	.word	.LC290
+	.word	.LC19
 	.word	.LC293
 	.word	.LC294
-	.word	.LC290
-	.word	.LC101
-	.word	.LC291
-	.word	.LC89
-	.word	.LC29
-	.word	.LC292
-	.word	.LC21
 	.word	.LC295
 	.word	.LC296
 	.word	.LC297
 	.word	.LC298
 	.word	.LC299
+	.word	.LC49
 	.word	.LC300
 	.word	.LC301
-	.word	.LC51
+	.word	.LC49
 	.word	.LC302
+	.word	.LC61
+	.word	.LC219
+	.word	.LC49
+	.word	.LC279
+	.word	.LC167
 	.word	.LC303
-	.word	.LC51
+	.word	.LC201
+	.word	.LC19
+	.word	.LC181
+	.word	.LC73
 	.word	.LC304
-	.word	.LC63
-	.word	.LC221
-	.word	.LC51
-	.word	.LC281
-	.word	.LC169
+	.word	.LC101
+	.word	.LC201
+	.word	.LC19
+	.word	.LC282
+	.word	.LC283
 	.word	.LC305
-	.word	.LC203
-	.word	.LC21
-	.word	.LC183
-	.word	.LC75
+	.word	.LC282
 	.word	.LC306
-	.word	.LC103
-	.word	.LC203
-	.word	.LC21
-	.word	.LC284
-	.word	.LC285
 	.word	.LC307
-	.word	.LC284
+	.word	.LC282
 	.word	.LC308
+	.word	.LC7
+	.word	.LC208
 	.word	.LC309
-	.word	.LC284
+	.word	.LC188
 	.word	.LC310
-	.word	.LC9
-	.word	.LC210
 	.word	.LC311
-	.word	.LC190
+	.word	.LC56
+	.word	.LC310
+	.word	.LC95
 	.word	.LC312
 	.word	.LC313
-	.word	.LC58
-	.word	.LC312
-	.word	.LC97
 	.word	.LC314
+	.word	.LC106
 	.word	.LC315
+	.word	.LC19
+	.word	.LC204
+	.word	.LC19
+	.word	.LC31
+	.word	.LC79
+	.word	.LC68
 	.word	.LC316
-	.word	.LC108
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
+	.word	.LC79
 	.word	.LC317
-	.word	.LC21
-	.word	.LC206
-	.word	.LC21
-	.word	.LC33
-	.word	.LC81
-	.word	.LC70
 	.word	.LC318
-	.word	.LC206
-	.word	.LC75
-	.word	.LC33
-	.word	.LC81
+	.word	.LC67
+	.word	.LC19
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC222
+	.word	.LC21
 	.word	.LC319
 	.word	.LC320
-	.word	.LC69
-	.word	.LC21
-	.word	.LC61
-	.word	.LC102
-	.word	.LC203
-	.word	.LC224
-	.word	.LC23
 	.word	.LC321
+	.word	.LC95
 	.word	.LC322
+	.word	.LC219
+	.word	.LC84
+	.word	.LC136
+	.word	.LC56
 	.word	.LC323
-	.word	.LC97
+	.word	.LC220
+	.word	.LC34
+	.word	.LC10
+	.word	.LC147
+	.word	.LC150
+	.word	.LC210
+	.word	.LC27
+	.word	.LC49
+	.word	.LC74
 	.word	.LC324
-	.word	.LC221
-	.word	.LC86
-	.word	.LC138
-	.word	.LC58
+	.word	.LC196
 	.word	.LC325
-	.word	.LC222
-	.word	.LC36
-	.word	.LC12
-	.word	.LC149
-	.word	.LC152
-	.word	.LC212
-	.word	.LC29
-	.word	.LC51
-	.word	.LC76
 	.word	.LC326
-	.word	.LC198
+	.word	.LC39
+	.word	.LC19
 	.word	.LC327
+	.word	.LC99
+	.word	.LC26
 	.word	.LC328
-	.word	.LC41
-	.word	.LC21
+	.word	.LC136
 	.word	.LC329
-	.word	.LC101
-	.word	.LC28
+	.word	.LC143
 	.word	.LC330
-	.word	.LC138
+	.word	.LC27
 	.word	.LC331
-	.word	.LC145
+	.word	.LC103
+	.word	.LC79
 	.word	.LC332
-	.word	.LC29
+	.word	.LC9
 	.word	.LC333
-	.word	.LC105
-	.word	.LC81
 	.word	.LC334
-	.word	.LC11
+	.word	.LC27
+	.word	.LC103
+	.word	.LC79
+	.word	.LC80
+	.word	.LC9
 	.word	.LC335
+	.word	.LC10
+	.word	.LC260
 	.word	.LC336
-	.word	.LC29
-	.word	.LC105
-	.word	.LC81
-	.word	.LC82
-	.word	.LC11
+	.word	.LC10
 	.word	.LC337
-	.word	.LC12
-	.word	.LC262
 	.word	.LC338
-	.word	.LC12
+	.word	.LC27
 	.word	.LC339
 	.word	.LC340
-	.word	.LC29
 	.word	.LC341
+	.word	.LC10
+	.word	.LC251
 	.word	.LC342
+	.word	.LC7
 	.word	.LC343
-	.word	.LC12
-	.word	.LC253
-	.word	.LC344
-	.word	.LC9
-	.word	.LC345
-	.word	.LC29
-	.word	.LC25
+	.word	.LC27
+	.word	.LC23
+	.word	.LC43
 	.word	.LC45
-	.word	.LC47
-	.word	.LC159
-	.word	.LC346
+	.word	.LC157
+	.word	.LC344
+	.word	.LC67
+	.word	.LC68
 	.word	.LC69
-	.word	.LC70
-	.word	.LC71
-	.word	.LC127
-	.word	.LC12
-	.word	.LC16
+	.word	.LC125
+	.word	.LC10
+	.word	.LC14
+	.word	.LC0
+	.word	.LC1
 	.word	.LC2
 	.word	.LC3
 	.word	.LC4
@@ -4102,9 +4072,9 @@ input_data:
 	.word	.LC9
 	.word	.LC10
 	.word	.LC11
+	.word	.LC9
 	.word	.LC12
 	.word	.LC13
-	.word	.LC11
 	.word	.LC14
 	.word	.LC15
 	.word	.LC16
@@ -4115,68 +4085,68 @@ input_data:
 	.word	.LC21
 	.word	.LC22
 	.word	.LC23
+	.word	.LC10
 	.word	.LC24
+	.word	.LC14
 	.word	.LC25
-	.word	.LC12
 	.word	.LC26
-	.word	.LC16
 	.word	.LC27
 	.word	.LC28
 	.word	.LC29
 	.word	.LC30
+	.word	.LC9
+	.word	.LC14
 	.word	.LC31
 	.word	.LC32
-	.word	.LC11
-	.word	.LC16
 	.word	.LC33
 	.word	.LC34
 	.word	.LC35
 	.word	.LC36
+	.word	.LC10
 	.word	.LC37
+	.word	.LC9
 	.word	.LC38
-	.word	.LC12
 	.word	.LC39
-	.word	.LC11
 	.word	.LC40
 	.word	.LC41
 	.word	.LC42
 	.word	.LC43
 	.word	.LC44
 	.word	.LC45
+	.word	.LC38
 	.word	.LC46
 	.word	.LC47
-	.word	.LC40
 	.word	.LC48
+	.word	.LC16
 	.word	.LC49
 	.word	.LC50
-	.word	.LC18
 	.word	.LC51
+	.word	.LC39
 	.word	.LC52
 	.word	.LC53
-	.word	.LC41
+	.word	.LC10
 	.word	.LC54
+	.word	.LC7
 	.word	.LC55
-	.word	.LC12
-	.word	.LC56
 	.word	.LC9
+	.word	.LC56
 	.word	.LC57
-	.word	.LC11
 	.word	.LC58
 	.word	.LC59
 	.word	.LC60
 	.word	.LC61
+	.word	.LC49
 	.word	.LC62
 	.word	.LC63
-	.word	.LC51
+	.word	.LC10
+	.word	.LC54
+	.word	.LC7
+	.word	.LC55
+	.word	.LC9
+	.word	.LC56
+	.word	.LC57
 	.word	.LC64
 	.word	.LC65
-	.word	.LC12
-	.word	.LC56
-	.word	.LC9
-	.word	.LC57
-	.word	.LC11
-	.word	.LC58
-	.word	.LC59
 	.word	.LC66
 	.word	.LC67
 	.word	.LC68
@@ -4187,592 +4157,592 @@ input_data:
 	.word	.LC73
 	.word	.LC74
 	.word	.LC75
+	.word	.LC4
 	.word	.LC76
-	.word	.LC77
-	.word	.LC6
-	.word	.LC78
-	.word	.LC11
-	.word	.LC79
 	.word	.LC9
+	.word	.LC77
+	.word	.LC7
+	.word	.LC78
+	.word	.LC70
+	.word	.LC79
 	.word	.LC80
-	.word	.LC72
+	.word	.LC19
 	.word	.LC81
 	.word	.LC82
-	.word	.LC21
+	.word	.LC52
 	.word	.LC83
 	.word	.LC84
-	.word	.LC54
 	.word	.LC85
 	.word	.LC86
 	.word	.LC87
+	.word	.LC19
+	.word	.LC7
+	.word	.LC83
 	.word	.LC88
+	.word	.LC19
 	.word	.LC89
-	.word	.LC21
-	.word	.LC9
-	.word	.LC85
 	.word	.LC90
-	.word	.LC21
+	.word	.LC61
 	.word	.LC91
+	.word	.LC62
 	.word	.LC92
-	.word	.LC63
 	.word	.LC93
-	.word	.LC64
+	.word	.LC92
+	.word	.LC19
 	.word	.LC94
 	.word	.LC95
-	.word	.LC94
-	.word	.LC21
 	.word	.LC96
 	.word	.LC97
+	.word	.LC10
+	.word	.LC24
 	.word	.LC98
+	.word	.LC96
 	.word	.LC99
-	.word	.LC12
-	.word	.LC26
 	.word	.LC100
-	.word	.LC98
 	.word	.LC101
 	.word	.LC102
 	.word	.LC103
+	.word	.LC92
 	.word	.LC104
+	.word	.LC92
 	.word	.LC105
-	.word	.LC94
 	.word	.LC106
-	.word	.LC94
 	.word	.LC107
 	.word	.LC108
 	.word	.LC109
 	.word	.LC110
+	.word	.LC34
 	.word	.LC111
 	.word	.LC112
-	.word	.LC36
 	.word	.LC113
+	.word	.LC28
 	.word	.LC114
 	.word	.LC115
-	.word	.LC30
+	.word	.LC70
+	.word	.LC56
 	.word	.LC116
+	.word	.LC91
 	.word	.LC117
-	.word	.LC72
-	.word	.LC58
+	.word	.LC106
+	.word	.LC26
 	.word	.LC118
-	.word	.LC93
+	.word	.LC101
+	.word	.LC59
 	.word	.LC119
-	.word	.LC108
-	.word	.LC28
+	.word	.LC56
 	.word	.LC120
-	.word	.LC103
-	.word	.LC61
+	.word	.LC60
+	.word	.LC10
 	.word	.LC121
-	.word	.LC58
+	.word	.LC101
 	.word	.LC122
-	.word	.LC62
-	.word	.LC12
+	.word	.LC19
+	.word	.LC4
 	.word	.LC123
-	.word	.LC103
 	.word	.LC124
-	.word	.LC21
-	.word	.LC6
 	.word	.LC125
 	.word	.LC126
 	.word	.LC127
 	.word	.LC128
 	.word	.LC129
+	.word	.LC21
 	.word	.LC130
 	.word	.LC131
-	.word	.LC23
 	.word	.LC132
+	.word	.LC101
 	.word	.LC133
+	.word	.LC19
 	.word	.LC134
-	.word	.LC103
+	.word	.LC95
+	.word	.LC26
 	.word	.LC135
-	.word	.LC21
 	.word	.LC136
-	.word	.LC97
-	.word	.LC28
 	.word	.LC137
 	.word	.LC138
 	.word	.LC139
+	.word	.LC95
 	.word	.LC140
 	.word	.LC141
-	.word	.LC97
+	.word	.LC136
 	.word	.LC142
 	.word	.LC143
-	.word	.LC138
+	.word	.LC91
+	.word	.LC135
+	.word	.LC136
 	.word	.LC144
 	.word	.LC145
-	.word	.LC93
-	.word	.LC137
-	.word	.LC138
+	.word	.LC95
 	.word	.LC146
+	.word	.LC56
 	.word	.LC147
-	.word	.LC97
+	.word	.LC125
 	.word	.LC148
-	.word	.LC58
 	.word	.LC149
-	.word	.LC127
 	.word	.LC150
 	.word	.LC151
 	.word	.LC152
+	.word	.LC150
 	.word	.LC153
+	.word	.LC28
 	.word	.LC154
-	.word	.LC152
+	.word	.LC103
 	.word	.LC155
-	.word	.LC30
+	.word	.LC7
+	.word	.LC70
+	.word	.LC10
 	.word	.LC156
-	.word	.LC105
 	.word	.LC157
-	.word	.LC9
-	.word	.LC72
-	.word	.LC12
+	.word	.LC20
+	.word	.LC136
+	.word	.LC77
 	.word	.LC158
 	.word	.LC159
-	.word	.LC22
-	.word	.LC138
-	.word	.LC79
+	.word	.LC19
 	.word	.LC160
 	.word	.LC161
-	.word	.LC21
+	.word	.LC10
 	.word	.LC162
+	.word	.LC15
+	.word	.LC19
 	.word	.LC163
-	.word	.LC12
+	.word	.LC70
 	.word	.LC164
-	.word	.LC17
-	.word	.LC21
+	.word	.LC51
 	.word	.LC165
-	.word	.LC72
+	.word	.LC69
+	.word	.LC83
 	.word	.LC166
-	.word	.LC53
+	.word	.LC56
 	.word	.LC167
-	.word	.LC71
-	.word	.LC85
 	.word	.LC168
-	.word	.LC58
 	.word	.LC169
 	.word	.LC170
 	.word	.LC171
+	.word	.LC56
+	.word	.LC167
 	.word	.LC172
 	.word	.LC173
-	.word	.LC58
-	.word	.LC169
 	.word	.LC174
+	.word	.LC95
 	.word	.LC175
 	.word	.LC176
-	.word	.LC97
 	.word	.LC177
+	.word	.LC19
 	.word	.LC178
+	.word	.LC100
 	.word	.LC179
-	.word	.LC21
+	.word	.LC19
 	.word	.LC180
-	.word	.LC102
+	.word	.LC106
 	.word	.LC181
-	.word	.LC21
+	.word	.LC136
+	.word	.LC56
+	.word	.LC116
+	.word	.LC28
 	.word	.LC182
-	.word	.LC108
 	.word	.LC183
-	.word	.LC138
-	.word	.LC58
-	.word	.LC118
-	.word	.LC30
+	.word	.LC142
+	.word	.LC16
+	.word	.LC100
 	.word	.LC184
+	.word	.LC100
+	.word	.LC4
 	.word	.LC185
-	.word	.LC144
-	.word	.LC18
-	.word	.LC102
+	.word	.LC179
 	.word	.LC186
-	.word	.LC102
-	.word	.LC6
 	.word	.LC187
+	.word	.LC106
 	.word	.LC181
+	.word	.LC136
 	.word	.LC188
 	.word	.LC189
-	.word	.LC108
-	.word	.LC183
-	.word	.LC138
 	.word	.LC190
+	.word	.LC9
+	.word	.LC10
+	.word	.LC182
+	.word	.LC183
 	.word	.LC191
+	.word	.LC16
+	.word	.LC100
 	.word	.LC192
-	.word	.LC11
-	.word	.LC12
-	.word	.LC184
-	.word	.LC185
+	.word	.LC178
 	.word	.LC193
-	.word	.LC18
-	.word	.LC102
 	.word	.LC194
-	.word	.LC180
+	.word	.LC9
 	.word	.LC195
 	.word	.LC196
-	.word	.LC11
+	.word	.LC121
+	.word	.LC106
+	.word	.LC56
 	.word	.LC197
 	.word	.LC198
-	.word	.LC123
-	.word	.LC108
-	.word	.LC58
 	.word	.LC199
 	.word	.LC200
 	.word	.LC201
 	.word	.LC202
 	.word	.LC203
 	.word	.LC204
+	.word	.LC73
 	.word	.LC205
 	.word	.LC206
-	.word	.LC75
+	.word	.LC19
 	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
 	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
-	.word	.LC33
+	.word	.LC19
+	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC209
+	.word	.LC4
 	.word	.LC210
-	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
+	.word	.LC73
 	.word	.LC211
-	.word	.LC6
+	.word	.LC10
 	.word	.LC212
-	.word	.LC208
-	.word	.LC75
 	.word	.LC213
-	.word	.LC12
+	.word	.LC125
+	.word	.LC56
 	.word	.LC214
 	.word	.LC215
-	.word	.LC127
-	.word	.LC58
 	.word	.LC216
 	.word	.LC217
+	.word	.LC19
+	.word	.LC181
+	.word	.LC178
 	.word	.LC218
+	.word	.LC77
 	.word	.LC219
-	.word	.LC21
-	.word	.LC183
-	.word	.LC180
+	.word	.LC84
 	.word	.LC220
-	.word	.LC79
 	.word	.LC221
-	.word	.LC86
+	.word	.LC77
 	.word	.LC222
 	.word	.LC223
-	.word	.LC79
 	.word	.LC224
+	.word	.LC91
 	.word	.LC225
 	.word	.LC226
-	.word	.LC93
 	.word	.LC227
+	.word	.LC91
 	.word	.LC228
 	.word	.LC229
-	.word	.LC93
+	.word	.LC53
+	.word	.LC56
 	.word	.LC230
 	.word	.LC231
-	.word	.LC55
-	.word	.LC58
-	.word	.LC232
-	.word	.LC233
-	.word	.LC29
-	.word	.LC133
-	.word	.LC82
-	.word	.LC21
-	.word	.LC234
-	.word	.LC97
-	.word	.LC28
-	.word	.LC235
-	.word	.LC11
-	.word	.LC29
-	.word	.LC222
-	.word	.LC11
-	.word	.LC181
-	.word	.LC139
-	.word	.LC144
-	.word	.LC236
-	.word	.LC11
-	.word	.LC29
-	.word	.LC237
-	.word	.LC12
-	.word	.LC238
-	.word	.LC239
-	.word	.LC75
-	.word	.LC240
-	.word	.LC48
-	.word	.LC241
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC33
-	.word	.LC243
-	.word	.LC108
-	.word	.LC183
-	.word	.LC29
-	.word	.LC101
-	.word	.LC58
-	.word	.LC244
-	.word	.LC245
-	.word	.LC246
-	.word	.LC12
-	.word	.LC247
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC180
-	.word	.LC248
-	.word	.LC202
+	.word	.LC27
 	.word	.LC131
-	.word	.LC64
-	.word	.LC249
-	.word	.LC57
-	.word	.LC250
-	.word	.LC251
-	.word	.LC51
-	.word	.LC22
-	.word	.LC252
-	.word	.LC21
+	.word	.LC80
+	.word	.LC19
+	.word	.LC232
+	.word	.LC95
+	.word	.LC26
+	.word	.LC233
+	.word	.LC9
+	.word	.LC27
+	.word	.LC220
+	.word	.LC9
+	.word	.LC179
+	.word	.LC137
+	.word	.LC142
+	.word	.LC234
+	.word	.LC9
+	.word	.LC27
+	.word	.LC235
+	.word	.LC10
+	.word	.LC236
+	.word	.LC237
+	.word	.LC73
+	.word	.LC238
+	.word	.LC46
+	.word	.LC239
+	.word	.LC240
 	.word	.LC177
-	.word	.LC253
-	.word	.LC195
-	.word	.LC108
-	.word	.LC102
-	.word	.LC58
-	.word	.LC254
-	.word	.LC63
+	.word	.LC19
+	.word	.LC31
+	.word	.LC241
+	.word	.LC106
+	.word	.LC181
+	.word	.LC27
+	.word	.LC99
+	.word	.LC56
+	.word	.LC242
+	.word	.LC243
+	.word	.LC244
+	.word	.LC10
+	.word	.LC245
+	.word	.LC240
+	.word	.LC177
+	.word	.LC19
+	.word	.LC178
+	.word	.LC246
+	.word	.LC200
+	.word	.LC129
+	.word	.LC62
+	.word	.LC247
+	.word	.LC55
+	.word	.LC248
+	.word	.LC249
+	.word	.LC49
+	.word	.LC20
+	.word	.LC250
+	.word	.LC19
+	.word	.LC175
+	.word	.LC251
+	.word	.LC193
+	.word	.LC106
+	.word	.LC100
+	.word	.LC56
+	.word	.LC252
 	.word	.LC61
-	.word	.LC102
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC253
+	.word	.LC26
 	.word	.LC203
+	.word	.LC23
+	.word	.LC254
+	.word	.LC196
 	.word	.LC255
-	.word	.LC28
-	.word	.LC205
-	.word	.LC25
+	.word	.LC106
+	.word	.LC56
 	.word	.LC256
-	.word	.LC198
 	.word	.LC257
-	.word	.LC108
-	.word	.LC58
+	.word	.LC56
 	.word	.LC258
 	.word	.LC259
-	.word	.LC58
+	.word	.LC106
+	.word	.LC56
 	.word	.LC260
+	.word	.LC7
+	.word	.LC10
+	.word	.LC142
+	.word	.LC182
 	.word	.LC261
-	.word	.LC108
-	.word	.LC58
+	.word	.LC106
 	.word	.LC262
-	.word	.LC9
-	.word	.LC12
-	.word	.LC144
-	.word	.LC184
+	.word	.LC136
+	.word	.LC19
+	.word	.LC70
+	.word	.LC10
+	.word	.LC24
 	.word	.LC263
-	.word	.LC108
-	.word	.LC264
-	.word	.LC138
-	.word	.LC21
-	.word	.LC72
-	.word	.LC12
-	.word	.LC26
-	.word	.LC265
-	.word	.LC103
-	.word	.LC266
-	.word	.LC267
-	.word	.LC9
-	.word	.LC268
 	.word	.LC101
-	.word	.LC138
-	.word	.LC81
+	.word	.LC264
+	.word	.LC265
+	.word	.LC7
+	.word	.LC266
+	.word	.LC99
+	.word	.LC136
+	.word	.LC79
+	.word	.LC267
+	.word	.LC268
+	.word	.LC19
 	.word	.LC269
 	.word	.LC270
-	.word	.LC21
+	.word	.LC125
 	.word	.LC271
 	.word	.LC272
-	.word	.LC127
+	.word	.LC106
 	.word	.LC273
+	.word	.LC10
 	.word	.LC274
-	.word	.LC108
+	.word	.LC70
 	.word	.LC275
-	.word	.LC12
+	.word	.LC7
 	.word	.LC276
-	.word	.LC72
 	.word	.LC277
-	.word	.LC9
+	.word	.LC10
 	.word	.LC278
+	.word	.LC19
 	.word	.LC279
-	.word	.LC12
+	.word	.LC10
+	.word	.LC43
+	.word	.LC19
 	.word	.LC280
-	.word	.LC21
+	.word	.LC10
+	.word	.LC142
+	.word	.LC143
 	.word	.LC281
-	.word	.LC12
-	.word	.LC45
-	.word	.LC21
+	.word	.LC19
+	.word	.LC201
+	.word	.LC19
 	.word	.LC282
-	.word	.LC12
-	.word	.LC144
-	.word	.LC145
 	.word	.LC283
-	.word	.LC21
-	.word	.LC203
-	.word	.LC21
 	.word	.LC284
+	.word	.LC70
 	.word	.LC285
 	.word	.LC286
-	.word	.LC72
 	.word	.LC287
 	.word	.LC288
+	.word	.LC99
 	.word	.LC289
+	.word	.LC87
+	.word	.LC27
 	.word	.LC290
-	.word	.LC101
+	.word	.LC19
+	.word	.LC272
+	.word	.LC284
+	.word	.LC70
 	.word	.LC291
-	.word	.LC89
-	.word	.LC29
 	.word	.LC292
-	.word	.LC21
-	.word	.LC274
-	.word	.LC286
-	.word	.LC72
+	.word	.LC288
+	.word	.LC99
+	.word	.LC289
+	.word	.LC87
+	.word	.LC27
+	.word	.LC290
+	.word	.LC19
 	.word	.LC293
 	.word	.LC294
-	.word	.LC290
-	.word	.LC101
-	.word	.LC291
-	.word	.LC89
-	.word	.LC29
-	.word	.LC292
-	.word	.LC21
 	.word	.LC295
 	.word	.LC296
 	.word	.LC297
 	.word	.LC298
 	.word	.LC299
+	.word	.LC49
 	.word	.LC300
 	.word	.LC301
-	.word	.LC51
+	.word	.LC49
 	.word	.LC302
+	.word	.LC61
+	.word	.LC219
+	.word	.LC49
+	.word	.LC279
+	.word	.LC167
 	.word	.LC303
-	.word	.LC51
+	.word	.LC201
+	.word	.LC19
+	.word	.LC181
+	.word	.LC73
 	.word	.LC304
-	.word	.LC63
-	.word	.LC221
-	.word	.LC51
-	.word	.LC281
-	.word	.LC169
+	.word	.LC101
+	.word	.LC201
+	.word	.LC19
+	.word	.LC282
+	.word	.LC283
 	.word	.LC305
-	.word	.LC203
-	.word	.LC21
-	.word	.LC183
-	.word	.LC75
+	.word	.LC282
 	.word	.LC306
-	.word	.LC103
-	.word	.LC203
-	.word	.LC21
-	.word	.LC284
-	.word	.LC285
 	.word	.LC307
-	.word	.LC284
+	.word	.LC282
 	.word	.LC308
+	.word	.LC7
+	.word	.LC208
 	.word	.LC309
-	.word	.LC284
+	.word	.LC188
 	.word	.LC310
-	.word	.LC9
-	.word	.LC210
 	.word	.LC311
-	.word	.LC190
+	.word	.LC56
+	.word	.LC310
+	.word	.LC95
 	.word	.LC312
 	.word	.LC313
-	.word	.LC58
-	.word	.LC312
-	.word	.LC97
 	.word	.LC314
+	.word	.LC106
 	.word	.LC315
+	.word	.LC19
+	.word	.LC204
+	.word	.LC19
+	.word	.LC31
+	.word	.LC79
+	.word	.LC68
 	.word	.LC316
-	.word	.LC108
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
+	.word	.LC79
 	.word	.LC317
-	.word	.LC21
-	.word	.LC206
-	.word	.LC21
-	.word	.LC33
-	.word	.LC81
-	.word	.LC70
 	.word	.LC318
-	.word	.LC206
-	.word	.LC75
-	.word	.LC33
-	.word	.LC81
+	.word	.LC67
+	.word	.LC19
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC222
+	.word	.LC21
 	.word	.LC319
 	.word	.LC320
-	.word	.LC69
-	.word	.LC21
-	.word	.LC61
-	.word	.LC102
-	.word	.LC203
-	.word	.LC224
-	.word	.LC23
 	.word	.LC321
+	.word	.LC95
 	.word	.LC322
+	.word	.LC219
+	.word	.LC84
+	.word	.LC136
+	.word	.LC56
 	.word	.LC323
-	.word	.LC97
+	.word	.LC220
+	.word	.LC34
+	.word	.LC10
+	.word	.LC147
+	.word	.LC150
+	.word	.LC210
+	.word	.LC27
+	.word	.LC49
+	.word	.LC74
 	.word	.LC324
-	.word	.LC221
-	.word	.LC86
-	.word	.LC138
-	.word	.LC58
+	.word	.LC196
 	.word	.LC325
-	.word	.LC222
-	.word	.LC36
-	.word	.LC12
-	.word	.LC149
-	.word	.LC152
-	.word	.LC212
-	.word	.LC29
-	.word	.LC51
-	.word	.LC76
 	.word	.LC326
-	.word	.LC198
+	.word	.LC39
+	.word	.LC19
 	.word	.LC327
+	.word	.LC99
+	.word	.LC26
 	.word	.LC328
-	.word	.LC41
-	.word	.LC21
+	.word	.LC136
 	.word	.LC329
-	.word	.LC101
-	.word	.LC28
+	.word	.LC143
 	.word	.LC330
-	.word	.LC138
+	.word	.LC27
 	.word	.LC331
-	.word	.LC145
+	.word	.LC103
+	.word	.LC79
 	.word	.LC332
-	.word	.LC29
+	.word	.LC9
 	.word	.LC333
-	.word	.LC105
-	.word	.LC81
 	.word	.LC334
-	.word	.LC11
+	.word	.LC27
+	.word	.LC103
+	.word	.LC79
+	.word	.LC80
+	.word	.LC9
 	.word	.LC335
+	.word	.LC10
+	.word	.LC260
 	.word	.LC336
-	.word	.LC29
-	.word	.LC105
-	.word	.LC81
-	.word	.LC82
-	.word	.LC11
+	.word	.LC10
 	.word	.LC337
-	.word	.LC12
-	.word	.LC262
 	.word	.LC338
-	.word	.LC12
+	.word	.LC27
 	.word	.LC339
 	.word	.LC340
-	.word	.LC29
 	.word	.LC341
+	.word	.LC10
+	.word	.LC251
 	.word	.LC342
+	.word	.LC7
 	.word	.LC343
-	.word	.LC12
-	.word	.LC253
-	.word	.LC344
-	.word	.LC9
-	.word	.LC345
-	.word	.LC29
-	.word	.LC25
+	.word	.LC27
+	.word	.LC23
+	.word	.LC43
 	.word	.LC45
-	.word	.LC47
-	.word	.LC159
-	.word	.LC346
+	.word	.LC157
+	.word	.LC344
+	.word	.LC67
+	.word	.LC68
 	.word	.LC69
-	.word	.LC70
-	.word	.LC71
-	.word	.LC127
-	.word	.LC12
-	.word	.LC16
+	.word	.LC125
+	.word	.LC10
+	.word	.LC14
+	.word	.LC0
+	.word	.LC1
 	.word	.LC2
 	.word	.LC3
 	.word	.LC4
@@ -4783,9 +4753,9 @@ input_data:
 	.word	.LC9
 	.word	.LC10
 	.word	.LC11
+	.word	.LC9
 	.word	.LC12
 	.word	.LC13
-	.word	.LC11
 	.word	.LC14
 	.word	.LC15
 	.word	.LC16
@@ -4796,68 +4766,68 @@ input_data:
 	.word	.LC21
 	.word	.LC22
 	.word	.LC23
+	.word	.LC10
 	.word	.LC24
+	.word	.LC14
 	.word	.LC25
-	.word	.LC12
 	.word	.LC26
-	.word	.LC16
 	.word	.LC27
 	.word	.LC28
 	.word	.LC29
 	.word	.LC30
+	.word	.LC9
+	.word	.LC14
 	.word	.LC31
 	.word	.LC32
-	.word	.LC11
-	.word	.LC16
 	.word	.LC33
 	.word	.LC34
 	.word	.LC35
 	.word	.LC36
+	.word	.LC10
 	.word	.LC37
+	.word	.LC9
 	.word	.LC38
-	.word	.LC12
 	.word	.LC39
-	.word	.LC11
 	.word	.LC40
 	.word	.LC41
 	.word	.LC42
 	.word	.LC43
 	.word	.LC44
 	.word	.LC45
+	.word	.LC38
 	.word	.LC46
 	.word	.LC47
-	.word	.LC40
 	.word	.LC48
+	.word	.LC16
 	.word	.LC49
 	.word	.LC50
-	.word	.LC18
 	.word	.LC51
+	.word	.LC39
 	.word	.LC52
 	.word	.LC53
-	.word	.LC41
+	.word	.LC10
 	.word	.LC54
+	.word	.LC7
 	.word	.LC55
-	.word	.LC12
-	.word	.LC56
 	.word	.LC9
+	.word	.LC56
 	.word	.LC57
-	.word	.LC11
 	.word	.LC58
 	.word	.LC59
 	.word	.LC60
 	.word	.LC61
+	.word	.LC49
 	.word	.LC62
 	.word	.LC63
-	.word	.LC51
+	.word	.LC10
+	.word	.LC54
+	.word	.LC7
+	.word	.LC55
+	.word	.LC9
+	.word	.LC56
+	.word	.LC57
 	.word	.LC64
 	.word	.LC65
-	.word	.LC12
-	.word	.LC56
-	.word	.LC9
-	.word	.LC57
-	.word	.LC11
-	.word	.LC58
-	.word	.LC59
 	.word	.LC66
 	.word	.LC67
 	.word	.LC68
@@ -4868,592 +4838,592 @@ input_data:
 	.word	.LC73
 	.word	.LC74
 	.word	.LC75
+	.word	.LC4
 	.word	.LC76
-	.word	.LC77
-	.word	.LC6
-	.word	.LC78
-	.word	.LC11
-	.word	.LC79
 	.word	.LC9
+	.word	.LC77
+	.word	.LC7
+	.word	.LC78
+	.word	.LC70
+	.word	.LC79
 	.word	.LC80
-	.word	.LC72
+	.word	.LC19
 	.word	.LC81
 	.word	.LC82
-	.word	.LC21
+	.word	.LC52
 	.word	.LC83
 	.word	.LC84
-	.word	.LC54
 	.word	.LC85
 	.word	.LC86
 	.word	.LC87
+	.word	.LC19
+	.word	.LC7
+	.word	.LC83
 	.word	.LC88
+	.word	.LC19
 	.word	.LC89
-	.word	.LC21
-	.word	.LC9
-	.word	.LC85
 	.word	.LC90
-	.word	.LC21
+	.word	.LC61
 	.word	.LC91
+	.word	.LC62
 	.word	.LC92
-	.word	.LC63
 	.word	.LC93
-	.word	.LC64
+	.word	.LC92
+	.word	.LC19
 	.word	.LC94
 	.word	.LC95
-	.word	.LC94
-	.word	.LC21
 	.word	.LC96
 	.word	.LC97
+	.word	.LC10
+	.word	.LC24
 	.word	.LC98
+	.word	.LC96
 	.word	.LC99
-	.word	.LC12
-	.word	.LC26
 	.word	.LC100
-	.word	.LC98
 	.word	.LC101
 	.word	.LC102
 	.word	.LC103
+	.word	.LC92
 	.word	.LC104
+	.word	.LC92
 	.word	.LC105
-	.word	.LC94
 	.word	.LC106
-	.word	.LC94
 	.word	.LC107
 	.word	.LC108
 	.word	.LC109
 	.word	.LC110
+	.word	.LC34
 	.word	.LC111
 	.word	.LC112
-	.word	.LC36
 	.word	.LC113
+	.word	.LC28
 	.word	.LC114
 	.word	.LC115
-	.word	.LC30
+	.word	.LC70
+	.word	.LC56
 	.word	.LC116
+	.word	.LC91
 	.word	.LC117
-	.word	.LC72
-	.word	.LC58
+	.word	.LC106
+	.word	.LC26
 	.word	.LC118
-	.word	.LC93
+	.word	.LC101
+	.word	.LC59
 	.word	.LC119
-	.word	.LC108
-	.word	.LC28
+	.word	.LC56
 	.word	.LC120
-	.word	.LC103
-	.word	.LC61
+	.word	.LC60
+	.word	.LC10
 	.word	.LC121
-	.word	.LC58
+	.word	.LC101
 	.word	.LC122
-	.word	.LC62
-	.word	.LC12
+	.word	.LC19
+	.word	.LC4
 	.word	.LC123
-	.word	.LC103
 	.word	.LC124
-	.word	.LC21
-	.word	.LC6
 	.word	.LC125
 	.word	.LC126
 	.word	.LC127
 	.word	.LC128
 	.word	.LC129
+	.word	.LC21
 	.word	.LC130
 	.word	.LC131
-	.word	.LC23
 	.word	.LC132
+	.word	.LC101
 	.word	.LC133
+	.word	.LC19
 	.word	.LC134
-	.word	.LC103
+	.word	.LC95
+	.word	.LC26
 	.word	.LC135
-	.word	.LC21
 	.word	.LC136
-	.word	.LC97
-	.word	.LC28
 	.word	.LC137
 	.word	.LC138
 	.word	.LC139
+	.word	.LC95
 	.word	.LC140
 	.word	.LC141
-	.word	.LC97
+	.word	.LC136
 	.word	.LC142
 	.word	.LC143
-	.word	.LC138
+	.word	.LC91
+	.word	.LC135
+	.word	.LC136
 	.word	.LC144
 	.word	.LC145
-	.word	.LC93
-	.word	.LC137
-	.word	.LC138
+	.word	.LC95
 	.word	.LC146
+	.word	.LC56
 	.word	.LC147
-	.word	.LC97
+	.word	.LC125
 	.word	.LC148
-	.word	.LC58
 	.word	.LC149
-	.word	.LC127
 	.word	.LC150
 	.word	.LC151
 	.word	.LC152
+	.word	.LC150
 	.word	.LC153
+	.word	.LC28
 	.word	.LC154
-	.word	.LC152
+	.word	.LC103
 	.word	.LC155
-	.word	.LC30
+	.word	.LC7
+	.word	.LC70
+	.word	.LC10
 	.word	.LC156
-	.word	.LC105
 	.word	.LC157
-	.word	.LC9
-	.word	.LC72
-	.word	.LC12
+	.word	.LC20
+	.word	.LC136
+	.word	.LC77
 	.word	.LC158
 	.word	.LC159
-	.word	.LC22
-	.word	.LC138
-	.word	.LC79
+	.word	.LC19
 	.word	.LC160
 	.word	.LC161
-	.word	.LC21
+	.word	.LC10
 	.word	.LC162
+	.word	.LC15
+	.word	.LC19
 	.word	.LC163
-	.word	.LC12
+	.word	.LC70
 	.word	.LC164
-	.word	.LC17
-	.word	.LC21
+	.word	.LC51
 	.word	.LC165
-	.word	.LC72
+	.word	.LC69
+	.word	.LC83
 	.word	.LC166
-	.word	.LC53
+	.word	.LC56
 	.word	.LC167
-	.word	.LC71
-	.word	.LC85
 	.word	.LC168
-	.word	.LC58
 	.word	.LC169
 	.word	.LC170
 	.word	.LC171
+	.word	.LC56
+	.word	.LC167
 	.word	.LC172
 	.word	.LC173
-	.word	.LC58
-	.word	.LC169
 	.word	.LC174
+	.word	.LC95
 	.word	.LC175
 	.word	.LC176
-	.word	.LC97
 	.word	.LC177
+	.word	.LC19
 	.word	.LC178
+	.word	.LC100
 	.word	.LC179
-	.word	.LC21
+	.word	.LC19
 	.word	.LC180
-	.word	.LC102
+	.word	.LC106
 	.word	.LC181
-	.word	.LC21
+	.word	.LC136
+	.word	.LC56
+	.word	.LC116
+	.word	.LC28
 	.word	.LC182
-	.word	.LC108
 	.word	.LC183
-	.word	.LC138
-	.word	.LC58
-	.word	.LC118
-	.word	.LC30
+	.word	.LC142
+	.word	.LC16
+	.word	.LC100
 	.word	.LC184
+	.word	.LC100
+	.word	.LC4
 	.word	.LC185
-	.word	.LC144
-	.word	.LC18
-	.word	.LC102
+	.word	.LC179
 	.word	.LC186
-	.word	.LC102
-	.word	.LC6
 	.word	.LC187
+	.word	.LC106
 	.word	.LC181
+	.word	.LC136
 	.word	.LC188
 	.word	.LC189
-	.word	.LC108
-	.word	.LC183
-	.word	.LC138
 	.word	.LC190
+	.word	.LC9
+	.word	.LC10
+	.word	.LC182
+	.word	.LC183
 	.word	.LC191
+	.word	.LC16
+	.word	.LC100
 	.word	.LC192
-	.word	.LC11
-	.word	.LC12
-	.word	.LC184
-	.word	.LC185
+	.word	.LC178
 	.word	.LC193
-	.word	.LC18
-	.word	.LC102
 	.word	.LC194
-	.word	.LC180
+	.word	.LC9
 	.word	.LC195
 	.word	.LC196
-	.word	.LC11
+	.word	.LC121
+	.word	.LC106
+	.word	.LC56
 	.word	.LC197
 	.word	.LC198
-	.word	.LC123
-	.word	.LC108
-	.word	.LC58
 	.word	.LC199
 	.word	.LC200
 	.word	.LC201
 	.word	.LC202
 	.word	.LC203
 	.word	.LC204
+	.word	.LC73
 	.word	.LC205
 	.word	.LC206
-	.word	.LC75
+	.word	.LC19
 	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
 	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
-	.word	.LC33
+	.word	.LC19
+	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC209
+	.word	.LC4
 	.word	.LC210
-	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
+	.word	.LC73
 	.word	.LC211
-	.word	.LC6
+	.word	.LC10
 	.word	.LC212
-	.word	.LC208
-	.word	.LC75
 	.word	.LC213
-	.word	.LC12
+	.word	.LC125
+	.word	.LC56
 	.word	.LC214
 	.word	.LC215
-	.word	.LC127
-	.word	.LC58
 	.word	.LC216
 	.word	.LC217
+	.word	.LC19
+	.word	.LC181
+	.word	.LC178
 	.word	.LC218
+	.word	.LC77
 	.word	.LC219
-	.word	.LC21
-	.word	.LC183
-	.word	.LC180
+	.word	.LC84
 	.word	.LC220
-	.word	.LC79
 	.word	.LC221
-	.word	.LC86
+	.word	.LC77
 	.word	.LC222
 	.word	.LC223
-	.word	.LC79
 	.word	.LC224
+	.word	.LC91
 	.word	.LC225
 	.word	.LC226
-	.word	.LC93
 	.word	.LC227
+	.word	.LC91
 	.word	.LC228
 	.word	.LC229
-	.word	.LC93
+	.word	.LC53
+	.word	.LC56
 	.word	.LC230
 	.word	.LC231
-	.word	.LC55
-	.word	.LC58
-	.word	.LC232
-	.word	.LC233
-	.word	.LC29
-	.word	.LC133
-	.word	.LC82
-	.word	.LC21
-	.word	.LC234
-	.word	.LC97
-	.word	.LC28
-	.word	.LC235
-	.word	.LC11
-	.word	.LC29
-	.word	.LC222
-	.word	.LC11
-	.word	.LC181
-	.word	.LC139
-	.word	.LC144
-	.word	.LC236
-	.word	.LC11
-	.word	.LC29
-	.word	.LC237
-	.word	.LC12
-	.word	.LC238
-	.word	.LC239
-	.word	.LC75
-	.word	.LC240
-	.word	.LC48
-	.word	.LC241
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC33
-	.word	.LC243
-	.word	.LC108
-	.word	.LC183
-	.word	.LC29
-	.word	.LC101
-	.word	.LC58
-	.word	.LC244
-	.word	.LC245
-	.word	.LC246
-	.word	.LC12
-	.word	.LC247
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC180
-	.word	.LC248
-	.word	.LC202
+	.word	.LC27
 	.word	.LC131
-	.word	.LC64
-	.word	.LC249
-	.word	.LC57
-	.word	.LC250
-	.word	.LC251
-	.word	.LC51
-	.word	.LC22
-	.word	.LC252
-	.word	.LC21
+	.word	.LC80
+	.word	.LC19
+	.word	.LC232
+	.word	.LC95
+	.word	.LC26
+	.word	.LC233
+	.word	.LC9
+	.word	.LC27
+	.word	.LC220
+	.word	.LC9
+	.word	.LC179
+	.word	.LC137
+	.word	.LC142
+	.word	.LC234
+	.word	.LC9
+	.word	.LC27
+	.word	.LC235
+	.word	.LC10
+	.word	.LC236
+	.word	.LC237
+	.word	.LC73
+	.word	.LC238
+	.word	.LC46
+	.word	.LC239
+	.word	.LC240
 	.word	.LC177
-	.word	.LC253
-	.word	.LC195
-	.word	.LC108
-	.word	.LC102
-	.word	.LC58
-	.word	.LC254
-	.word	.LC63
+	.word	.LC19
+	.word	.LC31
+	.word	.LC241
+	.word	.LC106
+	.word	.LC181
+	.word	.LC27
+	.word	.LC99
+	.word	.LC56
+	.word	.LC242
+	.word	.LC243
+	.word	.LC244
+	.word	.LC10
+	.word	.LC245
+	.word	.LC240
+	.word	.LC177
+	.word	.LC19
+	.word	.LC178
+	.word	.LC246
+	.word	.LC200
+	.word	.LC129
+	.word	.LC62
+	.word	.LC247
+	.word	.LC55
+	.word	.LC248
+	.word	.LC249
+	.word	.LC49
+	.word	.LC20
+	.word	.LC250
+	.word	.LC19
+	.word	.LC175
+	.word	.LC251
+	.word	.LC193
+	.word	.LC106
+	.word	.LC100
+	.word	.LC56
+	.word	.LC252
 	.word	.LC61
-	.word	.LC102
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC253
+	.word	.LC26
 	.word	.LC203
+	.word	.LC23
+	.word	.LC254
+	.word	.LC196
 	.word	.LC255
-	.word	.LC28
-	.word	.LC205
-	.word	.LC25
+	.word	.LC106
+	.word	.LC56
 	.word	.LC256
-	.word	.LC198
 	.word	.LC257
-	.word	.LC108
-	.word	.LC58
+	.word	.LC56
 	.word	.LC258
 	.word	.LC259
-	.word	.LC58
+	.word	.LC106
+	.word	.LC56
 	.word	.LC260
+	.word	.LC7
+	.word	.LC10
+	.word	.LC142
+	.word	.LC182
 	.word	.LC261
-	.word	.LC108
-	.word	.LC58
+	.word	.LC106
 	.word	.LC262
-	.word	.LC9
-	.word	.LC12
-	.word	.LC144
-	.word	.LC184
+	.word	.LC136
+	.word	.LC19
+	.word	.LC70
+	.word	.LC10
+	.word	.LC24
 	.word	.LC263
-	.word	.LC108
-	.word	.LC264
-	.word	.LC138
-	.word	.LC21
-	.word	.LC72
-	.word	.LC12
-	.word	.LC26
-	.word	.LC265
-	.word	.LC103
-	.word	.LC266
-	.word	.LC267
-	.word	.LC9
-	.word	.LC268
 	.word	.LC101
-	.word	.LC138
-	.word	.LC81
+	.word	.LC264
+	.word	.LC265
+	.word	.LC7
+	.word	.LC266
+	.word	.LC99
+	.word	.LC136
+	.word	.LC79
+	.word	.LC267
+	.word	.LC268
+	.word	.LC19
 	.word	.LC269
 	.word	.LC270
-	.word	.LC21
+	.word	.LC125
 	.word	.LC271
 	.word	.LC272
-	.word	.LC127
+	.word	.LC106
 	.word	.LC273
+	.word	.LC10
 	.word	.LC274
-	.word	.LC108
+	.word	.LC70
 	.word	.LC275
-	.word	.LC12
+	.word	.LC7
 	.word	.LC276
-	.word	.LC72
 	.word	.LC277
-	.word	.LC9
+	.word	.LC10
 	.word	.LC278
+	.word	.LC19
 	.word	.LC279
-	.word	.LC12
+	.word	.LC10
+	.word	.LC43
+	.word	.LC19
 	.word	.LC280
-	.word	.LC21
+	.word	.LC10
+	.word	.LC142
+	.word	.LC143
 	.word	.LC281
-	.word	.LC12
-	.word	.LC45
-	.word	.LC21
+	.word	.LC19
+	.word	.LC201
+	.word	.LC19
 	.word	.LC282
-	.word	.LC12
-	.word	.LC144
-	.word	.LC145
 	.word	.LC283
-	.word	.LC21
-	.word	.LC203
-	.word	.LC21
 	.word	.LC284
+	.word	.LC70
 	.word	.LC285
 	.word	.LC286
-	.word	.LC72
 	.word	.LC287
 	.word	.LC288
+	.word	.LC99
 	.word	.LC289
+	.word	.LC87
+	.word	.LC27
 	.word	.LC290
-	.word	.LC101
+	.word	.LC19
+	.word	.LC272
+	.word	.LC284
+	.word	.LC70
 	.word	.LC291
-	.word	.LC89
-	.word	.LC29
 	.word	.LC292
-	.word	.LC21
-	.word	.LC274
-	.word	.LC286
-	.word	.LC72
+	.word	.LC288
+	.word	.LC99
+	.word	.LC289
+	.word	.LC87
+	.word	.LC27
+	.word	.LC290
+	.word	.LC19
 	.word	.LC293
 	.word	.LC294
-	.word	.LC290
-	.word	.LC101
-	.word	.LC291
-	.word	.LC89
-	.word	.LC29
-	.word	.LC292
-	.word	.LC21
 	.word	.LC295
 	.word	.LC296
 	.word	.LC297
 	.word	.LC298
 	.word	.LC299
+	.word	.LC49
 	.word	.LC300
 	.word	.LC301
-	.word	.LC51
+	.word	.LC49
 	.word	.LC302
+	.word	.LC61
+	.word	.LC219
+	.word	.LC49
+	.word	.LC279
+	.word	.LC167
 	.word	.LC303
-	.word	.LC51
+	.word	.LC201
+	.word	.LC19
+	.word	.LC181
+	.word	.LC73
 	.word	.LC304
-	.word	.LC63
-	.word	.LC221
-	.word	.LC51
-	.word	.LC281
-	.word	.LC169
+	.word	.LC101
+	.word	.LC201
+	.word	.LC19
+	.word	.LC282
+	.word	.LC283
 	.word	.LC305
-	.word	.LC203
-	.word	.LC21
-	.word	.LC183
-	.word	.LC75
+	.word	.LC282
 	.word	.LC306
-	.word	.LC103
-	.word	.LC203
-	.word	.LC21
-	.word	.LC284
-	.word	.LC285
 	.word	.LC307
-	.word	.LC284
+	.word	.LC282
 	.word	.LC308
+	.word	.LC7
+	.word	.LC208
 	.word	.LC309
-	.word	.LC284
+	.word	.LC188
 	.word	.LC310
-	.word	.LC9
-	.word	.LC210
 	.word	.LC311
-	.word	.LC190
+	.word	.LC56
+	.word	.LC310
+	.word	.LC95
 	.word	.LC312
 	.word	.LC313
-	.word	.LC58
-	.word	.LC312
-	.word	.LC97
 	.word	.LC314
+	.word	.LC106
 	.word	.LC315
+	.word	.LC19
+	.word	.LC204
+	.word	.LC19
+	.word	.LC31
+	.word	.LC79
+	.word	.LC68
 	.word	.LC316
-	.word	.LC108
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
+	.word	.LC79
 	.word	.LC317
-	.word	.LC21
-	.word	.LC206
-	.word	.LC21
-	.word	.LC33
-	.word	.LC81
-	.word	.LC70
 	.word	.LC318
-	.word	.LC206
-	.word	.LC75
-	.word	.LC33
-	.word	.LC81
+	.word	.LC67
+	.word	.LC19
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC222
+	.word	.LC21
 	.word	.LC319
 	.word	.LC320
-	.word	.LC69
-	.word	.LC21
-	.word	.LC61
-	.word	.LC102
-	.word	.LC203
-	.word	.LC224
-	.word	.LC23
 	.word	.LC321
+	.word	.LC95
 	.word	.LC322
+	.word	.LC219
+	.word	.LC84
+	.word	.LC136
+	.word	.LC56
 	.word	.LC323
-	.word	.LC97
+	.word	.LC220
+	.word	.LC34
+	.word	.LC10
+	.word	.LC147
+	.word	.LC150
+	.word	.LC210
+	.word	.LC27
+	.word	.LC49
+	.word	.LC74
 	.word	.LC324
-	.word	.LC221
-	.word	.LC86
-	.word	.LC138
-	.word	.LC58
+	.word	.LC196
 	.word	.LC325
-	.word	.LC222
-	.word	.LC36
-	.word	.LC12
-	.word	.LC149
-	.word	.LC152
-	.word	.LC212
-	.word	.LC29
-	.word	.LC51
-	.word	.LC76
 	.word	.LC326
-	.word	.LC198
+	.word	.LC39
+	.word	.LC19
 	.word	.LC327
+	.word	.LC99
+	.word	.LC26
 	.word	.LC328
-	.word	.LC41
-	.word	.LC21
+	.word	.LC136
 	.word	.LC329
-	.word	.LC101
-	.word	.LC28
+	.word	.LC143
 	.word	.LC330
-	.word	.LC138
+	.word	.LC27
 	.word	.LC331
-	.word	.LC145
+	.word	.LC103
+	.word	.LC79
 	.word	.LC332
-	.word	.LC29
+	.word	.LC9
 	.word	.LC333
-	.word	.LC105
-	.word	.LC81
 	.word	.LC334
-	.word	.LC11
+	.word	.LC27
+	.word	.LC103
+	.word	.LC79
+	.word	.LC80
+	.word	.LC9
 	.word	.LC335
+	.word	.LC10
+	.word	.LC260
 	.word	.LC336
-	.word	.LC29
-	.word	.LC105
-	.word	.LC81
-	.word	.LC82
-	.word	.LC11
+	.word	.LC10
 	.word	.LC337
-	.word	.LC12
-	.word	.LC262
 	.word	.LC338
-	.word	.LC12
+	.word	.LC27
 	.word	.LC339
 	.word	.LC340
-	.word	.LC29
 	.word	.LC341
+	.word	.LC10
+	.word	.LC251
 	.word	.LC342
+	.word	.LC7
 	.word	.LC343
-	.word	.LC12
-	.word	.LC253
-	.word	.LC344
-	.word	.LC9
-	.word	.LC345
-	.word	.LC29
-	.word	.LC25
+	.word	.LC27
+	.word	.LC23
+	.word	.LC43
 	.word	.LC45
-	.word	.LC47
-	.word	.LC159
-	.word	.LC346
+	.word	.LC157
+	.word	.LC344
+	.word	.LC67
+	.word	.LC68
 	.word	.LC69
-	.word	.LC70
-	.word	.LC71
-	.word	.LC127
-	.word	.LC12
-	.word	.LC16
+	.word	.LC125
+	.word	.LC10
+	.word	.LC14
+	.word	.LC0
+	.word	.LC1
 	.word	.LC2
 	.word	.LC3
 	.word	.LC4
@@ -5464,9 +5434,9 @@ input_data:
 	.word	.LC9
 	.word	.LC10
 	.word	.LC11
+	.word	.LC9
 	.word	.LC12
 	.word	.LC13
-	.word	.LC11
 	.word	.LC14
 	.word	.LC15
 	.word	.LC16
@@ -5477,68 +5447,68 @@ input_data:
 	.word	.LC21
 	.word	.LC22
 	.word	.LC23
+	.word	.LC10
 	.word	.LC24
+	.word	.LC14
 	.word	.LC25
-	.word	.LC12
 	.word	.LC26
-	.word	.LC16
 	.word	.LC27
 	.word	.LC28
 	.word	.LC29
 	.word	.LC30
+	.word	.LC9
+	.word	.LC14
 	.word	.LC31
 	.word	.LC32
-	.word	.LC11
-	.word	.LC16
 	.word	.LC33
 	.word	.LC34
 	.word	.LC35
 	.word	.LC36
+	.word	.LC10
 	.word	.LC37
+	.word	.LC9
 	.word	.LC38
-	.word	.LC12
 	.word	.LC39
-	.word	.LC11
 	.word	.LC40
 	.word	.LC41
 	.word	.LC42
 	.word	.LC43
 	.word	.LC44
 	.word	.LC45
+	.word	.LC38
 	.word	.LC46
 	.word	.LC47
-	.word	.LC40
 	.word	.LC48
+	.word	.LC16
 	.word	.LC49
 	.word	.LC50
-	.word	.LC18
 	.word	.LC51
+	.word	.LC39
 	.word	.LC52
 	.word	.LC53
-	.word	.LC41
+	.word	.LC10
 	.word	.LC54
+	.word	.LC7
 	.word	.LC55
-	.word	.LC12
-	.word	.LC56
 	.word	.LC9
+	.word	.LC56
 	.word	.LC57
-	.word	.LC11
 	.word	.LC58
 	.word	.LC59
 	.word	.LC60
 	.word	.LC61
+	.word	.LC49
 	.word	.LC62
 	.word	.LC63
-	.word	.LC51
+	.word	.LC10
+	.word	.LC54
+	.word	.LC7
+	.word	.LC55
+	.word	.LC9
+	.word	.LC56
+	.word	.LC57
 	.word	.LC64
 	.word	.LC65
-	.word	.LC12
-	.word	.LC56
-	.word	.LC9
-	.word	.LC57
-	.word	.LC11
-	.word	.LC58
-	.word	.LC59
 	.word	.LC66
 	.word	.LC67
 	.word	.LC68
@@ -5549,592 +5519,592 @@ input_data:
 	.word	.LC73
 	.word	.LC74
 	.word	.LC75
+	.word	.LC4
 	.word	.LC76
-	.word	.LC77
-	.word	.LC6
-	.word	.LC78
-	.word	.LC11
-	.word	.LC79
 	.word	.LC9
+	.word	.LC77
+	.word	.LC7
+	.word	.LC78
+	.word	.LC70
+	.word	.LC79
 	.word	.LC80
-	.word	.LC72
+	.word	.LC19
 	.word	.LC81
 	.word	.LC82
-	.word	.LC21
+	.word	.LC52
 	.word	.LC83
 	.word	.LC84
-	.word	.LC54
 	.word	.LC85
 	.word	.LC86
 	.word	.LC87
+	.word	.LC19
+	.word	.LC7
+	.word	.LC83
 	.word	.LC88
+	.word	.LC19
 	.word	.LC89
-	.word	.LC21
-	.word	.LC9
-	.word	.LC85
 	.word	.LC90
-	.word	.LC21
+	.word	.LC61
 	.word	.LC91
+	.word	.LC62
 	.word	.LC92
-	.word	.LC63
 	.word	.LC93
-	.word	.LC64
+	.word	.LC92
+	.word	.LC19
 	.word	.LC94
 	.word	.LC95
-	.word	.LC94
-	.word	.LC21
 	.word	.LC96
 	.word	.LC97
+	.word	.LC10
+	.word	.LC24
 	.word	.LC98
+	.word	.LC96
 	.word	.LC99
-	.word	.LC12
-	.word	.LC26
 	.word	.LC100
-	.word	.LC98
 	.word	.LC101
 	.word	.LC102
 	.word	.LC103
+	.word	.LC92
 	.word	.LC104
+	.word	.LC92
 	.word	.LC105
-	.word	.LC94
 	.word	.LC106
-	.word	.LC94
 	.word	.LC107
 	.word	.LC108
 	.word	.LC109
 	.word	.LC110
+	.word	.LC34
 	.word	.LC111
 	.word	.LC112
-	.word	.LC36
 	.word	.LC113
+	.word	.LC28
 	.word	.LC114
 	.word	.LC115
-	.word	.LC30
+	.word	.LC70
+	.word	.LC56
 	.word	.LC116
+	.word	.LC91
 	.word	.LC117
-	.word	.LC72
-	.word	.LC58
+	.word	.LC106
+	.word	.LC26
 	.word	.LC118
-	.word	.LC93
+	.word	.LC101
+	.word	.LC59
 	.word	.LC119
-	.word	.LC108
-	.word	.LC28
+	.word	.LC56
 	.word	.LC120
-	.word	.LC103
-	.word	.LC61
+	.word	.LC60
+	.word	.LC10
 	.word	.LC121
-	.word	.LC58
+	.word	.LC101
 	.word	.LC122
-	.word	.LC62
-	.word	.LC12
+	.word	.LC19
+	.word	.LC4
 	.word	.LC123
-	.word	.LC103
 	.word	.LC124
-	.word	.LC21
-	.word	.LC6
 	.word	.LC125
 	.word	.LC126
 	.word	.LC127
 	.word	.LC128
 	.word	.LC129
+	.word	.LC21
 	.word	.LC130
 	.word	.LC131
-	.word	.LC23
 	.word	.LC132
+	.word	.LC101
 	.word	.LC133
+	.word	.LC19
 	.word	.LC134
-	.word	.LC103
+	.word	.LC95
+	.word	.LC26
 	.word	.LC135
-	.word	.LC21
 	.word	.LC136
-	.word	.LC97
-	.word	.LC28
 	.word	.LC137
 	.word	.LC138
 	.word	.LC139
+	.word	.LC95
 	.word	.LC140
 	.word	.LC141
-	.word	.LC97
+	.word	.LC136
 	.word	.LC142
 	.word	.LC143
-	.word	.LC138
+	.word	.LC91
+	.word	.LC135
+	.word	.LC136
 	.word	.LC144
 	.word	.LC145
-	.word	.LC93
-	.word	.LC137
-	.word	.LC138
+	.word	.LC95
 	.word	.LC146
+	.word	.LC56
 	.word	.LC147
-	.word	.LC97
+	.word	.LC125
 	.word	.LC148
-	.word	.LC58
 	.word	.LC149
-	.word	.LC127
 	.word	.LC150
 	.word	.LC151
 	.word	.LC152
+	.word	.LC150
 	.word	.LC153
+	.word	.LC28
 	.word	.LC154
-	.word	.LC152
+	.word	.LC103
 	.word	.LC155
-	.word	.LC30
+	.word	.LC7
+	.word	.LC70
+	.word	.LC10
 	.word	.LC156
-	.word	.LC105
 	.word	.LC157
-	.word	.LC9
-	.word	.LC72
-	.word	.LC12
+	.word	.LC20
+	.word	.LC136
+	.word	.LC77
 	.word	.LC158
 	.word	.LC159
-	.word	.LC22
-	.word	.LC138
-	.word	.LC79
+	.word	.LC19
 	.word	.LC160
 	.word	.LC161
-	.word	.LC21
+	.word	.LC10
 	.word	.LC162
+	.word	.LC15
+	.word	.LC19
 	.word	.LC163
-	.word	.LC12
+	.word	.LC70
 	.word	.LC164
-	.word	.LC17
-	.word	.LC21
+	.word	.LC51
 	.word	.LC165
-	.word	.LC72
+	.word	.LC69
+	.word	.LC83
 	.word	.LC166
-	.word	.LC53
+	.word	.LC56
 	.word	.LC167
-	.word	.LC71
-	.word	.LC85
 	.word	.LC168
-	.word	.LC58
 	.word	.LC169
 	.word	.LC170
 	.word	.LC171
+	.word	.LC56
+	.word	.LC167
 	.word	.LC172
 	.word	.LC173
-	.word	.LC58
-	.word	.LC169
 	.word	.LC174
+	.word	.LC95
 	.word	.LC175
 	.word	.LC176
-	.word	.LC97
 	.word	.LC177
+	.word	.LC19
 	.word	.LC178
+	.word	.LC100
 	.word	.LC179
-	.word	.LC21
+	.word	.LC19
 	.word	.LC180
-	.word	.LC102
+	.word	.LC106
 	.word	.LC181
-	.word	.LC21
+	.word	.LC136
+	.word	.LC56
+	.word	.LC116
+	.word	.LC28
 	.word	.LC182
-	.word	.LC108
 	.word	.LC183
-	.word	.LC138
-	.word	.LC58
-	.word	.LC118
-	.word	.LC30
+	.word	.LC142
+	.word	.LC16
+	.word	.LC100
 	.word	.LC184
+	.word	.LC100
+	.word	.LC4
 	.word	.LC185
-	.word	.LC144
-	.word	.LC18
-	.word	.LC102
+	.word	.LC179
 	.word	.LC186
-	.word	.LC102
-	.word	.LC6
 	.word	.LC187
+	.word	.LC106
 	.word	.LC181
+	.word	.LC136
 	.word	.LC188
 	.word	.LC189
-	.word	.LC108
-	.word	.LC183
-	.word	.LC138
 	.word	.LC190
+	.word	.LC9
+	.word	.LC10
+	.word	.LC182
+	.word	.LC183
 	.word	.LC191
+	.word	.LC16
+	.word	.LC100
 	.word	.LC192
-	.word	.LC11
-	.word	.LC12
-	.word	.LC184
-	.word	.LC185
+	.word	.LC178
 	.word	.LC193
-	.word	.LC18
-	.word	.LC102
 	.word	.LC194
-	.word	.LC180
+	.word	.LC9
 	.word	.LC195
 	.word	.LC196
-	.word	.LC11
+	.word	.LC121
+	.word	.LC106
+	.word	.LC56
 	.word	.LC197
 	.word	.LC198
-	.word	.LC123
-	.word	.LC108
-	.word	.LC58
 	.word	.LC199
 	.word	.LC200
 	.word	.LC201
 	.word	.LC202
 	.word	.LC203
 	.word	.LC204
+	.word	.LC73
 	.word	.LC205
 	.word	.LC206
-	.word	.LC75
+	.word	.LC19
 	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
 	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
-	.word	.LC33
+	.word	.LC19
+	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC209
+	.word	.LC4
 	.word	.LC210
-	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
+	.word	.LC73
 	.word	.LC211
-	.word	.LC6
+	.word	.LC10
 	.word	.LC212
-	.word	.LC208
-	.word	.LC75
 	.word	.LC213
-	.word	.LC12
+	.word	.LC125
+	.word	.LC56
 	.word	.LC214
 	.word	.LC215
-	.word	.LC127
-	.word	.LC58
 	.word	.LC216
 	.word	.LC217
+	.word	.LC19
+	.word	.LC181
+	.word	.LC178
 	.word	.LC218
+	.word	.LC77
 	.word	.LC219
-	.word	.LC21
-	.word	.LC183
-	.word	.LC180
+	.word	.LC84
 	.word	.LC220
-	.word	.LC79
 	.word	.LC221
-	.word	.LC86
+	.word	.LC77
 	.word	.LC222
 	.word	.LC223
-	.word	.LC79
 	.word	.LC224
+	.word	.LC91
 	.word	.LC225
 	.word	.LC226
-	.word	.LC93
 	.word	.LC227
+	.word	.LC91
 	.word	.LC228
 	.word	.LC229
-	.word	.LC93
+	.word	.LC53
+	.word	.LC56
 	.word	.LC230
 	.word	.LC231
-	.word	.LC55
-	.word	.LC58
-	.word	.LC232
-	.word	.LC233
-	.word	.LC29
-	.word	.LC133
-	.word	.LC82
-	.word	.LC21
-	.word	.LC234
-	.word	.LC97
-	.word	.LC28
-	.word	.LC235
-	.word	.LC11
-	.word	.LC29
-	.word	.LC222
-	.word	.LC11
-	.word	.LC181
-	.word	.LC139
-	.word	.LC144
-	.word	.LC236
-	.word	.LC11
-	.word	.LC29
-	.word	.LC237
-	.word	.LC12
-	.word	.LC238
-	.word	.LC239
-	.word	.LC75
-	.word	.LC240
-	.word	.LC48
-	.word	.LC241
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC33
-	.word	.LC243
-	.word	.LC108
-	.word	.LC183
-	.word	.LC29
-	.word	.LC101
-	.word	.LC58
-	.word	.LC244
-	.word	.LC245
-	.word	.LC246
-	.word	.LC12
-	.word	.LC247
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC180
-	.word	.LC248
-	.word	.LC202
+	.word	.LC27
 	.word	.LC131
-	.word	.LC64
-	.word	.LC249
-	.word	.LC57
-	.word	.LC250
-	.word	.LC251
-	.word	.LC51
-	.word	.LC22
-	.word	.LC252
-	.word	.LC21
+	.word	.LC80
+	.word	.LC19
+	.word	.LC232
+	.word	.LC95
+	.word	.LC26
+	.word	.LC233
+	.word	.LC9
+	.word	.LC27
+	.word	.LC220
+	.word	.LC9
+	.word	.LC179
+	.word	.LC137
+	.word	.LC142
+	.word	.LC234
+	.word	.LC9
+	.word	.LC27
+	.word	.LC235
+	.word	.LC10
+	.word	.LC236
+	.word	.LC237
+	.word	.LC73
+	.word	.LC238
+	.word	.LC46
+	.word	.LC239
+	.word	.LC240
 	.word	.LC177
-	.word	.LC253
-	.word	.LC195
-	.word	.LC108
-	.word	.LC102
-	.word	.LC58
-	.word	.LC254
-	.word	.LC63
+	.word	.LC19
+	.word	.LC31
+	.word	.LC241
+	.word	.LC106
+	.word	.LC181
+	.word	.LC27
+	.word	.LC99
+	.word	.LC56
+	.word	.LC242
+	.word	.LC243
+	.word	.LC244
+	.word	.LC10
+	.word	.LC245
+	.word	.LC240
+	.word	.LC177
+	.word	.LC19
+	.word	.LC178
+	.word	.LC246
+	.word	.LC200
+	.word	.LC129
+	.word	.LC62
+	.word	.LC247
+	.word	.LC55
+	.word	.LC248
+	.word	.LC249
+	.word	.LC49
+	.word	.LC20
+	.word	.LC250
+	.word	.LC19
+	.word	.LC175
+	.word	.LC251
+	.word	.LC193
+	.word	.LC106
+	.word	.LC100
+	.word	.LC56
+	.word	.LC252
 	.word	.LC61
-	.word	.LC102
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC253
+	.word	.LC26
 	.word	.LC203
+	.word	.LC23
+	.word	.LC254
+	.word	.LC196
 	.word	.LC255
-	.word	.LC28
-	.word	.LC205
-	.word	.LC25
+	.word	.LC106
+	.word	.LC56
 	.word	.LC256
-	.word	.LC198
 	.word	.LC257
-	.word	.LC108
-	.word	.LC58
+	.word	.LC56
 	.word	.LC258
 	.word	.LC259
-	.word	.LC58
+	.word	.LC106
+	.word	.LC56
 	.word	.LC260
+	.word	.LC7
+	.word	.LC10
+	.word	.LC142
+	.word	.LC182
 	.word	.LC261
-	.word	.LC108
-	.word	.LC58
+	.word	.LC106
 	.word	.LC262
-	.word	.LC9
-	.word	.LC12
-	.word	.LC144
-	.word	.LC184
+	.word	.LC136
+	.word	.LC19
+	.word	.LC70
+	.word	.LC10
+	.word	.LC24
 	.word	.LC263
-	.word	.LC108
-	.word	.LC264
-	.word	.LC138
-	.word	.LC21
-	.word	.LC72
-	.word	.LC12
-	.word	.LC26
-	.word	.LC265
-	.word	.LC103
-	.word	.LC266
-	.word	.LC267
-	.word	.LC9
-	.word	.LC268
 	.word	.LC101
-	.word	.LC138
-	.word	.LC81
+	.word	.LC264
+	.word	.LC265
+	.word	.LC7
+	.word	.LC266
+	.word	.LC99
+	.word	.LC136
+	.word	.LC79
+	.word	.LC267
+	.word	.LC268
+	.word	.LC19
 	.word	.LC269
 	.word	.LC270
-	.word	.LC21
+	.word	.LC125
 	.word	.LC271
 	.word	.LC272
-	.word	.LC127
+	.word	.LC106
 	.word	.LC273
+	.word	.LC10
 	.word	.LC274
-	.word	.LC108
+	.word	.LC70
 	.word	.LC275
-	.word	.LC12
+	.word	.LC7
 	.word	.LC276
-	.word	.LC72
 	.word	.LC277
-	.word	.LC9
+	.word	.LC10
 	.word	.LC278
+	.word	.LC19
 	.word	.LC279
-	.word	.LC12
+	.word	.LC10
+	.word	.LC43
+	.word	.LC19
 	.word	.LC280
-	.word	.LC21
+	.word	.LC10
+	.word	.LC142
+	.word	.LC143
 	.word	.LC281
-	.word	.LC12
-	.word	.LC45
-	.word	.LC21
+	.word	.LC19
+	.word	.LC201
+	.word	.LC19
 	.word	.LC282
-	.word	.LC12
-	.word	.LC144
-	.word	.LC145
 	.word	.LC283
-	.word	.LC21
-	.word	.LC203
-	.word	.LC21
 	.word	.LC284
+	.word	.LC70
 	.word	.LC285
 	.word	.LC286
-	.word	.LC72
 	.word	.LC287
 	.word	.LC288
+	.word	.LC99
 	.word	.LC289
+	.word	.LC87
+	.word	.LC27
 	.word	.LC290
-	.word	.LC101
+	.word	.LC19
+	.word	.LC272
+	.word	.LC284
+	.word	.LC70
 	.word	.LC291
-	.word	.LC89
-	.word	.LC29
 	.word	.LC292
-	.word	.LC21
-	.word	.LC274
-	.word	.LC286
-	.word	.LC72
+	.word	.LC288
+	.word	.LC99
+	.word	.LC289
+	.word	.LC87
+	.word	.LC27
+	.word	.LC290
+	.word	.LC19
 	.word	.LC293
 	.word	.LC294
-	.word	.LC290
-	.word	.LC101
-	.word	.LC291
-	.word	.LC89
-	.word	.LC29
-	.word	.LC292
-	.word	.LC21
 	.word	.LC295
 	.word	.LC296
 	.word	.LC297
 	.word	.LC298
 	.word	.LC299
+	.word	.LC49
 	.word	.LC300
 	.word	.LC301
-	.word	.LC51
+	.word	.LC49
 	.word	.LC302
+	.word	.LC61
+	.word	.LC219
+	.word	.LC49
+	.word	.LC279
+	.word	.LC167
 	.word	.LC303
-	.word	.LC51
+	.word	.LC201
+	.word	.LC19
+	.word	.LC181
+	.word	.LC73
 	.word	.LC304
-	.word	.LC63
-	.word	.LC221
-	.word	.LC51
-	.word	.LC281
-	.word	.LC169
+	.word	.LC101
+	.word	.LC201
+	.word	.LC19
+	.word	.LC282
+	.word	.LC283
 	.word	.LC305
-	.word	.LC203
-	.word	.LC21
-	.word	.LC183
-	.word	.LC75
+	.word	.LC282
 	.word	.LC306
-	.word	.LC103
-	.word	.LC203
-	.word	.LC21
-	.word	.LC284
-	.word	.LC285
 	.word	.LC307
-	.word	.LC284
+	.word	.LC282
 	.word	.LC308
+	.word	.LC7
+	.word	.LC208
 	.word	.LC309
-	.word	.LC284
+	.word	.LC188
 	.word	.LC310
-	.word	.LC9
-	.word	.LC210
 	.word	.LC311
-	.word	.LC190
+	.word	.LC56
+	.word	.LC310
+	.word	.LC95
 	.word	.LC312
 	.word	.LC313
-	.word	.LC58
-	.word	.LC312
-	.word	.LC97
 	.word	.LC314
+	.word	.LC106
 	.word	.LC315
+	.word	.LC19
+	.word	.LC204
+	.word	.LC19
+	.word	.LC31
+	.word	.LC79
+	.word	.LC68
 	.word	.LC316
-	.word	.LC108
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
+	.word	.LC79
 	.word	.LC317
-	.word	.LC21
-	.word	.LC206
-	.word	.LC21
-	.word	.LC33
-	.word	.LC81
-	.word	.LC70
 	.word	.LC318
-	.word	.LC206
-	.word	.LC75
-	.word	.LC33
-	.word	.LC81
+	.word	.LC67
+	.word	.LC19
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC222
+	.word	.LC21
 	.word	.LC319
 	.word	.LC320
-	.word	.LC69
-	.word	.LC21
-	.word	.LC61
-	.word	.LC102
-	.word	.LC203
-	.word	.LC224
-	.word	.LC23
 	.word	.LC321
+	.word	.LC95
 	.word	.LC322
+	.word	.LC219
+	.word	.LC84
+	.word	.LC136
+	.word	.LC56
 	.word	.LC323
-	.word	.LC97
+	.word	.LC220
+	.word	.LC34
+	.word	.LC10
+	.word	.LC147
+	.word	.LC150
+	.word	.LC210
+	.word	.LC27
+	.word	.LC49
+	.word	.LC74
 	.word	.LC324
-	.word	.LC221
-	.word	.LC86
-	.word	.LC138
-	.word	.LC58
+	.word	.LC196
 	.word	.LC325
-	.word	.LC222
-	.word	.LC36
-	.word	.LC12
-	.word	.LC149
-	.word	.LC152
-	.word	.LC212
-	.word	.LC29
-	.word	.LC51
-	.word	.LC76
 	.word	.LC326
-	.word	.LC198
+	.word	.LC39
+	.word	.LC19
 	.word	.LC327
+	.word	.LC99
+	.word	.LC26
 	.word	.LC328
-	.word	.LC41
-	.word	.LC21
+	.word	.LC136
 	.word	.LC329
-	.word	.LC101
-	.word	.LC28
+	.word	.LC143
 	.word	.LC330
-	.word	.LC138
+	.word	.LC27
 	.word	.LC331
-	.word	.LC145
+	.word	.LC103
+	.word	.LC79
 	.word	.LC332
-	.word	.LC29
+	.word	.LC9
 	.word	.LC333
-	.word	.LC105
-	.word	.LC81
 	.word	.LC334
-	.word	.LC11
+	.word	.LC27
+	.word	.LC103
+	.word	.LC79
+	.word	.LC80
+	.word	.LC9
 	.word	.LC335
+	.word	.LC10
+	.word	.LC260
 	.word	.LC336
-	.word	.LC29
-	.word	.LC105
-	.word	.LC81
-	.word	.LC82
-	.word	.LC11
+	.word	.LC10
 	.word	.LC337
-	.word	.LC12
-	.word	.LC262
 	.word	.LC338
-	.word	.LC12
+	.word	.LC27
 	.word	.LC339
 	.word	.LC340
-	.word	.LC29
 	.word	.LC341
+	.word	.LC10
+	.word	.LC251
 	.word	.LC342
+	.word	.LC7
 	.word	.LC343
-	.word	.LC12
-	.word	.LC253
-	.word	.LC344
-	.word	.LC9
-	.word	.LC345
-	.word	.LC29
-	.word	.LC25
+	.word	.LC27
+	.word	.LC23
+	.word	.LC43
 	.word	.LC45
-	.word	.LC47
-	.word	.LC159
-	.word	.LC346
+	.word	.LC157
+	.word	.LC344
+	.word	.LC67
+	.word	.LC68
 	.word	.LC69
-	.word	.LC70
-	.word	.LC71
-	.word	.LC127
-	.word	.LC12
-	.word	.LC16
+	.word	.LC125
+	.word	.LC10
+	.word	.LC14
+	.word	.LC0
+	.word	.LC1
 	.word	.LC2
 	.word	.LC3
 	.word	.LC4
@@ -6145,9 +6115,9 @@ input_data:
 	.word	.LC9
 	.word	.LC10
 	.word	.LC11
+	.word	.LC9
 	.word	.LC12
 	.word	.LC13
-	.word	.LC11
 	.word	.LC14
 	.word	.LC15
 	.word	.LC16
@@ -6158,68 +6128,68 @@ input_data:
 	.word	.LC21
 	.word	.LC22
 	.word	.LC23
+	.word	.LC10
 	.word	.LC24
+	.word	.LC14
 	.word	.LC25
-	.word	.LC12
 	.word	.LC26
-	.word	.LC16
 	.word	.LC27
 	.word	.LC28
 	.word	.LC29
 	.word	.LC30
+	.word	.LC9
+	.word	.LC14
 	.word	.LC31
 	.word	.LC32
-	.word	.LC11
-	.word	.LC16
 	.word	.LC33
 	.word	.LC34
 	.word	.LC35
 	.word	.LC36
+	.word	.LC10
 	.word	.LC37
+	.word	.LC9
 	.word	.LC38
-	.word	.LC12
 	.word	.LC39
-	.word	.LC11
 	.word	.LC40
 	.word	.LC41
 	.word	.LC42
 	.word	.LC43
 	.word	.LC44
 	.word	.LC45
+	.word	.LC38
 	.word	.LC46
 	.word	.LC47
-	.word	.LC40
 	.word	.LC48
+	.word	.LC16
 	.word	.LC49
 	.word	.LC50
-	.word	.LC18
 	.word	.LC51
+	.word	.LC39
 	.word	.LC52
 	.word	.LC53
-	.word	.LC41
+	.word	.LC10
 	.word	.LC54
+	.word	.LC7
 	.word	.LC55
-	.word	.LC12
-	.word	.LC56
 	.word	.LC9
+	.word	.LC56
 	.word	.LC57
-	.word	.LC11
 	.word	.LC58
 	.word	.LC59
 	.word	.LC60
 	.word	.LC61
+	.word	.LC49
 	.word	.LC62
 	.word	.LC63
-	.word	.LC51
+	.word	.LC10
+	.word	.LC54
+	.word	.LC7
+	.word	.LC55
+	.word	.LC9
+	.word	.LC56
+	.word	.LC57
 	.word	.LC64
 	.word	.LC65
-	.word	.LC12
-	.word	.LC56
-	.word	.LC9
-	.word	.LC57
-	.word	.LC11
-	.word	.LC58
-	.word	.LC59
 	.word	.LC66
 	.word	.LC67
 	.word	.LC68
@@ -6230,592 +6200,592 @@ input_data:
 	.word	.LC73
 	.word	.LC74
 	.word	.LC75
+	.word	.LC4
 	.word	.LC76
-	.word	.LC77
-	.word	.LC6
-	.word	.LC78
-	.word	.LC11
-	.word	.LC79
 	.word	.LC9
+	.word	.LC77
+	.word	.LC7
+	.word	.LC78
+	.word	.LC70
+	.word	.LC79
 	.word	.LC80
-	.word	.LC72
+	.word	.LC19
 	.word	.LC81
 	.word	.LC82
-	.word	.LC21
+	.word	.LC52
 	.word	.LC83
 	.word	.LC84
-	.word	.LC54
 	.word	.LC85
 	.word	.LC86
 	.word	.LC87
+	.word	.LC19
+	.word	.LC7
+	.word	.LC83
 	.word	.LC88
+	.word	.LC19
 	.word	.LC89
-	.word	.LC21
-	.word	.LC9
-	.word	.LC85
 	.word	.LC90
-	.word	.LC21
+	.word	.LC61
 	.word	.LC91
+	.word	.LC62
 	.word	.LC92
-	.word	.LC63
 	.word	.LC93
-	.word	.LC64
+	.word	.LC92
+	.word	.LC19
 	.word	.LC94
 	.word	.LC95
-	.word	.LC94
-	.word	.LC21
 	.word	.LC96
 	.word	.LC97
+	.word	.LC10
+	.word	.LC24
 	.word	.LC98
+	.word	.LC96
 	.word	.LC99
-	.word	.LC12
-	.word	.LC26
 	.word	.LC100
-	.word	.LC98
 	.word	.LC101
 	.word	.LC102
 	.word	.LC103
+	.word	.LC92
 	.word	.LC104
+	.word	.LC92
 	.word	.LC105
-	.word	.LC94
 	.word	.LC106
-	.word	.LC94
 	.word	.LC107
 	.word	.LC108
 	.word	.LC109
 	.word	.LC110
+	.word	.LC34
 	.word	.LC111
 	.word	.LC112
-	.word	.LC36
 	.word	.LC113
+	.word	.LC28
 	.word	.LC114
 	.word	.LC115
-	.word	.LC30
+	.word	.LC70
+	.word	.LC56
 	.word	.LC116
+	.word	.LC91
 	.word	.LC117
-	.word	.LC72
-	.word	.LC58
+	.word	.LC106
+	.word	.LC26
 	.word	.LC118
-	.word	.LC93
+	.word	.LC101
+	.word	.LC59
 	.word	.LC119
-	.word	.LC108
-	.word	.LC28
+	.word	.LC56
 	.word	.LC120
-	.word	.LC103
-	.word	.LC61
+	.word	.LC60
+	.word	.LC10
 	.word	.LC121
-	.word	.LC58
+	.word	.LC101
 	.word	.LC122
-	.word	.LC62
-	.word	.LC12
+	.word	.LC19
+	.word	.LC4
 	.word	.LC123
-	.word	.LC103
 	.word	.LC124
-	.word	.LC21
-	.word	.LC6
 	.word	.LC125
 	.word	.LC126
 	.word	.LC127
 	.word	.LC128
 	.word	.LC129
+	.word	.LC21
 	.word	.LC130
 	.word	.LC131
-	.word	.LC23
 	.word	.LC132
+	.word	.LC101
 	.word	.LC133
+	.word	.LC19
 	.word	.LC134
-	.word	.LC103
+	.word	.LC95
+	.word	.LC26
 	.word	.LC135
-	.word	.LC21
 	.word	.LC136
-	.word	.LC97
-	.word	.LC28
 	.word	.LC137
 	.word	.LC138
 	.word	.LC139
+	.word	.LC95
 	.word	.LC140
 	.word	.LC141
-	.word	.LC97
+	.word	.LC136
 	.word	.LC142
 	.word	.LC143
-	.word	.LC138
+	.word	.LC91
+	.word	.LC135
+	.word	.LC136
 	.word	.LC144
 	.word	.LC145
-	.word	.LC93
-	.word	.LC137
-	.word	.LC138
+	.word	.LC95
 	.word	.LC146
+	.word	.LC56
 	.word	.LC147
-	.word	.LC97
+	.word	.LC125
 	.word	.LC148
-	.word	.LC58
 	.word	.LC149
-	.word	.LC127
 	.word	.LC150
 	.word	.LC151
 	.word	.LC152
+	.word	.LC150
 	.word	.LC153
+	.word	.LC28
 	.word	.LC154
-	.word	.LC152
+	.word	.LC103
 	.word	.LC155
-	.word	.LC30
+	.word	.LC7
+	.word	.LC70
+	.word	.LC10
 	.word	.LC156
-	.word	.LC105
 	.word	.LC157
-	.word	.LC9
-	.word	.LC72
-	.word	.LC12
+	.word	.LC20
+	.word	.LC136
+	.word	.LC77
 	.word	.LC158
 	.word	.LC159
-	.word	.LC22
-	.word	.LC138
-	.word	.LC79
+	.word	.LC19
 	.word	.LC160
 	.word	.LC161
-	.word	.LC21
+	.word	.LC10
 	.word	.LC162
+	.word	.LC15
+	.word	.LC19
 	.word	.LC163
-	.word	.LC12
+	.word	.LC70
 	.word	.LC164
-	.word	.LC17
-	.word	.LC21
+	.word	.LC51
 	.word	.LC165
-	.word	.LC72
+	.word	.LC69
+	.word	.LC83
 	.word	.LC166
-	.word	.LC53
+	.word	.LC56
 	.word	.LC167
-	.word	.LC71
-	.word	.LC85
 	.word	.LC168
-	.word	.LC58
 	.word	.LC169
 	.word	.LC170
 	.word	.LC171
+	.word	.LC56
+	.word	.LC167
 	.word	.LC172
 	.word	.LC173
-	.word	.LC58
-	.word	.LC169
 	.word	.LC174
+	.word	.LC95
 	.word	.LC175
 	.word	.LC176
-	.word	.LC97
 	.word	.LC177
+	.word	.LC19
 	.word	.LC178
+	.word	.LC100
 	.word	.LC179
-	.word	.LC21
+	.word	.LC19
 	.word	.LC180
-	.word	.LC102
+	.word	.LC106
 	.word	.LC181
-	.word	.LC21
+	.word	.LC136
+	.word	.LC56
+	.word	.LC116
+	.word	.LC28
 	.word	.LC182
-	.word	.LC108
 	.word	.LC183
-	.word	.LC138
-	.word	.LC58
-	.word	.LC118
-	.word	.LC30
+	.word	.LC142
+	.word	.LC16
+	.word	.LC100
 	.word	.LC184
+	.word	.LC100
+	.word	.LC4
 	.word	.LC185
-	.word	.LC144
-	.word	.LC18
-	.word	.LC102
+	.word	.LC179
 	.word	.LC186
-	.word	.LC102
-	.word	.LC6
 	.word	.LC187
+	.word	.LC106
 	.word	.LC181
+	.word	.LC136
 	.word	.LC188
 	.word	.LC189
-	.word	.LC108
-	.word	.LC183
-	.word	.LC138
 	.word	.LC190
+	.word	.LC9
+	.word	.LC10
+	.word	.LC182
+	.word	.LC183
 	.word	.LC191
+	.word	.LC16
+	.word	.LC100
 	.word	.LC192
-	.word	.LC11
-	.word	.LC12
-	.word	.LC184
-	.word	.LC185
+	.word	.LC178
 	.word	.LC193
-	.word	.LC18
-	.word	.LC102
 	.word	.LC194
-	.word	.LC180
+	.word	.LC9
 	.word	.LC195
 	.word	.LC196
-	.word	.LC11
+	.word	.LC121
+	.word	.LC106
+	.word	.LC56
 	.word	.LC197
 	.word	.LC198
-	.word	.LC123
-	.word	.LC108
-	.word	.LC58
 	.word	.LC199
 	.word	.LC200
 	.word	.LC201
 	.word	.LC202
 	.word	.LC203
 	.word	.LC204
+	.word	.LC73
 	.word	.LC205
 	.word	.LC206
-	.word	.LC75
+	.word	.LC19
 	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
 	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
-	.word	.LC33
+	.word	.LC19
+	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC209
+	.word	.LC4
 	.word	.LC210
-	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
+	.word	.LC73
 	.word	.LC211
-	.word	.LC6
+	.word	.LC10
 	.word	.LC212
-	.word	.LC208
-	.word	.LC75
 	.word	.LC213
-	.word	.LC12
+	.word	.LC125
+	.word	.LC56
 	.word	.LC214
 	.word	.LC215
-	.word	.LC127
-	.word	.LC58
 	.word	.LC216
 	.word	.LC217
+	.word	.LC19
+	.word	.LC181
+	.word	.LC178
 	.word	.LC218
+	.word	.LC77
 	.word	.LC219
-	.word	.LC21
-	.word	.LC183
-	.word	.LC180
+	.word	.LC84
 	.word	.LC220
-	.word	.LC79
 	.word	.LC221
-	.word	.LC86
+	.word	.LC77
 	.word	.LC222
 	.word	.LC223
-	.word	.LC79
 	.word	.LC224
+	.word	.LC91
 	.word	.LC225
 	.word	.LC226
-	.word	.LC93
 	.word	.LC227
+	.word	.LC91
 	.word	.LC228
 	.word	.LC229
-	.word	.LC93
+	.word	.LC53
+	.word	.LC56
 	.word	.LC230
 	.word	.LC231
-	.word	.LC55
-	.word	.LC58
-	.word	.LC232
-	.word	.LC233
-	.word	.LC29
-	.word	.LC133
-	.word	.LC82
-	.word	.LC21
-	.word	.LC234
-	.word	.LC97
-	.word	.LC28
-	.word	.LC235
-	.word	.LC11
-	.word	.LC29
-	.word	.LC222
-	.word	.LC11
-	.word	.LC181
-	.word	.LC139
-	.word	.LC144
-	.word	.LC236
-	.word	.LC11
-	.word	.LC29
-	.word	.LC237
-	.word	.LC12
-	.word	.LC238
-	.word	.LC239
-	.word	.LC75
-	.word	.LC240
-	.word	.LC48
-	.word	.LC241
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC33
-	.word	.LC243
-	.word	.LC108
-	.word	.LC183
-	.word	.LC29
-	.word	.LC101
-	.word	.LC58
-	.word	.LC244
-	.word	.LC245
-	.word	.LC246
-	.word	.LC12
-	.word	.LC247
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC180
-	.word	.LC248
-	.word	.LC202
+	.word	.LC27
 	.word	.LC131
-	.word	.LC64
-	.word	.LC249
-	.word	.LC57
-	.word	.LC250
-	.word	.LC251
-	.word	.LC51
-	.word	.LC22
-	.word	.LC252
-	.word	.LC21
+	.word	.LC80
+	.word	.LC19
+	.word	.LC232
+	.word	.LC95
+	.word	.LC26
+	.word	.LC233
+	.word	.LC9
+	.word	.LC27
+	.word	.LC220
+	.word	.LC9
+	.word	.LC179
+	.word	.LC137
+	.word	.LC142
+	.word	.LC234
+	.word	.LC9
+	.word	.LC27
+	.word	.LC235
+	.word	.LC10
+	.word	.LC236
+	.word	.LC237
+	.word	.LC73
+	.word	.LC238
+	.word	.LC46
+	.word	.LC239
+	.word	.LC240
 	.word	.LC177
-	.word	.LC253
-	.word	.LC195
-	.word	.LC108
-	.word	.LC102
-	.word	.LC58
-	.word	.LC254
-	.word	.LC63
+	.word	.LC19
+	.word	.LC31
+	.word	.LC241
+	.word	.LC106
+	.word	.LC181
+	.word	.LC27
+	.word	.LC99
+	.word	.LC56
+	.word	.LC242
+	.word	.LC243
+	.word	.LC244
+	.word	.LC10
+	.word	.LC245
+	.word	.LC240
+	.word	.LC177
+	.word	.LC19
+	.word	.LC178
+	.word	.LC246
+	.word	.LC200
+	.word	.LC129
+	.word	.LC62
+	.word	.LC247
+	.word	.LC55
+	.word	.LC248
+	.word	.LC249
+	.word	.LC49
+	.word	.LC20
+	.word	.LC250
+	.word	.LC19
+	.word	.LC175
+	.word	.LC251
+	.word	.LC193
+	.word	.LC106
+	.word	.LC100
+	.word	.LC56
+	.word	.LC252
 	.word	.LC61
-	.word	.LC102
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC253
+	.word	.LC26
 	.word	.LC203
+	.word	.LC23
+	.word	.LC254
+	.word	.LC196
 	.word	.LC255
-	.word	.LC28
-	.word	.LC205
-	.word	.LC25
+	.word	.LC106
+	.word	.LC56
 	.word	.LC256
-	.word	.LC198
 	.word	.LC257
-	.word	.LC108
-	.word	.LC58
+	.word	.LC56
 	.word	.LC258
 	.word	.LC259
-	.word	.LC58
+	.word	.LC106
+	.word	.LC56
 	.word	.LC260
+	.word	.LC7
+	.word	.LC10
+	.word	.LC142
+	.word	.LC182
 	.word	.LC261
-	.word	.LC108
-	.word	.LC58
+	.word	.LC106
 	.word	.LC262
-	.word	.LC9
-	.word	.LC12
-	.word	.LC144
-	.word	.LC184
+	.word	.LC136
+	.word	.LC19
+	.word	.LC70
+	.word	.LC10
+	.word	.LC24
 	.word	.LC263
-	.word	.LC108
-	.word	.LC264
-	.word	.LC138
-	.word	.LC21
-	.word	.LC72
-	.word	.LC12
-	.word	.LC26
-	.word	.LC265
-	.word	.LC103
-	.word	.LC266
-	.word	.LC267
-	.word	.LC9
-	.word	.LC268
 	.word	.LC101
-	.word	.LC138
-	.word	.LC81
+	.word	.LC264
+	.word	.LC265
+	.word	.LC7
+	.word	.LC266
+	.word	.LC99
+	.word	.LC136
+	.word	.LC79
+	.word	.LC267
+	.word	.LC268
+	.word	.LC19
 	.word	.LC269
 	.word	.LC270
-	.word	.LC21
+	.word	.LC125
 	.word	.LC271
 	.word	.LC272
-	.word	.LC127
+	.word	.LC106
 	.word	.LC273
+	.word	.LC10
 	.word	.LC274
-	.word	.LC108
+	.word	.LC70
 	.word	.LC275
-	.word	.LC12
+	.word	.LC7
 	.word	.LC276
-	.word	.LC72
 	.word	.LC277
-	.word	.LC9
+	.word	.LC10
 	.word	.LC278
+	.word	.LC19
 	.word	.LC279
-	.word	.LC12
+	.word	.LC10
+	.word	.LC43
+	.word	.LC19
 	.word	.LC280
-	.word	.LC21
+	.word	.LC10
+	.word	.LC142
+	.word	.LC143
 	.word	.LC281
-	.word	.LC12
-	.word	.LC45
-	.word	.LC21
+	.word	.LC19
+	.word	.LC201
+	.word	.LC19
 	.word	.LC282
-	.word	.LC12
-	.word	.LC144
-	.word	.LC145
 	.word	.LC283
-	.word	.LC21
-	.word	.LC203
-	.word	.LC21
 	.word	.LC284
+	.word	.LC70
 	.word	.LC285
 	.word	.LC286
-	.word	.LC72
 	.word	.LC287
 	.word	.LC288
+	.word	.LC99
 	.word	.LC289
+	.word	.LC87
+	.word	.LC27
 	.word	.LC290
-	.word	.LC101
+	.word	.LC19
+	.word	.LC272
+	.word	.LC284
+	.word	.LC70
 	.word	.LC291
-	.word	.LC89
-	.word	.LC29
 	.word	.LC292
-	.word	.LC21
-	.word	.LC274
-	.word	.LC286
-	.word	.LC72
+	.word	.LC288
+	.word	.LC99
+	.word	.LC289
+	.word	.LC87
+	.word	.LC27
+	.word	.LC290
+	.word	.LC19
 	.word	.LC293
 	.word	.LC294
-	.word	.LC290
-	.word	.LC101
-	.word	.LC291
-	.word	.LC89
-	.word	.LC29
-	.word	.LC292
-	.word	.LC21
 	.word	.LC295
 	.word	.LC296
 	.word	.LC297
 	.word	.LC298
 	.word	.LC299
+	.word	.LC49
 	.word	.LC300
 	.word	.LC301
-	.word	.LC51
+	.word	.LC49
 	.word	.LC302
+	.word	.LC61
+	.word	.LC219
+	.word	.LC49
+	.word	.LC279
+	.word	.LC167
 	.word	.LC303
-	.word	.LC51
+	.word	.LC201
+	.word	.LC19
+	.word	.LC181
+	.word	.LC73
 	.word	.LC304
-	.word	.LC63
-	.word	.LC221
-	.word	.LC51
-	.word	.LC281
-	.word	.LC169
+	.word	.LC101
+	.word	.LC201
+	.word	.LC19
+	.word	.LC282
+	.word	.LC283
 	.word	.LC305
-	.word	.LC203
-	.word	.LC21
-	.word	.LC183
-	.word	.LC75
+	.word	.LC282
 	.word	.LC306
-	.word	.LC103
-	.word	.LC203
-	.word	.LC21
-	.word	.LC284
-	.word	.LC285
 	.word	.LC307
-	.word	.LC284
+	.word	.LC282
 	.word	.LC308
+	.word	.LC7
+	.word	.LC208
 	.word	.LC309
-	.word	.LC284
+	.word	.LC188
 	.word	.LC310
-	.word	.LC9
-	.word	.LC210
 	.word	.LC311
-	.word	.LC190
+	.word	.LC56
+	.word	.LC310
+	.word	.LC95
 	.word	.LC312
 	.word	.LC313
-	.word	.LC58
-	.word	.LC312
-	.word	.LC97
 	.word	.LC314
+	.word	.LC106
 	.word	.LC315
+	.word	.LC19
+	.word	.LC204
+	.word	.LC19
+	.word	.LC31
+	.word	.LC79
+	.word	.LC68
 	.word	.LC316
-	.word	.LC108
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
+	.word	.LC79
 	.word	.LC317
-	.word	.LC21
-	.word	.LC206
-	.word	.LC21
-	.word	.LC33
-	.word	.LC81
-	.word	.LC70
 	.word	.LC318
-	.word	.LC206
-	.word	.LC75
-	.word	.LC33
-	.word	.LC81
+	.word	.LC67
+	.word	.LC19
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC222
+	.word	.LC21
 	.word	.LC319
 	.word	.LC320
-	.word	.LC69
-	.word	.LC21
-	.word	.LC61
-	.word	.LC102
-	.word	.LC203
-	.word	.LC224
-	.word	.LC23
 	.word	.LC321
+	.word	.LC95
 	.word	.LC322
+	.word	.LC219
+	.word	.LC84
+	.word	.LC136
+	.word	.LC56
 	.word	.LC323
-	.word	.LC97
+	.word	.LC220
+	.word	.LC34
+	.word	.LC10
+	.word	.LC147
+	.word	.LC150
+	.word	.LC210
+	.word	.LC27
+	.word	.LC49
+	.word	.LC74
 	.word	.LC324
-	.word	.LC221
-	.word	.LC86
-	.word	.LC138
-	.word	.LC58
+	.word	.LC196
 	.word	.LC325
-	.word	.LC222
-	.word	.LC36
-	.word	.LC12
-	.word	.LC149
-	.word	.LC152
-	.word	.LC212
-	.word	.LC29
-	.word	.LC51
-	.word	.LC76
 	.word	.LC326
-	.word	.LC198
+	.word	.LC39
+	.word	.LC19
 	.word	.LC327
+	.word	.LC99
+	.word	.LC26
 	.word	.LC328
-	.word	.LC41
-	.word	.LC21
+	.word	.LC136
 	.word	.LC329
-	.word	.LC101
-	.word	.LC28
+	.word	.LC143
 	.word	.LC330
-	.word	.LC138
+	.word	.LC27
 	.word	.LC331
-	.word	.LC145
+	.word	.LC103
+	.word	.LC79
 	.word	.LC332
-	.word	.LC29
+	.word	.LC9
 	.word	.LC333
-	.word	.LC105
-	.word	.LC81
 	.word	.LC334
-	.word	.LC11
+	.word	.LC27
+	.word	.LC103
+	.word	.LC79
+	.word	.LC80
+	.word	.LC9
 	.word	.LC335
+	.word	.LC10
+	.word	.LC260
 	.word	.LC336
-	.word	.LC29
-	.word	.LC105
-	.word	.LC81
-	.word	.LC82
-	.word	.LC11
+	.word	.LC10
 	.word	.LC337
-	.word	.LC12
-	.word	.LC262
 	.word	.LC338
-	.word	.LC12
+	.word	.LC27
 	.word	.LC339
 	.word	.LC340
-	.word	.LC29
 	.word	.LC341
+	.word	.LC10
+	.word	.LC251
 	.word	.LC342
+	.word	.LC7
 	.word	.LC343
-	.word	.LC12
-	.word	.LC253
-	.word	.LC344
-	.word	.LC9
-	.word	.LC345
-	.word	.LC29
-	.word	.LC25
+	.word	.LC27
+	.word	.LC23
+	.word	.LC43
 	.word	.LC45
-	.word	.LC47
-	.word	.LC159
-	.word	.LC346
+	.word	.LC157
+	.word	.LC344
+	.word	.LC67
+	.word	.LC68
 	.word	.LC69
-	.word	.LC70
-	.word	.LC71
-	.word	.LC127
-	.word	.LC12
-	.word	.LC16
+	.word	.LC125
+	.word	.LC10
+	.word	.LC14
+	.word	.LC0
+	.word	.LC1
 	.word	.LC2
 	.word	.LC3
 	.word	.LC4
@@ -6826,9 +6796,9 @@ input_data:
 	.word	.LC9
 	.word	.LC10
 	.word	.LC11
+	.word	.LC9
 	.word	.LC12
 	.word	.LC13
-	.word	.LC11
 	.word	.LC14
 	.word	.LC15
 	.word	.LC16
@@ -6839,68 +6809,68 @@ input_data:
 	.word	.LC21
 	.word	.LC22
 	.word	.LC23
+	.word	.LC10
 	.word	.LC24
+	.word	.LC14
 	.word	.LC25
-	.word	.LC12
 	.word	.LC26
-	.word	.LC16
 	.word	.LC27
 	.word	.LC28
 	.word	.LC29
 	.word	.LC30
+	.word	.LC9
+	.word	.LC14
 	.word	.LC31
 	.word	.LC32
-	.word	.LC11
-	.word	.LC16
 	.word	.LC33
 	.word	.LC34
 	.word	.LC35
 	.word	.LC36
+	.word	.LC10
 	.word	.LC37
+	.word	.LC9
 	.word	.LC38
-	.word	.LC12
 	.word	.LC39
-	.word	.LC11
 	.word	.LC40
 	.word	.LC41
 	.word	.LC42
 	.word	.LC43
 	.word	.LC44
 	.word	.LC45
+	.word	.LC38
 	.word	.LC46
 	.word	.LC47
-	.word	.LC40
 	.word	.LC48
+	.word	.LC16
 	.word	.LC49
 	.word	.LC50
-	.word	.LC18
 	.word	.LC51
+	.word	.LC39
 	.word	.LC52
 	.word	.LC53
-	.word	.LC41
+	.word	.LC10
 	.word	.LC54
+	.word	.LC7
 	.word	.LC55
-	.word	.LC12
-	.word	.LC56
 	.word	.LC9
+	.word	.LC56
 	.word	.LC57
-	.word	.LC11
 	.word	.LC58
 	.word	.LC59
 	.word	.LC60
 	.word	.LC61
+	.word	.LC49
 	.word	.LC62
 	.word	.LC63
-	.word	.LC51
+	.word	.LC10
+	.word	.LC54
+	.word	.LC7
+	.word	.LC55
+	.word	.LC9
+	.word	.LC56
+	.word	.LC57
 	.word	.LC64
 	.word	.LC65
-	.word	.LC12
-	.word	.LC56
-	.word	.LC9
-	.word	.LC57
-	.word	.LC11
-	.word	.LC58
-	.word	.LC59
 	.word	.LC66
 	.word	.LC67
 	.word	.LC68
@@ -6911,592 +6881,592 @@ input_data:
 	.word	.LC73
 	.word	.LC74
 	.word	.LC75
+	.word	.LC4
 	.word	.LC76
-	.word	.LC77
-	.word	.LC6
-	.word	.LC78
-	.word	.LC11
-	.word	.LC79
 	.word	.LC9
+	.word	.LC77
+	.word	.LC7
+	.word	.LC78
+	.word	.LC70
+	.word	.LC79
 	.word	.LC80
-	.word	.LC72
+	.word	.LC19
 	.word	.LC81
 	.word	.LC82
-	.word	.LC21
+	.word	.LC52
 	.word	.LC83
 	.word	.LC84
-	.word	.LC54
 	.word	.LC85
 	.word	.LC86
 	.word	.LC87
+	.word	.LC19
+	.word	.LC7
+	.word	.LC83
 	.word	.LC88
+	.word	.LC19
 	.word	.LC89
-	.word	.LC21
-	.word	.LC9
-	.word	.LC85
 	.word	.LC90
-	.word	.LC21
+	.word	.LC61
 	.word	.LC91
+	.word	.LC62
 	.word	.LC92
-	.word	.LC63
 	.word	.LC93
-	.word	.LC64
+	.word	.LC92
+	.word	.LC19
 	.word	.LC94
 	.word	.LC95
-	.word	.LC94
-	.word	.LC21
 	.word	.LC96
 	.word	.LC97
+	.word	.LC10
+	.word	.LC24
 	.word	.LC98
+	.word	.LC96
 	.word	.LC99
-	.word	.LC12
-	.word	.LC26
 	.word	.LC100
-	.word	.LC98
 	.word	.LC101
 	.word	.LC102
 	.word	.LC103
+	.word	.LC92
 	.word	.LC104
+	.word	.LC92
 	.word	.LC105
-	.word	.LC94
 	.word	.LC106
-	.word	.LC94
 	.word	.LC107
 	.word	.LC108
 	.word	.LC109
 	.word	.LC110
+	.word	.LC34
 	.word	.LC111
 	.word	.LC112
-	.word	.LC36
 	.word	.LC113
+	.word	.LC28
 	.word	.LC114
 	.word	.LC115
-	.word	.LC30
+	.word	.LC70
+	.word	.LC56
 	.word	.LC116
+	.word	.LC91
 	.word	.LC117
-	.word	.LC72
-	.word	.LC58
+	.word	.LC106
+	.word	.LC26
 	.word	.LC118
-	.word	.LC93
+	.word	.LC101
+	.word	.LC59
 	.word	.LC119
-	.word	.LC108
-	.word	.LC28
+	.word	.LC56
 	.word	.LC120
-	.word	.LC103
-	.word	.LC61
+	.word	.LC60
+	.word	.LC10
 	.word	.LC121
-	.word	.LC58
+	.word	.LC101
 	.word	.LC122
-	.word	.LC62
-	.word	.LC12
+	.word	.LC19
+	.word	.LC4
 	.word	.LC123
-	.word	.LC103
 	.word	.LC124
-	.word	.LC21
-	.word	.LC6
 	.word	.LC125
 	.word	.LC126
 	.word	.LC127
 	.word	.LC128
 	.word	.LC129
+	.word	.LC21
 	.word	.LC130
 	.word	.LC131
-	.word	.LC23
 	.word	.LC132
+	.word	.LC101
 	.word	.LC133
+	.word	.LC19
 	.word	.LC134
-	.word	.LC103
+	.word	.LC95
+	.word	.LC26
 	.word	.LC135
-	.word	.LC21
 	.word	.LC136
-	.word	.LC97
-	.word	.LC28
 	.word	.LC137
 	.word	.LC138
 	.word	.LC139
+	.word	.LC95
 	.word	.LC140
 	.word	.LC141
-	.word	.LC97
+	.word	.LC136
 	.word	.LC142
 	.word	.LC143
-	.word	.LC138
+	.word	.LC91
+	.word	.LC135
+	.word	.LC136
 	.word	.LC144
 	.word	.LC145
-	.word	.LC93
-	.word	.LC137
-	.word	.LC138
+	.word	.LC95
 	.word	.LC146
+	.word	.LC56
 	.word	.LC147
-	.word	.LC97
+	.word	.LC125
 	.word	.LC148
-	.word	.LC58
 	.word	.LC149
-	.word	.LC127
 	.word	.LC150
 	.word	.LC151
 	.word	.LC152
+	.word	.LC150
 	.word	.LC153
+	.word	.LC28
 	.word	.LC154
-	.word	.LC152
+	.word	.LC103
 	.word	.LC155
-	.word	.LC30
+	.word	.LC7
+	.word	.LC70
+	.word	.LC10
 	.word	.LC156
-	.word	.LC105
 	.word	.LC157
-	.word	.LC9
-	.word	.LC72
-	.word	.LC12
+	.word	.LC20
+	.word	.LC136
+	.word	.LC77
 	.word	.LC158
 	.word	.LC159
-	.word	.LC22
-	.word	.LC138
-	.word	.LC79
+	.word	.LC19
 	.word	.LC160
 	.word	.LC161
-	.word	.LC21
+	.word	.LC10
 	.word	.LC162
+	.word	.LC15
+	.word	.LC19
 	.word	.LC163
-	.word	.LC12
+	.word	.LC70
 	.word	.LC164
-	.word	.LC17
-	.word	.LC21
+	.word	.LC51
 	.word	.LC165
-	.word	.LC72
+	.word	.LC69
+	.word	.LC83
 	.word	.LC166
-	.word	.LC53
+	.word	.LC56
 	.word	.LC167
-	.word	.LC71
-	.word	.LC85
 	.word	.LC168
-	.word	.LC58
 	.word	.LC169
 	.word	.LC170
 	.word	.LC171
+	.word	.LC56
+	.word	.LC167
 	.word	.LC172
 	.word	.LC173
-	.word	.LC58
-	.word	.LC169
 	.word	.LC174
+	.word	.LC95
 	.word	.LC175
 	.word	.LC176
-	.word	.LC97
 	.word	.LC177
+	.word	.LC19
 	.word	.LC178
+	.word	.LC100
 	.word	.LC179
-	.word	.LC21
+	.word	.LC19
 	.word	.LC180
-	.word	.LC102
+	.word	.LC106
 	.word	.LC181
-	.word	.LC21
+	.word	.LC136
+	.word	.LC56
+	.word	.LC116
+	.word	.LC28
 	.word	.LC182
-	.word	.LC108
 	.word	.LC183
-	.word	.LC138
-	.word	.LC58
-	.word	.LC118
-	.word	.LC30
+	.word	.LC142
+	.word	.LC16
+	.word	.LC100
 	.word	.LC184
+	.word	.LC100
+	.word	.LC4
 	.word	.LC185
-	.word	.LC144
-	.word	.LC18
-	.word	.LC102
+	.word	.LC179
 	.word	.LC186
-	.word	.LC102
-	.word	.LC6
 	.word	.LC187
+	.word	.LC106
 	.word	.LC181
+	.word	.LC136
 	.word	.LC188
 	.word	.LC189
-	.word	.LC108
-	.word	.LC183
-	.word	.LC138
 	.word	.LC190
+	.word	.LC9
+	.word	.LC10
+	.word	.LC182
+	.word	.LC183
 	.word	.LC191
+	.word	.LC16
+	.word	.LC100
 	.word	.LC192
-	.word	.LC11
-	.word	.LC12
-	.word	.LC184
-	.word	.LC185
+	.word	.LC178
 	.word	.LC193
-	.word	.LC18
-	.word	.LC102
 	.word	.LC194
-	.word	.LC180
+	.word	.LC9
 	.word	.LC195
 	.word	.LC196
-	.word	.LC11
+	.word	.LC121
+	.word	.LC106
+	.word	.LC56
 	.word	.LC197
 	.word	.LC198
-	.word	.LC123
-	.word	.LC108
-	.word	.LC58
 	.word	.LC199
 	.word	.LC200
 	.word	.LC201
 	.word	.LC202
 	.word	.LC203
 	.word	.LC204
+	.word	.LC73
 	.word	.LC205
 	.word	.LC206
-	.word	.LC75
+	.word	.LC19
 	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
 	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
-	.word	.LC33
+	.word	.LC19
+	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC209
+	.word	.LC4
 	.word	.LC210
-	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
+	.word	.LC73
 	.word	.LC211
-	.word	.LC6
+	.word	.LC10
 	.word	.LC212
-	.word	.LC208
-	.word	.LC75
 	.word	.LC213
-	.word	.LC12
+	.word	.LC125
+	.word	.LC56
 	.word	.LC214
 	.word	.LC215
-	.word	.LC127
-	.word	.LC58
 	.word	.LC216
 	.word	.LC217
+	.word	.LC19
+	.word	.LC181
+	.word	.LC178
 	.word	.LC218
+	.word	.LC77
 	.word	.LC219
-	.word	.LC21
-	.word	.LC183
-	.word	.LC180
+	.word	.LC84
 	.word	.LC220
-	.word	.LC79
 	.word	.LC221
-	.word	.LC86
+	.word	.LC77
 	.word	.LC222
 	.word	.LC223
-	.word	.LC79
 	.word	.LC224
+	.word	.LC91
 	.word	.LC225
 	.word	.LC226
-	.word	.LC93
 	.word	.LC227
+	.word	.LC91
 	.word	.LC228
 	.word	.LC229
-	.word	.LC93
+	.word	.LC53
+	.word	.LC56
 	.word	.LC230
 	.word	.LC231
-	.word	.LC55
-	.word	.LC58
-	.word	.LC232
-	.word	.LC233
-	.word	.LC29
-	.word	.LC133
-	.word	.LC82
-	.word	.LC21
-	.word	.LC234
-	.word	.LC97
-	.word	.LC28
-	.word	.LC235
-	.word	.LC11
-	.word	.LC29
-	.word	.LC222
-	.word	.LC11
-	.word	.LC181
-	.word	.LC139
-	.word	.LC144
-	.word	.LC236
-	.word	.LC11
-	.word	.LC29
-	.word	.LC237
-	.word	.LC12
-	.word	.LC238
-	.word	.LC239
-	.word	.LC75
-	.word	.LC240
-	.word	.LC48
-	.word	.LC241
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC33
-	.word	.LC243
-	.word	.LC108
-	.word	.LC183
-	.word	.LC29
-	.word	.LC101
-	.word	.LC58
-	.word	.LC244
-	.word	.LC245
-	.word	.LC246
-	.word	.LC12
-	.word	.LC247
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC180
-	.word	.LC248
-	.word	.LC202
+	.word	.LC27
 	.word	.LC131
-	.word	.LC64
-	.word	.LC249
-	.word	.LC57
-	.word	.LC250
-	.word	.LC251
-	.word	.LC51
-	.word	.LC22
-	.word	.LC252
-	.word	.LC21
+	.word	.LC80
+	.word	.LC19
+	.word	.LC232
+	.word	.LC95
+	.word	.LC26
+	.word	.LC233
+	.word	.LC9
+	.word	.LC27
+	.word	.LC220
+	.word	.LC9
+	.word	.LC179
+	.word	.LC137
+	.word	.LC142
+	.word	.LC234
+	.word	.LC9
+	.word	.LC27
+	.word	.LC235
+	.word	.LC10
+	.word	.LC236
+	.word	.LC237
+	.word	.LC73
+	.word	.LC238
+	.word	.LC46
+	.word	.LC239
+	.word	.LC240
 	.word	.LC177
-	.word	.LC253
-	.word	.LC195
-	.word	.LC108
-	.word	.LC102
-	.word	.LC58
-	.word	.LC254
-	.word	.LC63
+	.word	.LC19
+	.word	.LC31
+	.word	.LC241
+	.word	.LC106
+	.word	.LC181
+	.word	.LC27
+	.word	.LC99
+	.word	.LC56
+	.word	.LC242
+	.word	.LC243
+	.word	.LC244
+	.word	.LC10
+	.word	.LC245
+	.word	.LC240
+	.word	.LC177
+	.word	.LC19
+	.word	.LC178
+	.word	.LC246
+	.word	.LC200
+	.word	.LC129
+	.word	.LC62
+	.word	.LC247
+	.word	.LC55
+	.word	.LC248
+	.word	.LC249
+	.word	.LC49
+	.word	.LC20
+	.word	.LC250
+	.word	.LC19
+	.word	.LC175
+	.word	.LC251
+	.word	.LC193
+	.word	.LC106
+	.word	.LC100
+	.word	.LC56
+	.word	.LC252
 	.word	.LC61
-	.word	.LC102
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC253
+	.word	.LC26
 	.word	.LC203
+	.word	.LC23
+	.word	.LC254
+	.word	.LC196
 	.word	.LC255
-	.word	.LC28
-	.word	.LC205
-	.word	.LC25
+	.word	.LC106
+	.word	.LC56
 	.word	.LC256
-	.word	.LC198
 	.word	.LC257
-	.word	.LC108
-	.word	.LC58
+	.word	.LC56
 	.word	.LC258
 	.word	.LC259
-	.word	.LC58
+	.word	.LC106
+	.word	.LC56
 	.word	.LC260
+	.word	.LC7
+	.word	.LC10
+	.word	.LC142
+	.word	.LC182
 	.word	.LC261
-	.word	.LC108
-	.word	.LC58
+	.word	.LC106
 	.word	.LC262
-	.word	.LC9
-	.word	.LC12
-	.word	.LC144
-	.word	.LC184
+	.word	.LC136
+	.word	.LC19
+	.word	.LC70
+	.word	.LC10
+	.word	.LC24
 	.word	.LC263
-	.word	.LC108
-	.word	.LC264
-	.word	.LC138
-	.word	.LC21
-	.word	.LC72
-	.word	.LC12
-	.word	.LC26
-	.word	.LC265
-	.word	.LC103
-	.word	.LC266
-	.word	.LC267
-	.word	.LC9
-	.word	.LC268
 	.word	.LC101
-	.word	.LC138
-	.word	.LC81
+	.word	.LC264
+	.word	.LC265
+	.word	.LC7
+	.word	.LC266
+	.word	.LC99
+	.word	.LC136
+	.word	.LC79
+	.word	.LC267
+	.word	.LC268
+	.word	.LC19
 	.word	.LC269
 	.word	.LC270
-	.word	.LC21
+	.word	.LC125
 	.word	.LC271
 	.word	.LC272
-	.word	.LC127
+	.word	.LC106
 	.word	.LC273
+	.word	.LC10
 	.word	.LC274
-	.word	.LC108
+	.word	.LC70
 	.word	.LC275
-	.word	.LC12
+	.word	.LC7
 	.word	.LC276
-	.word	.LC72
 	.word	.LC277
-	.word	.LC9
+	.word	.LC10
 	.word	.LC278
+	.word	.LC19
 	.word	.LC279
-	.word	.LC12
+	.word	.LC10
+	.word	.LC43
+	.word	.LC19
 	.word	.LC280
-	.word	.LC21
+	.word	.LC10
+	.word	.LC142
+	.word	.LC143
 	.word	.LC281
-	.word	.LC12
-	.word	.LC45
-	.word	.LC21
+	.word	.LC19
+	.word	.LC201
+	.word	.LC19
 	.word	.LC282
-	.word	.LC12
-	.word	.LC144
-	.word	.LC145
 	.word	.LC283
-	.word	.LC21
-	.word	.LC203
-	.word	.LC21
 	.word	.LC284
+	.word	.LC70
 	.word	.LC285
 	.word	.LC286
-	.word	.LC72
 	.word	.LC287
 	.word	.LC288
+	.word	.LC99
 	.word	.LC289
+	.word	.LC87
+	.word	.LC27
 	.word	.LC290
-	.word	.LC101
+	.word	.LC19
+	.word	.LC272
+	.word	.LC284
+	.word	.LC70
 	.word	.LC291
-	.word	.LC89
-	.word	.LC29
 	.word	.LC292
-	.word	.LC21
-	.word	.LC274
-	.word	.LC286
-	.word	.LC72
+	.word	.LC288
+	.word	.LC99
+	.word	.LC289
+	.word	.LC87
+	.word	.LC27
+	.word	.LC290
+	.word	.LC19
 	.word	.LC293
 	.word	.LC294
-	.word	.LC290
-	.word	.LC101
-	.word	.LC291
-	.word	.LC89
-	.word	.LC29
-	.word	.LC292
-	.word	.LC21
 	.word	.LC295
 	.word	.LC296
 	.word	.LC297
 	.word	.LC298
 	.word	.LC299
+	.word	.LC49
 	.word	.LC300
 	.word	.LC301
-	.word	.LC51
+	.word	.LC49
 	.word	.LC302
+	.word	.LC61
+	.word	.LC219
+	.word	.LC49
+	.word	.LC279
+	.word	.LC167
 	.word	.LC303
-	.word	.LC51
+	.word	.LC201
+	.word	.LC19
+	.word	.LC181
+	.word	.LC73
 	.word	.LC304
-	.word	.LC63
-	.word	.LC221
-	.word	.LC51
-	.word	.LC281
-	.word	.LC169
+	.word	.LC101
+	.word	.LC201
+	.word	.LC19
+	.word	.LC282
+	.word	.LC283
 	.word	.LC305
-	.word	.LC203
-	.word	.LC21
-	.word	.LC183
-	.word	.LC75
+	.word	.LC282
 	.word	.LC306
-	.word	.LC103
-	.word	.LC203
-	.word	.LC21
-	.word	.LC284
-	.word	.LC285
 	.word	.LC307
-	.word	.LC284
+	.word	.LC282
 	.word	.LC308
+	.word	.LC7
+	.word	.LC208
 	.word	.LC309
-	.word	.LC284
+	.word	.LC188
 	.word	.LC310
-	.word	.LC9
-	.word	.LC210
 	.word	.LC311
-	.word	.LC190
+	.word	.LC56
+	.word	.LC310
+	.word	.LC95
 	.word	.LC312
 	.word	.LC313
-	.word	.LC58
-	.word	.LC312
-	.word	.LC97
 	.word	.LC314
+	.word	.LC106
 	.word	.LC315
+	.word	.LC19
+	.word	.LC204
+	.word	.LC19
+	.word	.LC31
+	.word	.LC79
+	.word	.LC68
 	.word	.LC316
-	.word	.LC108
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
+	.word	.LC79
 	.word	.LC317
-	.word	.LC21
-	.word	.LC206
-	.word	.LC21
-	.word	.LC33
-	.word	.LC81
-	.word	.LC70
 	.word	.LC318
-	.word	.LC206
-	.word	.LC75
-	.word	.LC33
-	.word	.LC81
+	.word	.LC67
+	.word	.LC19
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC222
+	.word	.LC21
 	.word	.LC319
 	.word	.LC320
-	.word	.LC69
-	.word	.LC21
-	.word	.LC61
-	.word	.LC102
-	.word	.LC203
-	.word	.LC224
-	.word	.LC23
 	.word	.LC321
+	.word	.LC95
 	.word	.LC322
+	.word	.LC219
+	.word	.LC84
+	.word	.LC136
+	.word	.LC56
 	.word	.LC323
-	.word	.LC97
+	.word	.LC220
+	.word	.LC34
+	.word	.LC10
+	.word	.LC147
+	.word	.LC150
+	.word	.LC210
+	.word	.LC27
+	.word	.LC49
+	.word	.LC74
 	.word	.LC324
-	.word	.LC221
-	.word	.LC86
-	.word	.LC138
-	.word	.LC58
+	.word	.LC196
 	.word	.LC325
-	.word	.LC222
-	.word	.LC36
-	.word	.LC12
-	.word	.LC149
-	.word	.LC152
-	.word	.LC212
-	.word	.LC29
-	.word	.LC51
-	.word	.LC76
 	.word	.LC326
-	.word	.LC198
+	.word	.LC39
+	.word	.LC19
 	.word	.LC327
+	.word	.LC99
+	.word	.LC26
 	.word	.LC328
-	.word	.LC41
-	.word	.LC21
+	.word	.LC136
 	.word	.LC329
-	.word	.LC101
-	.word	.LC28
+	.word	.LC143
 	.word	.LC330
-	.word	.LC138
+	.word	.LC27
 	.word	.LC331
-	.word	.LC145
+	.word	.LC103
+	.word	.LC79
 	.word	.LC332
-	.word	.LC29
+	.word	.LC9
 	.word	.LC333
-	.word	.LC105
-	.word	.LC81
 	.word	.LC334
-	.word	.LC11
+	.word	.LC27
+	.word	.LC103
+	.word	.LC79
+	.word	.LC80
+	.word	.LC9
 	.word	.LC335
+	.word	.LC10
+	.word	.LC260
 	.word	.LC336
-	.word	.LC29
-	.word	.LC105
-	.word	.LC81
-	.word	.LC82
-	.word	.LC11
+	.word	.LC10
 	.word	.LC337
-	.word	.LC12
-	.word	.LC262
 	.word	.LC338
-	.word	.LC12
+	.word	.LC27
 	.word	.LC339
 	.word	.LC340
-	.word	.LC29
 	.word	.LC341
+	.word	.LC10
+	.word	.LC251
 	.word	.LC342
+	.word	.LC7
 	.word	.LC343
-	.word	.LC12
-	.word	.LC253
-	.word	.LC344
-	.word	.LC9
-	.word	.LC345
-	.word	.LC29
-	.word	.LC25
+	.word	.LC27
+	.word	.LC23
+	.word	.LC43
 	.word	.LC45
-	.word	.LC47
-	.word	.LC159
-	.word	.LC346
+	.word	.LC157
+	.word	.LC344
+	.word	.LC67
+	.word	.LC68
 	.word	.LC69
-	.word	.LC70
-	.word	.LC71
-	.word	.LC127
-	.word	.LC12
-	.word	.LC16
+	.word	.LC125
+	.word	.LC10
+	.word	.LC14
+	.word	.LC0
+	.word	.LC1
 	.word	.LC2
 	.word	.LC3
 	.word	.LC4
@@ -7507,9 +7477,9 @@ input_data:
 	.word	.LC9
 	.word	.LC10
 	.word	.LC11
+	.word	.LC9
 	.word	.LC12
 	.word	.LC13
-	.word	.LC11
 	.word	.LC14
 	.word	.LC15
 	.word	.LC16
@@ -7520,68 +7490,68 @@ input_data:
 	.word	.LC21
 	.word	.LC22
 	.word	.LC23
+	.word	.LC10
 	.word	.LC24
+	.word	.LC14
 	.word	.LC25
-	.word	.LC12
 	.word	.LC26
-	.word	.LC16
 	.word	.LC27
 	.word	.LC28
 	.word	.LC29
 	.word	.LC30
+	.word	.LC9
+	.word	.LC14
 	.word	.LC31
 	.word	.LC32
-	.word	.LC11
-	.word	.LC16
 	.word	.LC33
 	.word	.LC34
 	.word	.LC35
 	.word	.LC36
+	.word	.LC10
 	.word	.LC37
+	.word	.LC9
 	.word	.LC38
-	.word	.LC12
 	.word	.LC39
-	.word	.LC11
 	.word	.LC40
 	.word	.LC41
 	.word	.LC42
 	.word	.LC43
 	.word	.LC44
 	.word	.LC45
+	.word	.LC38
 	.word	.LC46
 	.word	.LC47
-	.word	.LC40
 	.word	.LC48
+	.word	.LC16
 	.word	.LC49
 	.word	.LC50
-	.word	.LC18
 	.word	.LC51
+	.word	.LC39
 	.word	.LC52
 	.word	.LC53
-	.word	.LC41
+	.word	.LC10
 	.word	.LC54
+	.word	.LC7
 	.word	.LC55
-	.word	.LC12
-	.word	.LC56
 	.word	.LC9
+	.word	.LC56
 	.word	.LC57
-	.word	.LC11
 	.word	.LC58
 	.word	.LC59
 	.word	.LC60
 	.word	.LC61
+	.word	.LC49
 	.word	.LC62
 	.word	.LC63
-	.word	.LC51
+	.word	.LC10
+	.word	.LC54
+	.word	.LC7
+	.word	.LC55
+	.word	.LC9
+	.word	.LC56
+	.word	.LC57
 	.word	.LC64
 	.word	.LC65
-	.word	.LC12
-	.word	.LC56
-	.word	.LC9
-	.word	.LC57
-	.word	.LC11
-	.word	.LC58
-	.word	.LC59
 	.word	.LC66
 	.word	.LC67
 	.word	.LC68
@@ -7592,592 +7562,592 @@ input_data:
 	.word	.LC73
 	.word	.LC74
 	.word	.LC75
+	.word	.LC4
 	.word	.LC76
-	.word	.LC77
-	.word	.LC6
-	.word	.LC78
-	.word	.LC11
-	.word	.LC79
 	.word	.LC9
+	.word	.LC77
+	.word	.LC7
+	.word	.LC78
+	.word	.LC70
+	.word	.LC79
 	.word	.LC80
-	.word	.LC72
+	.word	.LC19
 	.word	.LC81
 	.word	.LC82
-	.word	.LC21
+	.word	.LC52
 	.word	.LC83
 	.word	.LC84
-	.word	.LC54
 	.word	.LC85
 	.word	.LC86
 	.word	.LC87
+	.word	.LC19
+	.word	.LC7
+	.word	.LC83
 	.word	.LC88
+	.word	.LC19
 	.word	.LC89
-	.word	.LC21
-	.word	.LC9
-	.word	.LC85
 	.word	.LC90
-	.word	.LC21
+	.word	.LC61
 	.word	.LC91
+	.word	.LC62
 	.word	.LC92
-	.word	.LC63
 	.word	.LC93
-	.word	.LC64
+	.word	.LC92
+	.word	.LC19
 	.word	.LC94
 	.word	.LC95
-	.word	.LC94
-	.word	.LC21
 	.word	.LC96
 	.word	.LC97
+	.word	.LC10
+	.word	.LC24
 	.word	.LC98
+	.word	.LC96
 	.word	.LC99
-	.word	.LC12
-	.word	.LC26
 	.word	.LC100
-	.word	.LC98
 	.word	.LC101
 	.word	.LC102
 	.word	.LC103
+	.word	.LC92
 	.word	.LC104
+	.word	.LC92
 	.word	.LC105
-	.word	.LC94
 	.word	.LC106
-	.word	.LC94
 	.word	.LC107
 	.word	.LC108
 	.word	.LC109
 	.word	.LC110
+	.word	.LC34
 	.word	.LC111
 	.word	.LC112
-	.word	.LC36
 	.word	.LC113
+	.word	.LC28
 	.word	.LC114
 	.word	.LC115
-	.word	.LC30
+	.word	.LC70
+	.word	.LC56
 	.word	.LC116
+	.word	.LC91
 	.word	.LC117
-	.word	.LC72
-	.word	.LC58
+	.word	.LC106
+	.word	.LC26
 	.word	.LC118
-	.word	.LC93
+	.word	.LC101
+	.word	.LC59
 	.word	.LC119
-	.word	.LC108
-	.word	.LC28
+	.word	.LC56
 	.word	.LC120
-	.word	.LC103
-	.word	.LC61
+	.word	.LC60
+	.word	.LC10
 	.word	.LC121
-	.word	.LC58
+	.word	.LC101
 	.word	.LC122
-	.word	.LC62
-	.word	.LC12
+	.word	.LC19
+	.word	.LC4
 	.word	.LC123
-	.word	.LC103
 	.word	.LC124
-	.word	.LC21
-	.word	.LC6
 	.word	.LC125
 	.word	.LC126
 	.word	.LC127
 	.word	.LC128
 	.word	.LC129
+	.word	.LC21
 	.word	.LC130
 	.word	.LC131
-	.word	.LC23
 	.word	.LC132
+	.word	.LC101
 	.word	.LC133
+	.word	.LC19
 	.word	.LC134
-	.word	.LC103
+	.word	.LC95
+	.word	.LC26
 	.word	.LC135
-	.word	.LC21
 	.word	.LC136
-	.word	.LC97
-	.word	.LC28
 	.word	.LC137
 	.word	.LC138
 	.word	.LC139
+	.word	.LC95
 	.word	.LC140
 	.word	.LC141
-	.word	.LC97
+	.word	.LC136
 	.word	.LC142
 	.word	.LC143
-	.word	.LC138
+	.word	.LC91
+	.word	.LC135
+	.word	.LC136
 	.word	.LC144
 	.word	.LC145
-	.word	.LC93
-	.word	.LC137
-	.word	.LC138
+	.word	.LC95
 	.word	.LC146
+	.word	.LC56
 	.word	.LC147
-	.word	.LC97
+	.word	.LC125
 	.word	.LC148
-	.word	.LC58
 	.word	.LC149
-	.word	.LC127
 	.word	.LC150
 	.word	.LC151
 	.word	.LC152
+	.word	.LC150
 	.word	.LC153
+	.word	.LC28
 	.word	.LC154
-	.word	.LC152
+	.word	.LC103
 	.word	.LC155
-	.word	.LC30
+	.word	.LC7
+	.word	.LC70
+	.word	.LC10
 	.word	.LC156
-	.word	.LC105
 	.word	.LC157
-	.word	.LC9
-	.word	.LC72
-	.word	.LC12
+	.word	.LC20
+	.word	.LC136
+	.word	.LC77
 	.word	.LC158
 	.word	.LC159
-	.word	.LC22
-	.word	.LC138
-	.word	.LC79
+	.word	.LC19
 	.word	.LC160
 	.word	.LC161
-	.word	.LC21
+	.word	.LC10
 	.word	.LC162
+	.word	.LC15
+	.word	.LC19
 	.word	.LC163
-	.word	.LC12
+	.word	.LC70
 	.word	.LC164
-	.word	.LC17
-	.word	.LC21
+	.word	.LC51
 	.word	.LC165
-	.word	.LC72
+	.word	.LC69
+	.word	.LC83
 	.word	.LC166
-	.word	.LC53
+	.word	.LC56
 	.word	.LC167
-	.word	.LC71
-	.word	.LC85
 	.word	.LC168
-	.word	.LC58
 	.word	.LC169
 	.word	.LC170
 	.word	.LC171
+	.word	.LC56
+	.word	.LC167
 	.word	.LC172
 	.word	.LC173
-	.word	.LC58
-	.word	.LC169
 	.word	.LC174
+	.word	.LC95
 	.word	.LC175
 	.word	.LC176
-	.word	.LC97
 	.word	.LC177
+	.word	.LC19
 	.word	.LC178
+	.word	.LC100
 	.word	.LC179
-	.word	.LC21
+	.word	.LC19
 	.word	.LC180
-	.word	.LC102
+	.word	.LC106
 	.word	.LC181
-	.word	.LC21
+	.word	.LC136
+	.word	.LC56
+	.word	.LC116
+	.word	.LC28
 	.word	.LC182
-	.word	.LC108
 	.word	.LC183
-	.word	.LC138
-	.word	.LC58
-	.word	.LC118
-	.word	.LC30
+	.word	.LC142
+	.word	.LC16
+	.word	.LC100
 	.word	.LC184
+	.word	.LC100
+	.word	.LC4
 	.word	.LC185
-	.word	.LC144
-	.word	.LC18
-	.word	.LC102
+	.word	.LC179
 	.word	.LC186
-	.word	.LC102
-	.word	.LC6
 	.word	.LC187
+	.word	.LC106
 	.word	.LC181
+	.word	.LC136
 	.word	.LC188
 	.word	.LC189
-	.word	.LC108
-	.word	.LC183
-	.word	.LC138
 	.word	.LC190
+	.word	.LC9
+	.word	.LC10
+	.word	.LC182
+	.word	.LC183
 	.word	.LC191
+	.word	.LC16
+	.word	.LC100
 	.word	.LC192
-	.word	.LC11
-	.word	.LC12
-	.word	.LC184
-	.word	.LC185
+	.word	.LC178
 	.word	.LC193
-	.word	.LC18
-	.word	.LC102
 	.word	.LC194
-	.word	.LC180
+	.word	.LC9
 	.word	.LC195
 	.word	.LC196
-	.word	.LC11
+	.word	.LC121
+	.word	.LC106
+	.word	.LC56
 	.word	.LC197
 	.word	.LC198
-	.word	.LC123
-	.word	.LC108
-	.word	.LC58
 	.word	.LC199
 	.word	.LC200
 	.word	.LC201
 	.word	.LC202
 	.word	.LC203
 	.word	.LC204
+	.word	.LC73
 	.word	.LC205
 	.word	.LC206
-	.word	.LC75
+	.word	.LC19
 	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
 	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
-	.word	.LC33
+	.word	.LC19
+	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC209
+	.word	.LC4
 	.word	.LC210
-	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
+	.word	.LC73
 	.word	.LC211
-	.word	.LC6
+	.word	.LC10
 	.word	.LC212
-	.word	.LC208
-	.word	.LC75
 	.word	.LC213
-	.word	.LC12
+	.word	.LC125
+	.word	.LC56
 	.word	.LC214
 	.word	.LC215
-	.word	.LC127
-	.word	.LC58
 	.word	.LC216
 	.word	.LC217
+	.word	.LC19
+	.word	.LC181
+	.word	.LC178
 	.word	.LC218
+	.word	.LC77
 	.word	.LC219
-	.word	.LC21
-	.word	.LC183
-	.word	.LC180
+	.word	.LC84
 	.word	.LC220
-	.word	.LC79
 	.word	.LC221
-	.word	.LC86
+	.word	.LC77
 	.word	.LC222
 	.word	.LC223
-	.word	.LC79
 	.word	.LC224
+	.word	.LC91
 	.word	.LC225
 	.word	.LC226
-	.word	.LC93
 	.word	.LC227
+	.word	.LC91
 	.word	.LC228
 	.word	.LC229
-	.word	.LC93
+	.word	.LC53
+	.word	.LC56
 	.word	.LC230
 	.word	.LC231
-	.word	.LC55
-	.word	.LC58
-	.word	.LC232
-	.word	.LC233
-	.word	.LC29
-	.word	.LC133
-	.word	.LC82
-	.word	.LC21
-	.word	.LC234
-	.word	.LC97
-	.word	.LC28
-	.word	.LC235
-	.word	.LC11
-	.word	.LC29
-	.word	.LC222
-	.word	.LC11
-	.word	.LC181
-	.word	.LC139
-	.word	.LC144
-	.word	.LC236
-	.word	.LC11
-	.word	.LC29
-	.word	.LC237
-	.word	.LC12
-	.word	.LC238
-	.word	.LC239
-	.word	.LC75
-	.word	.LC240
-	.word	.LC48
-	.word	.LC241
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC33
-	.word	.LC243
-	.word	.LC108
-	.word	.LC183
-	.word	.LC29
-	.word	.LC101
-	.word	.LC58
-	.word	.LC244
-	.word	.LC245
-	.word	.LC246
-	.word	.LC12
-	.word	.LC247
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC180
-	.word	.LC248
-	.word	.LC202
+	.word	.LC27
 	.word	.LC131
-	.word	.LC64
-	.word	.LC249
-	.word	.LC57
-	.word	.LC250
-	.word	.LC251
-	.word	.LC51
-	.word	.LC22
-	.word	.LC252
-	.word	.LC21
+	.word	.LC80
+	.word	.LC19
+	.word	.LC232
+	.word	.LC95
+	.word	.LC26
+	.word	.LC233
+	.word	.LC9
+	.word	.LC27
+	.word	.LC220
+	.word	.LC9
+	.word	.LC179
+	.word	.LC137
+	.word	.LC142
+	.word	.LC234
+	.word	.LC9
+	.word	.LC27
+	.word	.LC235
+	.word	.LC10
+	.word	.LC236
+	.word	.LC237
+	.word	.LC73
+	.word	.LC238
+	.word	.LC46
+	.word	.LC239
+	.word	.LC240
 	.word	.LC177
-	.word	.LC253
-	.word	.LC195
-	.word	.LC108
-	.word	.LC102
-	.word	.LC58
-	.word	.LC254
-	.word	.LC63
+	.word	.LC19
+	.word	.LC31
+	.word	.LC241
+	.word	.LC106
+	.word	.LC181
+	.word	.LC27
+	.word	.LC99
+	.word	.LC56
+	.word	.LC242
+	.word	.LC243
+	.word	.LC244
+	.word	.LC10
+	.word	.LC245
+	.word	.LC240
+	.word	.LC177
+	.word	.LC19
+	.word	.LC178
+	.word	.LC246
+	.word	.LC200
+	.word	.LC129
+	.word	.LC62
+	.word	.LC247
+	.word	.LC55
+	.word	.LC248
+	.word	.LC249
+	.word	.LC49
+	.word	.LC20
+	.word	.LC250
+	.word	.LC19
+	.word	.LC175
+	.word	.LC251
+	.word	.LC193
+	.word	.LC106
+	.word	.LC100
+	.word	.LC56
+	.word	.LC252
 	.word	.LC61
-	.word	.LC102
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC253
+	.word	.LC26
 	.word	.LC203
+	.word	.LC23
+	.word	.LC254
+	.word	.LC196
 	.word	.LC255
-	.word	.LC28
-	.word	.LC205
-	.word	.LC25
+	.word	.LC106
+	.word	.LC56
 	.word	.LC256
-	.word	.LC198
 	.word	.LC257
-	.word	.LC108
-	.word	.LC58
+	.word	.LC56
 	.word	.LC258
 	.word	.LC259
-	.word	.LC58
+	.word	.LC106
+	.word	.LC56
 	.word	.LC260
+	.word	.LC7
+	.word	.LC10
+	.word	.LC142
+	.word	.LC182
 	.word	.LC261
-	.word	.LC108
-	.word	.LC58
+	.word	.LC106
 	.word	.LC262
-	.word	.LC9
-	.word	.LC12
-	.word	.LC144
-	.word	.LC184
+	.word	.LC136
+	.word	.LC19
+	.word	.LC70
+	.word	.LC10
+	.word	.LC24
 	.word	.LC263
-	.word	.LC108
-	.word	.LC264
-	.word	.LC138
-	.word	.LC21
-	.word	.LC72
-	.word	.LC12
-	.word	.LC26
-	.word	.LC265
-	.word	.LC103
-	.word	.LC266
-	.word	.LC267
-	.word	.LC9
-	.word	.LC268
 	.word	.LC101
-	.word	.LC138
-	.word	.LC81
+	.word	.LC264
+	.word	.LC265
+	.word	.LC7
+	.word	.LC266
+	.word	.LC99
+	.word	.LC136
+	.word	.LC79
+	.word	.LC267
+	.word	.LC268
+	.word	.LC19
 	.word	.LC269
 	.word	.LC270
-	.word	.LC21
+	.word	.LC125
 	.word	.LC271
 	.word	.LC272
-	.word	.LC127
+	.word	.LC106
 	.word	.LC273
+	.word	.LC10
 	.word	.LC274
-	.word	.LC108
+	.word	.LC70
 	.word	.LC275
-	.word	.LC12
+	.word	.LC7
 	.word	.LC276
-	.word	.LC72
 	.word	.LC277
-	.word	.LC9
+	.word	.LC10
 	.word	.LC278
+	.word	.LC19
 	.word	.LC279
-	.word	.LC12
+	.word	.LC10
+	.word	.LC43
+	.word	.LC19
 	.word	.LC280
-	.word	.LC21
+	.word	.LC10
+	.word	.LC142
+	.word	.LC143
 	.word	.LC281
-	.word	.LC12
-	.word	.LC45
-	.word	.LC21
+	.word	.LC19
+	.word	.LC201
+	.word	.LC19
 	.word	.LC282
-	.word	.LC12
-	.word	.LC144
-	.word	.LC145
 	.word	.LC283
-	.word	.LC21
-	.word	.LC203
-	.word	.LC21
 	.word	.LC284
+	.word	.LC70
 	.word	.LC285
 	.word	.LC286
-	.word	.LC72
 	.word	.LC287
 	.word	.LC288
+	.word	.LC99
 	.word	.LC289
+	.word	.LC87
+	.word	.LC27
 	.word	.LC290
-	.word	.LC101
+	.word	.LC19
+	.word	.LC272
+	.word	.LC284
+	.word	.LC70
 	.word	.LC291
-	.word	.LC89
-	.word	.LC29
 	.word	.LC292
-	.word	.LC21
-	.word	.LC274
-	.word	.LC286
-	.word	.LC72
+	.word	.LC288
+	.word	.LC99
+	.word	.LC289
+	.word	.LC87
+	.word	.LC27
+	.word	.LC290
+	.word	.LC19
 	.word	.LC293
 	.word	.LC294
-	.word	.LC290
-	.word	.LC101
-	.word	.LC291
-	.word	.LC89
-	.word	.LC29
-	.word	.LC292
-	.word	.LC21
 	.word	.LC295
 	.word	.LC296
 	.word	.LC297
 	.word	.LC298
 	.word	.LC299
+	.word	.LC49
 	.word	.LC300
 	.word	.LC301
-	.word	.LC51
+	.word	.LC49
 	.word	.LC302
+	.word	.LC61
+	.word	.LC219
+	.word	.LC49
+	.word	.LC279
+	.word	.LC167
 	.word	.LC303
-	.word	.LC51
+	.word	.LC201
+	.word	.LC19
+	.word	.LC181
+	.word	.LC73
 	.word	.LC304
-	.word	.LC63
-	.word	.LC221
-	.word	.LC51
-	.word	.LC281
-	.word	.LC169
+	.word	.LC101
+	.word	.LC201
+	.word	.LC19
+	.word	.LC282
+	.word	.LC283
 	.word	.LC305
-	.word	.LC203
-	.word	.LC21
-	.word	.LC183
-	.word	.LC75
+	.word	.LC282
 	.word	.LC306
-	.word	.LC103
-	.word	.LC203
-	.word	.LC21
-	.word	.LC284
-	.word	.LC285
 	.word	.LC307
-	.word	.LC284
+	.word	.LC282
 	.word	.LC308
+	.word	.LC7
+	.word	.LC208
 	.word	.LC309
-	.word	.LC284
+	.word	.LC188
 	.word	.LC310
-	.word	.LC9
-	.word	.LC210
 	.word	.LC311
-	.word	.LC190
+	.word	.LC56
+	.word	.LC310
+	.word	.LC95
 	.word	.LC312
 	.word	.LC313
-	.word	.LC58
-	.word	.LC312
-	.word	.LC97
 	.word	.LC314
+	.word	.LC106
 	.word	.LC315
+	.word	.LC19
+	.word	.LC204
+	.word	.LC19
+	.word	.LC31
+	.word	.LC79
+	.word	.LC68
 	.word	.LC316
-	.word	.LC108
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
+	.word	.LC79
 	.word	.LC317
-	.word	.LC21
-	.word	.LC206
-	.word	.LC21
-	.word	.LC33
-	.word	.LC81
-	.word	.LC70
 	.word	.LC318
-	.word	.LC206
-	.word	.LC75
-	.word	.LC33
-	.word	.LC81
+	.word	.LC67
+	.word	.LC19
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC222
+	.word	.LC21
 	.word	.LC319
 	.word	.LC320
-	.word	.LC69
-	.word	.LC21
-	.word	.LC61
-	.word	.LC102
-	.word	.LC203
-	.word	.LC224
-	.word	.LC23
 	.word	.LC321
+	.word	.LC95
 	.word	.LC322
+	.word	.LC219
+	.word	.LC84
+	.word	.LC136
+	.word	.LC56
 	.word	.LC323
-	.word	.LC97
+	.word	.LC220
+	.word	.LC34
+	.word	.LC10
+	.word	.LC147
+	.word	.LC150
+	.word	.LC210
+	.word	.LC27
+	.word	.LC49
+	.word	.LC74
 	.word	.LC324
-	.word	.LC221
-	.word	.LC86
-	.word	.LC138
-	.word	.LC58
+	.word	.LC196
 	.word	.LC325
-	.word	.LC222
-	.word	.LC36
-	.word	.LC12
-	.word	.LC149
-	.word	.LC152
-	.word	.LC212
-	.word	.LC29
-	.word	.LC51
-	.word	.LC76
 	.word	.LC326
-	.word	.LC198
+	.word	.LC39
+	.word	.LC19
 	.word	.LC327
+	.word	.LC99
+	.word	.LC26
 	.word	.LC328
-	.word	.LC41
-	.word	.LC21
+	.word	.LC136
 	.word	.LC329
-	.word	.LC101
-	.word	.LC28
+	.word	.LC143
 	.word	.LC330
-	.word	.LC138
+	.word	.LC27
 	.word	.LC331
-	.word	.LC145
+	.word	.LC103
+	.word	.LC79
 	.word	.LC332
-	.word	.LC29
+	.word	.LC9
 	.word	.LC333
-	.word	.LC105
-	.word	.LC81
 	.word	.LC334
-	.word	.LC11
+	.word	.LC27
+	.word	.LC103
+	.word	.LC79
+	.word	.LC80
+	.word	.LC9
 	.word	.LC335
+	.word	.LC10
+	.word	.LC260
 	.word	.LC336
-	.word	.LC29
-	.word	.LC105
-	.word	.LC81
-	.word	.LC82
-	.word	.LC11
+	.word	.LC10
 	.word	.LC337
-	.word	.LC12
-	.word	.LC262
 	.word	.LC338
-	.word	.LC12
+	.word	.LC27
 	.word	.LC339
 	.word	.LC340
-	.word	.LC29
 	.word	.LC341
+	.word	.LC10
+	.word	.LC251
 	.word	.LC342
+	.word	.LC7
 	.word	.LC343
-	.word	.LC12
-	.word	.LC253
-	.word	.LC344
-	.word	.LC9
-	.word	.LC345
-	.word	.LC29
-	.word	.LC25
+	.word	.LC27
+	.word	.LC23
+	.word	.LC43
 	.word	.LC45
-	.word	.LC47
-	.word	.LC159
-	.word	.LC346
+	.word	.LC157
+	.word	.LC344
+	.word	.LC67
+	.word	.LC68
 	.word	.LC69
-	.word	.LC70
-	.word	.LC71
-	.word	.LC127
-	.word	.LC12
-	.word	.LC16
+	.word	.LC125
+	.word	.LC10
+	.word	.LC14
+	.word	.LC0
+	.word	.LC1
 	.word	.LC2
 	.word	.LC3
 	.word	.LC4
@@ -8188,9 +8158,9 @@ input_data:
 	.word	.LC9
 	.word	.LC10
 	.word	.LC11
+	.word	.LC9
 	.word	.LC12
 	.word	.LC13
-	.word	.LC11
 	.word	.LC14
 	.word	.LC15
 	.word	.LC16
@@ -8201,68 +8171,68 @@ input_data:
 	.word	.LC21
 	.word	.LC22
 	.word	.LC23
+	.word	.LC10
 	.word	.LC24
+	.word	.LC14
 	.word	.LC25
-	.word	.LC12
 	.word	.LC26
-	.word	.LC16
 	.word	.LC27
 	.word	.LC28
 	.word	.LC29
 	.word	.LC30
+	.word	.LC9
+	.word	.LC14
 	.word	.LC31
 	.word	.LC32
-	.word	.LC11
-	.word	.LC16
 	.word	.LC33
 	.word	.LC34
 	.word	.LC35
 	.word	.LC36
+	.word	.LC10
 	.word	.LC37
+	.word	.LC9
 	.word	.LC38
-	.word	.LC12
 	.word	.LC39
-	.word	.LC11
 	.word	.LC40
 	.word	.LC41
 	.word	.LC42
 	.word	.LC43
 	.word	.LC44
 	.word	.LC45
+	.word	.LC38
 	.word	.LC46
 	.word	.LC47
-	.word	.LC40
 	.word	.LC48
+	.word	.LC16
 	.word	.LC49
 	.word	.LC50
-	.word	.LC18
 	.word	.LC51
+	.word	.LC39
 	.word	.LC52
 	.word	.LC53
-	.word	.LC41
+	.word	.LC10
 	.word	.LC54
+	.word	.LC7
 	.word	.LC55
-	.word	.LC12
-	.word	.LC56
 	.word	.LC9
+	.word	.LC56
 	.word	.LC57
-	.word	.LC11
 	.word	.LC58
 	.word	.LC59
 	.word	.LC60
 	.word	.LC61
+	.word	.LC49
 	.word	.LC62
 	.word	.LC63
-	.word	.LC51
+	.word	.LC10
+	.word	.LC54
+	.word	.LC7
+	.word	.LC55
+	.word	.LC9
+	.word	.LC56
+	.word	.LC57
 	.word	.LC64
 	.word	.LC65
-	.word	.LC12
-	.word	.LC56
-	.word	.LC9
-	.word	.LC57
-	.word	.LC11
-	.word	.LC58
-	.word	.LC59
 	.word	.LC66
 	.word	.LC67
 	.word	.LC68
@@ -8273,592 +8243,592 @@ input_data:
 	.word	.LC73
 	.word	.LC74
 	.word	.LC75
+	.word	.LC4
 	.word	.LC76
-	.word	.LC77
-	.word	.LC6
-	.word	.LC78
-	.word	.LC11
-	.word	.LC79
 	.word	.LC9
+	.word	.LC77
+	.word	.LC7
+	.word	.LC78
+	.word	.LC70
+	.word	.LC79
 	.word	.LC80
-	.word	.LC72
+	.word	.LC19
 	.word	.LC81
 	.word	.LC82
-	.word	.LC21
+	.word	.LC52
 	.word	.LC83
 	.word	.LC84
-	.word	.LC54
 	.word	.LC85
 	.word	.LC86
 	.word	.LC87
+	.word	.LC19
+	.word	.LC7
+	.word	.LC83
 	.word	.LC88
+	.word	.LC19
 	.word	.LC89
-	.word	.LC21
-	.word	.LC9
-	.word	.LC85
 	.word	.LC90
-	.word	.LC21
+	.word	.LC61
 	.word	.LC91
+	.word	.LC62
 	.word	.LC92
-	.word	.LC63
 	.word	.LC93
-	.word	.LC64
+	.word	.LC92
+	.word	.LC19
 	.word	.LC94
 	.word	.LC95
-	.word	.LC94
-	.word	.LC21
 	.word	.LC96
 	.word	.LC97
+	.word	.LC10
+	.word	.LC24
 	.word	.LC98
+	.word	.LC96
 	.word	.LC99
-	.word	.LC12
-	.word	.LC26
 	.word	.LC100
-	.word	.LC98
 	.word	.LC101
 	.word	.LC102
 	.word	.LC103
+	.word	.LC92
 	.word	.LC104
+	.word	.LC92
 	.word	.LC105
-	.word	.LC94
 	.word	.LC106
-	.word	.LC94
 	.word	.LC107
 	.word	.LC108
 	.word	.LC109
 	.word	.LC110
+	.word	.LC34
 	.word	.LC111
 	.word	.LC112
-	.word	.LC36
 	.word	.LC113
+	.word	.LC28
 	.word	.LC114
 	.word	.LC115
-	.word	.LC30
+	.word	.LC70
+	.word	.LC56
 	.word	.LC116
+	.word	.LC91
 	.word	.LC117
-	.word	.LC72
-	.word	.LC58
+	.word	.LC106
+	.word	.LC26
 	.word	.LC118
-	.word	.LC93
+	.word	.LC101
+	.word	.LC59
 	.word	.LC119
-	.word	.LC108
-	.word	.LC28
+	.word	.LC56
 	.word	.LC120
-	.word	.LC103
-	.word	.LC61
+	.word	.LC60
+	.word	.LC10
 	.word	.LC121
-	.word	.LC58
+	.word	.LC101
 	.word	.LC122
-	.word	.LC62
-	.word	.LC12
+	.word	.LC19
+	.word	.LC4
 	.word	.LC123
-	.word	.LC103
 	.word	.LC124
-	.word	.LC21
-	.word	.LC6
 	.word	.LC125
 	.word	.LC126
 	.word	.LC127
 	.word	.LC128
 	.word	.LC129
+	.word	.LC21
 	.word	.LC130
 	.word	.LC131
-	.word	.LC23
 	.word	.LC132
+	.word	.LC101
 	.word	.LC133
+	.word	.LC19
 	.word	.LC134
-	.word	.LC103
+	.word	.LC95
+	.word	.LC26
 	.word	.LC135
-	.word	.LC21
 	.word	.LC136
-	.word	.LC97
-	.word	.LC28
 	.word	.LC137
 	.word	.LC138
 	.word	.LC139
+	.word	.LC95
 	.word	.LC140
 	.word	.LC141
-	.word	.LC97
+	.word	.LC136
 	.word	.LC142
 	.word	.LC143
-	.word	.LC138
+	.word	.LC91
+	.word	.LC135
+	.word	.LC136
 	.word	.LC144
 	.word	.LC145
-	.word	.LC93
-	.word	.LC137
-	.word	.LC138
+	.word	.LC95
 	.word	.LC146
+	.word	.LC56
 	.word	.LC147
-	.word	.LC97
+	.word	.LC125
 	.word	.LC148
-	.word	.LC58
 	.word	.LC149
-	.word	.LC127
 	.word	.LC150
 	.word	.LC151
 	.word	.LC152
+	.word	.LC150
 	.word	.LC153
+	.word	.LC28
 	.word	.LC154
-	.word	.LC152
+	.word	.LC103
 	.word	.LC155
-	.word	.LC30
+	.word	.LC7
+	.word	.LC70
+	.word	.LC10
 	.word	.LC156
-	.word	.LC105
 	.word	.LC157
-	.word	.LC9
-	.word	.LC72
-	.word	.LC12
+	.word	.LC20
+	.word	.LC136
+	.word	.LC77
 	.word	.LC158
 	.word	.LC159
-	.word	.LC22
-	.word	.LC138
-	.word	.LC79
+	.word	.LC19
 	.word	.LC160
 	.word	.LC161
-	.word	.LC21
+	.word	.LC10
 	.word	.LC162
+	.word	.LC15
+	.word	.LC19
 	.word	.LC163
-	.word	.LC12
+	.word	.LC70
 	.word	.LC164
-	.word	.LC17
-	.word	.LC21
+	.word	.LC51
 	.word	.LC165
-	.word	.LC72
+	.word	.LC69
+	.word	.LC83
 	.word	.LC166
-	.word	.LC53
+	.word	.LC56
 	.word	.LC167
-	.word	.LC71
-	.word	.LC85
 	.word	.LC168
-	.word	.LC58
 	.word	.LC169
 	.word	.LC170
 	.word	.LC171
+	.word	.LC56
+	.word	.LC167
 	.word	.LC172
 	.word	.LC173
-	.word	.LC58
-	.word	.LC169
 	.word	.LC174
+	.word	.LC95
 	.word	.LC175
 	.word	.LC176
-	.word	.LC97
 	.word	.LC177
+	.word	.LC19
 	.word	.LC178
+	.word	.LC100
 	.word	.LC179
-	.word	.LC21
+	.word	.LC19
 	.word	.LC180
-	.word	.LC102
+	.word	.LC106
 	.word	.LC181
-	.word	.LC21
+	.word	.LC136
+	.word	.LC56
+	.word	.LC116
+	.word	.LC28
 	.word	.LC182
-	.word	.LC108
 	.word	.LC183
-	.word	.LC138
-	.word	.LC58
-	.word	.LC118
-	.word	.LC30
+	.word	.LC142
+	.word	.LC16
+	.word	.LC100
 	.word	.LC184
+	.word	.LC100
+	.word	.LC4
 	.word	.LC185
-	.word	.LC144
-	.word	.LC18
-	.word	.LC102
+	.word	.LC179
 	.word	.LC186
-	.word	.LC102
-	.word	.LC6
 	.word	.LC187
+	.word	.LC106
 	.word	.LC181
+	.word	.LC136
 	.word	.LC188
 	.word	.LC189
-	.word	.LC108
-	.word	.LC183
-	.word	.LC138
 	.word	.LC190
+	.word	.LC9
+	.word	.LC10
+	.word	.LC182
+	.word	.LC183
 	.word	.LC191
+	.word	.LC16
+	.word	.LC100
 	.word	.LC192
-	.word	.LC11
-	.word	.LC12
-	.word	.LC184
-	.word	.LC185
+	.word	.LC178
 	.word	.LC193
-	.word	.LC18
-	.word	.LC102
 	.word	.LC194
-	.word	.LC180
+	.word	.LC9
 	.word	.LC195
 	.word	.LC196
-	.word	.LC11
+	.word	.LC121
+	.word	.LC106
+	.word	.LC56
 	.word	.LC197
 	.word	.LC198
-	.word	.LC123
-	.word	.LC108
-	.word	.LC58
 	.word	.LC199
 	.word	.LC200
 	.word	.LC201
 	.word	.LC202
 	.word	.LC203
 	.word	.LC204
+	.word	.LC73
 	.word	.LC205
 	.word	.LC206
-	.word	.LC75
+	.word	.LC19
 	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
 	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
-	.word	.LC33
+	.word	.LC19
+	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC209
+	.word	.LC4
 	.word	.LC210
-	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
+	.word	.LC73
 	.word	.LC211
-	.word	.LC6
+	.word	.LC10
 	.word	.LC212
-	.word	.LC208
-	.word	.LC75
 	.word	.LC213
-	.word	.LC12
+	.word	.LC125
+	.word	.LC56
 	.word	.LC214
 	.word	.LC215
-	.word	.LC127
-	.word	.LC58
 	.word	.LC216
 	.word	.LC217
+	.word	.LC19
+	.word	.LC181
+	.word	.LC178
 	.word	.LC218
+	.word	.LC77
 	.word	.LC219
-	.word	.LC21
-	.word	.LC183
-	.word	.LC180
+	.word	.LC84
 	.word	.LC220
-	.word	.LC79
 	.word	.LC221
-	.word	.LC86
+	.word	.LC77
 	.word	.LC222
 	.word	.LC223
-	.word	.LC79
 	.word	.LC224
+	.word	.LC91
 	.word	.LC225
 	.word	.LC226
-	.word	.LC93
 	.word	.LC227
+	.word	.LC91
 	.word	.LC228
 	.word	.LC229
-	.word	.LC93
+	.word	.LC53
+	.word	.LC56
 	.word	.LC230
 	.word	.LC231
-	.word	.LC55
-	.word	.LC58
-	.word	.LC232
-	.word	.LC233
-	.word	.LC29
-	.word	.LC133
-	.word	.LC82
-	.word	.LC21
-	.word	.LC234
-	.word	.LC97
-	.word	.LC28
-	.word	.LC235
-	.word	.LC11
-	.word	.LC29
-	.word	.LC222
-	.word	.LC11
-	.word	.LC181
-	.word	.LC139
-	.word	.LC144
-	.word	.LC236
-	.word	.LC11
-	.word	.LC29
-	.word	.LC237
-	.word	.LC12
-	.word	.LC238
-	.word	.LC239
-	.word	.LC75
-	.word	.LC240
-	.word	.LC48
-	.word	.LC241
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC33
-	.word	.LC243
-	.word	.LC108
-	.word	.LC183
-	.word	.LC29
-	.word	.LC101
-	.word	.LC58
-	.word	.LC244
-	.word	.LC245
-	.word	.LC246
-	.word	.LC12
-	.word	.LC247
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC180
-	.word	.LC248
-	.word	.LC202
+	.word	.LC27
 	.word	.LC131
-	.word	.LC64
-	.word	.LC249
-	.word	.LC57
-	.word	.LC250
-	.word	.LC251
-	.word	.LC51
-	.word	.LC22
-	.word	.LC252
-	.word	.LC21
+	.word	.LC80
+	.word	.LC19
+	.word	.LC232
+	.word	.LC95
+	.word	.LC26
+	.word	.LC233
+	.word	.LC9
+	.word	.LC27
+	.word	.LC220
+	.word	.LC9
+	.word	.LC179
+	.word	.LC137
+	.word	.LC142
+	.word	.LC234
+	.word	.LC9
+	.word	.LC27
+	.word	.LC235
+	.word	.LC10
+	.word	.LC236
+	.word	.LC237
+	.word	.LC73
+	.word	.LC238
+	.word	.LC46
+	.word	.LC239
+	.word	.LC240
 	.word	.LC177
-	.word	.LC253
-	.word	.LC195
-	.word	.LC108
-	.word	.LC102
-	.word	.LC58
-	.word	.LC254
-	.word	.LC63
+	.word	.LC19
+	.word	.LC31
+	.word	.LC241
+	.word	.LC106
+	.word	.LC181
+	.word	.LC27
+	.word	.LC99
+	.word	.LC56
+	.word	.LC242
+	.word	.LC243
+	.word	.LC244
+	.word	.LC10
+	.word	.LC245
+	.word	.LC240
+	.word	.LC177
+	.word	.LC19
+	.word	.LC178
+	.word	.LC246
+	.word	.LC200
+	.word	.LC129
+	.word	.LC62
+	.word	.LC247
+	.word	.LC55
+	.word	.LC248
+	.word	.LC249
+	.word	.LC49
+	.word	.LC20
+	.word	.LC250
+	.word	.LC19
+	.word	.LC175
+	.word	.LC251
+	.word	.LC193
+	.word	.LC106
+	.word	.LC100
+	.word	.LC56
+	.word	.LC252
 	.word	.LC61
-	.word	.LC102
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC253
+	.word	.LC26
 	.word	.LC203
+	.word	.LC23
+	.word	.LC254
+	.word	.LC196
 	.word	.LC255
-	.word	.LC28
-	.word	.LC205
-	.word	.LC25
+	.word	.LC106
+	.word	.LC56
 	.word	.LC256
-	.word	.LC198
 	.word	.LC257
-	.word	.LC108
-	.word	.LC58
+	.word	.LC56
 	.word	.LC258
 	.word	.LC259
-	.word	.LC58
+	.word	.LC106
+	.word	.LC56
 	.word	.LC260
+	.word	.LC7
+	.word	.LC10
+	.word	.LC142
+	.word	.LC182
 	.word	.LC261
-	.word	.LC108
-	.word	.LC58
+	.word	.LC106
 	.word	.LC262
-	.word	.LC9
-	.word	.LC12
-	.word	.LC144
-	.word	.LC184
+	.word	.LC136
+	.word	.LC19
+	.word	.LC70
+	.word	.LC10
+	.word	.LC24
 	.word	.LC263
-	.word	.LC108
-	.word	.LC264
-	.word	.LC138
-	.word	.LC21
-	.word	.LC72
-	.word	.LC12
-	.word	.LC26
-	.word	.LC265
-	.word	.LC103
-	.word	.LC266
-	.word	.LC267
-	.word	.LC9
-	.word	.LC268
 	.word	.LC101
-	.word	.LC138
-	.word	.LC81
+	.word	.LC264
+	.word	.LC265
+	.word	.LC7
+	.word	.LC266
+	.word	.LC99
+	.word	.LC136
+	.word	.LC79
+	.word	.LC267
+	.word	.LC268
+	.word	.LC19
 	.word	.LC269
 	.word	.LC270
-	.word	.LC21
+	.word	.LC125
 	.word	.LC271
 	.word	.LC272
-	.word	.LC127
+	.word	.LC106
 	.word	.LC273
+	.word	.LC10
 	.word	.LC274
-	.word	.LC108
+	.word	.LC70
 	.word	.LC275
-	.word	.LC12
+	.word	.LC7
 	.word	.LC276
-	.word	.LC72
 	.word	.LC277
-	.word	.LC9
+	.word	.LC10
 	.word	.LC278
+	.word	.LC19
 	.word	.LC279
-	.word	.LC12
+	.word	.LC10
+	.word	.LC43
+	.word	.LC19
 	.word	.LC280
-	.word	.LC21
+	.word	.LC10
+	.word	.LC142
+	.word	.LC143
 	.word	.LC281
-	.word	.LC12
-	.word	.LC45
-	.word	.LC21
+	.word	.LC19
+	.word	.LC201
+	.word	.LC19
 	.word	.LC282
-	.word	.LC12
-	.word	.LC144
-	.word	.LC145
 	.word	.LC283
-	.word	.LC21
-	.word	.LC203
-	.word	.LC21
 	.word	.LC284
+	.word	.LC70
 	.word	.LC285
 	.word	.LC286
-	.word	.LC72
 	.word	.LC287
 	.word	.LC288
+	.word	.LC99
 	.word	.LC289
+	.word	.LC87
+	.word	.LC27
 	.word	.LC290
-	.word	.LC101
+	.word	.LC19
+	.word	.LC272
+	.word	.LC284
+	.word	.LC70
 	.word	.LC291
-	.word	.LC89
-	.word	.LC29
 	.word	.LC292
-	.word	.LC21
-	.word	.LC274
-	.word	.LC286
-	.word	.LC72
+	.word	.LC288
+	.word	.LC99
+	.word	.LC289
+	.word	.LC87
+	.word	.LC27
+	.word	.LC290
+	.word	.LC19
 	.word	.LC293
 	.word	.LC294
-	.word	.LC290
-	.word	.LC101
-	.word	.LC291
-	.word	.LC89
-	.word	.LC29
-	.word	.LC292
-	.word	.LC21
 	.word	.LC295
 	.word	.LC296
 	.word	.LC297
 	.word	.LC298
 	.word	.LC299
+	.word	.LC49
 	.word	.LC300
 	.word	.LC301
-	.word	.LC51
+	.word	.LC49
 	.word	.LC302
+	.word	.LC61
+	.word	.LC219
+	.word	.LC49
+	.word	.LC279
+	.word	.LC167
 	.word	.LC303
-	.word	.LC51
+	.word	.LC201
+	.word	.LC19
+	.word	.LC181
+	.word	.LC73
 	.word	.LC304
-	.word	.LC63
-	.word	.LC221
-	.word	.LC51
-	.word	.LC281
-	.word	.LC169
+	.word	.LC101
+	.word	.LC201
+	.word	.LC19
+	.word	.LC282
+	.word	.LC283
 	.word	.LC305
-	.word	.LC203
-	.word	.LC21
-	.word	.LC183
-	.word	.LC75
+	.word	.LC282
 	.word	.LC306
-	.word	.LC103
-	.word	.LC203
-	.word	.LC21
-	.word	.LC284
-	.word	.LC285
 	.word	.LC307
-	.word	.LC284
+	.word	.LC282
 	.word	.LC308
+	.word	.LC7
+	.word	.LC208
 	.word	.LC309
-	.word	.LC284
+	.word	.LC188
 	.word	.LC310
-	.word	.LC9
-	.word	.LC210
 	.word	.LC311
-	.word	.LC190
+	.word	.LC56
+	.word	.LC310
+	.word	.LC95
 	.word	.LC312
 	.word	.LC313
-	.word	.LC58
-	.word	.LC312
-	.word	.LC97
 	.word	.LC314
+	.word	.LC106
 	.word	.LC315
+	.word	.LC19
+	.word	.LC204
+	.word	.LC19
+	.word	.LC31
+	.word	.LC79
+	.word	.LC68
 	.word	.LC316
-	.word	.LC108
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
+	.word	.LC79
 	.word	.LC317
-	.word	.LC21
-	.word	.LC206
-	.word	.LC21
-	.word	.LC33
-	.word	.LC81
-	.word	.LC70
 	.word	.LC318
-	.word	.LC206
-	.word	.LC75
-	.word	.LC33
-	.word	.LC81
+	.word	.LC67
+	.word	.LC19
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC222
+	.word	.LC21
 	.word	.LC319
 	.word	.LC320
-	.word	.LC69
-	.word	.LC21
-	.word	.LC61
-	.word	.LC102
-	.word	.LC203
-	.word	.LC224
-	.word	.LC23
 	.word	.LC321
+	.word	.LC95
 	.word	.LC322
+	.word	.LC219
+	.word	.LC84
+	.word	.LC136
+	.word	.LC56
 	.word	.LC323
-	.word	.LC97
+	.word	.LC220
+	.word	.LC34
+	.word	.LC10
+	.word	.LC147
+	.word	.LC150
+	.word	.LC210
+	.word	.LC27
+	.word	.LC49
+	.word	.LC74
 	.word	.LC324
-	.word	.LC221
-	.word	.LC86
-	.word	.LC138
-	.word	.LC58
+	.word	.LC196
 	.word	.LC325
-	.word	.LC222
-	.word	.LC36
-	.word	.LC12
-	.word	.LC149
-	.word	.LC152
-	.word	.LC212
-	.word	.LC29
-	.word	.LC51
-	.word	.LC76
 	.word	.LC326
-	.word	.LC198
+	.word	.LC39
+	.word	.LC19
 	.word	.LC327
+	.word	.LC99
+	.word	.LC26
 	.word	.LC328
-	.word	.LC41
-	.word	.LC21
+	.word	.LC136
 	.word	.LC329
-	.word	.LC101
-	.word	.LC28
+	.word	.LC143
 	.word	.LC330
-	.word	.LC138
+	.word	.LC27
 	.word	.LC331
-	.word	.LC145
+	.word	.LC103
+	.word	.LC79
 	.word	.LC332
-	.word	.LC29
+	.word	.LC9
 	.word	.LC333
-	.word	.LC105
-	.word	.LC81
 	.word	.LC334
-	.word	.LC11
+	.word	.LC27
+	.word	.LC103
+	.word	.LC79
+	.word	.LC80
+	.word	.LC9
 	.word	.LC335
+	.word	.LC10
+	.word	.LC260
 	.word	.LC336
-	.word	.LC29
-	.word	.LC105
-	.word	.LC81
-	.word	.LC82
-	.word	.LC11
+	.word	.LC10
 	.word	.LC337
-	.word	.LC12
-	.word	.LC262
 	.word	.LC338
-	.word	.LC12
+	.word	.LC27
 	.word	.LC339
 	.word	.LC340
-	.word	.LC29
 	.word	.LC341
+	.word	.LC10
+	.word	.LC251
 	.word	.LC342
+	.word	.LC7
 	.word	.LC343
-	.word	.LC12
-	.word	.LC253
-	.word	.LC344
-	.word	.LC9
-	.word	.LC345
-	.word	.LC29
-	.word	.LC25
+	.word	.LC27
+	.word	.LC23
+	.word	.LC43
 	.word	.LC45
-	.word	.LC47
-	.word	.LC159
-	.word	.LC346
+	.word	.LC157
+	.word	.LC344
+	.word	.LC67
+	.word	.LC68
 	.word	.LC69
-	.word	.LC70
-	.word	.LC71
-	.word	.LC127
-	.word	.LC12
-	.word	.LC16
+	.word	.LC125
+	.word	.LC10
+	.word	.LC14
+	.word	.LC0
+	.word	.LC1
 	.word	.LC2
 	.word	.LC3
 	.word	.LC4
@@ -8869,9 +8839,9 @@ input_data:
 	.word	.LC9
 	.word	.LC10
 	.word	.LC11
+	.word	.LC9
 	.word	.LC12
 	.word	.LC13
-	.word	.LC11
 	.word	.LC14
 	.word	.LC15
 	.word	.LC16
@@ -8882,68 +8852,68 @@ input_data:
 	.word	.LC21
 	.word	.LC22
 	.word	.LC23
+	.word	.LC10
 	.word	.LC24
+	.word	.LC14
 	.word	.LC25
-	.word	.LC12
 	.word	.LC26
-	.word	.LC16
 	.word	.LC27
 	.word	.LC28
 	.word	.LC29
 	.word	.LC30
+	.word	.LC9
+	.word	.LC14
 	.word	.LC31
 	.word	.LC32
-	.word	.LC11
-	.word	.LC16
 	.word	.LC33
 	.word	.LC34
 	.word	.LC35
 	.word	.LC36
+	.word	.LC10
 	.word	.LC37
+	.word	.LC9
 	.word	.LC38
-	.word	.LC12
 	.word	.LC39
-	.word	.LC11
 	.word	.LC40
 	.word	.LC41
 	.word	.LC42
 	.word	.LC43
 	.word	.LC44
 	.word	.LC45
+	.word	.LC38
 	.word	.LC46
 	.word	.LC47
-	.word	.LC40
 	.word	.LC48
+	.word	.LC16
 	.word	.LC49
 	.word	.LC50
-	.word	.LC18
 	.word	.LC51
+	.word	.LC39
 	.word	.LC52
 	.word	.LC53
-	.word	.LC41
+	.word	.LC10
 	.word	.LC54
+	.word	.LC7
 	.word	.LC55
-	.word	.LC12
-	.word	.LC56
 	.word	.LC9
+	.word	.LC56
 	.word	.LC57
-	.word	.LC11
 	.word	.LC58
 	.word	.LC59
 	.word	.LC60
 	.word	.LC61
+	.word	.LC49
 	.word	.LC62
 	.word	.LC63
-	.word	.LC51
+	.word	.LC10
+	.word	.LC54
+	.word	.LC7
+	.word	.LC55
+	.word	.LC9
+	.word	.LC56
+	.word	.LC57
 	.word	.LC64
 	.word	.LC65
-	.word	.LC12
-	.word	.LC56
-	.word	.LC9
-	.word	.LC57
-	.word	.LC11
-	.word	.LC58
-	.word	.LC59
 	.word	.LC66
 	.word	.LC67
 	.word	.LC68
@@ -8954,592 +8924,592 @@ input_data:
 	.word	.LC73
 	.word	.LC74
 	.word	.LC75
+	.word	.LC4
 	.word	.LC76
-	.word	.LC77
-	.word	.LC6
-	.word	.LC78
-	.word	.LC11
-	.word	.LC79
 	.word	.LC9
+	.word	.LC77
+	.word	.LC7
+	.word	.LC78
+	.word	.LC70
+	.word	.LC79
 	.word	.LC80
-	.word	.LC72
+	.word	.LC19
 	.word	.LC81
 	.word	.LC82
-	.word	.LC21
+	.word	.LC52
 	.word	.LC83
 	.word	.LC84
-	.word	.LC54
 	.word	.LC85
 	.word	.LC86
 	.word	.LC87
+	.word	.LC19
+	.word	.LC7
+	.word	.LC83
 	.word	.LC88
+	.word	.LC19
 	.word	.LC89
-	.word	.LC21
-	.word	.LC9
-	.word	.LC85
 	.word	.LC90
-	.word	.LC21
+	.word	.LC61
 	.word	.LC91
+	.word	.LC62
 	.word	.LC92
-	.word	.LC63
 	.word	.LC93
-	.word	.LC64
+	.word	.LC92
+	.word	.LC19
 	.word	.LC94
 	.word	.LC95
-	.word	.LC94
-	.word	.LC21
 	.word	.LC96
 	.word	.LC97
+	.word	.LC10
+	.word	.LC24
 	.word	.LC98
+	.word	.LC96
 	.word	.LC99
-	.word	.LC12
-	.word	.LC26
 	.word	.LC100
-	.word	.LC98
 	.word	.LC101
 	.word	.LC102
 	.word	.LC103
+	.word	.LC92
 	.word	.LC104
+	.word	.LC92
 	.word	.LC105
-	.word	.LC94
 	.word	.LC106
-	.word	.LC94
 	.word	.LC107
 	.word	.LC108
 	.word	.LC109
 	.word	.LC110
+	.word	.LC34
 	.word	.LC111
 	.word	.LC112
-	.word	.LC36
 	.word	.LC113
+	.word	.LC28
 	.word	.LC114
 	.word	.LC115
-	.word	.LC30
+	.word	.LC70
+	.word	.LC56
 	.word	.LC116
+	.word	.LC91
 	.word	.LC117
-	.word	.LC72
-	.word	.LC58
+	.word	.LC106
+	.word	.LC26
 	.word	.LC118
-	.word	.LC93
+	.word	.LC101
+	.word	.LC59
 	.word	.LC119
-	.word	.LC108
-	.word	.LC28
+	.word	.LC56
 	.word	.LC120
-	.word	.LC103
-	.word	.LC61
+	.word	.LC60
+	.word	.LC10
 	.word	.LC121
-	.word	.LC58
+	.word	.LC101
 	.word	.LC122
-	.word	.LC62
-	.word	.LC12
+	.word	.LC19
+	.word	.LC4
 	.word	.LC123
-	.word	.LC103
 	.word	.LC124
-	.word	.LC21
-	.word	.LC6
 	.word	.LC125
 	.word	.LC126
 	.word	.LC127
 	.word	.LC128
 	.word	.LC129
+	.word	.LC21
 	.word	.LC130
 	.word	.LC131
-	.word	.LC23
 	.word	.LC132
+	.word	.LC101
 	.word	.LC133
+	.word	.LC19
 	.word	.LC134
-	.word	.LC103
+	.word	.LC95
+	.word	.LC26
 	.word	.LC135
-	.word	.LC21
 	.word	.LC136
-	.word	.LC97
-	.word	.LC28
 	.word	.LC137
 	.word	.LC138
 	.word	.LC139
+	.word	.LC95
 	.word	.LC140
 	.word	.LC141
-	.word	.LC97
+	.word	.LC136
 	.word	.LC142
 	.word	.LC143
-	.word	.LC138
+	.word	.LC91
+	.word	.LC135
+	.word	.LC136
 	.word	.LC144
 	.word	.LC145
-	.word	.LC93
-	.word	.LC137
-	.word	.LC138
+	.word	.LC95
 	.word	.LC146
+	.word	.LC56
 	.word	.LC147
-	.word	.LC97
+	.word	.LC125
 	.word	.LC148
-	.word	.LC58
 	.word	.LC149
-	.word	.LC127
 	.word	.LC150
 	.word	.LC151
 	.word	.LC152
+	.word	.LC150
 	.word	.LC153
+	.word	.LC28
 	.word	.LC154
-	.word	.LC152
+	.word	.LC103
 	.word	.LC155
-	.word	.LC30
+	.word	.LC7
+	.word	.LC70
+	.word	.LC10
 	.word	.LC156
-	.word	.LC105
 	.word	.LC157
-	.word	.LC9
-	.word	.LC72
-	.word	.LC12
+	.word	.LC20
+	.word	.LC136
+	.word	.LC77
 	.word	.LC158
 	.word	.LC159
-	.word	.LC22
-	.word	.LC138
-	.word	.LC79
+	.word	.LC19
 	.word	.LC160
 	.word	.LC161
-	.word	.LC21
+	.word	.LC10
 	.word	.LC162
+	.word	.LC15
+	.word	.LC19
 	.word	.LC163
-	.word	.LC12
+	.word	.LC70
 	.word	.LC164
-	.word	.LC17
-	.word	.LC21
+	.word	.LC51
 	.word	.LC165
-	.word	.LC72
+	.word	.LC69
+	.word	.LC83
 	.word	.LC166
-	.word	.LC53
+	.word	.LC56
 	.word	.LC167
-	.word	.LC71
-	.word	.LC85
 	.word	.LC168
-	.word	.LC58
 	.word	.LC169
 	.word	.LC170
 	.word	.LC171
+	.word	.LC56
+	.word	.LC167
 	.word	.LC172
 	.word	.LC173
-	.word	.LC58
-	.word	.LC169
 	.word	.LC174
+	.word	.LC95
 	.word	.LC175
 	.word	.LC176
-	.word	.LC97
 	.word	.LC177
+	.word	.LC19
 	.word	.LC178
+	.word	.LC100
 	.word	.LC179
-	.word	.LC21
+	.word	.LC19
 	.word	.LC180
-	.word	.LC102
+	.word	.LC106
 	.word	.LC181
-	.word	.LC21
+	.word	.LC136
+	.word	.LC56
+	.word	.LC116
+	.word	.LC28
 	.word	.LC182
-	.word	.LC108
 	.word	.LC183
-	.word	.LC138
-	.word	.LC58
-	.word	.LC118
-	.word	.LC30
+	.word	.LC142
+	.word	.LC16
+	.word	.LC100
 	.word	.LC184
+	.word	.LC100
+	.word	.LC4
 	.word	.LC185
-	.word	.LC144
-	.word	.LC18
-	.word	.LC102
+	.word	.LC179
 	.word	.LC186
-	.word	.LC102
-	.word	.LC6
 	.word	.LC187
+	.word	.LC106
 	.word	.LC181
+	.word	.LC136
 	.word	.LC188
 	.word	.LC189
-	.word	.LC108
-	.word	.LC183
-	.word	.LC138
 	.word	.LC190
+	.word	.LC9
+	.word	.LC10
+	.word	.LC182
+	.word	.LC183
 	.word	.LC191
+	.word	.LC16
+	.word	.LC100
 	.word	.LC192
-	.word	.LC11
-	.word	.LC12
-	.word	.LC184
-	.word	.LC185
+	.word	.LC178
 	.word	.LC193
-	.word	.LC18
-	.word	.LC102
 	.word	.LC194
-	.word	.LC180
+	.word	.LC9
 	.word	.LC195
 	.word	.LC196
-	.word	.LC11
+	.word	.LC121
+	.word	.LC106
+	.word	.LC56
 	.word	.LC197
 	.word	.LC198
-	.word	.LC123
-	.word	.LC108
-	.word	.LC58
 	.word	.LC199
 	.word	.LC200
 	.word	.LC201
 	.word	.LC202
 	.word	.LC203
 	.word	.LC204
+	.word	.LC73
 	.word	.LC205
 	.word	.LC206
-	.word	.LC75
+	.word	.LC19
 	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
 	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
-	.word	.LC33
+	.word	.LC19
+	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC209
+	.word	.LC4
 	.word	.LC210
-	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
+	.word	.LC73
 	.word	.LC211
-	.word	.LC6
+	.word	.LC10
 	.word	.LC212
-	.word	.LC208
-	.word	.LC75
 	.word	.LC213
-	.word	.LC12
+	.word	.LC125
+	.word	.LC56
 	.word	.LC214
 	.word	.LC215
-	.word	.LC127
-	.word	.LC58
 	.word	.LC216
 	.word	.LC217
+	.word	.LC19
+	.word	.LC181
+	.word	.LC178
 	.word	.LC218
+	.word	.LC77
 	.word	.LC219
-	.word	.LC21
-	.word	.LC183
-	.word	.LC180
+	.word	.LC84
 	.word	.LC220
-	.word	.LC79
 	.word	.LC221
-	.word	.LC86
+	.word	.LC77
 	.word	.LC222
 	.word	.LC223
-	.word	.LC79
 	.word	.LC224
+	.word	.LC91
 	.word	.LC225
 	.word	.LC226
-	.word	.LC93
 	.word	.LC227
+	.word	.LC91
 	.word	.LC228
 	.word	.LC229
-	.word	.LC93
+	.word	.LC53
+	.word	.LC56
 	.word	.LC230
 	.word	.LC231
-	.word	.LC55
-	.word	.LC58
-	.word	.LC232
-	.word	.LC233
-	.word	.LC29
-	.word	.LC133
-	.word	.LC82
-	.word	.LC21
-	.word	.LC234
-	.word	.LC97
-	.word	.LC28
-	.word	.LC235
-	.word	.LC11
-	.word	.LC29
-	.word	.LC222
-	.word	.LC11
-	.word	.LC181
-	.word	.LC139
-	.word	.LC144
-	.word	.LC236
-	.word	.LC11
-	.word	.LC29
-	.word	.LC237
-	.word	.LC12
-	.word	.LC238
-	.word	.LC239
-	.word	.LC75
-	.word	.LC240
-	.word	.LC48
-	.word	.LC241
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC33
-	.word	.LC243
-	.word	.LC108
-	.word	.LC183
-	.word	.LC29
-	.word	.LC101
-	.word	.LC58
-	.word	.LC244
-	.word	.LC245
-	.word	.LC246
-	.word	.LC12
-	.word	.LC247
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC180
-	.word	.LC248
-	.word	.LC202
+	.word	.LC27
 	.word	.LC131
-	.word	.LC64
-	.word	.LC249
-	.word	.LC57
-	.word	.LC250
-	.word	.LC251
-	.word	.LC51
-	.word	.LC22
-	.word	.LC252
-	.word	.LC21
+	.word	.LC80
+	.word	.LC19
+	.word	.LC232
+	.word	.LC95
+	.word	.LC26
+	.word	.LC233
+	.word	.LC9
+	.word	.LC27
+	.word	.LC220
+	.word	.LC9
+	.word	.LC179
+	.word	.LC137
+	.word	.LC142
+	.word	.LC234
+	.word	.LC9
+	.word	.LC27
+	.word	.LC235
+	.word	.LC10
+	.word	.LC236
+	.word	.LC237
+	.word	.LC73
+	.word	.LC238
+	.word	.LC46
+	.word	.LC239
+	.word	.LC240
 	.word	.LC177
-	.word	.LC253
-	.word	.LC195
-	.word	.LC108
-	.word	.LC102
-	.word	.LC58
-	.word	.LC254
-	.word	.LC63
+	.word	.LC19
+	.word	.LC31
+	.word	.LC241
+	.word	.LC106
+	.word	.LC181
+	.word	.LC27
+	.word	.LC99
+	.word	.LC56
+	.word	.LC242
+	.word	.LC243
+	.word	.LC244
+	.word	.LC10
+	.word	.LC245
+	.word	.LC240
+	.word	.LC177
+	.word	.LC19
+	.word	.LC178
+	.word	.LC246
+	.word	.LC200
+	.word	.LC129
+	.word	.LC62
+	.word	.LC247
+	.word	.LC55
+	.word	.LC248
+	.word	.LC249
+	.word	.LC49
+	.word	.LC20
+	.word	.LC250
+	.word	.LC19
+	.word	.LC175
+	.word	.LC251
+	.word	.LC193
+	.word	.LC106
+	.word	.LC100
+	.word	.LC56
+	.word	.LC252
 	.word	.LC61
-	.word	.LC102
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC253
+	.word	.LC26
 	.word	.LC203
+	.word	.LC23
+	.word	.LC254
+	.word	.LC196
 	.word	.LC255
-	.word	.LC28
-	.word	.LC205
-	.word	.LC25
+	.word	.LC106
+	.word	.LC56
 	.word	.LC256
-	.word	.LC198
 	.word	.LC257
-	.word	.LC108
-	.word	.LC58
+	.word	.LC56
 	.word	.LC258
 	.word	.LC259
-	.word	.LC58
+	.word	.LC106
+	.word	.LC56
 	.word	.LC260
+	.word	.LC7
+	.word	.LC10
+	.word	.LC142
+	.word	.LC182
 	.word	.LC261
-	.word	.LC108
-	.word	.LC58
+	.word	.LC106
 	.word	.LC262
-	.word	.LC9
-	.word	.LC12
-	.word	.LC144
-	.word	.LC184
+	.word	.LC136
+	.word	.LC19
+	.word	.LC70
+	.word	.LC10
+	.word	.LC24
 	.word	.LC263
-	.word	.LC108
-	.word	.LC264
-	.word	.LC138
-	.word	.LC21
-	.word	.LC72
-	.word	.LC12
-	.word	.LC26
-	.word	.LC265
-	.word	.LC103
-	.word	.LC266
-	.word	.LC267
-	.word	.LC9
-	.word	.LC268
 	.word	.LC101
-	.word	.LC138
-	.word	.LC81
+	.word	.LC264
+	.word	.LC265
+	.word	.LC7
+	.word	.LC266
+	.word	.LC99
+	.word	.LC136
+	.word	.LC79
+	.word	.LC267
+	.word	.LC268
+	.word	.LC19
 	.word	.LC269
 	.word	.LC270
-	.word	.LC21
+	.word	.LC125
 	.word	.LC271
 	.word	.LC272
-	.word	.LC127
+	.word	.LC106
 	.word	.LC273
+	.word	.LC10
 	.word	.LC274
-	.word	.LC108
+	.word	.LC70
 	.word	.LC275
-	.word	.LC12
+	.word	.LC7
 	.word	.LC276
-	.word	.LC72
 	.word	.LC277
-	.word	.LC9
+	.word	.LC10
 	.word	.LC278
+	.word	.LC19
 	.word	.LC279
-	.word	.LC12
+	.word	.LC10
+	.word	.LC43
+	.word	.LC19
 	.word	.LC280
-	.word	.LC21
+	.word	.LC10
+	.word	.LC142
+	.word	.LC143
 	.word	.LC281
-	.word	.LC12
-	.word	.LC45
-	.word	.LC21
+	.word	.LC19
+	.word	.LC201
+	.word	.LC19
 	.word	.LC282
-	.word	.LC12
-	.word	.LC144
-	.word	.LC145
 	.word	.LC283
-	.word	.LC21
-	.word	.LC203
-	.word	.LC21
 	.word	.LC284
+	.word	.LC70
 	.word	.LC285
 	.word	.LC286
-	.word	.LC72
 	.word	.LC287
 	.word	.LC288
+	.word	.LC99
 	.word	.LC289
+	.word	.LC87
+	.word	.LC27
 	.word	.LC290
-	.word	.LC101
+	.word	.LC19
+	.word	.LC272
+	.word	.LC284
+	.word	.LC70
 	.word	.LC291
-	.word	.LC89
-	.word	.LC29
 	.word	.LC292
-	.word	.LC21
-	.word	.LC274
-	.word	.LC286
-	.word	.LC72
+	.word	.LC288
+	.word	.LC99
+	.word	.LC289
+	.word	.LC87
+	.word	.LC27
+	.word	.LC290
+	.word	.LC19
 	.word	.LC293
 	.word	.LC294
-	.word	.LC290
-	.word	.LC101
-	.word	.LC291
-	.word	.LC89
-	.word	.LC29
-	.word	.LC292
-	.word	.LC21
 	.word	.LC295
 	.word	.LC296
 	.word	.LC297
 	.word	.LC298
 	.word	.LC299
+	.word	.LC49
 	.word	.LC300
 	.word	.LC301
-	.word	.LC51
+	.word	.LC49
 	.word	.LC302
+	.word	.LC61
+	.word	.LC219
+	.word	.LC49
+	.word	.LC279
+	.word	.LC167
 	.word	.LC303
-	.word	.LC51
+	.word	.LC201
+	.word	.LC19
+	.word	.LC181
+	.word	.LC73
 	.word	.LC304
-	.word	.LC63
-	.word	.LC221
-	.word	.LC51
-	.word	.LC281
-	.word	.LC169
+	.word	.LC101
+	.word	.LC201
+	.word	.LC19
+	.word	.LC282
+	.word	.LC283
 	.word	.LC305
-	.word	.LC203
-	.word	.LC21
-	.word	.LC183
-	.word	.LC75
+	.word	.LC282
 	.word	.LC306
-	.word	.LC103
-	.word	.LC203
-	.word	.LC21
-	.word	.LC284
-	.word	.LC285
 	.word	.LC307
-	.word	.LC284
+	.word	.LC282
 	.word	.LC308
+	.word	.LC7
+	.word	.LC208
 	.word	.LC309
-	.word	.LC284
+	.word	.LC188
 	.word	.LC310
-	.word	.LC9
-	.word	.LC210
 	.word	.LC311
-	.word	.LC190
+	.word	.LC56
+	.word	.LC310
+	.word	.LC95
 	.word	.LC312
 	.word	.LC313
-	.word	.LC58
-	.word	.LC312
-	.word	.LC97
 	.word	.LC314
+	.word	.LC106
 	.word	.LC315
+	.word	.LC19
+	.word	.LC204
+	.word	.LC19
+	.word	.LC31
+	.word	.LC79
+	.word	.LC68
 	.word	.LC316
-	.word	.LC108
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
+	.word	.LC79
 	.word	.LC317
-	.word	.LC21
-	.word	.LC206
-	.word	.LC21
-	.word	.LC33
-	.word	.LC81
-	.word	.LC70
 	.word	.LC318
-	.word	.LC206
-	.word	.LC75
-	.word	.LC33
-	.word	.LC81
+	.word	.LC67
+	.word	.LC19
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC222
+	.word	.LC21
 	.word	.LC319
 	.word	.LC320
-	.word	.LC69
-	.word	.LC21
-	.word	.LC61
-	.word	.LC102
-	.word	.LC203
-	.word	.LC224
-	.word	.LC23
 	.word	.LC321
+	.word	.LC95
 	.word	.LC322
+	.word	.LC219
+	.word	.LC84
+	.word	.LC136
+	.word	.LC56
 	.word	.LC323
-	.word	.LC97
+	.word	.LC220
+	.word	.LC34
+	.word	.LC10
+	.word	.LC147
+	.word	.LC150
+	.word	.LC210
+	.word	.LC27
+	.word	.LC49
+	.word	.LC74
 	.word	.LC324
-	.word	.LC221
-	.word	.LC86
-	.word	.LC138
-	.word	.LC58
+	.word	.LC196
 	.word	.LC325
-	.word	.LC222
-	.word	.LC36
-	.word	.LC12
-	.word	.LC149
-	.word	.LC152
-	.word	.LC212
-	.word	.LC29
-	.word	.LC51
-	.word	.LC76
 	.word	.LC326
-	.word	.LC198
+	.word	.LC39
+	.word	.LC19
 	.word	.LC327
+	.word	.LC99
+	.word	.LC26
 	.word	.LC328
-	.word	.LC41
-	.word	.LC21
+	.word	.LC136
 	.word	.LC329
-	.word	.LC101
-	.word	.LC28
+	.word	.LC143
 	.word	.LC330
-	.word	.LC138
+	.word	.LC27
 	.word	.LC331
-	.word	.LC145
+	.word	.LC103
+	.word	.LC79
 	.word	.LC332
-	.word	.LC29
+	.word	.LC9
 	.word	.LC333
-	.word	.LC105
-	.word	.LC81
 	.word	.LC334
-	.word	.LC11
+	.word	.LC27
+	.word	.LC103
+	.word	.LC79
+	.word	.LC80
+	.word	.LC9
 	.word	.LC335
+	.word	.LC10
+	.word	.LC260
 	.word	.LC336
-	.word	.LC29
-	.word	.LC105
-	.word	.LC81
-	.word	.LC82
-	.word	.LC11
+	.word	.LC10
 	.word	.LC337
-	.word	.LC12
-	.word	.LC262
 	.word	.LC338
-	.word	.LC12
+	.word	.LC27
 	.word	.LC339
 	.word	.LC340
-	.word	.LC29
 	.word	.LC341
+	.word	.LC10
+	.word	.LC251
 	.word	.LC342
+	.word	.LC7
 	.word	.LC343
-	.word	.LC12
-	.word	.LC253
-	.word	.LC344
-	.word	.LC9
-	.word	.LC345
-	.word	.LC29
-	.word	.LC25
+	.word	.LC27
+	.word	.LC23
+	.word	.LC43
 	.word	.LC45
-	.word	.LC47
-	.word	.LC159
-	.word	.LC346
+	.word	.LC157
+	.word	.LC344
+	.word	.LC67
+	.word	.LC68
 	.word	.LC69
-	.word	.LC70
-	.word	.LC71
-	.word	.LC127
-	.word	.LC12
-	.word	.LC16
+	.word	.LC125
+	.word	.LC10
+	.word	.LC14
+	.word	.LC0
+	.word	.LC1
 	.word	.LC2
 	.word	.LC3
 	.word	.LC4
@@ -9550,9 +9520,9 @@ input_data:
 	.word	.LC9
 	.word	.LC10
 	.word	.LC11
+	.word	.LC9
 	.word	.LC12
 	.word	.LC13
-	.word	.LC11
 	.word	.LC14
 	.word	.LC15
 	.word	.LC16
@@ -9563,68 +9533,68 @@ input_data:
 	.word	.LC21
 	.word	.LC22
 	.word	.LC23
+	.word	.LC10
 	.word	.LC24
+	.word	.LC14
 	.word	.LC25
-	.word	.LC12
 	.word	.LC26
-	.word	.LC16
 	.word	.LC27
 	.word	.LC28
 	.word	.LC29
 	.word	.LC30
+	.word	.LC9
+	.word	.LC14
 	.word	.LC31
 	.word	.LC32
-	.word	.LC11
-	.word	.LC16
 	.word	.LC33
 	.word	.LC34
 	.word	.LC35
 	.word	.LC36
+	.word	.LC10
 	.word	.LC37
+	.word	.LC9
 	.word	.LC38
-	.word	.LC12
 	.word	.LC39
-	.word	.LC11
 	.word	.LC40
 	.word	.LC41
 	.word	.LC42
 	.word	.LC43
 	.word	.LC44
 	.word	.LC45
+	.word	.LC38
 	.word	.LC46
 	.word	.LC47
-	.word	.LC40
 	.word	.LC48
+	.word	.LC16
 	.word	.LC49
 	.word	.LC50
-	.word	.LC18
 	.word	.LC51
+	.word	.LC39
 	.word	.LC52
 	.word	.LC53
-	.word	.LC41
+	.word	.LC10
 	.word	.LC54
+	.word	.LC7
 	.word	.LC55
-	.word	.LC12
-	.word	.LC56
 	.word	.LC9
+	.word	.LC56
 	.word	.LC57
-	.word	.LC11
 	.word	.LC58
 	.word	.LC59
 	.word	.LC60
 	.word	.LC61
+	.word	.LC49
 	.word	.LC62
 	.word	.LC63
-	.word	.LC51
+	.word	.LC10
+	.word	.LC54
+	.word	.LC7
+	.word	.LC55
+	.word	.LC9
+	.word	.LC56
+	.word	.LC57
 	.word	.LC64
 	.word	.LC65
-	.word	.LC12
-	.word	.LC56
-	.word	.LC9
-	.word	.LC57
-	.word	.LC11
-	.word	.LC58
-	.word	.LC59
 	.word	.LC66
 	.word	.LC67
 	.word	.LC68
@@ -9635,592 +9605,592 @@ input_data:
 	.word	.LC73
 	.word	.LC74
 	.word	.LC75
+	.word	.LC4
 	.word	.LC76
-	.word	.LC77
-	.word	.LC6
-	.word	.LC78
-	.word	.LC11
-	.word	.LC79
 	.word	.LC9
+	.word	.LC77
+	.word	.LC7
+	.word	.LC78
+	.word	.LC70
+	.word	.LC79
 	.word	.LC80
-	.word	.LC72
+	.word	.LC19
 	.word	.LC81
 	.word	.LC82
-	.word	.LC21
+	.word	.LC52
 	.word	.LC83
 	.word	.LC84
-	.word	.LC54
 	.word	.LC85
 	.word	.LC86
 	.word	.LC87
+	.word	.LC19
+	.word	.LC7
+	.word	.LC83
 	.word	.LC88
+	.word	.LC19
 	.word	.LC89
-	.word	.LC21
-	.word	.LC9
-	.word	.LC85
 	.word	.LC90
-	.word	.LC21
+	.word	.LC61
 	.word	.LC91
+	.word	.LC62
 	.word	.LC92
-	.word	.LC63
 	.word	.LC93
-	.word	.LC64
+	.word	.LC92
+	.word	.LC19
 	.word	.LC94
 	.word	.LC95
-	.word	.LC94
-	.word	.LC21
 	.word	.LC96
 	.word	.LC97
+	.word	.LC10
+	.word	.LC24
 	.word	.LC98
+	.word	.LC96
 	.word	.LC99
-	.word	.LC12
-	.word	.LC26
 	.word	.LC100
-	.word	.LC98
 	.word	.LC101
 	.word	.LC102
 	.word	.LC103
+	.word	.LC92
 	.word	.LC104
+	.word	.LC92
 	.word	.LC105
-	.word	.LC94
 	.word	.LC106
-	.word	.LC94
 	.word	.LC107
 	.word	.LC108
 	.word	.LC109
 	.word	.LC110
+	.word	.LC34
 	.word	.LC111
 	.word	.LC112
-	.word	.LC36
 	.word	.LC113
+	.word	.LC28
 	.word	.LC114
 	.word	.LC115
-	.word	.LC30
+	.word	.LC70
+	.word	.LC56
 	.word	.LC116
+	.word	.LC91
 	.word	.LC117
-	.word	.LC72
-	.word	.LC58
+	.word	.LC106
+	.word	.LC26
 	.word	.LC118
-	.word	.LC93
+	.word	.LC101
+	.word	.LC59
 	.word	.LC119
-	.word	.LC108
-	.word	.LC28
+	.word	.LC56
 	.word	.LC120
-	.word	.LC103
-	.word	.LC61
+	.word	.LC60
+	.word	.LC10
 	.word	.LC121
-	.word	.LC58
+	.word	.LC101
 	.word	.LC122
-	.word	.LC62
-	.word	.LC12
+	.word	.LC19
+	.word	.LC4
 	.word	.LC123
-	.word	.LC103
 	.word	.LC124
-	.word	.LC21
-	.word	.LC6
 	.word	.LC125
 	.word	.LC126
 	.word	.LC127
 	.word	.LC128
 	.word	.LC129
+	.word	.LC21
 	.word	.LC130
 	.word	.LC131
-	.word	.LC23
 	.word	.LC132
+	.word	.LC101
 	.word	.LC133
+	.word	.LC19
 	.word	.LC134
-	.word	.LC103
+	.word	.LC95
+	.word	.LC26
 	.word	.LC135
-	.word	.LC21
 	.word	.LC136
-	.word	.LC97
-	.word	.LC28
 	.word	.LC137
 	.word	.LC138
 	.word	.LC139
+	.word	.LC95
 	.word	.LC140
 	.word	.LC141
-	.word	.LC97
+	.word	.LC136
 	.word	.LC142
 	.word	.LC143
-	.word	.LC138
+	.word	.LC91
+	.word	.LC135
+	.word	.LC136
 	.word	.LC144
 	.word	.LC145
-	.word	.LC93
-	.word	.LC137
-	.word	.LC138
+	.word	.LC95
 	.word	.LC146
+	.word	.LC56
 	.word	.LC147
-	.word	.LC97
+	.word	.LC125
 	.word	.LC148
-	.word	.LC58
 	.word	.LC149
-	.word	.LC127
 	.word	.LC150
 	.word	.LC151
 	.word	.LC152
+	.word	.LC150
 	.word	.LC153
+	.word	.LC28
 	.word	.LC154
-	.word	.LC152
+	.word	.LC103
 	.word	.LC155
-	.word	.LC30
+	.word	.LC7
+	.word	.LC70
+	.word	.LC10
 	.word	.LC156
-	.word	.LC105
 	.word	.LC157
-	.word	.LC9
-	.word	.LC72
-	.word	.LC12
+	.word	.LC20
+	.word	.LC136
+	.word	.LC77
 	.word	.LC158
 	.word	.LC159
-	.word	.LC22
-	.word	.LC138
-	.word	.LC79
+	.word	.LC19
 	.word	.LC160
 	.word	.LC161
-	.word	.LC21
+	.word	.LC10
 	.word	.LC162
+	.word	.LC15
+	.word	.LC19
 	.word	.LC163
-	.word	.LC12
+	.word	.LC70
 	.word	.LC164
-	.word	.LC17
-	.word	.LC21
+	.word	.LC51
 	.word	.LC165
-	.word	.LC72
+	.word	.LC69
+	.word	.LC83
 	.word	.LC166
-	.word	.LC53
+	.word	.LC56
 	.word	.LC167
-	.word	.LC71
-	.word	.LC85
 	.word	.LC168
-	.word	.LC58
 	.word	.LC169
 	.word	.LC170
 	.word	.LC171
+	.word	.LC56
+	.word	.LC167
 	.word	.LC172
 	.word	.LC173
-	.word	.LC58
-	.word	.LC169
 	.word	.LC174
+	.word	.LC95
 	.word	.LC175
 	.word	.LC176
-	.word	.LC97
 	.word	.LC177
+	.word	.LC19
 	.word	.LC178
+	.word	.LC100
 	.word	.LC179
-	.word	.LC21
+	.word	.LC19
 	.word	.LC180
-	.word	.LC102
+	.word	.LC106
 	.word	.LC181
-	.word	.LC21
+	.word	.LC136
+	.word	.LC56
+	.word	.LC116
+	.word	.LC28
 	.word	.LC182
-	.word	.LC108
 	.word	.LC183
-	.word	.LC138
-	.word	.LC58
-	.word	.LC118
-	.word	.LC30
+	.word	.LC142
+	.word	.LC16
+	.word	.LC100
 	.word	.LC184
+	.word	.LC100
+	.word	.LC4
 	.word	.LC185
-	.word	.LC144
-	.word	.LC18
-	.word	.LC102
+	.word	.LC179
 	.word	.LC186
-	.word	.LC102
-	.word	.LC6
 	.word	.LC187
+	.word	.LC106
 	.word	.LC181
+	.word	.LC136
 	.word	.LC188
 	.word	.LC189
-	.word	.LC108
-	.word	.LC183
-	.word	.LC138
 	.word	.LC190
+	.word	.LC9
+	.word	.LC10
+	.word	.LC182
+	.word	.LC183
 	.word	.LC191
+	.word	.LC16
+	.word	.LC100
 	.word	.LC192
-	.word	.LC11
-	.word	.LC12
-	.word	.LC184
-	.word	.LC185
+	.word	.LC178
 	.word	.LC193
-	.word	.LC18
-	.word	.LC102
 	.word	.LC194
-	.word	.LC180
+	.word	.LC9
 	.word	.LC195
 	.word	.LC196
-	.word	.LC11
+	.word	.LC121
+	.word	.LC106
+	.word	.LC56
 	.word	.LC197
 	.word	.LC198
-	.word	.LC123
-	.word	.LC108
-	.word	.LC58
 	.word	.LC199
 	.word	.LC200
 	.word	.LC201
 	.word	.LC202
 	.word	.LC203
 	.word	.LC204
+	.word	.LC73
 	.word	.LC205
 	.word	.LC206
-	.word	.LC75
+	.word	.LC19
 	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
 	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
-	.word	.LC33
+	.word	.LC19
+	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC209
+	.word	.LC4
 	.word	.LC210
-	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
+	.word	.LC73
 	.word	.LC211
-	.word	.LC6
+	.word	.LC10
 	.word	.LC212
-	.word	.LC208
-	.word	.LC75
 	.word	.LC213
-	.word	.LC12
+	.word	.LC125
+	.word	.LC56
 	.word	.LC214
 	.word	.LC215
-	.word	.LC127
-	.word	.LC58
 	.word	.LC216
 	.word	.LC217
+	.word	.LC19
+	.word	.LC181
+	.word	.LC178
 	.word	.LC218
+	.word	.LC77
 	.word	.LC219
-	.word	.LC21
-	.word	.LC183
-	.word	.LC180
+	.word	.LC84
 	.word	.LC220
-	.word	.LC79
 	.word	.LC221
-	.word	.LC86
+	.word	.LC77
 	.word	.LC222
 	.word	.LC223
-	.word	.LC79
 	.word	.LC224
+	.word	.LC91
 	.word	.LC225
 	.word	.LC226
-	.word	.LC93
 	.word	.LC227
+	.word	.LC91
 	.word	.LC228
 	.word	.LC229
-	.word	.LC93
+	.word	.LC53
+	.word	.LC56
 	.word	.LC230
 	.word	.LC231
-	.word	.LC55
-	.word	.LC58
-	.word	.LC232
-	.word	.LC233
-	.word	.LC29
-	.word	.LC133
-	.word	.LC82
-	.word	.LC21
-	.word	.LC234
-	.word	.LC97
-	.word	.LC28
-	.word	.LC235
-	.word	.LC11
-	.word	.LC29
-	.word	.LC222
-	.word	.LC11
-	.word	.LC181
-	.word	.LC139
-	.word	.LC144
-	.word	.LC236
-	.word	.LC11
-	.word	.LC29
-	.word	.LC237
-	.word	.LC12
-	.word	.LC238
-	.word	.LC239
-	.word	.LC75
-	.word	.LC240
-	.word	.LC48
-	.word	.LC241
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC33
-	.word	.LC243
-	.word	.LC108
-	.word	.LC183
-	.word	.LC29
-	.word	.LC101
-	.word	.LC58
-	.word	.LC244
-	.word	.LC245
-	.word	.LC246
-	.word	.LC12
-	.word	.LC247
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC180
-	.word	.LC248
-	.word	.LC202
+	.word	.LC27
 	.word	.LC131
-	.word	.LC64
-	.word	.LC249
-	.word	.LC57
-	.word	.LC250
-	.word	.LC251
-	.word	.LC51
-	.word	.LC22
-	.word	.LC252
-	.word	.LC21
+	.word	.LC80
+	.word	.LC19
+	.word	.LC232
+	.word	.LC95
+	.word	.LC26
+	.word	.LC233
+	.word	.LC9
+	.word	.LC27
+	.word	.LC220
+	.word	.LC9
+	.word	.LC179
+	.word	.LC137
+	.word	.LC142
+	.word	.LC234
+	.word	.LC9
+	.word	.LC27
+	.word	.LC235
+	.word	.LC10
+	.word	.LC236
+	.word	.LC237
+	.word	.LC73
+	.word	.LC238
+	.word	.LC46
+	.word	.LC239
+	.word	.LC240
 	.word	.LC177
-	.word	.LC253
-	.word	.LC195
-	.word	.LC108
-	.word	.LC102
-	.word	.LC58
-	.word	.LC254
-	.word	.LC63
+	.word	.LC19
+	.word	.LC31
+	.word	.LC241
+	.word	.LC106
+	.word	.LC181
+	.word	.LC27
+	.word	.LC99
+	.word	.LC56
+	.word	.LC242
+	.word	.LC243
+	.word	.LC244
+	.word	.LC10
+	.word	.LC245
+	.word	.LC240
+	.word	.LC177
+	.word	.LC19
+	.word	.LC178
+	.word	.LC246
+	.word	.LC200
+	.word	.LC129
+	.word	.LC62
+	.word	.LC247
+	.word	.LC55
+	.word	.LC248
+	.word	.LC249
+	.word	.LC49
+	.word	.LC20
+	.word	.LC250
+	.word	.LC19
+	.word	.LC175
+	.word	.LC251
+	.word	.LC193
+	.word	.LC106
+	.word	.LC100
+	.word	.LC56
+	.word	.LC252
 	.word	.LC61
-	.word	.LC102
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC253
+	.word	.LC26
 	.word	.LC203
+	.word	.LC23
+	.word	.LC254
+	.word	.LC196
 	.word	.LC255
-	.word	.LC28
-	.word	.LC205
-	.word	.LC25
+	.word	.LC106
+	.word	.LC56
 	.word	.LC256
-	.word	.LC198
 	.word	.LC257
-	.word	.LC108
-	.word	.LC58
+	.word	.LC56
 	.word	.LC258
 	.word	.LC259
-	.word	.LC58
+	.word	.LC106
+	.word	.LC56
 	.word	.LC260
+	.word	.LC7
+	.word	.LC10
+	.word	.LC142
+	.word	.LC182
 	.word	.LC261
-	.word	.LC108
-	.word	.LC58
+	.word	.LC106
 	.word	.LC262
-	.word	.LC9
-	.word	.LC12
-	.word	.LC144
-	.word	.LC184
+	.word	.LC136
+	.word	.LC19
+	.word	.LC70
+	.word	.LC10
+	.word	.LC24
 	.word	.LC263
-	.word	.LC108
-	.word	.LC264
-	.word	.LC138
-	.word	.LC21
-	.word	.LC72
-	.word	.LC12
-	.word	.LC26
-	.word	.LC265
-	.word	.LC103
-	.word	.LC266
-	.word	.LC267
-	.word	.LC9
-	.word	.LC268
 	.word	.LC101
-	.word	.LC138
-	.word	.LC81
+	.word	.LC264
+	.word	.LC265
+	.word	.LC7
+	.word	.LC266
+	.word	.LC99
+	.word	.LC136
+	.word	.LC79
+	.word	.LC267
+	.word	.LC268
+	.word	.LC19
 	.word	.LC269
 	.word	.LC270
-	.word	.LC21
+	.word	.LC125
 	.word	.LC271
 	.word	.LC272
-	.word	.LC127
+	.word	.LC106
 	.word	.LC273
+	.word	.LC10
 	.word	.LC274
-	.word	.LC108
+	.word	.LC70
 	.word	.LC275
-	.word	.LC12
+	.word	.LC7
 	.word	.LC276
-	.word	.LC72
 	.word	.LC277
-	.word	.LC9
+	.word	.LC10
 	.word	.LC278
+	.word	.LC19
 	.word	.LC279
-	.word	.LC12
+	.word	.LC10
+	.word	.LC43
+	.word	.LC19
 	.word	.LC280
-	.word	.LC21
+	.word	.LC10
+	.word	.LC142
+	.word	.LC143
 	.word	.LC281
-	.word	.LC12
-	.word	.LC45
-	.word	.LC21
+	.word	.LC19
+	.word	.LC201
+	.word	.LC19
 	.word	.LC282
-	.word	.LC12
-	.word	.LC144
-	.word	.LC145
 	.word	.LC283
-	.word	.LC21
-	.word	.LC203
-	.word	.LC21
 	.word	.LC284
+	.word	.LC70
 	.word	.LC285
 	.word	.LC286
-	.word	.LC72
 	.word	.LC287
 	.word	.LC288
+	.word	.LC99
 	.word	.LC289
+	.word	.LC87
+	.word	.LC27
 	.word	.LC290
-	.word	.LC101
+	.word	.LC19
+	.word	.LC272
+	.word	.LC284
+	.word	.LC70
 	.word	.LC291
-	.word	.LC89
-	.word	.LC29
 	.word	.LC292
-	.word	.LC21
-	.word	.LC274
-	.word	.LC286
-	.word	.LC72
+	.word	.LC288
+	.word	.LC99
+	.word	.LC289
+	.word	.LC87
+	.word	.LC27
+	.word	.LC290
+	.word	.LC19
 	.word	.LC293
 	.word	.LC294
-	.word	.LC290
-	.word	.LC101
-	.word	.LC291
-	.word	.LC89
-	.word	.LC29
-	.word	.LC292
-	.word	.LC21
 	.word	.LC295
 	.word	.LC296
 	.word	.LC297
 	.word	.LC298
 	.word	.LC299
+	.word	.LC49
 	.word	.LC300
 	.word	.LC301
-	.word	.LC51
+	.word	.LC49
 	.word	.LC302
+	.word	.LC61
+	.word	.LC219
+	.word	.LC49
+	.word	.LC279
+	.word	.LC167
 	.word	.LC303
-	.word	.LC51
+	.word	.LC201
+	.word	.LC19
+	.word	.LC181
+	.word	.LC73
 	.word	.LC304
-	.word	.LC63
-	.word	.LC221
-	.word	.LC51
-	.word	.LC281
-	.word	.LC169
+	.word	.LC101
+	.word	.LC201
+	.word	.LC19
+	.word	.LC282
+	.word	.LC283
 	.word	.LC305
-	.word	.LC203
-	.word	.LC21
-	.word	.LC183
-	.word	.LC75
+	.word	.LC282
 	.word	.LC306
-	.word	.LC103
-	.word	.LC203
-	.word	.LC21
-	.word	.LC284
-	.word	.LC285
 	.word	.LC307
-	.word	.LC284
+	.word	.LC282
 	.word	.LC308
+	.word	.LC7
+	.word	.LC208
 	.word	.LC309
-	.word	.LC284
+	.word	.LC188
 	.word	.LC310
-	.word	.LC9
-	.word	.LC210
 	.word	.LC311
-	.word	.LC190
+	.word	.LC56
+	.word	.LC310
+	.word	.LC95
 	.word	.LC312
 	.word	.LC313
-	.word	.LC58
-	.word	.LC312
-	.word	.LC97
 	.word	.LC314
+	.word	.LC106
 	.word	.LC315
+	.word	.LC19
+	.word	.LC204
+	.word	.LC19
+	.word	.LC31
+	.word	.LC79
+	.word	.LC68
 	.word	.LC316
-	.word	.LC108
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
+	.word	.LC79
 	.word	.LC317
-	.word	.LC21
-	.word	.LC206
-	.word	.LC21
-	.word	.LC33
-	.word	.LC81
-	.word	.LC70
 	.word	.LC318
-	.word	.LC206
-	.word	.LC75
-	.word	.LC33
-	.word	.LC81
+	.word	.LC67
+	.word	.LC19
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC222
+	.word	.LC21
 	.word	.LC319
 	.word	.LC320
-	.word	.LC69
-	.word	.LC21
-	.word	.LC61
-	.word	.LC102
-	.word	.LC203
-	.word	.LC224
-	.word	.LC23
 	.word	.LC321
+	.word	.LC95
 	.word	.LC322
+	.word	.LC219
+	.word	.LC84
+	.word	.LC136
+	.word	.LC56
 	.word	.LC323
-	.word	.LC97
+	.word	.LC220
+	.word	.LC34
+	.word	.LC10
+	.word	.LC147
+	.word	.LC150
+	.word	.LC210
+	.word	.LC27
+	.word	.LC49
+	.word	.LC74
 	.word	.LC324
-	.word	.LC221
-	.word	.LC86
-	.word	.LC138
-	.word	.LC58
+	.word	.LC196
 	.word	.LC325
-	.word	.LC222
-	.word	.LC36
-	.word	.LC12
-	.word	.LC149
-	.word	.LC152
-	.word	.LC212
-	.word	.LC29
-	.word	.LC51
-	.word	.LC76
 	.word	.LC326
-	.word	.LC198
+	.word	.LC39
+	.word	.LC19
 	.word	.LC327
+	.word	.LC99
+	.word	.LC26
 	.word	.LC328
-	.word	.LC41
-	.word	.LC21
+	.word	.LC136
 	.word	.LC329
-	.word	.LC101
-	.word	.LC28
+	.word	.LC143
 	.word	.LC330
-	.word	.LC138
+	.word	.LC27
 	.word	.LC331
-	.word	.LC145
+	.word	.LC103
+	.word	.LC79
 	.word	.LC332
-	.word	.LC29
+	.word	.LC9
 	.word	.LC333
-	.word	.LC105
-	.word	.LC81
 	.word	.LC334
-	.word	.LC11
+	.word	.LC27
+	.word	.LC103
+	.word	.LC79
+	.word	.LC80
+	.word	.LC9
 	.word	.LC335
+	.word	.LC10
+	.word	.LC260
 	.word	.LC336
-	.word	.LC29
-	.word	.LC105
-	.word	.LC81
-	.word	.LC82
-	.word	.LC11
+	.word	.LC10
 	.word	.LC337
-	.word	.LC12
-	.word	.LC262
 	.word	.LC338
-	.word	.LC12
+	.word	.LC27
 	.word	.LC339
 	.word	.LC340
-	.word	.LC29
 	.word	.LC341
+	.word	.LC10
+	.word	.LC251
 	.word	.LC342
+	.word	.LC7
 	.word	.LC343
-	.word	.LC12
-	.word	.LC253
-	.word	.LC344
-	.word	.LC9
-	.word	.LC345
-	.word	.LC29
-	.word	.LC25
+	.word	.LC27
+	.word	.LC23
+	.word	.LC43
 	.word	.LC45
-	.word	.LC47
-	.word	.LC159
-	.word	.LC346
+	.word	.LC157
+	.word	.LC344
+	.word	.LC67
+	.word	.LC68
 	.word	.LC69
-	.word	.LC70
-	.word	.LC71
-	.word	.LC127
-	.word	.LC12
-	.word	.LC16
+	.word	.LC125
+	.word	.LC10
+	.word	.LC14
+	.word	.LC0
+	.word	.LC1
 	.word	.LC2
 	.word	.LC3
 	.word	.LC4
@@ -10231,9 +10201,9 @@ input_data:
 	.word	.LC9
 	.word	.LC10
 	.word	.LC11
+	.word	.LC9
 	.word	.LC12
 	.word	.LC13
-	.word	.LC11
 	.word	.LC14
 	.word	.LC15
 	.word	.LC16
@@ -10244,68 +10214,68 @@ input_data:
 	.word	.LC21
 	.word	.LC22
 	.word	.LC23
+	.word	.LC10
 	.word	.LC24
+	.word	.LC14
 	.word	.LC25
-	.word	.LC12
 	.word	.LC26
-	.word	.LC16
 	.word	.LC27
 	.word	.LC28
 	.word	.LC29
 	.word	.LC30
+	.word	.LC9
+	.word	.LC14
 	.word	.LC31
 	.word	.LC32
-	.word	.LC11
-	.word	.LC16
 	.word	.LC33
 	.word	.LC34
 	.word	.LC35
 	.word	.LC36
+	.word	.LC10
 	.word	.LC37
+	.word	.LC9
 	.word	.LC38
-	.word	.LC12
 	.word	.LC39
-	.word	.LC11
 	.word	.LC40
 	.word	.LC41
 	.word	.LC42
 	.word	.LC43
 	.word	.LC44
 	.word	.LC45
+	.word	.LC38
 	.word	.LC46
 	.word	.LC47
-	.word	.LC40
 	.word	.LC48
+	.word	.LC16
 	.word	.LC49
 	.word	.LC50
-	.word	.LC18
 	.word	.LC51
+	.word	.LC39
 	.word	.LC52
 	.word	.LC53
-	.word	.LC41
+	.word	.LC10
 	.word	.LC54
+	.word	.LC7
 	.word	.LC55
-	.word	.LC12
-	.word	.LC56
 	.word	.LC9
+	.word	.LC56
 	.word	.LC57
-	.word	.LC11
 	.word	.LC58
 	.word	.LC59
 	.word	.LC60
 	.word	.LC61
+	.word	.LC49
 	.word	.LC62
 	.word	.LC63
-	.word	.LC51
+	.word	.LC10
+	.word	.LC54
+	.word	.LC7
+	.word	.LC55
+	.word	.LC9
+	.word	.LC56
+	.word	.LC57
 	.word	.LC64
 	.word	.LC65
-	.word	.LC12
-	.word	.LC56
-	.word	.LC9
-	.word	.LC57
-	.word	.LC11
-	.word	.LC58
-	.word	.LC59
 	.word	.LC66
 	.word	.LC67
 	.word	.LC68
@@ -10316,592 +10286,592 @@ input_data:
 	.word	.LC73
 	.word	.LC74
 	.word	.LC75
+	.word	.LC4
 	.word	.LC76
-	.word	.LC77
-	.word	.LC6
-	.word	.LC78
-	.word	.LC11
-	.word	.LC79
 	.word	.LC9
+	.word	.LC77
+	.word	.LC7
+	.word	.LC78
+	.word	.LC70
+	.word	.LC79
 	.word	.LC80
-	.word	.LC72
+	.word	.LC19
 	.word	.LC81
 	.word	.LC82
-	.word	.LC21
+	.word	.LC52
 	.word	.LC83
 	.word	.LC84
-	.word	.LC54
 	.word	.LC85
 	.word	.LC86
 	.word	.LC87
+	.word	.LC19
+	.word	.LC7
+	.word	.LC83
 	.word	.LC88
+	.word	.LC19
 	.word	.LC89
-	.word	.LC21
-	.word	.LC9
-	.word	.LC85
 	.word	.LC90
-	.word	.LC21
+	.word	.LC61
 	.word	.LC91
+	.word	.LC62
 	.word	.LC92
-	.word	.LC63
 	.word	.LC93
-	.word	.LC64
+	.word	.LC92
+	.word	.LC19
 	.word	.LC94
 	.word	.LC95
-	.word	.LC94
-	.word	.LC21
 	.word	.LC96
 	.word	.LC97
+	.word	.LC10
+	.word	.LC24
 	.word	.LC98
+	.word	.LC96
 	.word	.LC99
-	.word	.LC12
-	.word	.LC26
 	.word	.LC100
-	.word	.LC98
 	.word	.LC101
 	.word	.LC102
 	.word	.LC103
+	.word	.LC92
 	.word	.LC104
+	.word	.LC92
 	.word	.LC105
-	.word	.LC94
 	.word	.LC106
-	.word	.LC94
 	.word	.LC107
 	.word	.LC108
 	.word	.LC109
 	.word	.LC110
+	.word	.LC34
 	.word	.LC111
 	.word	.LC112
-	.word	.LC36
 	.word	.LC113
+	.word	.LC28
 	.word	.LC114
 	.word	.LC115
-	.word	.LC30
+	.word	.LC70
+	.word	.LC56
 	.word	.LC116
+	.word	.LC91
 	.word	.LC117
-	.word	.LC72
-	.word	.LC58
+	.word	.LC106
+	.word	.LC26
 	.word	.LC118
-	.word	.LC93
+	.word	.LC101
+	.word	.LC59
 	.word	.LC119
-	.word	.LC108
-	.word	.LC28
+	.word	.LC56
 	.word	.LC120
-	.word	.LC103
-	.word	.LC61
+	.word	.LC60
+	.word	.LC10
 	.word	.LC121
-	.word	.LC58
+	.word	.LC101
 	.word	.LC122
-	.word	.LC62
-	.word	.LC12
+	.word	.LC19
+	.word	.LC4
 	.word	.LC123
-	.word	.LC103
 	.word	.LC124
-	.word	.LC21
-	.word	.LC6
 	.word	.LC125
 	.word	.LC126
 	.word	.LC127
 	.word	.LC128
 	.word	.LC129
+	.word	.LC21
 	.word	.LC130
 	.word	.LC131
-	.word	.LC23
 	.word	.LC132
+	.word	.LC101
 	.word	.LC133
+	.word	.LC19
 	.word	.LC134
-	.word	.LC103
+	.word	.LC95
+	.word	.LC26
 	.word	.LC135
-	.word	.LC21
 	.word	.LC136
-	.word	.LC97
-	.word	.LC28
 	.word	.LC137
 	.word	.LC138
 	.word	.LC139
+	.word	.LC95
 	.word	.LC140
 	.word	.LC141
-	.word	.LC97
+	.word	.LC136
 	.word	.LC142
 	.word	.LC143
-	.word	.LC138
+	.word	.LC91
+	.word	.LC135
+	.word	.LC136
 	.word	.LC144
 	.word	.LC145
-	.word	.LC93
-	.word	.LC137
-	.word	.LC138
+	.word	.LC95
 	.word	.LC146
+	.word	.LC56
 	.word	.LC147
-	.word	.LC97
+	.word	.LC125
 	.word	.LC148
-	.word	.LC58
 	.word	.LC149
-	.word	.LC127
 	.word	.LC150
 	.word	.LC151
 	.word	.LC152
+	.word	.LC150
 	.word	.LC153
+	.word	.LC28
 	.word	.LC154
-	.word	.LC152
+	.word	.LC103
 	.word	.LC155
-	.word	.LC30
+	.word	.LC7
+	.word	.LC70
+	.word	.LC10
 	.word	.LC156
-	.word	.LC105
 	.word	.LC157
-	.word	.LC9
-	.word	.LC72
-	.word	.LC12
+	.word	.LC20
+	.word	.LC136
+	.word	.LC77
 	.word	.LC158
 	.word	.LC159
-	.word	.LC22
-	.word	.LC138
-	.word	.LC79
+	.word	.LC19
 	.word	.LC160
 	.word	.LC161
-	.word	.LC21
+	.word	.LC10
 	.word	.LC162
+	.word	.LC15
+	.word	.LC19
 	.word	.LC163
-	.word	.LC12
+	.word	.LC70
 	.word	.LC164
-	.word	.LC17
-	.word	.LC21
+	.word	.LC51
 	.word	.LC165
-	.word	.LC72
+	.word	.LC69
+	.word	.LC83
 	.word	.LC166
-	.word	.LC53
+	.word	.LC56
 	.word	.LC167
-	.word	.LC71
-	.word	.LC85
 	.word	.LC168
-	.word	.LC58
 	.word	.LC169
 	.word	.LC170
 	.word	.LC171
+	.word	.LC56
+	.word	.LC167
 	.word	.LC172
 	.word	.LC173
-	.word	.LC58
-	.word	.LC169
 	.word	.LC174
+	.word	.LC95
 	.word	.LC175
 	.word	.LC176
-	.word	.LC97
 	.word	.LC177
+	.word	.LC19
 	.word	.LC178
+	.word	.LC100
 	.word	.LC179
-	.word	.LC21
+	.word	.LC19
 	.word	.LC180
-	.word	.LC102
+	.word	.LC106
 	.word	.LC181
-	.word	.LC21
+	.word	.LC136
+	.word	.LC56
+	.word	.LC116
+	.word	.LC28
 	.word	.LC182
-	.word	.LC108
 	.word	.LC183
-	.word	.LC138
-	.word	.LC58
-	.word	.LC118
-	.word	.LC30
+	.word	.LC142
+	.word	.LC16
+	.word	.LC100
 	.word	.LC184
+	.word	.LC100
+	.word	.LC4
 	.word	.LC185
-	.word	.LC144
-	.word	.LC18
-	.word	.LC102
+	.word	.LC179
 	.word	.LC186
-	.word	.LC102
-	.word	.LC6
 	.word	.LC187
+	.word	.LC106
 	.word	.LC181
+	.word	.LC136
 	.word	.LC188
 	.word	.LC189
-	.word	.LC108
-	.word	.LC183
-	.word	.LC138
 	.word	.LC190
+	.word	.LC9
+	.word	.LC10
+	.word	.LC182
+	.word	.LC183
 	.word	.LC191
+	.word	.LC16
+	.word	.LC100
 	.word	.LC192
-	.word	.LC11
-	.word	.LC12
-	.word	.LC184
-	.word	.LC185
+	.word	.LC178
 	.word	.LC193
-	.word	.LC18
-	.word	.LC102
 	.word	.LC194
-	.word	.LC180
+	.word	.LC9
 	.word	.LC195
 	.word	.LC196
-	.word	.LC11
+	.word	.LC121
+	.word	.LC106
+	.word	.LC56
 	.word	.LC197
 	.word	.LC198
-	.word	.LC123
-	.word	.LC108
-	.word	.LC58
 	.word	.LC199
 	.word	.LC200
 	.word	.LC201
 	.word	.LC202
 	.word	.LC203
 	.word	.LC204
+	.word	.LC73
 	.word	.LC205
 	.word	.LC206
-	.word	.LC75
+	.word	.LC19
 	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
 	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
-	.word	.LC33
+	.word	.LC19
+	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC209
+	.word	.LC4
 	.word	.LC210
-	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
+	.word	.LC73
 	.word	.LC211
-	.word	.LC6
+	.word	.LC10
 	.word	.LC212
-	.word	.LC208
-	.word	.LC75
 	.word	.LC213
-	.word	.LC12
+	.word	.LC125
+	.word	.LC56
 	.word	.LC214
 	.word	.LC215
-	.word	.LC127
-	.word	.LC58
 	.word	.LC216
 	.word	.LC217
+	.word	.LC19
+	.word	.LC181
+	.word	.LC178
 	.word	.LC218
+	.word	.LC77
 	.word	.LC219
-	.word	.LC21
-	.word	.LC183
-	.word	.LC180
+	.word	.LC84
 	.word	.LC220
-	.word	.LC79
 	.word	.LC221
-	.word	.LC86
+	.word	.LC77
 	.word	.LC222
 	.word	.LC223
-	.word	.LC79
 	.word	.LC224
+	.word	.LC91
 	.word	.LC225
 	.word	.LC226
-	.word	.LC93
 	.word	.LC227
+	.word	.LC91
 	.word	.LC228
 	.word	.LC229
-	.word	.LC93
+	.word	.LC53
+	.word	.LC56
 	.word	.LC230
 	.word	.LC231
-	.word	.LC55
-	.word	.LC58
-	.word	.LC232
-	.word	.LC233
-	.word	.LC29
-	.word	.LC133
-	.word	.LC82
-	.word	.LC21
-	.word	.LC234
-	.word	.LC97
-	.word	.LC28
-	.word	.LC235
-	.word	.LC11
-	.word	.LC29
-	.word	.LC222
-	.word	.LC11
-	.word	.LC181
-	.word	.LC139
-	.word	.LC144
-	.word	.LC236
-	.word	.LC11
-	.word	.LC29
-	.word	.LC237
-	.word	.LC12
-	.word	.LC238
-	.word	.LC239
-	.word	.LC75
-	.word	.LC240
-	.word	.LC48
-	.word	.LC241
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC33
-	.word	.LC243
-	.word	.LC108
-	.word	.LC183
-	.word	.LC29
-	.word	.LC101
-	.word	.LC58
-	.word	.LC244
-	.word	.LC245
-	.word	.LC246
-	.word	.LC12
-	.word	.LC247
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC180
-	.word	.LC248
-	.word	.LC202
+	.word	.LC27
 	.word	.LC131
-	.word	.LC64
-	.word	.LC249
-	.word	.LC57
-	.word	.LC250
-	.word	.LC251
-	.word	.LC51
-	.word	.LC22
-	.word	.LC252
-	.word	.LC21
+	.word	.LC80
+	.word	.LC19
+	.word	.LC232
+	.word	.LC95
+	.word	.LC26
+	.word	.LC233
+	.word	.LC9
+	.word	.LC27
+	.word	.LC220
+	.word	.LC9
+	.word	.LC179
+	.word	.LC137
+	.word	.LC142
+	.word	.LC234
+	.word	.LC9
+	.word	.LC27
+	.word	.LC235
+	.word	.LC10
+	.word	.LC236
+	.word	.LC237
+	.word	.LC73
+	.word	.LC238
+	.word	.LC46
+	.word	.LC239
+	.word	.LC240
 	.word	.LC177
-	.word	.LC253
-	.word	.LC195
-	.word	.LC108
-	.word	.LC102
-	.word	.LC58
-	.word	.LC254
-	.word	.LC63
+	.word	.LC19
+	.word	.LC31
+	.word	.LC241
+	.word	.LC106
+	.word	.LC181
+	.word	.LC27
+	.word	.LC99
+	.word	.LC56
+	.word	.LC242
+	.word	.LC243
+	.word	.LC244
+	.word	.LC10
+	.word	.LC245
+	.word	.LC240
+	.word	.LC177
+	.word	.LC19
+	.word	.LC178
+	.word	.LC246
+	.word	.LC200
+	.word	.LC129
+	.word	.LC62
+	.word	.LC247
+	.word	.LC55
+	.word	.LC248
+	.word	.LC249
+	.word	.LC49
+	.word	.LC20
+	.word	.LC250
+	.word	.LC19
+	.word	.LC175
+	.word	.LC251
+	.word	.LC193
+	.word	.LC106
+	.word	.LC100
+	.word	.LC56
+	.word	.LC252
 	.word	.LC61
-	.word	.LC102
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC253
+	.word	.LC26
 	.word	.LC203
+	.word	.LC23
+	.word	.LC254
+	.word	.LC196
 	.word	.LC255
-	.word	.LC28
-	.word	.LC205
-	.word	.LC25
+	.word	.LC106
+	.word	.LC56
 	.word	.LC256
-	.word	.LC198
 	.word	.LC257
-	.word	.LC108
-	.word	.LC58
+	.word	.LC56
 	.word	.LC258
 	.word	.LC259
-	.word	.LC58
+	.word	.LC106
+	.word	.LC56
 	.word	.LC260
+	.word	.LC7
+	.word	.LC10
+	.word	.LC142
+	.word	.LC182
 	.word	.LC261
-	.word	.LC108
-	.word	.LC58
+	.word	.LC106
 	.word	.LC262
-	.word	.LC9
-	.word	.LC12
-	.word	.LC144
-	.word	.LC184
+	.word	.LC136
+	.word	.LC19
+	.word	.LC70
+	.word	.LC10
+	.word	.LC24
 	.word	.LC263
-	.word	.LC108
-	.word	.LC264
-	.word	.LC138
-	.word	.LC21
-	.word	.LC72
-	.word	.LC12
-	.word	.LC26
-	.word	.LC265
-	.word	.LC103
-	.word	.LC266
-	.word	.LC267
-	.word	.LC9
-	.word	.LC268
 	.word	.LC101
-	.word	.LC138
-	.word	.LC81
+	.word	.LC264
+	.word	.LC265
+	.word	.LC7
+	.word	.LC266
+	.word	.LC99
+	.word	.LC136
+	.word	.LC79
+	.word	.LC267
+	.word	.LC268
+	.word	.LC19
 	.word	.LC269
 	.word	.LC270
-	.word	.LC21
+	.word	.LC125
 	.word	.LC271
 	.word	.LC272
-	.word	.LC127
+	.word	.LC106
 	.word	.LC273
+	.word	.LC10
 	.word	.LC274
-	.word	.LC108
+	.word	.LC70
 	.word	.LC275
-	.word	.LC12
+	.word	.LC7
 	.word	.LC276
-	.word	.LC72
 	.word	.LC277
-	.word	.LC9
+	.word	.LC10
 	.word	.LC278
+	.word	.LC19
 	.word	.LC279
-	.word	.LC12
+	.word	.LC10
+	.word	.LC43
+	.word	.LC19
 	.word	.LC280
-	.word	.LC21
+	.word	.LC10
+	.word	.LC142
+	.word	.LC143
 	.word	.LC281
-	.word	.LC12
-	.word	.LC45
-	.word	.LC21
+	.word	.LC19
+	.word	.LC201
+	.word	.LC19
 	.word	.LC282
-	.word	.LC12
-	.word	.LC144
-	.word	.LC145
 	.word	.LC283
-	.word	.LC21
-	.word	.LC203
-	.word	.LC21
 	.word	.LC284
+	.word	.LC70
 	.word	.LC285
 	.word	.LC286
-	.word	.LC72
 	.word	.LC287
 	.word	.LC288
+	.word	.LC99
 	.word	.LC289
+	.word	.LC87
+	.word	.LC27
 	.word	.LC290
-	.word	.LC101
+	.word	.LC19
+	.word	.LC272
+	.word	.LC284
+	.word	.LC70
 	.word	.LC291
-	.word	.LC89
-	.word	.LC29
 	.word	.LC292
-	.word	.LC21
-	.word	.LC274
-	.word	.LC286
-	.word	.LC72
+	.word	.LC288
+	.word	.LC99
+	.word	.LC289
+	.word	.LC87
+	.word	.LC27
+	.word	.LC290
+	.word	.LC19
 	.word	.LC293
 	.word	.LC294
-	.word	.LC290
-	.word	.LC101
-	.word	.LC291
-	.word	.LC89
-	.word	.LC29
-	.word	.LC292
-	.word	.LC21
 	.word	.LC295
 	.word	.LC296
 	.word	.LC297
 	.word	.LC298
 	.word	.LC299
+	.word	.LC49
 	.word	.LC300
 	.word	.LC301
-	.word	.LC51
+	.word	.LC49
 	.word	.LC302
+	.word	.LC61
+	.word	.LC219
+	.word	.LC49
+	.word	.LC279
+	.word	.LC167
 	.word	.LC303
-	.word	.LC51
+	.word	.LC201
+	.word	.LC19
+	.word	.LC181
+	.word	.LC73
 	.word	.LC304
-	.word	.LC63
-	.word	.LC221
-	.word	.LC51
-	.word	.LC281
-	.word	.LC169
+	.word	.LC101
+	.word	.LC201
+	.word	.LC19
+	.word	.LC282
+	.word	.LC283
 	.word	.LC305
-	.word	.LC203
-	.word	.LC21
-	.word	.LC183
-	.word	.LC75
+	.word	.LC282
 	.word	.LC306
-	.word	.LC103
-	.word	.LC203
-	.word	.LC21
-	.word	.LC284
-	.word	.LC285
 	.word	.LC307
-	.word	.LC284
+	.word	.LC282
 	.word	.LC308
+	.word	.LC7
+	.word	.LC208
 	.word	.LC309
-	.word	.LC284
+	.word	.LC188
 	.word	.LC310
-	.word	.LC9
-	.word	.LC210
 	.word	.LC311
-	.word	.LC190
+	.word	.LC56
+	.word	.LC310
+	.word	.LC95
 	.word	.LC312
 	.word	.LC313
-	.word	.LC58
-	.word	.LC312
-	.word	.LC97
 	.word	.LC314
+	.word	.LC106
 	.word	.LC315
+	.word	.LC19
+	.word	.LC204
+	.word	.LC19
+	.word	.LC31
+	.word	.LC79
+	.word	.LC68
 	.word	.LC316
-	.word	.LC108
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
+	.word	.LC79
 	.word	.LC317
-	.word	.LC21
-	.word	.LC206
-	.word	.LC21
-	.word	.LC33
-	.word	.LC81
-	.word	.LC70
 	.word	.LC318
-	.word	.LC206
-	.word	.LC75
-	.word	.LC33
-	.word	.LC81
+	.word	.LC67
+	.word	.LC19
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC222
+	.word	.LC21
 	.word	.LC319
 	.word	.LC320
-	.word	.LC69
-	.word	.LC21
-	.word	.LC61
-	.word	.LC102
-	.word	.LC203
-	.word	.LC224
-	.word	.LC23
 	.word	.LC321
+	.word	.LC95
 	.word	.LC322
+	.word	.LC219
+	.word	.LC84
+	.word	.LC136
+	.word	.LC56
 	.word	.LC323
-	.word	.LC97
+	.word	.LC220
+	.word	.LC34
+	.word	.LC10
+	.word	.LC147
+	.word	.LC150
+	.word	.LC210
+	.word	.LC27
+	.word	.LC49
+	.word	.LC74
 	.word	.LC324
-	.word	.LC221
-	.word	.LC86
-	.word	.LC138
-	.word	.LC58
+	.word	.LC196
 	.word	.LC325
-	.word	.LC222
-	.word	.LC36
-	.word	.LC12
-	.word	.LC149
-	.word	.LC152
-	.word	.LC212
-	.word	.LC29
-	.word	.LC51
-	.word	.LC76
 	.word	.LC326
-	.word	.LC198
+	.word	.LC39
+	.word	.LC19
 	.word	.LC327
+	.word	.LC99
+	.word	.LC26
 	.word	.LC328
-	.word	.LC41
-	.word	.LC21
+	.word	.LC136
 	.word	.LC329
-	.word	.LC101
-	.word	.LC28
+	.word	.LC143
 	.word	.LC330
-	.word	.LC138
+	.word	.LC27
 	.word	.LC331
-	.word	.LC145
+	.word	.LC103
+	.word	.LC79
 	.word	.LC332
-	.word	.LC29
+	.word	.LC9
 	.word	.LC333
-	.word	.LC105
-	.word	.LC81
 	.word	.LC334
-	.word	.LC11
+	.word	.LC27
+	.word	.LC103
+	.word	.LC79
+	.word	.LC80
+	.word	.LC9
 	.word	.LC335
+	.word	.LC10
+	.word	.LC260
 	.word	.LC336
-	.word	.LC29
-	.word	.LC105
-	.word	.LC81
-	.word	.LC82
-	.word	.LC11
+	.word	.LC10
 	.word	.LC337
-	.word	.LC12
-	.word	.LC262
 	.word	.LC338
-	.word	.LC12
+	.word	.LC27
 	.word	.LC339
 	.word	.LC340
-	.word	.LC29
 	.word	.LC341
+	.word	.LC10
+	.word	.LC251
 	.word	.LC342
+	.word	.LC7
 	.word	.LC343
-	.word	.LC12
-	.word	.LC253
-	.word	.LC344
-	.word	.LC9
-	.word	.LC345
-	.word	.LC29
-	.word	.LC25
+	.word	.LC27
+	.word	.LC23
+	.word	.LC43
 	.word	.LC45
-	.word	.LC47
-	.word	.LC159
-	.word	.LC346
+	.word	.LC157
+	.word	.LC344
+	.word	.LC67
+	.word	.LC68
 	.word	.LC69
-	.word	.LC70
-	.word	.LC71
-	.word	.LC127
-	.word	.LC12
-	.word	.LC16
+	.word	.LC125
+	.word	.LC10
+	.word	.LC14
+	.word	.LC0
+	.word	.LC1
 	.word	.LC2
 	.word	.LC3
 	.word	.LC4
@@ -10912,9 +10882,9 @@ input_data:
 	.word	.LC9
 	.word	.LC10
 	.word	.LC11
+	.word	.LC9
 	.word	.LC12
 	.word	.LC13
-	.word	.LC11
 	.word	.LC14
 	.word	.LC15
 	.word	.LC16
@@ -10925,68 +10895,68 @@ input_data:
 	.word	.LC21
 	.word	.LC22
 	.word	.LC23
+	.word	.LC10
 	.word	.LC24
+	.word	.LC14
 	.word	.LC25
-	.word	.LC12
 	.word	.LC26
-	.word	.LC16
 	.word	.LC27
 	.word	.LC28
 	.word	.LC29
 	.word	.LC30
+	.word	.LC9
+	.word	.LC14
 	.word	.LC31
 	.word	.LC32
-	.word	.LC11
-	.word	.LC16
 	.word	.LC33
 	.word	.LC34
 	.word	.LC35
 	.word	.LC36
+	.word	.LC10
 	.word	.LC37
+	.word	.LC9
 	.word	.LC38
-	.word	.LC12
 	.word	.LC39
-	.word	.LC11
 	.word	.LC40
 	.word	.LC41
 	.word	.LC42
 	.word	.LC43
 	.word	.LC44
 	.word	.LC45
+	.word	.LC38
 	.word	.LC46
 	.word	.LC47
-	.word	.LC40
 	.word	.LC48
+	.word	.LC16
 	.word	.LC49
 	.word	.LC50
-	.word	.LC18
 	.word	.LC51
+	.word	.LC39
 	.word	.LC52
 	.word	.LC53
-	.word	.LC41
+	.word	.LC10
 	.word	.LC54
+	.word	.LC7
 	.word	.LC55
-	.word	.LC12
-	.word	.LC56
 	.word	.LC9
+	.word	.LC56
 	.word	.LC57
-	.word	.LC11
 	.word	.LC58
 	.word	.LC59
 	.word	.LC60
 	.word	.LC61
+	.word	.LC49
 	.word	.LC62
 	.word	.LC63
-	.word	.LC51
+	.word	.LC10
+	.word	.LC54
+	.word	.LC7
+	.word	.LC55
+	.word	.LC9
+	.word	.LC56
+	.word	.LC57
 	.word	.LC64
 	.word	.LC65
-	.word	.LC12
-	.word	.LC56
-	.word	.LC9
-	.word	.LC57
-	.word	.LC11
-	.word	.LC58
-	.word	.LC59
 	.word	.LC66
 	.word	.LC67
 	.word	.LC68
@@ -10997,377 +10967,375 @@ input_data:
 	.word	.LC73
 	.word	.LC74
 	.word	.LC75
+	.word	.LC4
 	.word	.LC76
-	.word	.LC77
-	.word	.LC6
-	.word	.LC78
-	.word	.LC11
-	.word	.LC79
 	.word	.LC9
+	.word	.LC77
+	.word	.LC7
+	.word	.LC78
+	.word	.LC70
+	.word	.LC79
 	.word	.LC80
-	.word	.LC72
+	.word	.LC19
 	.word	.LC81
 	.word	.LC82
-	.word	.LC21
+	.word	.LC52
 	.word	.LC83
 	.word	.LC84
-	.word	.LC54
 	.word	.LC85
 	.word	.LC86
 	.word	.LC87
+	.word	.LC19
+	.word	.LC7
+	.word	.LC83
 	.word	.LC88
+	.word	.LC19
 	.word	.LC89
-	.word	.LC21
-	.word	.LC9
-	.word	.LC85
 	.word	.LC90
-	.word	.LC21
+	.word	.LC61
 	.word	.LC91
+	.word	.LC62
 	.word	.LC92
-	.word	.LC63
 	.word	.LC93
-	.word	.LC64
+	.word	.LC92
+	.word	.LC19
 	.word	.LC94
 	.word	.LC95
-	.word	.LC94
-	.word	.LC21
 	.word	.LC96
 	.word	.LC97
+	.word	.LC10
+	.word	.LC24
 	.word	.LC98
+	.word	.LC96
 	.word	.LC99
-	.word	.LC12
-	.word	.LC26
 	.word	.LC100
-	.word	.LC98
 	.word	.LC101
 	.word	.LC102
 	.word	.LC103
+	.word	.LC92
 	.word	.LC104
+	.word	.LC92
 	.word	.LC105
-	.word	.LC94
 	.word	.LC106
-	.word	.LC94
 	.word	.LC107
 	.word	.LC108
 	.word	.LC109
 	.word	.LC110
+	.word	.LC34
 	.word	.LC111
 	.word	.LC112
-	.word	.LC36
 	.word	.LC113
+	.word	.LC28
 	.word	.LC114
 	.word	.LC115
-	.word	.LC30
+	.word	.LC70
+	.word	.LC56
 	.word	.LC116
+	.word	.LC91
 	.word	.LC117
-	.word	.LC72
-	.word	.LC58
+	.word	.LC106
+	.word	.LC26
 	.word	.LC118
-	.word	.LC93
+	.word	.LC101
+	.word	.LC59
 	.word	.LC119
-	.word	.LC108
-	.word	.LC28
+	.word	.LC56
 	.word	.LC120
-	.word	.LC103
-	.word	.LC61
+	.word	.LC60
+	.word	.LC10
 	.word	.LC121
-	.word	.LC58
+	.word	.LC101
 	.word	.LC122
-	.word	.LC62
-	.word	.LC12
+	.word	.LC19
+	.word	.LC4
 	.word	.LC123
-	.word	.LC103
 	.word	.LC124
-	.word	.LC21
-	.word	.LC6
 	.word	.LC125
 	.word	.LC126
 	.word	.LC127
 	.word	.LC128
 	.word	.LC129
+	.word	.LC21
 	.word	.LC130
 	.word	.LC131
-	.word	.LC23
 	.word	.LC132
+	.word	.LC101
 	.word	.LC133
+	.word	.LC19
 	.word	.LC134
-	.word	.LC103
+	.word	.LC95
+	.word	.LC26
 	.word	.LC135
-	.word	.LC21
 	.word	.LC136
-	.word	.LC97
-	.word	.LC28
 	.word	.LC137
 	.word	.LC138
 	.word	.LC139
+	.word	.LC95
 	.word	.LC140
 	.word	.LC141
-	.word	.LC97
+	.word	.LC136
 	.word	.LC142
 	.word	.LC143
-	.word	.LC138
+	.word	.LC91
+	.word	.LC135
+	.word	.LC136
 	.word	.LC144
 	.word	.LC145
-	.word	.LC93
-	.word	.LC137
-	.word	.LC138
+	.word	.LC95
 	.word	.LC146
+	.word	.LC56
 	.word	.LC147
-	.word	.LC97
+	.word	.LC125
 	.word	.LC148
-	.word	.LC58
 	.word	.LC149
-	.word	.LC127
 	.word	.LC150
 	.word	.LC151
 	.word	.LC152
+	.word	.LC150
 	.word	.LC153
+	.word	.LC28
 	.word	.LC154
-	.word	.LC152
+	.word	.LC103
 	.word	.LC155
-	.word	.LC30
+	.word	.LC7
+	.word	.LC70
+	.word	.LC10
 	.word	.LC156
-	.word	.LC105
 	.word	.LC157
-	.word	.LC9
-	.word	.LC72
-	.word	.LC12
+	.word	.LC20
+	.word	.LC136
+	.word	.LC77
 	.word	.LC158
 	.word	.LC159
-	.word	.LC22
-	.word	.LC138
-	.word	.LC79
+	.word	.LC19
 	.word	.LC160
 	.word	.LC161
-	.word	.LC21
+	.word	.LC10
 	.word	.LC162
+	.word	.LC15
+	.word	.LC19
 	.word	.LC163
-	.word	.LC12
+	.word	.LC70
 	.word	.LC164
-	.word	.LC17
-	.word	.LC21
+	.word	.LC51
 	.word	.LC165
-	.word	.LC72
+	.word	.LC69
+	.word	.LC83
 	.word	.LC166
-	.word	.LC53
+	.word	.LC56
 	.word	.LC167
-	.word	.LC71
-	.word	.LC85
 	.word	.LC168
-	.word	.LC58
 	.word	.LC169
 	.word	.LC170
 	.word	.LC171
+	.word	.LC56
+	.word	.LC167
 	.word	.LC172
 	.word	.LC173
-	.word	.LC58
-	.word	.LC169
 	.word	.LC174
+	.word	.LC95
 	.word	.LC175
 	.word	.LC176
-	.word	.LC97
 	.word	.LC177
+	.word	.LC19
 	.word	.LC178
+	.word	.LC100
 	.word	.LC179
-	.word	.LC21
+	.word	.LC19
 	.word	.LC180
-	.word	.LC102
+	.word	.LC106
 	.word	.LC181
-	.word	.LC21
+	.word	.LC136
+	.word	.LC56
+	.word	.LC116
+	.word	.LC28
 	.word	.LC182
-	.word	.LC108
 	.word	.LC183
-	.word	.LC138
-	.word	.LC58
-	.word	.LC118
-	.word	.LC30
+	.word	.LC142
+	.word	.LC16
+	.word	.LC100
 	.word	.LC184
+	.word	.LC100
+	.word	.LC4
 	.word	.LC185
-	.word	.LC144
-	.word	.LC18
-	.word	.LC102
+	.word	.LC179
 	.word	.LC186
-	.word	.LC102
-	.word	.LC6
 	.word	.LC187
+	.word	.LC106
 	.word	.LC181
+	.word	.LC136
 	.word	.LC188
 	.word	.LC189
-	.word	.LC108
-	.word	.LC183
-	.word	.LC138
 	.word	.LC190
+	.word	.LC9
+	.word	.LC10
+	.word	.LC182
+	.word	.LC183
 	.word	.LC191
+	.word	.LC16
+	.word	.LC100
 	.word	.LC192
-	.word	.LC11
-	.word	.LC12
-	.word	.LC184
-	.word	.LC185
+	.word	.LC178
 	.word	.LC193
-	.word	.LC18
-	.word	.LC102
 	.word	.LC194
-	.word	.LC180
+	.word	.LC9
 	.word	.LC195
 	.word	.LC196
-	.word	.LC11
+	.word	.LC121
+	.word	.LC106
+	.word	.LC56
 	.word	.LC197
 	.word	.LC198
-	.word	.LC123
-	.word	.LC108
-	.word	.LC58
 	.word	.LC199
 	.word	.LC200
 	.word	.LC201
 	.word	.LC202
 	.word	.LC203
 	.word	.LC204
+	.word	.LC73
 	.word	.LC205
 	.word	.LC206
-	.word	.LC75
+	.word	.LC19
 	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC31
 	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
-	.word	.LC33
+	.word	.LC19
+	.word	.LC207
+	.word	.LC204
+	.word	.LC73
+	.word	.LC209
+	.word	.LC4
 	.word	.LC210
-	.word	.LC208
-	.word	.LC21
-	.word	.LC209
 	.word	.LC206
-	.word	.LC75
+	.word	.LC73
 	.word	.LC211
-	.word	.LC6
+	.word	.LC10
 	.word	.LC212
-	.word	.LC208
-	.word	.LC75
 	.word	.LC213
-	.word	.LC12
+	.word	.LC125
+	.word	.LC56
 	.word	.LC214
 	.word	.LC215
-	.word	.LC127
-	.word	.LC58
 	.word	.LC216
 	.word	.LC217
+	.word	.LC19
+	.word	.LC181
+	.word	.LC178
 	.word	.LC218
+	.word	.LC77
 	.word	.LC219
-	.word	.LC21
-	.word	.LC183
-	.word	.LC180
+	.word	.LC84
 	.word	.LC220
-	.word	.LC79
 	.word	.LC221
-	.word	.LC86
+	.word	.LC77
 	.word	.LC222
 	.word	.LC223
-	.word	.LC79
 	.word	.LC224
+	.word	.LC91
 	.word	.LC225
 	.word	.LC226
-	.word	.LC93
 	.word	.LC227
+	.word	.LC91
 	.word	.LC228
 	.word	.LC229
-	.word	.LC93
+	.word	.LC53
+	.word	.LC56
 	.word	.LC230
 	.word	.LC231
-	.word	.LC55
-	.word	.LC58
-	.word	.LC232
-	.word	.LC233
-	.word	.LC29
-	.word	.LC133
-	.word	.LC82
-	.word	.LC21
-	.word	.LC234
-	.word	.LC97
-	.word	.LC28
-	.word	.LC235
-	.word	.LC11
-	.word	.LC29
-	.word	.LC222
-	.word	.LC11
-	.word	.LC181
-	.word	.LC139
-	.word	.LC144
-	.word	.LC236
-	.word	.LC11
-	.word	.LC29
-	.word	.LC237
-	.word	.LC12
-	.word	.LC238
-	.word	.LC239
-	.word	.LC75
-	.word	.LC240
-	.word	.LC48
-	.word	.LC241
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC33
-	.word	.LC243
-	.word	.LC108
-	.word	.LC183
-	.word	.LC29
-	.word	.LC101
-	.word	.LC58
-	.word	.LC244
-	.word	.LC245
-	.word	.LC246
-	.word	.LC12
-	.word	.LC247
-	.word	.LC242
-	.word	.LC179
-	.word	.LC21
-	.word	.LC180
-	.word	.LC248
-	.word	.LC202
+	.word	.LC27
 	.word	.LC131
-	.word	.LC64
-	.word	.LC249
-	.word	.LC57
-	.word	.LC250
-	.word	.LC251
-	.word	.LC51
-	.word	.LC22
-	.word	.LC252
-	.word	.LC21
+	.word	.LC80
+	.word	.LC19
+	.word	.LC232
+	.word	.LC95
+	.word	.LC26
+	.word	.LC233
+	.word	.LC9
+	.word	.LC27
+	.word	.LC220
+	.word	.LC9
+	.word	.LC179
+	.word	.LC137
+	.word	.LC142
+	.word	.LC234
+	.word	.LC9
+	.word	.LC27
+	.word	.LC235
+	.word	.LC10
+	.word	.LC236
+	.word	.LC237
+	.word	.LC73
+	.word	.LC238
+	.word	.LC46
+	.word	.LC239
+	.word	.LC240
 	.word	.LC177
-	.word	.LC253
-	.word	.LC195
-	.word	.LC108
-	.word	.LC102
-	.word	.LC58
-	.word	.LC254
-	.word	.LC63
+	.word	.LC19
+	.word	.LC31
+	.word	.LC241
+	.word	.LC106
+	.word	.LC181
+	.word	.LC27
+	.word	.LC99
+	.word	.LC56
+	.word	.LC242
+	.word	.LC243
+	.word	.LC244
+	.word	.LC10
+	.word	.LC245
+	.word	.LC240
+	.word	.LC177
+	.word	.LC19
+	.word	.LC178
+	.word	.LC246
+	.word	.LC200
+	.word	.LC129
+	.word	.LC62
+	.word	.LC247
+	.word	.LC55
+	.word	.LC248
+	.word	.LC249
+	.word	.LC49
+	.word	.LC20
+	.word	.LC250
+	.word	.LC19
+	.word	.LC175
+	.word	.LC251
+	.word	.LC193
+	.word	.LC106
+	.word	.LC100
+	.word	.LC56
+	.word	.LC252
 	.word	.LC61
-	.word	.LC102
+	.word	.LC59
+	.word	.LC100
+	.word	.LC201
+	.word	.LC253
+	.word	.LC26
 	.word	.LC203
+	.word	.LC23
+	.word	.LC254
+	.word	.LC196
 	.word	.LC255
-	.word	.LC28
-	.word	.LC205
-	.word	.LC25
+	.word	.LC106
+	.word	.LC56
 	.word	.LC256
-	.word	.LC198
 	.word	.LC257
-	.word	.LC108
-	.word	.LC58
+	.word	.LC56
 	.word	.LC258
 	.word	.LC259
-	.word	.LC58
+	.word	.LC106
+	.word	.LC56
 	.word	.LC260
+	.word	.LC7
+	.word	.LC10
+	.word	.LC142
+	.word	.LC182
 	.word	.LC261
-	.word	.LC108
-	.word	.LC58
-	.word	.LC262
-	.word	.LC9
-	.word	.LC12
-	.word	.LC144
-	.word	.LC184
-	.word	.LC263
-	.word	.LC108
+	.word	.LC106
 	.section	.sbss,"aw",@nobits
 	.align	3
 	.type	qsort_checksum, @object
@@ -11376,110 +11344,3 @@ qsort_checksum:
 	.zero	8
 	.ident	"GCC: (g1b306039a) 15.1.0"
 	.section	.note.GNU-stack,"",@progbits
-
-
-    .text
-    .align 2
-__mul:
-    add    a2, a0, x0
-    addi   a0, x0, 0
-.Mul_loop:
-    andi   a3, a1, 1
-    beq    a3, x0, .Mul_skip
-    add    a0, a0, a2
-.Mul_skip:
-    srli   a1, a1, 1
-    slli   a2, a2, 1
-    bne    a1, x0, .Mul_loop
-    jalr   x0, ra, 0
-
-.text
-.align 2
-
-# Signed 32-bit division: a0 = a0 / a1
-.global __riscv_div_lib_divsi3
-__riscv_div_lib_divsi3:
-    blt   a0, zero, __riscv_div_lib_L10      # bltz a0 -> blt a0, zero
-    blt   a1, zero, __riscv_div_lib_L11      # bltz a1 -> blt a1, zero
-    # Since the quotient is positive, fall into udivsi3
-
-# Unsigned 32-bit division: a0 = a0 / a1
-.global __riscv_div_lib_udivsi3
-__riscv_div_lib_udivsi3:
-    addi  a2, a1, 0                           # mv a2, a1 -> addi a2, a1, 0
-    addi  a1, a0, 0                           # mv a1, a0 -> addi a1, a0, 0
-    addi  a0, zero, -1                        # li a0, -1 -> addi a0, zero, -1
-    beq   a2, zero, __riscv_div_lib_L5       # beqz a2 -> beq a2, zero
-    addi  a3, zero, 1                         # li a3, 1 -> addi a3, zero, 1
-    bgeu  a2, a1, __riscv_div_lib_L2
-__riscv_div_lib_L1:
-    bge   zero, a2, __riscv_div_lib_L2       # blez a2 -> bge zero, a2
-    slli  a2, a2, 1
-    slli  a3, a3, 1
-    bltu  a2, a1, __riscv_div_lib_L1         # bgtu a1, a2 -> bltu a2, a1
-__riscv_div_lib_L2:
-    addi  a0, zero, 0                         # li a0, 0 -> addi a0, zero, 0
-__riscv_div_lib_L3:
-    bltu  a1, a2, __riscv_div_lib_L4
-    sub   a1, a1, a2
-    or    a0, a0, a3
-__riscv_div_lib_L4:
-    srli  a3, a3, 1
-    srli  a2, a2, 1
-    bne   a3, zero, __riscv_div_lib_L3       # bnez a3 -> bne a3, zero
-__riscv_div_lib_L5:
-    jalr  zero, ra, 0                         # ret -> jalr zero, ra, 0
-
-# Unsigned 32-bit remainder: a0 = a0 % a1
-.global __riscv_div_lib_umodsi3
-__riscv_div_lib_umodsi3:
-    # Call udivsi3(a0, a1), then return the remainder, which is in a1
-    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
-.Lpcrel_div1:
-    auipc ra, %pcrel_hi(__riscv_div_lib_udivsi3)
-    jalr  ra, ra, %pcrel_lo(.Lpcrel_div1)
-    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
-    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
-
-# Handle negative arguments to divsi3
-__riscv_div_lib_L10:
-    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
-    # Zero is handled as a negative so that the result will not be inverted
-    blt   zero, a1, __riscv_div_lib_L12      # bgtz a1 -> blt zero, a1
-
-    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
-    jal   zero, __riscv_div_lib_udivsi3      # j __riscv_div_lib_udivsi3 -> jal zero
-__riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
-    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
-__riscv_div_lib_L12:
-    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
-.Lpcrel_div2:
-    auipc ra, %pcrel_hi(__riscv_div_lib_udivsi3)
-    jalr  ra, ra, %pcrel_lo(.Lpcrel_div2)
-    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
-    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
-
-# Signed 32-bit remainder: a0 = a0 % a1
-.global __riscv_div_lib_modsi3
-__riscv_div_lib_modsi3:
-    addi  t0, ra, 0                           # mv t0, ra -> addi t0, ra, 0
-    blt   a1, zero, __riscv_div_lib_L31      # bltz a1 -> blt a1, zero
-    blt   a0, zero, __riscv_div_lib_L32      # bltz a0 -> blt a0, zero
-__riscv_div_lib_L30:
-.Lpcrel_div3:
-    auipc ra, %pcrel_hi(__riscv_div_lib_udivsi3)
-    jalr  ra, ra, %pcrel_lo(.Lpcrel_div3)
-    addi  a0, a1, 0                           # mv a0, a1 -> addi a0, a1, 0
-    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
-__riscv_div_lib_L31:
-    sub   a1, zero, a1                        # neg a1, a1 -> sub a1, zero, a1
-    bge   a0, zero, __riscv_div_lib_L30      # bgez a0 -> bge a0, zero
-__riscv_div_lib_L32:
-    sub   a0, zero, a0                        # neg a0, a0 -> sub a0, zero, a0
-.Lpcrel_div4:
-    auipc ra, %pcrel_hi(__riscv_div_lib_udivsi3)
-    jalr  ra, ra, %pcrel_lo(.Lpcrel_div4)
-    sub   a0, zero, a1                        # neg a0, a1 -> sub a0, zero, a1
-    jalr  zero, t0, 0                         # jr t0 -> jalr zero, t0, 0
-
-# end of subrountine

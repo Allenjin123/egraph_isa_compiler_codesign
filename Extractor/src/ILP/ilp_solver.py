@@ -447,9 +447,8 @@ def main():
              "latency (minimize execution time, cost=latency*exec_count). "
              "(default: program_size)"
     )
-
     args = parser.parse_args()
-    
+
     # Create output directories (append program name under the base output path)
     output_dir = Path(args.output) / args.program_name
     output_dir.mkdir(parents=True, exist_ok=True)

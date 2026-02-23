@@ -10095,9 +10095,9 @@ int main(void) {
     }
   }
   qsort_checksum = checksum;
-  printf("\nSorting %d elements.\n\n", MAXARRAY);
-  for (int i = 0; i < MAXARRAY; ++i) {
-    printf("%s\n", array[i].qstring);
-  }
+  // printf("\nSorting %d elements.\n\n", MAXARRAY);
+  // for (int i = 0; i < MAXARRAY; ++i) {
+  //   printf("%s\n", array[i].qstring);
+  // }
   return (qsort_checksum == 10000) ? 1 : 0;
 }

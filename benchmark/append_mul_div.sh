@@ -7,6 +7,7 @@ cd "$SCRIPT_DIR"
 # Path to the mul and div clean files
 MUL_CLEAN="../program_synthesis/ricsv_toolchain/mul_clean.s"
 DIV_CLEAN="../program_synthesis/ricsv_toolchain/div_clean.s"
+REPORT="$SCRIPT_DIR/rem_div_mul_report.json"
 
 # Check if the required files exist
 if [[ ! -f "$MUL_CLEAN" ]]; then
@@ -18,6 +19,26 @@ if [[ ! -f "$DIV_CLEAN" ]]; then
     echo "Error: $DIV_CLEAN not found!"
     exit 1
 fi
+
+if [[ ! -f "$REPORT" ]]; then
+    echo "Error: $REPORT not found! Run frontend/extract_instructions.py first."
+    exit 1
+fi
+
+# Helper: query rem_div_mul_report.json for a benchmark stem
+# Usage: query_report <stem> <key>   -> prints "true" or "false"
+query_report() {
+    local stem="$1"
+    local key="$2"
+    python3 -c "
+import json, sys
+data = json.load(open('$REPORT'))
+entry = data.get('$stem')
+if entry is None:
+    sys.exit(1)
+print(str(entry.get('$key', False)).lower())
+"
+}
 
 # Dynamically find all *_clean.s files in benchmark directory
 # Structure should be: category/benchmark/benchmark_name_clean.s
@@ -37,26 +58,51 @@ for workload in "${WORKLOADS[@]}"; do
         continue
     fi
 
+    # Derive benchmark stem (strip _clean suffix)
+    filename=$(basename "$file" _clean.s)
+
     # Get the last line of the file (trim whitespace)
     last_line=$(tail -1 "$file" | sed 's/[[:space:]]*$//')
 
     # Check if it ends with "# end of subrountine" (note: typo in original file)
-    if [[ "$last_line" != "# end of subrountine" ]]; then
-        echo "Processing: $workload"
-        echo "  Last line: '$last_line'"
-        echo "  Appending mul_clean.s and div_clean.s..."
-        echo >> "$file"  # Add a newline between the two files
-        echo >> "$file"  # Add a newline between the two files
-        # Append mul_clean.s and div_clean.s (order matters!)
-        cat "$MUL_CLEAN" >> "$file"
-        echo >> "$file"  # Add a newline between the two files
-        echo >> "$file"  # Add a newline between the two files
-        cat "$DIV_CLEAN" >> "$file"
-
-        echo "  Done!"
-    else
+    if [[ "$last_line" == "# end of subrountine" ]]; then
         echo "Skipping: $workload (already has mul/div appended)"
+        continue
     fi
+
+    # Look up which patches are needed
+    need_div=$(query_report "$filename" "div" 2>/dev/null || echo "true")
+    need_mul=$(query_report "$filename" "mul" 2>/dev/null || echo "true")
+
+    # Also treat rem as requiring div patch (rem/remu are implemented via div)
+    has_rem=$(query_report "$filename" "rem" 2>/dev/null || echo "false")
+    if [[ "$has_rem" == "true" ]]; then
+        need_div="true"
+    fi
+
+    if [[ "$need_mul" != "true" && "$need_div" != "true" ]]; then
+        echo "Skipping: $workload (no mul/div/rem instructions, no patch needed)"
+        continue
+    fi
+
+    echo "Processing: $workload"
+    echo "  Last line: '$last_line'"
+    echo "  Appending: mul=$need_mul, div/rem=$need_div"
+
+    echo >> "$file"
+    echo >> "$file"
+
+    if [[ "$need_mul" == "true" ]]; then
+        cat "$MUL_CLEAN" >> "$file"
+        echo >> "$file"
+        echo >> "$file"
+    fi
+
+    if [[ "$need_div" == "true" ]]; then
+        cat "$DIV_CLEAN" >> "$file"
+    fi
+
+    echo "  Done!"
 done
 
 echo "Processing complete!"

@@ -1074,23 +1074,32 @@ sha_process_buffer:
 	addi	sp,sp,32
 	tail	sha_final
 	.size	sha_process_buffer, .-sha_process_buffer
-	.section	.rodata.str1.4,"aMS",@progbits,1
-	.align	2
-.LC0:
-	.string	"%08lx %08lx %08lx %08lx %08lx\n"
-	.text
 	.align	2
 	.globl	sha_print
 	.type	sha_print, @function
 sha_print:
-	lw	a5,16(a0)
-	lw	a4,12(a0)
-	lw	a3,8(a0)
-	lw	a2,4(a0)
-	lw	a1,0(a0)
-	lui	a0,%hi(.LC0)
-	addi	a0,a0,%lo(.LC0)
-	tail	printf
+	lui	a5,%hi(sha_sink)
+	lw	a4,%lo(sha_sink)(a5)
+	lw	a3,0(a0)
+	lw	a6,4(a0)
+	lw	a1,8(a0)
+	add	a4,a4,a3
+	sw	a4,%lo(sha_sink)(a5)
+	lw	a4,%lo(sha_sink)(a5)
+	lw	a2,12(a0)
+	lw	a3,16(a0)
+	add	a4,a4,a6
+	sw	a4,%lo(sha_sink)(a5)
+	lw	a4,%lo(sha_sink)(a5)
+	add	a4,a4,a1
+	sw	a4,%lo(sha_sink)(a5)
+	lw	a4,%lo(sha_sink)(a5)
+	add	a4,a4,a2
+	sw	a4,%lo(sha_sink)(a5)
+	lw	a4,%lo(sha_sink)(a5)
+	add	a4,a4,a3
+	sw	a4,%lo(sha_sink)(a5)
+	ret
 	.size	sha_print, .-sha_print
 	.section	.text.startup,"ax",@progbits
 	.align	2
@@ -1114,6 +1123,7 @@ main:
 	.size	main, .-main
 	.globl	input_small_data
 	.globl	input_small_data_size
+	.globl	sha_sink
 	.section	.rodata
 	.align	2
 	.type	input_small_data, @object
@@ -6331,6 +6341,12 @@ input_small_data:
 	.ascii	"erienceIwilldispensethisadvicenowEnjoythepowerandbeautyofyou"
 	.ascii	"ryouthOhnevermindYouwillnotunder"
 	.string	"standthepowerandbeautyofyouryouthuntiltheyvefadedButtrustmein20yearsyoulllookbackatphotosofyourselfandrecallinawayyoucantgraspnowhowmuchpossibilitylaybeforeyouandhowfabulousyoureallylookedYouarenotasfatasyouimagineDontworryaboutthefutureOrworrybutknowthat\n"
+	.section	.sbss,"aw",@nobits
+	.align	2
+	.type	sha_sink, @object
+	.size	sha_sink, 4
+sha_sink:
+	.zero	4
 	.section	.srodata,"a"
 	.align	2
 	.type	input_small_data_size, @object

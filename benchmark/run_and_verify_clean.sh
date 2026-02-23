@@ -141,6 +141,24 @@ echo "RISC-V Clean Assembly Verification"
 echo "========================================="
 echo ""
 
+
+# Option: --compile-only (only check compilation, skip output verification)
+VERIFY_OUTPUT=1
+POSITIONAL=()
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --compile-only)
+            VERIFY_OUTPUT=0
+            shift
+            ;;
+        *)
+            POSITIONAL+=("$1")
+            shift
+            ;;
+    esac
+done
+set -- "${POSITIONAL[@]}"
+
 # Check if a specific file is provided
 if [ $# -gt 0 ]; then
     # Process specific file
@@ -192,15 +210,16 @@ for asm_file in "${clean_files[@]}"; do
         suite="embench"
     fi
     echo "  Suite: $suite"
-    
-    if [[ "$suite" == "mibench" ]]; then
+
+    # Only check for reference output if VERIFY_OUTPUT==1 and suite==mibench
+    if [ "$VERIFY_OUTPUT" -eq 1 ] && [[ "$suite" == "mibench" ]]; then
         if ! mibench_dir=$(find_mibench_dir "$prog_name"); then
             echo -e "  ${YELLOW}⚠ Cannot find mibench directory for $prog_name, skipping${NC}"
             skipped=$((skipped + 1))
             echo ""
             continue
         fi
-        
+
         ref_output="$mibench_dir/old_output/output_${size_type}.txt"
         if [ ! -f "$ref_output" ]; then
             echo -e "  ${YELLOW}⚠ Reference output not found: $ref_output${NC}"
@@ -233,11 +252,19 @@ for asm_file in "${clean_files[@]}"; do
     
     # Get program arguments
     prog_args=$(get_program_args "$prog_name" "$size_type")
-    
+
+    if [ "$VERIFY_OUTPUT" -eq 0 ]; then
+        echo "  [Compile-only mode] Skipping spike run and output verification."
+        passed=$((passed + 1))
+        rm -rf "$build_dir"
+        echo ""
+        continue
+    fi
+
     # Run with spike (with 300 second timeout)
     output_file="$build_dir/output_${size_type}.txt"
     echo "  Running with spike..."
-    
+
     if [ -n "$prog_args" ]; then
         echo "    Arguments: $prog_args"
         # Run spike with timeout, capture stdout only (stderr to /dev/null)
@@ -271,10 +298,10 @@ for asm_file in "${clean_files[@]}"; do
             echo -e "  ${YELLOW}⚠ Program exited with code $exit_code (continuing)${NC}"
         fi
     fi
-    
+
     if [[ "$suite" == "mibench" ]]; then
         echo "  Comparing with reference output..."
-        
+
         if diff -q "$output_file" "$ref_output" > /dev/null 2>&1; then
             echo -e "  ${GREEN}✓ Output matches reference${NC}"
             passed=$((passed + 1))
@@ -282,10 +309,10 @@ for asm_file in "${clean_files[@]}"; do
             echo -e "  ${RED}✗ Output differs from reference${NC}"
             echo "    Reference: $ref_output"
             echo "    Generated: $output_file"
-            
+
             echo "    First differences:"
             diff "$output_file" "$ref_output" | head -10 | sed 's/^/      /'
-            
+
             failed=$((failed + 1))
         fi
     else
@@ -297,7 +324,7 @@ for asm_file in "${clean_files[@]}"; do
             failed=$((failed + 1))
         fi
     fi
-    
+
     # Clean up
     rm -rf "$build_dir"
     echo ""

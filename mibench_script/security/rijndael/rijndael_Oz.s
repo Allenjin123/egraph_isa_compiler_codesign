@@ -1095,90 +1095,80 @@ dec_buffer:
 	.align	2
 .LC0:
 	.string	"1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321"
-	.align	2
-.LC1:
-	.string	"%c"
-	.align	2
-.LC2:
-	.string	"Invalid KEY\n"
 	.section	.text.startup,"ax",@progbits
 	.align	2
 	.globl	main
 	.type	main, @function
 main:
 	addi	sp,sp,-576
-	sw	s0,568(sp)
-	lui	s0,%hi(.LC0)
 	sw	s1,564(sp)
+	lui	s1,%hi(.LC0)
+	sw	s0,568(sp)
 	sw	s3,556(sp)
 	sw	s4,552(sp)
 	sw	ra,572(sp)
 	sw	s2,560(sp)
-	addi	s0,s0,%lo(.LC0)
-	li	s1,0
+	addi	s1,s1,%lo(.LC0)
+	li	s0,0
 	addi	s3,sp,20
 	li	s4,32
 .L122:
-	lbu	a0,0(s0)
+	lbu	a0,0(s1)
 	call	hex_value
 	mv	s2,a0
-	lbu	a0,1(s0)
+	lbu	a0,1(s1)
 	call	hex_value
 	addi	a5,s2,1
-	beq	a5,zero,.L121
+	beq	a5,zero,.L125
 	addi	a5,a0,1
-	beq	a5,zero,.L121
+	beq	a5,zero,.L125
 	slli	s2,s2,4
-	add	a5,s3,s1
+	add	a5,s3,s0
 	or	s2,s2,a0
 	sb	s2,0(a5)
-	addi	s1,s1,1
-	addi	s0,s0,2
-	bne	s1,s4,.L122
+	addi	s0,s0,1
+	addi	s1,s1,2
+	bne	s0,s4,.L122
 	addi	a3,sp,52
 	li	a2,1
-	mv	a1,s1
+	mv	a1,s0
 	mv	a0,s3
 	call	set_key
 	li	a4,348160
-	lui	s4,%hi(cipher_buffer.1)
+	lui	s1,%hi(cipher_buffer.1)
 	li	a1,311296
 	lui	a0,%hi(input_small_data)
 	addi	a5,sp,12
 	addi	a4,a4,1840
-	addi	a3,s4,%lo(cipher_buffer.1)
+	addi	a3,s1,%lo(cipher_buffer.1)
 	addi	a2,sp,52
 	addi	a1,a1,528
 	addi	a0,a0,%lo(input_small_data)
 	call	enc_buffer
-	li	s0,-2
-	bne	a0,zero,.L120
+	mv	a5,a0
+	li	a0,-2
+	bne	a5,zero,.L120
 	addi	a3,sp,52
 	li	a2,2
-	mv	a1,s1
+	mv	a1,s0
 	mv	a0,s3
 	call	set_key
 	lw	a1,12(sp)
 	li	a4,319488
-	lui	s2,%hi(plain_buffer.0)
+	lui	a3,%hi(plain_buffer.0)
 	addi	a5,sp,16
 	addi	a4,a4,512
-	addi	a3,s2,%lo(plain_buffer.0)
+	addi	a3,a3,%lo(plain_buffer.0)
 	addi	a2,sp,52
-	addi	a0,s4,%lo(cipher_buffer.1)
+	addi	a0,s1,%lo(cipher_buffer.1)
 	call	dec_buffer
-	mv	s0,a0
-	bne	a0,zero,.L128
-	lui	s3,%hi(.LC1)
-	li	s1,0
-	addi	s2,s2,%lo(plain_buffer.0)
-	addi	s3,s3,%lo(.LC1)
+	beq	a0,zero,.L120
+	li	a0,-3
+	j	.L120
 .L125:
-	lw	a5,16(sp)
-	bgtu	a5,s1,.L126
+	li	a0,-1
 .L120:
 	lw	ra,572(sp)
-	mv	a0,s0
 	lw	s0,568(sp)
 	lw	s1,564(sp)
 	lw	s2,560(sp)
@@ -1186,22 +1176,6 @@ main:
 	lw	s4,552(sp)
 	addi	sp,sp,576
 	jr	ra
-.L126:
-	add	a5,s1,s2
-	lbu	a1,0(a5)
-	mv	a0,s3
-	addi	s1,s1,1
-	call	printf
-	j	.L125
-.L128:
-	li	s0,-3
-	j	.L120
-.L121:
-	lui	a0,%hi(.LC2)
-	addi	a0,a0,%lo(.LC2)
-	call	printf
-	li	s0,-1
-	j	.L120
 	.size	main, .-main
 	.globl	input_small_data
 	.globl	input_small_data_size

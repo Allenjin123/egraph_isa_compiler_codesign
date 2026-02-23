@@ -315,28 +315,36 @@ class AsmReconstructor:
                         output_lines.append(line)
                         i += 1
                         deleted = 0
+                        current_block_lines = []
                         while i < len(lines) and deleted < label_line_count:
                             next_line = lines[i]
                             if (self.is_instruction_line(next_line) or
                                 (next_line.strip().startswith('.Lpcrel_') and next_line.strip().endswith(':'))):
                                 deleted += 1
+                            current_block_lines.append(next_line)
                             i += 1
                         blocks_info = metadata['blocks']
                         # 按照 block_id 数字大小排序，而不是按 key 字符串排序
                         sorted_block_keys = sorted(blocks_info.keys(), key=lambda k: blocks_info[k]['id'])
-                        for block_key in sorted_block_keys:
-                            block_id = blocks_info[block_key]['id']
-                            if block_id in blocks_map:
-                                block_lines = blocks_map[block_id]
-                                processed_lines = self.insert_pcrel_labels_in_block(block_lines)
-                                for block_line in processed_lines:
-                                    stripped = block_line.strip()
-                                    if stripped.endswith(':') and not block_line.startswith(('\t', ' ')):
-                                        output_lines.append(block_line)
-                                    elif block_line.startswith(('\t', ' ')) or not stripped:
-                                        output_lines.append(block_line)
-                                    else:
-                                        output_lines.append('\t' + block_line)
+                        # 检查是否所有 block 都不在 blocks_map 中（全部 fallback）
+                        all_missing = all(blocks_info[k]['id'] not in blocks_map for k in sorted_block_keys)
+                        if all_missing:
+                            # 没有任何 rewrite block，原样输出原始行
+                            output_lines.extend(current_block_lines)
+                        else:
+                            for block_key in sorted_block_keys:
+                                block_id = blocks_info[block_key]['id']
+                                if block_id in blocks_map:
+                                    block_lines = blocks_map[block_id]
+                                    processed_lines = self.insert_pcrel_labels_in_block(block_lines)
+                                    for block_line in processed_lines:
+                                        stripped = block_line.strip()
+                                        if stripped.endswith(':') and not block_line.startswith(('\t', ' ')):
+                                            output_lines.append(block_line)
+                                        elif block_line.startswith(('\t', ' ')) or not stripped:
+                                            output_lines.append(block_line)
+                                        else:
+                                            output_lines.append('\t' + block_line)
                         continue
                     else:
                         output_lines.append(line)
