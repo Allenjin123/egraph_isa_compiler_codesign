@@ -99,7 +99,7 @@ def run_egglog_on_file(egg_file: Path, egglog_path: str, verbose: bool = False) 
 def process_directory(input_dir: Path, egglog_path: str, verbose: bool = False, max_files: int = None):
     """
     Process all .egg files in a directory recursively
-    
+
     Args:
         input_dir: Directory to search for .egg files
         egglog_path: Path to the egglog executable
