@@ -357,7 +357,7 @@ int main(void) {
     aes ctx[1];
     
     if(parse_key(KEY, key_bytes, &key_len)) {
-        printf("Invalid KEY\n");
+        // printf("Invalid KEY\n");
         return -1;
     }
     
@@ -369,7 +369,7 @@ int main(void) {
     if(dec_buffer(cipher_buffer, cipher_len, ctx, plain_buffer, 
                   sizeof(plain_buffer), &plain_len)) return -3;
     
-    for(size_t i = 0; i < plain_len; i++) printf("%c", plain_buffer[i]);
+    // for(size_t i = 0; i < plain_len; i++) printf("%c", plain_buffer[i]);
     
     return 0;
 }

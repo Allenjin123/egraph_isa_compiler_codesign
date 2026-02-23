@@ -618,7 +618,7 @@ main(int argc, char **argv)
 			int whole = (int)time_us / 1000000;
 			int frac = (int)time_us % 1000000;
 			if (frac < 0) frac = -frac;
-			printf("%d.%06d %08x: Found.\n", whole, frac, addr.s_addr);
+			// printf("%d.%06d %08x: Found.\n", whole, frac, addr.s_addr);
 			found_count++;
 		} else {
 			/* Insert the node */

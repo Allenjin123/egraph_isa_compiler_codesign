@@ -203,37 +203,37 @@ int main(void) {
   long checksum = 0;
 
   /* solve some cubic functions */
-  printf("********* CUBIC FUNCTIONS ***********\n");
+  // printf("********* CUBIC FUNCTIONS ***********\n");
   /* should get 3 solutions: 2, 6 & 2.5   */
   SolveCubic(a1, b1, c1, d1, &solutions, x);
-  printf("Solutions:");
+  // printf("Solutions:");
   for (i = 0; i < solutions; i++) {
     checksum += x[i];
-    printf(" %ld.%03ld", x[i]/SCALE, my_fabs(x[i]%SCALE));
+    // printf(" %ld.%03ld", x[i]/SCALE, my_fabs(x[i]%SCALE));
   }
-  printf("\n");
+  // printf("\n");
   /* should get 1 solution: 2.5           */
   SolveCubic(a2, b2, c2, d2, &solutions, x);
-  printf("Solutions:");
+  // printf("Solutions:");
   for (i = 0; i < solutions; i++) {
     checksum += x[i];
-    printf(" %ld.%03ld", x[i]/SCALE, my_fabs(x[i]%SCALE));
+    // printf(" %ld.%03ld", x[i]/SCALE, my_fabs(x[i]%SCALE));
   }
-  printf("\n");
+  // printf("\n");
   SolveCubic(a3, b3, c3, d3, &solutions, x);
-  printf("Solutions:");
+  // printf("Solutions:");
   for (i = 0; i < solutions; i++) {
     checksum += x[i];
-    printf(" %ld.%03ld", x[i]/SCALE, my_fabs(x[i]%SCALE));
+    // printf(" %ld.%03ld", x[i]/SCALE, my_fabs(x[i]%SCALE));
   }
-  printf("\n");
+  // printf("\n");
   SolveCubic(a4, b4, c4, d4, &solutions, x);
-  printf("Solutions:");
+  // printf("Solutions:");
   for (i = 0; i < solutions; i++) {
     checksum += x[i];
-    printf(" %ld.%03ld", x[i]/SCALE, my_fabs(x[i]%SCALE));
+    // printf(" %ld.%03ld", x[i]/SCALE, my_fabs(x[i]%SCALE));
   }
-  printf("\n");
+  // printf("\n");
 
   /* Now solve some random equations */
   for (a1 = 1*SCALE; a1 < 10*SCALE; a1+=SCALE) {
@@ -241,39 +241,39 @@ int main(void) {
       for (c1 = 5*SCALE; c1 < 15*SCALE; c1 += SCALE/2) {
         for (d1 = -1*SCALE; d1 > -11*SCALE; d1-=SCALE) {
           SolveCubic(a1, b1, c1, d1, &solutions, x);
-          printf("Solutions:");
+          // printf("Solutions:");
           for (i = 0; i < solutions; i++) {
             checksum += x[i];
-            printf(" %ld.%03ld", x[i]/SCALE, my_fabs(x[i]%SCALE));
+            // printf(" %ld.%03ld", x[i]/SCALE, my_fabs(x[i]%SCALE));
           }
-          printf("\n");
+          // printf("\n");
         }
       }
     }
   }
 
-  printf("********* INTEGER SQR ROOTS ***********\n");
+  // printf("********* INTEGER SQR ROOTS ***********\n");
   /* perform some integer square roots */
   for (i = 0; i < 1001; ++i) {
     usqrt(i, &q);
     /* remainder differs on some machines */
     checksum += q.sqrt;
-    printf("sqrt(%3d) = %2d\n", i, q.sqrt);
+    // printf("sqrt(%3d) = %2d\n", i, q.sqrt);
   }
   usqrt(l, &q);
   checksum += q.sqrt;
-  printf("\nsqrt(%lX) = %X\n", l, q.sqrt);
+  // printf("\nsqrt(%lX) = %X\n", l, q.sqrt);
 
-  printf("********* ANGLE CONVERSION ***********\n");
+  // printf("********* ANGLE CONVERSION ***********\n");
   /* convert some rads to degrees */
   for (X = 0; X <= 360*SCALE; X += SCALE) {
     checksum += deg2rad(X);
-    printf("%3ld degrees = %ld.%03ld radians\n", X/SCALE, deg2rad(X)/SCALE, my_fabs(deg2rad(X)%SCALE));
+    // printf("%3ld degrees = %ld.%03ld radians\n", X/SCALE, deg2rad(X)/SCALE, my_fabs(deg2rad(X)%SCALE));
   }
-  printf("\n");
+  // printf("\n");
   for (X = 0; X <= (2 * PI); X += (PI / 180)) {
     checksum += rad2deg(X);
-    printf("%ld.%03ld radians = %3ld degrees\n", X/SCALE, my_fabs(X%SCALE), rad2deg(X)/SCALE);
+    // printf("%ld.%03ld radians = %3ld degrees\n", X/SCALE, my_fabs(X%SCALE), rad2deg(X)/SCALE);
   }
 
   return (checksum != 0) ? 0 : 1;

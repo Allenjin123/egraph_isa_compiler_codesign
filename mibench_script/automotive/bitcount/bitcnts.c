@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
             long secs = ct_ms / 1000;
             long millis = ct_ms % 1000;
             if (millis < 0) millis += 1000, secs -= 1;
-            printf("%-38s> Time: %4ld.%03ld sec.; Bits: %ld\n",
+            // printf("%-38s> Time: %4ld.%03ld sec.; Bits: %ld\n",
                    text[i], secs, millis, n);
       }
       checksum += cmin_ms;
@@ -139,8 +139,8 @@ int main(int argc, char *argv[])
       checksum += (long long)cmaxix;
       checksum += (long long)iterations;
       bitcnts_checksum = checksum;
-      printf("\nBest  > %s\n", text[cminix]);
-      printf("Worst > %s\n", text[cmaxix]);
+      // printf("\nBest  > %s\n", text[cminix]);
+      // printf("Worst > %s\n", text[cmaxix]);
       return (checksum > 0) ? 0 : 1;
 }
 

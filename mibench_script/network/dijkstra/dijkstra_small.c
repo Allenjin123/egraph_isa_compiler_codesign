@@ -44,7 +44,8 @@ void print_path (NODE *rgnNodes, int chNode)
     {
       print_path(rgnNodes, rgnNodes[chNode].iPrev);
     }
-  printf (" %d", chNode);
+  result_sink += chNode;  /* Write to volatile variable to prevent DCE */
+  // printf (" %d", chNode);
 }
 
 
@@ -89,7 +90,7 @@ int dijkstra(int chStart, int chEnd)
 
   if (chStart == chEnd) 
     {
-      printf("Shortest path is 0 in cost. Just stay where you are.\n");
+      //printf("Shortest path is 0 in cost. Just stay where you are.\n");
     }
   else
     {
@@ -116,10 +117,10 @@ int dijkstra(int chStart, int chEnd)
 	    }
 	}
       
-      printf("Shortest path is %d in cost. ", rgnNodes[chEnd].iDist);
-      printf("Path is: ");
+      // printf("Shortest path is %d in cost. ", rgnNodes[chEnd].iDist);
+      // printf("Path is: ");
       print_path(rgnNodes, chEnd);
-      printf("\n");
+      // printf("\n");
       
       /* Write to volatile variable to prevent DCE */
       result_sink += rgnNodes[chEnd].iDist;
