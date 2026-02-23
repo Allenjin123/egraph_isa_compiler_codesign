@@ -1,0 +1,28 @@
+rem/div/mul instruction presence per benchmark
+============================================================
+
+basicmath_small_O3: rem: false, div: true, mul: true
+bitcnts_O3: rem: false, div: false, mul: true
+qsort_large_O3: rem: false, div: false, mul: true
+qsort_small_O3: rem: false, div: false, mul: false
+mont64: rem: false, div: false, mul: true
+libedn: rem: false, div: false, mul: true
+libhuffbench: rem: false, div: false, mul: false
+matmult-int: rem: false, div: false, mul: true
+md5: rem: false, div: false, mul: false
+libnsichneu: rem: false, div: false, mul: false
+picojpeg_test: rem: false, div: false, mul: true
+primecount: rem: false, div: false, mul: true
+combined: rem: false, div: false, mul: true
+libslre: rem: false, div: false, mul: false
+libstatemate: rem: false, div: false, mul: false
+tarfind: rem: false, div: false, mul: true
+libud: rem: false, div: true, mul: true
+libwikisort: rem: true, div: true, mul: true
+nettle-aes: rem: true, div: false, mul: false
+nettle-sha256: rem: false, div: false, mul: false
+qrtest: rem: false, div: false, mul: true
+dijkstra_small_O3: rem: false, div: false, mul: true
+patricia_O3: rem: true, div: true, mul: true
+rijndael_Oz: rem: true, div: true, mul: true
+sha_O3: rem: false, div: false, mul: false
