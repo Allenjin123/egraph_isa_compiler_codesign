@@ -532,431 +532,240 @@ SolveCubic:
 	li	a0,1047
 	j	.L14
 	.size	SolveCubic, .-SolveCubic
-	.section	.rodata.str1.4,"aMS",@progbits,1
-	.align	2
-.LC0:
-	.string	"********* CUBIC FUNCTIONS ***********"
-	.align	2
-.LC1:
-	.string	"Solutions:"
-	.align	2
-.LC2:
-	.string	" %ld.%03ld"
-	.align	2
-.LC3:
-	.string	"********* INTEGER SQR ROOTS ***********"
-	.align	2
-.LC4:
-	.string	"sqrt(%3d) = %2d\n"
-	.align	2
-.LC5:
-	.string	"\nsqrt(%lX) = %X\n"
-	.align	2
-.LC6:
-	.string	"********* ANGLE CONVERSION ***********"
-	.align	2
-.LC7:
-	.string	"%3ld degrees = %ld.%03ld radians\n"
-	.align	2
-.LC8:
-	.string	"%ld.%03ld radians = %3ld degrees\n"
 	.section	.text.startup,"ax",@progbits
 	.align	2
 	.globl	main
 	.type	main, @function
 main:
-	lui	a0,%hi(.LC0)
-	addi	sp,sp,-96
-	addi	a0,a0,%lo(.LC0)
-	sw	ra,92(sp)
-	sw	s0,88(sp)
-	sw	s5,68(sp)
-	sw	s1,84(sp)
-	sw	s2,80(sp)
-	sw	s3,76(sp)
-	sw	s4,72(sp)
-	sw	s6,64(sp)
-	sw	s7,60(sp)
-	sw	s8,56(sp)
-	sw	s9,52(sp)
-	sw	s10,48(sp)
-	sw	s11,44(sp)
-	call	puts
+	addi	sp,sp,-64
 	li	a3,-28672
 	li	a2,32768
 	li	a1,-12288
-	addi	a5,sp,20
-	addi	a4,sp,16
+	addi	a5,sp,4
+	mv	a4,sp
 	addi	a3,a3,-1328
 	addi	a2,a2,-768
 	addi	a1,a1,1788
 	li	a0,1000
+	sw	s1,52(sp)
+	sw	ra,60(sp)
+	sw	s0,56(sp)
+	sw	s2,48(sp)
+	sw	s3,44(sp)
+	sw	s4,40(sp)
+	sw	s5,36(sp)
+	sw	s6,32(sp)
+	sw	s7,28(sp)
+	sw	s8,24(sp)
+	sw	s9,20(sp)
 	call	SolveCubic
-	lui	a5,%hi(.LC1)
-	addi	a0,a5,%lo(.LC1)
-	call	printf
-	lw	s5,16(sp)
-	li	s0,0
-	ble	s5,zero,.L59
-	lui	a5,%hi(.LC2)
-	li	s4,274878464
-	addi	s1,a5,%lo(.LC2)
-	addi	s4,s4,-557
-	addi	s3,sp,20
-	li	s2,0
-	li	s6,1000
-.L60:
-	lw	a5,0(s3)
-	mv	a0,s1
-	addi	s2,s2,1
-	mulh	a1,a5,s4
-	srai	a4,a5,31
-	add	s0,s0,a5
-	addi	s3,s3,4
-	srai	a1,a1,6
-	sub	a1,a1,a4
-	mul	a4,a1,s6
-	sub	a5,a5,a4
-	srai	a2,a5,31
-	xor	a5,a2,a5
-	sub	a2,a5,a2
-	call	printf
-	bne	s2,s5,.L60
+	lw	a5,0(sp)
+	li	s1,0
+	ble	a5,zero,.L59
+	li	a4,1
+	lw	s1,4(sp)
+	beq	a5,a4,.L59
+	lw	a3,8(sp)
+	li	a4,2
+	add	s1,s1,a3
+	beq	a5,a4,.L59
+	lw	a5,12(sp)
+	add	s1,s1,a5
 .L59:
-	li	a0,10
-	call	putchar
 	li	a3,-28672
 	li	a2,16384
 	li	a1,-4096
-	addi	a5,sp,20
-	addi	a4,sp,16
+	addi	a5,sp,4
 	addi	a3,a3,-1328
 	addi	a2,a2,616
 	addi	a1,a1,-404
+	mv	a4,sp
 	li	a0,1000
 	call	SolveCubic
-	lui	a5,%hi(.LC1)
-	addi	a0,a5,%lo(.LC1)
-	call	printf
-	lw	s5,16(sp)
-	ble	s5,zero,.L61
-	lui	a5,%hi(.LC2)
-	li	s4,274878464
-	addi	s1,a5,%lo(.LC2)
-	addi	s4,s4,-557
-	addi	s3,sp,20
-	li	s2,0
-	li	s6,1000
-.L62:
-	lw	a5,0(s3)
-	mv	a0,s1
-	addi	s2,s2,1
-	mulh	a1,a5,s4
-	srai	a4,a5,31
-	add	s0,s0,a5
-	addi	s3,s3,4
-	srai	a1,a1,6
-	sub	a1,a1,a4
-	mul	a4,a1,s6
-	sub	a5,a5,a4
-	srai	a2,a5,31
-	xor	a5,a2,a5
-	sub	a2,a5,a2
-	call	printf
-	bne	s2,s5,.L62
+	lw	a5,0(sp)
+	ble	a5,zero,.L61
+	lw	a3,4(sp)
+	li	a4,1
+	add	s1,s1,a3
+	beq	a5,a4,.L61
+	lw	a3,8(sp)
+	li	a4,2
+	add	s1,s1,a3
+	beq	a5,a4,.L61
+	lw	a5,12(sp)
+	add	s1,s1,a5
 .L61:
-	li	a0,10
-	call	putchar
 	li	a3,-32768
 	li	a2,20480
 	li	a1,-4096
-	addi	a5,sp,20
-	addi	a4,sp,16
+	addi	a5,sp,4
 	addi	a3,a3,1768
 	addi	a2,a2,1520
 	addi	a1,a1,596
+	mv	a4,sp
 	li	a0,1000
 	call	SolveCubic
-	lui	a5,%hi(.LC1)
-	addi	a0,a5,%lo(.LC1)
-	call	printf
-	lw	s5,16(sp)
-	ble	s5,zero,.L63
-	lui	a5,%hi(.LC2)
-	li	s4,274878464
-	addi	s1,a5,%lo(.LC2)
-	addi	s4,s4,-557
-	addi	s3,sp,20
-	li	s2,0
-	li	s6,1000
-.L64:
-	lw	a5,0(s3)
-	mv	a0,s1
-	addi	s2,s2,1
-	mulh	a1,a5,s4
-	srai	a4,a5,31
-	add	s0,s0,a5
-	addi	s3,s3,4
-	srai	a1,a1,6
-	sub	a1,a1,a4
-	mul	a4,a1,s6
-	sub	a5,a5,a4
-	srai	a2,a5,31
-	xor	a5,a2,a5
-	sub	a2,a5,a2
-	call	printf
-	bne	s2,s5,.L64
+	lw	a5,0(sp)
+	ble	a5,zero,.L63
+	lw	a3,4(sp)
+	li	a4,1
+	add	s1,s1,a3
+	beq	a5,a4,.L63
+	lw	a3,8(sp)
+	li	a4,2
+	add	s1,s1,a3
+	beq	a5,a4,.L63
+	lw	a5,12(sp)
+	add	s1,s1,a5
 .L63:
-	li	a0,10
-	call	putchar
 	li	a2,1000
 	li	a3,-36864
 	li	a1,-12288
-	mv	a0,a2
-	addi	a5,sp,20
-	addi	a4,sp,16
+	addi	a5,sp,4
 	addi	a3,a3,1864
+	mv	a0,a2
 	addi	a1,a1,-1412
+	mv	a4,sp
 	call	SolveCubic
-	lui	a5,%hi(.LC1)
-	addi	a0,a5,%lo(.LC1)
-	call	printf
-	lw	s5,16(sp)
-	ble	s5,zero,.L65
-	lui	a5,%hi(.LC2)
-	li	s4,274878464
-	addi	s1,a5,%lo(.LC2)
-	addi	s4,s4,-557
-	addi	s3,sp,20
-	li	s2,0
-	li	s6,1000
-.L66:
-	lw	a5,0(s3)
-	mv	a0,s1
-	addi	s2,s2,1
-	mulh	a1,a5,s4
-	srai	a4,a5,31
-	add	s0,s0,a5
-	addi	s3,s3,4
-	srai	a1,a1,6
-	sub	a1,a1,a4
-	mul	a4,a1,s6
-	sub	a5,a5,a4
-	srai	a2,a5,31
-	xor	a5,a2,a5
-	sub	a2,a5,a2
-	call	printf
-	bne	s2,s5,.L66
+	lw	a5,0(sp)
+	ble	a5,zero,.L65
+	lw	a3,4(sp)
+	li	a4,1
+	add	s1,s1,a3
+	beq	a5,a4,.L65
+	lw	a3,8(sp)
+	li	a4,2
+	add	s1,s1,a3
+	beq	a5,a4,.L65
+	lw	a5,12(sp)
+	add	s1,s1,a5
 .L65:
-	li	a0,10
-	call	putchar
-	li	a5,1000
-	lui	s4,%hi(.LC2)
-	li	s3,274878464
-	sw	a5,12(sp)
-	mv	s5,a5
-	addi	s4,s4,%lo(.LC2)
-	addi	s3,s3,-557
-.L67:
+	li	s5,-12288
+	li	s8,16384
 	li	s9,8192
+	addi	s5,s5,1288
+	addi	s8,s8,-1384
 	addi	s9,s9,1808
+	li	s4,1000
+	li	s6,1
+	li	s7,2
+.L67:
+	li	s3,8192
+	addi	s3,s3,1808
 .L75:
-	li	s6,4096
-	addi	s6,s6,904
+	li	s2,4096
+	addi	s2,s2,904
 .L73:
-	li	s7,-12288
-	lui	a5,%hi(.LC1)
-	addi	s7,s7,1288
-	li	s2,-1000
-	addi	s8,a5,%lo(.LC1)
+	li	s0,-1000
 .L70:
-	lw	a0,12(sp)
-	addi	a5,sp,20
-	addi	a4,sp,16
-	mv	a3,s2
-	mv	a2,s6
-	mv	a1,s9
-	call	SolveCubic
-	mv	a0,s8
-	call	printf
-	lw	s1,16(sp)
-	ble	s1,zero,.L68
-	addi	s10,sp,20
-	li	s11,0
-.L69:
-	lw	a2,0(s10)
+	addi	a5,sp,4
+	mv	a3,s0
+	mv	a4,sp
+	mv	a2,s2
+	mv	a1,s3
 	mv	a0,s4
-	addi	s11,s11,1
-	mulh	a1,a2,s3
-	srai	a3,a2,31
-	add	s0,s0,a2
-	addi	s10,s10,4
-	srai	a1,a1,6
-	sub	a1,a1,a3
-	mul	a3,a1,s5
-	sub	a2,a2,a3
-	srai	a3,a2,31
-	xor	a2,a3,a2
-	sub	a2,a2,a3
-	call	printf
-	bne	s11,s1,.L69
+	call	SolveCubic
+	lw	a5,0(sp)
+	addi	s0,s0,-1000
+	ble	a5,zero,.L68
+	lw	a4,4(sp)
+	add	s1,s1,a4
+	beq	a5,s6,.L68
+	lw	a4,8(sp)
+	add	s1,s1,a4
+	beq	a5,s7,.L68
+	lw	a5,12(sp)
+	add	s1,s1,a5
 .L68:
-	li	a0,10
-	addi	s2,s2,-1000
-	call	putchar
-	bne	s2,s7,.L70
-	li	a5,16384
-	addi	s6,s6,500
-	addi	a5,a5,-1384
-	bne	s6,a5,.L73
-	addi	s9,s9,-1000
-	bne	s9,zero,.L75
-	lw	a4,12(sp)
-	li	a5,8192
-	addi	a5,a5,1808
-	addi	a4,a4,1000
-	sw	a4,12(sp)
-	bne	a4,a5,.L67
-	lui	a0,%hi(.LC3)
-	addi	a0,a0,%lo(.LC3)
-	lui	s3,%hi(.LC4)
-	call	puts
-	addi	s3,s3,%lo(.LC4)
-	li	s2,0
-	li	s4,1001
-.L78:
-	mv	a3,s2
-	li	s1,32
-	li	a2,0
+	bne	s0,s5,.L70
+	addi	s2,s2,500
+	bne	s2,s8,.L73
+	addi	s3,s3,-1000
+	bne	s3,zero,.L75
+	addi	s4,s4,1000
+	bne	s4,s9,.L67
+	li	a6,1001
+.L74:
+	mv	a1,s3
+	li	a2,32
+	li	a3,0
 	li	a5,0
 .L77:
-	srli	a0,a3,30
-	slli	a4,a2,2
+	srli	a0,a1,30
+	slli	a4,a3,2
 	slli	a5,a5,2
 	add	a5,a0,a5
 	addi	a4,a4,1
-	addi	s1,s1,-1
-	slli	a3,a3,2
-	slli	a2,a2,1
+	addi	a2,a2,-1
+	slli	a1,a1,2
+	slli	a3,a3,1
 	bltu	a5,a4,.L76
 	sub	a5,a5,a4
-	addi	a2,a2,1
+	addi	a3,a3,1
 .L76:
-	bne	s1,zero,.L77
-	mv	a1,s2
-	mv	a0,s3
-	addi	s2,s2,1
-	add	s0,s0,a2
-	call	printf
-	bne	s2,s4,.L78
-	li	a5,1072496640
-	addi	a5,a5,361
-	li	a2,0
-	li	s2,32
-.L80:
-	srli	a3,a5,30
-	slli	a4,a2,2
-	slli	s1,s1,2
-	add	s1,a3,s1
-	addi	a4,a4,1
-	addi	s2,s2,-1
-	slli	a5,a5,2
-	slli	a2,a2,1
-	bgtu	a4,s1,.L79
-	sub	s1,s1,a4
-	addi	a2,a2,1
+	bne	a2,zero,.L77
+	addi	s3,s3,1
+	add	s1,s1,a3
+	bne	s3,a6,.L74
+	li	a3,1072496640
+	addi	a3,a3,361
+	li	a4,0
+	li	a5,32
 .L79:
-	bne	s2,zero,.L80
-	lui	a0,%hi(.LC5)
-	li	a1,1072496640
-	addi	a1,a1,361
-	addi	a0,a0,%lo(.LC5)
-	add	s0,a2,s0
-	call	printf
-	lui	a0,%hi(.LC6)
-	addi	a0,a0,%lo(.LC6)
-	lui	s4,%hi(.LC7)
-	li	s10,381775872
-	li	s5,274878464
-	li	s8,97734656
-	li	s7,3141632
-	li	s6,360448
-	call	puts
-	addi	s4,s4,%lo(.LC7)
-	addi	s10,s10,-1001
-	addi	s5,s5,-557
-	addi	s8,s8,-289
-	addi	s7,s7,368
-	addi	s6,s6,552
-	li	s3,0
-	li	s1,0
-	li	s11,1000
+	srli	a0,a3,30
+	slli	a1,a4,2
+	slli	a2,a2,2
+	add	a2,a0,a2
+	addi	a1,a1,1
+	addi	a5,a5,-1
+	slli	a3,a3,2
+	slli	a4,a4,1
+	bgtu	a1,a2,.L78
+	sub	a2,a2,a1
+	addi	a4,a4,1
+.L78:
+	bne	a5,zero,.L79
+	li	a6,381775872
+	li	a1,3141632
+	li	a2,1134260224
+	add	a0,s1,a4
+	addi	a6,a6,-1001
+	addi	a1,a1,368
+	addi	a2,a2,1776
+	li	a3,0
+.L80:
+	srli	a4,a3,2
+	mulhu	a4,a4,a6
+	add	a3,a3,a1
+	srli	a4,a4,2
+	add	a0,a0,a4
+	bne	a3,a2,.L80
+	li	a1,-1495445504
+	li	a2,3059712
+	li	a3,1132199936
+	addi	a1,a1,-1415
+	addi	a2,a2,288
+	addi	a3,a3,64
 .L81:
-	srli	a5,s3,2
-	mulhu	a5,a5,s10
-	srli	a2,s3,5
-	mv	a0,s4
-	add	s3,s3,s7
-	srli	a5,a5,2
-	mulhu	a3,a5,s5
-	add	s0,s0,a5
-	srli	a3,a3,6
-	mulhu	a1,s1,s5
-	addi	s1,s1,1000
-	mul	a3,a3,s11
-	srli	a1,a1,6
-	mulhu	a2,a2,s8
-	sub	a3,a5,a3
-	srli	a2,a2,7
-	call	printf
-	bne	s1,s6,.L81
-	li	a0,10
-	lui	s4,%hi(.LC8)
-	li	s7,-1495445504
-	li	s6,358338560
-	li	s5,274878464
-	li	s3,3059712
-	li	s1,8192
-	call	putchar
-	addi	s4,s4,%lo(.LC8)
-	addi	s7,s7,-1415
-	addi	s6,s6,49
-	addi	s5,s5,-557
-	addi	s3,s3,288
-	addi	s1,s1,-1902
-	li	s8,1000
-.L82:
-	mulhu	a1,s9,s5
-	srli	a5,s2,1
-	srli	a4,s2,4
-	mv	a0,s4
-	add	s2,s2,s3
-	srli	a1,a1,6
-	mul	a2,a1,s8
-	mulhu	a4,a4,s6
-	sub	a2,s9,a2
-	addi	s9,s9,17
-	mulhu	a5,a5,s7
-	srli	a3,a4,14
-	srli	a5,a5,10
-	add	s0,s0,a5
-	call	printf
-	bne	s9,s1,.L82
-	lw	ra,92(sp)
-	seqz	a0,s0
-	lw	s0,88(sp)
-	lw	s1,84(sp)
-	lw	s2,80(sp)
-	lw	s3,76(sp)
-	lw	s4,72(sp)
-	lw	s5,68(sp)
-	lw	s6,64(sp)
-	lw	s7,60(sp)
-	lw	s8,56(sp)
-	lw	s9,52(sp)
-	lw	s10,48(sp)
-	lw	s11,44(sp)
-	addi	sp,sp,96
+	srli	a4,a5,1
+	mulhu	a4,a4,a1
+	add	a5,a5,a2
+	srli	a4,a4,10
+	add	a0,a0,a4
+	bne	a5,a3,.L81
+	lw	ra,60(sp)
+	lw	s0,56(sp)
+	lw	s1,52(sp)
+	lw	s2,48(sp)
+	lw	s3,44(sp)
+	lw	s4,40(sp)
+	lw	s5,36(sp)
+	lw	s6,32(sp)
+	lw	s7,28(sp)
+	lw	s8,24(sp)
+	lw	s9,20(sp)
+	seqz	a0,a0
+	addi	sp,sp,64
 	jr	ra
 	.size	main, .-main
 	.ident	"GCC: (g1b306039a) 15.1.0"

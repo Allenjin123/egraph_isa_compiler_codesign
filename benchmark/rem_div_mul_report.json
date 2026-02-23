@@ -89,29 +89,14 @@
     "div": true,
     "mul": true
   },
-  "nettle-aes": {
-    "rem": true,
-    "div": false,
-    "mul": false
-  },
-  "nettle-sha256": {
-    "rem": false,
-    "div": false,
-    "mul": false
-  },
-  "qrtest": {
-    "rem": false,
-    "div": false,
-    "mul": true
-  },
   "dijkstra_small_O3": {
     "rem": false,
     "div": false,
     "mul": true
   },
   "patricia_O3": {
-    "rem": true,
-    "div": true,
+    "rem": false,
+    "div": false,
     "mul": true
   },
   "rijndael_Oz": {

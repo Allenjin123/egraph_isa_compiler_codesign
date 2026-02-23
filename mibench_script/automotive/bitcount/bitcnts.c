@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
             long millis = ct_ms % 1000;
             if (millis < 0) millis += 1000, secs -= 1;
             // printf("%-38s> Time: %4ld.%03ld sec.; Bits: %ld\n",
-                   text[i], secs, millis, n);
+                  //  text[i], secs, millis, n);
       }
       checksum += cmin_ms;
       checksum += cmax_ms;

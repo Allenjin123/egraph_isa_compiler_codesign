@@ -1084,25 +1084,32 @@ sha_process_buffer:
 	auipc	t1, %pcrel_hi(sha_final)
 	jalr	zero, t1, %pcrel_lo(.Lpcrel_5)
 	.size	sha_process_buffer, .-sha_process_buffer
-	.section	.rodata.str1.4,"aMS",@progbits,1
-	.align	2
-.LC0:
-	.string	"%08lx %08lx %08lx %08lx %08lx\n"
-	.text
 	.align	2
 	.globl	sha_print
 	.type	sha_print, @function
 sha_print:
-	lw	a5,16(a0)
-	lw	a4,12(a0)
-	lw	a3,8(a0)
-	lw	a2,4(a0)
-	lw	a1,0(a0)
-	lui	a0,%hi(.LC0)
-	addi	a0,a0,%lo(.LC0)
-.Lpcrel_6:
-	auipc	t1, %pcrel_hi(printf)
-	jalr	zero, t1, %pcrel_lo(.Lpcrel_6)
+	lui	a5,%hi(sha_sink)
+	lw	a4,%lo(sha_sink)(a5)
+	lw	a3,0(a0)
+	lw	a6,4(a0)
+	lw	a1,8(a0)
+	add	a4,a4,a3
+	sw	a4,%lo(sha_sink)(a5)
+	lw	a4,%lo(sha_sink)(a5)
+	lw	a2,12(a0)
+	lw	a3,16(a0)
+	add	a4,a4,a6
+	sw	a4,%lo(sha_sink)(a5)
+	lw	a4,%lo(sha_sink)(a5)
+	add	a4,a4,a1
+	sw	a4,%lo(sha_sink)(a5)
+	lw	a4,%lo(sha_sink)(a5)
+	add	a4,a4,a2
+	sw	a4,%lo(sha_sink)(a5)
+	lw	a4,%lo(sha_sink)(a5)
+	add	a4,a4,a3
+	sw	a4,%lo(sha_sink)(a5)
+	jalr	zero, ra, 0
 	.size	sha_print, .-sha_print
 	.section	.text.startup,"ax",@progbits
 	.align	2
@@ -1116,13 +1123,13 @@ main:
 	addi	a2,a2,528
 	addi	a1,a1,%lo(input_small_data)
 	sw	ra,108(sp)
-.Lpcrel_7:
+.Lpcrel_6:
 	auipc	ra, %pcrel_hi(sha_process_buffer)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_7)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_6)
 	addi	a0,sp,4
-.Lpcrel_8:
+.Lpcrel_7:
 	auipc	ra, %pcrel_hi(sha_print)
-	jalr	ra, ra, %pcrel_lo(.Lpcrel_8)
+	jalr	ra, ra, %pcrel_lo(.Lpcrel_7)
 	lw	ra,108(sp)
 	addi	a0, zero, 0
 	addi	sp,sp,112
@@ -1130,6 +1137,7 @@ main:
 	.size	main, .-main
 	.globl	input_small_data
 	.globl	input_small_data_size
+	.globl	sha_sink
 	.section	.rodata
 	.align	2
 	.type	input_small_data, @object
@@ -6347,6 +6355,12 @@ input_small_data:
 	.ascii	"erienceIwilldispensethisadvicenowEnjoythepowerandbeautyofyou"
 	.ascii	"ryouthOhnevermindYouwillnotunder"
 	.string	"standthepowerandbeautyofyouryouthuntiltheyvefadedButtrustmein20yearsyoulllookbackatphotosofyourselfandrecallinawayyoucantgraspnowhowmuchpossibilitylaybeforeyouandhowfabulousyoureallylookedYouarenotasfatasyouimagineDontworryaboutthefutureOrworrybutknowthat\n"
+	.section	.sbss,"aw",@nobits
+	.align	2
+	.type	sha_sink, @object
+	.size	sha_sink, 4
+sha_sink:
+	.zero	4
 	.section	.srodata,"a"
 	.align	2
 	.type	input_small_data_size, @object

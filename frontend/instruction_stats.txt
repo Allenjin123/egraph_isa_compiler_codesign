@@ -2,9 +2,9 @@
 Instruction Set Statistics Summary
 ================================================================================
 
-Total instructions: 67
+Total instructions: 62
   - Standard RV32IM instructions: 45
-  - Pseudo instructions: 22
+  - Pseudo instructions: 17
 
 ================================================================================
 Standard RV32IM Instructions (45)
@@ -56,18 +56,13 @@ Standard RV32IM Instructions (45)
   xori
 
 ================================================================================
-Pseudo Instructions (22)
+Pseudo Instructions (17)
 ================================================================================
   bgt
   bgtu
   ble
   bleu
   call
-  calldiv
-  calldivu
-  callmul
-  callrem
-  callremu
   j
   jr
   li

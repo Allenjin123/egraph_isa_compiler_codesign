@@ -146,13 +146,6 @@ quicksort_range:
 .L33:
 	ret
 	.size	quicksort_range, .-quicksort_range
-	.section	.rodata.str1.4,"aMS",@progbits,1
-	.align	2
-.LC0:
-	.string	"\nSorting %d vectors based on distance from the origin.\n\n"
-	.align	2
-.LC1:
-	.string	"%d %d %d\n"
 	.section	.text.startup,"ax",@progbits
 	.align	2
 	.globl	main
@@ -160,15 +153,12 @@ quicksort_range:
 main:
 	li	t0,-1196032
 	addi	sp,sp,-2032
-	addi	t0,t0,-1968
-	sw	s1,2020(sp)
-	sw	ra,2028(sp)
+	addi	t0,t0,-1952
 	sw	s0,2024(sp)
-	sw	s2,2016(sp)
-	sw	s3,2012(sp)
+	sw	ra,2028(sp)
 	lui	a6,%hi(input_data)
 	add	sp,sp,t0
-	mv	s1,sp
+	mv	s0,sp
 	mv	a2,sp
 	addi	a6,a6,%lo(input_data)
 .L40:
@@ -205,55 +195,32 @@ main:
 	addi	a2,a2,847
 	li	a1,0
 	call	quicksort_range
-	mv	a5,s1
 	li	a4,0
 	li	a3,0
 .L41:
-	lw	s0,0(a5)
-	lw	a1,4(a5)
-	lw	a2,8(a5)
-	addi	a5,a5,24
-	add	s0,s0,a1
-	add	s0,s0,a2
-	srai	a2,s0,31
+	lw	a5,0(s0)
+	lw	a1,4(s0)
+	lw	a2,8(s0)
+	addi	s0,s0,24
+	add	a5,a5,a1
+	add	a5,a5,a2
+	srai	a2,a5,31
+	add	a5,a4,a5
+	sltu	a4,a5,a4
 	add	a3,a3,a2
-	add	s0,a4,s0
-	li	a2,1200128
-	sltu	a4,s0,a4
-	addi	a2,a2,-128
-	add	s2,a4,a3
-	add	a2,a2,sp
-	mv	a3,s2
-	mv	a4,s0
-	bne	a2,a5,.L41
-	lui	a0,%hi(.LC0)
-	li	a1,49152
-	addi	a1,a1,848
-	addi	a0,a0,%lo(.LC0)
-	lui	s3,%hi(.LC1)
-	call	printf
-	addi	s3,s3,%lo(.LC1)
-.L42:
-	lw	a3,8(s1)
-	lw	a2,4(s1)
-	lw	a1,0(s1)
-	mv	a0,s3
-	addi	s1,s1,24
-	call	printf
+	add	a3,a4,a3
+	mv	a4,a5
 	li	a5,1200128
 	addi	a5,a5,-128
 	add	a5,a5,sp
-	bne	a5,s1,.L42
+	bne	a5,s0,.L41
 	li	t0,1196032
-	addi	t0,t0,1968
+	addi	t0,t0,1952
 	add	sp,sp,t0
 	lw	ra,2028(sp)
-	or	a0,s0,s2
-	lw	s1,2020(sp)
+	or	a4,a4,a3
 	lw	s0,2024(sp)
-	lw	s2,2016(sp)
-	lw	s3,2012(sp)
-	seqz	a0,a0
+	seqz	a0,a4
 	addi	sp,sp,2032
 	jr	ra
 	.size	main, .-main
