@@ -123,8 +123,8 @@
 ;; === Instruction Decomposition ===
 
 ;; Double shifts for larger shift amounts (example for constant propagation)
-;;(rewrite (Slli v (ImmVal 4))
-;;         (Slli (Slli v (ImmVal 2)) (ImmVal 2)))
+(rewrite (Slli v (ImmVal 4))
+        (Slli (Slli v (ImmVal 2)) (ImmVal 2)))
 ;;(rewrite (Slli v (ImmVal 6))
 ;;         (Slli (Slli v (ImmVal 3)) (ImmVal 3)))
 ;;(rewrite (Srli v (ImmVal 4))
@@ -230,6 +230,23 @@
 ;;
 ;; Note: Currently commented out - full implementation requires offset arithmetic
 ;; and would only work for constant offsets (ImmVal), not symbolic (ImmLabel)
+
+
+;; Lbu with aligned offset → Lw + mask (works even if base is unaligned on Ibex)
+(rewrite (Lbu base (ImmVal 0))
+      (Andi (Lw base (ImmVal 0)) (ImmVal 255)))
+
+(rewrite (Lbu base (ImmVal 4))
+      (Andi (Lw base (ImmVal 4)) (ImmVal 255)))
+
+;; Lh offset 0 → Lw + sign extend
+(rewrite (Lh base (ImmVal 0))
+      (Srai (Slli (Lw base (ImmVal 0)) (ImmVal 16)) (ImmVal 16)))
+
+;; Lhu offset 0 → Lw + zero extend (use shifts, not Andi 65535)
+(rewrite (Lhu base (ImmVal 0))
+      (Srli (Slli (Lw base (ImmVal 0)) (ImmVal 16)) (ImmVal 16)))
+
 
 ;; ============================================
 ;; I-type Decomposition: Use Only ADDI + R-type
