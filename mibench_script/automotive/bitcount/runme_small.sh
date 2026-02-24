@@ -12,4 +12,4 @@ fi
 if [ -f ./bitcnts$BIN_SUFFIX.s ]; then
 cp -f ./bitcnts$BIN_SUFFIX.s "$BENCH_DIR/"
 fi
-$MIBENCH_RUN ./bitcnts$BIN_SUFFIX 75000 > output_small.txt
+$MIBENCH_RUN ./bitcnts$BIN_SUFFIX > output_small.txt
