@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
       //       fprintf(stderr, "Usage: bitcnts <iterations>\n");
       //       exit(-1);
       // }
-      iterations = atoi(argv[1]);
+      iterations = 75000;
 
       //puts("Bit counter algorithm benchmark\n");
 
