@@ -166,7 +166,9 @@ def plot_pareto_curves(
     output_file: str,
     num_chips_range: Tuple[int, int] = None,
     figsize: Tuple[int, int] = (8, 6),
-    dpi: int = 400
+    dpi: int = 400,
+    palette: str = "Set2",
+    marker_size: int = 50
 ):
     """
     绘制所有 num_chip 的帕累托曲线
@@ -199,10 +201,8 @@ def plot_pareto_curves(
     # 创建图形
     fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
     
-    # 使用 seaborn Set2 调色板（与 parse_instruction_counts.py 保持一致）
-    sns.set_palette("Set2")
-    colors = sns.color_palette("Set2", len(num_chip_keys))
-    markers = ['o', 's', '^', 'v', 'D', 'p', '*', 'h', 'X', 'P']
+    colors = sns.color_palette(palette, len(num_chip_keys))
+    markers = ['o', 's', '^', 'v', 'D', 'p',  'h','*', 'X', 'P', '<']
     
     # 为每个 num_chip 绘制帕累托曲线
     for idx, num_chip_key in enumerate(num_chip_keys):
@@ -226,21 +226,12 @@ def plot_pareto_curves(
         pareto_areas = [p[0] / 22.0 for p in pareto_points]
         pareto_latencies = [p[1] / 22.0 for p in pareto_points]
         
-        # 绘制所有点（浅色，小点），坐标除以22
-        all_areas = [p[0] / 22.0 for p in all_points]
-        all_latencies = [p[1] / 22.0 for p in all_points]
-        ax.scatter(
-            all_areas, all_latencies,
-            alpha=0.2, s=10,
-            color=colors[idx], label=None
-        )
-        
-        # 绘制帕累托前沿（深色，大点，不连线），坐标除以22
+        # 绘制帕累托前沿，坐标除以22
         ax.scatter(
             pareto_areas, pareto_latencies,
-            color=colors[idx], s=100, marker='o',
+            color=colors[idx], s=marker_size, marker=markers[idx % len(markers)],
             label=f'num-chip={num_chip_value} (Pareto)',
-            alpha=0.8, edgecolors='black', linewidths=1
+            alpha=1.0, edgecolors='black', linewidths=1
         )
         
         print(f"{num_chip_key}: {len(all_points)} 个总点, {len(pareto_points)} 个帕累托点")
@@ -249,6 +240,9 @@ def plot_pareto_curves(
     ax.set_xlabel('Area', fontsize=14, fontweight='bold')
     ax.set_ylabel('Latency', fontsize=14, fontweight='bold')
     ax.tick_params(axis='both', which='major', labelsize=12)
+    from matplotlib.ticker import FuncFormatter
+    ax.xaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{x:.0f}%'))
+    ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{x:.0f}%'))
     ax.grid(True, alpha=0.3)
     
     # 获取图例并按显示编号排序（按 int 大小排序）
@@ -294,9 +288,12 @@ def main():
     parser.add_argument('--output', '-o', required=True, help='输出图片文件路径（默认使用 PDF 格式，如果没有扩展名则自动添加 .pdf）')
     parser.add_argument('--num-chips-min', type=int, default=None, help='最小芯片数量（可选）')
     parser.add_argument('--num-chips-max', type=int, default=None, help='最大芯片数量（可选）')
+    parser.add_argument('--num-chips-n', type=int, default=7, help='显示 1~n 加上第22个，默认: 7')
     parser.add_argument('--figsize', type=int, nargs=2, default=[8, 6], 
                        help='图片大小（宽 高），默认: 8 6')
     parser.add_argument('--dpi', type=int, default=400, help='图片分辨率，默认: 400')
+    parser.add_argument('--palette', type=str, default='Set2', help='seaborn 配色方案，默认: Set2')
+    parser.add_argument('--marker-size', type=int, default=90, help='帕累托点大小，默认: 20')
     
     args = parser.parse_args()
     
@@ -322,11 +319,13 @@ def main():
     results = data['results']
     
     # 确定 num_chips 范围
-    num_chips_range = None
+    # --num-chips-min/max 优先；否则用 --num-chips-n 设置 1~n
     if args.num_chips_min is not None or args.num_chips_max is not None:
         min_chip = args.num_chips_min if args.num_chips_min is not None else 1
         max_chip = args.num_chips_max if args.num_chips_max is not None else 10
         num_chips_range = (min_chip, max_chip)
+    else:
+        num_chips_range = (1, args.num_chips_n)
     
     # 打印帕累托点信息
     print_pareto_points(results, num_chips_range)
@@ -338,7 +337,9 @@ def main():
         output_file=args.output,
         num_chips_range=num_chips_range,
         figsize=tuple(args.figsize),
-        dpi=args.dpi
+        dpi=args.dpi,
+        palette=args.palette,
+        marker_size=args.marker_size
     )
 
 
