@@ -11,8 +11,8 @@
 set -e  # Exit on error
 
 # Default configuration
-DEFAULT_SCALES="0 0.0005 0.001 0.002 0.005 0.01 0.1 0.5 1"
-DEFAULT_K=3
+DEFAULT_SCALES="0 0.0001 0.0002 0.0005 0.001 0.0015 0.002 0.003 0.005 0.007 0.01 0.015 0.02 0.03 0.05 0.07 0.1 0.15 0.2 0.3 0.4 0.5 0.6 0.7 0.85 0.9 1"
+DEFAULT_K=1
 DEFAULT_TIMEOUT=180
 DEFAULT_PROGRAM_PARALLEL=4     # Number of programs to process in parallel
 DEFAULT_ILP_PARALLEL=24        # Number of ILP scaling factors to run in parallel per program

@@ -1084,16 +1084,15 @@ SolveCubic:
 	srl	a5,a5,op_0
 	sub	op_0,x0,a5
 	sub	a5,a2,op_0
-	bge	a1,a3,.+8
-	jal	x0,.L10
-	bge	zero,a5,.L52
+	blt	a1,a3,.L10
+	blt	zero,a5,.+8
+	jal	x0,.L52
 .L12:
 	addi	a3,zero,1
 	sw	a3,0(s8)
 	addi	a2,zero,1000
 	addi	a3,a5,0
-	bge	a5,a2,.+8
-	jal	x0,.L53
+	blt	a5,a2,.L53
 .L24:
 	addi	a1,zero,1000
 	callmul	a5,a5,a1
@@ -1169,8 +1168,7 @@ SolveCubic:
 	sub	a2,a5,op_0
 	beq	a2,zero,.L25
 	addi	a3,a2,0
-	bge	a2,a1,.+8
-	jal	x0,.L54
+	blt	a2,a1,.L54
 .L26:
 	addi	a5,zero,1000
 	callmul	a2,a2,a5
@@ -1342,8 +1340,7 @@ SolveCubic:
 .L25:
 	addi	a4,zero,-53
 	addi	a5,zero,-1000
-	bge	a0,a4,.+8
-	jal	x0,.L55
+	blt	a0,a4,.L55
 .L29:
 	callmul	a2,a2,a5
 	lui	a5,67109
@@ -1485,15 +1482,13 @@ SolveCubic:
 	addi	sp,sp,48
 	jalr	zero,ra,0
 .L10:
-	bge	zero,a5,.+8
-	jal	x0,.L12
+	blt	zero,a5,.L12
 	sw	s1,36(sp)
 	sw	s3,28(sp)
 	sw	s4,24(sp)
 	sw	s5,20(sp)
 	sub	a1,zero,a2
-	bge	a1,a7,.+8
-	jal	x0,.L56
+	blt	a1,a7,.L56
 .L13:
 	addi	a5,zero,-1000
 	callmul	a5,a2,a5
@@ -1556,20 +1551,19 @@ SolveCubic:
 	calldiv	a5,a5,a3
 	sub	op_0,x0,a5
 	sub	a5,a3,op_0
-	bge	t6,a5,.L11
+	blt	t6,a5,.+8
+	jal	x0,.L11
 	addi	t4,zero,1000
 	callmul	t4,a4,t4
 	addi	op_0,x0,1
 	sra	a5,a5,op_0
 	addi	a4,zero,999
 	calldiv	t4,t4,a5
-	bge	a4,t4,.+8
-	jal	x0,.L30
+	blt	a4,t4,.L30
 	sw	s6,16(sp)
 	sw	s7,12(sp)
 	addi	a5,zero,-999
-	bge	t4,a5,.+8
-	jal	x0,.L32
+	blt	t4,a5,.L32
 	lui	t3,1
 	lui	a0,67109
 	lui	a7,274878
@@ -2044,7 +2038,8 @@ SolveCubic:
 	beq	a3,zero,.L18
 	addi	s4,s3,0
 .L18:
-	bge	t4,s4,.L33
+	blt	t4,s4,.+8
+	jal	x0,.L33
 	addi	t1,a1,0
 .L19:
 	addi	a6,a6,-1
@@ -2260,10 +2255,12 @@ SolveCubic:
 	sw	a5,0(s8)
 	addi	a5,zero,8
 	addi	s4,zero,0
-	bge	a5,s2,.L21
+	blt	a5,s2,.+8
+	jal	x0,.L21
 	addi	a5,zero,1000
 	addi	a3,t5,0
-	bge	t5,a5,.L22
+	blt	t5,a5,.+8
+	jal	x0,.L22
 	addi	a3,a5,0
 .L22:
 	addi	a5,zero,1000
@@ -2327,7 +2324,7 @@ SolveCubic:
 	sub	op_0,x0,a5
 	sub	a5,a4,op_0
 	addi	op_0,x0,-2
-	and	a5,op_0,a5
+	and	a5,a5,op_0
 	sub	s4,zero,a5
 .L21:
 	lui	s5,349525
@@ -2629,8 +2626,7 @@ SolveCubic:
 .L11:
 	addi	a5,zero,-53
 	lui	s3,1
-	bge	a0,a5,.+8
-	jal	x0,.L57
+	blt	a0,a5,.L57
 	lui	s1,1
 	addi	s3,s3,93
 	addi	s1,s1,-2002
@@ -2702,12 +2698,11 @@ main:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_4)
 	lw	a5,0(sp)
 	addi	s1,zero,0
-	bge	zero,a5,.L59
+	blt	zero,a5,.+8
+	jal	x0,.L59
 	addi	a4,zero,1
 	lw	s1,4(sp)
-	beq	a5,a4,.+8
-	jal	x0,.+8
-	jal	x0,.L59
+	beq	a5,a4,.L59
 	lw	a3,8(sp)
 	addi	a4,zero,2
 	sub	op_0,x0,s1
@@ -2730,7 +2725,8 @@ main:
 	auipc	ra,%pcrel_hi(SolveCubic)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_5)
 	lw	a5,0(sp)
-	bge	zero,a5,.L61
+	blt	zero,a5,.+8
+	jal	x0,.L61
 	lw	a3,4(sp)
 	addi	a4,zero,1
 	sub	op_0,x0,s1
@@ -2758,7 +2754,8 @@ main:
 	auipc	ra,%pcrel_hi(SolveCubic)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_6)
 	lw	a5,0(sp)
-	bge	zero,a5,.L63
+	blt	zero,a5,.+8
+	jal	x0,.L63
 	lw	a3,4(sp)
 	addi	a4,zero,1
 	sub	op_0,x0,s1
@@ -2785,7 +2782,8 @@ main:
 	auipc	ra,%pcrel_hi(SolveCubic)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_7)
 	lw	a5,0(sp)
-	bge	zero,a5,.L65
+	blt	zero,a5,.+8
+	jal	x0,.L65
 	lw	a3,4(sp)
 	addi	a4,zero,1
 	sub	op_0,x0,s1
@@ -2795,9 +2793,7 @@ main:
 	addi	a4,zero,2
 	sub	op_0,x0,s1
 	sub	s1,a3,op_0
-	beq	a5,a4,.+8
-	jal	x0,.+8
-	jal	x0,.L65
+	beq	a5,a4,.L65
 	lw	a5,12(sp)
 	sub	op_0,x0,s1
 	sub	s1,a5,op_0
@@ -2831,7 +2827,8 @@ main:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_8)
 	lw	a5,0(sp)
 	addi	s0,s0,-1000
-	bge	zero,a5,.L68
+	blt	zero,a5,.+8
+	jal	x0,.L68
 	lw	a4,4(sp)
 	sub	op_0,x0,s1
 	sub	s1,a4,op_0
@@ -2876,8 +2873,7 @@ main:
 	sll	a1,a1,op_0
 	addi	op_0,x0,1
 	sll	a3,a3,op_0
-	bgeu	a5,a4,.+8
-	jal	x0,.L76
+	bltu	a5,a4,.L76
 	sub	a5,a5,a4
 	addi	a3,a3,1
 .L76:
@@ -2907,8 +2903,7 @@ main:
 	sll	a3,a3,op_0
 	addi	op_0,x0,1
 	sll	a4,a4,op_0
-	bgeu	a2,a1,.+8
-	jal	x0,.L78
+	bltu	a2,a1,.L78
 	sub	a2,a2,a1
 	addi	a4,a4,1
 .L78:
@@ -3119,8 +3114,7 @@ main:
 	lw	s8,24(sp)
 	lw	s9,20(sp)
 	addi	op_0,x0,1
-	bgeu	a0,op_0,.+8
-	jal	x0,.+12
+	bltu	a0,op_0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
@@ -3139,7 +3133,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	op_0,x0,1
-	and	a3,a1,op_0
+	and	a3,op_0,a1
 	beq	a3,x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
@@ -3158,10 +3152,8 @@ __mul:
 # Signed 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
-	bge	a0,zero,.+8
-	jal	x0,__riscv_div_lib_L10
-	bge	a1,zero,.+8
-	jal	x0,__riscv_div_lib_L11
+	blt	a0,zero,__riscv_div_lib_L10
+	blt	a1,zero,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
 # Unsigned 32-bit division: a0 = a0 / a1
@@ -3172,20 +3164,20 @@ __riscv_div_lib_udivsi3:
 	addi	a0,zero,-1
 	beq	a2,zero,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bgeu	a2,a1,__riscv_div_lib_L2
+	bltu	a2,a1,.+8
+	jal	x0,__riscv_div_lib_L2
 __riscv_div_lib_L1:
-	bge	zero,a2,__riscv_div_lib_L2
+	blt	zero,a2,.+8
+	jal	x0,__riscv_div_lib_L2
 	addi	op_0,x0,1
 	sll	a2,a2,op_0
 	addi	op_0,x0,1
 	sll	a3,a3,op_0
-	bgeu	a2,a1,.+8
-	jal	x0,__riscv_div_lib_L1
+	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bgeu	a1,a2,.+8
-	jal	x0,__riscv_div_lib_L4
+	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	and	op_1,a0,a3
 	sub	op_0,op_1,a3
@@ -3213,8 +3205,7 @@ __riscv_div_lib_umodsi3:
 # Handle negative arguments to divsi3
 __riscv_div_lib_L10:
 	sub	a0,zero,a0
-	bge	zero,a1,.+8
-	jal	x0,__riscv_div_lib_L12
+	blt	zero,a1,__riscv_div_lib_L12
 	sub	a1,zero,a1
 	jal	x0,__riscv_div_lib_udivsi3
 __riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
@@ -3231,10 +3222,8 @@ __riscv_div_lib_L12:
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
 	addi	t0,ra,0
-	bge	a1,zero,.+8
-	jal	x0,__riscv_div_lib_L31
-	bge	a0,zero,.+8
-	jal	x0,__riscv_div_lib_L32
+	blt	a1,zero,__riscv_div_lib_L31
+	blt	a0,zero,__riscv_div_lib_L32
 __riscv_div_lib_L30:
 .Lpcrel_div3:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
@@ -3243,7 +3232,8 @@ __riscv_div_lib_L30:
 	jalr	zero,t0,0
 __riscv_div_lib_L31:
 	sub	a1,zero,a1
-	bge	a0,zero,__riscv_div_lib_L30
+	blt	a0,zero,.+8
+	jal	x0,__riscv_div_lib_L30
 __riscv_div_lib_L32:
 	sub	a0,zero,a0
 .Lpcrel_div4:

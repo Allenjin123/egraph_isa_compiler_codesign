@@ -55,12 +55,12 @@ countPrimes:
 	jal	x0,.L9
 	sw	a5,0(a2)
 .L10:
-	bne	a4,a5,.+8
-	jal	x0,.L13
+	beq	a4,a5,.L13
 	addi	a6,a6,1
 	addi	a1,a1,4
 	addi	a2,a2,4
-	bne	t1,a6,.L14
+	beq	t1,a6,.+8
+	jal	x0,.L14
 	addi	sp,sp,336
 	jalr	zero,ra,0
 .L7:
@@ -113,7 +113,8 @@ benchmark_body.isra.0:
 .Lpcrel_2:
 	auipc	ra,%pcrel_hi(countPrimes)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_2)
-	bne	s0,s1,.L26
+	beq	s0,s1,.+8
+	jal	x0,.L26
 	lw	ra,12(sp)
 	lw	s0,8(sp)
 	lw	s1,4(sp)
@@ -198,13 +199,12 @@ __mul:
 	sub	a2,x0,op_0
 	addi	a0,x0,0
 .Mul_loop:
-	addi	op_0,x0,1
+	addi	op_2,x0,1
+	or	op_1,a1,op_2
 	addi	op_3,x0,1
-	or	op_2,op_3,a1
-	sub	op_1,op_2,a1
-	sub	a3,op_0,op_1
-	bne	a3,x0,.+8
-	jal	x0,.Mul_skip
+	sub	op_0,op_1,op_3
+	sub	a3,a1,op_0
+	beq	a3,x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
 .Mul_skip:
@@ -212,6 +212,7 @@ __mul:
 	srl	a1,a1,op_0
 	addi	op_0,x0,1
 	sll	a2,a2,op_0
-	bne	a1,x0,.Mul_loop
+	beq	a1,x0,.+8
+	jal	x0,.Mul_loop
 	jalr	x0,ra,0
 

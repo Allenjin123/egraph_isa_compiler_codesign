@@ -14,7 +14,7 @@ gmul:
 	addi	op_0,x0,1
 	sll	a5,a0,op_0
 	addi	op_0,x0,27
-	and	a3,op_0,a3
+	and	a3,a3,op_0
 	and	op_2,a5,a3
 	sub	op_1,op_2,a3
 	sub	op_0,a5,op_1
@@ -25,7 +25,7 @@ gmul:
 	addi	op_0,x0,31
 	sra	a4,a5,op_0
 	addi	op_0,x0,27
-	and	a4,a4,op_0
+	and	a4,op_0,a4
 	addi	op_0,x0,1
 	sll	a5,a3,op_0
 	and	op_2,a5,a4
@@ -36,10 +36,10 @@ gmul:
 	addi	op_0,x0,1
 	srl	a5,a1,op_0
 	addi	op_0,x0,1
-	and	a5,op_0,a5
+	and	a5,a5,op_0
 	callmul	a5,a5,a3
 	addi	op_0,x0,1
-	and	a3,op_0,a1
+	and	a3,a1,op_0
 	addi	op_0,x0,2
 	srl	a1,a1,op_0
 	addi	op_0,x0,1
@@ -92,7 +92,7 @@ hex_value:
 .L3:
 	addi	a5,a0,-65
 	addi	op_0,x0,255
-	and	a5,op_0,a5
+	and	a5,a5,op_0
 	addi	a3,zero,5
 	bltu	a3,a5,.L5
 	addi	a0,a0,-55
@@ -100,7 +100,7 @@ hex_value:
 .L5:
 	addi	a5,a0,-97
 	addi	op_0,x0,255
-	and	a5,a5,op_0
+	and	a5,op_0,a5
 	addi	a0,zero,-1
 	bltu	a3,a5,.L2
 	addi	a0,a4,-87
@@ -184,8 +184,10 @@ set_key:
 	jal	x0,.L33
 	addi	a5,a3,248
 	addi	a4,a3,264
-	addi	op_0,x0,4
-	sll	s3,s3,op_0
+	addi	op_1,x0,2
+	sll	op_0,s3,op_1
+	addi	op_2,x0,2
+	sll	s3,op_0,op_2
 .L18:
 	sub	op_0,x0,a5
 	sub	a2,s3,op_0
@@ -269,7 +271,7 @@ set_key:
 	sub	s4,op_0,op_3
 	lw	a0,12(sp)
 	addi	op_0,x0,-256
-	and	a5,op_0,s0
+	and	a5,s0,op_0
 	addi	op_0,x0,255
 	and	s4,op_0,s4
 	addi	a1,zero,9
@@ -312,7 +314,7 @@ set_key:
 	sub	s4,op_0,op_3
 	lw	a0,12(sp)
 	addi	op_0,x0,255
-	and	s4,s4,op_0
+	and	s4,op_0,s4
 	and	a5,s0,s5
 	addi	op_0,x0,8
 	sll	s4,s4,op_0
@@ -474,7 +476,7 @@ set_key:
 	addi	op_0,x0,24
 	srl	a1,a5,op_0
 	addi	op_0,x0,255
-	and	a4,a4,op_0
+	and	a4,op_0,a4
 	sub	op_0,x0,a0
 	sub	a4,a4,op_0
 	sub	op_0,x0,a0
@@ -485,21 +487,6 @@ set_key:
 	sll	a4,a4,op_0
 	addi	op_0,x0,16
 	sll	a1,a1,op_0
-	and	op_1,a4,a1
-	sub	op_0,op_1,a1
-	sub	a4,a4,op_0
-	addi	op_0,x0,8
-	srl	a1,a5,op_0
-	addi	op_0,x0,255
-	and	a1,op_0,a1
-	addi	op_0,x0,255
-	and	a5,op_0,a5
-	sub	op_0,x0,a0
-	sub	a1,a1,op_0
-	sub	op_0,x0,a0
-	sub	a5,a5,op_0
-	lbu	a1,0(a1)
-	lbu	a5,0(a5)
 	and	op_1,a4,a1
 	and	op_4,a4,a1
 	and	op_8,a1,a4
@@ -523,6 +510,21 @@ set_key:
 	sub	op_17,op_18,op_21
 	and	op_15,op_16,op_17
 	sub	a4,op_0,op_15
+	addi	op_0,x0,8
+	srl	a1,a5,op_0
+	addi	op_0,x0,255
+	and	a1,a1,op_0
+	addi	op_0,x0,255
+	and	a5,op_0,a5
+	sub	op_0,x0,a0
+	sub	a1,a1,op_0
+	sub	op_0,x0,a0
+	sub	a5,a5,op_0
+	lbu	a1,0(a1)
+	lbu	a5,0(a5)
+	and	op_1,a4,a1
+	sub	op_0,op_1,a1
+	sub	a4,a4,op_0
 	addi	op_0,x0,24
 	sll	a5,a5,op_0
 	and	op_1,a4,a5
@@ -565,9 +567,9 @@ set_key:
 	lui	a4,%hi(.LANCHOR0)
 	addi	a4,a4,%lo(.LANCHOR0)
 	addi	op_0,x0,255
-	and	a1,op_0,a1
+	and	a1,a1,op_0
 	addi	op_0,x0,255
-	and	t5,t5,op_0
+	and	t5,op_0,t5
 	sub	op_0,x0,a4
 	sub	a1,a1,op_0
 	sub	op_0,x0,a4
@@ -582,7 +584,7 @@ set_key:
 	sub	op_0,op_1,t5
 	sub	a1,a1,op_0
 	addi	op_0,x0,255
-	and	t5,op_0,a5
+	and	t5,a5,op_0
 	addi	op_0,x0,24
 	srl	a5,a5,op_0
 	sub	op_0,x0,a4
@@ -763,7 +765,7 @@ encrypt:
 	addi	op_0,x0,1
 	sll	a2,s0,op_0
 	addi	op_0,x0,27
-	and	a4,op_0,a4
+	and	a4,a4,op_0
 	and	op_2,s2,s0
 	sub	op_1,op_2,s0
 	sub	op_0,s2,op_1
@@ -796,7 +798,7 @@ encrypt:
 	addi	op_0,x0,1
 	sll	s3,s2,op_0
 	addi	op_0,x0,27
-	and	a2,a2,op_0
+	and	a2,op_0,a2
 	and	op_2,s3,a2
 	sub	op_1,op_2,a2
 	sub	op_0,s3,op_1
@@ -1347,7 +1349,7 @@ fillrand:
 enc_buffer:
 	addi	a6,a1,15
 	addi	op_0,x0,-16
-	and	a6,op_0,a6
+	and	a6,a6,op_0
 	addi	a6,a6,48
 	bltu	a4,a6,.L91
 	addi	sp,sp,-112
@@ -1426,7 +1428,7 @@ enc_buffer:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_37)
 	lbu	a4,32(sp)
 	addi	op_0,x0,-16
-	and	a4,a4,op_0
+	and	a4,op_0,a4
 	and	op_1,a4,s10
 	sub	op_0,op_1,s10
 	sub	a4,a4,op_0
@@ -1574,7 +1576,7 @@ dec_buffer:
 	bltu	s5,s4,.L107
 	addi	s11,s11,-15
 	addi	op_0,x0,15
-	and	s8,op_0,s8
+	and	s8,s8,op_0
 	bltu	zero,s11,.+12
 	addi	a2,x0,0
 	jal	x0,.+8
@@ -1585,7 +1587,9 @@ dec_buffer:
 	jal	x0,.L108
 	sub	op_0,x0,a2
 	sub	s1,a5,op_0
-	bltu	s3,s1,.L108
+	bltu	s3,s1,.+8
+	jal	x0,.+8
+	jal	x0,.L108
 	addi	op_0,x0,1
 	bltu	s11,op_0,.+12
 	addi	s11,x0,0

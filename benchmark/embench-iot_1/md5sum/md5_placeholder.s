@@ -89,7 +89,8 @@ md5.constprop.0:
 	lui	a3,%hi(heap_end)
 	lw	a3,%lo(heap_end)(a3)
 	sw	a5,%lo(heap_requested)(a7)
-	bltu	a3,a4,.L7
+	bgeu	a3,a4,.+8
+	jal	x0,.L7
 	sw	a4,%lo(heap_ptr)(a6)
 	beq	t2,zero,.L7
 	sub	a4,zero,t2
@@ -97,11 +98,8 @@ md5.constprop.0:
 	and	a5,a4,op_0
 	beq	a5,zero,.L25
 	sb	zero,0(t2)
-	addi	op_2,x0,2
-	or	op_1,a4,op_2
-	addi	op_3,x0,2
-	sub	op_0,op_1,op_3
-	sub	a4,a4,op_0
+	addi	op_0,x0,2
+	and	a4,op_0,a4
 	beq	a4,zero,.L26
 	sb	zero,1(t2)
 	addi	a4,zero,3
@@ -113,10 +111,7 @@ md5.constprop.0:
 	addi	a6,zero,1080
 	sub	a6,a6,a5
 	addi	op_0,x0,-4
-	addi	op_3,x0,-4
-	or	op_2,op_3,a6
-	sub	op_1,op_2,a6
-	sub	a1,op_0,op_1
+	and	a1,op_0,a6
 	sub	op_0,x0,t2
 	sub	a5,a5,op_0
 	sub	op_0,x0,a1
@@ -140,12 +135,11 @@ md5.constprop.0:
 	beq	a2,a4,.L6
 	sb	zero,2(a5)
 .L6:
-	or	a4,t2,a0
+	and	op_1,t2,a0
+	sub	op_0,op_1,a0
+	sub	a4,t2,op_0
 	addi	op_0,x0,3
-	addi	op_3,x0,3
-	or	op_2,op_3,a4
-	sub	op_1,op_2,a4
-	sub	a4,op_0,op_1
+	and	a4,a4,op_0
 	addi	a5,a0,0
 	addi	t6,t2,0
 	beq	a4,zero,.+8
@@ -154,7 +148,8 @@ md5.constprop.0:
 	sub	a4,t2,a0
 	addi	a4,a4,-1
 	addi	op_0,x0,3
-	bltu	a4,op_0,.+12
+	bgeu	a4,op_0,.+8
+	jal	x0,.+12
 	addi	a4,x0,0
 	jal	x0,.+8
 	addi	a4,x0,1
@@ -172,10 +167,7 @@ md5.constprop.0:
 	addi	a5,zero,-128
 	sb	a5,1000(t2)
 	addi	op_0,x0,3
-	addi	op_3,x0,3
-	or	op_2,op_3,t2
-	sub	op_1,op_2,t2
-	sub	a5,op_0,op_1
+	and	a5,op_0,t2
 	beq	a5,zero,.+8
 	jal	x0,.L16
 .L55:
@@ -240,21 +232,21 @@ md5.constprop.0:
 	addi	s0,zero,64
 .L19:
 	lw	a3,0(t6)
-	or	op_0,s5,s4
-	or	op_3,s5,s4
-	sub	op_2,op_3,s4
-	sub	op_1,s5,op_2
-	sub	a5,op_0,op_1
+	and	op_2,s5,s4
+	sub	op_1,op_2,s4
+	sub	op_0,s5,op_1
+	and	op_3,s5,s4
+	sub	a5,op_0,op_3
 	and	a5,a5,s3
 	sub	op_0,x0,s6
 	sub	a4,s10,op_0
 	sub	op_0,x0,a4
 	sub	a4,a3,op_0
-	or	op_0,s5,a5
-	or	op_3,s5,a5
-	sub	op_2,op_3,a5
-	sub	op_1,s5,op_2
-	sub	a5,op_0,op_1
+	and	op_2,s5,a5
+	sub	op_1,op_2,a5
+	sub	op_0,s5,op_1
+	and	op_3,s5,a5
+	sub	a5,op_0,op_3
 	sub	op_0,x0,a5
 	sub	a5,a4,op_0
 	addi	op_0,x0,25
@@ -266,41 +258,21 @@ md5.constprop.0:
 	sub	a1,a5,op_0
 	sub	op_0,x0,a1
 	sub	a1,s3,op_0
-	or	op_0,s3,s4
-	and	op_1,s3,s4
-	sub	a2,op_0,op_1
-	or	op_2,a1,a2
-	or	op_5,a1,a2
-	sub	op_4,op_5,a2
-	sub	op_3,a1,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a2,a1
-	or	op_0,op_1,op_6
-	or	op_9,a1,a2
-	or	op_12,a1,a2
-	sub	op_11,op_12,a2
-	sub	op_10,a1,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,a1,a2
-	or	op_19,a1,a2
-	sub	op_18,op_19,a2
-	sub	op_17,a1,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a2,a1
-	or	op_14,op_15,op_20
-	or	op_21,a2,a1
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a2,op_0,op_7
+	and	op_2,s3,s4
+	sub	op_1,op_2,s4
+	sub	op_0,s3,op_1
+	and	op_3,s3,s4
+	sub	a2,op_0,op_3
+	and	a2,a2,a1
 	sub	op_0,x0,s5
 	sub	a5,s9,op_0
 	sub	op_0,x0,a5
 	sub	a5,a4,op_0
-	or	op_0,s4,a2
-	or	op_3,s4,a2
-	sub	op_2,op_3,a2
-	sub	op_1,s4,op_2
-	sub	a2,op_0,op_1
+	and	op_2,s4,a2
+	sub	op_1,op_2,a2
+	sub	op_0,s4,op_1
+	and	op_3,s4,a2
+	sub	a2,op_0,op_3
 	sub	op_0,x0,a2
 	sub	a2,a5,op_0
 	addi	op_0,x0,20
@@ -312,43 +284,21 @@ md5.constprop.0:
 	sub	a2,a5,op_0
 	sub	op_0,x0,a1
 	sub	a2,a2,op_0
-	or	op_0,s3,a1
-	or	op_3,s3,a1
-	sub	op_2,op_3,a1
-	sub	op_1,s3,op_2
-	sub	a3,op_0,op_1
-	or	op_2,a2,a3
-	or	op_5,a2,a3
-	sub	op_4,op_5,a3
-	sub	op_3,a2,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a3,a2
-	or	op_0,op_1,op_6
-	or	op_9,a2,a3
-	or	op_12,a2,a3
-	sub	op_11,op_12,a3
-	sub	op_10,a2,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,a2,a3
-	or	op_19,a2,a3
-	sub	op_18,op_19,a3
-	sub	op_17,a2,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a3,a2
-	or	op_14,op_15,op_20
-	or	op_21,a3,a2
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a3,op_0,op_7
+	and	op_2,s3,a1
+	sub	op_1,op_2,a1
+	sub	op_0,s3,op_1
+	and	op_3,s3,a1
+	sub	a3,op_0,op_3
+	and	a3,a3,a2
 	sub	op_0,x0,s4
 	sub	a5,s8,op_0
 	sub	op_0,x0,a5
 	sub	a5,a4,op_0
-	or	op_0,s3,a3
-	or	op_3,s3,a3
-	sub	op_2,op_3,a3
-	sub	op_1,s3,op_2
-	sub	a3,op_0,op_1
+	and	op_2,s3,a3
+	sub	op_1,op_2,a3
+	sub	op_0,s3,op_1
+	and	op_3,s3,a3
+	sub	a3,op_0,op_3
 	sub	op_0,x0,a3
 	sub	a3,a5,op_0
 	addi	op_0,x0,15
@@ -360,23 +310,21 @@ md5.constprop.0:
 	sub	a3,a5,op_0
 	sub	op_0,x0,a2
 	sub	a3,a3,op_0
-	or	op_0,a2,a1
-	or	op_3,a2,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a2,op_2
-	sub	a4,op_0,op_1
-	or	op_1,a4,a3
-	sub	op_0,op_1,a3
-	sub	a4,a4,op_0
+	and	op_2,a2,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a2,op_1
+	and	op_3,a2,a1
+	sub	a4,op_0,op_3
+	and	a4,a4,a3
 	sub	op_0,x0,s3
 	sub	a5,s7,op_0
 	sub	op_0,x0,a5
 	sub	a5,a0,op_0
-	or	op_0,a1,a4
-	or	op_3,a1,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a1,op_2
-	sub	a4,op_0,op_1
+	and	op_2,a1,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a1,op_1
+	and	op_3,a1,a4
+	sub	a4,op_0,op_3
 	sub	op_0,x0,a4
 	sub	a4,a5,op_0
 	lw	a5,16(t6)
@@ -388,23 +336,21 @@ md5.constprop.0:
 	sub	a4,a0,op_0
 	sub	op_0,x0,a4
 	sub	a4,a3,op_0
-	or	op_0,a3,a2
-	or	op_3,a3,a2
-	sub	op_2,op_3,a2
-	sub	op_1,a3,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a3,a2
+	sub	op_1,op_2,a2
+	sub	op_0,a3,op_1
+	and	op_3,a3,a2
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a5
 	sub	a5,s11,op_0
 	sub	op_0,x0,a5
 	sub	a5,a1,op_0
-	or	op_1,a0,a4
-	sub	op_0,op_1,a4
-	sub	a1,a0,op_0
-	or	op_0,a2,a1
-	or	op_3,a2,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a2,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a4
+	and	op_2,a2,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a2,op_1
+	and	op_3,a2,a1
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a5
 	sub	a5,a1,op_0
 	lw	a6,4(sp)
@@ -417,43 +363,21 @@ md5.constprop.0:
 	sub	a5,a0,op_0
 	sub	op_0,x0,a4
 	sub	a5,a5,op_0
-	or	op_0,a3,a4
-	or	op_3,a3,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a3,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a3,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a3,op_1
+	and	op_3,a3,a4
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a1
 	sub	a1,a6,op_0
 	sub	op_0,x0,a1
 	sub	a2,a2,op_0
-	or	op_2,a5,a0
-	or	op_5,a5,a0
-	sub	op_4,op_5,a0
-	sub	op_3,a5,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a0,a5
-	or	op_0,op_1,op_6
-	or	op_9,a5,a0
-	or	op_12,a5,a0
-	sub	op_11,op_12,a0
-	sub	op_10,a5,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,a5,a0
-	or	op_19,a5,a0
-	sub	op_18,op_19,a0
-	sub	op_17,a5,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a0,a5
-	or	op_14,op_15,op_20
-	or	op_21,a0,a5
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a1,op_0,op_7
-	or	op_0,a3,a1
-	or	op_3,a3,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a3,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a5
+	and	op_2,a3,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a3,op_1
+	and	op_3,a3,a1
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a2
 	sub	a2,a1,op_0
 	lw	a6,8(sp)
@@ -466,43 +390,21 @@ md5.constprop.0:
 	sub	a2,a0,op_0
 	sub	op_0,x0,a5
 	sub	a2,a2,op_0
-	or	op_0,a5,a4
-	or	op_3,a5,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a5,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a5,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a5,op_1
+	and	op_3,a5,a4
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a1
 	sub	a1,a6,op_0
 	sub	op_0,x0,a1
 	sub	a3,a3,op_0
-	or	op_2,a2,a0
-	or	op_5,a2,a0
-	sub	op_4,op_5,a0
-	sub	op_3,a2,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a0,a2
-	or	op_0,op_1,op_6
-	or	op_9,a2,a0
-	or	op_12,a2,a0
-	sub	op_11,op_12,a0
-	sub	op_10,a2,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,a2,a0
-	or	op_19,a2,a0
-	sub	op_18,op_19,a0
-	sub	op_17,a2,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a0,a2
-	or	op_14,op_15,op_20
-	or	op_21,a0,a2
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a1,op_0,op_7
-	or	op_0,a4,a1
-	or	op_3,a4,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a4,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a2
+	and	op_2,a4,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a4,op_1
+	and	op_3,a4,a1
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a3
 	sub	a3,a1,op_0
 	lw	a6,12(sp)
@@ -515,23 +417,21 @@ md5.constprop.0:
 	sub	a3,a0,op_0
 	sub	op_0,x0,a2
 	sub	a3,a3,op_0
-	or	op_0,a2,a5
-	or	op_3,a2,a5
-	sub	op_2,op_3,a5
-	sub	op_1,a2,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a2,a5
+	sub	op_1,op_2,a5
+	sub	op_0,a2,op_1
+	and	op_3,a2,a5
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a1
 	sub	a1,a6,op_0
 	sub	op_0,x0,a1
 	sub	a4,a4,op_0
-	or	op_1,a0,a3
-	sub	op_0,op_1,a3
-	sub	a1,a0,op_0
-	or	op_0,a5,a1
-	or	op_3,a5,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a5,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a3
+	and	op_2,a5,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a5,op_1
+	and	op_3,a5,a1
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a4
 	sub	a4,a1,op_0
 	lw	a6,16(sp)
@@ -544,43 +444,21 @@ md5.constprop.0:
 	sub	a4,a0,op_0
 	sub	op_0,x0,a3
 	sub	a4,a4,op_0
-	or	op_0,a3,a2
-	or	op_3,a3,a2
-	sub	op_2,op_3,a2
-	sub	op_1,a3,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a3,a2
+	sub	op_1,op_2,a2
+	sub	op_0,a3,op_1
+	and	op_3,a3,a2
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a1
 	sub	a1,a6,op_0
 	sub	op_0,x0,a1
 	sub	a5,a5,op_0
-	or	op_2,a4,a0
-	or	op_5,a4,a0
-	sub	op_4,op_5,a0
-	sub	op_3,a4,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a0,a4
-	or	op_0,op_1,op_6
-	or	op_9,a4,a0
-	or	op_12,a4,a0
-	sub	op_11,op_12,a0
-	sub	op_10,a4,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,a4,a0
-	or	op_19,a4,a0
-	sub	op_18,op_19,a0
-	sub	op_17,a4,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a0,a4
-	or	op_14,op_15,op_20
-	or	op_21,a0,a4
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a1,op_0,op_7
-	or	op_0,a2,a1
-	or	op_3,a2,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a2,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a4
+	and	op_2,a2,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a2,op_1
+	and	op_3,a2,a1
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a5
 	sub	a5,a1,op_0
 	lw	a6,20(sp)
@@ -593,23 +471,21 @@ md5.constprop.0:
 	sub	a5,a0,op_0
 	sub	op_0,x0,a4
 	sub	a5,a5,op_0
-	or	op_0,a4,a3
-	or	op_3,a4,a3
-	sub	op_2,op_3,a3
-	sub	op_1,a4,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a4,a3
+	sub	op_1,op_2,a3
+	sub	op_0,a4,op_1
+	and	op_3,a4,a3
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a1
 	sub	a1,a6,op_0
 	sub	op_0,x0,a1
 	sub	a2,a2,op_0
-	or	op_1,a0,a5
-	sub	op_0,op_1,a5
-	sub	a1,a0,op_0
-	or	op_0,a3,a1
-	or	op_3,a3,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a3,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a5
+	and	op_2,a3,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a3,op_1
+	and	op_3,a3,a1
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a2
 	sub	a2,a1,op_0
 	lw	a6,24(sp)
@@ -622,43 +498,21 @@ md5.constprop.0:
 	sub	a2,a0,op_0
 	sub	op_0,x0,a5
 	sub	a2,a2,op_0
-	or	op_0,a5,a4
-	or	op_3,a5,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a5,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a5,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a5,op_1
+	and	op_3,a5,a4
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a1
 	sub	a1,a6,op_0
 	sub	op_0,x0,a1
 	sub	a3,a3,op_0
-	or	op_2,a2,a0
-	or	op_5,a2,a0
-	sub	op_4,op_5,a0
-	sub	op_3,a2,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a0,a2
-	or	op_0,op_1,op_6
-	or	op_9,a2,a0
-	or	op_12,a2,a0
-	sub	op_11,op_12,a0
-	sub	op_10,a2,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,a2,a0
-	or	op_19,a2,a0
-	sub	op_18,op_19,a0
-	sub	op_17,a2,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a0,a2
-	or	op_14,op_15,op_20
-	or	op_21,a0,a2
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a1,op_0,op_7
-	or	op_0,a4,a1
-	or	op_3,a4,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a4,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a2
+	and	op_2,a4,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a4,op_1
+	and	op_3,a4,a1
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a3
 	sub	a3,a1,op_0
 	lw	a6,28(sp)
@@ -671,43 +525,21 @@ md5.constprop.0:
 	sub	a3,a0,op_0
 	sub	op_0,x0,a2
 	sub	a3,a3,op_0
-	or	op_0,a2,a5
-	or	op_3,a2,a5
-	sub	op_2,op_3,a5
-	sub	op_1,a2,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a2,a5
+	sub	op_1,op_2,a5
+	sub	op_0,a2,op_1
+	and	op_3,a2,a5
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a1
 	sub	a1,a6,op_0
 	sub	op_0,x0,a1
 	sub	a4,a4,op_0
-	or	op_2,a3,a0
-	or	op_5,a3,a0
-	sub	op_4,op_5,a0
-	sub	op_3,a3,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a0,a3
-	or	op_0,op_1,op_6
-	or	op_9,a3,a0
-	or	op_12,a3,a0
-	sub	op_11,op_12,a0
-	sub	op_10,a3,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,a3,a0
-	or	op_19,a3,a0
-	sub	op_18,op_19,a0
-	sub	op_17,a3,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a0,a3
-	or	op_14,op_15,op_20
-	or	op_21,a0,a3
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a1,op_0,op_7
-	or	op_0,a5,a1
-	or	op_3,a5,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a5,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a3
+	and	op_2,a5,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a5,op_1
+	and	op_3,a5,a1
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a4
 	sub	a4,a1,op_0
 	lw	a6,32(sp)
@@ -720,23 +552,21 @@ md5.constprop.0:
 	sub	a4,a0,op_0
 	sub	op_0,x0,a3
 	sub	a4,a4,op_0
-	or	op_0,a3,a2
-	or	op_3,a3,a2
-	sub	op_2,op_3,a2
-	sub	op_1,a3,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a3,a2
+	sub	op_1,op_2,a2
+	sub	op_0,a3,op_1
+	and	op_3,a3,a2
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a1
 	sub	a1,a6,op_0
 	sub	op_0,x0,a1
 	sub	a5,a5,op_0
-	or	op_1,a0,a4
-	sub	op_0,op_1,a4
-	sub	a1,a0,op_0
-	or	op_0,a2,a1
-	or	op_3,a2,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a2,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a4
+	and	op_2,a2,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a2,op_1
+	and	op_3,a2,a1
+	sub	a1,op_0,op_3
 	lw	a0,36(sp)
 	sub	op_0,x0,a5
 	sub	a5,a1,op_0
@@ -749,43 +579,21 @@ md5.constprop.0:
 	sub	a5,a1,op_0
 	sub	op_0,x0,a4
 	sub	a5,a5,op_0
-	or	op_0,a4,a3
-	or	op_3,a4,a3
-	sub	op_2,op_3,a3
-	sub	op_1,a4,op_2
-	sub	a1,op_0,op_1
+	and	op_2,a4,a3
+	sub	op_1,op_2,a3
+	sub	op_0,a4,op_1
+	and	op_3,a4,a3
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a6
 	sub	a6,a0,op_0
 	sub	op_0,x0,a6
 	sub	a6,a2,op_0
-	or	op_2,a5,a1
-	or	op_5,a5,a1
-	sub	op_4,op_5,a1
-	sub	op_3,a5,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a1,a5
-	or	op_0,op_1,op_6
-	or	op_9,a5,a1
-	or	op_12,a5,a1
-	sub	op_11,op_12,a1
-	sub	op_10,a5,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,a5,a1
-	or	op_19,a5,a1
-	sub	op_18,op_19,a1
-	sub	op_17,a5,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a1,a5
-	or	op_14,op_15,op_20
-	or	op_21,a1,a5
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a2,op_0,op_7
-	or	op_0,a3,a2
-	or	op_3,a3,a2
-	sub	op_2,op_3,a2
-	sub	op_1,a3,op_2
-	sub	a2,op_0,op_1
+	and	a2,a1,a5
+	and	op_2,a3,a2
+	sub	op_1,op_2,a2
+	sub	op_0,a3,op_1
+	and	op_3,a3,a2
+	sub	a2,op_0,op_3
 	lw	a1,40(sp)
 	sub	op_0,x0,a6
 	sub	a6,a2,op_0
@@ -798,43 +606,21 @@ md5.constprop.0:
 	sub	a6,a2,op_0
 	sub	op_0,x0,a5
 	sub	a6,a6,op_0
-	or	op_0,a5,a4
-	or	op_3,a5,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a5,op_2
-	sub	a2,op_0,op_1
+	and	op_2,a5,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a5,op_1
+	and	op_3,a5,a4
+	sub	a2,op_0,op_3
 	sub	op_0,x0,a0
 	sub	a0,a1,op_0
 	sub	op_0,x0,a0
 	sub	a0,a3,op_0
-	or	op_2,a6,a2
-	or	op_5,a6,a2
-	sub	op_4,op_5,a2
-	sub	op_3,a6,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a2,a6
-	or	op_0,op_1,op_6
-	or	op_9,a6,a2
-	or	op_12,a6,a2
-	sub	op_11,op_12,a2
-	sub	op_10,a6,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,a6,a2
-	or	op_19,a6,a2
-	sub	op_18,op_19,a2
-	sub	op_17,a6,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a2,a6
-	or	op_14,op_15,op_20
-	or	op_21,a2,a6
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a3,op_0,op_7
-	or	op_0,a4,a3
-	or	op_3,a4,a3
-	sub	op_2,op_3,a3
-	sub	op_1,a4,op_2
-	sub	a3,op_0,op_1
+	and	a3,a2,a6
+	and	op_2,a4,a3
+	sub	op_1,op_2,a3
+	sub	op_0,a4,op_1
+	and	op_3,a4,a3
+	sub	a3,op_0,op_3
 	sub	op_0,x0,a0
 	sub	a0,a3,op_0
 	addi	op_0,x0,15
@@ -847,43 +633,21 @@ md5.constprop.0:
 	sub	a0,a2,op_0
 	sub	op_0,x0,a6
 	sub	a0,a0,op_0
-	or	op_0,a6,a5
-	or	op_3,a6,a5
-	sub	op_2,op_3,a5
-	sub	op_1,a6,op_2
-	sub	a2,op_0,op_1
+	and	op_2,a6,a5
+	sub	op_1,op_2,a5
+	sub	op_0,a6,op_1
+	and	op_3,a6,a5
+	sub	a2,op_0,op_3
 	sub	op_0,x0,a3
 	sub	a3,a1,op_0
-	or	op_2,a0,a2
-	or	op_5,a0,a2
-	sub	op_4,op_5,a2
-	sub	op_3,a0,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a2,a0
-	or	op_0,op_1,op_6
-	or	op_9,a0,a2
-	or	op_12,a0,a2
-	sub	op_11,op_12,a2
-	sub	op_10,a0,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,a0,a2
-	or	op_19,a0,a2
-	sub	op_18,op_19,a2
-	sub	op_17,a0,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a2,a0
-	or	op_14,op_15,op_20
-	or	op_21,a2,a0
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a2,op_0,op_7
+	and	a2,a2,a0
 	sub	op_0,x0,a3
 	sub	a4,a4,op_0
-	or	op_0,a5,a2
-	or	op_3,a5,a2
-	sub	op_2,op_3,a2
-	sub	op_1,a5,op_2
-	sub	a2,op_0,op_1
+	and	op_2,a5,a2
+	sub	op_1,op_2,a2
+	sub	op_0,a5,op_1
+	and	op_3,a5,a2
+	sub	a2,op_0,op_3
 	sub	op_0,x0,a2
 	sub	a2,a4,op_0
 	addi	op_0,x0,10
@@ -903,9 +667,11 @@ md5.constprop.0:
 	sw	s6,0(sp)
 	jal	x0,.L18
 .L53:
-	or	op_0,a0,a4
-	and	op_1,a0,a4
-	sub	a4,op_0,op_1
+	and	op_2,a0,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a0,op_1
+	and	op_3,a0,a4
+	sub	a4,op_0,op_3
 	addi	op_0,x0,15
 	and	a3,op_0,t3
 .L22:
@@ -929,7 +695,9 @@ md5.constprop.0:
 	sub	a5,zero,a3
 	sll	a3,a4,a3
 	srl	a4,a4,a5
-	or	a3,a3,a4
+	and	op_1,a3,a4
+	sub	op_0,op_1,a4
+	sub	a3,a3,op_0
 	addi	t4,t4,3
 	addi	t3,t3,5
 	addi	t1,t1,4
@@ -942,54 +710,45 @@ md5.constprop.0:
 	addi	a0,a2,0
 	addi	a2,a3,0
 .L18:
-	or	op_0,a2,a0
-	and	op_1,a2,a0
-	sub	a4,op_0,op_1
-	or	op_2,a6,a4
-	or	op_5,a6,a4
-	sub	op_4,op_5,a4
-	sub	op_3,a6,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a4,a6
-	or	op_0,op_1,op_6
-	or	op_9,a6,a4
-	or	op_12,a6,a4
-	sub	op_11,op_12,a4
-	sub	op_10,a6,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,a6,a4
-	or	op_19,a6,a4
-	sub	op_18,op_19,a4
-	sub	op_17,a6,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a4,a6
-	or	op_14,op_15,op_20
-	or	op_21,a4,a6
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a4,op_0,op_7
-	bltu	s1,a1,.+8
-	jal	x0,.L53
-	or	op_0,a6,a0
-	and	op_1,a6,a0
-	sub	a4,op_0,op_1
-	bltu	s2,a1,.L23
-	or	op_0,a2,a4
-	and	op_1,a2,a4
-	sub	a4,op_0,op_1
+	and	op_2,a2,a0
+	sub	op_1,op_2,a0
+	sub	op_0,a2,op_1
+	and	op_3,a2,a0
+	sub	a4,op_0,op_3
+	and	a4,a4,a6
+	bgeu	s1,a1,.L53
+	and	op_2,a6,a0
+	sub	op_1,op_2,a0
+	sub	op_0,a6,op_1
+	and	op_3,a6,a0
+	sub	a4,op_0,op_3
+	bgeu	s2,a1,.+8
+	jal	x0,.L23
+	and	op_2,a2,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a2,op_1
+	and	op_3,a2,a4
+	sub	a4,op_0,op_3
 	addi	op_0,x0,15
-	and	a3,t4,op_0
+	and	a3,op_0,t4
 	jal	x0,.L22
 .L23:
 	addi	op_1,x0,-1
-	or	op_0,op_1,a6
-	addi	op_3,x0,-1
-	and	op_2,op_3,a6
-	sub	a4,op_0,op_2
-	or	a4,a4,a2
-	or	op_0,a0,a4
-	and	op_1,a0,a4
-	sub	a4,op_0,op_1
+	addi	op_4,x0,-1
+	and	op_3,op_4,a6
+	sub	op_2,op_3,a6
+	sub	op_0,op_1,op_2
+	addi	op_6,x0,-1
+	and	op_5,op_6,a6
+	sub	a4,op_0,op_5
+	and	op_1,a4,a2
+	sub	op_0,op_1,a2
+	sub	a4,a4,op_0
+	and	op_2,a0,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a0,op_1
+	and	op_3,a0,a4
+	sub	a4,op_0,op_3
 	addi	op_0,x0,15
 	and	a3,op_0,t5
 	jal	x0,.L22
@@ -1032,12 +791,11 @@ md5.constprop.0:
 	jalr	zero,ra,0
 .L7:
 	addi	t2,zero,0
-	or	a4,t2,a0
+	and	op_1,t2,a0
+	sub	op_0,op_1,a0
+	sub	a4,t2,op_0
 	addi	op_0,x0,3
-	addi	op_3,x0,3
-	or	op_2,op_3,a4
-	sub	op_1,op_2,a4
-	sub	a4,op_0,op_1
+	and	a4,op_0,a4
 	addi	a5,a0,0
 	addi	t6,t2,0
 	beq	a4,zero,.L54
@@ -1045,7 +803,9 @@ md5.constprop.0:
 	addi	a3,a0,1000
 	addi	a4,t2,0
 .L15:
-	lbu	a2,0(a5)
+	addi	op_0,x0,255
+	lw	op_1,0(a5)
+	and	a2,op_0,op_1
 	addi	a5,a5,1
 	addi	a4,a4,1
 	sb	a2,-1(a4)
@@ -1054,7 +814,7 @@ md5.constprop.0:
 	addi	a5,zero,-128
 	sb	a5,1000(t2)
 	addi	op_0,x0,3
-	and	a5,op_0,t2
+	and	a5,t2,op_0
 	beq	a5,zero,.L55
 .L16:
 	addi	a4,zero,64
@@ -1130,14 +890,16 @@ benchmark_body.constprop.0:
 	lw	a0,%lo(h3)(a2)
 	lw	ra,44(sp)
 	lw	s0,40(sp)
-	or	op_0,a3,a5
-	and	op_1,a3,a5
-	sub	a5,op_0,op_1
-	or	op_0,a4,a5
-	or	op_3,a4,a5
-	sub	op_2,op_3,a5
-	sub	op_1,a4,op_2
-	sub	a5,op_0,op_1
+	and	op_2,a3,a5
+	sub	op_1,op_2,a5
+	sub	op_0,a3,op_1
+	and	op_3,a3,a5
+	sub	a5,op_0,op_3
+	and	op_2,a4,a5
+	sub	op_1,op_2,a5
+	sub	op_0,a4,op_1
+	and	op_3,a4,a5
+	sub	a5,op_0,op_3
 	lw	s1,36(sp)
 	lw	s2,32(sp)
 	lw	s3,28(sp)
@@ -1145,16 +907,19 @@ benchmark_body.constprop.0:
 	lw	s5,20(sp)
 	lw	s6,16(sp)
 	lw	s7,12(sp)
-	or	op_0,a0,a5
-	and	op_1,a0,a5
-	sub	a0,op_0,op_1
+	and	op_2,a0,a5
+	sub	op_1,op_2,a5
+	sub	op_0,a0,op_1
+	and	op_3,a0,a5
+	sub	a0,op_0,op_3
 	addi	sp,sp,48
 	jalr	zero,ra,0
 	.size	benchmark_body.constprop.0, .-benchmark_body.constprop.0
 	.align	2
 	.type	benchmark_body.constprop.1.isra.0, @function
 benchmark_body.constprop.1.isra.0:
-	bge	zero,a0,.L69
+	blt	zero,a0,.+8
+	jal	x0,.L69
 	addi	sp,sp,-48
 	sw	s2,32(sp)
 	sw	s4,24(sp)
@@ -1304,11 +1069,8 @@ md5:
 	lui	a3,%hi(h3)
 	addi	a2,a6,120
 	sw	a4,%lo(h3)(a3)
-	addi	op_2,x0,3
-	or	op_1,t2,op_2
-	addi	op_3,x0,3
-	sub	op_0,op_1,op_3
-	sub	t5,t2,op_0
+	addi	op_0,x0,3
+	and	t5,op_0,t2
 	sub	op_0,x0,t2
 	sub	a4,a2,op_0
 	sub	op_0,x0,a2
@@ -1325,12 +1087,13 @@ md5:
 	sw	a5,%lo(heap_requested)(t4)
 	lui	a5,%hi(heap_end)
 	lw	a5,%lo(heap_end)(a5)
-	bltu	a5,a4,.L83
+	bgeu	a5,a4,.+8
+	jal	x0,.L83
 	sw	a4,%lo(heap_ptr)(t3)
 	beq	t2,zero,.L83
 	sub	a4,zero,t2
 	addi	op_0,x0,3
-	and	a5,op_0,a4
+	and	a5,a4,op_0
 	addi	a7,zero,0
 	beq	a5,zero,.L86
 	sb	zero,0(t2)
@@ -1348,10 +1111,7 @@ md5:
 .L86:
 	sub	t1,a2,a5
 	addi	op_0,x0,-4
-	addi	op_3,x0,-4
-	or	op_2,op_3,t1
-	sub	op_1,op_2,t1
-	sub	a4,op_0,op_1
+	and	a4,op_0,t1
 	sub	op_0,x0,t2
 	sub	a5,a5,op_0
 	sub	op_0,x0,a4
@@ -1368,32 +1128,27 @@ md5:
 	sub	a4,a5,op_0
 	sb	zero,0(a4)
 	addi	a4,a5,1
-	bltu	a4,a2,.+8
-	jal	x0,.L89
+	bgeu	a4,a2,.L89
 	sub	op_0,x0,t2
 	sub	a4,a4,op_0
 	sb	zero,0(a4)
 	addi	a4,a5,2
-	bltu	a4,a2,.+8
-	jal	x0,.L89
+	bgeu	a4,a2,.L89
 	sub	op_0,x0,t2
 	sub	a4,a4,op_0
 	sb	zero,0(a4)
 	addi	a4,a5,3
-	bltu	a4,a2,.+8
-	jal	x0,.L89
+	bgeu	a4,a2,.L89
 	sub	op_0,x0,t2
 	sub	a4,a4,op_0
 	sb	zero,0(a4)
 	addi	a4,a5,4
-	bltu	a4,a2,.+8
-	jal	x0,.L89
+	bgeu	a4,a2,.L89
 	sub	op_0,x0,t2
 	sub	a4,a4,op_0
 	sb	zero,0(a4)
 	addi	a5,a5,5
-	bltu	a5,a2,.+8
-	jal	x0,.L89
+	bgeu	a5,a2,.L89
 	sub	op_0,x0,t2
 	sub	a5,a5,op_0
 	sb	zero,0(a5)
@@ -1402,14 +1157,12 @@ md5:
 .L80:
 	addi	a5,a1,-1
 	addi	a4,zero,6
-	bltu	a4,a5,.+8
-	jal	x0,.L90
-	or	a3,a0,t2
-	addi	op_2,x0,3
-	or	op_1,a3,op_2
-	addi	op_3,x0,3
-	sub	op_0,op_1,op_3
-	sub	a3,a3,op_0
+	bgeu	a4,a5,.L90
+	and	op_1,a0,t2
+	sub	op_0,op_1,t2
+	sub	a3,a0,op_0
+	addi	op_0,x0,3
+	and	a3,a3,op_0
 	addi	a4,t2,0
 	addi	a5,a0,0
 	beq	a3,zero,.+8
@@ -1417,17 +1170,15 @@ md5:
 	sub	a3,t2,a0
 	addi	a3,a3,-1
 	addi	op_0,x0,3
-	bltu	a3,op_0,.+12
+	bgeu	a3,op_0,.+8
+	jal	x0,.+12
 	addi	a3,x0,0
 	jal	x0,.+8
 	addi	a3,x0,1
 	beq	a3,zero,.+8
 	jal	x0,.L90
 	addi	op_0,x0,-4
-	addi	op_3,x0,-4
-	or	op_2,op_3,a1
-	sub	op_1,op_2,a1
-	sub	a7,op_0,op_1
+	and	a7,op_0,a1
 	sub	op_0,x0,a0
 	sub	a2,a7,op_0
 .L91:
@@ -1438,25 +1189,29 @@ md5:
 	beq	a2,a5,.+8
 	jal	x0,.L91
 	beq	a1,a7,.L93
-	lbu	a3,0(a2)
+	addi	op_0,x0,255
+	lw	op_1,0(a2)
+	and	a3,op_0,op_1
 	sub	op_0,x0,t2
 	sub	a4,a7,op_0
 	addi	a5,a7,1
 	sb	a3,0(a4)
-	bltu	a5,a1,.+8
-	jal	x0,.L93
+	bgeu	a5,a1,.L93
 	sub	op_0,x0,a0
 	sub	a4,a5,op_0
-	lbu	a4,0(a4)
+	lw	op_0,0(a4)
+	addi	op_1,x0,255
+	and	a4,op_0,op_1
 	sub	op_0,x0,t2
 	sub	a5,a5,op_0
 	addi	a7,a7,2
 	sb	a4,0(a5)
-	bltu	a7,a1,.+8
-	jal	x0,.L93
+	bgeu	a7,a1,.L93
 	sub	op_0,x0,a0
 	sub	a5,a7,op_0
-	lbu	a5,0(a5)
+	addi	op_0,x0,255
+	lw	op_1,0(a5)
+	and	a5,op_0,op_1
 	sub	op_0,x0,t2
 	sub	a7,a7,op_0
 	sb	a5,0(a7)
@@ -1466,7 +1221,7 @@ md5:
 	addi	a4,zero,-128
 	sb	a4,0(a5)
 	addi	op_0,x0,3
-	and	a5,op_0,t2
+	and	a5,t2,op_0
 	addi	op_0,x0,3
 	sll	a1,a1,op_0
 	sub	op_0,x0,t2
@@ -1475,7 +1230,8 @@ md5:
 	jal	x0,.L132
 	sw	a1,0(a4)
 .L97:
-	bge	zero,s10,.L75
+	blt	zero,s10,.+8
+	jal	x0,.L75
 .L81:
 	lui	t5,1005505
 	lui	t4,292988
@@ -1537,41 +1293,21 @@ md5:
 	sw	s10,60(sp)
 .L100:
 	lw	a3,0(t6)
-	or	op_0,s5,s4
-	and	op_1,s5,s4
-	sub	a5,op_0,op_1
-	or	op_2,s3,a5
-	or	op_5,s3,a5
-	sub	op_4,op_5,a5
-	sub	op_3,s3,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a5,s3
-	or	op_0,op_1,op_6
-	or	op_9,s3,a5
-	or	op_12,s3,a5
-	sub	op_11,op_12,a5
-	sub	op_10,s3,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,s3,a5
-	or	op_19,s3,a5
-	sub	op_18,op_19,a5
-	sub	op_17,s3,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a5,s3
-	or	op_14,op_15,op_20
-	or	op_21,a5,s3
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a5,op_0,op_7
+	and	op_2,s5,s4
+	sub	op_1,op_2,s4
+	sub	op_0,s5,op_1
+	and	op_3,s5,s4
+	sub	a5,op_0,op_3
+	and	a5,a5,s3
 	sub	op_0,x0,s6
 	sub	a4,s9,op_0
 	sub	op_0,x0,a4
 	sub	a4,a3,op_0
-	or	op_0,s5,a5
-	or	op_3,s5,a5
-	sub	op_2,op_3,a5
-	sub	op_1,s5,op_2
-	sub	a5,op_0,op_1
+	and	op_2,s5,a5
+	sub	op_1,op_2,a5
+	sub	op_0,s5,op_1
+	and	op_3,s5,a5
+	sub	a5,op_0,op_3
 	sub	op_0,x0,a5
 	sub	a5,a4,op_0
 	addi	op_0,x0,25
@@ -1583,21 +1319,21 @@ md5:
 	sub	a1,a5,op_0
 	sub	op_0,x0,a1
 	sub	a1,s3,op_0
-	or	op_0,s3,s4
-	and	op_1,s3,s4
-	sub	a2,op_0,op_1
-	or	op_1,a2,a1
-	sub	op_0,op_1,a1
-	sub	a2,a2,op_0
+	and	op_2,s3,s4
+	sub	op_1,op_2,s4
+	sub	op_0,s3,op_1
+	and	op_3,s3,s4
+	sub	a2,op_0,op_3
+	and	a2,a2,a1
 	sub	op_0,x0,s5
 	sub	a5,s8,op_0
 	sub	op_0,x0,a5
 	sub	a5,a4,op_0
-	or	op_0,s4,a2
-	or	op_3,s4,a2
-	sub	op_2,op_3,a2
-	sub	op_1,s4,op_2
-	sub	a2,op_0,op_1
+	and	op_2,s4,a2
+	sub	op_1,op_2,a2
+	sub	op_0,s4,op_1
+	and	op_3,s4,a2
+	sub	a2,op_0,op_3
 	sub	op_0,x0,a2
 	sub	a2,a5,op_0
 	addi	op_0,x0,20
@@ -1609,23 +1345,21 @@ md5:
 	sub	a2,a5,op_0
 	sub	op_0,x0,a1
 	sub	a2,a2,op_0
-	or	op_0,a1,s3
-	or	op_3,a1,s3
-	sub	op_2,op_3,s3
-	sub	op_1,a1,op_2
-	sub	a3,op_0,op_1
-	or	op_1,a3,a2
-	sub	op_0,op_1,a2
-	sub	a3,a3,op_0
+	and	op_2,a1,s3
+	sub	op_1,op_2,s3
+	sub	op_0,a1,op_1
+	and	op_3,a1,s3
+	sub	a3,op_0,op_3
+	and	a3,a3,a2
 	sub	op_0,x0,s4
 	sub	a5,s7,op_0
 	sub	op_0,x0,a5
 	sub	a5,a4,op_0
-	or	op_0,s3,a3
-	or	op_3,s3,a3
-	sub	op_2,op_3,a3
-	sub	op_1,s3,op_2
-	sub	a3,op_0,op_1
+	and	op_2,s3,a3
+	sub	op_1,op_2,a3
+	sub	op_0,s3,op_1
+	and	op_3,s3,a3
+	sub	a3,op_0,op_3
 	sub	op_0,x0,a3
 	sub	a3,a5,op_0
 	addi	op_0,x0,15
@@ -1637,23 +1371,21 @@ md5:
 	sub	a3,a5,op_0
 	sub	op_0,x0,a3
 	sub	a3,a2,op_0
-	or	op_0,a2,a1
-	or	op_3,a2,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a2,op_2
-	sub	a4,op_0,op_1
-	or	op_1,a4,a3
-	sub	op_0,op_1,a3
-	sub	a4,a4,op_0
+	and	op_2,a2,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a2,op_1
+	and	op_3,a2,a1
+	sub	a4,op_0,op_3
+	and	a4,a4,a3
 	sub	op_0,x0,s3
 	sub	a5,s11,op_0
 	sub	op_0,x0,a5
 	sub	a5,a0,op_0
-	or	op_0,a1,a4
-	or	op_3,a1,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a1,op_2
-	sub	a4,op_0,op_1
+	and	op_2,a1,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a1,op_1
+	and	op_3,a1,a4
+	sub	a4,op_0,op_3
 	sub	op_0,x0,a4
 	sub	a4,a5,op_0
 	lw	a6,12(sp)
@@ -1666,23 +1398,21 @@ md5:
 	sub	a4,a0,op_0
 	sub	op_0,x0,a3
 	sub	a4,a4,op_0
-	or	op_0,a2,a3
-	or	op_3,a2,a3
-	sub	op_2,op_3,a3
-	sub	op_1,a2,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a2,a3
+	sub	op_1,op_2,a3
+	sub	op_0,a2,op_1
+	and	op_3,a2,a3
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a5
 	sub	a5,a6,op_0
 	sub	op_0,x0,a5
 	sub	a5,a1,op_0
-	or	op_1,a0,a4
-	sub	op_0,op_1,a4
-	sub	a1,a0,op_0
-	or	op_0,a2,a1
-	or	op_3,a2,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a2,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a4
+	and	op_2,a2,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a2,op_1
+	and	op_3,a2,a1
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a5
 	sub	a5,a1,op_0
 	lw	a6,16(sp)
@@ -1695,23 +1425,21 @@ md5:
 	sub	a5,a0,op_0
 	sub	op_0,x0,a4
 	sub	a5,a5,op_0
-	or	op_0,a4,a3
-	or	op_3,a4,a3
-	sub	op_2,op_3,a3
-	sub	op_1,a4,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a4,a3
+	sub	op_1,op_2,a3
+	sub	op_0,a4,op_1
+	and	op_3,a4,a3
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a1
 	sub	a1,a6,op_0
 	sub	op_0,x0,a1
 	sub	a2,a2,op_0
-	or	op_1,a0,a5
-	sub	op_0,op_1,a5
-	sub	a1,a0,op_0
-	or	op_0,a3,a1
-	or	op_3,a3,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a3,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a5
+	and	op_2,a3,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a3,op_1
+	and	op_3,a3,a1
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a2
 	sub	a2,a1,op_0
 	lw	a6,20(sp)
@@ -1724,43 +1452,21 @@ md5:
 	sub	a2,a0,op_0
 	sub	op_0,x0,a5
 	sub	a2,a2,op_0
-	or	op_0,a5,a4
-	or	op_3,a5,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a5,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a5,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a5,op_1
+	and	op_3,a5,a4
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a1
 	sub	a1,a6,op_0
 	sub	op_0,x0,a1
 	sub	a3,a3,op_0
-	or	op_2,a2,a0
-	or	op_5,a2,a0
-	sub	op_4,op_5,a0
-	sub	op_3,a2,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a0,a2
-	or	op_0,op_1,op_6
-	or	op_9,a2,a0
-	or	op_12,a2,a0
-	sub	op_11,op_12,a0
-	sub	op_10,a2,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,a2,a0
-	or	op_19,a2,a0
-	sub	op_18,op_19,a0
-	sub	op_17,a2,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a0,a2
-	or	op_14,op_15,op_20
-	or	op_21,a0,a2
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a1,op_0,op_7
-	or	op_0,a4,a1
-	or	op_3,a4,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a4,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a2
+	and	op_2,a4,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a4,op_1
+	and	op_3,a4,a1
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a3
 	sub	a3,a1,op_0
 	lw	a6,24(sp)
@@ -1773,43 +1479,21 @@ md5:
 	sub	a3,a0,op_0
 	sub	op_0,x0,a2
 	sub	a3,a3,op_0
-	or	op_0,a2,a5
-	or	op_3,a2,a5
-	sub	op_2,op_3,a5
-	sub	op_1,a2,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a2,a5
+	sub	op_1,op_2,a5
+	sub	op_0,a2,op_1
+	and	op_3,a2,a5
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a1
 	sub	a1,a6,op_0
 	sub	op_0,x0,a1
 	sub	a4,a4,op_0
-	or	op_2,a3,a0
-	or	op_5,a3,a0
-	sub	op_4,op_5,a0
-	sub	op_3,a3,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a0,a3
-	or	op_0,op_1,op_6
-	or	op_9,a3,a0
-	or	op_12,a3,a0
-	sub	op_11,op_12,a0
-	sub	op_10,a3,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,a3,a0
-	or	op_19,a3,a0
-	sub	op_18,op_19,a0
-	sub	op_17,a3,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a0,a3
-	or	op_14,op_15,op_20
-	or	op_21,a0,a3
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a1,op_0,op_7
-	or	op_0,a5,a1
-	or	op_3,a5,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a5,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a3
+	and	op_2,a5,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a5,op_1
+	and	op_3,a5,a1
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a4
 	sub	a4,a1,op_0
 	lw	a6,28(sp)
@@ -1822,23 +1506,21 @@ md5:
 	sub	a4,a0,op_0
 	sub	op_0,x0,a3
 	sub	a4,a4,op_0
-	or	op_0,a3,a2
-	or	op_3,a3,a2
-	sub	op_2,op_3,a2
-	sub	op_1,a3,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a3,a2
+	sub	op_1,op_2,a2
+	sub	op_0,a3,op_1
+	and	op_3,a3,a2
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a1
 	sub	a1,a6,op_0
 	sub	op_0,x0,a1
 	sub	a5,a5,op_0
-	or	op_1,a0,a4
-	sub	op_0,op_1,a4
-	sub	a1,a0,op_0
-	or	op_0,a2,a1
-	or	op_3,a2,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a2,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a4
+	and	op_2,a2,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a2,op_1
+	and	op_3,a2,a1
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a5
 	sub	a5,a1,op_0
 	lw	a6,32(sp)
@@ -1851,23 +1533,21 @@ md5:
 	sub	a5,a0,op_0
 	sub	op_0,x0,a4
 	sub	a5,a5,op_0
-	or	op_0,a4,a3
-	or	op_3,a4,a3
-	sub	op_2,op_3,a3
-	sub	op_1,a4,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a4,a3
+	sub	op_1,op_2,a3
+	sub	op_0,a4,op_1
+	and	op_3,a4,a3
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a1
 	sub	a1,a6,op_0
 	sub	op_0,x0,a1
 	sub	a2,a2,op_0
-	or	op_1,a0,a5
-	sub	op_0,op_1,a5
-	sub	a1,a0,op_0
-	or	op_0,a3,a1
-	or	op_3,a3,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a3,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a5
+	and	op_2,a3,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a3,op_1
+	and	op_3,a3,a1
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a2
 	sub	a2,a1,op_0
 	lw	a6,36(sp)
@@ -1880,23 +1560,21 @@ md5:
 	sub	a2,a0,op_0
 	sub	op_0,x0,a5
 	sub	a2,a2,op_0
-	or	op_0,a5,a4
-	or	op_3,a5,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a5,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a5,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a5,op_1
+	and	op_3,a5,a4
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a1
 	sub	a1,a6,op_0
 	sub	op_0,x0,a1
 	sub	a3,a3,op_0
-	or	op_1,a0,a2
-	sub	op_0,op_1,a2
-	sub	a1,a0,op_0
-	or	op_0,a4,a1
-	or	op_3,a4,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a4,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a2
+	and	op_2,a4,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a4,op_1
+	and	op_3,a4,a1
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a3
 	sub	a3,a1,op_0
 	lw	a6,40(sp)
@@ -1909,43 +1587,21 @@ md5:
 	sub	a3,a0,op_0
 	sub	op_0,x0,a2
 	sub	a3,a3,op_0
-	or	op_0,a2,a5
-	or	op_3,a2,a5
-	sub	op_2,op_3,a5
-	sub	op_1,a2,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a2,a5
+	sub	op_1,op_2,a5
+	sub	op_0,a2,op_1
+	and	op_3,a2,a5
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a1
 	sub	a1,a6,op_0
 	sub	op_0,x0,a1
 	sub	a4,a4,op_0
-	or	op_2,a3,a0
-	or	op_5,a3,a0
-	sub	op_4,op_5,a0
-	sub	op_3,a3,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a0,a3
-	or	op_0,op_1,op_6
-	or	op_9,a3,a0
-	or	op_12,a3,a0
-	sub	op_11,op_12,a0
-	sub	op_10,a3,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,a3,a0
-	or	op_19,a3,a0
-	sub	op_18,op_19,a0
-	sub	op_17,a3,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a0,a3
-	or	op_14,op_15,op_20
-	or	op_21,a0,a3
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a1,op_0,op_7
-	or	op_0,a5,a1
-	or	op_3,a5,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a5,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a3
+	and	op_2,a5,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a5,op_1
+	and	op_3,a5,a1
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a4
 	sub	a4,a1,op_0
 	lw	a6,44(sp)
@@ -1958,43 +1614,21 @@ md5:
 	sub	a4,a0,op_0
 	sub	op_0,x0,a3
 	sub	a4,a4,op_0
-	or	op_0,a3,a2
-	or	op_3,a3,a2
-	sub	op_2,op_3,a2
-	sub	op_1,a3,op_2
-	sub	a0,op_0,op_1
+	and	op_2,a3,a2
+	sub	op_1,op_2,a2
+	sub	op_0,a3,op_1
+	and	op_3,a3,a2
+	sub	a0,op_0,op_3
 	sub	op_0,x0,a1
 	sub	a1,a6,op_0
 	sub	op_0,x0,a1
 	sub	a5,a5,op_0
-	or	op_2,a4,a0
-	or	op_5,a4,a0
-	sub	op_4,op_5,a0
-	sub	op_3,a4,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a0,a4
-	or	op_0,op_1,op_6
-	or	op_9,a4,a0
-	or	op_12,a4,a0
-	sub	op_11,op_12,a0
-	sub	op_10,a4,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,a4,a0
-	or	op_19,a4,a0
-	sub	op_18,op_19,a0
-	sub	op_17,a4,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a0,a4
-	or	op_14,op_15,op_20
-	or	op_21,a0,a4
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a1,op_0,op_7
-	or	op_0,a2,a1
-	or	op_3,a2,a1
-	sub	op_2,op_3,a1
-	sub	op_1,a2,op_2
-	sub	a1,op_0,op_1
+	and	a1,a0,a4
+	and	op_2,a2,a1
+	sub	op_1,op_2,a1
+	sub	op_0,a2,op_1
+	and	op_3,a2,a1
+	sub	a1,op_0,op_3
 	lw	a0,48(sp)
 	sub	op_0,x0,a5
 	sub	a5,a1,op_0
@@ -2007,23 +1641,21 @@ md5:
 	sub	a5,a1,op_0
 	sub	op_0,x0,a4
 	sub	a5,a5,op_0
-	or	op_0,a4,a3
-	or	op_3,a4,a3
-	sub	op_2,op_3,a3
-	sub	op_1,a4,op_2
-	sub	a1,op_0,op_1
+	and	op_2,a4,a3
+	sub	op_1,op_2,a3
+	sub	op_0,a4,op_1
+	and	op_3,a4,a3
+	sub	a1,op_0,op_3
 	sub	op_0,x0,a6
 	sub	a6,a0,op_0
 	sub	op_0,x0,a6
 	sub	a6,a2,op_0
-	or	op_1,a1,a5
-	sub	op_0,op_1,a5
-	sub	a2,a1,op_0
-	or	op_0,a3,a2
-	or	op_3,a3,a2
-	sub	op_2,op_3,a2
-	sub	op_1,a3,op_2
-	sub	a2,op_0,op_1
+	and	a2,a1,a5
+	and	op_2,a3,a2
+	sub	op_1,op_2,a2
+	sub	op_0,a3,op_1
+	and	op_3,a3,a2
+	sub	a2,op_0,op_3
 	lw	a1,52(sp)
 	sub	op_0,x0,a6
 	sub	a6,a2,op_0
@@ -2036,23 +1668,21 @@ md5:
 	sub	a6,a2,op_0
 	sub	op_0,x0,a5
 	sub	a6,a6,op_0
-	or	op_0,a5,a4
-	or	op_3,a5,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a5,op_2
-	sub	a2,op_0,op_1
+	and	op_2,a5,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a5,op_1
+	and	op_3,a5,a4
+	sub	a2,op_0,op_3
 	sub	op_0,x0,a0
 	sub	a0,a1,op_0
 	sub	op_0,x0,a0
 	sub	a0,a3,op_0
-	or	op_1,a2,a6
-	sub	op_0,op_1,a6
-	sub	a3,a2,op_0
-	or	op_0,a4,a3
-	or	op_3,a4,a3
-	sub	op_2,op_3,a3
-	sub	op_1,a4,op_2
-	sub	a3,op_0,op_1
+	and	a3,a2,a6
+	and	op_2,a4,a3
+	sub	op_1,op_2,a3
+	sub	op_0,a4,op_1
+	and	op_3,a4,a3
+	sub	a3,op_0,op_3
 	lw	a1,56(sp)
 	sub	op_0,x0,a0
 	sub	a0,a3,op_0
@@ -2067,41 +1697,19 @@ md5:
 	sub	a0,a0,op_0
 	sub	op_0,x0,a2
 	sub	a2,a1,op_0
-	or	op_0,a6,a5
-	or	op_3,a6,a5
-	sub	op_2,op_3,a5
-	sub	op_1,a6,op_2
-	sub	a3,op_0,op_1
+	and	op_2,a6,a5
+	sub	op_1,op_2,a5
+	sub	op_0,a6,op_1
+	and	op_3,a6,a5
+	sub	a3,op_0,op_3
 	sub	op_0,x0,a2
 	sub	a2,a4,op_0
-	or	op_2,a0,a3
-	or	op_5,a0,a3
-	sub	op_4,op_5,a3
-	sub	op_3,a0,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a3,a0
-	or	op_0,op_1,op_6
-	or	op_9,a0,a3
-	or	op_12,a0,a3
-	sub	op_11,op_12,a3
-	sub	op_10,a0,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,a0,a3
-	or	op_19,a0,a3
-	sub	op_18,op_19,a3
-	sub	op_17,a0,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a3,a0
-	or	op_14,op_15,op_20
-	or	op_21,a3,a0
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a4,op_0,op_7
-	or	op_0,a5,a4
-	or	op_3,a5,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a5,op_2
-	sub	a4,op_0,op_1
+	and	a4,a3,a0
+	and	op_2,a5,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a5,op_1
+	and	op_3,a5,a4
+	sub	a4,op_0,op_3
 	sub	op_0,x0,a2
 	sub	a2,a4,op_0
 	addi	op_0,x0,10
@@ -2120,14 +1728,13 @@ md5:
 	addi	a1,zero,16
 	jal	x0,.L99
 .L134:
-	or	op_0,a0,a4
-	and	op_1,a0,a4
-	sub	a4,op_0,op_1
-	addi	op_2,x0,15
-	or	op_1,t3,op_2
-	addi	op_3,x0,15
-	sub	op_0,op_1,op_3
-	sub	a3,t3,op_0
+	and	op_2,a0,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a0,op_1
+	and	op_3,a0,a4
+	sub	a4,op_0,op_3
+	addi	op_0,x0,15
+	and	a3,t3,op_0
 .L103:
 	addi	op_0,x0,2
 	sll	a3,a3,op_0
@@ -2149,7 +1756,9 @@ md5:
 	sub	a5,zero,a3
 	sll	a3,a4,a3
 	srl	a4,a4,a5
-	or	a3,a3,a4
+	and	op_1,a3,a4
+	sub	op_0,op_1,a4
+	sub	a3,a3,op_0
 	addi	t4,t4,3
 	addi	t3,t3,5
 	addi	t1,t1,4
@@ -2162,42 +1771,47 @@ md5:
 	addi	a0,a2,0
 	addi	a2,a3,0
 .L99:
-	or	op_0,a0,a2
-	and	op_1,a0,a2
-	sub	a4,op_0,op_1
+	and	op_2,a0,a2
+	sub	op_1,op_2,a2
+	sub	op_0,a0,op_1
+	and	op_3,a0,a2
+	sub	a4,op_0,op_3
 	and	a4,a4,a6
-	bltu	s1,a1,.+8
-	jal	x0,.L134
-	or	op_0,a6,a2
-	and	op_1,a6,a2
-	sub	a4,op_0,op_1
-	bltu	s2,a1,.L104
-	or	op_0,a0,a4
-	and	op_1,a0,a4
-	sub	a4,op_0,op_1
+	bgeu	s1,a1,.L134
+	and	op_2,a6,a2
+	sub	op_1,op_2,a2
+	sub	op_0,a6,op_1
+	and	op_3,a6,a2
+	sub	a4,op_0,op_3
+	bgeu	s2,a1,.+8
+	jal	x0,.L104
+	and	op_2,a0,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a0,op_1
+	and	op_3,a0,a4
+	sub	a4,op_0,op_3
 	addi	op_0,x0,15
-	and	a3,op_0,t4
+	and	a3,t4,op_0
 	jal	x0,.L103
 .L104:
 	addi	op_1,x0,-1
-	or	op_0,op_1,a6
-	addi	op_3,x0,-1
+	addi	op_4,x0,-1
+	and	op_3,op_4,a6
+	sub	op_2,op_3,a6
+	sub	op_0,op_1,op_2
 	addi	op_6,x0,-1
-	or	op_5,op_6,a6
-	sub	op_4,op_5,a6
-	sub	op_2,op_3,op_4
-	sub	a4,op_0,op_2
-	or	a4,a4,a2
-	or	op_0,a0,a4
-	or	op_3,a0,a4
-	sub	op_2,op_3,a4
-	sub	op_1,a0,op_2
-	sub	a4,op_0,op_1
+	and	op_5,op_6,a6
+	sub	a4,op_0,op_5
+	and	op_1,a4,a2
+	sub	op_0,op_1,a2
+	sub	a4,a4,op_0
+	and	op_2,a0,a4
+	sub	op_1,op_2,a4
+	sub	op_0,a0,op_1
+	and	op_3,a0,a4
+	sub	a4,op_0,op_3
 	addi	op_0,x0,15
-	addi	op_3,x0,15
-	or	op_2,op_3,t5
-	sub	op_1,op_2,t5
-	sub	a3,op_0,op_1
+	and	a3,t5,op_0
 	jal	x0,.L103
 .L133:
 	lw	a5,60(sp)
@@ -2211,8 +1825,7 @@ md5:
 	sub	op_0,x0,s5
 	sub	s5,a0,op_0
 	addi	t6,t6,64
-	bge	t0,a5,.+8
-	jal	x0,.L100
+	blt	t0,a5,.L100
 	lui	a5,%hi(h0)
 	sw	s6,%lo(h0)(a5)
 	lui	a5,%hi(h1)
@@ -2264,7 +1877,9 @@ md5:
 	sub	a2,a1,op_0
 	addi	a4,t2,0
 .L95:
-	lbu	a3,0(a5)
+	lw	op_0,0(a5)
+	addi	op_1,x0,255
+	and	a3,op_0,op_1
 	addi	a5,a5,1
 	addi	a4,a4,1
 	sb	a3,-1(a4)
@@ -2325,7 +1940,8 @@ main:
 	addi	a5,a5,-948
 	sub	op_0,x0,a0
 	sub	a0,a5,op_0
-	bltu	zero,a0,.+12
+	bgeu	zero,a0,.+8
+	jal	x0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
@@ -2342,7 +1958,8 @@ verify_benchmark:
 	sub	op_0,x0,a0
 	sub	a0,a5,op_0
 	addi	op_0,x0,1
-	bltu	a0,op_0,.+12
+	bgeu	a0,op_0,.+8
+	jal	x0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1

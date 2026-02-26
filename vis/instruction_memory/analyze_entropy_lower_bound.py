@@ -140,6 +140,43 @@ def shannon_entropy(counts: Counter) -> float:
     return H
 
 
+def huffman_avg_bits(counts: Counter) -> float:
+    """Compute average bits per symbol under optimal Huffman coding.
+
+    Builds a Huffman tree from frequency counts and returns
+    L = Σ p_i * l_i, where l_i is the codeword length for symbol i.
+    Guaranteed: H ≤ L < H + 1  (Huffman 1952).
+    """
+    import heapq
+    total = sum(counts.values())
+    if total == 0:
+        return 0.0
+    if len(counts) <= 1:
+        return 0.0
+
+    # Build Huffman tree: heap of (frequency, tie-breaker, bit-lengths-dict)
+    heap = []
+    for i, (sym, cnt) in enumerate(counts.items()):
+        heapq.heappush(heap, (cnt, i, {sym: 0}))
+
+    counter = len(counts)
+    while len(heap) > 1:
+        freq1, _, lengths1 = heapq.heappop(heap)
+        freq2, _, lengths2 = heapq.heappop(heap)
+        # Increment all bit lengths by 1 for both subtrees
+        merged = {}
+        for sym, bits in lengths1.items():
+            merged[sym] = bits + 1
+        for sym, bits in lengths2.items():
+            merged[sym] = bits + 1
+        heapq.heappush(heap, (freq1 + freq2, counter, merged))
+        counter += 1
+
+    _, _, final_lengths = heap[0]
+    avg = sum(final_lengths[sym] * counts[sym] for sym in counts) / total
+    return avg
+
+
 def bits_needed_uniform(n_unique: int) -> int:
     """Minimum bits for uniform encoding (ceil(log2(N)))."""
     if n_unique <= 1:
@@ -189,6 +226,7 @@ def analyze_program(program_name: str, frontend_dir: Path,
     orig_unique = len(orig_counts)
     orig_uniform_bits = bits_needed_uniform(orig_unique)
     orig_entropy = shannon_entropy(orig_counts)
+    orig_huffman = huffman_avg_bits(orig_counts)
 
     result = {
         'application': program_name,
@@ -196,9 +234,11 @@ def analyze_program(program_name: str, frontend_dir: Path,
         'orig_unique_instr': orig_unique,
         'orig_uniform_bits': orig_uniform_bits,
         'orig_entropy_bits': orig_entropy,
+        'orig_huffman_bits': orig_huffman,
         'orig_code_bytes_32': orig_total * 4,
         'orig_code_bytes_uniform': orig_total * orig_uniform_bits / 8,
         'orig_code_bytes_entropy': orig_total * orig_entropy / 8,
+        'orig_code_bytes_huffman': orig_total * orig_huffman / 8,
     }
 
     # ── rewritten variant ──
@@ -210,6 +250,7 @@ def analyze_program(program_name: str, frontend_dir: Path,
         rewr_unique = len(rewr_counts)
         rewr_uniform_bits = bits_needed_uniform(rewr_unique)
         rewr_entropy = shannon_entropy(rewr_counts)
+        rewr_huffman = huffman_avg_bits(rewr_counts)
 
         result.update({
             'rewr_variant': variant_info['variant_id'],
@@ -218,16 +259,18 @@ def analyze_program(program_name: str, frontend_dir: Path,
             'rewr_unique_instr': rewr_unique,
             'rewr_uniform_bits': rewr_uniform_bits,
             'rewr_entropy_bits': rewr_entropy,
+            'rewr_huffman_bits': rewr_huffman,
             'rewr_code_bytes_32': rewr_total * 4,
             'rewr_code_bytes_uniform': rewr_total * rewr_uniform_bits / 8,
             'rewr_code_bytes_entropy': rewr_total * rewr_entropy / 8,
+            'rewr_code_bytes_huffman': rewr_total * rewr_huffman / 8,
         })
     else:
         for key in ('rewr_variant', 'rewr_num_opcode_types',
                      'rewr_total_instr', 'rewr_unique_instr',
-                     'rewr_uniform_bits', 'rewr_entropy_bits',
+                     'rewr_uniform_bits', 'rewr_entropy_bits', 'rewr_huffman_bits',
                      'rewr_code_bytes_32', 'rewr_code_bytes_uniform',
-                     'rewr_code_bytes_entropy'):
+                     'rewr_code_bytes_entropy', 'rewr_code_bytes_huffman'):
             result[key] = None
 
     return result
@@ -239,12 +282,14 @@ def generate_csv(summaries: List[Dict], output_path: str):
     fieldnames = [
         'application',
         'orig_total_instr', 'orig_unique_instr',
-        'orig_uniform_bits', 'orig_entropy_bits',
-        'orig_code_bytes_32', 'orig_code_bytes_uniform', 'orig_code_bytes_entropy',
+        'orig_uniform_bits', 'orig_entropy_bits', 'orig_huffman_bits',
+        'orig_code_bytes_32', 'orig_code_bytes_uniform',
+        'orig_code_bytes_entropy', 'orig_code_bytes_huffman',
         'rewr_variant', 'rewr_num_opcode_types',
         'rewr_total_instr', 'rewr_unique_instr',
-        'rewr_uniform_bits', 'rewr_entropy_bits',
-        'rewr_code_bytes_32', 'rewr_code_bytes_uniform', 'rewr_code_bytes_entropy',
+        'rewr_uniform_bits', 'rewr_entropy_bits', 'rewr_huffman_bits',
+        'rewr_code_bytes_32', 'rewr_code_bytes_uniform',
+        'rewr_code_bytes_entropy', 'rewr_code_bytes_huffman',
     ]
     with open(output_path, 'w', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction='ignore')
@@ -269,35 +314,83 @@ EMBENCH_NAMES = {
 
 # ── visualization ───────────────────────────────────────────────────────────
 
-def _plot_suite(apps, norm_orig_32, norm_orig_entropy, norm_rewr_32,
-                norm_rewr_entropy, title, output_path):
-    """Draw a single normalized bar chart for one benchmark suite."""
+def visualize_results(summaries: List[Dict], output_path: str):
+    from matplotlib.patches import Patch
+
+    valid = [s for s in summaries if s.get('rewr_unique_instr') is not None]
+    if not valid:
+        print("No valid rewrite data to visualize!")
+        return
+
+    apps = [NAME_MAPPING.get(s['application'], s['application']) for s in valid]
+    orig_32       = np.array([s['orig_code_bytes_32'] for s in valid], dtype=float)
+    orig_entropy  = np.array([s['orig_code_bytes_entropy'] for s in valid], dtype=float)
+    rewr_32       = np.array([s['rewr_code_bytes_32'] for s in valid], dtype=float)
+    rewr_entropy  = np.array([s['rewr_code_bytes_entropy'] for s in valid], dtype=float)
+
+    # Normalize to original 32-bit
+    norm_orig_32       = orig_32 / orig_32
+    norm_orig_entropy  = orig_entropy / orig_32
+    norm_rewr_32       = rewr_32 / orig_32
+    norm_rewr_entropy  = rewr_entropy / orig_32
+
+    def _gmean(arr):
+        return np.exp(np.mean(np.log(arr)))
+
+    avg_orig_32       = _gmean(norm_orig_32)
+    avg_orig_entropy  = _gmean(norm_orig_entropy)
+    avg_rewr_32       = _gmean(norm_rewr_32)
+    avg_rewr_entropy  = _gmean(norm_rewr_entropy)
+
+    # Sort all benchmarks by rewritten 32-bit ratio (ascending)
+    sort_idx = sorted(range(len(apps)), key=lambda i: norm_rewr_32[i])
+    apps              = [apps[i] for i in sort_idx]
+    norm_orig_32      = norm_orig_32[sort_idx]
+    norm_orig_entropy = norm_orig_entropy[sort_idx]
+    norm_rewr_32      = norm_rewr_32[sort_idx]
+    norm_rewr_entropy = norm_rewr_entropy[sort_idx]
+
+    # Append Geomean
+    apps.append('Geomean')
+    norm_orig_32      = np.append(norm_orig_32,      avg_orig_32)
+    norm_orig_entropy = np.append(norm_orig_entropy,  avg_orig_entropy)
+    norm_rewr_32      = np.append(norm_rewr_32,      avg_rewr_32)
+    norm_rewr_entropy = np.append(norm_rewr_entropy,  avg_rewr_entropy)
+
+    n = len(apps)
     sns.set_palette("Set2")
     colors = sns.color_palette("Set2", 4)
-    fig, ax = plt.subplots(figsize=(10, 5))
-    x = np.arange(len(apps))
-    w = 0.2
+    fig, ax = plt.subplots(figsize=(7, 3.5))
+    x = np.arange(n)
+    w = 0.18
 
     Y_MAX = 3.0
 
-    clip_orig_32       = np.minimum(norm_orig_32, Y_MAX)
-    clip_orig_entropy  = np.minimum(norm_orig_entropy, Y_MAX)
-    clip_rewr_32       = np.minimum(norm_rewr_32, Y_MAX)
-    clip_rewr_entropy  = np.minimum(norm_rewr_entropy, Y_MAX)
+    # Bar 1: Original 32-bit
+    clip_orig_32 = np.minimum(norm_orig_32, Y_MAX)
+    ax.bar(x - 1.5*w, clip_orig_32, w,
+           color=colors[0], edgecolor='black', linewidth=0.4, alpha=0.85)
 
-    ax.bar(x - 1.5*w, clip_orig_32,      w, label='Original (32-bit)',
-           color=colors[0], edgecolor='black', linewidth=0.5, alpha=0.85)
-    ax.bar(x - 0.5*w, clip_orig_entropy,  w, label='Original (entropy lower bound)',
-           color=colors[1], edgecolor='black', linewidth=0.5, alpha=0.85, hatch='//')
-    ax.bar(x + 0.5*w, clip_rewr_32,      w, label='Rewritten (32-bit)',
-           color=colors[2], edgecolor='black', linewidth=0.5, alpha=0.85)
-    ax.bar(x + 1.5*w, clip_rewr_entropy,  w, label='Rewritten (entropy lower bound)',
-           color=colors[3], edgecolor='black', linewidth=0.5, alpha=0.85, hatch='//')
+    # Bar 2: Original entropy lower bound
+    clip_orig_entropy = np.minimum(norm_orig_entropy, Y_MAX)
+    ax.bar(x - 0.5*w, clip_orig_entropy, w,
+           color=colors[1], edgecolor='black', linewidth=0.4, alpha=0.85)
 
+    # Bar 3: Rewritten 32-bit
+    clip_rewr_32 = np.minimum(norm_rewr_32, Y_MAX)
+    ax.bar(x + 0.5*w, clip_rewr_32, w,
+           color=colors[2], edgecolor='black', linewidth=0.4, alpha=0.85)
+
+    # Bar 4: Rewritten entropy lower bound
+    clip_rewr_entropy = np.minimum(norm_rewr_entropy, Y_MAX)
+    ax.bar(x + 1.5*w, clip_rewr_entropy, w,
+           color=colors[3], edgecolor='black', linewidth=0.4, alpha=0.85)
+
+    # Annotate clipped bars
     for vals, offset in [(norm_orig_32, -1.5*w),
                           (norm_orig_entropy, -0.5*w),
-                          (norm_rewr_32, 0.5*w - 0.06),
-                          (norm_rewr_entropy, 1.5*w + 0.06)]:
+                          (norm_rewr_32, 0.5*w),
+                          (norm_rewr_entropy, 1.5*w)]:
         for i, val in enumerate(vals):
             if val > Y_MAX:
                 ax.text(x[i] + offset, Y_MAX + 0.03, f'{val:.1f}',
@@ -305,70 +398,34 @@ def _plot_suite(apps, norm_orig_32, norm_orig_entropy, norm_rewr_32,
 
     ax.axhline(y=1.0, color='black', linestyle='--', linewidth=0.8, alpha=0.5)
 
-    avg_idx = len(apps) - 1
+    avg_idx = n - 1
     ax.axvline(x=avg_idx - 0.5, color='black', linestyle='-', linewidth=0.8, alpha=0.4)
 
+    ax.set_xlim(-0.6, n - 0.4)
     ax.set_ylim(0, Y_MAX + 0.25)
-    ax.set_ylabel('Normalized Code Size\n(1.0 = Original 32-bit)', fontsize=11, fontweight='bold')
-    ax.set_title(title, fontsize=12, fontweight='bold')
+    ax.set_ylabel('Normalized Code Size', fontsize=11, fontweight='bold')
     ax.set_xticks(x)
-    xlabels = ax.set_xticklabels(apps, rotation=45, ha='right', fontsize=10)
+    xlabels = ax.set_xticklabels(apps, rotation=60, ha='right', fontsize=10)
     xlabels[-1].set_fontweight('bold')
-    ax.tick_params(axis='y', labelsize=10)
+    ax.tick_params(axis='y', labelsize=9)
     ax.grid(axis='y', alpha=0.3, linestyle='--')
-    ax.legend(loc='upper left', framealpha=0.9, fontsize=9)
+
+    legend_handles = [
+        Patch(facecolor=colors[0], edgecolor='black', linewidth=0.5,
+              label='Original (32-bit)'),
+        Patch(facecolor=colors[1], edgecolor='black', linewidth=0.5,
+              label='Original (entropy lower bound)'),
+        Patch(facecolor=colors[2], edgecolor='black', linewidth=0.5,
+              label='Rewritten (32-bit)'),
+        Patch(facecolor=colors[3], edgecolor='black', linewidth=0.5,
+              label='Rewritten (entropy lower bound)'),
+    ]
+    ax.legend(handles=legend_handles, loc='upper left', framealpha=0.9, fontsize=7)
 
     plt.tight_layout()
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
     print(f"Visualization saved to: {output_path}")
     plt.close()
-
-
-def visualize_results(summaries: List[Dict], output_dir: str):
-    valid = [s for s in summaries if s.get('rewr_unique_instr') is not None]
-    if not valid:
-        print("No valid rewrite data to visualize!")
-        return
-
-    apps_all = [NAME_MAPPING.get(s['application'], s['application']) for s in valid]
-    orig_32_all       = np.array([s['orig_code_bytes_32'] for s in valid], dtype=float)
-    orig_entropy_all  = np.array([s['orig_code_bytes_entropy'] for s in valid], dtype=float)
-    rewr_32_all       = np.array([s['rewr_code_bytes_32'] for s in valid], dtype=float)
-    rewr_entropy_all  = np.array([s['rewr_code_bytes_entropy'] for s in valid], dtype=float)
-
-    norm_orig_32_all       = orig_32_all / orig_32_all
-    norm_orig_entropy_all  = orig_entropy_all / orig_32_all
-    norm_rewr_32_all       = rewr_32_all / orig_32_all
-    norm_rewr_entropy_all  = rewr_entropy_all / orig_32_all
-
-    def _gmean(arr):
-        return np.exp(np.mean(np.log(arr)))
-
-    for suite_name, suite_set in [('mibench', MIBENCH_NAMES), ('embench', EMBENCH_NAMES)]:
-        sel_idx = [i for i, a in enumerate(apps_all) if a in suite_set]
-        if not sel_idx:
-            print(f"No {suite_name} benchmarks found, skipping plot.")
-            continue
-
-        # Geomean over this suite
-        avg_orig_32      = _gmean(norm_orig_32_all[sel_idx])
-        avg_orig_entropy = _gmean(norm_orig_entropy_all[sel_idx])
-        avg_rewr_32      = _gmean(norm_rewr_32_all[sel_idx])
-        avg_rewr_entropy = _gmean(norm_rewr_entropy_all[sel_idx])
-
-        # Sort by rewritten 32-bit ratio (ascending)
-        sel_idx.sort(key=lambda i: norm_rewr_32_all[i])
-
-        apps           = [apps_all[i] for i in sel_idx] + ['Geomean']
-        norm_orig_32      = np.append(norm_orig_32_all[sel_idx],      avg_orig_32)
-        norm_orig_entropy = np.append(norm_orig_entropy_all[sel_idx], avg_orig_entropy)
-        norm_rewr_32      = np.append(norm_rewr_32_all[sel_idx],      avg_rewr_32)
-        norm_rewr_entropy = np.append(norm_rewr_entropy_all[sel_idx], avg_rewr_entropy)
-
-        out_path = os.path.join(output_dir, f"entropy_lower_bound_{suite_name}.pdf")
-        _plot_suite(apps, norm_orig_32, norm_orig_entropy, norm_rewr_32,
-                    norm_rewr_entropy,
-                    f"Entropy Lower Bound — {suite_name.upper()}", out_path)
 
 
 # ── main ────────────────────────────────────────────────────────────────────
@@ -429,8 +486,9 @@ def main():
     # ── CSV ──
     generate_csv(summaries, output_csv)
 
-    # ── Visualization (one plot per suite) ──
-    visualize_results(summaries, str(script_dir))
+    # ── Visualization ──
+    plot_path = output_csv.replace('.csv', '.pdf')
+    visualize_results(summaries, plot_path)
 
     # ── Aggregate statistics ──
     print()

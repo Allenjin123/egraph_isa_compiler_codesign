@@ -468,68 +468,8 @@ initialise_benchmark:
 .L61:
 	addi	a3,a1,-80
 .L62:
-	sub	op_4,x0,a5
-	sub	op_3,a5,op_4
-	sub	op_7,x0,a5
-	sub	op_6,a5,op_7
-	sub	op_5,x0,op_6
-	sub	op_2,op_3,op_5
-	sub	op_11,x0,a5
-	sub	op_10,a5,op_11
-	sub	op_14,x0,a5
-	sub	op_13,a5,op_14
-	sub	op_12,x0,op_13
-	sub	op_9,op_10,op_12
-	sub	op_8,x0,op_9
-	sub	op_1,op_2,op_8
-	sub	op_19,x0,a5
-	sub	op_18,a5,op_19
-	sub	op_22,x0,a5
-	sub	op_21,a5,op_22
-	sub	op_20,x0,op_21
-	sub	op_17,op_18,op_20
-	sub	op_26,x0,a5
-	sub	op_25,a5,op_26
-	sub	op_29,x0,a5
-	sub	op_28,a5,op_29
-	sub	op_27,x0,op_28
-	sub	op_24,op_25,op_27
-	sub	op_23,x0,op_24
-	sub	op_16,op_17,op_23
-	sub	op_15,x0,op_16
-	sub	op_0,op_1,op_15
-	sub	op_35,x0,a5
-	sub	op_34,a5,op_35
-	sub	op_38,x0,a5
-	sub	op_37,a5,op_38
-	sub	op_36,x0,op_37
-	sub	op_33,op_34,op_36
-	sub	op_42,x0,a5
-	sub	op_41,a5,op_42
-	sub	op_45,x0,a5
-	sub	op_44,a5,op_45
-	sub	op_43,x0,op_44
-	sub	op_40,op_41,op_43
-	sub	op_39,x0,op_40
-	sub	op_32,op_33,op_39
-	sub	op_50,x0,a5
-	sub	op_49,a5,op_50
-	sub	op_53,x0,a5
-	sub	op_52,a5,op_53
-	sub	op_51,x0,op_52
-	sub	op_48,op_49,op_51
-	sub	op_57,x0,a5
-	sub	op_56,a5,op_57
-	sub	op_60,x0,a5
-	sub	op_59,a5,op_60
-	sub	op_58,x0,op_59
-	sub	op_55,op_56,op_58
-	sub	op_54,x0,op_55
-	sub	op_47,op_48,op_54
-	sub	op_46,x0,op_47
-	sub	op_31,op_32,op_46
-	sub	op_30,x0,op_31
-	sub	a4,op_0,op_30
+	addi	op_0,x0,5
+	sll	a4,a5,op_0
 	sub	op_0,x0,a4
 	sub	a4,a5,op_0
 	addi	op_0,x0,2
@@ -638,8 +578,12 @@ verify_benchmark:
 	addi	a4,sp,0
 	addi	a1,a1,704
 .L70:
-	lbu	a2,0(a5)
-	lbu	a3,0(a4)
+	lw	op_0,0(a5)
+	addi	op_1,x0,255
+	and	a2,op_0,op_1
+	lw	op_0,0(a4)
+	addi	op_1,x0,255
+	and	a3,op_0,op_1
 	addi	a5,a5,1
 	addi	a4,a4,1
 	bne	a2,a3,.L71
@@ -1139,7 +1083,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	op_0,x0,1
-	and	a3,a1,op_0
+	and	a3,op_0,a1
 	bne	a3,x0,.+8
 	jal	x0,.Mul_skip
 	sub	op_0,x0,a0

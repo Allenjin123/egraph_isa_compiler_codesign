@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Create 2x2 grid of Pareto frontier plots from analysis results.
+Create 2x4 grid of Pareto frontier plots from analysis results.
 Parses existing JSON files without rerunning analysis.
 
 Usage:
-    python plot_pareto_grid.py [program1] [program2] [program3] [program4]
+    python plot_pareto_grid.py [program1] ... [program8]
 
-If no programs specified, will automatically select 4 programs.
+If no programs specified, will automatically select 8 programs.
 """
 
 import sys
@@ -35,14 +35,17 @@ def load_program_results(program_name: str, backend_dir: Path) -> Optional[Dict]
         return None
 
 
-def plot_pareto_single(ax, data: Dict, program_name: str, subplot_idx: int):
+def plot_pareto_single(ax, data: Dict, program_name: str, subplot_idx: int,
+                       n_cols: int = 4, n_rows: int = 2):
     """Plot Pareto frontier for a single program on given axes.
 
     Args:
         ax: Matplotlib axes
         data: Program analysis data
         program_name: Name of the program
-        subplot_idx: Index in 2x2 grid (0-3)
+        subplot_idx: Index in grid (0-7)
+        n_cols: Number of columns in grid
+        n_rows: Number of rows in grid
     """
 
     variants = data.get('variants', [])
@@ -86,23 +89,23 @@ def plot_pareto_single(ax, data: Dict, program_name: str, subplot_idx: int):
     # Plot different variant types
     if baseline_areas:
         ax.scatter(baseline_areas, baseline_latencies, color='blue', marker='o',
-                  label='aeSIP: ISA level constraint', alpha=0.6, s=100)
+                  label='aeSIP: ISA level constraint', alpha=0.6, s=100, zorder=3)
 
     if uarchaware_areas:
         ax.scatter(uarchaware_areas, uarchaware_latencies, color='green', marker='^',
-                  label='aeSIP: uarch aware constraint', alpha=0.6, s=100)
+                  label='aeSIP: uarch aware constraint', alpha=0.6, s=100, zorder=3)
 
     # if single_areas:
     #     ax.scatter(single_areas, single_latencies, color='blue', marker='o',
     #               label='Variants', alpha=0.6, s=100)
 
-    if original_area is not None:
-        ax.scatter([original_area], [original_latency], color='red', marker='*',
-                  label='PDAG', s=400, edgecolors='black', linewidths=1.5, zorder=10)
-
     if gp_area is not None:
         ax.scatter([gp_area], [gp_latency], color='orange', marker='s',
                   label='Baseline Ibex (RV32IM)', s=300, edgecolors='black', linewidths=1.5, zorder=10)
+
+    if original_area is not None:
+        ax.scatter([original_area], [original_latency], color='red', marker='*',
+                  label='PDAG', s=400, edgecolors='black', linewidths=1.5, zorder=15)
 
     # Calculate and plot Pareto frontier
     all_areas = []
@@ -141,15 +144,15 @@ def plot_pareto_single(ax, data: Dict, program_name: str, subplot_idx: int):
                   s=200, linewidths=2, zorder=5, label='Pareto frontier')
 
     # Configure axes based on position in grid
-    # Grid layout: [0, 1]  (top row)
-    #              [2, 3]  (bottom row)
+    row = subplot_idx // n_cols
+    col = subplot_idx % n_cols
 
     # Bottom row only: show x-axis label
-    if subplot_idx >= 2:
-        ax.set_xlabel('Area ($\mu m^2$)', fontsize=32, fontweight='bold')
+    if row == n_rows - 1:
+        ax.set_xlabel(r'Area ($\mu m^2$)', fontsize=32, fontweight='bold')
 
     # Left column only: show y-axis label
-    if subplot_idx % 2 == 0:
+    if col == 0:
         ax.set_ylabel('Latency (s)', fontsize=32, fontweight='bold')
 
     ax.set_title(program_name, fontsize=32, fontweight='bold')
@@ -162,9 +165,8 @@ def plot_pareto_single(ax, data: Dict, program_name: str, subplot_idx: int):
 
 
 def create_pareto_grid(program_names: List[str], backend_dir: Path, output_path: str):
-    """Create 2x2 grid of Pareto frontier plots."""
+    """Create 2x4 grid of Pareto frontier plots."""
 
-    # Optional: Name mapping for cleaner display names
     NAME_MAPPING = {
         'basicmath_small_O3': 'basicmath',
         'bitcnts_O3': 'bitcnts',
@@ -172,14 +174,29 @@ def create_pareto_grid(program_names: List[str], backend_dir: Path, output_path:
         'matmult-int': 'matmult',
         'qsort_large_O3': 'qsort-large',
         'qsort_small_O3': 'qsort-small',
+        'sha_O3': 'sha',
+        'patricia_O3': 'patricia',
+        'picojpeg_test': 'picojpeg',
+        'rijndael_Oz': 'rijndael',
         'libhuffbench': 'huffbench',
         'combined': 'combined',
-        # Add more mappings as needed
+        'libedn': 'edn',
+        'libnsichneu': 'nsichneu',
+        'libslre': 'slre',
+        'libstatemate': 'statemate',
+        'libud': 'ud',
+        'libwikisort': 'wikisort',
+        'md5': 'md5sum',
+        'mont64': 'mont64',
+        'primecount': 'primecount',
+        'tarfind': 'tarfind',
     }
+
+    N_ROWS, N_COLS = 2, 5
 
     # Load data for all programs
     program_data = []
-    for pname in program_names[:4]:  # Limit to 4 programs
+    for pname in program_names[:N_ROWS * N_COLS]:
         data = load_program_results(pname, backend_dir)
         if data:
             display_name = NAME_MAPPING.get(pname, pname)
@@ -189,29 +206,27 @@ def create_pareto_grid(program_names: List[str], backend_dir: Path, output_path:
         print("No valid program data found!")
         return
 
-    # Create 2x2 subplot grid
-    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+    # Create 2x4 subplot grid (double-column figure)
+    fig, axes = plt.subplots(N_ROWS, N_COLS, figsize=(40, 12))
     axes = axes.flatten()
 
     # Plot each program
     for idx, (pname, data) in enumerate(program_data):
-        if idx < 4:
-            plot_pareto_single(axes[idx], data, pname, idx)
+        plot_pareto_single(axes[idx], data, pname, idx,
+                           n_cols=N_COLS, n_rows=N_ROWS)
 
     # Hide unused subplots
-    for idx in range(len(program_data), 4):
+    for idx in range(len(program_data), N_ROWS * N_COLS):
         axes[idx].axis('off')
 
-    # Create single shared legend at the top with more space
+    # Create single shared legend at the top
     handles, labels = axes[0].get_legend_handles_labels()
-    # Remove duplicate labels
     by_label = dict(zip(labels, handles))
     fig.legend(by_label.values(), by_label.keys(),
               loc='upper center', bbox_to_anchor=(0.5, 1.0),
-              ncol=3, fontsize=32, framealpha=0.9)
+              ncol=len(by_label), fontsize=32, framealpha=0.9)
 
-    # Adjust layout to make room for legend (more space at top)
-    plt.tight_layout(rect=[0, 0, 1, 0.85])
+    plt.tight_layout(rect=[0, 0, 1, 0.92])
 
     # Save figure
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
@@ -220,35 +235,76 @@ def create_pareto_grid(program_names: List[str], backend_dir: Path, output_path:
 
 
 def main():
-    # Parse arguments
     if len(sys.argv) > 1 and sys.argv[1] in ['-h', '--help']:
         print(__doc__)
         sys.exit(0)
 
-    # Get program names from arguments or auto-select
-    script_dir = Path(__file__).parent
-    backend_dir = script_dir / "output" / "backend"
+    script_dir = Path(__file__).resolve().parent
+    project_root = script_dir.parent.parent
+    backend_dir = project_root / "output" / "backend"
+
+    # Default 10 programs, sorted alphabetically by display name
+    DEFAULT_PROGRAMS = [
+        'basicmath_small_O3',  # basicmath
+        'bitcnts_O3',          # bitcnts
+        'combined',            # combined
+        'dijkstra_small_O3',   # dijkstra
+        'matmult-int',         # matmult
+        'mont64',              # mont64
+        'qsort_small_O3',     # qsort-small
+        'rijndael_Oz',         # rijndael
+        'libud',               # ud
+        'libwikisort',         # wikisort
+    ]
+
+    # MiBench (8) + wikisort + mont64, sorted alphabetically by display name
+    MIBENCH_PLUS = [
+        'basicmath_small_O3',  # basicmath
+        'bitcnts_O3',          # bitcnts
+        'dijkstra_small_O3',   # dijkstra
+        'mont64',              # mont64
+        'patricia_O3',         # patricia
+        'qsort_large_O3',     # qsort-large
+        'qsort_small_O3',     # qsort-small
+        'rijndael_Oz',         # rijndael
+        'sha_O3',              # sha
+        'libwikisort',         # wikisort
+    ]
 
     if len(sys.argv) > 1:
-        # Use specified programs
-        program_names = sys.argv[1:5]  # Take up to 4 programs
+        program_names = sys.argv[1:11]
+        print("="*80)
+        print("Creating Pareto Frontier Grid (2x5)")
+        print("="*80)
+        print(f"Programs: {', '.join(program_names)}")
+        print("="*80)
+        print()
+        output_path = str(script_dir / "pareto_grid.pdf")
+        create_pareto_grid(program_names, backend_dir, output_path)
     else:
-        # Auto-select 4 programs
-        all_programs = [d.name for d in backend_dir.iterdir() if d.is_dir()]
-        program_names = sorted(all_programs)[:4]
+        # Figure 1: default 10 programs
+        print("="*80)
+        print("Figure 1: Default selection (2x5)")
+        print("="*80)
+        print(f"Programs: {', '.join(DEFAULT_PROGRAMS)}")
+        print("="*80)
+        print()
+        output_path = str(script_dir / "pareto_grid.pdf")
+        create_pareto_grid(DEFAULT_PROGRAMS, backend_dir, output_path)
 
-    print("="*80)
-    print("Creating Pareto Frontier Grid (2x2)")
-    print("="*80)
-    print(f"Programs: {', '.join(program_names)}")
-    print("="*80)
+        # Figure 2: MiBench + wikisort + mont64
+        print()
+        print("="*80)
+        print("Figure 2: MiBench + wikisort + mont64 (2x5)")
+        print("="*80)
+        print(f"Programs: {', '.join(MIBENCH_PLUS)}")
+        print("="*80)
+        print()
+        output_path2 = str(script_dir / "pareto_grid_mibench.pdf")
+        create_pareto_grid(MIBENCH_PLUS, backend_dir, output_path2)
+
     print()
-
-    output_path = "pareto_grid.pdf"
-    create_pareto_grid(program_names, backend_dir, output_path)
-
-    print()
-    print("✓ Complete!")
+    print("Complete!")
 
 
 if __name__ == "__main__":

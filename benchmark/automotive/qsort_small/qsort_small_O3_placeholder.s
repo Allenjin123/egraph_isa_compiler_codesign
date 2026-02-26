@@ -18,10 +18,7 @@ quicksort_range:
 	sw	s0,296(sp)
 	addi	s3,a2,0
 	addi	s4,zero,127
-	addi	op_1,x0,1
-	or	op_0,x0,op_1
-	sub	op_2,x0,zero
-	sub	s2,op_0,op_2
+	addi	s2,zero,1
 	addi	s1,zero,-1
 .L2:
 	sub	op_0,x0,s3
@@ -42,12 +39,12 @@ quicksort_range:
 	sub	op_0,x0,a0
 	sub	a4,a4,op_0
 	lbu	a4,0(a4)
-	bne	a4,zero,.+8
-	jal	x0,.L4
+	beq	a4,zero,.L4
 	sb	a4,0(a3)
 	addi	a5,a5,1
 	addi	a3,a3,1
-	bne	a5,s4,.L3
+	beq	a5,s4,.+8
+	jal	x0,.L3
 .L4:
 	sub	op_0,x0,a5
 	sub	a5,sp,op_0
@@ -63,33 +60,33 @@ quicksort_range:
 	sub	t1,t1,op_0
 	lbu	a4,0(t1)
 	addi	a6,t1,0
-	bne	a4,zero,.+8
-	jal	x0,.L8
+	beq	a4,zero,.L8
 .L36:
 	addi	a3,sp,16
 	jal	x0,.L7
 .L65:
-	bne	a5,a4,.L39
+	beq	a5,a4,.+8
+	jal	x0,.L39
 	lbu	a4,0(a6)
-	bne	a4,zero,.+8
-	jal	x0,.L8
+	beq	a4,zero,.L8
 .L7:
 	lbu	a5,0(a3)
 	addi	a6,a6,1
 	addi	a3,a3,1
-	bne	a5,zero,.L65
+	beq	a5,zero,.+8
+	jal	x0,.L65
 .L39:
 	sltu	a3,a5,a4
 	sltu	a5,a4,a5
 	sub	a5,a3,a5
-	bne	a5,s2,.+8
-	jal	x0,.+8
+	beq	a5,s2,.+8
 	jal	x0,.L8
 	lbu	a4,128(t1)
 	addi	t1,t1,128
 	addi	s0,s0,1
 	addi	a6,t1,0
-	bne	a4,zero,.L36
+	beq	a4,zero,.+8
+	jal	x0,.L36
 .L8:
 	addi	op_0,x0,7
 	sll	a7,a2,op_0
@@ -98,27 +95,26 @@ quicksort_range:
 	lbu	a5,0(a7)
 	addi	a3,a7,0
 	addi	a6,sp,16
-	bne	a5,zero,.+8
-	jal	x0,.+8
+	beq	a5,zero,.+8
 	jal	x0,.L13
 	jal	x0,.L66
 .L68:
-	bne	a4,a5,.L40
+	beq	a4,a5,.+8
+	jal	x0,.L40
 	lbu	a5,0(a3)
-	bne	a5,zero,.+8
-	jal	x0,.L67
+	beq	a5,zero,.L67
 	addi	a6,a6,1
 .L13:
 	lbu	a4,0(a6)
 	addi	a3,a3,1
-	bne	a4,zero,.L68
+	beq	a4,zero,.+8
+	jal	x0,.L68
 .L40:
 	sltu	a3,a4,a5
 .L14:
 	sltu	a5,a5,a4
 	sub	a5,a3,a5
-	bne	a5,s1,.+8
-	jal	x0,.+8
+	beq	a5,s1,.+8
 	jal	x0,.L69
 .L17:
 	lbu	a5,-128(a7)
@@ -126,17 +122,14 @@ quicksort_range:
 	addi	a2,a2,-1
 	addi	a3,a7,0
 	addi	a6,sp,16
-	bne	a5,zero,.L13
+	beq	a5,zero,.+8
+	jal	x0,.L13
 .L66:
 	lbu	a4,16(sp)
-	addi	op_1,x0,0
-	or	op_0,x0,op_1
-	sub	op_2,x0,zero
-	sub	a3,op_0,op_2
+	addi	a3,zero,0
 	sltu	a5,a5,a4
 	sub	a5,a3,a5
-	bne	a5,s1,.+8
-	jal	x0,.L17
+	beq	a5,s1,.L17
 .L69:
 	bge	a2,s0,.L70
 .L31:
@@ -151,94 +144,76 @@ quicksort_range:
 	addi	a3,zero,0
 	jal	x0,.L14
 .L70:
-	addi	op_0,x0,3
+	addi	op_2,x0,3
+	or	op_1,t1,op_2
 	addi	op_3,x0,3
-	or	op_2,op_3,t1
-	sub	op_1,op_2,t1
-	sub	a5,op_0,op_1
-	bne	a5,zero,.L19
+	sub	op_0,op_1,op_3
+	sub	a5,t1,op_0
+	beq	a5,zero,.+8
+	jal	x0,.L19
 	addi	a5,sp,144
-	addi	op_1,x0,0
-	or	op_0,x0,op_1
-	sub	op_2,x0,a5
-	sub	a4,op_0,op_2
-	addi	op_1,x0,0
-	or	op_0,x0,op_1
-	sub	op_2,x0,t1
-	sub	a3,op_0,op_2
+	addi	a4,a5,0
+	addi	a3,t1,0
 .L20:
 	lw	a6,0(a3)
 	addi	a4,a4,4
-	addi	op_1,x0,4
-	or	op_0,x0,op_1
-	sub	op_2,x0,a3
-	sub	a3,op_0,op_2
+	addi	a3,a3,4
 	sw	a6,-4(a4)
-	addi	op_1,x0,272
-	or	op_0,x0,op_1
-	sub	op_2,x0,sp
-	sub	a6,op_0,op_2
-	bne	a4,a6,.L20
+	addi	a6,sp,272
+	beq	a4,a6,.+8
+	jal	x0,.L20
 .L21:
 	or	a4,a7,t1
-	addi	op_2,x0,3
-	or	op_1,a4,op_2
+	addi	op_0,x0,3
 	addi	op_3,x0,3
-	sub	op_0,op_1,op_3
-	sub	a4,a4,op_0
-	bne	a4,zero,.L23
+	or	op_2,op_3,a4
+	sub	op_1,op_2,a4
+	sub	a4,op_0,op_1
+	beq	a4,zero,.+8
+	jal	x0,.L23
 	addi	a6,t1,128
-	addi	op_1,x0,0
-	or	op_0,x0,op_1
-	sub	op_2,x0,a7
-	sub	a4,op_0,op_2
+	addi	a4,a7,0
 .L24:
 	lw	a3,0(a4)
 	addi	t1,t1,4
 	addi	a4,a4,4
 	sw	a3,-4(t1)
-	bne	t1,a6,.L24
+	beq	t1,a6,.+8
+	jal	x0,.L24
 .L25:
-	addi	op_0,x0,3
+	addi	op_2,x0,3
+	or	op_1,a7,op_2
 	addi	op_3,x0,3
-	or	op_2,op_3,a7
-	sub	op_1,op_2,a7
-	sub	a4,op_0,op_1
-	bne	a4,zero,.L30
+	sub	op_0,op_1,op_3
+	sub	a4,a7,op_0
+	beq	a4,zero,.+8
+	jal	x0,.L30
 .L28:
 	lw	a4,0(a5)
 	addi	a5,a5,4
 	addi	a7,a7,4
 	sw	a4,-4(a7)
 	addi	a4,sp,272
-	bne	a5,a4,.L28
+	beq	a5,a4,.+8
+	jal	x0,.L28
 .L29:
-	addi	op_1,x0,1
-	or	op_0,x0,op_1
-	sub	op_2,x0,s0
-	sub	s0,op_0,op_2
-	addi	op_1,x0,-1
-	or	op_0,x0,op_1
-	sub	op_2,x0,a2
-	sub	a2,op_0,op_2
+	addi	s0,s0,1
+	addi	a2,a2,-1
 	jal	x0,.L6
 .L30:
 	lbu	a4,0(a5)
 	addi	a5,a5,1
 	addi	a7,a7,1
 	sb	a4,-1(a7)
-	addi	op_1,x0,272
-	or	op_0,x0,op_1
-	sub	op_2,x0,sp
-	sub	a4,op_0,op_2
-	bne	a4,a5,.+8
-	jal	x0,.L29
+	addi	a4,sp,272
+	beq	a4,a5,.L29
 	lbu	a4,0(a5)
 	addi	a5,a5,1
 	addi	a7,a7,1
 	sb	a4,-1(a7)
 	addi	a4,sp,272
-	bne	a4,a5,.L30
+	beq	a4,a5,.+8
+	jal	x0,.L30
 	jal	x0,.L29
 .L71:
 	sw	a0,12(sp)
@@ -265,31 +240,21 @@ quicksort_range:
 	addi	a4,a4,1
 	addi	t1,t1,1
 	sb	a3,-1(t1)
-	bne	a4,a6,.L26
+	beq	a4,a6,.+8
+	jal	x0,.L26
 	jal	x0,.L25
 .L19:
-	addi	op_1,x0,144
-	or	op_0,x0,op_1
-	sub	op_2,x0,sp
-	sub	a5,op_0,op_2
-	addi	op_1,x0,0
-	or	op_0,x0,op_1
-	sub	op_2,x0,a5
-	sub	a4,op_0,op_2
-	addi	op_1,x0,0
-	or	op_0,x0,op_1
-	sub	op_2,x0,t1
-	sub	a3,op_0,op_2
+	addi	a5,sp,144
+	addi	a4,a5,0
+	addi	a3,t1,0
 .L22:
 	lbu	a6,0(a3)
 	addi	a4,a4,1
 	addi	a3,a3,1
 	sb	a6,-1(a4)
-	addi	op_1,x0,272
-	or	op_0,x0,op_1
-	sub	op_2,x0,sp
-	sub	a6,op_0,op_2
-	bne	a4,a6,.L22
+	addi	a6,sp,272
+	beq	a4,a6,.+8
+	jal	x0,.L22
 	jal	x0,.L21
 .L60:
 	jalr	zero,ra,0
@@ -313,24 +278,18 @@ main:
 	addi	a0,zero,127
 .L76:
 	lw	a1,0(a6)
-	addi	op_1,x0,0
-	or	op_0,x0,op_1
-	sub	op_2,x0,zero
-	sub	a5,op_0,op_2
+	addi	a5,zero,0
 .L73:
 	sub	op_0,x0,a1
 	sub	a4,a5,op_0
 	lbu	a4,0(a4)
 	sub	op_0,x0,a2
 	sub	a3,a5,op_0
-	bne	a4,zero,.+8
-	jal	x0,.L74
+	beq	a4,zero,.L74
 	sb	a4,0(a3)
-	addi	op_1,x0,1
-	or	op_0,x0,op_1
-	sub	op_2,x0,a5
-	sub	a5,op_0,op_2
-	bne	a5,a0,.L73
+	addi	a5,a5,1
+	beq	a5,a0,.+8
+	jal	x0,.L73
 .L74:
 	sub	op_0,x0,a2
 	sub	a5,a5,op_0
@@ -341,7 +300,8 @@ main:
 	sub	op_0,x0,a5
 	sub	a5,sp,op_0
 	addi	a6,a6,4
-	bne	a2,a5,.L76
+	beq	a2,a5,.+8
+	jal	x0,.L76
 	lui	a2,2
 	addi	a0,sp,0
 	addi	a2,a2,1807
@@ -354,20 +314,24 @@ main:
 .L79:
 	lbu	a2,0(s0)
 	addi	a1,s0,0
-	bne	a2,zero,.+8
-	jal	x0,.L77
+	beq	a2,zero,.L77
 .L78:
 	addi	a1,a1,1
 	sub	op_0,x0,a4
 	sub	a0,a2,op_0
-	lbu	a2,0(a1)
+	lw	op_0,0(a1)
+	lw	op_3,0(a1)
+	addi	op_4,x0,255
+	or	op_2,op_3,op_4
+	addi	op_5,x0,255
+	sub	op_1,op_2,op_5
+	sub	a2,op_0,op_1
 	sltu	a3,a0,a4
 	sub	op_0,x0,a3
 	sub	a3,a5,op_0
 	addi	a4,a0,0
 	addi	a5,a3,0
-	bne	a2,zero,.+8
-	jal	x0,.+8
+	beq	a2,zero,.+8
 	jal	x0,.L78
 .L77:
 	lui	a3,313
@@ -375,7 +339,8 @@ main:
 	addi	s0,s0,128
 	sub	op_0,x0,a3
 	sub	a3,sp,op_0
-	bne	a3,s0,.L79
+	beq	a3,s0,.+8
+	jal	x0,.L79
 	lui	a3,%hi(qsort_checksum)
 	sw	a4,%lo(qsort_checksum)(a3)
 	sw	a5,%lo(qsort_checksum+4)(a3)
