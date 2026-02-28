@@ -198,8 +198,7 @@ for asm_file in "${clean_files[@]}"; do
     echo "  Program: $prog_name, Size: $size_type"
     
     suite="mibench"
-    category="${rel_path%%/*}"
-    if [[ "$category" == "embench-iot" ]]; then
+    if [[ "$asm_file" == *embench* ]]; then
         suite="embench"
     fi
     echo "  Suite: $suite"

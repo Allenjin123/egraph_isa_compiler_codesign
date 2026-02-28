@@ -31,20 +31,6 @@ echo -e "${BLUE}[DEBUG] Input file: $ASM_FILE${NC}"
 echo -e "${BLUE}[DEBUG] Program args: $PROG_ARGS${NC}"
 echo ""
 
-# Minimal auto-args for Mibench bitcount variants to avoid argv[1] NULL segfaults
-if [ -z "$PROG_ARGS" ]; then
-    base_name=$(basename "$ASM_FILE")
-    case "$base_name" in
-        *bitcount*|*bitcnts*)
-            if [[ "$base_name" == *"_large"* ]]; then
-                PROG_ARGS="1125000"
-            else
-                PROG_ARGS="75000"
-            fi
-            echo -e "${YELLOW}[DEBUG] Auto-detected args for bitcount: ${PROG_ARGS}${NC}"
-            ;;
-    esac
-fi
 
 if [ ! -f "$ASM_FILE" ]; then
     echo -e "${RED}Error: File not found: $ASM_FILE${NC}"

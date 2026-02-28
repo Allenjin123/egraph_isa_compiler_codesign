@@ -1,5 +1,6 @@
 tmp/
 benchmark/*/*/*_rewrite_variant_*.s
+benchmark/**/*_placeholder.s
 
 PdatScorrWrapper/
 # python
