@@ -38,6 +38,47 @@ from typing import Dict, List, Optional, Tuple
 # float('inf') = unconstrained (no latency limit)
 LATENCY_CONSTRAINTS = [1.0, 1.2, 1.5, 2.0, float('inf')]
 
+# Constraints to include in CSV output
+CSV_LATENCY_CONSTRAINTS = [1.2, float('inf')]
+
+
+def load_sim_results(csv_path: Path) -> Dict:
+    """Load RTL simulation cycle counts from sim_results.csv.
+
+    Returns dict keyed by (benchmark, variant_key) -> cycles.
+    variant_key is 'original', 'gp', '0', '1', etc.
+    """
+    sim_cycles = {}
+    if not csv_path.exists():
+        print(f"Warning: sim_results.csv not found at {csv_path}")
+        return sim_cycles
+
+    with open(csv_path, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            benchmark = row['benchmark']
+            variant_dir = row['variant_dir']
+            status = row['status']
+            if status != 'PASS':
+                continue
+            # Strip 'variant_' prefix to get key: 'original', 'gp', '0', '1', ...
+            variant_key = variant_dir.replace('variant_', '', 1)
+            sim_cycles[(benchmark, variant_key)] = int(row['cycles'])
+
+    return sim_cycles
+
+
+def variant_id_to_sim_key(variant_id: str) -> str:
+    """Map JSON variant_id to sim_results variant_key.
+
+    'original' -> 'original', 'gp' -> 'gp', '0_baseline' -> '0', '3_power' -> '3'
+    """
+    if variant_id in ('original', 'gp'):
+        return variant_id
+    # Extract number before first underscore
+    parts = variant_id.split('_', 1)
+    return parts[0]
+
 
 def find_all_result_jsons(backend_dir: Path) -> List[Path]:
     """Find all analysis_results.json files in backend directory."""
@@ -108,13 +149,23 @@ def parse_all_variants(json_path: Path):
 
 
 def compute_summary(program_name: str, original: Dict, candidates: List[Dict],
-                    dyn_frac: float) -> Dict:
-    """Compute summary for a given power mode (dyn_frac)."""
+                    dyn_frac: float, sim_cycles: Dict = None) -> Dict:
+    """Compute summary for a given power mode (dyn_frac).
+
+    If sim_cycles is provided, use RTL simulation cycle counts instead of
+    analytical latency*freq estimates.
+    """
     original_area = original['area']
     original_freq = original['frequency']
     original_latency = original['latency']
-    original_cycles = compute_cycles(original_latency, original_freq)
     f_ref = original_freq
+
+    # Use RTL sim cycles if available, else fall back to analytical
+    orig_sim_key = (program_name, 'original')
+    if sim_cycles and orig_sim_key in sim_cycles:
+        original_cycles = sim_cycles[orig_sim_key]
+    else:
+        original_cycles = compute_cycles(original_latency, original_freq)
 
     def safe_div(a, b):
         if a is not None and b is not None and b != 0:
@@ -136,7 +187,13 @@ def compute_summary(program_name: str, original: Dict, candidates: List[Dict],
 
     for v in candidates:
         v_freq = v['frequency']
-        v_cycles = compute_cycles(v['latency'], v['frequency'])
+        v_id = v['variant_id']
+        sim_key = (program_name, variant_id_to_sim_key(v_id))
+
+        if sim_cycles and sim_key in sim_cycles:
+            v_cycles = sim_cycles[sim_key]
+        else:
+            v_cycles = compute_cycles(v['latency'], v['frequency'])
 
         area_norm = safe_div(v['area'], original_area)
         cycle_norm = safe_div(v_cycles, original_cycles)
@@ -165,6 +222,9 @@ def compute_summary(program_name: str, original: Dict, candidates: List[Dict],
         latency_norm = e['cycle_norm'] / freq_norm
         # energy = power * latency_norm
         energy = power * latency_norm
+        # Iso-frequency power: power at original frequency (freq_norm=1)
+        power_iso = (dyn_frac * e['dyn_power_base']
+                     + (1 - dyn_frac) * e['area_norm'])
         return {
             'variant': e['variant'],
             'area_norm': e['area_norm'],
@@ -173,6 +233,7 @@ def compute_summary(program_name: str, original: Dict, candidates: List[Dict],
             'freq_norm': freq_norm,
             'latency_norm': latency_norm,
             'power_norm': power,
+            'power_iso_norm': power_iso,
             'energy_norm': energy,
         }
 
@@ -223,19 +284,22 @@ def compute_summary(program_name: str, original: Dict, candidates: List[Dict],
             summary[f'{key_prefix}_freq_norm'] = best['freq_norm']
             summary[f'{key_prefix}_latency_norm'] = best['latency_norm']
             summary[f'{key_prefix}_power_norm'] = best['power_norm']
+            summary[f'{key_prefix}_power_iso_norm'] = best['power_iso_norm']
             summary[f'{key_prefix}_energy_norm'] = best['energy_norm']
 
     return summary
 
 
-def build_fieldnames():
-    """Build CSV fieldnames dynamically from LATENCY_CONSTRAINTS."""
+def build_fieldnames(constraints=None):
+    """Build CSV fieldnames dynamically from given constraints."""
+    if constraints is None:
+        constraints = CSV_LATENCY_CONSTRAINTS
     fieldnames = [
         'application_name',
         'original_area', 'original_freq', 'original_latency', 'original_cycles',
     ]
 
-    for cf in LATENCY_CONSTRAINTS:
+    for cf in constraints:
         cf_label = constraint_label(cf)
         for prefix in ['minA', 'minE']:
             key_prefix = f"{prefix}_{cf_label}"
@@ -247,6 +311,7 @@ def build_fieldnames():
                 f'{key_prefix}_freq_norm',
                 f'{key_prefix}_latency_norm',
                 f'{key_prefix}_power_norm',
+                f'{key_prefix}_power_iso_norm',
                 f'{key_prefix}_energy_norm',
             ])
 
@@ -259,9 +324,11 @@ def compute_geomean_row(summaries: List[Dict]) -> Dict:
 
     # Geo mean only applies to normalized numeric columns
     norm_suffixes = ['_area_norm', '_cycle_norm', '_freq_norm',
-                     '_latency_norm', '_power_norm', '_energy_norm']
+                     '_latency_norm', '_power_norm', '_power_iso_norm',
+                     '_energy_norm']
 
-    fieldnames = build_fieldnames()
+    # Use all constraints so geomean covers both CSV and LaTeX table keys
+    fieldnames = build_fieldnames(constraints=LATENCY_CONSTRAINTS)
     for col in fieldnames:
         if col == 'application_name':
             continue
@@ -333,41 +400,62 @@ def display_name(raw_name):
     return NAME_MAPPING.get(raw_name, raw_name)
 
 
-def generate_latex_table(summaries_m1: List[Dict], summaries_m2: List[Dict],
-                         objective: str, output_path: str):
-    """Generate a LaTeX table merging Mode 1 and Mode 2 for a given objective."""
-    prefix = 'minA' if objective == 'min_area' else 'minE'
-    obj_label = 'Minimum Area' if objective == 'min_area' else 'Minimum Energy'
+def _generate_latex_table_core(summaries_m1: List[Dict], summaries_m2: List[Dict],
+                                prefix: str, obj_label: str, label: str,
+                                constraints, metrics, output_path: str):
+    """Core LaTeX table generator with configurable constraints and metrics.
 
+    Uses booktabs for professional formatting. Values < 1.0 are bolded
+    to highlight improvements over baseline.
+    """
     geomean_m1 = compute_geomean_row(summaries_m1)
     geomean_m2 = compute_geomean_row(summaries_m2)
 
-    constraints = [('1.2x', '$1.2\\times$ Latency Constraint'),
-                   ('unconstrained', 'Unconstrained')]
     modes = [('M1', summaries_m1, geomean_m1),
              ('M2', summaries_m2, geomean_m2)]
-    metrics = [('area_norm', 'A'), ('power_norm', 'P'),
-               ('latency_norm', 'L'), ('energy_norm', 'E')]
 
     n_metrics = len(metrics)
     n_modes = len(modes)
-    # Per constraint group: n_modes * n_metrics columns
     group_width = n_modes * n_metrics
-    col_spec = 'l|' + '|'.join(['c' * group_width] * len(constraints))
+    # Total data columns
+    total_data_cols = group_width * len(constraints)
+    col_spec = 'l' + 'c' * total_data_cols
 
     lines = []
     lines.append('\\begin{table*}[t]')
     lines.append('\\centering')
     lines.append('\\small')
     lines.append(f'\\caption{{{obj_label}}}')
+    lines.append(f'\\label{{tab:{label}}}')
     lines.append(f'\\begin{{tabular}}{{{col_spec}}}')
-    lines.append('\\hline')
+    lines.append('\\toprule')
+
+    # Build cmidrule ranges for constraint groups
+    # Column 1 is the benchmark name, data starts at column 2
+    col_idx = 2
+    cmidrule_parts = []
+    for _ in constraints:
+        start = col_idx
+        end = col_idx + group_width - 1
+        cmidrule_parts.append(f'\\cmidrule(lr){{{start}-{end}}}')
+        col_idx = end + 1
 
     # Row 1: constraint labels
     h1 = ['']
     for _, clabel in constraints:
         h1.append(f'\\multicolumn{{{group_width}}}{{c}}{{{clabel}}}')
     lines.append(' & '.join(h1) + ' \\\\')
+    lines.append(' '.join(cmidrule_parts))
+
+    # Build cmidrule ranges for mode subgroups
+    col_idx = 2
+    mode_cmidrule_parts = []
+    for _ in constraints:
+        for _ in modes:
+            start = col_idx
+            end = col_idx + n_metrics - 1
+            mode_cmidrule_parts.append(f'\\cmidrule(lr){{{start}-{end}}}')
+            col_idx = end + 1
 
     # Row 2: mode labels within each constraint
     h2 = ['']
@@ -375,6 +463,7 @@ def generate_latex_table(summaries_m1: List[Dict], summaries_m2: List[Dict],
         for mlabel, _, _ in modes:
             h2.append(f'\\multicolumn{{{n_metrics}}}{{c}}{{{mlabel}}}')
     lines.append(' & '.join(h2) + ' \\\\')
+    lines.append(' '.join(mode_cmidrule_parts))
 
     # Row 3: metric names
     h3 = ['Benchmark']
@@ -383,18 +472,28 @@ def generate_latex_table(summaries_m1: List[Dict], summaries_m2: List[Dict],
             for _, mlabel in metrics:
                 h3.append(mlabel)
     lines.append(' & '.join(h3) + ' \\\\')
-    lines.append('\\hline')
+    lines.append('\\midrule')
 
     def fmt(val):
+        """Format value; bold if < 1.0 (improvement over baseline)."""
         if val is None:
             return '--'
-        return f'{val:.2f}'
+        s = f'{val:.2f}'
+        if val < 0.995:  # will display as <= 0.99
+            return f'\\textbf{{{s}}}'
+        return s
 
-    # Data rows — iterate by index (m1 and m2 have same order)
+    def fmt_geomean(val):
+        if val is None:
+            return '--'
+        s = f'{val:.2f}'
+        return f'\\textbf{{{s}}}'
+
+    # Data rows
     for i in range(len(summaries_m1)):
         raw_name = summaries_m1[i]['application_name']
-        name = display_name(raw_name).replace('_', '\\_').replace('-', '-')
-        parts = [name]
+        name = display_name(raw_name).replace('_', '\\_')
+        parts = [f'\\texttt{{{name}}}']
         for cf_label, _ in constraints:
             key_prefix = f'{prefix}_{cf_label}'
             for _, sums, _ in modes:
@@ -403,15 +502,15 @@ def generate_latex_table(summaries_m1: List[Dict], summaries_m2: List[Dict],
         lines.append(' & '.join(parts) + ' \\\\')
 
     # GEOMEAN row
-    lines.append('\\hline')
-    parts = ['\\textbf{Geo. Mean}']
+    lines.append('\\midrule')
+    parts = ['\\textbf{Geo.\\ Mean}']
     for cf_label, _ in constraints:
         key_prefix = f'{prefix}_{cf_label}'
         for _, _, gm in modes:
             for msuffix, _ in metrics:
-                parts.append(f'\\textbf{{{fmt(gm.get(f"{key_prefix}_{msuffix}"))}}}')
+                parts.append(fmt_geomean(gm.get(f'{key_prefix}_{msuffix}')))
     lines.append(' & '.join(parts) + ' \\\\')
-    lines.append('\\hline')
+    lines.append('\\bottomrule')
 
     lines.append('\\end{tabular}')
     lines.append('\\end{table*}')
@@ -421,6 +520,27 @@ def generate_latex_table(summaries_m1: List[Dict], summaries_m2: List[Dict],
         f.write(content + '\n')
 
     print(f"  Written: {output_path}")
+
+
+def generate_latex_table_minA(summaries_m1, summaries_m2, output_path):
+    """Generate Table A (Minimum Area): A and P (iso-freq), both constraints."""
+    constraints = [('1.2x', '$1.2\\times$ Latency Constraint'),
+                   ('unconstrained', 'Unconstrained')]
+    # A = area, P = iso-frequency power (no L or E)
+    metrics = [('area_norm', 'A'), ('power_iso_norm', 'P')]
+    _generate_latex_table_core(summaries_m1, summaries_m2,
+                               'minA', 'Minimum Area', 'min_area',
+                               constraints, metrics, output_path)
+
+
+def generate_latex_table_minE(summaries_m1, summaries_m2, output_path):
+    """Generate Table B (Minimum Energy): A and E, unconstrained only."""
+    constraints = [('unconstrained', 'Unconstrained')]
+    # A = area, E = energy (no P or L)
+    metrics = [('area_norm', 'A'), ('energy_norm', 'E')]
+    _generate_latex_table_core(summaries_m1, summaries_m2,
+                               'minE', 'Minimum Energy', 'min_energy',
+                               constraints, metrics, output_path)
 
 
 def print_summary(summaries: List[Dict], mode_label: str):
@@ -446,6 +566,7 @@ def print_summary(summaries: List[Dict], mode_label: str):
 
 def main():
     # Determine output file names
+    script_dir = Path(__file__).parent
     if len(sys.argv) > 1:
         base = sys.argv[1]
         if base.endswith('.csv'):
@@ -453,11 +574,15 @@ def main():
         output_m1 = f"{base}_m1.csv"
         output_m2 = f"{base}_m2.csv"
     else:
-        output_m1 = "results_summary_power_m1.csv"
-        output_m2 = "results_summary_power_m2.csv"
+        output_m1 = str(script_dir / "results_summary_power_m1.csv")
+        output_m2 = str(script_dir / "results_summary_power_m2.csv")
 
-    script_dir = Path(__file__).parent
-    backend_dir = script_dir / "output" / "backend"
+    project_dir = script_dir.parent.parent
+    backend_dir = project_dir / "output" / "backend"
+    sim_csv_path = project_dir / "sim_results.csv"
+
+    # Load RTL simulation cycle counts
+    sim_cycles = load_sim_results(sim_csv_path)
 
     constraint_strs = ', '.join(constraint_label(c) for c in LATENCY_CONSTRAINTS)
 
@@ -465,10 +590,11 @@ def main():
     print("Parsing Analysis Results (Frequency DSE + Power & Energy Model)")
     print("="*80)
     print(f"Backend directory: {backend_dir}")
+    print(f"Sim results: {sim_csv_path} ({len(sim_cycles)} entries)")
     print(f"Output: {output_m1} (Mode 1: 99% dynamic)")
     print(f"        {output_m2} (Mode 2: 99% static)")
     print(f"Baseline: original program (= 1.0)")
-    print(f"Frequency DSE: each variant runs at its max synthesized freq")
+    print(f"Cycle counts: RTL simulation (sim_results.csv)")
     print(f"Power model: P(f) = dyn_frac * P_dyn_base * f/f_ref + static_frac * area_norm")
     print(f"  Dynamic: P_dyn_base = 1 - (2/3)*(1 - area_norm)")
     print(f"  Static (leakage): scales exactly with area")
@@ -499,19 +625,21 @@ def main():
     print()
 
     # Mode 1: 99% dynamic, 1% static
-    summaries_m1 = [compute_summary(*p, dyn_frac=0.99) for p in parsed]
+    summaries_m1 = [compute_summary(*p, dyn_frac=0.99, sim_cycles=sim_cycles)
+                    for p in parsed]
     generate_csv(summaries_m1, output_m1)
 
     # Mode 2: 1% dynamic, 99% static
-    summaries_m2 = [compute_summary(*p, dyn_frac=0.01) for p in parsed]
+    summaries_m2 = [compute_summary(*p, dyn_frac=0.01, sim_cycles=sim_cycles)
+                    for p in parsed]
     generate_csv(summaries_m2, output_m2)
 
-    # Generate LaTeX tables (2 tables: minE and minA, each merging M1/M2)
+    # Generate LaTeX tables
     print()
-    generate_latex_table(summaries_m1, summaries_m2, 'min_energy',
-                         'table_minE.tex')
-    generate_latex_table(summaries_m1, summaries_m2, 'min_area',
-                         'table_minA.tex')
+    generate_latex_table_minA(summaries_m1, summaries_m2,
+                              str(script_dir / 'table_minA.tex'))
+    generate_latex_table_minE(summaries_m1, summaries_m2,
+                              str(script_dir / 'table_minE.tex'))
 
     print()
     print_summary(summaries_m1, "Mode 1 (99% dynamic, 1% static)")

@@ -270,95 +270,88 @@ def visualize_results(summaries: List[Dict], output_path: str = "instruction_ana
     rewr_branch = [s['min_instr_cats']['Branch'] if s['min_instr_cats'] else 0 for s in summaries]
     rewr_memory = [s['min_instr_cats']['Memory'] if s['min_instr_cats'] else 0 for s in summaries]
 
-    # Compute geometric mean over ALL programs before filtering
-    def _gmean(lst):
+    # Compute arithmetic mean for geomean row (use arithmetic for stacked counts)
+    def _amean(lst):
         arr = np.array(lst, dtype=float)
-        if np.any(arr <= 0):
-            return 0.0
-        return np.exp(np.mean(np.log(arr)))
-    avg_orig_instr = _gmean(orig_instr); avg_min_instr = _gmean(min_instr)
-    avg_orig_simple = _gmean(orig_simple); avg_orig_complex = _gmean(orig_complex)
-    avg_orig_branch = _gmean(orig_branch); avg_orig_memory = _gmean(orig_memory)
-    avg_rewr_simple = _gmean(rewr_simple); avg_rewr_complex = _gmean(rewr_complex)
-    avg_rewr_branch = _gmean(rewr_branch); avg_rewr_memory = _gmean(rewr_memory)
+        return np.mean(arr)
 
-    # Select 8 representative benchmarks (same as unique_instructions plot)
-    SELECTED = [
-        'statemate', 'rijndael', 'nsichneu', 'sha', 'qsort-str',
-        'slre', 'patricia', 'picojpeg', 'edn', 'dijkstra', 'basicmath',
-    ]
-    # Match ordering from unique_instructions plot (sorted by code-size blowup ascending)
-    BLOWUP_ORDER = {
-        'statemate': 0, 'rijndael': 1, 'nsichneu': 2, 'sha': 3, 'qsort-str': 4,
-        'slre': 5, 'patricia': 6, 'picojpeg': 7, 'edn': 8, 'dijkstra': 9, 'basicmath': 10,
-    }
-    sel_idx = [i for i, a in enumerate(applications) if a in SELECTED]
-    sel_idx.sort(key=lambda i: BLOWUP_ORDER.get(applications[i], 999))
-    applications = [applications[i] for i in sel_idx]
-    orig_instr = [orig_instr[i] for i in sel_idx]
-    min_instr = [min_instr[i] for i in sel_idx]
-    orig_simple = [orig_simple[i] for i in sel_idx]
-    orig_complex = [orig_complex[i] for i in sel_idx]
-    orig_branch = [orig_branch[i] for i in sel_idx]
-    orig_memory = [orig_memory[i] for i in sel_idx]
-    rewr_simple = [rewr_simple[i] for i in sel_idx]
-    rewr_complex = [rewr_complex[i] for i in sel_idx]
-    rewr_branch = [rewr_branch[i] for i in sel_idx]
-    rewr_memory = [rewr_memory[i] for i in sel_idx]
+    avg_orig_simple = _amean(orig_simple); avg_orig_complex = _amean(orig_complex)
+    avg_orig_branch = _amean(orig_branch); avg_orig_memory = _amean(orig_memory)
+    avg_rewr_simple = _amean(rewr_simple); avg_rewr_complex = _amean(rewr_complex)
+    avg_rewr_branch = _amean(rewr_branch); avg_rewr_memory = _amean(rewr_memory)
 
-    # Append "Geomean" (computed over all programs)
+    # Sort all 22 benchmarks by original instruction count (ascending)
+    sort_idx = sorted(range(len(applications)),
+                      key=lambda i: orig_instr[i] if orig_instr[i] else 0)
+    applications = [applications[i] for i in sort_idx]
+    orig_instr = [orig_instr[i] for i in sort_idx]
+    min_instr = [min_instr[i] for i in sort_idx]
+    orig_simple = [orig_simple[i] for i in sort_idx]
+    orig_complex = [orig_complex[i] for i in sort_idx]
+    orig_branch = [orig_branch[i] for i in sort_idx]
+    orig_memory = [orig_memory[i] for i in sort_idx]
+    rewr_simple = [rewr_simple[i] for i in sort_idx]
+    rewr_complex = [rewr_complex[i] for i in sort_idx]
+    rewr_branch = [rewr_branch[i] for i in sort_idx]
+    rewr_memory = [rewr_memory[i] for i in sort_idx]
+
+    # Append "Geomean"
     applications.append('Geomean')
-    orig_instr.append(avg_orig_instr); min_instr.append(avg_min_instr)
+    orig_instr.append(_amean(orig_instr)); min_instr.append(_amean(min_instr))
     orig_simple.append(avg_orig_simple); orig_complex.append(avg_orig_complex)
     orig_branch.append(avg_orig_branch); orig_memory.append(avg_orig_memory)
     rewr_simple.append(avg_rewr_simple); rewr_complex.append(avg_rewr_complex)
     rewr_branch.append(avg_rewr_branch); rewr_memory.append(avg_rewr_memory)
+
+    n = len(applications)  # 23 = 22 benchmarks + Geomean
 
     # Color = instruction category, Texture = original vs rewritten
     cat_colors = sns.color_palette("Set2", 4)
     ORIG_HATCH = ''        # solid fill for original
     REWR_HATCH = '///'     # hatched for rewritten
 
-    fig, ax = plt.subplots(figsize=(10, 5))
+    # Single-column figure: narrow bars, tall aspect ratio
+    fig, ax = plt.subplots(figsize=(7, 3.5))
 
-    x = np.arange(len(applications))
-    width = 0.35
+    x = np.arange(n)
+    width = 0.3
 
     # --- Original bars (left, solid) ---
-    orig_bottom = np.zeros(len(applications))
+    orig_bottom = np.zeros(n)
     orig_data = [orig_simple, orig_complex, orig_branch, orig_memory]
 
     for i, (cat_name, data) in enumerate(zip(CATEGORIES, orig_data)):
         ax.bar(x - width / 2, data, width, bottom=orig_bottom,
                color=cat_colors[i], hatch=ORIG_HATCH,
-               edgecolor='black', linewidth=0.5, alpha=0.85,
+               edgecolor='black', linewidth=0.4, alpha=0.85,
                label=cat_name)
         orig_bottom += np.array(data)
 
     # --- Rewritten bars (right, hatched) ---
-    rewr_bottom = np.zeros(len(applications))
+    rewr_bottom = np.zeros(n)
     rewr_data = [rewr_simple, rewr_complex, rewr_branch, rewr_memory]
 
     for i, (cat_name, data) in enumerate(zip(CATEGORIES, rewr_data)):
         ax.bar(x + width / 2, data, width, bottom=rewr_bottom,
                color=cat_colors[i], hatch=REWR_HATCH,
-               edgecolor='black', linewidth=0.5, alpha=0.85)
+               edgecolor='black', linewidth=0.4, alpha=0.85)
         rewr_bottom += np.array(data)
 
-    # Vertical separator before Average
-    ax.axvline(x=len(applications) - 1.5, color='black', linestyle='-', linewidth=0.8, alpha=0.4)
+    # Vertical separator before Geomean
+    ax.axvline(x=n - 1.5, color='black', linestyle='-', linewidth=0.8, alpha=0.4)
+
+    # Tighten x-axis limits to remove gap between bars and figure edges
+    ax.set_xlim(-0.6, n - 0.4)
 
     # Configure axes
     ax.set_ylabel('Number of Unique Instructions', fontsize=11, fontweight='bold')
     ax.set_xticks(x)
-    xlabels = ax.set_xticklabels(applications, rotation=45, ha='right', fontsize=10)
+    xlabels = ax.set_xticklabels(applications, rotation=60, ha='right', fontsize=10)
     xlabels[-1].set_fontweight('bold')
-    ax.tick_params(axis='y', labelsize=10)
+    ax.tick_params(axis='y', labelsize=9)
     ax.grid(axis='y', alpha=0.3, linestyle='--')
 
-    # Build two-column legend (matplotlib ncol fills column-major):
-    #   Column 1: Instruction types (4 color patches)
-    #   Column 2: Original / Rewritten (2 texture patches + 2 blank spacers)
+    # Build two-column legend
     from matplotlib.patches import Patch
     blank = Patch(facecolor='none', edgecolor='none', label=' ')
     col1 = [Patch(facecolor=cat_colors[i], edgecolor='black', linewidth=0.5,
@@ -368,9 +361,8 @@ def visualize_results(summaries: List[Dict], output_path: str = "instruction_ana
             Patch(facecolor='white', edgecolor='black', hatch=REWR_HATCH,
                    linewidth=0.5, label='Rewritten'),
             blank, blank]
-    # Column-major: first 4 items → col 1, next 4 → col 2
     ax.legend(handles=col1 + col2, loc='upper left',
-              framealpha=0.9, fontsize=9, ncol=2)
+              framealpha=0.9, fontsize=8, ncol=2)
 
     plt.tight_layout()
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
@@ -423,11 +415,12 @@ def visualize_results(summaries: List[Dict], output_path: str = "instruction_ana
 
 
 def main():
-    output_csv = sys.argv[1] if len(sys.argv) > 1 else "instruction_counts.csv"
+    script_dir = Path(__file__).resolve().parent
+    output_csv = sys.argv[1] if len(sys.argv) > 1 else str(script_dir / "instruction_counts.csv")
 
-    script_dir = Path(__file__).parent
-    backend_dir = script_dir / "output" / "backend"
-    frontend_dir = script_dir / "output" / "frontend"
+    project_root = script_dir.parent.parent
+    backend_dir = project_root / "output" / "backend"
+    frontend_dir = project_root / "output" / "frontend"
 
     print("=" * 80)
     print("Parsing Instruction Counts from Analysis Results")

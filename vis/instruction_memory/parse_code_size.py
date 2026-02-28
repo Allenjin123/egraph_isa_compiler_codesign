@@ -310,28 +310,32 @@ def visualize_results(summaries: List[Dict], output_path: str = "code_size_analy
     comp_bits = [comp_bits[i] for i in sorted_indices]
     num_unique = [num_unique[i] for i in sorted_indices]
 
-    # Create figure
-    fig, ax1 = plt.subplots(figsize=(16, 6))
+    # Create figure — single-column, all 22 benchmarks
+    n = len(applications)
+    fig, ax1 = plt.subplots(figsize=(7, 3.5))
 
-    x = np.arange(len(applications))
+    x = np.arange(n)
     width = 0.25
 
     colors = sns.color_palette("Set2", 3)
     ax1.bar(x - width, orig_size, width, label='Original (32-bit)',
-            color=colors[0], alpha=0.8, edgecolor='black', linewidth=0.5)
+            color=colors[0], alpha=0.8, edgecolor='black', linewidth=0.4)
     ax1.bar(x, rewritten_size, width, label='Rewritten (32-bit)',
-            color=colors[1], alpha=0.8, edgecolor='black', linewidth=0.5)
+            color=colors[1], alpha=0.8, edgecolor='black', linewidth=0.4)
     ax1.bar(x + width, compressed_size, width, label='Rewritten + Compressed (29/30-bit)',
-            color=colors[2], alpha=0.8, edgecolor='black', linewidth=0.5, hatch='//')
+            color=colors[2], alpha=0.8, edgecolor='black', linewidth=0.4, hatch='//')
+
+    # Tighten x-axis
+    ax1.set_xlim(-0.6, n - 0.4)
 
     # Configure y-axis
-    ax1.set_ylabel('Code Size (Bytes)', fontsize=16, fontweight='bold')
+    ax1.set_ylabel('Code Size (Bytes)', fontsize=11, fontweight='bold')
     ax1.set_xticks(x)
-    ax1.set_xticklabels(applications, rotation=45, ha='right', fontsize=14)
-    ax1.tick_params(axis='y', labelcolor='black', labelsize=14)
+    ax1.set_xticklabels(applications, rotation=60, ha='right', fontsize=9)
+    ax1.tick_params(axis='y', labelcolor='black', labelsize=9)
     ax1.grid(axis='y', alpha=0.3, linestyle='--')
 
-    ax1.legend(loc='upper left', framealpha=0.9, fontsize=14)
+    ax1.legend(loc='upper left', framealpha=0.9, fontsize=8)
 
     plt.tight_layout()
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
@@ -399,11 +403,12 @@ def visualize_results(summaries: List[Dict], output_path: str = "code_size_analy
 
 
 def main():
-    output_csv = sys.argv[1] if len(sys.argv) > 1 else "code_size.csv"
+    script_dir = Path(__file__).resolve().parent
+    output_csv = sys.argv[1] if len(sys.argv) > 1 else str(script_dir / "code_size.csv")
 
-    script_dir = Path(__file__).parent
-    backend_dir = script_dir / "output" / "backend"
-    frontend_dir = script_dir / "output" / "frontend"
+    project_root = script_dir.parent.parent
+    backend_dir = project_root / "output" / "backend"
+    frontend_dir = project_root / "output" / "frontend"
 
     print("=" * 80)
     print("Parsing Code Size from Frontend Output")

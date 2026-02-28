@@ -61,11 +61,8 @@ for workload in "${WORKLOADS[@]}"; do
     # Derive benchmark stem (strip _clean suffix)
     filename=$(basename "$file" _clean.s)
 
-    # Get the last line of the file (trim whitespace)
-    last_line=$(tail -1 "$file" | sed 's/[[:space:]]*$//')
-
-    # Check if it ends with "# end of subrountine" (note: typo in original file)
-    if [[ "$last_line" == "# end of subrountine" ]]; then
+    # Check if mul/div routines are already present in the file
+    if grep -q '^__mul:' "$file" 2>/dev/null || grep -q '^__riscv_div_lib_divsi3:' "$file" 2>/dev/null; then
         echo "Skipping: $workload (already has mul/div appended)"
         continue
     fi

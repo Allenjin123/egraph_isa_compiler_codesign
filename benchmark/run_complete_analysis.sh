@@ -24,18 +24,31 @@ echo -e "${MAGENTA}Complete Analysis Pipeline${NC}"
 echo -e "${MAGENTA}============================================================${NC}"
 echo ""
 
-# Step 1: Append mul/div subroutines
-echo -e "${CYAN}Step 1: Appending mul/div subroutines to clean.s files${NC}"
-echo ""
+# Step 1: Append mul/div subroutines (skipped if already done by run_multi_scale_variants.sh Step -2)
+# Check if any clean.s file needs mul/div by looking for __mul label
+NEEDS_APPEND=false
+for f in $(find "$SCRIPT_DIR" -name "*_clean.s" -type f | grep -E "(automotive|network|security|embench-iot_[0-9]+)/" | head -5); do
+    if ! grep -q '^__mul:' "$f" 2>/dev/null; then
+        NEEDS_APPEND=true
+        break
+    fi
+done
 
-if ! ./append_mul_div.sh; then
+if [ "$NEEDS_APPEND" = true ]; then
+    echo -e "${CYAN}Step 1: Appending mul/div subroutines to clean.s files${NC}"
     echo ""
-    echo -e "${RED}Failed to append mul/div subroutines!${NC}"
-    exit 1
-fi
 
-echo ""
-echo -e "${GREEN}✓ Mul/div subroutines appended to clean.s files${NC}"
+    if ! ./append_mul_div.sh; then
+        echo ""
+        echo -e "${RED}Failed to append mul/div subroutines!${NC}"
+        exit 1
+    fi
+
+    echo ""
+    echo -e "${GREEN}✓ Mul/div subroutines appended to clean.s files${NC}"
+else
+    echo -e "${YELLOW}Step 1: Skipping mul/div append (already present)${NC}"
+fi
 echo ""
 
 # Create tmp directory for logs and outputs

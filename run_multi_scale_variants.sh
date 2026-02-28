@@ -11,8 +11,8 @@
 set -e  # Exit on error
 
 # Default configuration
-DEFAULT_SCALES="0 0.0005 0.001 0.002 0.005 0.01 0.1 0.5 1"
-DEFAULT_K=3
+DEFAULT_SCALES="0 0.0001 0.0002 0.0005 0.001 0.0015 0.002 0.003 0.005 0.007 0.01 0.015 0.02 0.03 0.05 0.07 0.1 0.15 0.2 0.3 0.4 0.5 0.6 0.7 0.85 0.9 1"
+DEFAULT_K=1
 DEFAULT_TIMEOUT=180
 DEFAULT_PROGRAM_PARALLEL=4     # Number of programs to process in parallel
 DEFAULT_ILP_PARALLEL=24        # Number of ILP scaling factors to run in parallel per program
@@ -896,6 +896,39 @@ echo -e "${YELLOW}汇总报告已保存至: $SUMMARY_FILE${NC}"
         return 1
     fi
 }
+
+# ============================================================================
+# Step -2: Clean benchmark assembly files (replace pseudo + append mul/div)
+# ============================================================================
+if [ "$SKIP_FRONTEND" = false ]; then
+    echo -e "${BLUE}步骤 -2: 清理汇编文件（替换伪指令 + 追加 mul/div）...${NC}"
+
+    # Delete _placeholder.s files
+    placeholder_files=($(find "$BENCHMARK_DIR" -name "*_placeholder.s" -type f))
+    if [ ${#placeholder_files[@]} -gt 0 ]; then
+        echo -e "${CYAN}  删除 ${#placeholder_files[@]} 个 _placeholder.s 文件${NC}"
+        for file in "${placeholder_files[@]}"; do
+            rm -f "$file"
+        done
+    fi
+
+    # Replace pseudo instructions to regenerate _clean.s files
+    echo -e "${CYAN}  替换伪指令...${NC}"
+    if ! python3 "$FRONTEND_DIR/replace_pseudo_clean.py"; then
+        echo -e "${RED}✗ 替换伪指令失败${NC}"
+        exit 1
+    fi
+
+    # Append mul/div routines (safe: _clean.s files are freshly generated)
+    echo -e "${CYAN}  追加 mul/div 函数...${NC}"
+    if ! bash "$BENCHMARK_DIR/append_mul_div.sh"; then
+        echo -e "${RED}✗ 追加 mul/div 失败${NC}"
+        exit 1
+    fi
+
+    echo -e "${GREEN}  ✓ 汇编文件清理完成${NC}"
+    echo ""
+fi
 
 # ============================================================================
 # Step -1: Run frontend & complete analysis (spike instruction count + block execution)

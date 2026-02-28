@@ -1,0 +1,40 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Minimum Area}
+\label{tab:min_area}
+\begin{tabular}{lcccccccc}
+\toprule
+ & \multicolumn{4}{c}{$1.2\times$ Latency Constraint} & \multicolumn{4}{c}{Unconstrained} \\
+\cmidrule(lr){2-5} \cmidrule(lr){6-9}
+ & \multicolumn{2}{c}{M1} & \multicolumn{2}{c}{M2} & \multicolumn{2}{c}{M1} & \multicolumn{2}{c}{M2} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9}
+Benchmark & A & P & A & P & A & P & A & P \\
+\midrule
+\texttt{basicmath} & \textbf{0.97} & \textbf{0.98} & \textbf{0.97} & \textbf{0.97} & \textbf{0.70} & \textbf{0.80} & \textbf{0.70} & \textbf{0.70} \\
+\texttt{bitcnts} & \textbf{0.78} & \textbf{0.85} & \textbf{0.78} & \textbf{0.78} & \textbf{0.78} & \textbf{0.85} & \textbf{0.78} & \textbf{0.78} \\
+\texttt{combined} & \textbf{0.92} & \textbf{0.94} & \textbf{0.92} & \textbf{0.92} & \textbf{0.76} & \textbf{0.84} & \textbf{0.76} & \textbf{0.76} \\
+\texttt{dijkstra} & \textbf{0.92} & \textbf{0.95} & \textbf{0.92} & \textbf{0.92} & \textbf{0.76} & \textbf{0.84} & \textbf{0.76} & \textbf{0.76} \\
+\texttt{edn} & \textbf{0.98} & \textbf{0.99} & \textbf{0.98} & \textbf{0.98} & \textbf{0.81} & \textbf{0.87} & \textbf{0.81} & \textbf{0.81} \\
+\texttt{huffbench} & \textbf{0.97} & \textbf{0.98} & \textbf{0.97} & \textbf{0.97} & \textbf{0.97} & \textbf{0.98} & \textbf{0.97} & \textbf{0.97} \\
+\texttt{nsichneu} & \textbf{0.98} & \textbf{0.99} & \textbf{0.98} & \textbf{0.98} & \textbf{0.98} & \textbf{0.99} & \textbf{0.98} & \textbf{0.98} \\
+\texttt{slre} & \textbf{0.97} & \textbf{0.98} & \textbf{0.97} & \textbf{0.97} & \textbf{0.97} & \textbf{0.98} & \textbf{0.97} & \textbf{0.97} \\
+\texttt{statemate} & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 \\
+\texttt{ud} & 1.00 & 1.00 & 1.00 & 1.00 & \textbf{0.72} & \textbf{0.81} & \textbf{0.72} & \textbf{0.72} \\
+\texttt{wikisort} & \textbf{0.86} & \textbf{0.90} & \textbf{0.86} & \textbf{0.86} & \textbf{0.71} & \textbf{0.81} & \textbf{0.71} & \textbf{0.71} \\
+\texttt{matmult-int} & \textbf{0.92} & \textbf{0.94} & \textbf{0.92} & \textbf{0.92} & \textbf{0.76} & \textbf{0.84} & \textbf{0.76} & \textbf{0.76} \\
+\texttt{md5sum} & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 \\
+\texttt{mont64} & \textbf{0.97} & \textbf{0.98} & \textbf{0.97} & \textbf{0.97} & \textbf{0.80} & \textbf{0.87} & \textbf{0.80} & \textbf{0.80} \\
+\texttt{patricia} & \textbf{0.81} & \textbf{0.87} & \textbf{0.81} & \textbf{0.81} & \textbf{0.81} & \textbf{0.87} & \textbf{0.81} & \textbf{0.81} \\
+\texttt{picojpeg} & \textbf{0.99} & 1.00 & \textbf{0.99} & \textbf{0.99} & \textbf{0.81} & \textbf{0.87} & \textbf{0.81} & \textbf{0.81} \\
+\texttt{primecount} & \textbf{0.98} & \textbf{0.98} & \textbf{0.98} & \textbf{0.98} & \textbf{0.80} & \textbf{0.87} & \textbf{0.80} & \textbf{0.80} \\
+\texttt{qsort-num} & \textbf{0.98} & \textbf{0.98} & \textbf{0.98} & \textbf{0.98} & \textbf{0.76} & \textbf{0.84} & \textbf{0.76} & \textbf{0.76} \\
+\texttt{qsort-str} & \textbf{0.97} & \textbf{0.98} & \textbf{0.97} & \textbf{0.97} & \textbf{0.97} & \textbf{0.98} & \textbf{0.97} & \textbf{0.97} \\
+\texttt{rijndael} & \textbf{0.91} & \textbf{0.94} & \textbf{0.91} & \textbf{0.92} & \textbf{0.76} & \textbf{0.84} & \textbf{0.76} & \textbf{0.76} \\
+\texttt{sha} & \textbf{0.98} & \textbf{0.98} & \textbf{0.98} & \textbf{0.98} & \textbf{0.98} & \textbf{0.98} & \textbf{0.98} & \textbf{0.98} \\
+\texttt{tarfind} & \textbf{0.98} & \textbf{0.98} & \textbf{0.98} & \textbf{0.98} & \textbf{0.81} & \textbf{0.87} & \textbf{0.81} & \textbf{0.81} \\
+\midrule
+\textbf{Geo.\ Mean} & \textbf{0.94} & \textbf{0.96} & \textbf{0.94} & \textbf{0.94} & \textbf{0.83} & \textbf{0.89} & \textbf{0.83} & \textbf{0.83} \\
+\bottomrule
+\end{tabular}
+\end{table*}

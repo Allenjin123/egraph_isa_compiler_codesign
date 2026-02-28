@@ -80,3 +80,5 @@ Saturation/egglog_output/
 
 
 output/
+output_backup/
+output_*
