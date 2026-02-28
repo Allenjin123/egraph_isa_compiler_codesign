@@ -1,163 +1,587 @@
 {
+  "scales": [
+    "0",
+    "0.0005"
+  ],
   "programs": {
     "basicmath_small_O3": {
       "insn_count": 782,
-      "saturation_ms": 1651,
-      "extraction_ms": 2918,
+      "saturation_ms": 1559,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/basicmath_small_O3_scale_0",
+          "extraction_ms": 3714,
+          "extraction_ok": true,
+          "scorr_ms": 46738,
+          "scorr_ok": true
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/basicmath_small_O3_scale_0.0005",
+          "extraction_ms": 2179,
+          "extraction_ok": true,
+          "scorr_ms": 46738,
+          "scorr_ok": true
+        }
+      ],
+      "extraction_ms_median": 2946.5,
+      "scorr_ms": 93475,
+      "scorr_ok": true
     },
     "bitcnts_O3": {
       "insn_count": 394,
-      "saturation_ms": 868,
-      "extraction_ms": 1740,
+      "saturation_ms": 825,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/bitcnts_O3_scale_0",
+          "extraction_ms": 1711,
+          "extraction_ok": true,
+          "scorr_ms": 45562,
+          "scorr_ok": true
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/bitcnts_O3_scale_0.0005",
+          "extraction_ms": 2069,
+          "extraction_ok": true,
+          "scorr_ms": 45562,
+          "scorr_ok": true
+        }
+      ],
+      "extraction_ms_median": 1890.0,
+      "scorr_ms": 91123,
+      "scorr_ok": true
     },
     "combined": {
       "insn_count": 5397,
-      "saturation_ms": 15370,
-      "extraction_ms": 6641,
+      "saturation_ms": 16052,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/combined_scale_0",
+          "extraction_ms": 6298,
+          "extraction_ok": true,
+          "scorr_ms": 380,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/combined_scale_0.0005",
+          "extraction_ms": 6448,
+          "extraction_ok": true,
+          "scorr_ms": 380,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 6373.0,
+      "scorr_ms": 760,
+      "scorr_ok": false
     },
     "dijkstra_small_O3": {
       "insn_count": 424,
-      "saturation_ms": 797,
-      "extraction_ms": 462,
+      "saturation_ms": 804,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/dijkstra_small_O3_scale_0",
+          "extraction_ms": 520,
+          "extraction_ok": true,
+          "scorr_ms": 187,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/dijkstra_small_O3_scale_0.0005",
+          "extraction_ms": 545,
+          "extraction_ok": true,
+          "scorr_ms": 187,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 532.5,
+      "scorr_ms": 374,
+      "scorr_ok": false
     },
     "libedn": {
       "insn_count": 913,
-      "saturation_ms": 1476,
-      "extraction_ms": 748,
+      "saturation_ms": 1583,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/libedn_scale_0",
+          "extraction_ms": 929,
+          "extraction_ok": true,
+          "scorr_ms": 182,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/libedn_scale_0.0005",
+          "extraction_ms": 773,
+          "extraction_ok": true,
+          "scorr_ms": 182,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 851.0,
+      "scorr_ms": 364,
+      "scorr_ok": false
     },
     "libhuffbench": {
       "insn_count": 1219,
-      "saturation_ms": 3146,
-      "extraction_ms": 2436,
+      "saturation_ms": 3154,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/libhuffbench_scale_0",
+          "extraction_ms": 2422,
+          "extraction_ok": true,
+          "scorr_ms": 177,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/libhuffbench_scale_0.0005",
+          "extraction_ms": 2556,
+          "extraction_ok": true,
+          "scorr_ms": 177,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 2489.0,
+      "scorr_ms": 354,
+      "scorr_ok": false
     },
     "libnsichneu": {
       "insn_count": 4639,
-      "saturation_ms": 9052,
-      "extraction_ms": 3150,
+      "saturation_ms": 9659,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/libnsichneu_scale_0",
+          "extraction_ms": 2759,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/libnsichneu_scale_0.0005",
+          "extraction_ms": 3499,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 3129.0,
+      "scorr_ms": 32,
+      "scorr_ok": false
     },
     "libslre": {
       "insn_count": 1333,
-      "saturation_ms": 3640,
-      "extraction_ms": 5017,
+      "saturation_ms": 3869,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/libslre_scale_0",
+          "extraction_ms": 4930,
+          "extraction_ok": true,
+          "scorr_ms": 17,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/libslre_scale_0.0005",
+          "extraction_ms": 4660,
+          "extraction_ok": true,
+          "scorr_ms": 17,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 4795.0,
+      "scorr_ms": 34,
+      "scorr_ok": false
     },
     "libstatemate": {
       "insn_count": 1948,
-      "saturation_ms": 4099,
-      "extraction_ms": 1366,
+      "saturation_ms": 4277,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/libstatemate_scale_0",
+          "extraction_ms": 1218,
+          "extraction_ok": true,
+          "scorr_ms": 17,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/libstatemate_scale_0.0005",
+          "extraction_ms": 1381,
+          "extraction_ok": true,
+          "scorr_ms": 17,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 1299.5,
+      "scorr_ms": 34,
+      "scorr_ok": false
     },
     "libud": {
       "insn_count": 1070,
-      "saturation_ms": 1669,
-      "extraction_ms": 801,
+      "saturation_ms": 1880,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/libud_scale_0",
+          "extraction_ms": 711,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/libud_scale_0.0005",
+          "extraction_ms": 766,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 738.5,
+      "scorr_ms": 33,
+      "scorr_ok": false
     },
     "libwikisort": {
       "insn_count": 4635,
-      "saturation_ms": 10899,
-      "extraction_ms": 10506,
+      "saturation_ms": 11653,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/libwikisort_scale_0",
+          "extraction_ms": 8916,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/libwikisort_scale_0.0005",
+          "extraction_ms": 12741,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 10828.5,
+      "scorr_ms": 32,
+      "scorr_ok": false
     },
     "matmult-int": {
       "insn_count": 328,
-      "saturation_ms": 951,
-      "extraction_ms": 492,
+      "saturation_ms": 876,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/matmult-int_scale_0",
+          "extraction_ms": 566,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/matmult-int_scale_0.0005",
+          "extraction_ms": 575,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 570.5,
+      "scorr_ms": 32,
+      "scorr_ok": false
     },
     "md5": {
       "insn_count": 1153,
-      "saturation_ms": 2167,
-      "extraction_ms": 21759,
+      "saturation_ms": 2550,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/md5_scale_0",
+          "extraction_ms": 87764,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/md5_scale_0.0005",
+          "extraction_ms": 66632,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 77198.0,
+      "scorr_ms": 32,
+      "scorr_ok": false
     },
     "mont64": {
       "insn_count": 806,
-      "saturation_ms": 1860,
-      "extraction_ms": 3907,
+      "saturation_ms": 1431,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/mont64_scale_0",
+          "extraction_ms": 3230,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/mont64_scale_0.0005",
+          "extraction_ms": 2755,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 2992.5,
+      "scorr_ms": 32,
+      "scorr_ok": false
     },
     "patricia_O3": {
       "insn_count": 879,
-      "saturation_ms": 2266,
-      "extraction_ms": 2035,
+      "saturation_ms": 2309,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/patricia_O3_scale_0",
+          "extraction_ms": 1707,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/patricia_O3_scale_0.0005",
+          "extraction_ms": 2013,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 1860.0,
+      "scorr_ms": 33,
+      "scorr_ok": false
     },
     "picojpeg_test": {
       "insn_count": 5017,
-      "saturation_ms": 10187,
-      "extraction_ms": 35713,
+      "saturation_ms": 11033,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/picojpeg_test_scale_0",
+          "extraction_ms": 33399,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/picojpeg_test_scale_0.0005",
+          "extraction_ms": 40200,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 36799.5,
+      "scorr_ms": 33,
+      "scorr_ok": false
     },
     "primecount": {
       "insn_count": 117,
-      "saturation_ms": 446,
-      "extraction_ms": 222,
+      "saturation_ms": 570,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/primecount_scale_0",
+          "extraction_ms": 247,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/primecount_scale_0.0005",
+          "extraction_ms": 320,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 283.5,
+      "scorr_ms": 32,
+      "scorr_ok": false
     },
     "qsort_large_O3": {
       "insn_count": 201,
-      "saturation_ms": 488,
-      "extraction_ms": 337,
+      "saturation_ms": 680,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/qsort_large_O3_scale_0",
+          "extraction_ms": 345,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/qsort_large_O3_scale_0.0005",
+          "extraction_ms": 434,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 389.5,
+      "scorr_ms": 33,
+      "scorr_ok": false
     },
     "qsort_small_O3": {
       "insn_count": 240,
-      "saturation_ms": 843,
-      "extraction_ms": 490,
+      "saturation_ms": 871,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/qsort_small_O3_scale_0",
+          "extraction_ms": 463,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/qsort_small_O3_scale_0.0005",
+          "extraction_ms": 568,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 515.5,
+      "scorr_ms": 32,
+      "scorr_ok": false
     },
     "rijndael_Oz": {
       "insn_count": 1230,
-      "saturation_ms": 2310,
-      "extraction_ms": 17791,
+      "saturation_ms": 2884,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/rijndael_Oz_scale_0",
+          "extraction_ms": 36994,
+          "extraction_ok": true,
+          "scorr_ms": 17,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/rijndael_Oz_scale_0.0005",
+          "extraction_ms": 23732,
+          "extraction_ok": true,
+          "scorr_ms": 17,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 30363.0,
+      "scorr_ms": 34,
+      "scorr_ok": false
     },
     "sha_O3": {
       "insn_count": 1058,
-      "saturation_ms": 1691,
-      "extraction_ms": 1620,
+      "saturation_ms": 1860,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/sha_O3_scale_0",
+          "extraction_ms": 2141,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/sha_O3_scale_0.0005",
+          "extraction_ms": 2104,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 2122.5,
+      "scorr_ms": 33,
+      "scorr_ok": false
     },
     "tarfind": {
       "insn_count": 352,
-      "saturation_ms": 1273,
-      "extraction_ms": 669,
+      "saturation_ms": 1341,
       "saturation_ok": true,
-      "extraction_ok": true
+      "variants": [
+        {
+          "scale": "0",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/tarfind_scale_0",
+          "extraction_ms": 620,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        },
+        {
+          "scale": "0.0005",
+          "output_dir": "/home/yjrcs/Egglog_DSL/egraph_isa_compiler_codesign/output/ilp/tarfind_scale_0.0005",
+          "extraction_ms": 661,
+          "extraction_ok": true,
+          "scorr_ms": 16,
+          "scorr_ok": false
+        }
+      ],
+      "extraction_ms_median": 640.5,
+      "scorr_ms": 33,
+      "scorr_ok": false
     }
   },
   "summary": {
-    "total": 22,
+    "total_programs": 22,
+    "total_runs": 44,
     "sat_success": 22,
-    "ext_success": 22
+    "ext_success": 44,
+    "global_extraction_ms_median": 2086.5
   }
 }

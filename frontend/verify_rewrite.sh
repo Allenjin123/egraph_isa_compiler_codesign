@@ -67,13 +67,6 @@ get_program_args() {
     local size_type="$2"
     
     case "$prog_name" in
-        bitcount|bitcnts)
-            if [ "$size_type" = "small" ]; then
-                echo "75000"
-            else
-                echo "1125000"
-            fi
-            ;;
         *)
             echo ""
             ;;
