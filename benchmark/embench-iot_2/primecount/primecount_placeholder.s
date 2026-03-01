@@ -37,22 +37,21 @@ countPrimes:
 	addi	a4,zero,3
 .L6:
 	callmul	a5,a7,a7
-	bge	a4,a5,.L7
+	blt	a4,a5,.+8
+	jal	x0,.L7
 	addi	a7,a7,-1
 	addi	a1,sp,0
 	addi	a2,sp,168
 	addi	a6,zero,0
 .L14:
 	lw	a3,0(a1)
-	bge	a7,a3,.+8
-	jal	x0,.L8
+	blt	a7,a3,.L8
 	lw	a5,0(a2)
-	bge	a5,a4,.L10
+	blt	a5,a4,.+8
+	jal	x0,.L10
 .L9:
-	sub	op_0,x0,a5
-	sub	a5,a3,op_0
-	bge	a5,a4,.+8
-	jal	x0,.L9
+	add	a5,a5,a3
+	blt	a5,a4,.L9
 	sw	a5,0(a2)
 .L10:
 	beq	a4,a5,.L13
@@ -68,15 +67,12 @@ countPrimes:
 	jal	x0,.L6
 .L8:
 	addi	a5,zero,41
-	bge	a5,t1,.+8
-	jal	x0,.L12
+	blt	a5,t1,.L12
 	callmul	a3,a4,a4
 	addi	op_0,x0,2
 	sll	a5,t1,op_0
-	sub	op_0,x0,sp
-	sub	a2,a5,op_0
-	sub	op_0,x0,sp
-	sub	a5,a5,op_0
+	add	a2,sp,a5
+	add	a5,sp,a5
 	addi	t1,t1,1
 	sw	a4,0(a5)
 	sw	a3,168(a5)
@@ -101,7 +97,8 @@ benchmark_body.constprop.0:
 	.align	2
 	.type	benchmark_body.isra.0, @function
 benchmark_body.isra.0:
-	bge	zero,a0,.L29
+	blt	zero,a0,.+8
+	jal	x0,.L29
 	addi	sp,sp,-16
 	sw	s0,8(sp)
 	sw	s1,4(sp)
@@ -195,18 +192,15 @@ verify_benchmark:
     .text
     .align 2
 __mul:
-	sub	op_0,x0,a0
-	sub	a2,x0,op_0
+	add	a2,a0,x0
 	addi	a0,x0,0
 .Mul_loop:
-	addi	op_2,x0,1
-	or	op_1,a1,op_2
-	addi	op_3,x0,1
-	sub	op_0,op_1,op_3
-	sub	a3,a1,op_0
-	beq	a3,x0,.Mul_skip
-	sub	op_0,x0,a0
-	sub	a0,a2,op_0
+	addi	op_0,x0,1
+	and	a3,a1,op_0
+	beq	a3,x0,.+8
+	jal	x0,.+8
+	jal	x0,.Mul_skip
+	add	a0,a0,a2
 .Mul_skip:
 	addi	op_0,x0,1
 	srl	a1,a1,op_0

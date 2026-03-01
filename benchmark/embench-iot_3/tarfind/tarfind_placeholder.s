@@ -60,7 +60,7 @@ benchmark_body.isra.0:
 	beq	a4,zero,.L18
 	sb	zero,0(a2)
 	addi	op_0,x0,2
-	and	a1,a1,op_0
+	and	a1,op_0,a1
 	beq	a1,zero,.L19
 	sb	zero,1(a2)
 	beq	a4,s4,.+8
@@ -203,8 +203,8 @@ benchmark_body.isra.0:
 .L16:
 	addi	t6,s2,0
 .L15:
-	lw	op_0,0(t6)
-	addi	op_1,x0,255
+	addi	op_0,x0,255
+	lw	op_1,0(t6)
 	and	a3,op_0,op_1
 	addi	a2,t6,0
 	addi	a4,t0,0
@@ -214,8 +214,8 @@ benchmark_body.isra.0:
 .L43:
 	beq	a3,t5,.+8
 	jal	x0,.L13
-	lw	op_0,0(a2)
-	addi	op_1,x0,255
+	addi	op_0,x0,255
+	lw	op_1,0(a2)
 	and	a3,op_0,op_1
 	beq	a3,zero,.L10
 .L9:
@@ -263,8 +263,8 @@ benchmark_body.isra.0:
 	addi	sp,sp,64
 	jalr	zero,ra,0
 .L10:
-	lw	op_0,0(a4)
-	addi	op_1,x0,255
+	addi	op_0,x0,255
+	lw	op_1,0(a4)
 	and	a4,op_0,op_1
 	beq	a4,zero,.L14
 	addi	t6,t6,257
@@ -338,7 +338,7 @@ benchmark_body.constprop.0:
 	beq	a5,zero,.L60
 	sb	zero,0(s7)
 	addi	op_0,x0,2
-	and	a4,a4,op_0
+	and	a4,op_0,a4
 	beq	a4,zero,.L61
 	sb	zero,1(s7)
 	beq	a5,t2,.+8
@@ -353,7 +353,7 @@ benchmark_body.constprop.0:
 	sub	op_0,x0,t6
 	sub	a5,a5,op_0
 	addi	op_0,x0,-4
-	and	s11,op_0,s9
+	and	s11,s9,op_0
 	sub	op_0,x0,s11
 	sub	s10,a5,op_0
 .L47:
@@ -480,8 +480,8 @@ benchmark_body.constprop.0:
 .L58:
 	addi	s7,t6,0
 .L57:
-	lw	op_0,0(s7)
-	addi	op_1,x0,255
+	addi	op_0,x0,255
+	lw	op_1,0(s7)
 	and	a4,op_0,op_1
 	addi	a3,s7,0
 	addi	a5,s8,0
@@ -491,13 +491,13 @@ benchmark_body.constprop.0:
 .L78:
 	beq	a2,a4,.+8
 	jal	x0,.L55
-	lw	op_0,0(a3)
-	addi	op_1,x0,255
+	addi	op_0,x0,255
+	lw	op_1,0(a3)
 	and	a4,op_0,op_1
 	beq	a4,zero,.L52
 .L51:
-	addi	op_0,x0,255
-	lw	op_1,0(a5)
+	lw	op_0,0(a5)
+	addi	op_1,x0,255
 	and	a2,op_0,op_1
 	addi	a3,a3,1
 	addi	a5,a5,1

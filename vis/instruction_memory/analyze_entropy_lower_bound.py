@@ -51,6 +51,7 @@ import re
 import json
 import csv
 import math
+import argparse
 from pathlib import Path
 from collections import Counter
 from typing import Dict, List, Optional, Tuple
@@ -59,6 +60,8 @@ import matplotlib.pyplot as plt
 plt.style.use(['science', 'no-latex'])
 import seaborn as sns
 import numpy as np
+
+from analyze_unique_instructions import compute_uniform_code_size
 
 
 # ── register normalization (shared with analyze_unique_instructions.py) ──────
@@ -177,13 +180,6 @@ def huffman_avg_bits(counts: Counter) -> float:
     return avg
 
 
-def bits_needed_uniform(n_unique: int) -> int:
-    """Minimum bits for uniform encoding (ceil(log2(N)))."""
-    if n_unique <= 1:
-        return 0
-    return math.ceil(math.log2(n_unique))
-
-
 # ── finding result JSONs & variant mapping ──────────────────────────────────
 
 def find_all_result_jsons(backend_dir: Path) -> List[Path]:
@@ -224,7 +220,8 @@ def analyze_program(program_name: str, frontend_dir: Path,
 
     orig_total = len(orig_instrs)
     orig_unique = len(orig_counts)
-    orig_uniform_bits = bits_needed_uniform(orig_unique)
+    orig_uniform = compute_uniform_code_size(orig_instrs, orig_counts)
+    orig_uniform_bits = orig_uniform['bits_per_instr']
     orig_entropy = shannon_entropy(orig_counts)
     orig_huffman = huffman_avg_bits(orig_counts)
 
@@ -236,7 +233,7 @@ def analyze_program(program_name: str, frontend_dir: Path,
         'orig_entropy_bits': orig_entropy,
         'orig_huffman_bits': orig_huffman,
         'orig_code_bytes_32': orig_total * 4,
-        'orig_code_bytes_uniform': orig_total * orig_uniform_bits / 8,
+        'orig_code_bytes_uniform': orig_uniform['code_bytes'],
         'orig_code_bytes_entropy': orig_total * orig_entropy / 8,
         'orig_code_bytes_huffman': orig_total * orig_huffman / 8,
     }
@@ -248,7 +245,8 @@ def analyze_program(program_name: str, frontend_dir: Path,
         rewr_instrs, rewr_counts = collect_instructions_from_dir(rewrite_dir)
         rewr_total = len(rewr_instrs)
         rewr_unique = len(rewr_counts)
-        rewr_uniform_bits = bits_needed_uniform(rewr_unique)
+        rewr_uniform = compute_uniform_code_size(rewr_instrs, rewr_counts)
+        rewr_uniform_bits = rewr_uniform['bits_per_instr']
         rewr_entropy = shannon_entropy(rewr_counts)
         rewr_huffman = huffman_avg_bits(rewr_counts)
 
@@ -261,7 +259,7 @@ def analyze_program(program_name: str, frontend_dir: Path,
             'rewr_entropy_bits': rewr_entropy,
             'rewr_huffman_bits': rewr_huffman,
             'rewr_code_bytes_32': rewr_total * 4,
-            'rewr_code_bytes_uniform': rewr_total * rewr_uniform_bits / 8,
+            'rewr_code_bytes_uniform': rewr_uniform['code_bytes'],
             'rewr_code_bytes_entropy': rewr_total * rewr_entropy / 8,
             'rewr_code_bytes_huffman': rewr_total * rewr_huffman / 8,
         })
@@ -325,37 +323,53 @@ def visualize_results(summaries: List[Dict], output_path: str):
     apps = [NAME_MAPPING.get(s['application'], s['application']) for s in valid]
     orig_32       = np.array([s['orig_code_bytes_32'] for s in valid], dtype=float)
     orig_entropy  = np.array([s['orig_code_bytes_entropy'] for s in valid], dtype=float)
+    orig_uniform  = np.array([s['orig_code_bytes_uniform'] for s in valid], dtype=float)
     rewr_32       = np.array([s['rewr_code_bytes_32'] for s in valid], dtype=float)
     rewr_entropy  = np.array([s['rewr_code_bytes_entropy'] for s in valid], dtype=float)
+    rewr_uniform  = np.array([s['rewr_code_bytes_uniform'] for s in valid], dtype=float)
 
     # Normalize to original 32-bit
     norm_orig_32       = orig_32 / orig_32
     norm_orig_entropy  = orig_entropy / orig_32
+    norm_orig_uniform  = orig_uniform / orig_32
     norm_rewr_32       = rewr_32 / orig_32
     norm_rewr_entropy  = rewr_entropy / orig_32
+    norm_rewr_uniform  = rewr_uniform / orig_32
+
+    # Uniform overhead = uniform - entropy (stacked on top of entropy)
+    norm_orig_uniform_overhead = norm_orig_uniform - norm_orig_entropy
+    norm_rewr_uniform_overhead = norm_rewr_uniform - norm_rewr_entropy
 
     def _gmean(arr):
         return np.exp(np.mean(np.log(arr)))
 
     avg_orig_32       = _gmean(norm_orig_32)
     avg_orig_entropy  = _gmean(norm_orig_entropy)
+    avg_orig_uniform  = _gmean(norm_orig_uniform)
     avg_rewr_32       = _gmean(norm_rewr_32)
     avg_rewr_entropy  = _gmean(norm_rewr_entropy)
+    avg_rewr_uniform  = _gmean(norm_rewr_uniform)
 
     # Sort all benchmarks by rewritten 32-bit ratio (ascending)
     sort_idx = sorted(range(len(apps)), key=lambda i: norm_rewr_32[i])
     apps              = [apps[i] for i in sort_idx]
     norm_orig_32      = norm_orig_32[sort_idx]
     norm_orig_entropy = norm_orig_entropy[sort_idx]
+    norm_orig_uniform_overhead = norm_orig_uniform_overhead[sort_idx]
     norm_rewr_32      = norm_rewr_32[sort_idx]
     norm_rewr_entropy = norm_rewr_entropy[sort_idx]
+    norm_rewr_uniform_overhead = norm_rewr_uniform_overhead[sort_idx]
 
     # Append Geomean
     apps.append('Geomean')
+    avg_orig_uniform_overhead = avg_orig_uniform - avg_orig_entropy
+    avg_rewr_uniform_overhead = avg_rewr_uniform - avg_rewr_entropy
     norm_orig_32      = np.append(norm_orig_32,      avg_orig_32)
     norm_orig_entropy = np.append(norm_orig_entropy,  avg_orig_entropy)
+    norm_orig_uniform_overhead = np.append(norm_orig_uniform_overhead, avg_orig_uniform_overhead)
     norm_rewr_32      = np.append(norm_rewr_32,      avg_rewr_32)
     norm_rewr_entropy = np.append(norm_rewr_entropy,  avg_rewr_entropy)
+    norm_rewr_uniform_overhead = np.append(norm_rewr_uniform_overhead, avg_rewr_uniform_overhead)
 
     n = len(apps)
     sns.set_palette("Set2")
@@ -366,35 +380,56 @@ def visualize_results(summaries: List[Dict], output_path: str):
 
     Y_MAX = 3.0
 
-    # Bar 1: Original 32-bit
+    # Bar 1: Original 32-bit (solid)
     clip_orig_32 = np.minimum(norm_orig_32, Y_MAX)
     ax.bar(x - 1.5*w, clip_orig_32, w,
            color=colors[0], edgecolor='black', linewidth=0.4, alpha=0.85)
 
-    # Bar 2: Original entropy lower bound
+    # Bar 2: Original entropy (solid bottom) + uniform overhead (hatched top)
     clip_orig_entropy = np.minimum(norm_orig_entropy, Y_MAX)
     ax.bar(x - 0.5*w, clip_orig_entropy, w,
            color=colors[1], edgecolor='black', linewidth=0.4, alpha=0.85)
+    # Stacked uniform overhead — clip so total doesn't exceed Y_MAX
+    orig_overhead_clipped = np.minimum(norm_orig_uniform_overhead,
+                                       Y_MAX - clip_orig_entropy)
+    orig_overhead_clipped = np.maximum(orig_overhead_clipped, 0)
+    ax.bar(x - 0.5*w, orig_overhead_clipped, w, bottom=clip_orig_entropy,
+           color=colors[1], edgecolor='black', linewidth=0.4, alpha=0.45,
+           hatch='//')
 
-    # Bar 3: Rewritten 32-bit
+    # Bar 3: Rewritten 32-bit (solid)
     clip_rewr_32 = np.minimum(norm_rewr_32, Y_MAX)
     ax.bar(x + 0.5*w, clip_rewr_32, w,
            color=colors[2], edgecolor='black', linewidth=0.4, alpha=0.85)
 
-    # Bar 4: Rewritten entropy lower bound
+    # Bar 4: Rewritten entropy (solid bottom) + uniform overhead (hatched top)
     clip_rewr_entropy = np.minimum(norm_rewr_entropy, Y_MAX)
     ax.bar(x + 1.5*w, clip_rewr_entropy, w,
            color=colors[3], edgecolor='black', linewidth=0.4, alpha=0.85)
+    # Stacked uniform overhead
+    rewr_overhead_clipped = np.minimum(norm_rewr_uniform_overhead,
+                                       Y_MAX - clip_rewr_entropy)
+    rewr_overhead_clipped = np.maximum(rewr_overhead_clipped, 0)
+    ax.bar(x + 1.5*w, rewr_overhead_clipped, w, bottom=clip_rewr_entropy,
+           color=colors[3], edgecolor='black', linewidth=0.4, alpha=0.45,
+           hatch='//')
 
-    # Annotate clipped bars
-    for vals, offset in [(norm_orig_32, -1.5*w),
-                          (norm_orig_entropy, -0.5*w),
-                          (norm_rewr_32, 0.5*w),
-                          (norm_rewr_entropy, 1.5*w)]:
-        for i, val in enumerate(vals):
-            if val > Y_MAX:
-                ax.text(x[i] + offset, Y_MAX + 0.03, f'{val:.1f}',
-                        ha='center', va='bottom', fontsize=7, fontweight='bold')
+    # Annotate clipped bars — spread labels horizontally across the benchmark slot
+    norm_orig_total_b2 = norm_orig_entropy + norm_orig_uniform_overhead
+    norm_rewr_total_b4 = norm_rewr_entropy + norm_rewr_uniform_overhead
+    bar_series = [(norm_orig_32, -1.5*w),
+                  (norm_orig_total_b2, -0.5*w),
+                  (norm_rewr_32, 0.5*w),
+                  (norm_rewr_total_b4, 1.5*w)]
+    for i in range(n):
+        clipped = [(vals[i], offset) for vals, offset in bar_series if vals[i] > Y_MAX]
+        if not clipped:
+            continue
+        # Place each label above its own bar, rotated to avoid overlap
+        for val, offset in clipped:
+            ax.text(x[i] + offset, Y_MAX + 0.03, f'{val:.1f}',
+                    ha='center', va='bottom', fontsize=5, fontweight='bold',
+                    rotation=45)
 
     ax.axhline(y=1.0, color='black', linestyle='--', linewidth=0.8, alpha=0.5)
 
@@ -403,10 +438,12 @@ def visualize_results(summaries: List[Dict], output_path: str):
 
     ax.set_xlim(-0.6, n - 0.4)
     ax.set_ylim(0, Y_MAX + 0.25)
-    ax.set_ylabel('Normalized Code Size', fontsize=11, fontweight='bold')
+    from matplotlib.font_manager import FontProperties
+    bold_fp = FontProperties(family='DejaVu Serif', weight='bold')
+    ax.set_ylabel('Normalized Code Size', fontsize=11, fontproperties=bold_fp)
     ax.set_xticks(x)
     xlabels = ax.set_xticklabels(apps, rotation=60, ha='right', fontsize=10)
-    xlabels[-1].set_fontweight('bold')
+    xlabels[-1].set_fontproperties(FontProperties(family='DejaVu Serif', weight='bold', size=10))
     ax.tick_params(axis='y', labelsize=9)
     ax.grid(axis='y', alpha=0.3, linestyle='--')
 
@@ -419,6 +456,8 @@ def visualize_results(summaries: List[Dict], output_path: str):
               label='Rewritten (32-bit)'),
         Patch(facecolor=colors[3], edgecolor='black', linewidth=0.5,
               label='Rewritten (entropy lower bound)'),
+        Patch(facecolor='white', edgecolor='black', linewidth=0.5,
+              hatch='//', label='Uniform encoding overhead'),
     ]
     ax.legend(handles=legend_handles, loc='upper left', framealpha=0.9, fontsize=7)
 
@@ -444,12 +483,29 @@ NAME_MAPPING = {
 
 
 def main():
-    script_dir = Path(__file__).resolve().parent
-    output_csv = sys.argv[1] if len(sys.argv) > 1 else str(script_dir / "entropy_lower_bound.csv")
+    parser = argparse.ArgumentParser(
+        description="Analyze instruction memory lower bound using Shannon entropy.")
+    parser.add_argument('--input-dir', default='output',
+                        help='Data directory under project root (default: output)')
+    parser.add_argument('output_csv', nargs='?', default=None,
+                        help='Output CSV path (default: entropy_lower_bound[_suffix].csv)')
+    args = parser.parse_args()
 
-    project_root = Path(__file__).resolve().parent.parent.parent
-    backend_dir = project_root / "output" / "backend"
-    frontend_dir = project_root / "output" / "frontend"
+    script_dir = Path(__file__).resolve().parent
+    project_root = script_dir.parent.parent
+
+    backend_dir = project_root / args.input_dir / "backend"
+    frontend_dir = project_root / args.input_dir / "frontend"
+
+    # Build default CSV name with suffix when using non-default input dir
+    if args.output_csv is not None:
+        output_csv = args.output_csv
+    else:
+        if args.input_dir != 'output':
+            suffix = args.input_dir.replace('/', '_')
+            output_csv = str(script_dir / f"entropy_lower_bound_{suffix}.csv")
+        else:
+            output_csv = str(script_dir / "entropy_lower_bound.csv")
 
     print("=" * 90)
     print("Instruction Memory Lower Bound — Shannon Entropy Analysis")

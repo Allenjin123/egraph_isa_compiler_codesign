@@ -455,8 +455,28 @@ sha_transform:
 	sub	op_0,x0,a6
 	sub	a6,a4,op_0
 	and	op_1,a1,a2
-	sub	op_0,op_1,a2
-	sub	a4,a1,op_0
+	and	op_4,a1,a2
+	and	op_8,a2,a1
+	sub	op_7,op_8,a1
+	sub	op_6,a2,op_7
+	and	op_9,a2,a1
+	sub	op_5,op_6,op_9
+	and	op_3,op_4,op_5
+	and	op_13,a2,a1
+	sub	op_12,op_13,a1
+	sub	op_11,a2,op_12
+	and	op_14,a2,a1
+	sub	op_10,op_11,op_14
+	sub	op_2,op_3,op_10
+	sub	op_0,op_1,op_2
+	and	op_16,a1,a2
+	and	op_20,a2,a1
+	sub	op_19,op_20,a1
+	sub	op_18,a2,op_19
+	and	op_21,a2,a1
+	sub	op_17,op_18,op_21
+	and	op_15,op_16,op_17
+	sub	a4,op_0,op_15
 	and	a4,a4,a5
 	and	s0,a1,a2
 	sub	op_0,x0,a6
@@ -464,8 +484,28 @@ sha_transform:
 	sub	op_0,x0,a6
 	sub	a6,s2,op_0
 	and	op_1,a4,s0
-	sub	op_0,op_1,s0
-	sub	a4,a4,op_0
+	and	op_4,a4,s0
+	and	op_8,s0,a4
+	sub	op_7,op_8,a4
+	sub	op_6,s0,op_7
+	and	op_9,s0,a4
+	sub	op_5,op_6,op_9
+	and	op_3,op_4,op_5
+	and	op_13,s0,a4
+	sub	op_12,op_13,a4
+	sub	op_11,s0,op_12
+	and	op_14,s0,a4
+	sub	op_10,op_11,op_14
+	sub	op_2,op_3,op_10
+	sub	op_0,op_1,op_2
+	and	op_16,a4,s0
+	and	op_20,s0,a4
+	sub	op_19,op_20,a4
+	sub	op_18,s0,op_19
+	and	op_21,s0,a4
+	sub	op_17,op_18,op_21
+	and	op_15,op_16,op_17
+	sub	a4,op_0,op_15
 	sub	op_0,x0,a4
 	sub	a4,a6,op_0
 	addi	op_0,x0,30
@@ -679,10 +719,30 @@ sha_update:
 	addi	s6,a0,27
 .L22:
 	and	op_1,s7,a5
-	sub	op_0,op_1,a5
-	sub	a3,s7,op_0
+	and	op_4,s7,a5
+	and	op_8,a5,s7
+	sub	op_7,op_8,s7
+	sub	op_6,a5,op_7
+	and	op_9,a5,s7
+	sub	op_5,op_6,op_9
+	and	op_3,op_4,op_5
+	and	op_13,a5,s7
+	sub	op_12,op_13,s7
+	sub	op_11,a5,op_12
+	and	op_14,a5,s7
+	sub	op_10,op_11,op_14
+	sub	op_2,op_3,op_10
+	sub	op_0,op_1,op_2
+	and	op_16,s7,a5
+	and	op_20,a5,s7
+	sub	op_19,op_20,s7
+	sub	op_18,a5,op_19
+	and	op_21,a5,s7
+	sub	op_17,op_18,op_21
+	and	op_15,op_16,op_17
+	sub	a3,op_0,op_15
 	addi	op_0,x0,3
-	and	a3,op_0,a3
+	and	a3,a3,op_0
 	addi	a4,s7,0
 	bne	a3,zero,.L31
 	sub	a3,s6,a5
@@ -892,13 +952,33 @@ sha_update:
 	addi	a4,s2,0
 	bne	a5,zero,.L24
 	and	op_1,a1,s2
-	sub	op_0,op_1,s2
-	sub	a5,a1,op_0
+	and	op_4,a1,s2
+	and	op_8,s2,a1
+	sub	op_7,op_8,a1
+	sub	op_6,s2,op_7
+	and	op_9,s2,a1
+	sub	op_5,op_6,op_9
+	and	op_3,op_4,op_5
+	and	op_13,s2,a1
+	sub	op_12,op_13,a1
+	sub	op_11,s2,op_12
+	and	op_14,s2,a1
+	sub	op_10,op_11,op_14
+	sub	op_2,op_3,op_10
+	sub	op_0,op_1,op_2
+	and	op_16,a1,s2
+	and	op_20,s2,a1
+	sub	op_19,op_20,a1
+	sub	op_18,s2,op_19
+	and	op_21,s2,a1
+	sub	op_17,op_18,op_21
+	and	op_15,op_16,op_17
+	sub	a5,op_0,op_15
 	addi	op_0,x0,3
-	and	a5,a5,op_0
+	and	a5,op_0,a5
 	bne	a5,zero,.L24
 	addi	op_0,x0,-4
-	and	a6,op_0,a3
+	and	a6,a3,op_0
 	sub	op_0,x0,a6
 	sub	a0,s2,op_0
 	addi	a5,a1,0
@@ -1150,7 +1230,7 @@ sha_final:
 	lw	a7,16(sp)
 	sub	a3,zero,a5
 	addi	op_0,x0,3
-	and	a4,op_0,a3
+	and	a4,a3,op_0
 	lw	t1,20(sp)
 	lw	a6,24(sp)
 	bne	a4,zero,.+8
@@ -1338,7 +1418,7 @@ sha_final:
 	jal	x0,.L70
 	sb	zero,0(a2)
 	addi	op_0,x0,2
-	and	a5,op_0,a5
+	and	a5,a5,op_0
 	bne	a5,zero,.+8
 	jal	x0,.L92
 	sb	zero,1(a2)

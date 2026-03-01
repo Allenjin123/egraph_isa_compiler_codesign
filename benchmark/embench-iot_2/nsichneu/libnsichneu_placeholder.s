@@ -1284,9 +1284,7 @@ benchmark_body.isra.0:
 	jal	x0,.L257
 .L128:
 	addi	t1,t1,1
-	bne	t1,a0,.+8
-	jal	x0,.+8
-	jal	x0,.L129
+	bne	t1,a0,.L129
 .L1:
 	jalr	zero,ra,0
 .L255:
@@ -6021,9 +6019,7 @@ verify_benchmark:
 	lui	a5,%hi(.LANCHOR0)
 	addi	a5,a5,%lo(.LANCHOR0)
 	lw	a4,0(a5)
-	bne	a4,zero,.+8
-	jal	x0,.+8
-	jal	x0,.L266
+	bne	a4,zero,.L266
 	lw	a0,36(a5)
 	bne	a0,zero,.L276
 	lw	a4,12(a5)
@@ -6076,13 +6072,13 @@ main:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_5)
 	lw	ra,28(sp)
 	addi	op_1,x0,1
-	addi	op_4,x0,1
-	and	op_3,op_4,a0
-	sub	op_2,op_3,a0
-	sub	op_0,op_1,op_2
+	or	op_0,op_1,a0
+	addi	op_3,x0,1
 	addi	op_6,x0,1
-	and	op_5,op_6,a0
-	sub	a0,op_0,op_5
+	or	op_5,op_6,a0
+	sub	op_4,op_5,a0
+	sub	op_2,op_3,op_4
+	sub	a0,op_0,op_2
 	addi	sp,sp,32
 	jalr	zero,ra,0
 	.size	main, .-main

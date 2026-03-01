@@ -867,11 +867,11 @@ verify_benchmark:
 	addi	a4,sp,0
 	addi	a1,a1,1760
 .L61:
-	addi	op_0,x0,255
-	addi	op_3,x0,255
-	lw	op_4,0(a5)
+	lw	op_0,0(a5)
+	lw	op_3,0(a5)
+	addi	op_4,x0,255
 	or	op_2,op_3,op_4
-	lw	op_5,0(a5)
+	addi	op_5,x0,255
 	sub	op_1,op_2,op_5
 	sub	a3,op_0,op_1
 	addi	op_0,x0,255
@@ -883,10 +883,13 @@ verify_benchmark:
 	sub	a2,op_0,op_1
 	addi	a5,a5,1
 	addi	a4,a4,1
-	bne	a3,a2,.L65
+	bne	a3,a2,.+8
+	jal	x0,.+8
+	jal	x0,.L65
 	bne	a1,a5,.L61
 	addi	op_0,x0,1
-	bltu	a0,op_0,.+12
+	bgeu	a0,op_0,.+8
+	jal	x0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
@@ -896,7 +899,8 @@ verify_benchmark:
 	sub	a3,a3,a2
 	or	a0,a0,a3
 	addi	op_0,x0,1
-	bltu	a0,op_0,.+12
+	bgeu	a0,op_0,.+8
+	jal	x0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
@@ -985,10 +989,8 @@ ludcmp:
 	sub	op_0,x0,s2
 	sub	t1,a1,op_0
 	sw	s0,428(sp)
-	addi	op_1,x0,2
-	sll	op_0,t1,op_1
-	addi	op_2,x0,2
-	sll	t1,op_0,op_2
+	addi	op_0,x0,4
+	sll	t1,t1,op_0
 	addi	s0,s1,80
 	sw	s3,416(sp)
 	sw	s6,404(sp)
@@ -1008,7 +1010,9 @@ ludcmp:
 	addi	s3,s1,-4
 .L83:
 	addi	t6,t6,1
-	blt	a1,t6,.L75
+	blt	a1,t6,.+8
+	jal	x0,.+8
+	jal	x0,.L75
 	addi	a6,t2,0
 .L80:
 	lw	a2,0(a6)
@@ -1249,11 +1253,11 @@ __mul:
 	sub	a2,x0,op_0
 	addi	a0,x0,0
 .Mul_loop:
-	addi	op_2,x0,1
-	or	op_1,a1,op_2
+	addi	op_0,x0,1
 	addi	op_3,x0,1
-	sub	op_0,op_1,op_3
-	sub	a3,a1,op_0
+	or	op_2,op_3,a1
+	sub	op_1,op_2,a1
+	sub	a3,op_0,op_1
 	bne	a3,x0,.+8
 	jal	x0,.Mul_skip
 	sub	op_0,x0,a0
@@ -1285,8 +1289,7 @@ __riscv_div_lib_udivsi3:
 	bne	a2,zero,.+8
 	jal	x0,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bltu	a2,a1,.+8
-	jal	x0,__riscv_div_lib_L2
+	bgeu	a2,a1,__riscv_div_lib_L2
 __riscv_div_lib_L1:
 	blt	zero,a2,.+8
 	jal	x0,__riscv_div_lib_L2
@@ -1294,11 +1297,13 @@ __riscv_div_lib_L1:
 	sll	a2,a2,op_0
 	addi	op_0,x0,1
 	sll	a3,a3,op_0
-	bltu	a2,a1,__riscv_div_lib_L1
+	bgeu	a2,a1,.+8
+	jal	x0,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bltu	a1,a2,__riscv_div_lib_L4
+	bgeu	a1,a2,.+8
+	jal	x0,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	or	a0,a0,a3
 __riscv_div_lib_L4:

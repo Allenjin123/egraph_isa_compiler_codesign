@@ -308,7 +308,7 @@ ls output/frontend/dijkstra_small_O3/basic_blocks_json/*.json
 ### End-to-end
 ```bash
 ./run_multi_scale_variants.sh --enable-freq-analysis --enable-shift-constraints
-./run_multi_scale_variants.sh -t 600 --enable-freq-analysis --enable-shift-constraints --enable-cache-latencies
+./run_multi_scale_variants.sh -t 6000 --enable-freq-analysis --enable-shift-constraints --enable-cache-latencies
 ```
 
 ## 📈 Performance Metrics

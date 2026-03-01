@@ -20,8 +20,7 @@ heap_adjust:
 	addi	op_0,x0,1
 	sra	t5,t5,op_0
 	lw	t2,0(a5)
-	bge	t5,a3,.+8
-	jal	x0,.L2
+	blt	t5,a3,.L2
 	addi	op_0,x0,2
 	sll	t6,t2,op_0
 	sub	op_0,x0,a0
@@ -40,8 +39,7 @@ heap_adjust:
 	jal	x0,.L2
 .L11:
 	sw	a7,0(a5)
-	bge	t5,a4,.+8
-	jal	x0,.L9
+	blt	t5,a4,.L9
 	addi	a3,a4,0
 .L4:
 	addi	op_0,x0,3
@@ -60,7 +58,8 @@ heap_adjust:
 	addi	op_0,x0,2
 	sll	t4,t3,op_0
 	addi	t1,a5,0
-	bge	a4,a2,.L3
+	blt	a4,a2,.+8
+	jal	x0,.L3
 	sub	op_0,x0,a1
 	sub	t1,t4,op_0
 	lw	t0,0(t1)
@@ -90,7 +89,8 @@ heap_adjust:
 heap_adjust.constprop.0:
 	addi	a5,zero,1
 	lw	t2,0(a1)
-	bge	a5,a2,.L13
+	blt	a5,a2,.+8
+	jal	x0,.L13
 	addi	op_0,x0,2
 	sll	t5,t2,op_0
 	addi	t4,a1,-4
@@ -112,8 +112,7 @@ heap_adjust.constprop.0:
 	jal	x0,.L13
 .L21:
 	sw	a6,0(a1)
-	bge	t0,a4,.+8
-	jal	x0,.L19
+	blt	t0,a4,.L19
 	addi	a5,a4,0
 .L15:
 	addi	op_0,x0,3
@@ -132,7 +131,8 @@ heap_adjust.constprop.0:
 	addi	op_0,x0,2
 	sll	t3,t1,op_0
 	addi	a7,a1,0
-	bge	a4,a2,.L14
+	blt	a4,a2,.+8
+	jal	x0,.L14
 	sub	op_0,x0,t4
 	sub	a7,t3,op_0
 	lw	t6,0(a7)
@@ -186,7 +186,7 @@ compdecomp.constprop.0:
 	lw	a5,%lo(heap_requested)(a3)
 	addi	a4,a4,501
 	addi	op_0,x0,3
-	and	a0,a4,op_0
+	and	a0,op_0,a4
 	addi	a5,a5,501
 	bne	a0,zero,.+8
 	jal	x0,.L23
@@ -445,8 +445,7 @@ compdecomp.constprop.0:
 	sub	a3,s5,a4
 	sub	op_0,x0,s5
 	sub	a4,a4,op_0
-	bge	a5,zero,.+8
-	jal	x0,.L140
+	blt	a5,zero,.L140
 	lw	a5,0(a4)
 	addi	a6,a6,1
 	addi	op_0,x0,1
@@ -846,7 +845,8 @@ benchmark_body.constprop.0.isra.0:
 	.align	2
 	.type	benchmark_body.isra.0, @function
 benchmark_body.isra.0:
-	bge	zero,a0,.L157
+	blt	zero,a0,.+8
+	jal	x0,.L157
 	addi	sp,sp,-48
 	sw	s0,40(sp)
 	sw	s2,32(sp)
@@ -976,12 +976,12 @@ compdecomp:
 	lw	a5,4(sp)
 	sub	a4,zero,a5
 	addi	op_0,x0,3
-	and	a5,op_0,a4
+	and	a5,a4,op_0
 	bne	a5,zero,.+8
 	jal	x0,.L229
 	lw	a3,4(sp)
 	addi	op_0,x0,2
-	and	a4,op_0,a4
+	and	a4,a4,op_0
 	sb	zero,0(a3)
 	addi	a3,zero,1
 	bne	a4,zero,.+8
@@ -998,7 +998,7 @@ compdecomp:
 	lw	a4,4(sp)
 	sub	a0,a2,a5
 	addi	op_0,x0,-4
-	and	a1,op_0,a0
+	and	a1,a0,op_0
 	sub	op_0,x0,a4
 	sub	a5,a5,op_0
 	sub	op_0,x0,a5
@@ -1017,9 +1017,7 @@ compdecomp:
 	sub	a4,a5,op_0
 	sb	zero,0(a4)
 	addi	a4,a5,1
-	bgeu	a4,a2,.+8
-	jal	x0,.+8
-	jal	x0,.L164
+	bgeu	a4,a2,.L164
 	lw	a3,4(sp)
 	sub	op_0,x0,a3
 	sub	a4,a4,op_0
@@ -1239,8 +1237,7 @@ compdecomp:
 	sub	a3,s5,a4
 	sub	op_0,x0,s5
 	sub	a4,a4,op_0
-	bge	a5,zero,.+8
-	jal	x0,.L296
+	blt	a5,zero,.L296
 	lw	a5,0(a4)
 	addi	a6,a6,1
 	addi	op_0,x0,1
@@ -1431,9 +1428,7 @@ compdecomp:
 	sb	t3,768(a3)
 	addi	t1,t1,4
 	addi	a6,a6,1
-	bne	a7,t6,.+8
-	jal	x0,.+8
-	jal	x0,.L214
+	bne	a7,t6,.L214
 	lw	a1,-1024(s9)
 	bne	a1,zero,.L236
 	addi	a5,t5,0

@@ -578,8 +578,8 @@ verify_benchmark:
 	addi	a4,sp,0
 	addi	a1,a1,704
 .L70:
-	lw	op_0,0(a5)
-	addi	op_1,x0,255
+	addi	op_0,x0,255
+	lw	op_1,0(a5)
 	and	a2,op_0,op_1
 	lw	op_0,0(a4)
 	addi	op_1,x0,255

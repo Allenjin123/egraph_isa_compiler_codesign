@@ -1149,11 +1149,11 @@ verify_benchmark:
 	addi	a1,a5,800
 	addi	a4,sp,0
 .L97:
-	lw	op_0,0(a5)
-	addi	op_1,x0,255
-	and	a2,op_0,op_1
 	addi	op_0,x0,255
-	lw	op_1,0(a4)
+	lw	op_1,0(a5)
+	and	a2,op_0,op_1
+	lw	op_0,0(a4)
+	addi	op_1,x0,255
 	and	a3,op_0,op_1
 	addi	a5,a5,1
 	addi	a4,a4,1
