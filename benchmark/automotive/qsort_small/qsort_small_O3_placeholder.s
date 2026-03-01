@@ -8,8 +8,7 @@
 	.align	2
 	.type	quicksort_range, @function
 quicksort_range:
-	blt	a1,a2,.+8
-	jal	x0,.L60
+	bge	a1,a2,.L60
 	addi	sp,sp,-304
 	sw	s1,292(sp)
 	sw	s2,288(sp)
@@ -53,7 +52,8 @@ quicksort_range:
 	addi	a2,s3,0
 	addi	s0,a1,0
 .L6:
-	blt	a2,s0,.L31
+	bge	a2,s0,.+8
+	jal	x0,.L31
 	addi	op_0,x0,7
 	sll	t1,s0,op_0
 	sub	op_0,x0,a0
@@ -126,12 +126,11 @@ quicksort_range:
 	bne	a5,s1,.+8
 	jal	x0,.L17
 .L69:
-	blt	a2,s0,.+8
-	jal	x0,.L70
+	bge	a2,s0,.L70
 .L31:
-	blt	a1,a2,.L71
-	blt	s0,s3,.+8
-	jal	x0,.L1
+	bge	a1,a2,.+8
+	jal	x0,.L71
+	bge	s0,s3,.L1
 .L34:
 	addi	a1,s0,0
 	jal	x0,.L2
@@ -141,10 +140,11 @@ quicksort_range:
 	jal	x0,.L14
 .L70:
 	addi	op_0,x0,3
-	and	a5,op_0,t1
-	bne	a5,zero,.+8
-	jal	x0,.+8
-	jal	x0,.L19
+	addi	op_3,x0,3
+	or	op_2,op_3,t1
+	sub	op_1,op_2,t1
+	sub	a5,op_0,op_1
+	bne	a5,zero,.L19
 	addi	a5,sp,144
 	addi	a4,a5,0
 	addi	a3,t1,0
@@ -156,11 +156,12 @@ quicksort_range:
 	addi	a6,sp,272
 	bne	a4,a6,.L20
 .L21:
-	and	op_1,a7,t1
-	sub	op_0,op_1,t1
-	sub	a4,a7,op_0
-	addi	op_0,x0,3
-	and	a4,a4,op_0
+	or	a4,a7,t1
+	addi	op_2,x0,3
+	or	op_1,a4,op_2
+	addi	op_3,x0,3
+	sub	op_0,op_1,op_3
+	sub	a4,a4,op_0
 	bne	a4,zero,.L23
 	addi	a6,t1,128
 	addi	a4,a7,0
@@ -171,11 +172,12 @@ quicksort_range:
 	sw	a3,-4(t1)
 	bne	t1,a6,.L24
 .L25:
-	addi	op_0,x0,3
-	and	a4,op_0,a7
-	bne	a4,zero,.+8
-	jal	x0,.+8
-	jal	x0,.L30
+	addi	op_2,x0,3
+	or	op_1,a7,op_2
+	addi	op_3,x0,3
+	sub	op_0,op_1,op_3
+	sub	a4,a7,op_0
+	bne	a4,zero,.L30
 .L28:
 	lw	a4,0(a5)
 	addi	a5,a5,4
@@ -208,7 +210,8 @@ quicksort_range:
 	auipc	ra,%pcrel_hi(quicksort_range)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_1)
 	lw	a0,12(sp)
-	blt	s0,s3,.L34
+	bge	s0,s3,.+8
+	jal	x0,.L34
 .L1:
 	lw	ra,300(sp)
 	lw	s0,296(sp)
@@ -329,14 +332,12 @@ main:
 	sub	sp,t0,op_0
 	lw	ra,2028(sp)
 	addi	a0,a0,1808
-	and	op_2,a0,a4
-	sub	op_1,op_2,a4
-	sub	op_0,a0,op_1
-	and	op_3,a0,a4
-	sub	a0,op_0,op_3
-	and	op_1,a0,a5
-	sub	op_0,op_1,a5
-	sub	a0,a0,op_0
+	or	op_0,a0,a4
+	or	op_3,a0,a4
+	sub	op_2,op_3,a4
+	sub	op_1,a0,op_2
+	sub	a0,op_0,op_1
+	or	a0,a0,a5
 	lw	s0,2024(sp)
 	addi	op_0,x0,1
 	sltu	a0,a0,op_0

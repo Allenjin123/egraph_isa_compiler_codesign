@@ -60,7 +60,7 @@ ntbl_bitcount:
 	lui	a4,%hi(.LANCHOR0)
 	addi	a4,a4,%lo(.LANCHOR0)
 	addi	op_0,x0,15
-	and	a1,a0,op_0
+	and	a1,op_0,a0
 	addi	op_0,x0,8
 	srl	a2,a0,op_0
 	addi	op_0,x0,15
@@ -87,7 +87,7 @@ ntbl_bitcount:
 	addi	op_0,x0,20
 	srl	a2,a0,op_0
 	addi	op_0,x0,15
-	and	a1,a1,op_0
+	and	a1,op_0,a1
 	lbu	a6,0(a3)
 	sub	op_0,x0,a4
 	sub	a1,a1,op_0
@@ -134,9 +134,9 @@ BW_btbl_bitcount:
 	lui	a5,%hi(.LANCHOR0)
 	addi	a5,a5,%lo(.LANCHOR0)
 	addi	op_0,x0,255
-	and	a2,op_0,a0
+	and	a2,a0,op_0
 	addi	op_0,x0,255
-	and	a4,a4,op_0
+	and	a4,op_0,a4
 	sub	op_0,x0,a5
 	sub	a4,a4,op_0
 	sub	op_0,x0,a5
@@ -154,9 +154,7 @@ BW_btbl_bitcount:
 	lbu	a3,0(a3)
 	sub	op_0,x0,a5
 	sub	a5,a0,op_0
-	lw	op_0,0(a5)
-	addi	op_1,x0,255
-	and	a0,op_0,op_1
+	lbu	a0,0(a5)
 	sub	op_0,x0,a4
 	sub	a5,a1,op_0
 	sub	op_0,x0,a5
@@ -184,7 +182,7 @@ AR_btbl_bitcount:
 	sub	op_0,x0,a5
 	sub	a2,a2,op_0
 	addi	op_0,x0,255
-	and	a4,a4,op_0
+	and	a4,op_0,a4
 	lbu	a3,0(a3)
 	lbu	a2,0(a2)
 	sub	op_0,x0,a5
@@ -209,7 +207,7 @@ AR_btbl_bitcount:
 ntbl_bitcnt:
 	lui	a2,%hi(.LANCHOR0)
 	addi	op_0,x0,15
-	and	a4,op_0,a0
+	and	a4,a0,op_0
 	addi	a2,a2,%lo(.LANCHOR0)
 	addi	op_0,x0,4
 	sra	a5,a0,op_0
@@ -220,7 +218,7 @@ ntbl_bitcnt:
 	addi	a3,zero,0
 .L8:
 	addi	op_0,x0,15
-	and	a4,op_0,a5
+	and	a4,a5,op_0
 	sub	op_0,x0,a2
 	sub	a4,a4,op_0
 	addi	op_0,x0,4
@@ -244,7 +242,7 @@ bit_shifter:
 	addi	a4,zero,0
 .L15:
 	addi	op_0,x0,1
-	and	a3,op_0,a5
+	and	a3,a5,op_0
 	addi	a4,a4,1
 	addi	op_0,x0,1
 	sra	a5,a5,op_0
@@ -408,7 +406,7 @@ atoi:
 .L33:
 	addi	a3,a2,-48
 	addi	op_0,x0,255
-	and	a5,op_0,a3
+	and	a5,a3,op_0
 	addi	a1,zero,9
 	addi	a4,zero,0
 	bgeu	a1,a5,.+8
@@ -439,7 +437,9 @@ atoi:
 	addi	op_0,x0,255
 	and	a5,op_0,a3
 	addi	a4,zero,0
-	bgeu	a1,a5,.L34
+	bgeu	a1,a5,.+8
+	jal	x0,.+8
+	jal	x0,.L34
 .L42:
 	addi	a0,zero,0
 	jalr	zero,ra,0

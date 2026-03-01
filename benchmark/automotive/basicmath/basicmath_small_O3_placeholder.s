@@ -329,11 +329,11 @@ my_cos:
 	addi	op_0,x0,6
 	srl	a5,a5,op_0
 	callmul	a4,a5,a4
-	addi	op_0,x0,3
+	addi	op_2,x0,3
+	or	op_1,a5,op_2
 	addi	op_3,x0,3
-	or	op_2,op_3,a5
-	sub	op_1,op_2,a5
-	sub	a5,op_0,op_1
+	sub	op_0,op_1,op_3
+	sub	a5,a5,op_0
 	sub	op_0,x0,a4
 	sub	a0,a0,op_0
 	callmul	a6,a0,a0
@@ -651,7 +651,8 @@ my_cos:
 	sub	a3,a3,a2
 	sub	op_0,x0,a3
 	sub	a3,a0,op_0
-	beq	a5,t1,.L2
+	bne	a5,t1,.+8
+	jal	x0,.L2
 	callmul	a0,a4,a4
 	addi	t1,zero,42
 	addi	op_0,x0,31
@@ -969,8 +970,10 @@ my_cos:
 	srl	a0,a0,op_0
 	sub	op_0,x0,a0
 	sub	a0,a4,op_0
-	beq	a5,a2,.L3
-	beq	a5,zero,.L1
+	bne	a5,a2,.+8
+	jal	x0,.L3
+	bne	a5,zero,.+8
+	jal	x0,.L1
 	addi	a0,a3,0
 	jalr	zero,ra,0
 .L3:
@@ -2293,7 +2296,8 @@ SolveCubic:
 	sra	a5,a5,op_0
 	sub	op_0,x0,a2
 	sub	a2,a5,op_0
-	beq	a2,zero,.L25
+	bne	a2,zero,.+8
+	jal	x0,.L25
 	addi	a3,a2,0
 	blt	a2,a1,.L54
 .L26:
@@ -2495,7 +2499,8 @@ SolveCubic:
 	sub	a5,op_0,op_113
 	addi	op_0,x0,6
 	srl	a5,a5,op_0
-	beq	a5,zero,.L27
+	bne	a5,zero,.+8
+	jal	x0,.L27
 	calldiv	a5,a2,a5
 	sub	op_0,x0,a4
 	sub	a5,a5,op_0
@@ -2621,11 +2626,11 @@ SolveCubic:
 	addi	op_0,x0,31
 	sra	a5,a5,op_0
 	sub	a3,a3,a5
-	beq	a1,zero,.+8
-	jal	x0,.L28
+	bne	a1,zero,.L28
 .L27:
 	addi	a2,zero,0
-	beq	a3,zero,.L25
+	bne	a3,zero,.+8
+	jal	x0,.L25
 	addi	a5,zero,1000
 	callmul	t5,t5,a5
 	calldiv	t5,t5,a3
@@ -3640,7 +3645,8 @@ SolveCubic:
 	sub	op_0,x0,s4
 	sub	s3,s3,op_0
 	sub	s4,zero,s3
-	beq	a3,t6,.L18
+	bne	a3,t6,.+8
+	jal	x0,.L18
 	callmul	a2,a2,a2
 	callmul	a2,a2,s1
 	lui	op_7,16
@@ -3954,8 +3960,10 @@ SolveCubic:
 	srl	a2,a2,op_0
 	sub	op_0,x0,a2
 	sub	s4,s5,op_0
-	beq	a3,a5,.L17
-	beq	a3,zero,.L18
+	bne	a3,a5,.+8
+	jal	x0,.L17
+	bne	a3,zero,.+8
+	jal	x0,.L18
 	addi	s4,s3,0
 .L18:
 	blt	t4,s4,.+8
@@ -3963,8 +3971,7 @@ SolveCubic:
 	addi	t1,a1,0
 .L19:
 	addi	a6,a6,-1
-	beq	a6,zero,.+8
-	jal	x0,.L20
+	bne	a6,zero,.L20
 	sub	op_0,x0,t1
 	sub	t1,t3,op_0
 	addi	op_0,x0,31
@@ -4426,11 +4433,11 @@ SolveCubic:
 	calldiv	a5,a5,a4
 	sub	op_0,x0,a5
 	sub	a5,a4,op_0
-	addi	op_2,x0,-2
-	or	op_1,a5,op_2
+	addi	op_0,x0,-2
 	addi	op_3,x0,-2
-	sub	op_0,op_1,op_3
-	sub	a5,a5,op_0
+	or	op_2,op_3,a5
+	sub	op_1,op_2,a5
+	sub	a5,op_0,op_1
 	sub	s4,zero,a5
 .L21:
 	lui	s5,349525
@@ -5052,12 +5059,14 @@ main:
 	jal	x0,.L59
 	addi	a4,zero,1
 	lw	s1,4(sp)
-	beq	a5,a4,.L59
+	bne	a5,a4,.+8
+	jal	x0,.L59
 	lw	a3,8(sp)
 	addi	a4,zero,2
 	sub	op_0,x0,s1
 	sub	s1,a3,op_0
-	beq	a5,a4,.L59
+	bne	a5,a4,.+8
+	jal	x0,.L59
 	lw	a5,12(sp)
 	sub	op_0,x0,s1
 	sub	s1,a5,op_0
@@ -5081,12 +5090,14 @@ main:
 	addi	a4,zero,1
 	sub	op_0,x0,s1
 	sub	s1,a3,op_0
-	beq	a5,a4,.L61
+	bne	a5,a4,.+8
+	jal	x0,.L61
 	lw	a3,8(sp)
 	addi	a4,zero,2
 	sub	op_0,x0,s1
 	sub	s1,a3,op_0
-	beq	a5,a4,.L61
+	bne	a5,a4,.+8
+	jal	x0,.L61
 	lw	a5,12(sp)
 	sub	op_0,x0,s1
 	sub	s1,a5,op_0
@@ -5110,12 +5121,14 @@ main:
 	addi	a4,zero,1
 	sub	op_0,x0,s1
 	sub	s1,a3,op_0
-	beq	a5,a4,.L63
+	bne	a5,a4,.+8
+	jal	x0,.L63
 	lw	a3,8(sp)
 	addi	a4,zero,2
 	sub	op_0,x0,s1
 	sub	s1,a3,op_0
-	beq	a5,a4,.L63
+	bne	a5,a4,.+8
+	jal	x0,.L63
 	lw	a5,12(sp)
 	sub	op_0,x0,s1
 	sub	s1,a5,op_0
@@ -5138,12 +5151,14 @@ main:
 	addi	a4,zero,1
 	sub	op_0,x0,s1
 	sub	s1,a3,op_0
-	beq	a5,a4,.L65
+	bne	a5,a4,.+8
+	jal	x0,.L65
 	lw	a3,8(sp)
 	addi	a4,zero,2
 	sub	op_0,x0,s1
 	sub	s1,a3,op_0
-	beq	a5,a4,.L65
+	bne	a5,a4,.+8
+	jal	x0,.L65
 	lw	a5,12(sp)
 	sub	op_0,x0,s1
 	sub	s1,a5,op_0
@@ -5182,26 +5197,24 @@ main:
 	lw	a4,4(sp)
 	sub	op_0,x0,s1
 	sub	s1,a4,op_0
-	beq	a5,s6,.L68
+	bne	a5,s6,.+8
+	jal	x0,.L68
 	lw	a4,8(sp)
 	sub	op_0,x0,s1
 	sub	s1,a4,op_0
-	beq	a5,s7,.L68
+	bne	a5,s7,.+8
+	jal	x0,.L68
 	lw	a5,12(sp)
 	sub	op_0,x0,s1
 	sub	s1,a5,op_0
 .L68:
-	beq	s0,s5,.+8
-	jal	x0,.L70
+	bne	s0,s5,.L70
 	addi	s2,s2,500
-	beq	s2,s8,.+8
-	jal	x0,.L73
+	bne	s2,s8,.L73
 	addi	s3,s3,-1000
-	beq	s3,zero,.+8
-	jal	x0,.L75
+	bne	s3,zero,.L75
 	addi	s4,s4,1000
-	beq	s4,s9,.+8
-	jal	x0,.L67
+	bne	s4,s9,.L67
 	addi	a6,zero,1001
 .L74:
 	addi	a1,s3,0
@@ -5227,13 +5240,11 @@ main:
 	sub	a5,a5,a4
 	addi	a3,a3,1
 .L76:
-	beq	a2,zero,.+8
-	jal	x0,.L77
+	bne	a2,zero,.L77
 	addi	s3,s3,1
 	sub	op_0,x0,s1
 	sub	s1,a3,op_0
-	beq	s3,a6,.+8
-	jal	x0,.L74
+	bne	s3,a6,.L74
 	lui	a3,261840
 	addi	a3,a3,361
 	addi	a4,zero,0
@@ -5257,8 +5268,7 @@ main:
 	sub	a2,a2,a1
 	addi	a4,a4,1
 .L78:
-	beq	a5,zero,.+8
-	jal	x0,.L79
+	bne	a5,zero,.L79
 	lui	a6,93207
 	lui	a1,767
 	lui	a2,276919
@@ -5461,8 +5471,7 @@ main:
 	srl	a4,a4,op_0
 	sub	op_0,x0,a0
 	sub	a0,a4,op_0
-	beq	a3,a2,.+8
-	jal	x0,.L80
+	bne	a3,a2,.L80
 	lui	a1,683477
 	lui	a2,747
 	lui	a3,276416
@@ -5662,8 +5671,7 @@ main:
 	srl	a4,a4,op_0
 	sub	op_0,x0,a0
 	sub	a0,a4,op_0
-	beq	a5,a3,.+8
-	jal	x0,.L81
+	bne	a5,a3,.L81
 	lw	ra,60(sp)
 	lw	s0,56(sp)
 	lw	s1,52(sp)
@@ -5699,7 +5707,8 @@ __mul:
 	or	op_2,op_3,a1
 	sub	op_1,op_2,a1
 	sub	a3,op_0,op_1
-	beq	a3,x0,.Mul_skip
+	bne	a3,x0,.+8
+	jal	x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
 .Mul_skip:
@@ -5707,8 +5716,7 @@ __mul:
 	srl	a1,a1,op_0
 	addi	op_0,x0,1
 	sll	a2,a2,op_0
-	beq	a1,x0,.+8
-	jal	x0,.Mul_loop
+	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
 
 .text
@@ -5727,7 +5735,8 @@ __riscv_div_lib_udivsi3:
 	addi	a2,a1,0
 	addi	a1,a0,0
 	addi	a0,zero,-1
-	beq	a2,zero,__riscv_div_lib_L5
+	bne	a2,zero,.+8
+	jal	x0,__riscv_div_lib_L5
 	addi	a3,zero,1
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
@@ -5750,8 +5759,7 @@ __riscv_div_lib_L4:
 	srl	a3,a3,op_0
 	addi	op_0,x0,1
 	srl	a2,a2,op_0
-	beq	a3,zero,.+8
-	jal	x0,__riscv_div_lib_L3
+	bne	a3,zero,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
 

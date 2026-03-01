@@ -1149,8 +1149,8 @@ verify_benchmark:
 	addi	a1,a5,800
 	addi	a4,sp,0
 .L97:
-	addi	op_0,x0,255
-	lw	op_1,0(a5)
+	lw	op_0,0(a5)
+	addi	op_1,x0,255
 	and	a2,op_0,op_1
 	lw	op_0,0(a4)
 	addi	op_1,x0,255
@@ -1868,7 +1868,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	op_0,x0,1
-	and	a3,a1,op_0
+	and	a3,op_0,a1
 	beq	a3,x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0

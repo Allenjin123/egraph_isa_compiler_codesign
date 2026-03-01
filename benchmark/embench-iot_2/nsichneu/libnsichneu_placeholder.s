@@ -6071,14 +6071,8 @@ main:
 	auipc	ra,%pcrel_hi(verify_benchmark)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_5)
 	lw	ra,28(sp)
-	addi	op_1,x0,1
-	or	op_0,op_1,a0
-	addi	op_3,x0,1
-	addi	op_6,x0,1
-	or	op_5,op_6,a0
-	sub	op_4,op_5,a0
-	sub	op_2,op_3,op_4
-	sub	a0,op_0,op_2
+	addi	op_0,x0,1
+	xor	a0,a0,op_0
 	addi	sp,sp,32
 	jalr	zero,ra,0
 	.size	main, .-main
