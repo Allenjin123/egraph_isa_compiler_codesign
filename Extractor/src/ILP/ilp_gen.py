@@ -71,7 +71,8 @@ def generate_ilp_file(
     #root_eclasses: List[str],
     file_path: str,
     zero_nodes: Optional[Set[str]] = None,
-    node_cost_scale: float = 0
+    node_cost_scale: float = 0,
+    banned_ops: Optional[Set[str]] = None,
 ):
     """
     Generate ILP file (LP format) with objective to minimize operator types
@@ -82,10 +83,13 @@ def generate_ilp_file(
         file_path: Output LP file path
         zero_nodes: Set of nodes to force to 0 (warm start pruning)
         node_cost_scale: Scaling factor for node costs (0=ignore, 1=default, >1=emphasize)
+        banned_ops: Set of operator names to forbid (Op_xxx = 0 constraints)
     """
     
     if zero_nodes is None:
         zero_nodes = set()
+    if banned_ops is None:
+        banned_ops = set()
     
     lp_lines = []
     
@@ -352,7 +356,18 @@ def generate_ilp_file(
                     constraint = f" WARM_START_{sanitize(eclass_id)}_{sanitize(node_id)}: {node_var} = 0"
                     lp_lines.append(constraint)
                     break
-    
+
+    # 3.8 Banned operator constraints: force Op_xxx = 0
+    if banned_ops:
+        for op_name in sorted(banned_ops):
+            if op_name in op_vars:
+                op_var = op_vars[op_name]
+                constraint = f" BAN_OP_{sanitize(op_name)}: {op_var} = 0"
+                lp_lines.append(constraint)
+                print(f"Banned operator: {op_name} ({op_var} = 0)")
+            else:
+                print(f"Warning: banned op '{op_name}' not found in egraph operators, skipping")
+
     lp_lines.append("")
     
     # ============================================

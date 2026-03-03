@@ -58,8 +58,7 @@ upsampleCb:
 	addi	op_0,x0,16
 	sra	s0,s0,op_0
 	addi	a2,zero,0
-	blt	s0,zero,.+8
-	jal	x0,.L36
+	bge	s0,zero,.L36
 .L4:
 	sb	a2,0(a4)
 	bltu	a6,a0,.+8
@@ -69,8 +68,7 @@ upsampleCb:
 	addi	op_0,x0,16
 	sra	a2,a2,op_0
 	addi	a0,zero,0
-	blt	a2,zero,.+8
-	jal	x0,.L9
+	bge	a2,zero,.L9
 .L8:
 	lbu	a2,8(a4)
 	sb	a0,1(a4)
@@ -86,8 +84,7 @@ upsampleCb:
 	addi	op_0,x0,16
 	sra	a0,a0,op_0
 	addi	a2,zero,0
-	blt	a0,zero,.+8
-	jal	x0,.L6
+	bge	a0,zero,.L6
 .L12:
 	lbu	a0,9(a4)
 	sb	a2,8(a4)
@@ -139,8 +136,7 @@ upsampleCb:
 	addi	op_0,x0,16
 	sra	t2,t2,op_0
 	addi	a2,zero,0
-	blt	t2,zero,.+8
-	jal	x0,.L37
+	bge	t2,zero,.L37
 .L14:
 	sb	a2,0(a3)
 	bltu	a6,a0,.+8
@@ -150,8 +146,7 @@ upsampleCb:
 	addi	op_0,x0,16
 	sra	a2,a2,op_0
 	addi	a0,zero,0
-	blt	a2,zero,.+8
-	jal	x0,.L19
+	bge	a2,zero,.L19
 .L18:
 	lbu	a2,8(a3)
 	sb	a0,1(a3)
@@ -168,8 +163,7 @@ upsampleCb:
 	addi	op_0,x0,16
 	sra	a0,a0,op_0
 	addi	a2,zero,0
-	blt	a0,zero,.+8
-	jal	x0,.L16
+	bge	a0,zero,.L16
 .L22:
 	lbu	a0,9(a3)
 	sb	a2,8(a3)
@@ -197,11 +191,13 @@ upsampleCb:
 	sb	a2,9(a3)
 	addi	a4,a4,2
 	addi	a3,a3,2
-	bne	a7,t1,.L23
+	beq	a7,t1,.+8
+	jal	x0,.L23
 	addi	t1,a7,16
 	addi	a1,a1,16
 	addi	t6,t6,16
-	bne	t1,t0,.L2
+	beq	t1,t0,.+8
+	jal	x0,.L2
 	lw	s0,12(sp)
 	addi	sp,sp,16
 	jalr	zero,ra,0
@@ -325,8 +321,7 @@ upsampleCbH:
 	addi	op_0,x0,16
 	sra	t4,t4,op_0
 	addi	t3,zero,0
-	blt	t4,zero,.+8
-	jal	x0,.L89
+	bge	t4,zero,.L89
 .L44:
 	sb	t3,0(a1)
 	bltu	a4,a3,.+8
@@ -369,8 +364,7 @@ upsampleCbH:
 	addi	op_0,x0,16
 	sra	t4,t4,op_0
 	addi	a3,zero,0
-	blt	t4,zero,.+8
-	jal	x0,.L90
+	bge	t4,zero,.L90
 .L48:
 	sb	a3,2(a5)
 	bltu	a4,t3,.+8
@@ -416,8 +410,7 @@ upsampleCbH:
 	addi	op_0,x0,16
 	sra	t4,t4,op_0
 	addi	t3,zero,0
-	blt	t4,zero,.+8
-	jal	x0,.L91
+	bge	t4,zero,.L91
 .L52:
 	sb	t3,2(a1)
 	bltu	a4,a3,.+8
@@ -460,8 +453,7 @@ upsampleCbH:
 	addi	op_0,x0,16
 	sra	t4,t4,op_0
 	addi	a3,zero,0
-	blt	t4,zero,.+8
-	jal	x0,.L92
+	bge	t4,zero,.L92
 .L56:
 	sb	a3,4(a5)
 	bltu	a4,t3,.+8
@@ -507,8 +499,7 @@ upsampleCbH:
 	addi	op_0,x0,16
 	sra	t4,t4,op_0
 	addi	t3,zero,0
-	blt	t4,zero,.+8
-	jal	x0,.L93
+	bge	t4,zero,.L93
 .L60:
 	sb	t3,4(a1)
 	bltu	a4,a3,.+8
@@ -551,8 +542,7 @@ upsampleCbH:
 	addi	op_0,x0,16
 	sra	t4,t4,op_0
 	addi	a3,zero,0
-	blt	t4,zero,.+8
-	jal	x0,.L94
+	bge	t4,zero,.L94
 .L64:
 	sb	a3,6(a5)
 	bltu	a4,t3,.+8
@@ -598,8 +588,7 @@ upsampleCbH:
 	addi	op_0,x0,16
 	sra	t4,t4,op_0
 	addi	t3,zero,0
-	blt	t4,zero,.+8
-	jal	x0,.L95
+	bge	t4,zero,.L95
 .L68:
 	sb	t3,6(a1)
 	bltu	a4,a3,.+8
@@ -621,8 +610,7 @@ upsampleCbH:
 	addi	a5,a5,8
 	addi	a1,a1,8
 	addi	a2,a2,16
-	bne	a5,t1,.+8
-	jal	x0,.L96
+	beq	a5,t1,.L96
 .L71:
 	lbu	t5,0(a2)
 	lbu	a3,0(a5)
@@ -648,8 +636,7 @@ upsampleCbH:
 	addi	op_0,x0,16
 	sra	t4,t4,op_0
 	addi	a3,zero,0
-	blt	t4,zero,.+8
-	jal	x0,.L97
+	bge	t4,zero,.L97
 .L40:
 	sb	a3,0(a5)
 	bltu	a4,t3,.L98
@@ -707,7 +694,8 @@ upsampleCbH:
 	addi	a5,a5,8
 	addi	a1,a1,8
 	addi	a2,a2,16
-	bne	a5,t1,.L71
+	beq	a5,t1,.+8
+	jal	x0,.L71
 .L96:
 	jalr	zero,ra,0
 .L97:
@@ -784,8 +772,7 @@ upsampleCbV:
 	addi	op_0,x0,16
 	sra	t0,t0,op_0
 	addi	a4,zero,0
-	blt	t0,zero,.+8
-	jal	x0,.L116
+	bge	t0,zero,.L116
 .L106:
 	sb	a4,0(a2)
 	bltu	a6,a5,.+8
@@ -806,8 +793,7 @@ upsampleCbV:
 	sb	a4,8(a2)
 	addi	a3,a3,1
 	addi	a2,a2,1
-	bne	a0,a7,.+8
-	jal	x0,.L117
+	beq	a0,a7,.L117
 .L109:
 	lbu	t2,0(a0)
 	lbu	a5,0(a3)
@@ -834,8 +820,7 @@ upsampleCbV:
 	addi	op_0,x0,16
 	sra	t0,t0,op_0
 	addi	a5,zero,0
-	blt	t0,zero,.+8
-	jal	x0,.L118
+	bge	t0,zero,.L118
 .L102:
 	sb	a5,0(a3)
 	bltu	a6,a4,.L119
@@ -850,12 +835,14 @@ upsampleCbV:
 	sb	a4,8(a2)
 	addi	a3,a3,1
 	addi	a2,a2,1
-	bne	a0,a7,.L109
+	beq	a0,a7,.+8
+	jal	x0,.L109
 .L117:
 	addi	t4,t4,16
 	addi	a1,a1,16
 	addi	a7,a0,16
-	bne	t4,t6,.L100
+	beq	t4,t6,.+8
+	jal	x0,.L100
 	jalr	zero,ra,0
 .L118:
 	sb	t5,0(a3)
@@ -921,8 +908,7 @@ upsampleCr:
 	addi	op_0,x0,16
 	sra	s0,s0,op_0
 	addi	a0,zero,0
-	blt	s0,zero,.+8
-	jal	x0,.L154
+	bge	s0,zero,.L154
 .L123:
 	sb	a0,0(a3)
 	bltu	a6,t2,.+8
@@ -932,8 +918,7 @@ upsampleCr:
 	addi	op_0,x0,16
 	sra	a0,a0,op_0
 	addi	t2,zero,0
-	blt	a0,zero,.+8
-	jal	x0,.L128
+	bge	a0,zero,.L128
 .L127:
 	lbu	a0,8(a3)
 	sb	t2,1(a3)
@@ -950,8 +935,7 @@ upsampleCr:
 	addi	op_0,x0,16
 	sra	t2,t2,op_0
 	addi	a0,zero,0
-	blt	t2,zero,.+8
-	jal	x0,.L125
+	bge	t2,zero,.L125
 .L131:
 	lbu	t2,9(a3)
 	sb	a0,8(a3)
@@ -1000,8 +984,7 @@ upsampleCr:
 	addi	op_0,x0,16
 	sra	t2,t2,op_0
 	addi	a4,zero,0
-	blt	t2,zero,.+8
-	jal	x0,.L155
+	bge	t2,zero,.L155
 .L133:
 	sb	a4,0(a2)
 	bltu	a6,a0,.+8
@@ -1011,8 +994,7 @@ upsampleCr:
 	addi	op_0,x0,16
 	sra	a4,a4,op_0
 	addi	a0,zero,0
-	blt	a4,zero,.+8
-	jal	x0,.L138
+	bge	a4,zero,.L138
 .L137:
 	lbu	a4,8(a2)
 	sb	a0,1(a2)
@@ -1028,8 +1010,7 @@ upsampleCr:
 	addi	op_0,x0,16
 	sra	a0,a0,op_0
 	addi	a4,zero,0
-	blt	a0,zero,.+8
-	jal	x0,.L135
+	bge	a0,zero,.L135
 .L141:
 	lbu	a0,9(a2)
 	sb	a4,8(a2)
@@ -1056,11 +1037,13 @@ upsampleCr:
 	sb	a0,9(a2)
 	addi	a3,a3,2
 	addi	a2,a2,2
-	bne	a7,t1,.L142
+	beq	a7,t1,.+8
+	jal	x0,.L142
 	addi	t1,a7,16
 	addi	t6,t6,16
 	addi	a1,a1,16
-	bne	t1,t0,.L121
+	beq	t1,t0,.+8
+	jal	x0,.L121
 	lw	s0,12(sp)
 	addi	sp,sp,16
 	jalr	zero,ra,0
@@ -1180,8 +1163,7 @@ upsampleCrH:
 	addi	op_0,x0,16
 	sra	t4,t4,op_0
 	addi	a3,zero,0
-	blt	t4,zero,.+8
-	jal	x0,.L207
+	bge	t4,zero,.L207
 .L162:
 	sb	a3,0(a1)
 	bltu	a4,t3,.+8
@@ -1228,8 +1210,7 @@ upsampleCrH:
 	addi	op_0,x0,16
 	sra	t5,t5,op_0
 	addi	t4,zero,0
-	blt	t5,zero,.+8
-	jal	x0,.L208
+	bge	t5,zero,.L208
 .L166:
 	sb	t4,2(a5)
 	bltu	a4,a3,.+8
@@ -1271,8 +1252,7 @@ upsampleCrH:
 	addi	op_0,x0,16
 	sra	t4,t4,op_0
 	addi	a3,zero,0
-	blt	t4,zero,.+8
-	jal	x0,.L209
+	bge	t4,zero,.L209
 .L170:
 	sb	a3,2(a1)
 	bltu	a4,t3,.+8
@@ -1319,8 +1299,7 @@ upsampleCrH:
 	addi	op_0,x0,16
 	sra	t5,t5,op_0
 	addi	t4,zero,0
-	blt	t5,zero,.+8
-	jal	x0,.L210
+	bge	t5,zero,.L210
 .L174:
 	sb	t4,4(a5)
 	bltu	a4,a3,.+8
@@ -1362,8 +1341,7 @@ upsampleCrH:
 	addi	op_0,x0,16
 	sra	t4,t4,op_0
 	addi	a3,zero,0
-	blt	t4,zero,.+8
-	jal	x0,.L211
+	bge	t4,zero,.L211
 .L178:
 	sb	a3,4(a1)
 	bltu	a4,t3,.+8
@@ -1410,8 +1388,7 @@ upsampleCrH:
 	addi	op_0,x0,16
 	sra	t5,t5,op_0
 	addi	t4,zero,0
-	blt	t5,zero,.+8
-	jal	x0,.L212
+	bge	t5,zero,.L212
 .L182:
 	sb	t4,6(a5)
 	bltu	a4,a3,.+8
@@ -1453,8 +1430,7 @@ upsampleCrH:
 	addi	op_0,x0,16
 	sra	t4,t4,op_0
 	addi	a3,zero,0
-	blt	t4,zero,.+8
-	jal	x0,.L213
+	bge	t4,zero,.L213
 .L186:
 	sb	a3,6(a1)
 	bltu	a4,t3,.+8
@@ -1476,8 +1452,7 @@ upsampleCrH:
 	addi	a5,a5,8
 	addi	a1,a1,8
 	addi	a2,a2,16
-	bne	a5,t1,.+8
-	jal	x0,.L214
+	beq	a5,t1,.L214
 .L189:
 	lbu	t3,0(a2)
 	lbu	t4,0(a5)
@@ -1507,8 +1482,7 @@ upsampleCrH:
 	addi	op_0,x0,16
 	sra	t5,t5,op_0
 	addi	t4,zero,0
-	blt	t5,zero,.+8
-	jal	x0,.L215
+	bge	t5,zero,.L215
 .L158:
 	sb	t4,0(a5)
 	bltu	a4,a3,.L216
@@ -1566,7 +1540,8 @@ upsampleCrH:
 	addi	a5,a5,8
 	addi	a1,a1,8
 	addi	a2,a2,16
-	bne	a5,t1,.L189
+	beq	a5,t1,.+8
+	jal	x0,.L189
 .L214:
 	jalr	zero,ra,0
 .L215:
@@ -1641,8 +1616,7 @@ upsampleCrV:
 	addi	op_0,x0,16
 	sra	a3,a3,op_0
 	addi	a5,zero,0
-	blt	a3,zero,.+8
-	jal	x0,.L235
+	bge	a3,zero,.L235
 .L224:
 	sb	a5,0(a0)
 	bltu	a7,a4,.+8
@@ -1663,8 +1637,7 @@ upsampleCrV:
 	sb	a5,8(a0)
 	addi	a2,a2,1
 	addi	a0,a0,1
-	bne	a6,t1,.+8
-	jal	x0,.L236
+	beq	a6,t1,.L236
 .L227:
 	lbu	a4,0(a6)
 	lbu	a3,0(a2)
@@ -1695,8 +1668,7 @@ upsampleCrV:
 	addi	op_0,x0,16
 	sra	t2,t2,op_0
 	addi	a3,zero,0
-	blt	t2,zero,.+8
-	jal	x0,.L237
+	bge	t2,zero,.L237
 .L220:
 	sb	a3,0(a2)
 	bltu	a7,a5,.L238
@@ -1711,12 +1683,14 @@ upsampleCrV:
 	sb	a5,8(a0)
 	addi	a2,a2,1
 	addi	a0,a0,1
-	bne	a6,t1,.L227
+	beq	a6,t1,.+8
+	jal	x0,.L227
 .L236:
 	addi	t5,t5,16
 	addi	a1,a1,16
 	addi	t1,a6,16
-	bne	t5,t0,.L218
+	beq	t5,t0,.+8
+	jal	x0,.L218
 	lw	s0,12(sp)
 	addi	sp,sp,16
 	jalr	zero,ra,0
@@ -1739,8 +1713,7 @@ pjpeg_need_bytes_callback:
 	jal	x0,.L240
 	addi	a6,a1,0
 .L240:
-	bne	a6,zero,.+8
-	jal	x0,.L241
+	beq	a6,zero,.L241
 	lui	a5,%hi(.LANCHOR1)
 	addi	a5,a5,%lo(.LANCHOR1)
 	sub	op_0,x0,a5
@@ -1753,8 +1726,9 @@ pjpeg_need_bytes_callback:
 	sub	op_0,op_1,a0
 	sub	a5,a3,op_0
 	addi	op_0,x0,3
-	and	a5,op_0,a5
-	bne	a5,zero,.L242
+	and	a5,a5,op_0
+	beq	a5,zero,.+8
+	jal	x0,.L242
 	addi	op_0,x0,-4
 	and	t1,op_0,a6
 	sub	op_0,x0,a3
@@ -1766,9 +1740,9 @@ pjpeg_need_bytes_callback:
 	addi	a5,a5,4
 	addi	a4,a4,4
 	sw	a1,-4(a4)
-	bne	a7,a5,.L243
-	bne	a6,t1,.+8
-	jal	x0,.L241
+	beq	a7,a5,.+8
+	jal	x0,.L243
+	beq	a6,t1,.L241
 	lbu	a1,0(a7)
 	sub	op_0,x0,a0
 	sub	a4,t1,op_0
@@ -1808,7 +1782,8 @@ pjpeg_need_bytes_callback:
 	addi	a5,a5,1
 	addi	a0,a0,1
 	sb	a4,-1(a0)
-	bne	a3,a5,.L245
+	beq	a3,a5,.+8
+	jal	x0,.L245
 	sb	a6,0(a2)
 	lw	a5,%lo(jpeg_off)(t3)
 	addi	a0,zero,0
@@ -1824,8 +1799,7 @@ getChar:
 	lbu	a4,%lo(gInBufLeft)(a6)
 	addi	sp,sp,-32
 	sw	ra,28(sp)
-	bne	a4,zero,.+8
-	jal	x0,.L261
+	beq	a4,zero,.L261
 	lui	a5,%hi(.LANCHOR0)
 	addi	a5,a5,%lo(.LANCHOR0)
 	lui	a7,%hi(gInBufOfs)
@@ -1861,13 +1835,13 @@ getChar:
 	lw	a7,8(sp)
 	lw	a5,12(sp)
 	lui	a6,%hi(gInBufLeft)
-	bne	a0,zero,.+8
-	jal	x0,.L254
+	beq	a0,zero,.L254
 	lui	a4,%hi(gCallbackStatus)
 	sb	a0,%lo(gCallbackStatus)(a4)
 .L254:
 	lbu	a4,%lo(gInBufLeft)(a6)
-	bne	a4,zero,.L253
+	beq	a4,zero,.+8
+	jal	x0,.L253
 	lui	a4,%hi(gTemFlag)
 	lbu	a5,%lo(gTemFlag)(a4)
 	lw	ra,28(sp)
@@ -1886,7 +1860,7 @@ getChar:
 	addi	a0,x0,1
 	sub	a0,zero,a0
 	addi	op_0,x0,-38
-	and	a0,op_0,a0
+	and	a0,a0,op_0
 	sb	a5,%lo(gTemFlag)(a4)
 	addi	a0,a0,255
 	addi	sp,sp,32
@@ -1916,8 +1890,7 @@ huffDecode:
 	addi	s10,a1,0
 	addi	op_0,x0,15
 	srl	s1,a5,op_0
-	bne	a4,zero,.+8
-	jal	x0,.L288
+	beq	a4,zero,.L288
 .L264:
 	addi	op_0,x0,1
 	sll	a0,a5,op_0
@@ -1959,8 +1932,7 @@ huffDecode:
 	addi	op_0,x0,16
 	srl	a4,a4,op_0
 	addi	s4,s4,2
-	bne	s3,s9,.+8
-	jal	x0,.L289
+	beq	s3,s9,.L289
 .L275:
 	lhu	a3,0(s4)
 	addi	op_0,x0,15
@@ -1970,17 +1942,18 @@ huffDecode:
 	sub	op_0,x0,a3
 	sub	a1,s8,op_0
 	bltu	a3,a4,.L277
-	bne	a1,zero,.L268
+	beq	a1,zero,.+8
+	jal	x0,.L268
 .L277:
 	addi	op_0,x0,255
 	and	s1,op_0,a2
-	bne	a5,zero,.L270
+	beq	a5,zero,.+8
+	jal	x0,.L270
 .Lpcrel_1:
 	auipc	ra,%pcrel_hi(getChar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_1)
 	addi	a5,a0,0
-	bne	a0,s2,.+8
-	jal	x0,.L290
+	beq	a0,s2,.L290
 .L272:
 	lhu	a3,%lo(gBitBuf)(s7)
 	lbu	a4,%lo(gBitsLeft)(s6)
@@ -2000,19 +1973,18 @@ huffDecode:
 	lui	a1,%hi(gInBufLeft)
 	addi	a4,a4,%lo(.LANCHOR0)
 	addi	t1,zero,-1
-	bne	a0,zero,.+8
-	jal	x0,.L272
+	beq	a0,zero,.L272
 	lbu	a3,%lo(gInBufOfs)(a7)
 	lbu	a6,%lo(gInBufLeft)(a1)
 	sub	op_0,x0,a3
 	sub	a2,t1,op_0
 	addi	op_0,x0,255
-	and	a2,op_0,a2
+	and	a2,a2,op_0
 	addi	a3,a3,-2
 	sub	op_0,x0,a4
 	sub	a2,a2,op_0
 	addi	op_0,x0,255
-	and	a3,a3,op_0
+	and	a3,op_0,a3
 	sb	a0,896(a2)
 	sub	op_0,x0,a4
 	sub	a4,a3,op_0
@@ -2062,8 +2034,7 @@ huffDecode:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_3)
 	addi	a4,zero,255
 	addi	s2,a0,0
-	bne	a0,a4,.+8
-	jal	x0,.L291
+	beq	a0,a4,.L291
 .L266:
 	lhu	a3,%lo(gBitBuf)(s7)
 	lbu	a4,%lo(gBitsLeft)(s6)
@@ -2076,8 +2047,7 @@ huffDecode:
 .Lpcrel_4:
 	auipc	ra,%pcrel_hi(getChar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_4)
-	bne	a0,zero,.+8
-	jal	x0,.L266
+	beq	a0,zero,.L266
 	lui	a7,%hi(gInBufOfs)
 	lbu	a4,%lo(gInBufOfs)(a7)
 	lui	a6,%hi(gInBufLeft)
@@ -2136,10 +2106,12 @@ getBits.constprop.0:
 	addi	a5,a0,0
 	lui	a4,%hi(gBitBuf)
 	lui	a2,%hi(gBitsLeft)
-	bne	a1,zero,.L296
+	beq	a1,zero,.+8
+	jal	x0,.L296
 	addi	op_0,x0,1
 	and	a0,s0,op_0
-	bne	a0,zero,.L310
+	beq	a0,zero,.+8
+	jal	x0,.L310
 .L296:
 	lbu	a0,%lo(gBitsLeft)(a2)
 	lhu	a1,%lo(gBitBuf)(a4)
@@ -2165,8 +2137,7 @@ getBits.constprop.0:
 	lw	a5,12(sp)
 	lui	a4,%hi(gBitBuf)
 	lui	a2,%hi(gBitsLeft)
-	bne	a0,zero,.+8
-	jal	x0,.L296
+	beq	a0,zero,.L296
 	lui	t4,%hi(gInBufOfs)
 	lbu	a1,%lo(gInBufOfs)(t4)
 	lui	t3,%hi(gInBufLeft)
@@ -2225,7 +2196,7 @@ getBits:
 	addi	a2,a6,-8
 	sll	a3,a4,a3
 	addi	op_0,x0,255
-	and	a2,a2,op_0
+	and	a2,op_0,a2
 	sh	a3,%lo(gBitBuf)(a7)
 	sw	a1,24(sp)
 	sw	a4,20(sp)
@@ -2242,10 +2213,12 @@ getBits:
 	addi	a5,a0,0
 	lui	a7,%hi(gBitBuf)
 	lui	t1,%hi(gBitsLeft)
-	bne	a3,zero,.L315
+	beq	a3,zero,.+8
+	jal	x0,.L315
 	addi	op_0,x0,1
 	and	a3,op_0,a1
-	bne	a3,zero,.L340
+	beq	a3,zero,.+8
+	jal	x0,.L340
 .L315:
 	lbu	a3,%lo(gBitsLeft)(t1)
 	lhu	t3,%lo(gBitBuf)(a7)
@@ -2285,11 +2258,13 @@ getBits:
 	addi	a5,a0,0
 	lui	a7,%hi(gBitBuf)
 	lui	t1,%hi(gBitsLeft)
-	bne	a3,zero,.L320
+	beq	a3,zero,.+8
+	jal	x0,.L320
 	lw	a1,24(sp)
 	addi	op_0,x0,1
 	and	a1,op_0,a1
-	bne	a1,zero,.L341
+	beq	a1,zero,.+8
+	jal	x0,.L341
 .L320:
 	lbu	a3,%lo(gBitsLeft)(t1)
 	lhu	a0,%lo(gBitBuf)(a7)
@@ -2323,8 +2298,7 @@ getBits:
 	lw	a5,24(sp)
 	lui	a7,%hi(gBitBuf)
 	lui	t1,%hi(gBitsLeft)
-	bne	a0,zero,.+8
-	jal	x0,.L320
+	beq	a0,zero,.L320
 	lui	t6,%hi(gInBufOfs)
 	lbu	a3,%lo(gInBufOfs)(t6)
 	lui	t5,%hi(gInBufLeft)
@@ -2336,7 +2310,7 @@ getBits:
 	addi	op_0,x0,255
 	and	t3,t3,op_0
 	addi	op_0,x0,255
-	and	a3,a3,op_0
+	and	a3,op_0,a3
 	sub	op_0,x0,a1
 	sub	t3,t3,op_0
 	sb	a0,896(t3)
@@ -2362,8 +2336,7 @@ getBits:
 	lw	a5,28(sp)
 	lui	a7,%hi(gBitBuf)
 	lui	t1,%hi(gBitsLeft)
-	bne	a0,zero,.+8
-	jal	x0,.L315
+	beq	a0,zero,.L315
 	lui	t0,%hi(gInBufOfs)
 	lbu	a3,%lo(gInBufOfs)(t0)
 	lui	t6,%hi(gInBufLeft)
@@ -2375,7 +2348,7 @@ getBits:
 	addi	op_0,x0,255
 	and	t4,t4,op_0
 	addi	op_0,x0,255
-	and	a3,a3,op_0
+	and	a3,op_0,a3
 	sub	op_0,x0,t3
 	sub	t4,t4,op_0
 	sb	a0,896(t4)
@@ -2418,7 +2391,7 @@ getBits.constprop.1:
 	addi	op_0,x0,16
 	srl	a5,a5,op_0
 	addi	op_0,x0,-256
-	and	s0,op_0,s0
+	and	s0,s0,op_0
 	addi	op_0,x0,8
 	srl	a1,a5,op_0
 	addi	a2,zero,7
@@ -2505,8 +2478,7 @@ getBits.constprop.2:
 	addi	a5,a0,0
 	lui	a6,%hi(gBitBuf)
 	lui	a7,%hi(gBitsLeft)
-	bne	a0,a3,.+8
-	jal	x0,.L368
+	beq	a0,a3,.L368
 .L350:
 	lhu	t1,%lo(gBitBuf)(a6)
 	lbu	a3,%lo(gBitsLeft)(a7)
@@ -2545,8 +2517,7 @@ getBits.constprop.2:
 	addi	a5,a0,0
 	lui	a6,%hi(gBitBuf)
 	lui	a7,%hi(gBitsLeft)
-	bne	a0,a3,.+8
-	jal	x0,.L369
+	beq	a0,a3,.L369
 .L354:
 	lbu	a3,%lo(gBitsLeft)(a7)
 	lhu	t1,%lo(gBitBuf)(a6)
@@ -2583,8 +2554,7 @@ getBits.constprop.2:
 	lw	a5,12(sp)
 	lui	a6,%hi(gBitBuf)
 	lui	a7,%hi(gBitsLeft)
-	bne	a0,zero,.+8
-	jal	x0,.L350
+	beq	a0,zero,.L350
 	lui	t6,%hi(gInBufOfs)
 	lbu	a3,%lo(gInBufOfs)(t6)
 	lui	t5,%hi(gInBufLeft)
@@ -2594,7 +2564,7 @@ getBits.constprop.2:
 	addi	t1,t1,%lo(.LANCHOR0)
 	addi	a3,a3,-2
 	addi	op_0,x0,255
-	and	t3,op_0,t3
+	and	t3,t3,op_0
 	addi	op_0,x0,255
 	and	a3,a3,op_0
 	sub	op_0,x0,t1
@@ -2619,8 +2589,7 @@ getBits.constprop.2:
 	lw	a5,12(sp)
 	lui	a6,%hi(gBitBuf)
 	lui	a7,%hi(gBitsLeft)
-	bne	a0,zero,.+8
-	jal	x0,.L354
+	beq	a0,zero,.L354
 	lui	t6,%hi(gInBufOfs)
 	lbu	a3,%lo(gInBufOfs)(t6)
 	lui	t5,%hi(gInBufLeft)
@@ -2656,20 +2625,17 @@ decodeNextMCU:
 	sw	s0,88(sp)
 	sw	s1,84(sp)
 	sw	s3,76(sp)
-	bne	a5,zero,.+8
-	jal	x0,.L371
+	beq	a5,zero,.L371
 	lui	s3,%hi(gRestartsLeft)
 	lhu	a5,%lo(gRestartsLeft)(s3)
-	bne	a5,zero,.+8
-	jal	x0,.L664
+	beq	a5,zero,.L664
 .L372:
 	addi	a5,a5,-1
 	sh	a5,%lo(gRestartsLeft)(s3)
 .L371:
 	lui	a5,%hi(gMaxBlocksPerMCU)
 	lbu	a5,%lo(gMaxBlocksPerMCU)(a5)
-	bne	a5,zero,.+8
-	jal	x0,.L582
+	beq	a5,zero,.L582
 	lui	a5,%hi(.LANCHOR1)
 	sw	s10,48(sp)
 	lui	s10,%hi(gCompDCTab)
@@ -2715,12 +2681,10 @@ decodeNextMCU:
 	sub	op_0,x0,a5
 	sub	a5,s2,op_0
 	lbu	a5,0(a5)
-	bne	a4,zero,.+8
-	jal	x0,.L378
+	beq	a4,zero,.L378
 	addi	s4,s0,1152
 .L378:
-	bne	a5,zero,.+8
-	jal	x0,.L585
+	beq	a5,zero,.L585
 	addi	a0,s0,1408
 	addi	a1,s0,1488
 .Lpcrel_17:
@@ -2730,7 +2694,8 @@ decodeNextMCU:
 	addi	op_0,x0,15
 	and	a0,op_0,a0
 	addi	a4,zero,0
-	bne	a0,zero,.L665
+	beq	a0,zero,.+8
+	jal	x0,.L665
 .L381:
 	lw	a5,12(sp)
 	addi	op_0,x0,1
@@ -2750,10 +2715,8 @@ decodeNextMCU:
 	sub	a5,s2,op_0
 	lbu	a5,0(a5)
 	sh	a2,512(s0)
-	bne	a1,zero,.+8
-	jal	x0,.L382
-	bne	a5,zero,.+8
-	jal	x0,.L383
+	beq	a1,zero,.L382
+	beq	a5,zero,.L383
 	lw	a5,16(sp)
 	addi	s3,s0,1600
 	addi	s4,a5,-1984
@@ -2764,7 +2727,8 @@ decodeNextMCU:
 	addi	s2,zero,63
 	jal	x0,.L395
 .L387:
-	bne	s10,s5,.L396
+	beq	s10,s5,.+8
+	jal	x0,.L396
 	bltu	s7,s1,.L394
 	addi	s1,s1,15
 .L389:
@@ -2781,20 +2745,17 @@ decodeNextMCU:
 	addi	op_0,x0,4
 	srl	s10,a0,op_0
 	addi	op_0,x0,15
-	and	a0,op_0,a0
+	and	a0,a0,op_0
 	addi	op_0,x0,255
-	and	s10,op_0,s10
-	bne	a0,zero,.+8
-	jal	x0,.L387
+	and	s10,s10,op_0
+	beq	a0,zero,.L387
 .Lpcrel_19:
 	auipc	ra,%pcrel_hi(getBits.constprop.2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_19)
-	bne	s10,zero,.+8
-	jal	x0,.L389
+	beq	s10,zero,.L389
 	sub	op_0,x0,s1
 	sub	s1,s10,op_0
-	blt	s2,s1,.+8
-	jal	x0,.L389
+	bge	s2,s1,.L389
 .L394:
 	lw	s4,72(sp)
 	lw	s5,68(sp)
@@ -2814,8 +2775,7 @@ decodeNextMCU:
 	addi	sp,sp,96
 	jalr	zero,ra,0
 .L382:
-	bne	a5,zero,.+8
-	jal	x0,.L505
+	beq	a5,zero,.L505
 	lw	a5,16(sp)
 	addi	s2,s0,1600
 	addi	s3,a5,-1984
@@ -2828,26 +2788,27 @@ decodeNextMCU:
 	sw	s9,24(sp)
 	jal	x0,.L517
 .L509:
-	bne	s9,s5,.L666
+	beq	s9,s5,.+8
+	jal	x0,.L666
 	bltu	s7,s10,.L394
 	addi	a3,s10,1
 	sub	op_0,x0,s11
 	sub	a5,s10,op_0
 	addi	a4,s10,2
 	addi	op_0,x0,255
-	and	a3,op_0,a3
+	and	a3,a3,op_0
 	lb	a2,636(a5)
 	sub	op_0,x0,s11
 	sub	a3,a3,op_0
 	addi	op_0,x0,255
-	and	a4,a4,op_0
+	and	a4,op_0,a4
 	lb	a3,636(a3)
 	sub	op_0,x0,s11
 	sub	a4,a4,op_0
 	addi	a5,s10,3
 	lb	a4,636(a4)
 	addi	op_0,x0,255
-	and	a5,a5,op_0
+	and	a5,op_0,a5
 	addi	op_0,x0,1
 	sll	a2,a2,op_0
 	sub	op_0,x0,s0
@@ -2868,20 +2829,20 @@ decodeNextMCU:
 	sub	a4,a4,op_0
 	addi	a3,s10,5
 	addi	op_0,x0,255
-	and	a2,a2,op_0
+	and	a2,op_0,a2
 	sh	zero,512(a4)
 	sub	op_0,x0,s11
 	sub	a2,a2,op_0
 	addi	a4,s10,6
 	addi	op_0,x0,255
-	and	a3,a3,op_0
+	and	a3,op_0,a3
 	lb	a2,636(a2)
 	sub	op_0,x0,s11
 	sub	a3,a3,op_0
 	addi	op_0,x0,1
 	sll	a5,a5,op_0
 	addi	op_0,x0,255
-	and	a4,a4,op_0
+	and	a4,op_0,a4
 	sub	op_0,x0,s0
 	sub	a5,a5,op_0
 	lb	a3,636(a3)
@@ -2925,7 +2886,7 @@ decodeNextMCU:
 	addi	op_0,x0,1
 	sll	a5,a5,op_0
 	addi	op_0,x0,255
-	and	a4,a4,op_0
+	and	a4,op_0,a4
 	sub	op_0,x0,s0
 	sub	a5,a5,op_0
 	lb	a3,636(a3)
@@ -2937,7 +2898,7 @@ decodeNextMCU:
 	addi	op_0,x0,1
 	sll	a2,a2,op_0
 	addi	op_0,x0,255
-	and	a5,a5,op_0
+	and	a5,op_0,a5
 	sub	op_0,x0,s0
 	sub	a2,a2,op_0
 	sub	op_0,x0,s11
@@ -2956,13 +2917,13 @@ decodeNextMCU:
 	sub	a4,a4,op_0
 	addi	a3,s10,13
 	addi	op_0,x0,255
-	and	a2,op_0,a2
+	and	a2,a2,op_0
 	sh	zero,512(a4)
 	sub	op_0,x0,s11
 	sub	a2,a2,op_0
 	addi	a4,s10,14
 	addi	op_0,x0,255
-	and	a3,op_0,a3
+	and	a3,a3,op_0
 	lb	a2,636(a2)
 	sub	op_0,x0,s11
 	sub	a3,a3,op_0
@@ -3016,16 +2977,16 @@ decodeNextMCU:
 	addi	op_0,x0,4
 	srl	a5,a0,op_0
 	addi	op_0,x0,15
-	and	s6,a0,op_0
+	and	s6,op_0,a0
 	addi	op_0,x0,255
 	and	s9,op_0,a5
-	bne	s6,zero,.+8
-	jal	x0,.L509
+	beq	s6,zero,.L509
 	addi	a0,s6,0
 .Lpcrel_21:
 	auipc	ra,%pcrel_hi(getBits.constprop.2)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_21)
-	bne	s9,zero,.L668
+	beq	s9,zero,.+8
+	jal	x0,.L668
 .L511:
 	addi	a5,s6,-1
 	addi	op_0,x0,255
@@ -3080,8 +3041,28 @@ decodeNextMCU:
 	sub	a4,t1,op_0
 	lh	t5,12(a5)
 	and	op_1,t0,a4
-	sub	op_0,op_1,a4
-	sub	a4,t0,op_0
+	and	op_4,t0,a4
+	and	op_8,a4,t0
+	sub	op_7,op_8,t0
+	sub	op_6,a4,op_7
+	and	op_9,a4,t0
+	sub	op_5,op_6,op_9
+	and	op_3,op_4,op_5
+	and	op_13,a4,t0
+	sub	op_12,op_13,t0
+	sub	op_11,a4,op_12
+	and	op_14,a4,t0
+	sub	op_10,op_11,op_14
+	sub	op_2,op_3,op_10
+	sub	op_0,op_1,op_2
+	and	op_16,t0,a4
+	and	op_20,a4,t0
+	sub	op_19,op_20,t0
+	sub	op_18,a4,op_19
+	and	op_21,a4,t0
+	sub	op_17,op_18,op_21
+	and	op_15,op_16,op_17
+	sub	a4,op_0,op_15
 	lh	a7,14(a5)
 	and	op_1,a3,a4
 	sub	op_0,op_1,a4
@@ -3096,8 +3077,7 @@ decodeNextMCU:
 	sub	op_0,op_1,a4
 	sub	a4,a7,op_0
 	lh	t6,0(a5)
-	bne	a4,zero,.+8
-	jal	x0,.L521
+	beq	a4,zero,.L521
 	sub	s2,t1,a7
 	addi	op_0,x0,16
 	sll	s2,s2,op_0
@@ -3197,7 +3177,8 @@ decodeNextMCU:
 	sh	a3,-14(a5)
 	sh	a4,-12(a5)
 	sh	t4,-6(a5)
-	bne	a5,a1,.L520
+	beq	a5,a1,.+8
+	jal	x0,.L520
 .L523:
 	addi	a5,s0,512
 	addi	a6,zero,277
@@ -3251,8 +3232,7 @@ decodeNextMCU:
 	sh	t3,96(a5)
 	sh	a7,112(a5)
 	addi	a5,a5,2
-	bne	a5,a2,.+8
-	jal	x0,.L669
+	beq	a5,a2,.L669
 .L544:
 	lh	t6,16(a5)
 	lh	t0,32(a5)
@@ -3280,8 +3260,7 @@ decodeNextMCU:
 	sub	op_0,op_1,a4
 	sub	a4,a7,op_0
 	lh	t2,0(a5)
-	bne	a4,zero,.+8
-	jal	x0,.L670
+	beq	a4,zero,.L670
 	sub	op_0,x0,t4
 	sub	a4,s2,op_0
 	sub	op_0,x0,a7
@@ -3382,7 +3361,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	s3,s3,op_0
 	addi	op_0,x0,255
-	and	t0,t0,op_0
+	and	t0,op_0,t0
 	addi	op_0,x0,16
 	sra	s1,s1,op_0
 	addi	op_0,x0,16
@@ -3431,7 +3410,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	srl	t4,t4,op_0
 	addi	op_0,x0,255
-	and	t6,t6,op_0
+	and	t6,op_0,t6
 	bltu	a3,t4,.+8
 	jal	x0,.L531
 	addi	op_1,x0,-1
@@ -3460,7 +3439,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	srl	t4,t4,op_0
 	addi	op_0,x0,255
-	and	t5,op_0,t5
+	and	t5,t5,op_0
 	bltu	a3,t4,.+8
 	jal	x0,.L533
 	addi	op_1,x0,-1
@@ -3488,7 +3467,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	srl	s4,s4,op_0
 	addi	op_0,x0,255
-	and	t4,op_0,t4
+	and	t4,t4,op_0
 	bltu	a3,s4,.+8
 	jal	x0,.L535
 	addi	op_1,x0,-1
@@ -3533,7 +3512,7 @@ decodeNextMCU:
 	addi	op_0,x0,31
 	sra	s3,a4,op_0
 	addi	op_0,x0,255
-	and	a4,op_0,s3
+	and	a4,s3,op_0
 .L537:
 	sub	t1,t1,s2
 	addi	t1,t1,64
@@ -3561,7 +3540,7 @@ decodeNextMCU:
 	addi	op_0,x0,31
 	sra	s2,t1,op_0
 	addi	op_0,x0,255
-	and	t1,op_0,s2
+	and	t1,s2,op_0
 .L539:
 	sub	t3,t3,s1
 	addi	t3,t3,64
@@ -3573,7 +3552,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	srl	s1,s1,op_0
 	addi	op_0,x0,255
-	and	t3,op_0,t3
+	and	t3,t3,op_0
 	bltu	a3,s1,.+8
 	jal	x0,.L541
 	addi	op_1,x0,-1
@@ -3589,7 +3568,7 @@ decodeNextMCU:
 	addi	op_0,x0,31
 	sra	s1,t3,op_0
 	addi	op_0,x0,255
-	and	t3,s1,op_0
+	and	t3,op_0,s1
 .L541:
 	sub	a7,a7,t2
 	addi	a7,a7,64
@@ -3617,19 +3596,20 @@ decodeNextMCU:
 	addi	op_0,x0,31
 	sra	t2,a7,op_0
 	addi	op_0,x0,255
-	and	a7,t2,op_0
+	and	a7,op_0,t2
 	jal	x0,.L527
 .L668:
 	sub	op_0,x0,s9
 	sub	s10,s10,op_0
-	blt	s1,s10,.L394
+	bge	s1,s10,.+8
+	jal	x0,.L394
 	addi	a5,s9,0
 	addi	op_0,x0,255
-	and	s10,op_0,s10
+	and	s10,s10,op_0
 .L514:
 	sub	a3,s10,a5
 	addi	op_0,x0,255
-	and	a3,op_0,a3
+	and	a3,a3,op_0
 	sub	op_0,x0,s11
 	sub	a3,a3,op_0
 	lb	a3,636(a3)
@@ -3643,7 +3623,8 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	srl	a5,a5,op_0
 	sh	zero,512(a3)
-	bne	a5,zero,.L514
+	beq	a5,zero,.+8
+	jal	x0,.L514
 	jal	x0,.L511
 .L585:
 	addi	a0,s0,1504
@@ -3653,10 +3634,9 @@ decodeNextMCU:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_22)
 	addi	s1,a0,0
 	addi	op_0,x0,15
-	and	a0,a0,op_0
+	and	a0,op_0,a0
 	addi	a4,zero,0
-	bne	a0,zero,.+8
-	jal	x0,.L381
+	beq	a0,zero,.L381
 .L665:
 .Lpcrel_23:
 	auipc	ra,%pcrel_hi(getBits.constprop.2)
@@ -3706,7 +3686,7 @@ decodeNextMCU:
 	addi	op_0,x0,31
 	sra	a5,a4,op_0
 	addi	op_0,x0,255
-	and	a5,a5,op_0
+	and	a5,op_0,a5
 .L397:
 	lui	a4,%hi(gScanType)
 	lw	a4,%lo(gScanType)(a4)
@@ -3745,7 +3725,8 @@ decodeNextMCU:
 	sb	a4,0(a1)
 	addi	a2,a2,1
 	addi	a1,a1,1
-	bne	a5,a0,.L550
+	beq	a5,a0,.+8
+	jal	x0,.L550
 .L405:
 	lui	a5,%hi(gMaxBlocksPerMCU)
 	lbu	a5,%lo(gMaxBlocksPerMCU)(a5)
@@ -3775,7 +3756,8 @@ decodeNextMCU:
 	sh	t6,12(a5)
 	sh	t6,14(a5)
 	addi	a5,a5,16
-	bne	a5,a1,.L520
+	beq	a5,a1,.+8
+	jal	x0,.L520
 	jal	x0,.L523
 .L669:
 	lui	a5,%hi(gScanType)
@@ -3817,7 +3799,7 @@ decodeNextMCU:
 	lw	s6,20(sp)
 	lw	s9,24(sp)
 	addi	op_0,x0,255
-	and	a4,op_0,a4
+	and	a4,a4,op_0
 	sub	op_0,x0,a3
 	sub	a3,s10,op_0
 	addi	a5,a5,%lo(.LANCHOR1+636)
@@ -3833,7 +3815,8 @@ decodeNextMCU:
 	sub	op_0,x0,s0
 	sub	a4,a4,op_0
 	sh	zero,512(a4)
-	bne	a5,a3,.L519
+	beq	a5,a3,.+8
+	jal	x0,.L519
 	jal	x0,.L518
 .L671:
 	addi	op_0,x0,255
@@ -3863,11 +3846,9 @@ decodeNextMCU:
 	.text
 .L547:
 	addi	a5,zero,2
-	bne	s6,a5,.+8
-	jal	x0,.L563
+	beq	s6,a5,.L563
 	bltu	a5,s6,.L564
-	bne	s6,zero,.+8
-	jal	x0,.L622
+	beq	s6,zero,.L622
 	addi	a1,s0,384
 	addi	a2,s0,128
 	addi	a3,s0,768
@@ -3882,16 +3863,16 @@ decodeNextMCU:
 	sb	a4,0(a1)
 	addi	a2,a2,1
 	addi	a1,a1,1
-	bne	a5,a0,.L566
+	beq	a5,a0,.+8
+	jal	x0,.L566
 	jal	x0,.L405
 .L549:
 	addi	a5,zero,1
-	bne	s6,a5,.+8
-	jal	x0,.L620
+	beq	s6,a5,.L620
 	addi	a5,zero,2
-	bne	s6,a5,.+8
-	jal	x0,.L621
-	bne	s6,zero,.L405
+	beq	s6,a5,.L621
+	beq	s6,zero,.+8
+	jal	x0,.L405
 	addi	a3,s0,640
 	addi	a0,a3,0
 	addi	a1,s0,256
@@ -3906,15 +3887,14 @@ decodeNextMCU:
 	sb	a4,0(a1)
 	addi	a2,a2,1
 	addi	a1,a1,1
-	bne	a5,a0,.L553
+	beq	a5,a0,.+8
+	jal	x0,.L553
 	jal	x0,.L405
 .L548:
 	addi	a5,zero,2
-	bne	s6,a5,.+8
-	jal	x0,.L568
+	beq	s6,a5,.L568
 	bltu	a5,s6,.L569
-	bne	s6,zero,.+8
-	jal	x0,.L623
+	beq	s6,zero,.L623
 	addi	a1,s0,320
 	addi	a2,s0,64
 	addi	a3,s0,704
@@ -3929,15 +3909,14 @@ decodeNextMCU:
 	sb	a4,0(a1)
 	addi	a2,a2,1
 	addi	a1,a1,1
-	bne	a5,a0,.L571
+	beq	a5,a0,.+8
+	jal	x0,.L571
 	jal	x0,.L405
 .L401:
 	addi	a4,zero,2
-	bne	s6,a4,.+8
-	jal	x0,.L416
+	beq	s6,a4,.L416
 	bltu	a4,s6,.L417
-	bne	s6,zero,.+8
-	jal	x0,.L458
+	beq	s6,zero,.L458
 .L463:
 	sb	a5,768(s0)
 	sb	a5,128(s0)
@@ -3977,12 +3956,11 @@ decodeNextMCU:
 	jal	x0,.L672
 .L403:
 	addi	a4,zero,1
-	bne	s6,a4,.+8
-	jal	x0,.L406
+	beq	s6,a4,.L406
 	addi	a4,zero,2
-	bne	s6,a4,.+8
-	jal	x0,.L407
-	bne	s6,zero,.L405
+	beq	s6,a4,.L407
+	beq	s6,zero,.+8
+	jal	x0,.L405
 .L458:
 	sb	a5,640(s0)
 	sb	a5,0(s0)
@@ -3991,17 +3969,15 @@ decodeNextMCU:
 	lbu	a5,%lo(gMaxBlocksPerMCU)(a5)
 	addi	s6,s6,1
 	addi	op_0,x0,255
-	and	s6,op_0,s6
+	and	s6,s6,op_0
 	addi	s9,s9,1
 	bltu	s6,a5,.L580
 	jal	x0,.L672
 .L402:
 	addi	a4,zero,2
-	bne	s6,a4,.+8
-	jal	x0,.L437
+	beq	s6,a4,.L437
 	bltu	a4,s6,.L438
-	bne	s6,zero,.+8
-	jal	x0,.L458
+	beq	s6,zero,.L458
 .L464:
 	sb	a5,704(s0)
 	sb	a5,64(s0)
@@ -4017,25 +3993,27 @@ decodeNextMCU:
 	sll	s0,s0,op_0
 	addi	op_0,x0,16
 	srl	s0,s0,op_0
-	bne	s0,zero,.+8
-	jal	x0,.L377
+	beq	s0,zero,.L377
 .L374:
 .Lpcrel_24:
 	auipc	ra,%pcrel_hi(getChar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_24)
-	bne	a0,s1,.L654
+	beq	a0,s1,.+8
+	jal	x0,.L654
 	addi	s1,zero,255
 .L373:
 .Lpcrel_25:
 	auipc	ra,%pcrel_hi(getChar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_25)
-	bne	a0,s1,.L376
+	beq	a0,s1,.+8
+	jal	x0,.L376
 	addi	s0,s0,-1
 	addi	op_0,x0,16
 	sll	s0,s0,op_0
 	addi	op_0,x0,16
 	srl	s0,s0,op_0
-	bne	s0,zero,.L373
+	beq	s0,zero,.+8
+	jal	x0,.L373
 .L377:
 	lw	ra,92(sp)
 	lw	s0,88(sp)
@@ -4049,7 +4027,8 @@ decodeNextMCU:
 	lui	a3,%hi(gNextRestartNum)
 	lhu	a5,%lo(gNextRestartNum)(a3)
 	addi	a4,a5,208
-	bne	a0,a4,.L377
+	beq	a0,a4,.+8
+	jal	x0,.L377
 	lhu	a6,%lo(gRestartInterval)(s2)
 	lui	a4,%hi(gLastDC)
 	addi	a5,a5,1
@@ -4075,7 +4054,8 @@ decodeNextMCU:
 	jal	x0,.L372
 .L417:
 	addi	a4,zero,3
-	bne	s6,a4,.L405
+	beq	s6,a4,.+8
+	jal	x0,.L405
 	addi	a4,zero,103
 	callmul	a4,a5,a4
 	lbu	a3,640(s0)
@@ -4105,8 +4085,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a1,a1,op_0
 	addi	a3,zero,0
-	blt	a1,zero,.+8
-	jal	x0,.L673
+	bge	a1,zero,.L673
 .L430:
 	sb	a3,640(s0)
 	addi	a3,zero,255
@@ -4151,8 +4130,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a3,a3,op_0
 	addi	a4,zero,0
-	blt	a3,zero,.+8
-	jal	x0,.L674
+	bge	a3,zero,.L674
 .L434:
 	sb	a4,0(s0)
 	addi	a4,zero,255
@@ -4175,7 +4153,8 @@ decodeNextMCU:
 	jal	x0,.L405
 .L569:
 	addi	a5,zero,3
-	bne	s6,a5,.L405
+	beq	s6,a5,.+8
+	jal	x0,.L405
 	addi	a1,zero,0
 	addi	a0,zero,0
 .Lpcrel_28:
@@ -4189,7 +4168,8 @@ decodeNextMCU:
 	jal	x0,.L405
 .L438:
 	addi	a4,zero,3
-	bne	s6,a4,.L405
+	beq	s6,a4,.+8
+	jal	x0,.L405
 	addi	a4,zero,103
 	callmul	a4,a5,a4
 	lbu	a3,640(s0)
@@ -4219,8 +4199,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a1,a1,op_0
 	addi	a3,zero,0
-	blt	a1,zero,.+8
-	jal	x0,.L675
+	bge	a1,zero,.L675
 .L451:
 	sb	a3,640(s0)
 	addi	a3,zero,255
@@ -4265,8 +4244,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a3,a3,op_0
 	addi	a4,zero,0
-	blt	a3,zero,.+8
-	jal	x0,.L676
+	bge	a3,zero,.L676
 .L455:
 	sb	a4,0(s0)
 	addi	a4,zero,255
@@ -4289,7 +4267,8 @@ decodeNextMCU:
 	jal	x0,.L405
 .L564:
 	addi	a5,zero,3
-	bne	s6,a5,.L405
+	beq	s6,a5,.+8
+	jal	x0,.L405
 	addi	a1,zero,0
 	addi	a0,zero,0
 .Lpcrel_30:
@@ -4338,7 +4317,8 @@ decodeNextMCU:
 	sb	a4,0(a1)
 	addi	a2,a2,1
 	addi	a1,a1,1
-	bne	a5,a0,.L577
+	beq	a5,a0,.+8
+	jal	x0,.L577
 	jal	x0,.L405
 .L461:
 	addi	a3,zero,88
@@ -4366,8 +4346,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a0,a0,op_0
 	addi	a2,zero,0
-	blt	a0,zero,.+8
-	jal	x0,.L677
+	bge	a0,zero,.L677
 .L466:
 	sb	a2,0(s0)
 	addi	a2,zero,255
@@ -4378,8 +4357,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a2,a2,op_0
 	addi	a4,zero,0
-	blt	a2,zero,.+8
-	jal	x0,.L471
+	bge	a2,zero,.L471
 .L470:
 	sb	a4,64(s0)
 	lbu	a4,128(s0)
@@ -4396,8 +4374,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a2,a2,op_0
 	addi	a4,zero,0
-	blt	a2,zero,.+8
-	jal	x0,.L468
+	bge	a2,zero,.L468
 .L474:
 	sb	a4,128(s0)
 	lbu	a4,192(s0)
@@ -4452,8 +4429,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a2,a2,op_0
 	addi	a3,zero,0
-	blt	a2,zero,.+8
-	jal	x0,.L678
+	bge	a2,zero,.L678
 .L476:
 	sb	a3,256(s0)
 	addi	a3,zero,255
@@ -4464,8 +4440,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a3,a3,op_0
 	addi	a4,zero,0
-	blt	a3,zero,.+8
-	jal	x0,.L481
+	bge	a3,zero,.L481
 .L480:
 	sb	a4,320(s0)
 	lbu	a4,384(s0)
@@ -4483,8 +4458,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a3,a3,op_0
 	addi	a4,zero,0
-	blt	a3,zero,.+8
-	jal	x0,.L478
+	bge	a3,zero,.L478
 .L484:
 	lbu	a3,448(s0)
 	sb	a4,384(s0)
@@ -4547,8 +4521,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a1,a1,op_0
 	addi	a2,zero,0
-	blt	a1,zero,.+8
-	jal	x0,.L679
+	bge	a1,zero,.L679
 .L486:
 	sb	a2,640(s0)
 	addi	a2,zero,255
@@ -4559,8 +4532,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a2,a2,op_0
 	addi	a3,zero,0
-	blt	a2,zero,.+8
-	jal	x0,.L491
+	bge	a2,zero,.L491
 .L490:
 	sb	a3,704(s0)
 	lbu	a3,768(s0)
@@ -4578,8 +4550,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a2,a2,op_0
 	addi	a3,zero,0
-	blt	a2,zero,.+8
-	jal	x0,.L488
+	bge	a2,zero,.L488
 .L494:
 	lbu	a2,832(s0)
 	sb	a3,768(s0)
@@ -4631,8 +4602,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a1,a1,op_0
 	addi	a3,zero,0
-	blt	a1,zero,.+8
-	jal	x0,.L680
+	bge	a1,zero,.L680
 .L496:
 	sb	a3,0(s0)
 	addi	a3,zero,255
@@ -4643,8 +4613,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a3,a3,op_0
 	addi	a4,zero,0
-	blt	a3,zero,.+8
-	jal	x0,.L501
+	bge	a3,zero,.L501
 .L500:
 	sb	a4,64(s0)
 	lbu	a4,128(s0)
@@ -4661,8 +4630,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a3,a3,op_0
 	addi	a4,zero,0
-	blt	a3,zero,.+8
-	jal	x0,.L498
+	bge	a3,zero,.L498
 .L504:
 	sb	a4,128(s0)
 	lbu	a4,192(s0)
@@ -4704,7 +4672,8 @@ decodeNextMCU:
 	sb	a4,0(a1)
 	addi	a2,a2,1
 	addi	a1,a1,1
-	bne	a5,a0,.L578
+	beq	a5,a0,.+8
+	jal	x0,.L578
 	jal	x0,.L405
 .L625:
 	addi	a1,s0,320
@@ -4721,7 +4690,8 @@ decodeNextMCU:
 	sb	a4,0(a1)
 	addi	a2,a2,1
 	addi	a1,a1,1
-	bne	a5,a0,.L579
+	beq	a5,a0,.+8
+	jal	x0,.L579
 	jal	x0,.L405
 .L574:
 	addi	a1,zero,0
@@ -4760,7 +4730,8 @@ decodeNextMCU:
 	sb	a4,0(a1)
 	addi	a2,a2,1
 	addi	a1,a1,1
-	bne	a5,a0,.L573
+	beq	a5,a0,.+8
+	jal	x0,.L573
 	jal	x0,.L405
 .L416:
 	addi	a2,zero,88
@@ -4788,8 +4759,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a2,a2,op_0
 	addi	a3,zero,0
-	blt	a2,zero,.+8
-	jal	x0,.L681
+	bge	a2,zero,.L681
 .L422:
 	sb	a3,0(s0)
 	addi	a3,zero,255
@@ -4838,8 +4808,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a3,a3,op_0
 	addi	a4,zero,0
-	blt	a3,zero,.+8
-	jal	x0,.L682
+	bge	a3,zero,.L682
 .L426:
 	sb	a4,256(s0)
 	addi	a4,zero,255
@@ -4875,7 +4844,8 @@ decodeNextMCU:
 	sb	a4,0(a1)
 	addi	a2,a2,1
 	addi	a1,a1,1
-	bne	a5,a0,.L570
+	beq	a5,a0,.+8
+	jal	x0,.L570
 	jal	x0,.L405
 .L621:
 	lui	a6,%hi(.LANCHOR0+64)
@@ -4947,15 +4917,13 @@ decodeNextMCU:
 	sra	a5,a4,op_0
 	sb	a5,0(a3)
 	addi	a3,a3,1
-	bne	a3,a6,.+8
-	jal	x0,.L405
+	beq	a3,a6,.L405
 	addi	a2,a2,1
 	jal	x0,.L552
 .L561:
 	sb	a5,0(a3)
 	addi	a3,a3,1
-	bne	a3,a6,.+8
-	jal	x0,.L405
+	beq	a3,a6,.L405
 	addi	a2,a2,1
 	jal	x0,.L552
 .L620:
@@ -5027,15 +4995,13 @@ decodeNextMCU:
 	sra	a5,t3,op_0
 	sb	a5,0(a4)
 	addi	a4,a4,1
-	bne	a4,a0,.+8
-	jal	x0,.L405
+	beq	a4,a0,.L405
 	addi	a3,a3,1
 	jal	x0,.L551
 .L557:
 	sb	a5,0(a4)
 	addi	a4,a4,1
-	bne	a4,a0,.+8
-	jal	x0,.L405
+	beq	a4,a0,.L405
 	addi	a3,a3,1
 	jal	x0,.L551
 .L406:
@@ -5127,8 +5093,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a2,a2,op_0
 	addi	a3,zero,0
-	blt	a2,zero,.+8
-	jal	x0,.L683
+	bge	a2,zero,.L683
 .L443:
 	sb	a3,0(s0)
 	addi	a3,zero,255
@@ -5177,8 +5142,7 @@ decodeNextMCU:
 	addi	op_0,x0,16
 	sra	a3,a3,op_0
 	addi	a4,zero,0
-	blt	a3,zero,.+8
-	jal	x0,.L684
+	bge	a3,zero,.L684
 .L447:
 	sb	a4,256(s0)
 	addi	a4,zero,255
@@ -5277,7 +5241,8 @@ decodeNextMCU:
 	sb	a4,0(a1)
 	addi	a2,a2,1
 	addi	a1,a1,1
-	bne	a5,a0,.L565
+	beq	a5,a0,.+8
+	jal	x0,.L565
 	jal	x0,.L405
 .L563:
 	addi	a1,zero,0
@@ -5526,7 +5491,8 @@ processMarkers:
 	auipc	ra,%pcrel_hi(getBits.constprop.0)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_44)
 	addi	s4,a0,0
-	bne	a0,s1,.L687
+	beq	a0,s1,.+8
+	jal	x0,.L687
 	lhu	a0,%lo(gBitBuf)(s0)
 	lbu	a5,%lo(gBitsLeft)(s2)
 .L691:
@@ -5544,13 +5510,11 @@ processMarkers:
 	and	a5,op_0,a3
 	sh	a0,%lo(gBitBuf)(s0)
 	sb	a5,%lo(gBitsLeft)(s2)
-	bne	a4,s1,.+8
-	jal	x0,.L691
-	bne	a4,zero,.+8
-	jal	x0,.L687
+	beq	a4,s1,.L691
+	beq	a4,zero,.L687
 .L804:
 	addi	op_0,x0,255
-	and	a4,a4,op_0
+	and	a4,op_0,a4
 	addi	a5,zero,215
 	bltu	a5,a4,.L693
 	addi	a5,zero,196
@@ -5562,10 +5526,12 @@ processMarkers:
 	sll	a5,a5,a2
 	addi	a3,a3,-2040
 	and	a3,a5,a3
-	bne	a3,zero,.L745
+	beq	a3,zero,.+8
+	jal	x0,.L745
 	addi	op_0,x0,1911
 	and	a5,op_0,a5
-	bne	a5,zero,.L698
+	beq	a5,zero,.+8
+	jal	x0,.L698
 	addi	a0,zero,17
 .L789:
 	lw	ra,92(sp)
@@ -5598,24 +5564,23 @@ processMarkers:
 	addi	op_0,x0,16
 	srl	a0,a0,op_0
 	sh	a0,%lo(gBitBuf)(s0)
-	bne	a4,s1,.+8
-	jal	x0,.L691
-	bne	a4,zero,.+8
-	jal	x0,.L687
+	beq	a4,s1,.L691
+	beq	a4,zero,.L687
 	jal	x0,.L804
 .L693:
 	addi	a5,zero,219
-	bne	a4,a5,.+8
-	jal	x0,.L699
+	beq	a4,a5,.L699
 	bltu	a5,a4,.+8
 	jal	x0,.L698
 	addi	a5,zero,221
-	bne	a4,a5,.L697
+	beq	a4,a5,.+8
+	jal	x0,.L697
 .Lpcrel_46:
 	auipc	ra,%pcrel_hi(getBits.constprop.1)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_46)
 	addi	a5,zero,4
-	bne	a0,a5,.L687
+	beq	a0,a5,.+8
+	jal	x0,.L687
 .Lpcrel_47:
 	auipc	ra,%pcrel_hi(getBits.constprop.1)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_47)
@@ -5623,7 +5588,8 @@ processMarkers:
 	sh	a0,%lo(gRestartInterval)(a5)
 	jal	x0,.L687
 .L803:
-	bne	a4,a5,.L805
+	beq	a4,a5,.+8
+	jal	x0,.L805
 .Lpcrel_48:
 	auipc	ra,%pcrel_hi(getBits.constprop.1)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_48)
@@ -5636,8 +5602,7 @@ processMarkers:
 	sll	s11,a0,op_0
 	addi	op_0,x0,16
 	srl	s11,s11,op_0
-	bne	s11,zero,.+8
-	jal	x0,.L801
+	beq	s11,zero,.L801
 	lui	a5,%hi(.LANCHOR1)
 	addi	a5,a5,%lo(.LANCHOR1)
 	sw	s9,52(sp)
@@ -5652,11 +5617,12 @@ processMarkers:
 	auipc	ra,%pcrel_hi(getBits.constprop.0)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_49)
 	addi	op_0,x0,14
-	and	a5,a0,op_0
+	and	a5,op_0,a0
 	sw	a5,4(sp)
-	bne	a5,zero,.L800
+	beq	a5,zero,.+8
+	jal	x0,.L800
 	addi	op_0,x0,240
-	and	a5,a0,op_0
+	and	a5,op_0,a0
 	addi	a4,zero,16
 	bltu	a4,a5,.L800
 	addi	op_0,x0,3
@@ -5667,8 +5633,28 @@ processMarkers:
 	addi	op_0,x0,1
 	and	a0,a0,op_0
 	and	op_1,s10,a0
-	sub	op_0,op_1,a0
-	sub	a5,s10,op_0
+	and	op_4,s10,a0
+	and	op_8,a0,s10
+	sub	op_7,op_8,s10
+	sub	op_6,a0,op_7
+	and	op_9,a0,s10
+	sub	op_5,op_6,op_9
+	and	op_3,op_4,op_5
+	and	op_13,a0,s10
+	sub	op_12,op_13,s10
+	sub	op_11,a0,op_12
+	and	op_14,a0,s10
+	sub	op_10,op_11,op_14
+	sub	op_2,op_3,op_10
+	sub	op_0,op_1,op_2
+	and	op_16,s10,a0
+	and	op_20,a0,s10
+	sub	op_19,op_20,s10
+	sub	op_18,a0,op_19
+	and	op_21,a0,s10
+	sub	op_17,op_18,op_21
+	and	op_15,op_16,op_17
+	sub	a5,op_0,op_15
 	sw	a5,0(sp)
 	addi	op_0,x0,2
 	sll	a5,a5,op_0
@@ -5701,7 +5687,8 @@ processMarkers:
 	addi	a5,sp,32
 	addi	op_0,x0,16
 	srl	s5,s5,op_0
-	bne	a5,s10,.L704
+	beq	a5,s10,.+8
+	jal	x0,.L704
 	lw	a4,0(sp)
 	addi	a3,zero,1
 	addi	a5,s4,0
@@ -5710,8 +5697,7 @@ processMarkers:
 .L705:
 	bltu	a5,s5,.L800
 	addi	s10,zero,0
-	bne	s5,zero,.+8
-	jal	x0,.L708
+	beq	s5,zero,.L708
 .L706:
 	addi	a0,zero,0
 .Lpcrel_51:
@@ -5722,7 +5708,7 @@ processMarkers:
 	addi	s10,s10,1
 	sb	a0,0(a5)
 	addi	op_0,x0,255
-	and	s10,op_0,s10
+	and	s10,s10,op_0
 	bltu	s10,s5,.L706
 .L708:
 	addi	a5,s5,17
@@ -5737,8 +5723,7 @@ processMarkers:
 	sll	s11,a5,op_0
 	addi	op_0,x0,16
 	srl	s11,s11,op_0
-	bne	a4,zero,.+8
-	jal	x0,.L748
+	beq	a4,zero,.L748
 	addi	a5,a4,0
 	addi	a2,a4,-1
 .L709:
@@ -5748,8 +5733,7 @@ processMarkers:
 	sb	zero,64(s6)
 	addi	op_0,x0,1
 	sll	a5,a5,op_0
-	bne	a3,zero,.+8
-	jal	x0,.L749
+	beq	a3,zero,.L749
 	sub	op_0,x0,a3
 	sub	a0,a5,op_0
 	sub	op_0,x0,a3
@@ -5767,8 +5751,7 @@ processMarkers:
 	sb	a3,65(s6)
 	addi	op_0,x0,1
 	sll	a5,a5,op_0
-	bne	a2,zero,.+8
-	jal	x0,.L750
+	beq	a2,zero,.L750
 	sub	op_0,x0,a2
 	sub	a0,a5,op_0
 	sub	op_0,x0,a4
@@ -5786,8 +5769,7 @@ processMarkers:
 	sb	a2,66(s6)
 	addi	op_0,x0,1
 	sll	a5,a5,op_0
-	bne	a3,zero,.+8
-	jal	x0,.L751
+	beq	a3,zero,.L751
 	sub	op_0,x0,a3
 	sub	a0,a5,op_0
 	sub	op_0,x0,a4
@@ -5796,7 +5778,7 @@ processMarkers:
 	addi	a3,a4,0
 	addi	a1,a0,-1
 	addi	op_0,x0,255
-	and	a4,a6,op_0
+	and	a4,op_0,a6
 	addi	a5,a0,0
 .L712:
 	sh	a2,6(s6)
@@ -5805,8 +5787,7 @@ processMarkers:
 	sb	a3,67(s6)
 	addi	op_0,x0,1
 	sll	a5,a5,op_0
-	bne	a2,zero,.+8
-	jal	x0,.L752
+	beq	a2,zero,.L752
 	sub	op_0,x0,a2
 	sub	a0,a5,op_0
 	sub	op_0,x0,a4
@@ -5815,7 +5796,7 @@ processMarkers:
 	addi	a2,a4,0
 	addi	a1,a0,-1
 	addi	op_0,x0,255
-	and	a4,a6,op_0
+	and	a4,op_0,a6
 	addi	a5,a0,0
 .L713:
 	sh	a3,8(s6)
@@ -5824,8 +5805,7 @@ processMarkers:
 	sb	a2,68(s6)
 	addi	op_0,x0,1
 	sll	a5,a5,op_0
-	bne	a3,zero,.+8
-	jal	x0,.L753
+	beq	a3,zero,.L753
 	sub	op_0,x0,a3
 	sub	a0,a5,op_0
 	sub	op_0,x0,a4
@@ -5843,8 +5823,7 @@ processMarkers:
 	sb	a3,69(s6)
 	addi	op_0,x0,1
 	sll	a5,a5,op_0
-	bne	a2,zero,.+8
-	jal	x0,.L754
+	beq	a2,zero,.L754
 	sub	op_0,x0,a2
 	sub	a0,a5,op_0
 	sub	op_0,x0,a4
@@ -5862,8 +5841,7 @@ processMarkers:
 	sb	a2,70(s6)
 	addi	op_0,x0,1
 	sll	a5,a5,op_0
-	bne	a3,zero,.+8
-	jal	x0,.L755
+	beq	a3,zero,.L755
 	sub	op_0,x0,a3
 	sub	a0,a5,op_0
 	sub	op_0,x0,a4
@@ -5881,8 +5859,7 @@ processMarkers:
 	sb	a3,71(s6)
 	addi	op_0,x0,1
 	sll	a5,a5,op_0
-	bne	a2,zero,.+8
-	jal	x0,.L756
+	beq	a2,zero,.L756
 	sub	op_0,x0,a2
 	sub	a0,a5,op_0
 	sub	op_0,x0,a4
@@ -5891,7 +5868,7 @@ processMarkers:
 	addi	a2,a4,0
 	addi	a1,a0,-1
 	addi	op_0,x0,255
-	and	a4,a6,op_0
+	and	a4,op_0,a6
 	addi	a5,a0,0
 .L717:
 	sh	a3,16(s6)
@@ -5900,8 +5877,7 @@ processMarkers:
 	sb	a2,72(s6)
 	addi	op_0,x0,1
 	sll	a5,a5,op_0
-	bne	a3,zero,.+8
-	jal	x0,.L757
+	beq	a3,zero,.L757
 	sub	op_0,x0,a3
 	sub	a0,a5,op_0
 	sub	op_0,x0,a4
@@ -5910,7 +5886,7 @@ processMarkers:
 	addi	a3,a4,0
 	addi	a1,a0,-1
 	addi	op_0,x0,255
-	and	a4,a6,op_0
+	and	a4,op_0,a6
 	addi	a5,a0,0
 .L718:
 	sh	a2,18(s6)
@@ -5919,8 +5895,7 @@ processMarkers:
 	sb	a3,73(s6)
 	addi	op_0,x0,1
 	sll	a5,a5,op_0
-	bne	a2,zero,.+8
-	jal	x0,.L758
+	beq	a2,zero,.L758
 	sub	op_0,x0,a2
 	sub	a0,a5,op_0
 	sub	op_0,x0,a4
@@ -5938,8 +5913,7 @@ processMarkers:
 	sb	a2,74(s6)
 	addi	op_0,x0,1
 	sll	a5,a5,op_0
-	bne	a3,zero,.+8
-	jal	x0,.L759
+	beq	a3,zero,.L759
 	sub	op_0,x0,a3
 	sub	a0,a5,op_0
 	sub	op_0,x0,a4
@@ -5948,7 +5922,7 @@ processMarkers:
 	addi	a3,a4,0
 	addi	a1,a0,-1
 	addi	op_0,x0,255
-	and	a4,a6,op_0
+	and	a4,op_0,a6
 	addi	a5,a0,0
 .L720:
 	sh	a2,22(s6)
@@ -5957,8 +5931,7 @@ processMarkers:
 	sb	a3,75(s6)
 	addi	op_0,x0,1
 	sll	a5,a5,op_0
-	bne	a2,zero,.+8
-	jal	x0,.L760
+	beq	a2,zero,.L760
 	sub	op_0,x0,a2
 	sub	a0,a5,op_0
 	sub	op_0,x0,a4
@@ -5967,7 +5940,7 @@ processMarkers:
 	addi	a2,a4,0
 	addi	a1,a0,-1
 	addi	op_0,x0,255
-	and	a4,op_0,a6
+	and	a4,a6,op_0
 	addi	a5,a0,0
 .L721:
 	sh	a3,24(s6)
@@ -5976,8 +5949,7 @@ processMarkers:
 	sb	a2,76(s6)
 	addi	op_0,x0,1
 	sll	a5,a5,op_0
-	bne	a3,zero,.+8
-	jal	x0,.L761
+	beq	a3,zero,.L761
 	sub	op_0,x0,a3
 	sub	a0,a5,op_0
 	sub	op_0,x0,a4
@@ -5996,8 +5968,7 @@ processMarkers:
 	addi	op_0,x0,1
 	sll	a5,a5,op_0
 	addi	a1,s9,-1
-	bne	a2,zero,.+8
-	jal	x0,.L723
+	beq	a2,zero,.L723
 	sub	op_0,x0,a2
 	sub	a3,a5,op_0
 	sub	op_0,x0,a4
@@ -6006,7 +5977,7 @@ processMarkers:
 	addi	a2,a4,0
 	addi	a1,a3,-1
 	addi	op_0,x0,255
-	and	a4,a0,op_0
+	and	a4,op_0,a0
 	addi	a5,a3,0
 .L723:
 	lw	a0,4(sp)
@@ -6014,8 +5985,7 @@ processMarkers:
 	sh	a1,60(s6)
 	sh	a0,28(s6)
 	sb	a2,78(s6)
-	bne	a3,zero,.+8
-	jal	x0,.L724
+	beq	a3,zero,.L724
 	addi	op_0,x0,1
 	sll	a5,a5,op_0
 	sub	op_0,x0,a3
@@ -6024,7 +5994,8 @@ processMarkers:
 	sh	a3,62(s6)
 	sh	a5,30(s6)
 	sb	a4,79(s6)
-	bne	s11,zero,.L726
+	beq	s11,zero,.+8
+	jal	x0,.L726
 .L800:
 	lw	s6,64(sp)
 	lw	s8,56(sp)
@@ -6038,8 +6009,7 @@ processMarkers:
 	jal	x0,.L705
 .L805:
 	addi	a5,zero,1
-	bne	a4,a5,.+8
-	jal	x0,.L745
+	beq	a4,a5,.L745
 	addi	a5,a4,64
 	addi	op_0,x0,255
 	and	a5,a5,op_0
@@ -6066,7 +6036,8 @@ processMarkers:
 	sh	zero,30(s6)
 	sb	zero,79(s6)
 	sh	a5,62(s6)
-	bne	s11,zero,.L726
+	beq	s11,zero,.+8
+	jal	x0,.L726
 	jal	x0,.L800
 .L759:
 	addi	a2,zero,0
@@ -6129,8 +6100,7 @@ processMarkers:
 	sll	s9,a0,op_0
 	addi	op_0,x0,16
 	srl	s9,s9,op_0
-	bne	s9,zero,.+8
-	jal	x0,.L798
+	beq	s9,zero,.L798
 	lui	a5,%hi(.LANCHOR1)
 	addi	a5,a5,%lo(.LANCHOR1)
 	sw	s10,48(sp)
@@ -6150,13 +6120,15 @@ processMarkers:
 	and	a5,op_0,a0
 	addi	op_0,x0,255
 	and	a0,op_0,a0
-	bne	a5,zero,.L800
+	beq	a5,zero,.+8
+	jal	x0,.L800
 	addi	op_0,x0,15
-	and	a5,a0,op_0
+	and	a5,op_0,a0
 	addi	op_0,x0,4
 	srl	s6,a0,op_0
 	lui	a4,%hi(gValidQuantTables)
-	bne	a5,zero,.L728
+	beq	a5,zero,.+8
+	jal	x0,.L728
 	lbu	a5,%lo(gValidQuantTables)(a4)
 	addi	op_2,x0,1
 	and	op_1,a5,op_2
@@ -6164,7 +6136,8 @@ processMarkers:
 	sub	op_0,op_1,op_3
 	sub	a5,a5,op_0
 	sb	a5,%lo(gValidQuantTables)(a4)
-	bne	s6,zero,.L807
+	beq	s6,zero,.+8
+	jal	x0,.L807
 	addi	a5,s10,1280
 	sw	a5,0(sp)
 	addi	s8,a5,0
@@ -6176,7 +6149,8 @@ processMarkers:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_54)
 	sh	a0,0(s8)
 	addi	s8,s8,2
-	bne	s5,s8,.L733
+	beq	s5,s8,.+8
+	jal	x0,.L733
 .L734:
 	lw	a4,0(sp)
 .L743:
@@ -6192,7 +6166,8 @@ processMarkers:
 	addi	op_0,x0,3
 	sra	a5,a5,op_0
 	sh	a5,-2(a4)
-	bne	s4,a3,.L739
+	beq	s4,a3,.+8
+	jal	x0,.L739
 	bltu	zero,s6,.+8
 	jal	x0,.+8
 	jal	x0,.+12
@@ -6208,7 +6183,8 @@ processMarkers:
 	sll	s9,a5,op_0
 	addi	op_0,x0,16
 	srl	s9,s9,op_0
-	bne	s9,zero,.L741
+	beq	s9,zero,.+8
+	jal	x0,.L741
 	jal	x0,.L800
 .L728:
 	lbu	a5,%lo(gValidQuantTables)(a4)
@@ -6220,7 +6196,8 @@ processMarkers:
 	sub	op_0,op_1,op_3
 	sub	a5,a5,op_0
 	sb	a5,%lo(gValidQuantTables)(a4)
-	bne	s6,zero,.L808
+	beq	s6,zero,.+8
+	jal	x0,.L808
 .L735:
 	addi	a0,zero,0
 .Lpcrel_55:
@@ -6228,7 +6205,8 @@ processMarkers:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_55)
 	sh	a0,0(s8)
 	addi	s8,s8,2
-	bne	s5,s8,.L735
+	beq	s5,s8,.+8
+	jal	x0,.L735
 	addi	a4,s10,1152
 	jal	x0,.L743
 .L808:
@@ -6249,7 +6227,8 @@ processMarkers:
 	sub	a0,s5,op_0
 	sh	a0,0(s11)
 	addi	s11,s11,2
-	bne	s8,s11,.L738
+	beq	s8,s11,.+8
+	jal	x0,.L738
 	addi	a4,s10,1152
 	jal	x0,.L743
 .L807:
@@ -6272,7 +6251,8 @@ processMarkers:
 	sub	a0,s5,op_0
 	sh	a0,0(s11)
 	addi	s11,s11,2
-	bne	s8,s11,.L737
+	beq	s8,s11,.+8
+	jal	x0,.L737
 	jal	x0,.L734
 .L697:
 .Lpcrel_60:
@@ -6286,8 +6266,7 @@ processMarkers:
 	sll	s4,a0,op_0
 	addi	op_0,x0,16
 	srl	s4,s4,op_0
-	bne	s4,zero,.+8
-	jal	x0,.L687
+	beq	s4,zero,.L687
 .L742:
 	addi	s4,s4,-1
 	addi	op_0,x0,16
@@ -6298,7 +6277,8 @@ processMarkers:
 .Lpcrel_61:
 	auipc	ra,%pcrel_hi(getBits.constprop.0)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_61)
-	bne	s4,zero,.L742
+	beq	s4,zero,.+8
+	jal	x0,.L742
 	jal	x0,.L687
 .L798:
 	lw	s9,52(sp)
@@ -6310,11 +6290,13 @@ processMarkers:
 pjpeg_decode_mcu:
 	lui	a5,%hi(gCallbackStatus)
 	lbu	a0,%lo(gCallbackStatus)(a5)
-	bne	a0,zero,.L818
+	beq	a0,zero,.+8
+	jal	x0,.L818
 	lui	a4,%hi(gNumMCUSRemaining)
 	lhu	a3,%lo(gNumMCUSRemaining)(a4)
 	addi	a0,zero,1
-	bne	a3,zero,.L821
+	beq	a3,zero,.+8
+	jal	x0,.L821
 .L818:
 	jalr	zero,ra,0
 .L821:
@@ -6325,9 +6307,11 @@ pjpeg_decode_mcu:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_62)
 	lui	a5,%hi(gCallbackStatus)
 	lbu	a5,%lo(gCallbackStatus)(a5)
-	bne	a0,zero,.L811
+	beq	a0,zero,.+8
+	jal	x0,.L811
 	lui	a4,%hi(gNumMCUSRemaining)
-	bne	a5,zero,.L812
+	beq	a5,zero,.+8
+	jal	x0,.L812
 	lhu	a3,%lo(gNumMCUSRemaining)(a4)
 	addi	a3,a3,-1
 	sh	a3,%lo(gNumMCUSRemaining)(a4)
@@ -6338,8 +6322,7 @@ pjpeg_decode_mcu:
 	addi	sp,sp,16
 	jalr	zero,ra,0
 .L811:
-	bne	a5,zero,.+8
-	jal	x0,.L810
+	beq	a5,zero,.L810
 	jal	x0,.L812
 	.size	pjpeg_decode_mcu, .-pjpeg_decode_mcu
 	.align	2
@@ -6408,8 +6391,7 @@ pjpeg_decode_init:
 	auipc	ra,%pcrel_hi(getBits.constprop.0)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_64)
 	lbu	s3,%lo(gCallbackStatus)(s0)
-	bne	s3,zero,.+8
-	jal	x0,.L961
+	beq	s3,zero,.L961
 .L913:
 	lw	ra,92(sp)
 	lw	s0,88(sp)
@@ -6432,25 +6414,27 @@ pjpeg_decode_init:
 .Lpcrel_66:
 	auipc	ra,%pcrel_hi(getBits.constprop.0)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_66)
-	bne	s1,zero,.L824
+	beq	s1,zero,.+8
+	jal	x0,.L824
 	addi	a5,a0,-216
-	bne	a5,zero,.L824
+	beq	a5,zero,.+8
+	jal	x0,.L824
 .L832:
 	addi	a0,sp,31
 .Lpcrel_67:
 	auipc	ra,%pcrel_hi(processMarkers)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_67)
 	addi	s3,a0,0
-	bne	a0,zero,.L825
+	beq	a0,zero,.+8
+	jal	x0,.L825
 	lbu	a4,31(sp)
 	addi	a3,zero,194
-	bne	a4,a3,.+8
-	jal	x0,.L876
+	beq	a4,a3,.L876
 	addi	a3,zero,201
-	bne	a4,a3,.+8
-	jal	x0,.L877
+	beq	a4,a3,.L877
 	addi	a3,zero,192
-	bne	a4,a3,.L878
+	beq	a4,a3,.+8
+	jal	x0,.L878
 	sw	s2,80(sp)
 .Lpcrel_68:
 	auipc	ra,%pcrel_hi(getBits.constprop.1)
@@ -6462,8 +6446,7 @@ pjpeg_decode_init:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_69)
 	addi	a4,zero,8
 	addi	s2,a0,0
-	bne	a0,a4,.+8
-	jal	x0,.L962
+	beq	a0,a4,.L962
 	lw	s2,80(sp)
 	addi	s3,zero,7
 	jal	x0,.L825
@@ -6483,13 +6466,12 @@ pjpeg_decode_init:
 	addi	s1,zero,216
 	addi	s3,zero,217
 	addi	op_0,x0,255
-	and	s8,a0,op_0
+	and	s8,op_0,a0
 	jal	x0,.L827
 .L830:
 	addi	op_0,x0,255
 	and	s8,op_0,a4
-	bne	s5,zero,.+8
-	jal	x0,.L875
+	beq	s5,zero,.L875
 .L827:
 	lbu	a4,%lo(gBitsLeft)(s10)
 	addi	s9,a5,0
@@ -6510,10 +6492,11 @@ pjpeg_decode_init:
 	srl	s5,s5,op_0
 	addi	op_0,x0,8
 	sra	a4,s9,op_0
-	bne	s8,s7,.L830
-	bne	a4,s1,.+8
-	jal	x0,.L831
-	bne	a4,s3,.L830
+	beq	s8,s7,.+8
+	jal	x0,.L830
+	beq	a4,s1,.L831
+	beq	a4,s3,.+8
+	jal	x0,.L830
 .L875:
 	lw	s2,80(sp)
 	lw	s5,68(sp)
@@ -6523,7 +6506,8 @@ pjpeg_decode_init:
 	addi	s3,zero,19
 .L825:
 	lbu	a4,%lo(gCallbackStatus)(s0)
-	bne	a4,zero,.L964
+	beq	a4,zero,.+8
+	jal	x0,.L964
 	lw	s1,84(sp)
 	jal	x0,.L913
 .L963:
@@ -6552,7 +6536,8 @@ pjpeg_decode_init:
 	addi	op_0,x0,8
 	srl	a5,a5,op_0
 	lw	s8,4(sp)
-	bne	a5,s9,.L875
+	beq	a5,s9,.+8
+	jal	x0,.L875
 	lw	s2,80(sp)
 	lw	s5,68(sp)
 	lw	s6,64(sp)
@@ -6605,9 +6590,9 @@ pjpeg_decode_init:
 	sub	a4,a0,op_0
 	sub	op_0,x0,a4
 	sub	a4,s2,op_0
-	bne	s1,a4,.L883
-	bne	a0,zero,.+8
-	jal	x0,.L833
+	beq	s1,a4,.+8
+	jal	x0,.L883
+	beq	a0,zero,.L833
 	lui	a5,%hi(gCompVSamp)
 	lui	a4,%hi(gCompQuant)
 	addi	s5,a5,%lo(gCompVSamp)
@@ -6699,27 +6684,30 @@ pjpeg_decode_init:
 	lbu	s3,%lo(gCallbackStatus)(s0)
 	sw	s7,60(sp)
 	sw	s9,52(sp)
-	bne	s3,zero,.L957
-	bne	a3,a4,.+8
-	jal	x0,.L967
+	beq	s3,zero,.+8
+	jal	x0,.L957
+	beq	a3,a4,.L967
 	addi	a5,zero,3
-	bne	a3,a5,.L949
+	beq	a3,a5,.+8
+	jal	x0,.L949
 	lbu	a3,1(t3)
 	addi	s3,zero,27
-	bne	a3,a4,.L957
+	beq	a3,a4,.+8
+	jal	x0,.L957
 	lbu	a3,1(t5)
-	bne	a3,a4,.L957
+	beq	a3,a4,.+8
+	jal	x0,.L957
 	lbu	a3,2(t3)
-	bne	a3,a4,.L957
+	beq	a3,a4,.+8
+	jal	x0,.L957
 	lbu	a3,2(t5)
-	bne	a3,a4,.L957
+	beq	a3,a4,.+8
+	jal	x0,.L957
 	lbu	a3,%lo(gCompHSamp)(t4)
-	bne	a3,a4,.+8
-	jal	x0,.L968
+	beq	a3,a4,.L968
 	addi	a4,zero,2
 	addi	s3,zero,27
-	bne	a3,a4,.+8
-	jal	x0,.L969
+	beq	a3,a4,.L969
 .L957:
 	lw	s1,84(sp)
 	lw	s2,80(sp)
@@ -6731,10 +6719,12 @@ pjpeg_decode_init:
 .L967:
 	lbu	a3,%lo(gCompHSamp)(t4)
 	addi	s3,zero,27
-	bne	a3,a4,.L957
+	beq	a3,a4,.+8
+	jal	x0,.L957
 	lui	a5,%hi(gCompVSamp)
 	lbu	a3,%lo(gCompVSamp)(a5)
-	bne	a3,a4,.L957
+	beq	a3,a4,.+8
+	jal	x0,.L957
 	lui	a5,%hi(gMaxBlocksPerMCU)
 	lui	s2,%hi(gScanType)
 	sb	a4,%lo(gMaxBlocksPerMCU)(a5)
@@ -6782,11 +6772,13 @@ pjpeg_decode_init:
 	auipc	ra,%pcrel_hi(processMarkers)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_78)
 	addi	s3,a0,0
-	bne	a0,zero,.L847
+	beq	a0,zero,.+8
+	jal	x0,.L847
 	lbu	a4,31(sp)
 	addi	a5,zero,218
 	addi	s3,zero,18
-	bne	a4,a5,.L847
+	beq	a4,a5,.+8
+	jal	x0,.L847
 .Lpcrel_79:
 	auipc	ra,%pcrel_hi(getBits.constprop.1)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_79)
@@ -6805,7 +6797,8 @@ pjpeg_decode_init:
 	srl	s3,s3,op_0
 	sb	a0,%lo(gCompsInScan)(a5)
 	addi	a4,a4,3
-	bne	s3,a4,.L850
+	beq	s3,a4,.+8
+	jal	x0,.L850
 	addi	a4,a0,-1
 	addi	op_0,x0,16
 	sll	a4,a4,op_0
@@ -6831,34 +6824,27 @@ pjpeg_decode_init:
 	auipc	ra,%pcrel_hi(getBits.constprop.0)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_82)
 	lbu	a4,%lo(gCompsInFrame)(s4)
-	bne	a4,zero,.+8
-	jal	x0,.L851
+	beq	a4,zero,.L851
 	lui	a2,%hi(gCompIdent)
 	lbu	a3,%lo(gCompIdent)(a2)
 	addi	op_0,x0,255
-	and	a5,op_0,s1
-	bne	a3,a5,.+8
-	jal	x0,.L896
+	and	a5,s1,op_0
+	beq	a3,a5,.L896
 	addi	a3,zero,1
-	bne	a4,a3,.+8
-	jal	x0,.L851
+	beq	a4,a3,.L851
 	addi	a3,a2,%lo(gCompIdent)
 	lbu	a3,1(a3)
-	bne	a3,a5,.+8
-	jal	x0,.L897
+	beq	a3,a5,.L897
 	addi	a3,zero,2
-	bne	a4,a3,.+8
-	jal	x0,.L851
+	beq	a4,a3,.L851
 	addi	a4,a2,%lo(gCompIdent)
 	lbu	a4,2(a4)
-	bne	a4,a5,.+8
-	jal	x0,.L970
+	beq	a4,a5,.L970
 .L851:
 	addi	s3,zero,15
 .L847:
 	lbu	a4,%lo(gCallbackStatus)(s0)
-	bne	a4,zero,.+8
-	jal	x0,.L957
+	beq	a4,zero,.L957
 	addi	s3,a4,0
 	jal	x0,.L957
 .L970:
@@ -6877,11 +6863,11 @@ pjpeg_decode_init:
 	lbu	a3,%lo(gCompsInScan)(a3)
 	addi	s6,s6,1
 	addi	op_0,x0,15
-	and	a5,a5,op_0
+	and	a5,op_0,a5
 	sub	op_0,x0,s5
 	sub	a4,a4,op_0
 	addi	op_0,x0,255
-	and	s6,op_0,s6
+	and	s6,s6,op_0
 	sb	a5,0(a4)
 	addi	s7,s7,1
 	bltu	s6,a3,.+8
@@ -6905,11 +6891,11 @@ pjpeg_decode_init:
 	lui	a5,%hi(gCompVSamp)
 	lbu	a4,%lo(gCompVSamp)(a5)
 	addi	a5,zero,1
-	bne	a4,a5,.+8
-	jal	x0,.L972
+	beq	a4,a5,.L972
 	addi	a3,zero,2
 	addi	s3,zero,27
-	bne	a4,a3,.L957
+	beq	a4,a3,.+8
+	jal	x0,.L957
 	addi	a5,zero,3
 	lui	s2,%hi(gScanType)
 	addi	a4,zero,4
@@ -6926,9 +6912,9 @@ pjpeg_decode_init:
 	lui	a5,%hi(gCompVSamp)
 	lbu	a4,%lo(gCompVSamp)(a5)
 	addi	a1,zero,1
-	bne	a4,a1,.+8
-	jal	x0,.L973
-	bne	a4,a3,.L957
+	beq	a4,a1,.L973
+	beq	a4,a3,.+8
+	jal	x0,.L957
 	lui	a5,%hi(gMCUOrg)
 	addi	a4,a5,%lo(gMCUOrg)
 	sw	zero,%lo(gMCUOrg)(a5)
@@ -6988,8 +6974,7 @@ pjpeg_decode_init:
 	addi	op_0,x0,16
 	srl	s1,s1,op_0
 	sb	a0,%lo(successive_low)(a4)
-	bne	s1,zero,.+8
-	jal	x0,.L854
+	beq	s1,zero,.L854
 .L855:
 	addi	s1,s1,-1
 	addi	op_0,x0,16
@@ -7000,12 +6985,12 @@ pjpeg_decode_init:
 .Lpcrel_87:
 	auipc	ra,%pcrel_hi(getBits.constprop.0)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_87)
-	bne	s1,zero,.L855
+	beq	s1,zero,.+8
+	jal	x0,.L855
 .L854:
 	lui	a5,%hi(gCompsInScan)
 	lbu	t1,%lo(gCompsInScan)(a5)
-	bne	t1,zero,.+8
-	jal	x0,.L856
+	beq	t1,zero,.L856
 	lui	a2,%hi(gCompList)
 	lbu	a5,%lo(gCompList)(a2)
 	lui	a4,%hi(gValidHuffTables)
@@ -7024,9 +7009,9 @@ pjpeg_decode_init:
 	sub	op_0,op_1,a1
 	sub	a3,a3,op_0
 	and	a1,a0,a3
-	bne	a1,a3,.L901
-	bne	t1,a4,.+8
-	jal	x0,.L857
+	beq	a1,a3,.+8
+	jal	x0,.L901
+	beq	t1,a4,.L857
 	addi	a3,a2,%lo(gCompList)
 	lbu	a1,1(a3)
 	sub	op_0,x0,s5
@@ -7042,10 +7027,10 @@ pjpeg_decode_init:
 	sub	op_0,op_1,a1
 	sub	a3,a3,op_0
 	and	a1,a0,a3
-	bne	a1,a3,.L901
+	beq	a1,a3,.+8
+	jal	x0,.L901
 	addi	a3,zero,2
-	bne	t1,a3,.+8
-	jal	x0,.L858
+	beq	t1,a3,.L858
 	addi	a3,a2,%lo(gCompList)
 	lbu	a3,2(a3)
 	sub	op_0,x0,s5
@@ -7061,7 +7046,8 @@ pjpeg_decode_init:
 	sub	op_0,op_1,a4
 	sub	a4,a3,op_0
 	and	a0,a0,a4
-	bne	a0,a4,.L901
+	beq	a0,a4,.+8
+	jal	x0,.L901
 .L858:
 	lw	a4,4(sp)
 	sub	op_0,x0,a4
@@ -7069,12 +7055,10 @@ pjpeg_decode_init:
 	lbu	a5,0(a5)
 	lui	a4,%hi(gValidQuantTables)
 	lbu	a4,%lo(gValidQuantTables)(a4)
-	bne	a5,zero,.+8
-	jal	x0,.L974
+	beq	a5,zero,.L974
 	addi	op_0,x0,2
-	and	a5,a4,op_0
-	bne	a5,zero,.+8
-	jal	x0,.L911
+	and	a5,op_0,a4
+	beq	a5,zero,.L911
 .L864:
 	lui	a3,%hi(gCompList)
 	addi	a5,a3,%lo(gCompList)
@@ -7083,30 +7067,31 @@ pjpeg_decode_init:
 	sub	op_0,x0,a2
 	sub	a5,a5,op_0
 	lbu	a5,0(a5)
-	bltu	zero,a5,.+12
+	bltu	zero,a5,.+8
+	jal	x0,.+8
+	jal	x0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
 	addi	a5,a5,1
 	and	a5,a4,a5
-	bne	a5,zero,.+8
-	jal	x0,.L911
+	beq	a5,zero,.L911
 	addi	a5,zero,2
-	bne	t1,a5,.+8
-	jal	x0,.L856
+	beq	t1,a5,.L856
 	addi	a5,a3,%lo(gCompList)
 	lbu	a5,2(a5)
 	sub	op_0,x0,a2
 	sub	a5,a5,op_0
-	lbu	a5,0(a5)
+	addi	op_0,x0,255
+	lw	op_1,0(a5)
+	and	a5,op_0,op_1
 	bltu	zero,a5,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
 	addi	a5,a5,1
 	and	a5,a5,a4
-	bne	a5,zero,.+8
-	jal	x0,.L911
+	beq	a5,zero,.L911
 .L856:
 	lui	a5,%hi(gRestartInterval)
 	lhu	a4,%lo(gRestartInterval)(a5)
@@ -7114,8 +7099,7 @@ pjpeg_decode_init:
 	sw	zero,%lo(gLastDC)(a5)
 	addi	a5,a5,%lo(gLastDC)
 	sh	zero,4(a5)
-	bne	a4,zero,.+8
-	jal	x0,.L867
+	beq	a4,zero,.L867
 	lui	a5,%hi(gRestartsLeft)
 	sh	a4,%lo(gRestartsLeft)(a5)
 	lui	a5,%hi(gNextRestartNum)
@@ -7127,7 +7111,8 @@ pjpeg_decode_init:
 	lhu	a3,%lo(gBitBuf)(s11)
 	lbu	a5,%lo(gInBufOfs)(a5)
 	lbu	a4,%lo(gInBufLeft)(a4)
-	bne	a1,zero,.L940
+	beq	a1,zero,.+8
+	jal	x0,.L940
 	lui	s1,%hi(.LANCHOR0)
 	addi	s1,s1,%lo(.LANCHOR0)
 .L868:
@@ -7155,7 +7140,8 @@ pjpeg_decode_init:
 	auipc	ra,%pcrel_hi(getBits.constprop.0)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_89)
 	lbu	s3,%lo(gCallbackStatus)(s0)
-	bne	s3,zero,.L957
+	beq	s3,zero,.+8
+	jal	x0,.L957
 	lui	a5,%hi(gImageXSize)
 	lhu	t5,%lo(gImageXSize)(a5)
 	lui	a5,%hi(gImageYSize)
@@ -7205,8 +7191,9 @@ pjpeg_decode_init:
 	jal	x0,.L852
 .L974:
 	addi	op_0,x0,1
-	and	a5,op_0,a4
-	bne	a5,zero,.L864
+	and	a5,a4,op_0
+	beq	a5,zero,.+8
+	jal	x0,.L864
 .L911:
 	addi	s3,zero,23
 	jal	x0,.L847
@@ -7240,8 +7227,7 @@ pjpeg_decode_init:
 	jal	x0,.L847
 .L833:
 	lbu	s3,%lo(gCallbackStatus)(s0)
-	bne	s3,zero,.+8
-	jal	x0,.L839
+	beq	s3,zero,.L839
 	lw	s1,84(sp)
 	lw	s2,80(sp)
 	lw	s5,68(sp)
@@ -7253,17 +7239,18 @@ pjpeg_decode_init:
 	lbu	a4,0(a5)
 	lui	a5,%hi(gValidQuantTables)
 	lbu	a5,%lo(gValidQuantTables)(a5)
-	bne	a4,zero,.+8
-	jal	x0,.L863
+	beq	a4,zero,.L863
 	addi	op_0,x0,2
 	and	a5,op_0,a5
-	bne	a5,zero,.L856
+	beq	a5,zero,.+8
+	jal	x0,.L856
 	addi	s3,zero,23
 	jal	x0,.L847
 .L863:
 	addi	op_0,x0,1
 	and	a5,a5,op_0
-	bne	a5,zero,.L856
+	beq	a5,zero,.+8
+	jal	x0,.L856
 	addi	s3,zero,23
 	jal	x0,.L847
 	.size	pjpeg_decode_init, .-pjpeg_decode_init
@@ -7298,10 +7285,8 @@ benchmark_body.constprop.0.isra.0:
 	auipc	ra,%pcrel_hi(pjpeg_decode_init)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_90)
 	lbu	a5,%lo(gCallbackStatus)(s2)
-	bne	a5,zero,.+8
-	jal	x0,.L977
-	bne	a5,s3,.+8
-	jal	x0,.L988
+	beq	a5,zero,.L977
+	beq	a5,s3,.L988
 .L992:
 	jal	x0,.L992
 .L980:
@@ -7309,17 +7294,21 @@ benchmark_body.constprop.0.isra.0:
 	auipc	ra,%pcrel_hi(decodeNextMCU)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_91)
 	lbu	a5,%lo(gCallbackStatus)(s2)
-	bne	a0,zero,.L983
-	bne	a5,zero,.L994
+	beq	a0,zero,.+8
+	jal	x0,.L983
+	beq	a5,zero,.+8
+	jal	x0,.L994
 	lhu	a5,%lo(gNumMCUSRemaining)(s1)
 	addi	a5,a5,-1
 	sh	a5,%lo(gNumMCUSRemaining)(s1)
 .L977:
 	lhu	a5,%lo(gNumMCUSRemaining)(s1)
-	bne	a5,zero,.L980
+	beq	a5,zero,.+8
+	jal	x0,.L980
 .L988:
 	addi	s0,s0,-1
-	bne	s0,zero,.L981
+	beq	s0,zero,.+8
+	jal	x0,.L981
 	lw	ra,28(sp)
 	lw	s0,24(sp)
 	lw	s1,20(sp)
@@ -7331,22 +7320,18 @@ benchmark_body.constprop.0.isra.0:
 	addi	sp,sp,32
 	jalr	zero,ra,0
 .L983:
-	bne	a5,zero,.+8
-	jal	x0,.L977
+	beq	a5,zero,.L977
 	addi	a4,zero,1
-	bne	a5,a4,.+8
-	jal	x0,.L988
+	beq	a5,a4,.L988
 	jal	x0,.L992
 .L994:
-	bne	a5,s3,.+8
-	jal	x0,.L988
+	beq	a5,s3,.L988
 	jal	x0,.L992
 	.size	benchmark_body.constprop.0.isra.0, .-benchmark_body.constprop.0.isra.0
 	.align	2
 	.type	benchmark_body.isra.0, @function
 benchmark_body.isra.0:
-	blt	zero,a0,.+8
-	jal	x0,.L1014
+	bge	zero,a0,.L1014
 	addi	sp,sp,-48
 	sw	s5,20(sp)
 	sw	s6,16(sp)
@@ -7377,10 +7362,8 @@ benchmark_body.isra.0:
 	auipc	ra,%pcrel_hi(pjpeg_decode_init)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_92)
 	lbu	a5,%lo(gCallbackStatus)(s2)
-	bne	a5,zero,.+8
-	jal	x0,.L998
-	bne	a5,s4,.+8
-	jal	x0,.L1008
+	beq	a5,zero,.L998
+	beq	a5,s4,.L1008
 .L1012:
 	jal	x0,.L1012
 .L1001:
@@ -7388,17 +7371,21 @@ benchmark_body.isra.0:
 	auipc	ra,%pcrel_hi(decodeNextMCU)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_93)
 	lbu	a5,%lo(gCallbackStatus)(s2)
-	bne	a0,zero,.L1003
-	bne	a5,zero,.L1017
+	beq	a0,zero,.+8
+	jal	x0,.L1003
+	beq	a5,zero,.+8
+	jal	x0,.L1017
 	lhu	a5,%lo(gNumMCUSRemaining)(s1)
 	addi	a5,a5,-1
 	sh	a5,%lo(gNumMCUSRemaining)(s1)
 .L998:
 	lhu	a5,%lo(gNumMCUSRemaining)(s1)
-	bne	a5,zero,.L1001
+	beq	a5,zero,.+8
+	jal	x0,.L1001
 .L1008:
 	addi	s0,s0,1
-	bne	s0,s3,.L996
+	beq	s0,s3,.+8
+	jal	x0,.L996
 	lw	ra,44(sp)
 	lw	s0,40(sp)
 	lw	s1,36(sp)
@@ -7411,15 +7398,12 @@ benchmark_body.isra.0:
 	addi	sp,sp,48
 	jalr	zero,ra,0
 .L1003:
-	bne	a5,zero,.+8
-	jal	x0,.L998
+	beq	a5,zero,.L998
 	addi	a4,zero,1
-	bne	a5,a4,.+8
-	jal	x0,.L1008
+	beq	a5,a4,.L1008
 	jal	x0,.L1012
 .L1017:
-	bne	a5,s4,.+8
-	jal	x0,.L1008
+	beq	a5,s4,.L1008
 	jal	x0,.L1012
 .L1014:
 	jalr	zero,ra,0
@@ -7458,8 +7442,10 @@ verify_benchmark:
 	lbu	a3,0(a5)
 	addi	a4,a4,1
 	addi	a5,a5,1
-	bne	a2,a3,.L1031
-	bne	a5,a1,.L1025
+	beq	a2,a3,.+8
+	jal	x0,.L1031
+	beq	a5,a1,.+8
+	jal	x0,.L1025
 	lw	a4,-1788(a6)
 	addi	a5,a0,860
 	addi	a1,a0,924
@@ -7468,8 +7454,10 @@ verify_benchmark:
 	lbu	a3,0(a5)
 	addi	a4,a4,1
 	addi	a5,a5,1
-	bne	a2,a3,.L1031
-	bne	a5,a1,.L1028
+	beq	a2,a3,.+8
+	jal	x0,.L1031
+	beq	a5,a1,.+8
+	jal	x0,.L1028
 	addi	a5,a0,925
 	lw	a4,-1784(a6)
 	addi	a0,a0,988
@@ -7481,8 +7469,10 @@ verify_benchmark:
 .L1030:
 	lbu	a3,0(a4)
 	addi	a4,a4,1
-	bne	a3,a2,.L1031
-	bne	a0,a5,.L1036
+	beq	a3,a2,.+8
+	jal	x0,.L1031
+	beq	a0,a5,.+8
+	jal	x0,.L1036
 	addi	a0,zero,1
 	jalr	zero,ra,0
 .L1031:
@@ -7894,8 +7884,7 @@ __mul:
 .Mul_loop:
 	addi	op_0,x0,1
 	and	a3,op_0,a1
-	bne	a3,x0,.+8
-	jal	x0,.Mul_skip
+	beq	a3,x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
 .Mul_skip:
@@ -7903,6 +7892,7 @@ __mul:
 	srl	a1,a1,op_0
 	addi	op_0,x0,1
 	sll	a2,a2,op_0
-	bne	a1,x0,.Mul_loop
+	beq	a1,x0,.+8
+	jal	x0,.Mul_loop
 	jalr	x0,ra,0
 

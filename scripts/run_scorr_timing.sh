@@ -1,7 +1,7 @@
 #!/bin/bash
-# 对每个 program 运行一次 scorr（analyze_all_variants.py 单线程），
-# 将总耗时写到 timing.json program 级的 scorr_ms，
-# 并将均摊耗时写到每个 variant 的 extraction_ms 下面的 scorr_ms。
+# 对每个 program 的每个 variant 单独运行一次 scorr（analyze_one_variant.py），
+# 将每个 variant 的实际耗时写到 timing.json 对应 variant 的 scorr_ms，
+# 并将 program 级总耗时写到 program 级的 scorr_ms。
 #
 # 用法:
 #   ./run_scorr_timing.sh                      # 跑 timing.json 里所有程序
@@ -57,43 +57,95 @@ for PROG in "${PROGRAMS[@]}"; do
     fi
 
     echo -e "${CYAN}$PROG${NC}"
-    echo -e "  -> scorr (所有 variants 一次)..."
 
-    START=$(date +%s%N)
-    if python3 "$PROJECT_ROOT/analyze_all_variants.py" \
-            "$VARIANTS_DIR" "$PROG" "$OUTPUT_DIR" 1 \
-            > /tmp/scorr_${PROG}.log 2>&1; then
-        SCORR_OK="true"
-    else
-        SCORR_OK="false"
-        echo -e "  ${RED}✗ scorr 失败，见 /tmp/scorr_${PROG}.log${NC}"
+    # 枚举 variants 目录下的 variant_N（只取数字编号，不含 original/gp）
+    mapfile -t VARIANT_DIRS < <(ls -d "$VARIANTS_DIR"/variant_[0-9]* 2>/dev/null | sort -V)
+
+    if [ ${#VARIANT_DIRS[@]} -eq 0 ]; then
+        echo -e "${YELLOW}  跳过: 没有找到 variant_N 目录${NC}"
+        echo ""
+        continue
     fi
-    END=$(date +%s%N)
-    SCORR_MS=$(( (END - START) / 1000000 ))
-    echo -e "  scorr 耗时: ${SCORR_MS} ms (成功: $SCORR_OK)"
 
-    # 写入 timing.json：program 级记总耗时，每个 variant 记均摊耗时
-    python3 - "$TIMING_JSON" "$PROG" "$SCORR_MS" "$SCORR_OK" << 'PYEOF'
+    PROG_TOTAL_MS=0
+    PROG_OK="true"
+
+    # 收集每个 variant 的耗时，格式: "variant_idx scorr_ms ok"
+    VARIANT_RESULTS=()
+
+    for VDIR in "${VARIANT_DIRS[@]}"; do
+        VID=$(basename "$VDIR" | sed 's/variant_//')
+        echo -e "  -> variant_${VID}..."
+
+        START=$(date +%s%N)
+        if python3 "$SCRIPT_DIR/analyze_one_variant.py" \
+                "$VARIANTS_DIR" "$PROG" "$OUTPUT_DIR" "$VID" \
+                > /tmp/scorr_${PROG}_${VID}.log 2>&1; then
+            V_OK="true"
+        else
+            V_OK="false"
+            PROG_OK="false"
+            echo -e "  ${RED}✗ variant_${VID} 失败，见 /tmp/scorr_${PROG}_${VID}.log${NC}"
+        fi
+        END=$(date +%s%N)
+        V_MS=$(( (END - START) / 1000000 ))
+        PROG_TOTAL_MS=$(( PROG_TOTAL_MS + V_MS ))
+        echo -e "     耗时: ${V_MS} ms (成功: $V_OK)"
+
+        VARIANT_RESULTS+=("${VID} ${V_MS} ${V_OK}")
+    done
+
+    echo -e "  program 总耗时: ${PROG_TOTAL_MS} ms"
+
+    # 写入 timing.json：每个 variant 记实际耗时，program 级记总耗时
+    python3 - "$TIMING_JSON" "$PROG" "$PROG_TOTAL_MS" "$PROG_OK" "${VARIANT_RESULTS[@]}" << 'PYEOF'
 import json, sys
 
-path, prog, scorr_ms, scorr_ok = sys.argv[1], sys.argv[2], int(sys.argv[3]), sys.argv[4] == "true"
+path   = sys.argv[1]
+prog   = sys.argv[2]
+total_ms = int(sys.argv[3])
+prog_ok  = sys.argv[4] == "true"
+# 剩余参数每个格式: "vid ms ok"
+raw_variants = sys.argv[5:]
+
+variant_map = {}  # vid_str -> (ms, ok)
+for item in raw_variants:
+    parts = item.split()
+    vid, ms, ok = parts[0], int(parts[1]), parts[2] == "true"
+    variant_map[vid] = (ms, ok)
+
+import statistics as _st
 
 with open(path) as f:
     d = json.load(f)
 
 p = d["programs"][prog]
-variants = p["variants"]
-n = len(variants)
 
-# program 级：总耗时
-p["scorr_ms"] = scorr_ms
-p["scorr_ok"] = scorr_ok
+# program 级
+p["scorr_ms"] = total_ms
+p["scorr_ok"] = prog_ok
 
-# 每个 variant：均摊耗时（scorr 是对全部 variants 一次性跑的）
-per_variant_ms = round(scorr_ms / n) if n > 0 else scorr_ms
-for v in variants:
-    v["scorr_ms"] = per_variant_ms
-    v["scorr_ok"] = scorr_ok
+# 每个 variant 按顺序对应 variant_0, variant_1, ...
+scorr_ms_list = []
+for idx, v in enumerate(p["variants"]):
+    vid_str = str(idx)
+    if vid_str in variant_map:
+        v["scorr_ms"] = variant_map[vid_str][0]
+        v["scorr_ok"] = variant_map[vid_str][1]
+        if variant_map[vid_str][1]:
+            scorr_ms_list.append(variant_map[vid_str][0])
+
+# program 级 scorr 平均（仅成功 variant）
+p["scorr_ms_average"] = _st.mean(scorr_ms_list) if scorr_ms_list else None
+
+# 全局 scorr 平均（跨所有程序的成功 variant）
+all_scorr = [
+    v["scorr_ms"]
+    for pp in d["programs"].values()
+    for v in pp.get("variants", [])
+    if v.get("scorr_ok") and "scorr_ms" in v
+]
+d["summary"]["global_scorr_ms_average"] = _st.mean(all_scorr) if all_scorr else None
 
 with open(path, "w") as f:
     json.dump(d, f, indent=2, ensure_ascii=False)

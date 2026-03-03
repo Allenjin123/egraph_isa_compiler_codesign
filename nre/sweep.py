@@ -131,15 +131,27 @@ def sweep_parameters(
                     # 对于每个解，收集数据
                     for idx, (solution, obj_value) in enumerate(zip(solutions, obj_values)):
                         total_area, total_latency = calculate_total_area_latency(solution)
-                        
+
+                        # per-program 数据：每个程序分配到的芯片和成本
+                        per_program = {
+                            prog_name: {
+                                'chip_id': assign['chip_id'],
+                                'area': assign['area'],
+                                'latency': assign['latency'],
+                            }
+                            for prog_name, assign in solution.get('assignments', {}).items()
+                        }
+
                         result_entry = {
                             'alpha': alpha,
                             'area': total_area,
                             'latency': total_latency,
                             'objective_value': obj_value,
+                            'selected_chips': sorted(solution.get('selected_chips', [])),
+                            'per_program': per_program,
                             'solution_index': idx + 1 if len(solutions) > 1 else None
                         }
-                        
+
                         # 如果只有一个解，不包含 solution_index
                         if len(solutions) == 1:
                             result_entry.pop('solution_index', None)

@@ -37,29 +37,31 @@ countPrimes:
 	addi	a4,zero,3
 .L6:
 	callmul	a5,a7,a7
-	bge	a4,a5,.L7
+	blt	a4,a5,.+8
+	jal	x0,.L7
 	addi	a7,a7,-1
 	addi	a1,sp,0
 	addi	a2,sp,168
 	addi	a6,zero,0
 .L14:
 	lw	a3,0(a1)
-	bge	a7,a3,.+8
-	jal	x0,.L8
+	blt	a7,a3,.L8
 	lw	a5,0(a2)
-	bge	a5,a4,.L10
+	blt	a5,a4,.+8
+	jal	x0,.L10
 .L9:
 	sub	op_0,x0,a5
 	sub	a5,a3,op_0
-	bge	a5,a4,.+8
-	jal	x0,.L9
+	blt	a5,a4,.L9
 	sw	a5,0(a2)
 .L10:
-	beq	a4,a5,.L13
+	bne	a4,a5,.+8
+	jal	x0,.L13
 	addi	a6,a6,1
 	addi	a1,a1,4
 	addi	a2,a2,4
-	beq	t1,a6,.+8
+	bne	t1,a6,.+8
+	jal	x0,.+8
 	jal	x0,.L14
 	addi	sp,sp,336
 	jalr	zero,ra,0
@@ -68,8 +70,7 @@ countPrimes:
 	jal	x0,.L6
 .L8:
 	addi	a5,zero,41
-	bge	a5,t1,.+8
-	jal	x0,.L12
+	blt	a5,t1,.L12
 	callmul	a3,a4,a4
 	addi	op_0,x0,2
 	sll	a5,t1,op_0
@@ -101,7 +102,8 @@ benchmark_body.constprop.0:
 	.align	2
 	.type	benchmark_body.isra.0, @function
 benchmark_body.isra.0:
-	bge	zero,a0,.L29
+	blt	zero,a0,.+8
+	jal	x0,.L29
 	addi	sp,sp,-16
 	sw	s0,8(sp)
 	sw	s1,4(sp)
@@ -113,8 +115,7 @@ benchmark_body.isra.0:
 .Lpcrel_2:
 	auipc	ra,%pcrel_hi(countPrimes)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_2)
-	beq	s0,s1,.+8
-	jal	x0,.L26
+	bne	s0,s1,.L26
 	lw	ra,12(sp)
 	lw	s0,8(sp)
 	lw	s1,4(sp)
@@ -199,12 +200,13 @@ __mul:
 	sub	a2,x0,op_0
 	addi	a0,x0,0
 .Mul_loop:
-	addi	op_2,x0,1
-	or	op_1,a1,op_2
+	addi	op_0,x0,1
 	addi	op_3,x0,1
-	sub	op_0,op_1,op_3
-	sub	a3,a1,op_0
-	beq	a3,x0,.Mul_skip
+	or	op_2,op_3,a1
+	sub	op_1,op_2,a1
+	sub	a3,op_0,op_1
+	bne	a3,x0,.+8
+	jal	x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
 .Mul_skip:
@@ -212,7 +214,8 @@ __mul:
 	srl	a1,a1,op_0
 	addi	op_0,x0,1
 	sll	a2,a2,op_0
-	beq	a1,x0,.+8
+	bne	a1,x0,.+8
+	jal	x0,.+8
 	jal	x0,.Mul_loop
 	jalr	x0,ra,0
 

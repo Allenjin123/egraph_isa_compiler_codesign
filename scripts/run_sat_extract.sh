@@ -19,8 +19,7 @@ EXT_SCRIPT="$PROJECT_ROOT/Extractor/run_extractor.sh"
 OUTPUT_JSON="$SCRIPT_DIR/timing.json"
 
 # 默认 scale 列表（与 run_multi_scale_variants.sh 保持一致）
-DEFAULT_SCALES="0 0.0005"
-
+DEFAULT_SCALES="0 0.0001 0.0002 0.0005 0.001 0.0015 0.002 0.003 0.005 0.007 0.01 0.015 0.02 0.03 0.05 0.07 0.1 0.15 0.2 0.3 0.4 0.5 0.6 0.7 0.85 0.9 1"
 # 颜色
 GREEN='\033[0;32m'
 RED='\033[0;31m'
@@ -80,7 +79,7 @@ for PROG in "${PROGRAMS[@]}"; do
     # ---- 饱和步骤 3（每个程序只跑一次）----
     echo -e "  -> 饱和（步骤3）..."
     SAT_START=$(date +%s%N)
-    if bash "$SAT_SCRIPT" --steps 3 "$PROG" > /dev/null 2>&1; then
+    if bash "$SAT_SCRIPT" --steps 1,2,3 "$PROG" > /dev/null 2>&1; then
         SAT_OK="true"
     else
         SAT_OK="false"
@@ -165,19 +164,22 @@ for prog, rs in by_prog.items():
             ext_ms_list.append(r["extraction_ms"])
             all_ext_ms.append(r["extraction_ms"])
 
-    # 中位数（仅统计成功的）
-    ext_median = statistics.median(ext_ms_list) if ext_ms_list else None
+    # 中位数和平均值（仅统计成功的）
+    ext_median  = statistics.median(ext_ms_list) if ext_ms_list else None
+    ext_average = statistics.mean(ext_ms_list)   if ext_ms_list else None
 
     programs[prog] = {
         "insn_count":      rs[0]["insn_count"],
         "saturation_ms":   rs[0]["saturation_ms"],
         "saturation_ok":   rs[0]["saturation_ok"],
         "variants":        variants,
-        "extraction_ms_median": ext_median,
+        "extraction_ms_median":  ext_median,
+        "extraction_ms_average": ext_average,
     }
 
-# 全局中位数
-global_ext_median = statistics.median(all_ext_ms) if all_ext_ms else None
+# 全局中位数和平均值
+global_ext_median  = statistics.median(all_ext_ms) if all_ext_ms else None
+global_ext_average = statistics.mean(all_ext_ms)   if all_ext_ms else None
 
 output = {
     "scales": list(dict.fromkeys(r["scale"] for r in records)),  # 保持顺序去重
@@ -187,7 +189,8 @@ output = {
         "total_runs":            len(records),
         "sat_success":           sum(1 for p in programs.values() if p["saturation_ok"]),
         "ext_success":           sum(1 for r in records if r["extraction_ok"]),
-        "global_extraction_ms_median": global_ext_median,
+        "global_extraction_ms_median":  global_ext_median,
+        "global_extraction_ms_average": global_ext_average,
     }
 }
 

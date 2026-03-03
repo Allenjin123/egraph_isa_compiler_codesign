@@ -447,6 +447,14 @@ def main():
              "latency (minimize execution time, cost=latency*exec_count). "
              "(default: program_size)"
     )
+    parser.add_argument(
+        "--ban-ops",
+        nargs="*",
+        default=None,
+        metavar="OP",
+        help="List of operator names to ban (e.g. --ban-ops Mul Div). "
+             "Banned operators will be forced to 0 in the ILP."
+    )
     args = parser.parse_args()
 
     # Create output directories (append program name under the base output path)
@@ -470,6 +478,8 @@ def main():
     print(f"Solver: gurobi")
     print(f"Timeout: {args.timeout} seconds")
     print(f"Cost mode: {args.cost_mode}")
+    if args.ban_ops:
+        print(f"Banned ops: {sorted(args.ban_ops)}")
     print(f"Output directory: {output_dir}")
     print()
     
@@ -523,10 +533,14 @@ def main():
     # Generate ILP file
     lp_file = lp_dir / f"extraction.lp"
     
+    banned_ops = set(args.ban_ops) if args.ban_ops else set()
+    if banned_ops:
+        print(f"  Banned operators: {sorted(banned_ops)}")
+
     print(f"\nGenerating ILP file: {lp_file}")
     print(f"  Node cost scale: {args.node_cost_scale}")
     start_time = time.time()
-    generate_ilp_file(egraph, str(lp_file), node_cost_scale=args.node_cost_scale)
+    generate_ilp_file(egraph, str(lp_file), node_cost_scale=args.node_cost_scale, banned_ops=banned_ops)
     ilp_time = time.time() - start_time
     print(f"ILP generation completed (time: {ilp_time:.2f}s)")
     

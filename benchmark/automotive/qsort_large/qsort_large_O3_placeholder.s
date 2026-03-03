@@ -8,7 +8,8 @@
 	.align	2
 	.type	quicksort_range, @function
 quicksort_range:
-	bge	a1,a2,.L33
+	blt	a1,a2,.+8
+	jal	x0,.L33
 	addi	sp,sp,-80
 	sw	s1,68(sp)
 	sw	s2,64(sp)
@@ -40,8 +41,7 @@ quicksort_range:
 	addi	a2,s3,0
 	addi	s0,a1,0
 .L10:
-	bge	a2,s0,.+8
-	jal	x0,.L11
+	blt	a2,s0,.L11
 .L36:
 	addi	op_0,x0,1
 	sll	a4,s0,op_0
@@ -95,8 +95,7 @@ quicksort_range:
 .L22:
 	addi	a7,a6,0
 .L6:
-	bge	a2,s0,.+8
-	jal	x0,.L10
+	blt	a2,s0,.L10
 .L19:
 	lw	t5,0(a7)
 	lw	t4,4(a7)
@@ -130,11 +129,12 @@ quicksort_range:
 	sw	a6,12(a7)
 	sw	a4,16(a7)
 	sw	a5,20(a7)
-	bge	a2,s0,.L36
+	blt	a2,s0,.+8
+	jal	x0,.L36
 .L11:
-	bge	a1,a2,.+8
-	jal	x0,.L37
-	bge	s0,s3,.L38
+	blt	a1,a2,.L37
+	blt	s0,s3,.+8
+	jal	x0,.L38
 .L20:
 	addi	a1,s0,0
 	jal	x0,.L2
@@ -157,8 +157,7 @@ quicksort_range:
 	lw	a4,16(a7)
 	bgeu	t3,a4,.+8
 	jal	x0,.L17
-	bge	a2,s0,.+8
-	jal	x0,.L10
+	blt	a2,s0,.L10
 	jal	x0,.L19
 .L37:
 	sw	a0,12(sp)
@@ -166,8 +165,7 @@ quicksort_range:
 	auipc	ra,%pcrel_hi(quicksort_range)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_1)
 	lw	a0,12(sp)
-	bge	s0,s3,.+8
-	jal	x0,.L20
+	blt	s0,s3,.L20
 .L38:
 	lw	ra,76(sp)
 	lw	s0,72(sp)
@@ -453,8 +451,28 @@ main:
 	sub	sp,t0,op_0
 	lw	ra,2028(sp)
 	and	op_1,a4,a3
-	sub	op_0,op_1,a3
-	sub	a4,a4,op_0
+	and	op_4,a4,a3
+	and	op_8,a3,a4
+	sub	op_7,op_8,a4
+	sub	op_6,a3,op_7
+	and	op_9,a3,a4
+	sub	op_5,op_6,op_9
+	and	op_3,op_4,op_5
+	and	op_13,a3,a4
+	sub	op_12,op_13,a4
+	sub	op_11,a3,op_12
+	and	op_14,a3,a4
+	sub	op_10,op_11,op_14
+	sub	op_2,op_3,op_10
+	sub	op_0,op_1,op_2
+	and	op_16,a4,a3
+	and	op_20,a3,a4
+	sub	op_19,op_20,a4
+	sub	op_18,a3,op_19
+	and	op_21,a3,a4
+	sub	op_17,op_18,op_21
+	and	op_15,op_16,op_17
+	sub	a4,op_0,op_15
 	lw	s0,2024(sp)
 	addi	op_0,x0,1
 	bgeu	a4,op_0,.+8
@@ -150483,7 +150501,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	op_0,x0,1
-	and	a3,op_0,a1
+	and	a3,a1,op_0
 	bne	a3,x0,.+8
 	jal	x0,.Mul_skip
 	sub	op_0,x0,a0

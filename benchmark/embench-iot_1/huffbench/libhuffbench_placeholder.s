@@ -186,7 +186,7 @@ compdecomp.constprop.0:
 	lw	a5,%lo(heap_requested)(a3)
 	addi	a4,a4,501
 	addi	op_0,x0,3
-	and	a0,a4,op_0
+	and	a0,op_0,a4
 	addi	a5,a5,501
 	bne	a0,zero,.+8
 	jal	x0,.L23
@@ -206,12 +206,12 @@ compdecomp.constprop.0:
 	sw	a4,%lo(heap_ptr)(a2)
 	sub	a3,zero,a5
 	addi	op_0,x0,3
-	and	a5,op_0,a3
+	and	a5,a3,op_0
 	bne	a5,zero,.+8
 	jal	x0,.L82
 	lw	a4,8(sp)
 	addi	op_0,x0,2
-	and	a3,a3,op_0
+	and	a3,op_0,a3
 	sb	zero,0(a4)
 	bne	a3,zero,.+8
 	jal	x0,.L83
@@ -981,7 +981,7 @@ compdecomp:
 	jal	x0,.L229
 	lw	a3,4(sp)
 	addi	op_0,x0,2
-	and	a4,op_0,a4
+	and	a4,a4,op_0
 	sb	zero,0(a3)
 	addi	a3,zero,1
 	bne	a4,zero,.+8
@@ -998,7 +998,7 @@ compdecomp:
 	lw	a4,4(sp)
 	sub	a0,a2,a5
 	addi	op_0,x0,-4
-	and	a1,op_0,a0
+	and	a1,a0,op_0
 	sub	op_0,x0,a4
 	sub	a5,a5,op_0
 	sub	op_0,x0,a5
@@ -1017,9 +1017,7 @@ compdecomp:
 	sub	a4,a5,op_0
 	sb	zero,0(a4)
 	addi	a4,a5,1
-	bgeu	a4,a2,.+8
-	jal	x0,.+8
-	jal	x0,.L164
+	bgeu	a4,a2,.L164
 	lw	a3,4(sp)
 	sub	op_0,x0,a3
 	sub	a4,a4,op_0
@@ -1431,9 +1429,7 @@ compdecomp:
 	sb	t3,768(a3)
 	addi	t1,t1,4
 	addi	a6,a6,1
-	bne	a7,t6,.+8
-	jal	x0,.+8
-	jal	x0,.L214
+	bne	a7,t6,.L214
 	lw	a1,-1024(s9)
 	bne	a1,zero,.L236
 	addi	a5,t5,0

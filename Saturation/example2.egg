@@ -1,0 +1,35 @@
+; EGraph for prng_loop (Original) - Block 2 (prng_latch)
+; Total instructions: 3
+; Input registers: 3 (a1, t0, zero) + 1 Cross-block value (t2)
+
+(include "base.egg")
+
+; Input register declarations (used but not defined in this block)
+(let a1_0 (RegVal "a1_0"))
+(let t0_0 (RegVal "t0_0"))
+(let zero_0 (RegVal "zero"))
+
+; 跨基本块传递的变量声明：
+; 引入 Block 1 产出的 Orphan Node 作为一个已知的输入值
+(let t2_0_val (RegVal "t2_0_val"))
+
+; ============================================
+; Block 2 Instructions
+; ============================================
+
+;; add a1, a1, t2
+;; 消费了 Block 1 传来的 Orphan Node (t2_0_val)，寄存器 a1 更新为 a1_1_val
+(let a1_1_val (Add a1_0 t2_0_val))
+
+;; addi t0, t0, -1
+;; 循环计数器 t0 被更新为 t0_1_val
+(let t0_1_val (Addi t0_0 (ImmVal -1)))
+
+;; bne t0, zero, prng_mix
+;; 控制流指令，比较更新后的 t0 和 zero
+(let bne_0_val (Bne t0_1_val zero_0 (ImmLabel ".L0")))
+
+; ============================================
+; Run saturation to apply rewrite rules
+; ============================================
+(run 1)

@@ -168,7 +168,8 @@ def plot_pareto_curves(
     figsize: Tuple[int, int] = (8, 6),
     dpi: int = 400,
     palette: str = "Set2",
-    marker_size: int = 50
+    marker_size: int = 50,
+    num_programs: int = 22,
 ):
     """
     绘制所有 num_chip 的帕累托曲线
@@ -223,14 +224,14 @@ def plot_pareto_curves(
             continue
         
         # 分离坐标并除以22
-        pareto_areas = [p[0] / 22.0 for p in pareto_points]
-        pareto_latencies = [p[1] / 22.0 for p in pareto_points]
+        pareto_areas = [p[0] / num_programs for p in pareto_points]
+        pareto_latencies = [p[1] / num_programs for p in pareto_points]
         
         # 绘制帕累托前沿，坐标除以22
         ax.scatter(
             pareto_areas, pareto_latencies,
             color=colors[idx], s=marker_size, marker=markers[idx % len(markers)],
-            label=f'num-chip={num_chip_value} (Pareto)',
+            label=f'num={num_chip_value}',
             alpha=1.0, edgecolors='black', linewidths=1
         )
         
@@ -252,18 +253,41 @@ def plot_pareto_curves(
     for handle, label in zip(handles, labels):
         # 从标签中提取编号，例如 "num-chip=1 (Pareto)" -> 1
         try:
-            num = int(label.split('=')[1].split()[0])
+            num = int(label.split('=')[1])
             legend_items.append((num, handle, label))
         except:
             legend_items.append((999, handle, label))  # 无法解析的放在最后
     
     # 按编号排序（按 int 大小，不是字典序）
     legend_items.sort(key=lambda x: x[0])
-    sorted_handles = [item[1] for item in legend_items]
-    sorted_labels = [item[2] for item in legend_items]
-    
-    ax.legend(sorted_handles, sorted_labels, loc='best', fontsize=12, prop={'weight': 'bold'})
-    
+
+    # matplotlib ncol 按列填充，需要转置成按行填充
+    # 例如 8 个元素 4 列 2 行：原顺序 [0,1,2,3,4,5,6,7] 会显示为
+    #   0 2 4 6
+    #   1 3 5 7
+    # 目标是：
+    #   0 1 2 3
+    #   4 5 6 7
+    # 所以先按行顺序重排为按列顺序
+    ncols = 4
+    n = len(legend_items)
+    nrows = (n + ncols - 1) // ncols
+    # 填充到 nrows*ncols，不足补 None
+    padded = legend_items + [None] * (nrows * ncols - n)
+    # 转置：原来的第 i 行第 j 列 -> 新位置 j*nrows+i
+    reordered = []
+    for col in range(ncols):
+        for row in range(nrows):
+            item = padded[row * ncols + col]
+            if item is not None:
+                reordered.append(item)
+
+    sorted_handles = [item[1] for item in reordered]
+    sorted_labels = [item[2] for item in reordered]
+
+    ax.legend(sorted_handles, sorted_labels, loc='upper right',
+              ncol=ncols, fontsize=8, prop={'weight': 'bold'})
+
     # 保存图片
     output_path = Path(output_file)
     output_path.parent.mkdir(parents=True, exist_ok=True)

@@ -75,7 +75,7 @@ md5.constprop.0:
 	lui	a3,%hi(h3)
 	sw	a4,%lo(h3)(a3)
 	addi	op_0,x0,3
-	and	t1,t2,op_0
+	and	t1,op_0,t2
 	addi	a4,t2,1080
 	addi	a5,a5,1080
 	beq	t1,zero,.L4
@@ -99,7 +99,7 @@ md5.constprop.0:
 	beq	a5,zero,.L25
 	sb	zero,0(t2)
 	addi	op_0,x0,2
-	and	a4,op_0,a4
+	and	a4,a4,op_0
 	beq	a4,zero,.L26
 	sb	zero,1(t2)
 	addi	a4,zero,3
@@ -111,7 +111,7 @@ md5.constprop.0:
 	addi	a6,zero,1080
 	sub	a6,a6,a5
 	addi	op_0,x0,-4
-	and	a1,op_0,a6
+	and	a1,a6,op_0
 	sub	op_0,x0,t2
 	sub	a5,a5,op_0
 	sub	op_0,x0,a1
@@ -139,7 +139,7 @@ md5.constprop.0:
 	sub	op_0,op_1,a0
 	sub	a4,t2,op_0
 	addi	op_0,x0,3
-	and	a4,a4,op_0
+	and	a4,op_0,a4
 	addi	a5,a0,0
 	addi	t6,t2,0
 	beq	a4,zero,.+8
@@ -673,7 +673,7 @@ md5.constprop.0:
 	and	op_3,a0,a4
 	sub	a4,op_0,op_3
 	addi	op_0,x0,15
-	and	a3,op_0,t3
+	and	a3,t3,op_0
 .L22:
 	addi	op_0,x0,2
 	sll	a3,a3,op_0
@@ -795,7 +795,7 @@ md5.constprop.0:
 	sub	op_0,op_1,a0
 	sub	a4,t2,op_0
 	addi	op_0,x0,3
-	and	a4,op_0,a4
+	and	a4,a4,op_0
 	addi	a5,a0,0
 	addi	t6,t2,0
 	beq	a4,zero,.L54
@@ -803,8 +803,8 @@ md5.constprop.0:
 	addi	a3,a0,1000
 	addi	a4,t2,0
 .L15:
-	addi	op_0,x0,255
-	lw	op_1,0(a5)
+	lw	op_0,0(a5)
+	addi	op_1,x0,255
 	and	a2,op_0,op_1
 	addi	a5,a5,1
 	addi	a4,a4,1
@@ -1063,7 +1063,7 @@ md5:
 	sw	a7,%lo(h1)(t1)
 	lui	a7,%hi(h2)
 	addi	op_0,x0,-64
-	and	a6,a6,op_0
+	and	a6,op_0,a6
 	addi	a4,a4,1142
 	sw	a3,%lo(h2)(a7)
 	lui	a3,%hi(h3)
@@ -1093,7 +1093,7 @@ md5:
 	beq	t2,zero,.L83
 	sub	a4,zero,t2
 	addi	op_0,x0,3
-	and	a5,a4,op_0
+	and	a5,op_0,a4
 	addi	a7,zero,0
 	beq	a5,zero,.L86
 	sb	zero,0(t2)
@@ -1111,7 +1111,7 @@ md5:
 .L86:
 	sub	t1,a2,a5
 	addi	op_0,x0,-4
-	and	a4,op_0,t1
+	and	a4,t1,op_0
 	sub	op_0,x0,t2
 	sub	a5,a5,op_0
 	sub	op_0,x0,a4
@@ -1189,8 +1189,8 @@ md5:
 	beq	a2,a5,.+8
 	jal	x0,.L91
 	beq	a1,a7,.L93
-	addi	op_0,x0,255
-	lw	op_1,0(a2)
+	lw	op_0,0(a2)
+	addi	op_1,x0,255
 	and	a3,op_0,op_1
 	sub	op_0,x0,t2
 	sub	a4,a7,op_0
@@ -1734,7 +1734,7 @@ md5:
 	and	op_3,a0,a4
 	sub	a4,op_0,op_3
 	addi	op_0,x0,15
-	and	a3,t3,op_0
+	and	a3,op_0,t3
 .L103:
 	addi	op_0,x0,2
 	sll	a3,a3,op_0
@@ -1791,7 +1791,7 @@ md5:
 	and	op_3,a0,a4
 	sub	a4,op_0,op_3
 	addi	op_0,x0,15
-	and	a3,t4,op_0
+	and	a3,op_0,t4
 	jal	x0,.L103
 .L104:
 	addi	op_1,x0,-1
@@ -1811,7 +1811,7 @@ md5:
 	and	op_3,a0,a4
 	sub	a4,op_0,op_3
 	addi	op_0,x0,15
-	and	a3,t5,op_0
+	and	a3,op_0,t5
 	jal	x0,.L103
 .L133:
 	lw	a5,60(sp)

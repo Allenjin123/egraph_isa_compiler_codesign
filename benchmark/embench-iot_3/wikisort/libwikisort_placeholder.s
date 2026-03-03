@@ -10,7 +10,8 @@
 	.type	TestCompare, @function
 TestCompare:
 	addi	sp,sp,-16
-	blt	a0,a2,.+12
+	bge	a0,a2,.+8
+	jal	x0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
@@ -279,298 +280,190 @@ TestingMostlyAscending:
 	srl	a5,a5,op_0
 	addi	op_0,x0,16
 	sra	a3,a5,op_0
-	addi	op_9,x0,-1
-	or	op_8,x0,op_9
-	lui	op_11,16
-	sub	op_10,x0,op_11
-	sub	op_7,op_8,op_10
+	lui	op_8,16
+	addi	op_7,op_8,-1
 	or	op_6,a3,op_7
-	addi	op_14,x0,-1
-	or	op_13,x0,op_14
-	lui	op_16,16
-	sub	op_15,x0,op_16
-	sub	op_12,op_13,op_15
-	sub	op_5,op_6,op_12
+	lui	op_10,16
+	addi	op_9,op_10,-1
+	sub	op_5,op_6,op_9
 	sub	op_4,a3,op_5
-	addi	op_22,x0,-1
-	or	op_21,x0,op_22
-	lui	op_24,16
-	sub	op_23,x0,op_24
-	sub	op_20,op_21,op_23
-	or	op_19,a4,op_20
-	addi	op_27,x0,-1
-	or	op_26,x0,op_27
-	lui	op_29,16
-	sub	op_28,x0,op_29
-	sub	op_25,op_26,op_28
-	sub	op_18,op_19,op_25
-	sub	op_17,a4,op_18
-	callmul	op_3,op_4,op_17
-	addi	op_30,x0,16
-	srl	op_2,op_3,op_30
-	addi	op_37,x0,16
-	srl	op_36,a3,op_37
-	addi	op_41,x0,16
-	srl	op_40,a3,op_41
-	addi	op_44,x0,-1
-	or	op_43,x0,op_44
-	lui	op_46,16
-	sub	op_45,x0,op_46
-	sub	op_42,op_43,op_45
-	or	op_39,op_40,op_42
-	addi	op_49,x0,-1
-	or	op_48,x0,op_49
-	lui	op_51,16
-	sub	op_50,x0,op_51
-	sub	op_47,op_48,op_50
-	sub	op_38,op_39,op_47
-	sub	op_35,op_36,op_38
-	addi	op_57,x0,-1
-	or	op_56,x0,op_57
+	lui	op_15,16
+	addi	op_14,op_15,-1
+	or	op_13,a4,op_14
+	lui	op_17,16
+	addi	op_16,op_17,-1
+	sub	op_12,op_13,op_16
+	sub	op_11,a4,op_12
+	callmul	op_3,op_4,op_11
+	addi	op_18,x0,16
+	srl	op_2,op_3,op_18
+	addi	op_25,x0,16
+	srl	op_24,a3,op_25
+	addi	op_29,x0,16
+	srl	op_28,a3,op_29
+	lui	op_31,16
+	addi	op_30,op_31,-1
+	or	op_27,op_28,op_30
+	lui	op_33,16
+	addi	op_32,op_33,-1
+	sub	op_26,op_27,op_32
+	sub	op_23,op_24,op_26
+	lui	op_38,16
+	addi	op_37,op_38,-1
+	or	op_36,a4,op_37
+	lui	op_40,16
+	addi	op_39,op_40,-1
+	sub	op_35,op_36,op_39
+	sub	op_34,a4,op_35
+	callmul	op_22,op_23,op_34
+	addi	op_46,x0,16
+	srl	op_45,a3,op_46
+	addi	op_50,x0,16
+	srl	op_49,a3,op_50
+	lui	op_52,16
+	addi	op_51,op_52,-1
+	or	op_48,op_49,op_51
+	lui	op_54,16
+	addi	op_53,op_54,-1
+	sub	op_47,op_48,op_53
+	sub	op_44,op_45,op_47
 	lui	op_59,16
-	sub	op_58,x0,op_59
-	sub	op_55,op_56,op_58
-	or	op_54,a4,op_55
-	addi	op_62,x0,-1
-	or	op_61,x0,op_62
-	lui	op_64,16
-	sub	op_63,x0,op_64
-	sub	op_60,op_61,op_63
-	sub	op_53,op_54,op_60
-	sub	op_52,a4,op_53
-	callmul	op_34,op_35,op_52
-	addi	op_70,x0,16
-	srl	op_69,a3,op_70
-	addi	op_74,x0,16
-	srl	op_73,a3,op_74
-	addi	op_77,x0,-1
-	or	op_76,x0,op_77
-	lui	op_79,16
-	sub	op_78,x0,op_79
-	sub	op_75,op_76,op_78
-	or	op_72,op_73,op_75
-	addi	op_82,x0,-1
-	or	op_81,x0,op_82
+	addi	op_58,op_59,-1
+	or	op_57,a4,op_58
+	lui	op_61,16
+	addi	op_60,op_61,-1
+	sub	op_56,op_57,op_60
+	sub	op_55,a4,op_56
+	callmul	op_43,op_44,op_55
+	lui	op_63,16
+	addi	op_62,op_63,-1
+	or	op_42,op_43,op_62
+	lui	op_65,16
+	addi	op_64,op_65,-1
+	sub	op_41,op_42,op_64
+	sub	op_21,op_22,op_41
+	lui	op_73,16
+	addi	op_72,op_73,-1
+	or	op_71,a3,op_72
+	lui	op_75,16
+	addi	op_74,op_75,-1
+	sub	op_70,op_71,op_74
+	sub	op_69,a3,op_70
+	addi	op_78,x0,16
+	srl	op_77,a4,op_78
+	addi	op_82,x0,16
+	srl	op_81,a4,op_82
 	lui	op_84,16
-	sub	op_83,x0,op_84
-	sub	op_80,op_81,op_83
-	sub	op_71,op_72,op_80
-	sub	op_68,op_69,op_71
-	addi	op_90,x0,-1
-	or	op_89,x0,op_90
-	lui	op_92,16
-	sub	op_91,x0,op_92
-	sub	op_88,op_89,op_91
-	or	op_87,a4,op_88
-	addi	op_95,x0,-1
-	or	op_94,x0,op_95
-	lui	op_97,16
-	sub	op_96,x0,op_97
-	sub	op_93,op_94,op_96
-	sub	op_86,op_87,op_93
-	sub	op_85,a4,op_86
-	callmul	op_67,op_68,op_85
-	addi	op_100,x0,-1
-	or	op_99,x0,op_100
-	lui	op_102,16
-	sub	op_101,x0,op_102
-	sub	op_98,op_99,op_101
-	or	op_66,op_67,op_98
-	addi	op_105,x0,-1
-	or	op_104,x0,op_105
+	addi	op_83,op_84,-1
+	or	op_80,op_81,op_83
+	lui	op_86,16
+	addi	op_85,op_86,-1
+	sub	op_79,op_80,op_85
+	sub	op_76,op_77,op_79
+	callmul	op_68,op_69,op_76
+	lui	op_94,16
+	addi	op_93,op_94,-1
+	or	op_92,a3,op_93
+	lui	op_96,16
+	addi	op_95,op_96,-1
+	sub	op_91,op_92,op_95
+	sub	op_90,a3,op_91
+	addi	op_99,x0,16
+	srl	op_98,a4,op_99
+	addi	op_103,x0,16
+	srl	op_102,a4,op_103
+	lui	op_105,16
+	addi	op_104,op_105,-1
+	or	op_101,op_102,op_104
 	lui	op_107,16
-	sub	op_106,x0,op_107
-	sub	op_103,op_104,op_106
-	sub	op_65,op_66,op_103
-	sub	op_33,op_34,op_65
-	addi	op_116,x0,-1
-	or	op_115,x0,op_116
-	lui	op_118,16
-	sub	op_117,x0,op_118
-	sub	op_114,op_115,op_117
-	or	op_113,a3,op_114
-	addi	op_121,x0,-1
-	or	op_120,x0,op_121
-	lui	op_123,16
-	sub	op_122,x0,op_123
-	sub	op_119,op_120,op_122
-	sub	op_112,op_113,op_119
-	sub	op_111,a3,op_112
-	addi	op_126,x0,16
-	srl	op_125,a4,op_126
-	addi	op_130,x0,16
-	srl	op_129,a4,op_130
-	addi	op_133,x0,-1
-	or	op_132,x0,op_133
-	lui	op_135,16
-	sub	op_134,x0,op_135
-	sub	op_131,op_132,op_134
-	or	op_128,op_129,op_131
-	addi	op_138,x0,-1
-	or	op_137,x0,op_138
-	lui	op_140,16
-	sub	op_139,x0,op_140
-	sub	op_136,op_137,op_139
-	sub	op_127,op_128,op_136
-	sub	op_124,op_125,op_127
-	callmul	op_110,op_111,op_124
-	addi	op_149,x0,-1
-	or	op_148,x0,op_149
-	lui	op_151,16
-	sub	op_150,x0,op_151
+	addi	op_106,op_107,-1
+	sub	op_100,op_101,op_106
+	sub	op_97,op_98,op_100
+	callmul	op_89,op_90,op_97
+	lui	op_109,16
+	addi	op_108,op_109,-1
+	or	op_88,op_89,op_108
+	lui	op_111,16
+	addi	op_110,op_111,-1
+	sub	op_87,op_88,op_110
+	sub	op_67,op_68,op_87
+	sub	op_66,x0,op_67
+	sub	op_20,op_21,op_66
+	sub	op_19,x0,op_20
+	sub	op_1,op_2,op_19
+	addi	op_112,x0,16
+	srl	op_0,op_1,op_112
+	addi	op_119,x0,16
+	srl	op_118,a3,op_119
+	addi	op_123,x0,16
+	srl	op_122,a3,op_123
+	lui	op_125,16
+	addi	op_124,op_125,-1
+	or	op_121,op_122,op_124
+	lui	op_127,16
+	addi	op_126,op_127,-1
+	sub	op_120,op_121,op_126
+	sub	op_117,op_118,op_120
+	lui	op_132,16
+	addi	op_131,op_132,-1
+	or	op_130,a4,op_131
+	lui	op_134,16
+	addi	op_133,op_134,-1
+	sub	op_129,op_130,op_133
+	sub	op_128,a4,op_129
+	callmul	op_116,op_117,op_128
+	addi	op_135,x0,16
+	srl	op_115,op_116,op_135
+	lui	op_144,16
+	addi	op_143,op_144,-1
+	or	op_142,a3,op_143
+	lui	op_146,16
+	addi	op_145,op_146,-1
+	sub	op_141,op_142,op_145
+	sub	op_140,a3,op_141
+	addi	op_149,x0,16
+	srl	op_148,a4,op_149
+	addi	op_153,x0,16
+	srl	op_152,a4,op_153
+	lui	op_155,16
+	addi	op_154,op_155,-1
+	or	op_151,op_152,op_154
+	lui	op_157,16
+	addi	op_156,op_157,-1
+	sub	op_150,op_151,op_156
 	sub	op_147,op_148,op_150
-	or	op_146,a3,op_147
-	addi	op_154,x0,-1
-	or	op_153,x0,op_154
-	lui	op_156,16
-	sub	op_155,x0,op_156
-	sub	op_152,op_153,op_155
-	sub	op_145,op_146,op_152
-	sub	op_144,a3,op_145
-	addi	op_159,x0,16
-	srl	op_158,a4,op_159
+	callmul	op_139,op_140,op_147
+	addi	op_158,x0,16
+	srl	op_138,op_139,op_158
 	addi	op_163,x0,16
-	srl	op_162,a4,op_163
-	addi	op_166,x0,-1
-	or	op_165,x0,op_166
-	lui	op_168,16
-	sub	op_167,x0,op_168
-	sub	op_164,op_165,op_167
-	or	op_161,op_162,op_164
-	addi	op_171,x0,-1
-	or	op_170,x0,op_171
-	lui	op_173,16
-	sub	op_172,x0,op_173
-	sub	op_169,op_170,op_172
-	sub	op_160,op_161,op_169
-	sub	op_157,op_158,op_160
-	callmul	op_143,op_144,op_157
-	addi	op_176,x0,-1
-	or	op_175,x0,op_176
-	lui	op_178,16
-	sub	op_177,x0,op_178
-	sub	op_174,op_175,op_177
-	or	op_142,op_143,op_174
-	addi	op_181,x0,-1
-	or	op_180,x0,op_181
-	lui	op_183,16
-	sub	op_182,x0,op_183
-	sub	op_179,op_180,op_182
-	sub	op_141,op_142,op_179
-	sub	op_109,op_110,op_141
-	sub	op_108,x0,op_109
-	sub	op_32,op_33,op_108
-	sub	op_31,x0,op_32
-	sub	op_1,op_2,op_31
-	addi	op_184,x0,16
-	srl	op_0,op_1,op_184
-	addi	op_191,x0,16
-	srl	op_190,a3,op_191
-	addi	op_195,x0,16
-	srl	op_194,a3,op_195
-	addi	op_198,x0,-1
-	or	op_197,x0,op_198
-	lui	op_200,16
-	sub	op_199,x0,op_200
-	sub	op_196,op_197,op_199
-	or	op_193,op_194,op_196
-	addi	op_203,x0,-1
-	or	op_202,x0,op_203
-	lui	op_205,16
-	sub	op_204,x0,op_205
-	sub	op_201,op_202,op_204
-	sub	op_192,op_193,op_201
-	sub	op_189,op_190,op_192
-	addi	op_211,x0,-1
-	or	op_210,x0,op_211
-	lui	op_213,16
-	sub	op_212,x0,op_213
-	sub	op_209,op_210,op_212
-	or	op_208,a4,op_209
-	addi	op_216,x0,-1
-	or	op_215,x0,op_216
-	lui	op_218,16
-	sub	op_217,x0,op_218
-	sub	op_214,op_215,op_217
-	sub	op_207,op_208,op_214
-	sub	op_206,a4,op_207
-	callmul	op_188,op_189,op_206
-	addi	op_219,x0,16
-	srl	op_187,op_188,op_219
-	addi	op_229,x0,-1
-	or	op_228,x0,op_229
-	lui	op_231,16
-	sub	op_230,x0,op_231
-	sub	op_227,op_228,op_230
-	or	op_226,a3,op_227
-	addi	op_234,x0,-1
-	or	op_233,x0,op_234
-	lui	op_236,16
-	sub	op_235,x0,op_236
-	sub	op_232,op_233,op_235
-	sub	op_225,op_226,op_232
-	sub	op_224,a3,op_225
-	addi	op_239,x0,16
-	srl	op_238,a4,op_239
-	addi	op_243,x0,16
-	srl	op_242,a4,op_243
-	addi	op_246,x0,-1
-	or	op_245,x0,op_246
-	lui	op_248,16
-	sub	op_247,x0,op_248
-	sub	op_244,op_245,op_247
-	or	op_241,op_242,op_244
-	addi	op_251,x0,-1
-	or	op_250,x0,op_251
-	lui	op_253,16
-	sub	op_252,x0,op_253
-	sub	op_249,op_250,op_252
-	sub	op_240,op_241,op_249
-	sub	op_237,op_238,op_240
-	callmul	op_223,op_224,op_237
-	addi	op_254,x0,16
-	srl	op_222,op_223,op_254
-	addi	op_259,x0,16
-	srl	op_258,a3,op_259
-	addi	op_263,x0,16
-	srl	op_262,a3,op_263
-	addi	op_266,x0,-1
-	or	op_265,x0,op_266
-	lui	op_268,16
-	sub	op_267,x0,op_268
-	sub	op_264,op_265,op_267
-	or	op_261,op_262,op_264
-	addi	op_271,x0,-1
-	or	op_270,x0,op_271
-	lui	op_273,16
-	sub	op_272,x0,op_273
-	sub	op_269,op_270,op_272
-	sub	op_260,op_261,op_269
-	sub	op_257,op_258,op_260
-	addi	op_276,x0,16
-	srl	op_275,a4,op_276
-	addi	op_280,x0,16
-	srl	op_279,a4,op_280
-	addi	op_283,x0,-1
-	or	op_282,x0,op_283
-	lui	op_285,16
-	sub	op_284,x0,op_285
-	sub	op_281,op_282,op_284
-	or	op_278,op_279,op_281
-	addi	op_288,x0,-1
-	or	op_287,x0,op_288
-	lui	op_290,16
-	sub	op_289,x0,op_290
-	sub	op_286,op_287,op_289
-	sub	op_277,op_278,op_286
-	sub	op_274,op_275,op_277
-	callmul	op_256,op_257,op_274
-	sub	op_255,x0,op_256
-	sub	op_221,op_222,op_255
-	sub	op_220,x0,op_221
-	sub	op_186,op_187,op_220
-	sub	op_185,x0,op_186
-	sub	a4,op_0,op_185
+	srl	op_162,a3,op_163
+	addi	op_167,x0,16
+	srl	op_166,a3,op_167
+	lui	op_169,16
+	addi	op_168,op_169,-1
+	or	op_165,op_166,op_168
+	lui	op_171,16
+	addi	op_170,op_171,-1
+	sub	op_164,op_165,op_170
+	sub	op_161,op_162,op_164
+	addi	op_174,x0,16
+	srl	op_173,a4,op_174
+	addi	op_178,x0,16
+	srl	op_177,a4,op_178
+	lui	op_180,16
+	addi	op_179,op_180,-1
+	or	op_176,op_177,op_179
+	lui	op_182,16
+	addi	op_181,op_182,-1
+	sub	op_175,op_176,op_181
+	sub	op_172,op_173,op_175
+	callmul	op_160,op_161,op_172
+	sub	op_159,x0,op_160
+	sub	op_137,op_138,op_159
+	sub	op_136,x0,op_137
+	sub	op_114,op_115,op_136
+	sub	op_113,x0,op_114
+	sub	a4,op_0,op_113
 	sw	a5,%lo(seed)(a2)
 	addi	op_0,x0,2
 	srl	a5,a4,op_0
@@ -845,11 +738,11 @@ TestingMostlyEqual:
 	srl	a5,a5,op_0
 	addi	op_0,x0,16
 	sra	a0,a5,op_0
-	addi	op_2,x0,3
-	or	op_1,a0,op_2
+	addi	op_0,x0,3
 	addi	op_3,x0,3
-	sub	op_0,op_1,op_3
-	sub	a0,a0,op_0
+	or	op_2,op_3,a0
+	sub	op_1,op_2,a0
+	sub	a0,op_0,op_1
 	sw	a5,%lo(seed)(a3)
 	addi	a0,a0,1000
 	jalr	zero,ra,0
@@ -868,12 +761,12 @@ TestingPathological:
 	addi	op_0,x0,1
 	sra	a4,a4,op_0
 	addi	a0,zero,11
-	blt	a5,a4,.L14
+	bge	a5,a4,.+8
+	jal	x0,.L14
 	addi	a1,a1,-1
 	sub	a5,a5,a1
 	addi	op_0,x0,1
-	bgeu	a5,op_0,.+8
-	jal	x0,.+12
+	bltu	a5,op_0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
@@ -906,7 +799,8 @@ WikiMerge.constprop.1.isra.0:
 	sw	a3,4(sp)
 	addi	s0,a0,0
 	addi	s6,a6,0
-	blt	a4,s5,.L20
+	bge	a4,s5,.+8
+	jal	x0,.L20
 	sw	s2,80(sp)
 	addi	op_0,x0,3
 	sll	s3,a2,op_0
@@ -917,10 +811,8 @@ WikiMerge.constprop.1.isra.0:
 	sub	s3,s3,op_0
 	sub	op_0,x0,a7
 	sub	s1,s1,op_0
-	blt	zero,s5,.+8
-	jal	x0,.L21
-	blt	zero,a3,.+8
-	jal	x0,.L21
+	bge	zero,s5,.L21
+	bge	zero,a3,.L21
 	lw	a4,8(sp)
 	sw	s4,72(sp)
 	addi	op_0,x0,3
@@ -958,8 +850,7 @@ WikiMerge.constprop.1.isra.0:
 	jalr	zero,ra,0
 .L20:
 	addi	s1,a1,0
-	blt	zero,a3,.+8
-	jal	x0,.L33
+	bge	zero,a3,.L33
 	sw	s8,56(sp)
 	lw	s8,8(sp)
 	sw	s11,44(sp)
@@ -1003,8 +894,7 @@ WikiMerge.constprop.1.isra.0:
 	sw	a1,4(s11)
 	sw	a2,0(s10)
 	sw	a3,4(s10)
-	blt	s4,s5,.+8
-	jal	x0,.L61
+	bge	s4,s5,.L61
 .L36:
 	addi	s11,s11,8
 	jal	x0,.L34
@@ -1020,10 +910,10 @@ WikiMerge.constprop.1.isra.0:
 	sw	a1,4(s11)
 	sw	a2,0(s2)
 	sw	a3,4(s2)
-	blt	s3,a5,.L36
+	bge	s3,a5,.+8
+	jal	x0,.L36
 	sub	s5,s5,s4
-	blt	zero,s5,.+8
-	jal	x0,.L61
+	bge	zero,s5,.L61
 	lw	a5,12(sp)
 	addi	s1,s7,0
 	lw	s2,80(sp)
@@ -1086,12 +976,12 @@ WikiMerge.constprop.1.isra.0:
 	jal	x0,.L59
 	addi	a5,a1,-1
 	addi	a4,zero,6
-	bgeu	a4,a5,.L27
+	bltu	a4,a5,.+8
+	jal	x0,.L27
 	addi	a3,s3,-1
 	sub	a3,a3,s2
 	addi	op_0,x0,3
-	bgeu	a3,op_0,.+8
-	jal	x0,.+12
+	bltu	a3,op_0,.+12
 	addi	a3,x0,0
 	jal	x0,.+8
 	addi	a3,x0,1
@@ -1105,11 +995,11 @@ WikiMerge.constprop.1.isra.0:
 	sub	op_0,op_1,op_3
 	sub	a3,a3,op_0
 	bne	a3,zero,.L27
-	addi	op_0,x0,-4
+	addi	op_2,x0,-4
+	or	op_1,a1,op_2
 	addi	op_3,x0,-4
-	or	op_2,op_3,a1
-	sub	op_1,op_2,a1
-	sub	a0,op_0,op_1
+	sub	op_0,op_1,op_3
+	sub	a0,a1,op_0
 	sub	op_0,x0,a0
 	sub	a2,s3,op_0
 .L28:
@@ -1122,16 +1012,17 @@ WikiMerge.constprop.1.isra.0:
 	jal	x0,.L59
 	sub	op_0,x0,s2
 	sub	a5,a0,op_0
-	addi	op_0,x0,255
-	addi	op_3,x0,255
-	lw	op_4,0(a5)
+	lw	op_0,0(a5)
+	lw	op_3,0(a5)
+	addi	op_4,x0,255
 	or	op_2,op_3,op_4
-	lw	op_5,0(a5)
+	addi	op_5,x0,255
 	sub	op_1,op_2,op_5
 	sub	a4,op_0,op_1
 	addi	a5,a0,1
 	sb	a4,0(a2)
-	bgeu	a5,a1,.L59
+	bltu	a5,a1,.+8
+	jal	x0,.L59
 	sub	op_0,x0,s2
 	sub	a4,a5,op_0
 	addi	op_0,x0,255
@@ -1145,14 +1036,15 @@ WikiMerge.constprop.1.isra.0:
 	sub	a5,a5,op_0
 	addi	a0,a0,2
 	sb	a4,0(a5)
-	bgeu	a0,a1,.L59
+	bltu	a0,a1,.+8
+	jal	x0,.L59
 	sub	op_0,x0,s2
 	sub	s2,a0,op_0
-	lw	op_0,0(s2)
-	lw	op_3,0(s2)
-	addi	op_4,x0,255
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(s2)
 	or	op_2,op_3,op_4
-	addi	op_5,x0,255
+	lw	op_5,0(s2)
 	sub	op_1,op_2,op_5
 	sub	a5,op_0,op_1
 	sub	op_0,x0,s3
@@ -1171,11 +1063,11 @@ WikiMerge.constprop.1.isra.0:
 	sub	op_0,x0,s2
 	sub	a1,a1,op_0
 .L31:
-	lw	op_0,0(s2)
-	lw	op_3,0(s2)
-	addi	op_4,x0,255
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(s2)
 	or	op_2,op_3,op_4
-	addi	op_5,x0,255
+	lw	op_5,0(s2)
 	sub	op_1,op_2,op_5
 	sub	a5,op_0,op_1
 	addi	s2,s2,1
@@ -1214,7 +1106,8 @@ WikiMerge.constprop.0.isra.0:
 	sw	a4,4(sp)
 	addi	a6,zero,512
 	sub	s2,a4,a3
-	blt	a6,a2,.L63
+	bge	a6,a2,.+8
+	jal	x0,.L63
 	lui	a6,%hi(array1)
 	addi	op_0,x0,3
 	sll	a1,a1,op_0
@@ -1225,10 +1118,8 @@ WikiMerge.constprop.0.isra.0:
 	sub	a1,a6,op_0
 	sub	op_0,x0,a5
 	sub	a0,a0,op_0
-	blt	zero,s2,.+8
-	jal	x0,.L64
-	blt	zero,a2,.+8
-	jal	x0,.L64
+	bge	zero,s2,.L64
+	bge	zero,a2,.L64
 	addi	op_0,x0,3
 	sll	a3,a3,op_0
 	addi	op_0,x0,3
@@ -1241,7 +1132,8 @@ WikiMerge.constprop.0.isra.0:
 	lw	a2,0(a5)
 	lw	a4,0(a3)
 	addi	a1,a1,8
-	blt	a4,a2,.L66
+	bge	a4,a2,.+8
+	jal	x0,.L66
 	sw	a2,-8(a1)
 	lw	a4,4(a5)
 	addi	a5,a5,8
@@ -1252,8 +1144,7 @@ WikiMerge.constprop.0.isra.0:
 	addi	sp,sp,32
 	jalr	zero,ra,0
 .L63:
-	blt	zero,s2,.+8
-	jal	x0,.L103
+	bge	zero,s2,.L103
 	lui	a5,%hi(array1)
 	addi	a5,a5,%lo(array1)
 	addi	op_0,x0,3
@@ -1281,7 +1172,8 @@ WikiMerge.constprop.0.isra.0:
 	lw	t2,0(a4)
 	lw	t0,4(a4)
 	addi	t4,t4,1
-	blt	t1,t3,.L78
+	bge	t1,t3,.+8
+	jal	x0,.L78
 	sw	t3,0(a4)
 	lw	a6,4(a7)
 	addi	t5,t5,1
@@ -1290,8 +1182,7 @@ WikiMerge.constprop.0.isra.0:
 	sw	a6,4(a4)
 	sw	t2,0(a7)
 	sw	t0,4(a7)
-	blt	t5,a2,.+8
-	jal	x0,.L102
+	bge	t5,a2,.L102
 .L79:
 	addi	a4,a4,8
 	jal	x0,.L77
@@ -1340,29 +1231,29 @@ WikiMerge.constprop.0.isra.0:
 	jal	x0,.L62
 	addi	a4,a6,-1
 	addi	a3,zero,5
-	bgeu	a3,a4,.L70
+	bltu	a3,a4,.+8
+	jal	x0,.L70
 	addi	a2,a1,-1
 	sub	a2,a2,a5
 	addi	op_0,x0,3
-	bgeu	a2,op_0,.+8
-	jal	x0,.+12
+	bltu	a2,op_0,.+12
 	addi	a2,x0,0
 	jal	x0,.+8
 	addi	a2,x0,1
 	addi	a4,a1,0
 	addi	a3,a5,0
 	bne	a2,zero,.L70
-	addi	op_2,x0,3
-	or	op_1,a5,op_2
+	addi	op_0,x0,3
 	addi	op_3,x0,3
-	sub	op_0,op_1,op_3
-	sub	a2,a5,op_0
+	or	op_2,op_3,a5
+	sub	op_1,op_2,a5
+	sub	a2,op_0,op_1
 	bne	a2,zero,.L70
-	addi	op_0,x0,-4
+	addi	op_2,x0,-4
+	or	op_1,a6,op_2
 	addi	op_3,x0,-4
-	or	op_2,op_3,a6
-	sub	op_1,op_2,a6
-	sub	a7,op_0,op_1
+	sub	op_0,op_1,op_3
+	sub	a7,a6,op_0
 	sub	op_0,x0,a7
 	sub	a0,a1,op_0
 .L71:
@@ -1384,7 +1275,8 @@ WikiMerge.constprop.0.isra.0:
 	sub	a3,op_0,op_1
 	addi	a4,a7,1
 	sb	a3,0(a0)
-	bgeu	a4,a6,.L62
+	bltu	a4,a6,.+8
+	jal	x0,.L62
 	sub	op_0,x0,a5
 	sub	a3,a4,op_0
 	addi	op_0,x0,255
@@ -1398,7 +1290,8 @@ WikiMerge.constprop.0.isra.0:
 	sub	a4,a4,op_0
 	addi	a7,a7,2
 	sb	a3,0(a4)
-	bgeu	a7,a6,.L62
+	bltu	a7,a6,.+8
+	jal	x0,.L62
 	sub	op_0,x0,a5
 	sub	a5,a7,op_0
 	lw	op_0,0(a5)
@@ -1423,10 +1316,10 @@ WikiMerge.constprop.0.isra.0:
 	sw	a7,4(a4)
 	sw	t2,0(a6)
 	sw	t0,4(a6)
-	blt	t6,s2,.L79
+	bge	t6,s2,.+8
+	jal	x0,.L79
 	sub	a2,a2,t5
-	blt	zero,a2,.+8
-	jal	x0,.L102
+	bge	zero,a2,.L102
 	addi	a0,s0,0
 	lw	s1,24(sp)
 	lw	s0,28(sp)
@@ -1441,11 +1334,11 @@ WikiMerge.constprop.0.isra.0:
 	sub	op_0,x0,a5
 	sub	a6,a6,op_0
 .L74:
-	lw	op_0,0(a5)
-	lw	op_3,0(a5)
-	addi	op_4,x0,255
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(a5)
 	or	op_2,op_3,op_4
-	addi	op_5,x0,255
+	lw	op_5,0(a5)
 	sub	op_1,op_2,op_5
 	sub	a4,op_0,op_1
 	addi	a5,a5,1
@@ -1462,15 +1355,14 @@ Rotate.constprop.1:
 	sw	a3,12(sp)
 	bne	a2,a3,.+8
 	jal	x0,.L104
-	blt	a1,zero,.L106
+	bge	a1,zero,.+8
+	jal	x0,.L106
 	sub	op_0,x0,a2
 	sub	t4,a1,op_0
 	sub	t5,a3,t4
-	blt	t5,a1,.+8
-	jal	x0,.L107
+	bge	t5,a1,.L107
 	addi	a5,zero,512
-	blt	a5,t5,.+8
-	jal	x0,.L213
+	bge	a5,t5,.L213
 .L109:
 	addi	op_0,x0,1
 	sra	a1,a1,op_0
@@ -1543,8 +1435,7 @@ Rotate.constprop.1:
 .L158:
 	sub	a4,a3,a2
 	addi	a5,zero,1
-	blt	a5,a4,.+8
-	jal	x0,.L104
+	bge	a5,a4,.L104
 	addi	op_0,x0,31
 	srl	a5,a4,op_0
 	sub	op_0,x0,a5
@@ -1587,11 +1478,9 @@ Rotate.constprop.1:
 	sub	t4,a1,op_0
 	sub	a5,t4,a2
 	sub	t5,zero,a1
-	blt	t5,a5,.+8
-	jal	x0,.L160
+	bge	t5,a5,.L160
 	addi	a6,zero,-512
-	blt	a1,a6,.+8
-	jal	x0,.L214
+	bge	a1,a6,.L214
 	addi	a1,a5,0
 	jal	x0,.L109
 .L160:
@@ -1601,7 +1490,8 @@ Rotate.constprop.1:
 	sra	a6,a1,op_0
 	addi	a5,zero,512
 	addi	a6,a6,-1
-	blt	a5,a1,.L152
+	bge	a5,a1,.+8
+	jal	x0,.L152
 	addi	op_0,x0,3
 	sll	a1,a1,op_0
 	addi	op_0,x0,3
@@ -1613,8 +1503,7 @@ Rotate.constprop.1:
 	sub	a6,a6,op_0
 	sub	a6,a4,a6
 	addi	op_0,x0,3
-	bgeu	a6,op_0,.+8
-	jal	x0,.+12
+	bltu	a6,op_0,.+12
 	addi	a6,x0,0
 	jal	x0,.+8
 	addi	a6,x0,1
@@ -1645,7 +1534,8 @@ Rotate.constprop.1:
 	sub	a5,a5,op_0
 	addi	op_0,x0,3
 	sll	a6,t5,op_0
-	bgeu	a7,a5,.L216
+	bltu	a7,a5,.+8
+	jal	x0,.L216
 	bne	a6,zero,.+8
 	jal	x0,.L125
 	or	t1,a5,a7
@@ -1676,8 +1566,7 @@ Rotate.constprop.1:
 	sub	a6,a5,a4
 	addi	a6,a6,-1
 	addi	op_0,x0,3
-	bgeu	a6,op_0,.+8
-	jal	x0,.+12
+	bltu	a6,op_0,.+12
 	addi	a6,x0,0
 	jal	x0,.+8
 	addi	a6,x0,1
@@ -1712,8 +1601,7 @@ Rotate.constprop.1:
 	sub	a7,a7,op_0
 	sub	a7,a4,a7
 	addi	op_0,x0,3
-	bgeu	a7,op_0,.+8
-	jal	x0,.+12
+	bltu	a7,op_0,.+12
 	addi	a7,x0,0
 	jal	x0,.+8
 	addi	a7,x0,1
@@ -1748,7 +1636,8 @@ Rotate.constprop.1:
 	sub	a2,a2,op_0
 	addi	op_0,x0,3
 	sll	a3,a1,op_0
-	bgeu	a5,a2,.L217
+	bltu	a5,a2,.+8
+	jal	x0,.L217
 	bne	a3,zero,.+8
 	jal	x0,.L144
 	or	a1,a5,a2
@@ -1773,8 +1662,7 @@ Rotate.constprop.1:
 	sub	a1,a2,a4
 	addi	a1,a1,-1
 	addi	op_0,x0,3
-	bgeu	a1,op_0,.+8
-	jal	x0,.+12
+	bltu	a1,op_0,.+12
 	addi	a1,x0,0
 	jal	x0,.+8
 	addi	a1,x0,1
@@ -1798,7 +1686,8 @@ Rotate.constprop.1:
 	bne	a5,t5,.L149
 	jal	x0,.L104
 .L217:
-	bgeu	a2,a5,.L144
+	bltu	a2,a5,.+8
+	jal	x0,.L144
 	bne	a3,zero,.+8
 	jal	x0,.L144
 .L147:
@@ -1818,18 +1707,19 @@ Rotate.constprop.1:
 	bne	a3,zero,.L147
 	jal	x0,.L144
 .L216:
-	bgeu	a5,a7,.L125
+	bltu	a5,a7,.+8
+	jal	x0,.L125
 	bne	a6,zero,.+8
 	jal	x0,.L125
 .L128:
 	addi	a6,a6,-1
 	sub	op_0,x0,a5
 	sub	t1,a6,op_0
-	lw	op_0,0(t1)
-	lw	op_3,0(t1)
-	addi	op_4,x0,255
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(t1)
 	or	op_2,op_3,op_4
-	addi	op_5,x0,255
+	lw	op_5,0(t1)
 	sub	op_1,op_2,op_5
 	sub	t3,op_0,op_1
 	sub	op_0,x0,a7
@@ -1857,11 +1747,11 @@ Rotate.constprop.1:
 	sub	op_0,x0,a4
 	sub	a1,a1,op_0
 .L131:
-	lw	op_0,0(a3)
-	lw	op_3,0(a3)
-	addi	op_4,x0,255
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(a3)
 	or	op_2,op_3,op_4
-	addi	op_5,x0,255
+	lw	op_5,0(a3)
 	sub	op_1,op_2,op_5
 	sub	a4,op_0,op_1
 	addi	a3,a3,1
@@ -1889,11 +1779,11 @@ Rotate.constprop.1:
 	sub	op_0,x0,a4
 	sub	t1,t5,op_0
 .L138:
-	addi	op_0,x0,255
-	addi	op_3,x0,255
-	lw	op_4,0(a5)
+	lw	op_0,0(a5)
+	lw	op_3,0(a5)
+	addi	op_4,x0,255
 	or	op_2,op_3,op_4
-	lw	op_5,0(a5)
+	addi	op_5,x0,255
 	sub	op_1,op_2,op_5
 	sub	a7,op_0,op_1
 	addi	a6,a6,1
@@ -1906,11 +1796,11 @@ Rotate.constprop.1:
 	sub	op_0,x0,a4
 	sub	t3,a1,op_0
 .L118:
-	lw	op_0,0(a6)
-	lw	op_3,0(a6)
-	addi	op_4,x0,255
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(a6)
 	or	op_2,op_3,op_4
-	addi	op_5,x0,255
+	lw	op_5,0(a6)
 	sub	op_1,op_2,op_5
 	sub	t1,op_0,op_1
 	addi	a5,a5,1
@@ -1925,11 +1815,11 @@ Rotate.constprop.1:
 .L142:
 	addi	a1,a2,0
 .L145:
-	addi	op_0,x0,255
-	addi	op_3,x0,255
-	lw	op_4,0(a1)
+	lw	op_0,0(a1)
+	lw	op_3,0(a1)
+	addi	op_4,x0,255
 	or	op_2,op_3,op_4
-	lw	op_5,0(a1)
+	addi	op_5,x0,255
 	sub	op_1,op_2,op_5
 	sub	a0,op_0,op_1
 	addi	a1,a1,1
@@ -1941,11 +1831,11 @@ Rotate.constprop.1:
 	sub	op_0,x0,a5
 	sub	a6,a6,op_0
 .L126:
-	addi	op_0,x0,255
-	addi	op_3,x0,255
-	lw	op_4,0(a5)
+	lw	op_0,0(a5)
+	lw	op_3,0(a5)
+	addi	op_4,x0,255
 	or	op_2,op_3,op_4
-	lw	op_5,0(a5)
+	addi	op_5,x0,255
 	sub	op_1,op_2,op_5
 	sub	t1,op_0,op_1
 	addi	a5,a5,1
@@ -1964,17 +1854,15 @@ Rotate.constprop.0:
 	jal	x0,.L218
 	sub	op_0,x0,a1
 	sub	a6,a0,op_0
-	blt	a0,zero,.L317
+	bge	a0,zero,.+8
+	jal	x0,.L317
 	sub	t3,a2,a6
-	blt	t3,a0,.+8
-	jal	x0,.L318
+	bge	t3,a0,.L318
 .L222:
-	blt	a4,t3,.+8
-	jal	x0,.L319
+	bge	a4,t3,.L319
 .L223:
 	addi	a5,zero,1
-	blt	a5,a0,.+8
-	jal	x0,.L263
+	bge	a5,a0,.L263
 	addi	op_0,x0,31
 	srl	a5,a0,op_0
 	sub	op_0,x0,a5
@@ -2012,8 +1900,7 @@ Rotate.constprop.0:
 	bne	a5,t1,.L262
 .L263:
 	addi	a5,zero,1
-	blt	a5,t3,.+8
-	jal	x0,.L261
+	bge	a5,t3,.L261
 	addi	op_0,x0,31
 	srl	a4,t3,op_0
 	sub	op_0,x0,a4
@@ -2052,8 +1939,7 @@ Rotate.constprop.0:
 .L261:
 	sub	a4,a2,a1
 	addi	a5,zero,1
-	blt	a5,a4,.+8
-	jal	x0,.L218
+	bge	a5,a4,.L218
 	addi	op_0,x0,31
 	srl	a5,a4,op_0
 	sub	op_0,x0,a5
@@ -2093,7 +1979,8 @@ Rotate.constprop.0:
 	addi	sp,sp,16
 	jalr	zero,ra,0
 .L318:
-	blt	a4,a0,.L223
+	bge	a4,a0,.+8
+	jal	x0,.L223
 	lui	a7,%hi(array1)
 	addi	op_0,x0,3
 	sll	a0,a0,op_0
@@ -2114,18 +2001,17 @@ Rotate.constprop.0:
 	sub	op_0,x0,a3
 	sub	t1,t1,op_0
 	addi	op_0,x0,3
-	bgeu	t1,op_0,.+8
-	jal	x0,.+12
+	bltu	t1,op_0,.+12
 	addi	t1,x0,0
 	jal	x0,.+8
 	addi	t1,x0,1
 	addi	a5,a3,0
 	bne	t1,zero,.L227
-	addi	op_2,x0,3
-	or	op_1,a3,op_2
+	addi	op_0,x0,3
 	addi	op_3,x0,3
-	sub	op_0,op_1,op_3
-	sub	t1,a3,op_0
+	or	op_2,op_3,a3
+	sub	op_1,op_2,a3
+	sub	t1,op_0,op_1
 	bne	t1,zero,.L227
 	sub	op_0,x0,a7
 	sub	t1,a4,op_0
@@ -2146,7 +2032,8 @@ Rotate.constprop.0:
 	sub	a4,t1,op_0
 	addi	op_0,x0,3
 	sll	t1,t3,op_0
-	bgeu	a5,a4,.L320
+	bltu	a5,a4,.+8
+	jal	x0,.L320
 	sub	op_0,x0,a5
 	sub	t4,t1,op_0
 	bne	t1,zero,.+8
@@ -2170,18 +2057,17 @@ Rotate.constprop.0:
 	sub	op_0,x0,a2
 	sub	a2,a5,op_0
 	addi	op_0,x0,3
-	bgeu	a2,op_0,.+8
-	jal	x0,.+12
+	bltu	a2,op_0,.+12
 	addi	a2,x0,0
 	jal	x0,.+8
 	addi	a2,x0,1
 	addi	a4,a3,0
 	bne	a2,zero,.L238
-	addi	op_2,x0,3
-	or	op_1,a3,op_2
+	addi	op_0,x0,3
 	addi	op_3,x0,3
-	sub	op_0,op_1,op_3
-	sub	a2,a3,op_0
+	or	op_2,op_3,a3
+	sub	op_1,op_2,a3
+	sub	a2,op_0,op_1
 	bne	a2,zero,.L238
 	sub	op_0,x0,a7
 	sub	a5,a5,op_0
@@ -2199,7 +2085,8 @@ Rotate.constprop.0:
 	sub	a6,a0,op_0
 	sub	a0,a6,a1
 	sub	t3,a2,a6
-	blt	t3,a0,.L222
+	bge	t3,a0,.+8
+	jal	x0,.L222
 	jal	x0,.L318
 .L319:
 	lui	a7,%hi(array1)
@@ -2214,18 +2101,17 @@ Rotate.constprop.0:
 	addi	a5,a5,-1
 	sub	a5,a5,a6
 	addi	op_0,x0,3
-	bgeu	a5,op_0,.+8
-	jal	x0,.+12
+	bltu	a5,op_0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
 	addi	a4,a3,0
 	bne	a5,zero,.L245
-	addi	op_2,x0,3
-	or	op_1,a3,op_2
+	addi	op_0,x0,3
 	addi	op_3,x0,3
-	sub	op_0,op_1,op_3
-	sub	a5,a3,op_0
+	or	op_2,op_3,a3
+	sub	op_1,op_2,a3
+	sub	a5,op_0,op_1
 	bne	a5,zero,.L245
 	sub	op_0,x0,a7
 	sub	a6,a6,op_0
@@ -2249,7 +2135,8 @@ Rotate.constprop.0:
 	sub	a5,a1,op_0
 	addi	op_0,x0,3
 	sll	a0,a0,op_0
-	bgeu	a4,a5,.L321
+	bltu	a4,a5,.+8
+	jal	x0,.L321
 	addi	a2,a5,0
 	sub	op_0,x0,a0
 	sub	a6,a5,op_0
@@ -2269,18 +2156,17 @@ Rotate.constprop.0:
 	sub	a2,a1,op_0
 	sub	a2,a2,a3
 	addi	op_0,x0,3
-	bgeu	a2,op_0,.+8
-	jal	x0,.+12
+	bltu	a2,op_0,.+12
 	addi	a2,x0,0
 	jal	x0,.+8
 	addi	a2,x0,1
 	addi	a4,a3,0
 	bne	a2,zero,.L255
-	addi	op_2,x0,3
-	or	op_1,a3,op_2
+	addi	op_0,x0,3
 	addi	op_3,x0,3
-	sub	op_0,op_1,op_3
-	sub	a2,a3,op_0
+	or	op_2,op_3,a3
+	sub	op_1,op_2,a3
+	sub	a2,op_0,op_1
 	bne	a2,zero,.L255
 	sub	op_0,x0,a5
 	sub	t3,t3,op_0
@@ -2292,18 +2178,19 @@ Rotate.constprop.0:
 	bne	a5,t3,.L256
 	jal	x0,.L218
 .L321:
-	bgeu	a5,a4,.L253
+	bltu	a5,a4,.+8
+	jal	x0,.L253
 	bne	a0,zero,.+8
 	jal	x0,.L253
 .L254:
 	addi	a0,a0,-1
 	sub	op_0,x0,a5
 	sub	a2,a0,op_0
-	lw	op_0,0(a2)
-	lw	op_3,0(a2)
-	addi	op_4,x0,255
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(a2)
 	or	op_2,op_3,op_4
-	addi	op_5,x0,255
+	lw	op_5,0(a2)
 	sub	op_1,op_2,op_5
 	sub	a6,op_0,op_1
 	sub	op_0,x0,a4
@@ -2312,7 +2199,8 @@ Rotate.constprop.0:
 	bne	a0,zero,.L254
 	jal	x0,.L253
 .L320:
-	bgeu	a4,a5,.L236
+	bltu	a4,a5,.+8
+	jal	x0,.L236
 	bne	t1,zero,.+8
 	jal	x0,.L236
 .L237:
@@ -2377,11 +2265,11 @@ Rotate.constprop.0:
 	sub	op_0,x0,a3
 	sub	a0,a0,op_0
 .L240:
-	lw	op_0,0(a4)
-	lw	op_3,0(a4)
-	addi	op_4,x0,255
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(a4)
 	or	op_2,op_3,op_4
-	addi	op_5,x0,255
+	lw	op_5,0(a4)
 	sub	op_1,op_2,op_5
 	sub	a3,op_0,op_1
 	addi	a4,a4,1
@@ -2449,12 +2337,12 @@ WikiSort.constprop.0:
 	addi	a4,a4,-1
 	sw	a1,4(a5)
 	addi	a5,a5,-8
-	blt	a0,a4,.+8
-	jal	x0,.L556
+	bge	a0,a4,.L556
 .L324:
 	lw	a3,-8(a5)
 	addi	a2,a5,0
-	blt	a6,a3,.L557
+	bge	a6,a3,.+8
+	jal	x0,.L557
 	sw	a6,0(a2)
 	sw	t6,4(a2)
 	addi	t4,t4,1
@@ -2485,12 +2373,12 @@ WikiSort.constprop.0:
 	addi	s5,zero,4
 .L327:
 	lui	a5,262144
-	blt	t2,a5,.+8
-	jal	x0,.L471
+	bge	t2,a5,.L471
 .L328:
 	addi	op_0,x0,2
 	sra	a5,a5,op_0
-	blt	t2,a5,.L328
+	bge	t2,a5,.+8
+	jal	x0,.L328
 	bne	a5,zero,.+8
 	jal	x0,.L329
 .L471:
@@ -2499,7 +2387,8 @@ WikiSort.constprop.0:
 .L333:
 	sub	op_0,x0,a5
 	sub	a4,s3,op_0
-	blt	a3,a4,.L330
+	bge	a3,a4,.+8
+	jal	x0,.L330
 .L560:
 	addi	op_0,x0,1
 	sll	a2,a5,op_0
@@ -2514,8 +2403,7 @@ WikiSort.constprop.0:
 	sub	a3,a3,a4
 	sub	op_0,x0,a5
 	sub	a4,s3,op_0
-	blt	a3,a4,.+8
-	jal	x0,.L560
+	bge	a3,a4,.L560
 .L330:
 	addi	op_0,x0,2
 	sra	a5,a5,op_0
@@ -2569,24 +2457,22 @@ WikiSort.constprop.0:
 	lw	a5,-8(a4)
 	sub	a2,a2,a0
 	sw	a2,52(sp)
-	blt	a1,a5,.L561
+	bge	a1,a5,.+8
+	jal	x0,.L561
 	addi	op_0,x0,3
 	sll	a2,s9,op_0
 	sub	op_0,x0,s11
 	sub	a2,a2,op_0
 	lw	a0,-8(a2)
 	lw	a2,0(a2)
-	blt	a2,a0,.+8
-	jal	x0,.L337
+	bge	a2,a0,.L337
 	lw	a2,64(sp)
 	addi	a0,zero,512
 	addi	s4,s9,0
-	blt	a0,a2,.+8
-	jal	x0,.L562
+	bge	a0,a2,.L562
 	addi	t5,a3,-8
 	lw	a3,52(sp)
-	blt	zero,a3,.+8
-	jal	x0,.L563
+	bge	zero,a3,.L563
 	addi	a0,a2,0
 	callrem	a0,a0,s3
 	addi	t3,a2,0
@@ -2595,8 +2481,7 @@ WikiSort.constprop.0:
 	sub	op_0,x0,a6
 	sub	s1,a0,op_0
 	addi	a2,s1,1
-	blt	a2,s9,.+8
-	jal	x0,.L564
+	bge	a2,s9,.L564
 .L406:
 	lw	a5,12(sp)
 	addi	op_0,x0,3
@@ -2623,11 +2508,11 @@ WikiSort.constprop.0:
 	sw	a5,4(a3)
 	sub	op_0,x0,a3
 	sub	a3,s8,op_0
-	blt	a2,s9,.L410
+	bge	a2,s9,.+8
+	jal	x0,.L410
 .L411:
 	addi	t4,s3,0
-	blt	t3,s3,.+8
-	jal	x0,.L407
+	bge	t3,s3,.L407
 	addi	t4,t3,0
 .L407:
 	sub	op_0,x0,s11
@@ -2636,7 +2521,8 @@ WikiSort.constprop.0:
 	lw	t0,0(a7)
 	sub	op_0,x0,t4
 	sub	t4,s9,op_0
-	blt	a5,a0,.L565
+	bge	a5,a0,.+8
+	jal	x0,.L565
 	addi	op_0,x0,3
 	sll	a0,a0,op_0
 	sub	op_0,x0,s11
@@ -2674,8 +2560,7 @@ WikiSort.constprop.0:
 	addi	s4,t0,0
 	addi	s9,s10,0
 .L413:
-	blt	s0,s2,.+8
-	jal	x0,.L420
+	bge	s0,s2,.L420
 .L417:
 	lw	a5,28(sp)
 	sub	op_0,x0,s2
@@ -2685,11 +2570,11 @@ WikiSort.constprop.0:
 	sub	op_0,x0,s11
 	sub	a4,a4,op_0
 	lw	a4,0(a4)
-	blt	a4,s4,.L420
+	bge	a4,s4,.+8
+	jal	x0,.L420
 .L418:
 	addi	a4,s2,-1
-	blt	s0,a4,.+8
-	jal	x0,.L421
+	bge	s0,a4,.L421
 	addi	op_0,x0,3
 	sll	a3,t1,op_0
 	sub	op_0,x0,s11
@@ -2707,10 +2592,10 @@ WikiSort.constprop.0:
 	sub	op_0,x0,s11
 	sub	a3,a3,op_0
 	lw	a3,0(a3)
-	blt	a3,a1,.+8
-	jal	x0,.L484
+	bge	a3,a1,.L484
 	addi	s0,a5,1
-	blt	s0,a2,.L423
+	bge	s0,a2,.+8
+	jal	x0,.L423
 .L421:
 	bne	a4,s0,.L424
 	addi	op_0,x0,3
@@ -2723,7 +2608,8 @@ WikiSort.constprop.0:
 	sub	a3,a3,op_0
 	lw	a4,0(a4)
 	lw	a3,0(a3)
-	blt	a3,a4,.+12
+	bge	a3,a4,.+8
+	jal	x0,.+12
 	addi	a4,x0,0
 	jal	x0,.+8
 	addi	a4,x0,1
@@ -2733,8 +2619,7 @@ WikiSort.constprop.0:
 	sub	s4,s2,s0
 	sub	op_0,x0,s1
 	sub	s10,s3,op_0
-	blt	zero,s3,.+8
-	jal	x0,.L429
+	bge	zero,s3,.L429
 	addi	op_0,x0,3
 	sll	a3,t1,op_0
 	addi	op_0,x0,3
@@ -2795,7 +2680,8 @@ WikiSort.constprop.0:
 	auipc	ra,%pcrel_hi(WikiMerge.constprop.0.isra.0)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_1)
 	addi	a5,zero,512
-	blt	a5,s3,.L566
+	bge	a5,s3,.+8
+	jal	x0,.L566
 	bne	s8,zero,.+8
 	jal	x0,.L434
 	addi	op_0,x0,3
@@ -2812,8 +2698,7 @@ WikiSort.constprop.0:
 	sw	a5,-4(a3)
 	bne	a4,a1,.L433
 .L434:
-	blt	zero,s4,.+8
-	jal	x0,.L432
+	bge	zero,s4,.L432
 	sub	a3,s10,s4
 	addi	op_0,x0,3
 	sll	a4,s0,op_0
@@ -2853,8 +2738,7 @@ WikiSort.constprop.0:
 	sw	a5,8(sp)
 	sub	op_0,x0,s4
 	sub	s2,t3,op_0
-	blt	a4,s5,.+8
-	jal	x0,.L485
+	bge	a4,s5,.L485
 	addi	op_0,x0,3
 	sll	a3,t1,op_0
 	sub	op_0,x0,s11
@@ -2866,8 +2750,7 @@ WikiSort.constprop.0:
 	sub	a2,a2,op_0
 .L441:
 	lw	a5,0(a2)
-	blt	a5,a0,.+8
-	jal	x0,.L440
+	bge	a5,a0,.L440
 	addi	a0,a5,0
 	addi	t1,a4,0
 .L440:
@@ -2875,7 +2758,8 @@ WikiSort.constprop.0:
 	sub	a4,s3,op_0
 	sub	op_0,x0,a2
 	sub	a2,s8,op_0
-	blt	a4,s5,.L441
+	bge	a4,s5,.+8
+	jal	x0,.L441
 	addi	t1,t1,-1
 .L439:
 	addi	op_0,x0,3
@@ -2885,13 +2769,13 @@ WikiSort.constprop.0:
 	addi	s0,t3,0
 	lw	s4,0(a4)
 	addi	s1,s10,0
-	blt	s0,s2,.L417
+	bge	s0,s2,.+8
+	jal	x0,.L417
 .L420:
 	bne	s6,s7,.+8
 	jal	x0,.L418
 	sub	s0,s6,s7
-	blt	s0,s3,.+8
-	jal	x0,.L568
+	bge	s0,s3,.L568
 	addi	a1,s1,0
 	addi	a2,s6,0
 	sub	a0,s7,s6
@@ -2920,7 +2804,8 @@ WikiSort.constprop.0:
 	jal	x0,.L413
 .L484:
 	addi	a2,a5,0
-	blt	s0,a2,.L423
+	bge	s0,a2,.+8
+	jal	x0,.L423
 	jal	x0,.L421
 .L566:
 	lw	a3,56(sp)
@@ -2969,11 +2854,11 @@ WikiSort.constprop.0:
 	sub	a4,s7,op_0
 	sw	a4,20(sp)
 	lw	a4,16(sp)
-	blt	a5,a4,.+8
-	jal	x0,.L449
+	bge	a5,a4,.L449
 	lw	a5,52(sp)
 	lw	s5,108(sp)
-	blt	zero,a5,.L450
+	bge	zero,a5,.+8
+	jal	x0,.L450
 .L460:
 	addi	s5,s5,-1
 	bne	s5,zero,.+8
@@ -2984,8 +2869,7 @@ WikiSort.constprop.0:
 .L568:
 	sub	op_0,x0,s3
 	sub	s10,s1,op_0
-	blt	zero,s3,.+8
-	jal	x0,.L447
+	bge	zero,s3,.L447
 	addi	op_0,x0,3
 	sll	a7,s10,op_0
 	addi	op_0,x0,3
@@ -3022,8 +2906,7 @@ WikiSort.constprop.0:
 	sub	s5,s3,op_0
 	sub	op_0,x0,s7
 	sub	s7,s3,op_0
-	blt	a5,s6,.+8
-	jal	x0,.L448
+	bge	a5,s6,.L448
 	addi	s6,a5,0
 .L448:
 	addi	s0,s1,0
@@ -3082,9 +2965,9 @@ WikiSort.constprop.0:
 .L348:
 	addi	a3,a5,0
 	lw	a5,0(a4)
-	blt	a3,a5,.L347
-	blt	a5,a3,.+8
-	jal	x0,.L346
+	bge	a3,a5,.+8
+	jal	x0,.L347
+	bge	a5,a3,.L346
 .L347:
 	bne	a0,s1,.+8
 	jal	x0,.L476
@@ -3092,10 +2975,12 @@ WikiSort.constprop.0:
 .L346:
 	addi	a2,a2,1
 	addi	a4,a4,8
-	blt	a2,s9,.L348
+	bge	a2,s9,.+8
+	jal	x0,.L348
 	lw	a5,68(sp)
 	addi	a4,zero,512
-	blt	a4,a5,.L349
+	bge	a4,a5,.+8
+	jal	x0,.L349
 .L571:
 	bne	a5,s1,.L350
 	sub	op_0,x0,a5
@@ -3134,9 +3019,9 @@ WikiSort.constprop.0:
 	jal	x0,.L399
 	lw	a1,-8(s4)
 	lw	a4,0(s4)
-	blt	a1,a4,.L399
-	blt	a4,a1,.+8
-	jal	x0,.L398
+	bge	a1,a4,.+8
+	jal	x0,.L399
+	bge	a4,a1,.L398
 .L399:
 	addi	a2,a2,1
 	addi	a1,s2,1
@@ -3154,7 +3039,8 @@ WikiSort.constprop.0:
 .L398:
 	addi	s2,s2,-1
 	addi	s4,s4,-8
-	blt	s3,s1,.L400
+	bge	s3,s1,.+8
+	jal	x0,.L400
 	lw	a6,40(sp)
 	lw	a4,8(sp)
 	lw	s4,36(sp)
@@ -3164,8 +3050,7 @@ WikiSort.constprop.0:
 	sw	a6,12(sp)
 	addi	s10,s5,0
 .L472:
-	blt	zero,a3,.+8
-	jal	x0,.L405
+	bge	zero,a3,.L405
 .L359:
 	addi	op_0,x0,3
 	sll	s2,a4,op_0
@@ -3187,9 +3072,9 @@ WikiSort.constprop.0:
 	jal	x0,.L403
 	lw	a4,0(s4)
 	lw	a6,8(s4)
-	blt	a4,a6,.L403
-	blt	a6,a4,.+8
-	jal	x0,.L402
+	bge	a4,a6,.+8
+	jal	x0,.L403
+	bge	a6,a4,.L402
 .L403:
 	addi	a0,s3,0
 	addi	a4,zero,512
@@ -3205,7 +3090,8 @@ WikiSort.constprop.0:
 .L402:
 	addi	s1,s1,1
 	addi	s4,s4,8
-	blt	s3,s0,.L404
+	bge	s3,s0,.+8
+	jal	x0,.L404
 	lw	s4,8(sp)
 	lw	s1,36(sp)
 	lw	a6,40(sp)
@@ -3226,7 +3112,8 @@ WikiSort.constprop.0:
 	sub	op_0,x0,a6
 	sub	s1,a0,op_0
 	addi	a2,s1,1
-	blt	a2,s9,.L406
+	bge	a2,s9,.+8
+	jal	x0,.L406
 .L564:
 	addi	op_0,x0,3
 	sll	a7,s1,op_0
@@ -3269,12 +3156,10 @@ WikiSort.constprop.0:
 	lw	a5,68(sp)
 	addi	a4,zero,512
 	addi	s1,s1,1
-	blt	a4,a5,.+8
-	jal	x0,.L571
+	bge	a4,a5,.L571
 .L349:
 	addi	a3,a2,1
-	blt	a3,s9,.+8
-	jal	x0,.L362
+	bge	a3,s9,.L362
 	addi	op_0,x0,3
 	sll	a4,a2,op_0
 	sub	op_0,x0,s11
@@ -3289,9 +3174,9 @@ WikiSort.constprop.0:
 .L367:
 	addi	a0,a5,0
 	lw	a5,0(a4)
-	blt	a0,a5,.L366
-	blt	a5,a0,.+8
-	jal	x0,.L365
+	bge	a0,a5,.+8
+	jal	x0,.L366
+	bge	a5,a0,.L365
 .L366:
 	bne	t1,a7,.+8
 	jal	x0,.L478
@@ -3309,7 +3194,8 @@ WikiSort.constprop.0:
 	addi	a5,a5,-2
 	bne	a4,s1,.+8
 	jal	x0,.L573
-	blt	a5,s9,.L377
+	bge	a5,s9,.+8
+	jal	x0,.L377
 	lw	a4,32(sp)
 	lui	a3,%hi(array1-8)
 	lw	a0,92(sp)
@@ -3322,9 +3208,9 @@ WikiSort.constprop.0:
 .L381:
 	addi	a3,a1,0
 	lw	a1,0(a4)
-	blt	a1,a3,.L380
-	blt	a3,a1,.+8
-	jal	x0,.L379
+	bge	a1,a3,.+8
+	jal	x0,.L380
+	bge	a3,a1,.L379
 .L380:
 	bne	a0,a2,.+8
 	jal	x0,.L377
@@ -3332,11 +3218,11 @@ WikiSort.constprop.0:
 .L379:
 	addi	a5,a5,-1
 	addi	a4,a4,-8
-	blt	a5,s9,.+8
-	jal	x0,.L381
+	bge	a5,s9,.L381
 .L377:
 	addi	a4,a5,-1
-	blt	a4,s9,.L376
+	bge	a4,s9,.+8
+	jal	x0,.L376
 	addi	op_0,x0,3
 	sll	a5,a5,op_0
 	sub	op_0,x0,s11
@@ -3351,9 +3237,9 @@ WikiSort.constprop.0:
 .L386:
 	addi	a1,a3,0
 	lw	a3,0(a5)
-	blt	a3,a1,.L385
-	blt	a1,a3,.+8
-	jal	x0,.L384
+	bge	a3,a1,.+8
+	jal	x0,.L385
+	bge	a1,a3,.L384
 .L385:
 	bne	a2,a0,.+8
 	jal	x0,.L480
@@ -3361,8 +3247,7 @@ WikiSort.constprop.0:
 .L384:
 	addi	a4,a4,-1
 	addi	a5,a5,-8
-	blt	a4,s9,.+8
-	jal	x0,.L386
+	bge	a4,s9,.L386
 	lw	a5,68(sp)
 	bne	a5,a2,.L376
 .L581:
@@ -3391,7 +3276,8 @@ WikiSort.constprop.0:
 .L350:
 	lw	a5,16(sp)
 	addi	a4,a5,-2
-	blt	a4,s9,.L352
+	bge	a4,s9,.+8
+	jal	x0,.L352
 	lw	a5,32(sp)
 	lui	a3,%hi(array1-8)
 	lw	a0,92(sp)
@@ -3404,9 +3290,9 @@ WikiSort.constprop.0:
 .L357:
 	addi	a2,a1,0
 	lw	a1,0(a5)
-	blt	a1,a2,.L356
-	blt	a2,a1,.+8
-	jal	x0,.L355
+	bge	a1,a2,.+8
+	jal	x0,.L356
+	bge	a2,a1,.L355
 .L356:
 	bne	a0,a3,.+8
 	jal	x0,.L477
@@ -3414,29 +3300,25 @@ WikiSort.constprop.0:
 .L355:
 	addi	a4,a4,-1
 	addi	a5,a5,-8
-	blt	a4,s9,.+8
-	jal	x0,.L357
+	bge	a4,s9,.L357
 	lw	a5,68(sp)
 	sub	op_0,x0,a4
 	sub	a2,a3,op_0
 	bne	a5,a3,.+8
 	jal	x0,.L574
 .L361:
-	blt	a3,a5,.+8
-	jal	x0,.L575
+	bge	a3,a5,.L575
 .L376:
 	lw	s0,16(sp)
 	sw	s3,8(sp)
 	lw	s10,32(sp)
 	addi	s1,sp,208
 	addi	s5,a6,0
-	blt	s4,s0,.+8
-	jal	x0,.L541
+	bge	s4,s0,.L541
 .L396:
 	sw	s4,-80(s1)
 	sw	s0,-76(s1)
-	blt	s4,s10,.+8
-	jal	x0,.L481
+	bge	s4,s10,.L481
 	addi	op_0,x0,3
 	sll	a5,s5,op_0
 	sub	op_0,x0,s11
@@ -3455,10 +3337,10 @@ WikiSort.constprop.0:
 	sub	op_0,x0,s11
 	sub	a4,a4,op_0
 	lw	a4,0(a4)
-	blt	a4,a3,.+8
-	jal	x0,.L482
+	bge	a4,a3,.L482
 	addi	s2,a5,1
-	blt	s2,a2,.L389
+	bge	s2,a2,.+8
+	jal	x0,.L389
 .L387:
 	bne	s10,s2,.L390
 	addi	op_0,x0,3
@@ -3471,7 +3353,8 @@ WikiSort.constprop.0:
 	sub	a5,a5,op_0
 	lw	s2,0(a4)
 	lw	a5,0(a5)
-	blt	s2,a5,.+12
+	bge	s2,a5,.+8
+	jal	x0,.+12
 	addi	s2,x0,0
 	jal	x0,.+8
 	addi	s2,x0,1
@@ -3494,8 +3377,7 @@ WikiSort.constprop.0:
 	addi	s4,s4,-1
 	sub	op_0,x0,s5
 	sub	a5,s3,op_0
-	blt	s5,s4,.+8
-	jal	x0,.L391
+	bge	s5,s4,.L391
 	addi	op_0,x0,3
 	sll	a4,a5,op_0
 	sub	op_0,x0,s11
@@ -3513,17 +3395,19 @@ WikiSort.constprop.0:
 	sub	op_0,x0,s11
 	sub	a1,a1,op_0
 	lw	a1,0(a1)
-	blt	a3,a1,.L483
+	bge	a3,a1,.+8
+	jal	x0,.L483
 	addi	s5,a4,1
-	blt	s5,a2,.L393
+	bge	s5,a2,.+8
+	jal	x0,.L393
 .L391:
 	bne	s4,s5,.+8
 	jal	x0,.L576
 .L394:
-	blt	s5,s2,.+8
-	jal	x0,.L541
+	bge	s5,s2,.L541
 	addi	s4,s2,0
-	blt	s4,s0,.L396
+	bge	s4,s0,.+8
+	jal	x0,.L396
 .L541:
 	lw	s3,8(sp)
 	jal	x0,.L337
@@ -3538,13 +3422,13 @@ WikiSort.constprop.0:
 	sub	a4,a4,op_0
 	lw	a5,0(a5)
 	lw	a4,0(a4)
-	blt	a5,a4,.+12
+	bge	a5,a4,.+8
+	jal	x0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
 	addi	op_0,x0,1
-	bgeu	a5,op_0,.+8
-	jal	x0,.+12
+	bltu	a5,op_0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
@@ -3569,11 +3453,13 @@ WikiSort.constprop.0:
 	jal	x0,.L359
 .L482:
 	addi	a2,a5,0
-	blt	s2,a2,.L389
+	bge	s2,a2,.+8
+	jal	x0,.L389
 	jal	x0,.L387
 .L483:
 	addi	a2,a4,0
-	blt	s5,a2,.L393
+	bge	s5,a2,.+8
+	jal	x0,.L393
 	jal	x0,.L391
 .L481:
 	addi	s2,s4,0
@@ -3588,8 +3474,7 @@ WikiSort.constprop.0:
 	sub	op_0,x0,a0
 	sub	a0,a5,op_0
 	lw	a5,96(sp)
-	blt	a7,a5,.+8
-	jal	x0,.L458
+	bge	a7,a5,.L458
 	lw	t1,24(sp)
 .L457:
 	lw	a6,0(a0)
@@ -3603,12 +3488,12 @@ WikiSort.constprop.0:
 	addi	a4,a4,-1
 	sw	a1,4(a5)
 	addi	a5,a5,-8
-	blt	t1,a4,.+8
-	jal	x0,.L577
+	bge	t1,a4,.L577
 .L456:
 	lw	a3,-8(a5)
 	addi	a2,a5,0
-	blt	a6,a3,.L578
+	bge	a6,a3,.+8
+	jal	x0,.L578
 	lw	a5,96(sp)
 	sw	a6,0(a2)
 	sw	t3,4(a2)
@@ -3621,8 +3506,7 @@ WikiSort.constprop.0:
 	addi	s3,sp,208
 	addi	s1,a4,0
 	addi	s0,a5,0
-	blt	a4,a5,.+8
-	jal	x0,.L454
+	bge	a4,a5,.L454
 	lw	s4,84(sp)
 .L453:
 	bne	s0,s4,.+8
@@ -3638,10 +3522,8 @@ WikiSort.constprop.0:
 	sub	a4,a4,op_0
 	lw	a2,0(a2)
 	lw	a4,0(a4)
-	blt	a2,a4,.+8
-	jal	x0,.L461
-	blt	s1,a5,.+8
-	jal	x0,.L454
+	bge	a2,a4,.L461
+	bge	s1,a5,.L454
 	addi	s0,s0,1
 	bne	s0,s4,.L579
 .L461:
@@ -3659,8 +3541,7 @@ WikiSort.constprop.0:
 	addi	a5,s2,1
 	sub	op_0,x0,s1
 	sub	s1,a5,op_0
-	blt	s1,s0,.+8
-	jal	x0,.L454
+	bge	s1,s0,.L454
 	bne	s0,s4,.+8
 	jal	x0,.L465
 	addi	a5,s0,0
@@ -3677,14 +3558,14 @@ WikiSort.constprop.0:
 .Lpcrel_10:
 	auipc	ra,%pcrel_hi(Rotate.constprop.0)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_10)
-	blt	s1,s0,.L465
+	bge	s1,s0,.+8
+	jal	x0,.L465
 .L454:
 	lw	a5,84(sp)
 	lw	a4,104(sp)
 	addi	s3,sp,208
 	addi	s0,a5,0
-	blt	a5,a4,.+8
-	jal	x0,.L460
+	bge	a5,a4,.L460
 	lw	s1,100(sp)
 	addi	s2,a4,0
 	addi	s4,a5,0
@@ -3707,10 +3588,8 @@ WikiSort.constprop.0:
 	sub	a5,a5,op_0
 	lw	a4,0(a4)
 	lw	a5,0(a5)
-	blt	a5,a4,.+8
-	jal	x0,.L466
-	blt	s4,s2,.+8
-	jal	x0,.L460
+	bge	a5,a4,.L466
+	bge	s4,s2,.L460
 	addi	s0,s0,-1
 	bne	s1,s0,.L580
 .L466:
@@ -3727,8 +3606,7 @@ WikiSort.constprop.0:
 .Lpcrel_11:
 	auipc	ra,%pcrel_hi(Rotate.constprop.0)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_11)
-	blt	s0,s2,.+8
-	jal	x0,.L460
+	bge	s0,s2,.L460
 	bne	s1,s0,.+8
 	jal	x0,.L551
 	addi	s4,s0,0
@@ -3747,7 +3625,8 @@ WikiSort.constprop.0:
 .Lpcrel_12:
 	auipc	ra,%pcrel_hi(Rotate.constprop.0)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_12)
-	blt	s0,s1,.L470
+	bge	s0,s1,.+8
+	jal	x0,.L470
 	addi	s5,s5,-1
 	bne	s5,zero,.L488
 .L569:
@@ -3809,7 +3688,8 @@ WikiSort.constprop.0:
 	sw	a5,52(sp)
 	jal	x0,.L351
 .L573:
-	blt	a5,s9,.L376
+	bge	a5,s9,.+8
+	jal	x0,.L376
 	lw	a4,32(sp)
 	lui	a3,%hi(array1-8)
 	lw	a7,92(sp)
@@ -3822,9 +3702,9 @@ WikiSort.constprop.0:
 .L375:
 	addi	a0,a1,0
 	lw	a1,0(a4)
-	blt	a1,a0,.L374
-	blt	a0,a1,.+8
-	jal	x0,.L373
+	bge	a1,a0,.+8
+	jal	x0,.L374
+	bge	a0,a1,.L373
 .L374:
 	bne	a7,a3,.+8
 	jal	x0,.L479
@@ -3832,8 +3712,7 @@ WikiSort.constprop.0:
 .L373:
 	addi	a5,a5,-1
 	addi	a4,a4,-8
-	blt	a5,s9,.+8
-	jal	x0,.L375
+	bge	a5,s9,.L375
 	bne	s1,a3,.L376
 .L582:
 	sub	op_0,x0,s1
@@ -3994,8 +3873,7 @@ benchmark_body.isra.0:
 	sw	a3,36(sp)
 	sw	a4,40(sp)
 	sw	a5,44(sp)
-	blt	zero,a0,.+8
-	jal	x0,.L593
+	bge	zero,a0,.L593
 	sw	s3,76(sp)
 	sw	s5,68(sp)
 	sw	s6,64(sp)
@@ -4070,8 +3948,7 @@ stop_trigger:
 	.globl	Min
 	.type	Min, @function
 Min:
-	blt	a1,a0,.+8
-	jal	x0,.L607
+	bge	a1,a0,.L607
 	addi	a0,a1,0
 .L607:
 	jalr	zero,ra,0
@@ -4080,8 +3957,7 @@ Min:
 	.globl	Max
 	.type	Max, @function
 Max:
-	blt	a0,a1,.+8
-	jal	x0,.L609
+	bge	a0,a1,.L609
 	addi	a0,a1,0
 .L609:
 	jalr	zero,ra,0
@@ -4145,8 +4021,7 @@ BinaryFirst:
 	addi	s4,a0,0
 	addi	s7,a1,0
 	addi	s5,a4,0
-	blt	a2,s6,.+8
-	jal	x0,.L616
+	bge	a2,s6,.L616
 	sw	s3,44(sp)
 	addi	op_0,x0,3
 	sll	s3,a1,op_0
@@ -4173,7 +4048,8 @@ BinaryFirst:
 	bne	a0,zero,.+8
 	jal	x0,.L620
 	addi	s1,s0,1
-	blt	s1,s2,.L618
+	bge	s1,s2,.+8
+	jal	x0,.L618
 .L623:
 	lw	s0,56(sp)
 	lw	s2,48(sp)
@@ -4207,7 +4083,8 @@ BinaryFirst:
 	jalr	zero,ra,0
 .L620:
 	addi	s2,s0,0
-	blt	s1,s2,.L618
+	bge	s1,s2,.+8
+	jal	x0,.L618
 	jal	x0,.L623
 	.size	BinaryFirst, .-BinaryFirst
 	.align	2
@@ -4228,8 +4105,7 @@ BinaryLast:
 	addi	s4,a0,0
 	addi	s7,a1,0
 	addi	s5,a4,0
-	blt	a2,s6,.+8
-	jal	x0,.L625
+	bge	a2,s6,.L625
 	sw	s3,44(sp)
 	addi	op_0,x0,3
 	sll	s3,a1,op_0
@@ -4255,7 +4131,8 @@ BinaryLast:
 	jalr	ra,s5,0
 	bne	a0,zero,.L631
 	addi	s1,s0,1
-	blt	s1,s2,.L627
+	bge	s1,s2,.+8
+	jal	x0,.L627
 .L634:
 	lw	s0,56(sp)
 	lw	s2,48(sp)
@@ -4276,8 +4153,7 @@ BinaryLast:
 	lw	a3,4(s4)
 	jalr	ra,s5,0
 	addi	op_0,x0,1
-	bgeu	a0,op_0,.+8
-	jal	x0,.+12
+	bltu	a0,op_0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
@@ -4295,7 +4171,8 @@ BinaryLast:
 	jalr	zero,ra,0
 .L631:
 	addi	s2,s0,0
-	blt	s1,s2,.L627
+	bge	s1,s2,.+8
+	jal	x0,.L627
 	jal	x0,.L634
 	.size	BinaryLast, .-BinaryLast
 	.align	2
@@ -4313,8 +4190,7 @@ InsertionSort:
 	sw	a2,12(sp)
 	sub	op_0,x0,a0
 	sub	s4,s4,op_0
-	blt	s6,a2,.+8
-	jal	x0,.L635
+	bge	s6,a2,.L635
 	sw	s3,60(sp)
 	sw	s5,52(sp)
 	sw	s7,44(sp)
@@ -4339,8 +4215,7 @@ InsertionSort:
 	lw	a5,-4(s0)
 	sw	a4,0(s0)
 	sw	a5,4(s0)
-	blt	s3,s2,.+8
-	jal	x0,.L648
+	bge	s3,s2,.L648
 .L638:
 	addi	s0,s1,0
 	lw	a0,24(sp)
@@ -4358,7 +4233,8 @@ InsertionSort:
 	sw	a3,0(a5)
 	sw	a4,4(a5)
 	addi	s4,s4,8
-	blt	s6,s7,.L639
+	bge	s6,s7,.+8
+	jal	x0,.L639
 .L650:
 	lw	s0,72(sp)
 	lw	s1,68(sp)
@@ -4384,7 +4260,8 @@ InsertionSort:
 	sw	a3,0(a5)
 	sw	a4,4(a5)
 	addi	s4,s4,8
-	blt	s6,s7,.L639
+	bge	s6,s7,.+8
+	jal	x0,.L639
 	jal	x0,.L650
 	.size	InsertionSort, .-InsertionSort
 	.align	2
@@ -4396,8 +4273,7 @@ Reverse:
 	sw	a2,12(sp)
 	sub	a4,a2,a1
 	addi	a5,zero,1
-	blt	a5,a4,.+8
-	jal	x0,.L651
+	bge	a5,a4,.L651
 	addi	op_0,x0,31
 	srl	a5,a4,op_0
 	sub	op_0,x0,a5
@@ -4440,8 +4316,7 @@ Reverse:
 	.globl	BlockSwap
 	.type	BlockSwap, @function
 BlockSwap:
-	blt	zero,a3,.+8
-	jal	x0,.L656
+	bge	zero,a3,.L656
 	sub	op_0,x0,a3
 	sub	a6,a1,op_0
 	addi	op_0,x0,3
@@ -4482,17 +4357,15 @@ Rotate:
 	jal	x0,.L660
 	sub	op_0,x0,a1
 	sub	t4,a2,op_0
-	blt	a1,zero,.L765
+	bge	a1,zero,.+8
+	jal	x0,.L765
 	sub	t5,a3,t4
-	blt	t5,a1,.+8
-	jal	x0,.L766
+	bge	t5,a1,.L766
 .L664:
-	blt	a5,t5,.+8
-	jal	x0,.L767
+	bge	a5,t5,.L767
 .L665:
 	addi	a5,zero,1
-	blt	a5,a1,.+8
-	jal	x0,.L711
+	bge	a5,a1,.L711
 	addi	op_0,x0,31
 	srl	a5,a1,op_0
 	sub	op_0,x0,a5
@@ -4527,8 +4400,7 @@ Rotate:
 	bne	a5,t3,.L710
 .L711:
 	addi	a5,zero,1
-	blt	a5,t5,.+8
-	jal	x0,.L709
+	bge	a5,t5,.L709
 	addi	op_0,x0,31
 	srl	a5,t5,op_0
 	sub	op_0,x0,a5
@@ -4564,8 +4436,7 @@ Rotate:
 .L709:
 	sub	a4,a3,a2
 	addi	a5,zero,1
-	blt	a5,a4,.+8
-	jal	x0,.L660
+	bge	a5,a4,.L660
 	addi	op_0,x0,31
 	srl	a5,a4,op_0
 	sub	op_0,x0,a5
@@ -4602,7 +4473,8 @@ Rotate:
 	addi	sp,sp,16
 	jalr	zero,ra,0
 .L766:
-	blt	a5,a1,.L665
+	bge	a5,a1,.+8
+	jal	x0,.L665
 	addi	op_0,x0,3
 	sll	a1,a1,op_0
 	addi	op_0,x0,3
@@ -4614,8 +4486,7 @@ Rotate:
 	sub	a6,a6,op_0
 	sub	a6,a4,a6
 	addi	op_0,x0,3
-	bgeu	a6,op_0,.+8
-	jal	x0,.+12
+	bltu	a6,op_0,.+12
 	addi	a6,x0,0
 	jal	x0,.+8
 	addi	a6,x0,1
@@ -4646,7 +4517,8 @@ Rotate:
 	sub	a5,a5,op_0
 	addi	op_0,x0,3
 	sll	a6,t5,op_0
-	bgeu	a7,a5,.L769
+	bltu	a7,a5,.+8
+	jal	x0,.L769
 	bne	a6,zero,.+8
 	jal	x0,.L679
 	or	t1,a5,a7
@@ -4677,8 +4549,7 @@ Rotate:
 	sub	a6,a5,a4
 	addi	a6,a6,-1
 	addi	op_0,x0,3
-	bgeu	a6,op_0,.+8
-	jal	x0,.+12
+	bltu	a6,op_0,.+12
 	addi	a6,x0,0
 	jal	x0,.+8
 	addi	a6,x0,1
@@ -4705,7 +4576,8 @@ Rotate:
 	sub	t4,a1,op_0
 	sub	a1,t4,a2
 	sub	t5,a3,t4
-	blt	t5,a1,.L664
+	bge	t5,a1,.+8
+	jal	x0,.L664
 	jal	x0,.L766
 .L767:
 	addi	op_0,x0,3
@@ -4719,8 +4591,7 @@ Rotate:
 	sub	a7,a7,op_0
 	sub	a7,a4,a7
 	addi	op_0,x0,3
-	bgeu	a7,op_0,.+8
-	jal	x0,.+12
+	bltu	a7,op_0,.+12
 	addi	a7,x0,0
 	jal	x0,.+8
 	addi	a7,x0,1
@@ -4755,7 +4626,8 @@ Rotate:
 	sub	a2,a2,op_0
 	addi	op_0,x0,3
 	sll	a1,a1,op_0
-	bgeu	a5,a2,.L770
+	bltu	a5,a2,.+8
+	jal	x0,.L770
 	bne	a1,zero,.+8
 	jal	x0,.L699
 	or	a3,a5,a2
@@ -4789,8 +4661,7 @@ Rotate:
 	sub	a1,a2,a4
 	addi	a1,a1,-1
 	addi	op_0,x0,3
-	bgeu	a1,op_0,.+8
-	jal	x0,.+12
+	bltu	a1,op_0,.+12
 	addi	a1,x0,0
 	jal	x0,.+8
 	addi	a1,x0,1
@@ -4805,7 +4676,8 @@ Rotate:
 	bne	a5,t5,.L704
 	jal	x0,.L660
 .L770:
-	bgeu	a2,a5,.L699
+	bltu	a2,a5,.+8
+	jal	x0,.L699
 	bne	a1,zero,.+8
 	jal	x0,.L699
 .L702:
@@ -4825,7 +4697,8 @@ Rotate:
 	bne	a1,zero,.L702
 	jal	x0,.L699
 .L769:
-	bgeu	a5,a7,.L679
+	bltu	a5,a7,.+8
+	jal	x0,.L679
 	bne	a6,zero,.+8
 	jal	x0,.L679
 .L682:
@@ -4848,11 +4721,11 @@ Rotate:
 	sub	op_0,x0,a4
 	sub	a4,t5,op_0
 .L705:
-	lw	op_0,0(a5)
-	lw	op_3,0(a5)
-	addi	op_4,x0,255
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(a5)
 	or	op_2,op_3,op_4
-	addi	op_5,x0,255
+	lw	op_5,0(a5)
 	sub	op_1,op_2,op_5
 	sub	a3,op_0,op_1
 	addi	a5,a5,1
@@ -4864,11 +4737,11 @@ Rotate:
 	sub	op_0,x0,a4
 	sub	t1,t5,op_0
 .L693:
-	lw	op_0,0(a5)
-	lw	op_3,0(a5)
-	addi	op_4,x0,255
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(a5)
 	or	op_2,op_3,op_4
-	addi	op_5,x0,255
+	lw	op_5,0(a5)
 	sub	op_1,op_2,op_5
 	sub	a7,op_0,op_1
 	addi	a6,a6,1
@@ -4886,11 +4759,11 @@ Rotate:
 	sub	op_0,x0,a4
 	sub	a1,a1,op_0
 .L685:
-	addi	op_0,x0,255
-	addi	op_3,x0,255
-	lw	op_4,0(a3)
+	lw	op_0,0(a3)
+	lw	op_3,0(a3)
+	addi	op_4,x0,255
 	or	op_2,op_3,op_4
-	lw	op_5,0(a3)
+	addi	op_5,x0,255
 	sub	op_1,op_2,op_5
 	sub	a4,op_0,op_1
 	addi	a3,a3,1
@@ -4903,11 +4776,11 @@ Rotate:
 	sub	op_0,x0,a4
 	sub	t3,a1,op_0
 .L672:
-	addi	op_0,x0,255
-	addi	op_3,x0,255
-	lw	op_4,0(a6)
+	lw	op_0,0(a6)
+	lw	op_3,0(a6)
+	addi	op_4,x0,255
 	or	op_2,op_3,op_4
-	lw	op_5,0(a6)
+	addi	op_5,x0,255
 	sub	op_1,op_2,op_5
 	sub	t1,op_0,op_1
 	addi	a5,a5,1
@@ -4971,11 +4844,13 @@ WikiMerge:
 	sw	a4,36(sp)
 	sw	a5,16(sp)
 	sw	a5,24(sp)
-	blt	zero,s9,.+12
+	bge	zero,s9,.+8
+	jal	x0,.+12
 	addi	a4,x0,0
 	jal	x0,.+8
 	addi	a4,x0,1
-	blt	zero,s5,.+12
+	bge	zero,s5,.+8
+	jal	x0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
@@ -4989,7 +4864,8 @@ WikiMerge:
 	or	op_1,a5,a4
 	sub	op_0,op_1,a4
 	sub	a5,a5,op_0
-	blt	a3,s5,.L772
+	bge	a3,s5,.+8
+	jal	x0,.L772
 	addi	op_0,x0,3
 	sll	s3,a2,op_0
 	addi	op_0,x0,3
@@ -5005,12 +4881,12 @@ WikiMerge:
 	jal	x0,.L771
 	addi	a5,a1,-1
 	addi	a4,zero,6
-	bgeu	a4,a5,.L779
+	bltu	a4,a5,.+8
+	jal	x0,.L779
 	addi	a3,s3,-1
 	sub	a3,a3,s1
 	addi	op_0,x0,3
-	bgeu	a3,op_0,.+8
-	jal	x0,.+12
+	bltu	a3,op_0,.+12
 	addi	a3,x0,0
 	jal	x0,.+8
 	addi	a3,x0,1
@@ -5024,11 +4900,11 @@ WikiMerge:
 	sub	op_0,op_1,op_3
 	sub	a3,a3,op_0
 	bne	a3,zero,.L779
-	addi	op_0,x0,-4
+	addi	op_2,x0,-4
+	or	op_1,a1,op_2
 	addi	op_3,x0,-4
-	or	op_2,op_3,a1
-	sub	op_1,op_2,a1
-	sub	a0,op_0,op_1
+	sub	op_0,op_1,op_3
+	sub	a0,a1,op_0
 	sub	op_0,x0,a0
 	sub	a2,s3,op_0
 .L780:
@@ -5050,21 +4926,23 @@ WikiMerge:
 	sub	a4,op_0,op_1
 	addi	a5,a0,1
 	sb	a4,0(a2)
-	bgeu	a5,a1,.L771
+	bltu	a5,a1,.+8
+	jal	x0,.L771
 	sub	op_0,x0,s1
 	sub	a4,a5,op_0
-	lw	op_0,0(a4)
-	lw	op_3,0(a4)
-	addi	op_4,x0,255
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(a4)
 	or	op_2,op_3,op_4
-	addi	op_5,x0,255
+	lw	op_5,0(a4)
 	sub	op_1,op_2,op_5
 	sub	a4,op_0,op_1
 	sub	op_0,x0,s3
 	sub	a5,a5,op_0
 	addi	a0,a0,2
 	sb	a4,0(a5)
-	bgeu	a0,a1,.L771
+	bltu	a0,a1,.+8
+	jal	x0,.L771
 	sub	op_0,x0,s1
 	sub	s1,a0,op_0
 	addi	op_0,x0,255
@@ -5091,8 +4969,7 @@ WikiMerge:
 	sw	a1,12(sp)
 	bne	a5,zero,.L810
 .L785:
-	blt	zero,s5,.+8
-	jal	x0,.L771
+	bge	zero,s5,.L771
 	lw	a5,12(sp)
 	sub	op_0,x0,s5
 	sub	s5,a5,op_0
@@ -5193,8 +5070,7 @@ WikiMerge:
 	sw	a1,4(s11)
 	sw	a2,0(s10)
 	sw	a3,4(s10)
-	blt	s1,s5,.+8
-	jal	x0,.L808
+	bge	s1,s5,.L808
 .L788:
 	addi	s11,s11,8
 	jal	x0,.L786
@@ -5226,7 +5102,8 @@ WikiMerge:
 	sw	a1,4(s11)
 	sw	a2,0(s2)
 	sw	a3,4(s2)
-	blt	s4,s9,.L788
+	bge	s4,s9,.+8
+	jal	x0,.L788
 	lw	a5,20(sp)
 	sw	s7,12(sp)
 	lw	s2,96(sp)
@@ -5280,8 +5157,7 @@ WikiSort:
 	addi	sp,sp,-2048
 	addi	t1,a1,0
 	addi	s9,a2,0
-	blt	a5,a1,.+8
-	jal	x0,.L1127
+	bge	a5,a1,.L1127
 	addi	op_0,x0,1
 	sra	a5,a1,op_0
 	or	a5,a5,a1
@@ -5320,7 +5196,8 @@ WikiSort:
 	addi	s5,t0,0
 	sub	op_0,x0,s5
 	sub	s0,a1,op_0
-	blt	s1,s2,.L814
+	bge	s1,s2,.+8
+	jal	x0,.L814
 .L1128:
 	addi	s0,s0,1
 	addi	a2,s0,0
@@ -5331,8 +5208,7 @@ WikiSort:
 .Lpcrel_15:
 	auipc	ra,%pcrel_hi(InsertionSort)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_15)
-	blt	s0,s6,.+8
-	jal	x0,.L815
+	bge	s0,s6,.L815
 	sub	s1,s1,s2
 .L816:
 	addi	a1,s0,0
@@ -5340,8 +5216,7 @@ WikiSort:
 	sub	s1,s4,op_0
 	sub	op_0,x0,s5
 	sub	s0,a1,op_0
-	blt	s1,s2,.+8
-	jal	x0,.L1128
+	bge	s1,s2,.L1128
 .L814:
 	addi	a3,s9,0
 	addi	a2,s0,0
@@ -5351,7 +5226,8 @@ WikiSort:
 .Lpcrel_16:
 	auipc	ra,%pcrel_hi(InsertionSort)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_16)
-	blt	s0,s6,.L816
+	bge	s0,s6,.+8
+	jal	x0,.L816
 .L815:
 	lui	a5,131072
 	addi	a5,a5,-1
@@ -5359,18 +5235,17 @@ WikiSort:
 	sw	a5,20(sp)
 	addi	s6,zero,16
 	addi	t0,s5,0
-	blt	s6,s3,.+8
-	jal	x0,.L811
+	bge	s6,s3,.L811
 	addi	s11,s10,0
 	sw	t1,64(sp)
 .L818:
 	lui	a5,262144
-	blt	t0,a5,.+8
-	jal	x0,.L1009
+	bge	t0,a5,.L1009
 .L820:
 	addi	op_0,x0,2
 	sra	a5,a5,op_0
-	blt	t0,a5,.L820
+	bge	t0,a5,.+8
+	jal	x0,.L820
 	bne	a5,zero,.+8
 	jal	x0,.L821
 .L1009:
@@ -5379,7 +5254,8 @@ WikiSort:
 .L825:
 	sub	op_0,x0,s10
 	sub	a4,a5,op_0
-	blt	a3,a4,.L822
+	bge	a3,a4,.+8
+	jal	x0,.L822
 .L1129:
 	addi	op_0,x0,1
 	sll	a2,a5,op_0
@@ -5394,8 +5270,7 @@ WikiSort:
 	sub	a3,a3,a4
 	sub	op_0,x0,s10
 	sub	a4,a5,op_0
-	blt	a3,a4,.+8
-	jal	x0,.L1129
+	bge	a3,a4,.L1129
 .L822:
 	addi	op_0,x0,2
 	sra	a5,a5,op_0
@@ -5437,7 +5312,8 @@ WikiSort:
 	sub	a5,a5,op_0
 	sw	a5,8(sp)
 	lw	a5,24(sp)
-	blt	s5,a5,.L826
+	bge	s5,a5,.+8
+	jal	x0,.L826
 	sub	s5,s5,a5
 	lw	a5,8(sp)
 	addi	a5,a5,1
@@ -5451,7 +5327,8 @@ WikiSort:
 	sub	op_0,x0,a5
 	sub	s6,a4,op_0
 	lw	a5,24(sp)
-	blt	s5,a5,.L827
+	bge	s5,a5,.+8
+	jal	x0,.L827
 	sub	s5,s5,a5
 	addi	s6,s6,1
 .L827:
@@ -5496,19 +5373,16 @@ WikiSort:
 	lw	a5,8(sp)
 	sub	s0,a5,s2
 	addi	a5,zero,512
-	blt	a5,s0,.+8
-	jal	x0,.L1131
+	bge	a5,s0,.L1131
 	lw	a5,52(sp)
 	sw	s6,44(sp)
-	blt	zero,a5,.+8
-	jal	x0,.L1132
+	bge	zero,a5,.L1132
 	callrem	a1,s0,s10
 	lw	a5,8(sp)
 	sub	op_0,x0,a1
 	sub	a6,s2,op_0
 	addi	a3,a6,1
-	blt	a3,a5,.+8
-	jal	x0,.L1133
+	bge	a3,a5,.L1133
 .L896:
 	addi	t3,a5,0
 	lw	a5,16(sp)
@@ -5535,13 +5409,13 @@ WikiSort:
 	sw	a0,12(a4)
 	sub	op_0,x0,a4
 	sub	a4,t4,op_0
-	blt	a3,t3,.L900
+	bge	a3,t3,.+8
+	jal	x0,.L900
 .L901:
 	lw	a5,44(sp)
 	lw	a4,8(sp)
 	sub	s1,a5,a4
-	blt	s10,s1,.+8
-	jal	x0,.L897
+	bge	s10,s1,.L897
 	addi	s1,s10,0
 .L897:
 	lw	a5,8(sp)
@@ -5554,17 +5428,18 @@ WikiSort:
 	sw	a4,-96(s8)
 	sw	a5,-92(s8)
 	addi	a5,zero,512
-	blt	a5,a1,.L1134
+	bge	a5,a1,.+8
+	jal	x0,.L1134
 	addi	op_0,x0,3
 	sll	a3,a1,op_0
 	bne	a3,zero,.+8
 	jal	x0,.L1126
 	lw	a5,4(sp)
-	addi	op_0,x0,3
+	addi	op_2,x0,3
+	or	op_1,s11,op_2
 	addi	op_3,x0,3
-	or	op_2,op_3,s11
-	sub	op_1,op_2,s11
-	sub	a4,op_0,op_1
+	sub	op_0,op_1,op_3
+	sub	a4,s11,op_0
 	sub	op_0,x0,s11
 	sub	a5,a5,op_0
 	bne	a4,zero,.L904
@@ -5601,8 +5476,7 @@ WikiSort:
 	addi	s6,a6,0
 	addi	s2,a5,0
 .L903:
-	blt	s3,s4,.+8
-	jal	x0,.L913
+	bge	s3,s4,.L913
 .L910:
 	lw	a5,20(sp)
 	lw	a2,-96(s2)
@@ -5632,8 +5506,7 @@ WikiSort:
 	sub	t5,s4,a0
 	sub	op_0,x0,s10
 	sub	t4,s6,op_0
-	blt	zero,s10,.+8
-	jal	x0,.L918
+	bge	zero,s10,.L918
 	addi	op_0,x0,3
 	sll	a4,s5,op_0
 	addi	op_0,x0,3
@@ -5698,7 +5571,8 @@ WikiSort:
 	addi	a5,zero,512
 	lw	t5,8(sp)
 	lw	t4,12(sp)
-	blt	a5,s10,.L1135
+	bge	a5,s10,.+8
+	jal	x0,.L1135
 	lw	a5,36(sp)
 	bne	a5,zero,.+8
 	jal	x0,.L924
@@ -5723,8 +5597,7 @@ WikiSort:
 	sw	a3,-4(a4)
 	bne	a2,a5,.L923
 .L924:
-	blt	zero,t5,.+8
-	jal	x0,.L921
+	bge	zero,t5,.L921
 	sub	a4,t4,t5
 	addi	op_0,x0,3
 	sll	a5,s3,op_0
@@ -5765,8 +5638,7 @@ WikiSort:
 	addi	s7,s7,1
 	sub	op_0,x0,a5
 	sub	s4,t5,op_0
-	blt	s3,s0,.+8
-	jal	x0,.L1021
+	bge	s3,s0,.L1021
 	addi	s6,t4,0
 .L933:
 	addi	op_0,x0,3
@@ -5788,7 +5660,8 @@ WikiSort:
 .L932:
 	sub	op_0,x0,s3
 	sub	s3,s10,op_0
-	blt	s3,s0,.L933
+	bge	s3,s0,.+8
+	jal	x0,.L933
 	addi	t4,s6,0
 	addi	s5,s5,-1
 .L931:
@@ -5802,28 +5675,29 @@ WikiSort:
 	sw	a4,-96(s2)
 	sw	a5,-92(s2)
 	addi	s6,t4,0
-	blt	s3,s4,.L910
+	bge	s3,s4,.+8
+	jal	x0,.L910
 .L913:
 	lw	a5,0(sp)
 	bne	s1,a5,.+8
 	jal	x0,.L911
 	sub	a4,s1,a5
-	blt	a4,s10,.+8
-	jal	x0,.L1137
+	bge	a4,s10,.L1137
 	sub	op_0,x0,s6
 	sub	s4,a4,op_0
 	bne	s1,s6,.+8
 	jal	x0,.L952
 	sub	a2,a5,s1
-	blt	a2,zero,.L939
+	bge	a2,zero,.+8
+	jal	x0,.L939
 	sub	op_0,x0,a2
 	sub	a3,s6,op_0
 	sub	a1,s1,a3
-	blt	a1,a2,.L941
+	bge	a1,a2,.+8
+	jal	x0,.L941
 .L940:
 	addi	a5,zero,1
-	blt	a5,a2,.+8
-	jal	x0,.L987
+	bge	a5,a2,.L987
 	addi	op_0,x0,31
 	srl	a5,a2,op_0
 	sub	op_0,x0,a5
@@ -5858,8 +5732,7 @@ WikiSort:
 	bne	t6,a5,.L986
 .L987:
 	addi	a5,zero,1
-	blt	a5,a1,.+8
-	jal	x0,.L985
+	bge	a5,a1,.L985
 	addi	op_0,x0,31
 	srl	a5,a1,op_0
 	sub	op_0,x0,a5
@@ -5895,8 +5768,7 @@ WikiSort:
 .L985:
 	sub	a3,s1,s6
 	addi	a5,zero,1
-	blt	a5,a3,.+8
-	jal	x0,.L952
+	bge	a5,a3,.L952
 	addi	op_0,x0,31
 	srl	a5,a3,op_0
 	sub	op_0,x0,a5
@@ -5942,7 +5814,8 @@ WikiSort:
 	addi	a3,a5,0
 	addi	a1,a4,0
 .L941:
-	blt	zero,a1,.L940
+	bge	zero,a1,.+8
+	jal	x0,.L940
 	addi	op_0,x0,3
 	sll	a1,a1,op_0
 	bne	a1,zero,.+8
@@ -5978,7 +5851,8 @@ WikiSort:
 	sub	a5,a5,op_0
 	addi	op_0,x0,3
 	sll	a2,a2,op_0
-	bgeu	a3,a5,.L1138
+	bltu	a3,a5,.+8
+	jal	x0,.L1138
 	bne	a2,zero,.+8
 	jal	x0,.L975
 	or	a0,a3,a5
@@ -6000,11 +5874,11 @@ WikiSort:
 .L975:
 	bne	a1,zero,.+8
 	jal	x0,.L952
-	addi	op_2,x0,3
-	or	op_1,a5,op_2
+	addi	op_0,x0,3
 	addi	op_3,x0,3
-	sub	op_0,op_1,op_3
-	sub	a3,a5,op_0
+	or	op_2,op_3,a5
+	sub	op_1,op_2,a5
+	sub	a3,op_0,op_1
 	bne	a3,zero,.L979
 	sub	op_0,x0,a5
 	sub	a1,a1,op_0
@@ -6059,14 +5933,12 @@ WikiSort:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_19)
 .L994:
 	lw	a5,64(sp)
-	blt	s6,a5,.+8
-	jal	x0,.L1139
+	bge	s6,a5,.L1139
 .L1026:
 	addi	s2,s6,0
 	jal	x0,.L995
 .L1137:
-	blt	zero,s10,.+8
-	jal	x0,.L1140
+	bge	zero,s10,.L1140
 	addi	a4,a5,0
 	sub	op_0,x0,s10
 	sub	t4,s6,op_0
@@ -6108,8 +5980,7 @@ WikiSort:
 	sub	a5,s10,op_0
 	sw	a5,0(sp)
 	lw	a5,44(sp)
-	blt	a5,s1,.+8
-	jal	x0,.L993
+	bge	a5,s1,.L993
 	addi	s1,a5,0
 .L993:
 	addi	s3,s6,0
@@ -6117,19 +5988,21 @@ WikiSort:
 	jal	x0,.L903
 .L939:
 	sub	a2,a5,s6
-	blt	a4,a2,.L1024
-	blt	zero,a2,.L1025
+	bge	a4,a2,.+8
+	jal	x0,.L1024
+	bge	zero,a2,.+8
+	jal	x0,.L1025
 	addi	op_0,x0,3
 	sll	a2,a2,op_0
 	addi	op_0,x0,3
 	sll	a1,s6,op_0
 	bne	a2,zero,.+8
 	jal	x0,.L1141
-	addi	op_0,x0,3
+	addi	op_2,x0,3
+	or	op_1,s11,op_2
 	addi	op_3,x0,3
-	or	op_2,op_3,s11
-	sub	op_1,op_2,s11
-	sub	a5,op_0,op_1
+	sub	op_0,op_1,op_3
+	sub	a5,s11,op_0
 	sub	op_0,x0,s11
 	sub	a1,a1,op_0
 	bne	a5,zero,.L945
@@ -6151,7 +6024,8 @@ WikiSort:
 	sll	a5,a5,op_0
 	sub	op_0,x0,s11
 	sub	a5,a5,op_0
-	bgeu	a1,a5,.L1142
+	bltu	a1,a5,.+8
+	jal	x0,.L1142
 	bne	a3,zero,.+8
 	jal	x0,.L955
 	or	a0,a5,a1
@@ -6225,7 +6099,8 @@ WikiSort:
 	auipc	ra,%pcrel_hi(WikiMerge.constprop.1.isra.0)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_20)
 	lw	a5,64(sp)
-	blt	s6,a5,.L1026
+	bge	s6,a5,.+8
+	jal	x0,.L1026
 .L1139:
 	addi	a5,s11,0
 	addi	s11,s8,0
@@ -6235,7 +6110,8 @@ WikiSort:
 	lw	s6,96(sp)
 	lw	t2,80(sp)
 	lw	s3,100(sp)
-	blt	zero,a5,.L996
+	bge	zero,a5,.+8
+	jal	x0,.L996
 .L1001:
 	lw	a5,32(sp)
 	addi	op_0,x0,1
@@ -6245,7 +6121,8 @@ WikiSort:
 	sw	a5,32(sp)
 	lw	a4,32(sp)
 	lw	a5,24(sp)
-	blt	a4,a5,.L998
+	bge	a4,a5,.+8
+	jal	x0,.L998
 	addi	a5,a4,0
 	lw	a4,24(sp)
 	addi	t0,t0,1
@@ -6254,7 +6131,8 @@ WikiSort:
 .L998:
 	addi	op_0,x0,1
 	sll	s6,s6,op_0
-	blt	s6,s3,.L818
+	bge	s6,s3,.+8
+	jal	x0,.L818
 .L811:
 	lui	t0,1
 	sub	op_0,x0,sp
@@ -6283,11 +6161,11 @@ WikiSort:
 	sub	op_0,x0,s2
 	sub	a2,a3,op_0
 .L925:
-	lw	op_0,0(a5)
-	lw	op_3,0(a5)
-	addi	op_4,x0,255
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(a5)
 	or	op_2,op_3,op_4
-	addi	op_5,x0,255
+	lw	op_5,0(a5)
 	sub	op_1,op_2,op_5
 	sub	a3,op_0,op_1
 	addi	a4,a4,1
@@ -6321,8 +6199,7 @@ WikiSort:
 .L1132:
 	lw	a5,8(sp)
 	addi	s7,s2,1
-	blt	s7,a5,.+8
-	jal	x0,.L839
+	bge	s7,a5,.L839
 	sw	s2,12(sp)
 	addi	s2,s7,0
 	addi	s7,s0,0
@@ -6361,7 +6238,8 @@ WikiSort:
 	addi	s7,s2,0
 	addi	a3,s3,0
 	lw	s2,12(sp)
-	blt	a4,a5,.L1013
+	bge	a4,a5,.+8
+	jal	x0,.L1013
 	bne	s3,a5,.L852
 .L849:
 	lw	a5,68(sp)
@@ -6427,7 +6305,8 @@ WikiSort:
 .L888:
 	addi	s3,s3,-1
 	addi	s5,s4,0
-	blt	s0,s1,.L890
+	bge	s0,s1,.+8
+	jal	x0,.L890
 	lw	a5,68(sp)
 	lw	s4,0(sp)
 	lw	s5,12(sp)
@@ -6437,8 +6316,7 @@ WikiSort:
 	sw	s2,16(sp)
 .L1010:
 	addi	a5,s6,-1
-	blt	zero,a3,.+8
-	jal	x0,.L895
+	bge	zero,a3,.L895
 .L860:
 	addi	op_0,x0,3
 	sll	s3,s4,op_0
@@ -6484,7 +6362,8 @@ WikiSort:
 .L892:
 	addi	s2,s2,1
 	addi	s5,s1,0
-	blt	s0,s3,.L894
+	bge	s0,s3,.+8
+	jal	x0,.L894
 	lw	s2,0(sp)
 	lw	s5,12(sp)
 	lw	s0,44(sp)
@@ -6499,7 +6378,8 @@ WikiSort:
 	sub	op_0,x0,a1
 	sub	a6,s2,op_0
 	addi	a3,a6,1
-	blt	a3,a5,.L896
+	bge	a3,a5,.+8
+	jal	x0,.L896
 .L1133:
 	addi	op_0,x0,3
 	sll	a2,a6,op_0
@@ -6509,18 +6389,19 @@ WikiSort:
 	sub	t4,s6,op_0
 	jal	x0,.L992
 .L1138:
-	bgeu	a5,a3,.L975
+	bltu	a5,a3,.+8
+	jal	x0,.L975
 	bne	a2,zero,.+8
 	jal	x0,.L975
 .L978:
 	addi	a2,a2,-1
 	sub	op_0,x0,a5
 	sub	a0,a2,op_0
-	lw	op_0,0(a0)
-	lw	op_3,0(a0)
-	addi	op_4,x0,255
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(a0)
 	or	op_2,op_3,op_4
-	addi	op_5,x0,255
+	lw	op_5,0(a0)
 	sub	op_1,op_2,op_5
 	sub	a6,op_0,op_1
 	sub	op_0,x0,a3
@@ -6529,18 +6410,19 @@ WikiSort:
 	bne	a2,zero,.L978
 	jal	x0,.L975
 .L1142:
-	bgeu	a5,a1,.L955
+	bltu	a5,a1,.+8
+	jal	x0,.L955
 	bne	a3,zero,.+8
 	jal	x0,.L955
 .L958:
 	addi	a3,a3,-1
 	sub	op_0,x0,a5
 	sub	a0,a3,op_0
-	lw	op_0,0(a0)
-	lw	op_3,0(a0)
-	addi	op_4,x0,255
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(a0)
 	or	op_2,op_3,op_4
-	addi	op_5,x0,255
+	lw	op_5,0(a0)
 	sub	op_1,op_2,op_5
 	sub	a6,op_0,op_1
 	sub	op_0,x0,a1
@@ -6553,11 +6435,11 @@ WikiSort:
 	sll	a3,s0,op_0
 	bne	a3,zero,.+8
 	jal	x0,.L835
-	addi	op_2,x0,3
-	or	op_1,s1,op_2
+	addi	op_0,x0,3
 	addi	op_3,x0,3
-	sub	op_0,op_1,op_3
-	sub	a5,s1,op_0
+	or	op_2,op_3,s1
+	sub	op_1,op_2,s1
+	sub	a5,op_0,op_1
 	bne	a5,zero,.L833
 	sub	op_0,x0,s1
 	sub	a3,a3,op_0
@@ -6592,12 +6474,10 @@ WikiSort:
 	lw	s5,44(sp)
 	addi	s7,s2,0
 	lw	s2,12(sp)
-	blt	a4,a5,.+8
-	jal	x0,.L849
+	bge	a4,a5,.L849
 	lw	a5,8(sp)
 	addi	s3,s7,1
-	blt	s3,a5,.+8
-	jal	x0,.L1013
+	bge	s3,a5,.L1013
 	addi	op_0,x0,3
 	sll	s1,s7,op_0
 	sw	s0,60(sp)
@@ -6649,7 +6529,8 @@ WikiSort:
 .L847:
 	lw	a5,8(sp)
 	addi	s7,s6,-2
-	blt	s7,a5,.L875
+	bge	s7,a5,.+8
+	jal	x0,.L875
 	addi	s4,a5,0
 	lw	a5,0(sp)
 	sw	s2,0(sp)
@@ -6682,8 +6563,7 @@ WikiSort:
 .L877:
 	addi	s2,s2,-1
 	addi	s3,s3,-8
-	blt	s2,s4,.+8
-	jal	x0,.L879
+	bge	s2,s4,.L879
 .L1110:
 	addi	s0,s7,0
 	lw	s5,12(sp)
@@ -6692,7 +6572,8 @@ WikiSort:
 .L875:
 	lw	a5,8(sp)
 	addi	s4,s7,-1
-	blt	s4,a5,.L1111
+	bge	s4,a5,.+8
+	jal	x0,.L1111
 	sw	s0,12(sp)
 	lw	s0,92(sp)
 	addi	s3,a5,0
@@ -6725,8 +6606,7 @@ WikiSort:
 	addi	s7,s7,1
 .L882:
 	addi	s2,s2,-1
-	blt	s2,s3,.+8
-	jal	x0,.L884
+	bge	s2,s3,.L884
 	addi	s4,s2,0
 	lw	s0,12(sp)
 	lw	s2,0(sp)
@@ -6800,8 +6680,7 @@ WikiSort:
 	addi	s2,a5,0
 	addi	s5,t0,0
 	addi	s4,t2,0
-	blt	a4,a5,.+8
-	jal	x0,.L1003
+	bge	a4,a5,.L1003
 .L999:
 	bne	s4,s0,.+8
 	jal	x0,.L1002
@@ -6821,8 +6700,7 @@ WikiSort:
 	jalr	ra,s9,0
 	bne	a0,zero,.+8
 	jal	x0,.L1002
-	blt	s1,s2,.+8
-	jal	x0,.L1117
+	bge	s1,s2,.L1117
 	addi	s0,s0,1
 	bne	s4,s0,.L1145
 .L1002:
@@ -6840,8 +6718,7 @@ WikiSort:
 .Lpcrel_25:
 	auipc	ra,%pcrel_hi(Rotate.constprop.1)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_25)
-	blt	s1,s0,.+8
-	jal	x0,.L1117
+	bge	s1,s0,.L1117
 	bne	s4,s0,.+8
 	jal	x0,.L1118
 	addi	s2,s0,0
@@ -6852,8 +6729,7 @@ WikiSort:
 .L1003:
 	lw	a5,108(sp)
 	addi	s0,t2,0
-	blt	t2,a5,.+8
-	jal	x0,.L1001
+	bge	t2,a5,.L1001
 	lw	s4,104(sp)
 	lw	s2,20(sp)
 	addi	s1,a5,0
@@ -6882,8 +6758,7 @@ WikiSort:
 	jalr	ra,s9,0
 	bne	a0,zero,.+8
 	jal	x0,.L1006
-	blt	s0,s1,.+8
-	jal	x0,.L1120
+	bge	s0,s1,.L1120
 	addi	s7,s7,-1
 	bne	s4,s7,.L1146
 .L1006:
@@ -6900,8 +6775,7 @@ WikiSort:
 .Lpcrel_26:
 	auipc	ra,%pcrel_hi(Rotate.constprop.1)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_26)
-	blt	s7,s1,.+8
-	jal	x0,.L1120
+	bge	s7,s1,.L1120
 	bne	s4,s7,.+8
 	jal	x0,.L1121
 	addi	s0,s7,0
@@ -6920,7 +6794,8 @@ WikiSort:
 .Lpcrel_27:
 	auipc	ra,%pcrel_hi(Rotate.constprop.1)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_27)
-	blt	s1,s0,.L1005
+	bge	s1,s0,.+8
+	jal	x0,.L1005
 	addi	t0,s2,0
 	addi	t2,s4,0
 	jal	x0,.L1003
@@ -6940,7 +6815,8 @@ WikiSort:
 .Lpcrel_28:
 	auipc	ra,%pcrel_hi(Rotate.constprop.1)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_28)
-	blt	s1,s0,.L1008
+	bge	s1,s0,.+8
+	jal	x0,.L1008
 	addi	t0,s2,0
 	jal	x0,.L1001
 .L945:
@@ -6966,11 +6842,11 @@ WikiSort:
 	sub	op_0,x0,s2
 	sub	t4,a1,op_0
 .L969:
-	addi	op_0,x0,255
-	addi	op_3,x0,255
-	lw	op_4,0(a5)
+	lw	op_0,0(a5)
+	lw	op_3,0(a5)
+	addi	op_4,x0,255
 	or	op_2,op_3,op_4
-	lw	op_5,0(a5)
+	addi	op_5,x0,255
 	sub	op_1,op_2,op_5
 	sub	a0,op_0,op_1
 	addi	a3,a3,1
@@ -7009,7 +6885,8 @@ WikiSort:
 .L852:
 	lw	a5,8(sp)
 	addi	s4,s6,-2
-	blt	s4,a5,.L854
+	bge	s4,a5,.+8
+	jal	x0,.L854
 .L850:
 	lw	a5,0(sp)
 	sw	s0,12(sp)
@@ -7042,8 +6919,7 @@ WikiSort:
 .L857:
 	addi	s2,s2,-1
 	addi	s1,s1,-8
-	blt	s2,s7,.+8
-	jal	x0,.L859
+	bge	s2,s7,.L859
 	lw	a5,68(sp)
 	addi	s4,s2,0
 	lw	s0,12(sp)
@@ -7052,13 +6928,11 @@ WikiSort:
 	jal	x0,.L1147
 .L851:
 	lw	a5,68(sp)
-	blt	s3,a5,.+8
-	jal	x0,.L1148
+	bge	s3,a5,.L1148
 .L1123:
 	lw	s0,8(sp)
 .L874:
-	blt	s0,s6,.+8
-	jal	x0,.L994
+	bge	s0,s6,.L994
 	addi	a1,s2,0
 	addi	a4,s9,0
 	addi	a2,s0,0
@@ -7093,8 +6967,7 @@ WikiSort:
 	auipc	ra,%pcrel_hi(BinaryLast)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_31)
 	addi	s2,a0,0
-	blt	a0,s1,.+8
-	jal	x0,.L994
+	bge	a0,s1,.L994
 	addi	s0,s1,0
 	jal	x0,.L874
 .L904:
@@ -7125,11 +6998,11 @@ WikiSort:
 	sub	op_0,x0,a5
 	sub	a3,a3,op_0
 .L956:
-	addi	op_0,x0,255
-	addi	op_3,x0,255
-	lw	op_4,0(a5)
+	lw	op_0,0(a5)
+	lw	op_3,0(a5)
+	addi	op_4,x0,255
 	or	op_2,op_3,op_4
-	lw	op_5,0(a5)
+	addi	op_5,x0,255
 	sub	op_1,op_2,op_5
 	sub	a0,op_0,op_1
 	addi	a5,a5,1
@@ -7211,11 +7084,11 @@ WikiSort:
 	sub	a3,a3,op_0
 	addi	a5,s8,0
 .L836:
-	lw	op_0,0(s1)
-	lw	op_3,0(s1)
-	addi	op_4,x0,255
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(s1)
 	or	op_2,op_3,op_4
-	addi	op_5,x0,255
+	lw	op_5,0(s1)
 	sub	op_1,op_2,op_5
 	sub	a4,op_0,op_1
 	addi	a5,a5,1
@@ -7232,7 +7105,8 @@ WikiSort:
 .L1144:
 	lw	a4,8(sp)
 	addi	a5,s6,-2
-	blt	a5,a4,.L1108
+	bge	a5,a4,.+8
+	jal	x0,.L1108
 	lw	a4,0(sp)
 	addi	s0,a5,0
 	sw	s2,0(sp)
@@ -7291,15 +7165,15 @@ WikiSort:
 .L839:
 	lw	a5,68(sp)
 	addi	a4,zero,512
-	blt	a4,a5,.L847
+	bge	a4,a5,.+8
+	jal	x0,.L847
 	addi	a3,zero,1
 	bne	a5,a3,.+8
 	jal	x0,.L849
 	lw	a5,8(sp)
 	addi	s4,s6,-2
 	addi	s3,a3,0
-	blt	s4,a5,.+8
-	jal	x0,.L850
+	bge	s4,a5,.L850
 	jal	x0,.L851
 .L1127:
 	addi	a3,a2,0
@@ -7382,18 +7256,18 @@ verify_benchmark:
 	addi	a1,a1,1153
 	addi	a4,sp,0
 .L1152:
-	lw	op_0,0(a5)
-	lw	op_3,0(a5)
-	addi	op_4,x0,255
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(a5)
 	or	op_2,op_3,op_4
-	addi	op_5,x0,255
+	lw	op_5,0(a5)
 	sub	op_1,op_2,op_5
 	sub	a2,op_0,op_1
-	lw	op_0,0(a4)
-	lw	op_3,0(a4)
-	addi	op_4,x0,255
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(a4)
 	or	op_2,op_3,op_4
-	addi	op_5,x0,255
+	lw	op_5,0(a4)
 	sub	op_1,op_2,op_5
 	sub	a3,op_0,op_1
 	addi	a5,a5,1
@@ -8318,11 +8192,11 @@ __mul:
 	sub	a2,x0,op_0
 	addi	a0,x0,0
 .Mul_loop:
-	addi	op_2,x0,1
-	or	op_1,a1,op_2
+	addi	op_0,x0,1
 	addi	op_3,x0,1
-	sub	op_0,op_1,op_3
-	sub	a3,a1,op_0
+	or	op_2,op_3,a1
+	sub	op_1,op_2,a1
+	sub	a3,op_0,op_1
 	bne	a3,x0,.+8
 	jal	x0,.Mul_skip
 	sub	op_0,x0,a0
@@ -8341,8 +8215,10 @@ __mul:
 # Signed 32-bit division: a0 = a0 / a1
 .global __riscv_div_lib_divsi3
 __riscv_div_lib_divsi3:
-	blt	a0,zero,__riscv_div_lib_L10
-	blt	a1,zero,__riscv_div_lib_L11
+	bge	a0,zero,.+8
+	jal	x0,__riscv_div_lib_L10
+	bge	a1,zero,.+8
+	jal	x0,__riscv_div_lib_L11
     # Since the quotient is positive, fall into udivsi3
 
 # Unsigned 32-bit division: a0 = a0 / a1
@@ -8354,21 +8230,19 @@ __riscv_div_lib_udivsi3:
 	bne	a2,zero,.+8
 	jal	x0,__riscv_div_lib_L5
 	addi	a3,zero,1
-	bgeu	a2,a1,__riscv_div_lib_L2
-__riscv_div_lib_L1:
-	blt	zero,a2,.+8
+	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
+__riscv_div_lib_L1:
+	bge	zero,a2,__riscv_div_lib_L2
 	addi	op_0,x0,1
 	sll	a2,a2,op_0
 	addi	op_0,x0,1
 	sll	a3,a3,op_0
-	bgeu	a2,a1,.+8
-	jal	x0,__riscv_div_lib_L1
+	bltu	a2,a1,__riscv_div_lib_L1
 __riscv_div_lib_L2:
 	addi	a0,zero,0
 __riscv_div_lib_L3:
-	bgeu	a1,a2,.+8
-	jal	x0,__riscv_div_lib_L4
+	bltu	a1,a2,__riscv_div_lib_L4
 	sub	a1,a1,a2
 	or	a0,a0,a3
 __riscv_div_lib_L4:
@@ -8393,7 +8267,8 @@ __riscv_div_lib_umodsi3:
 # Handle negative arguments to divsi3
 __riscv_div_lib_L10:
 	sub	a0,zero,a0
-	blt	zero,a1,__riscv_div_lib_L12
+	bge	zero,a1,.+8
+	jal	x0,__riscv_div_lib_L12
 	sub	a1,zero,a1
 	jal	x0,__riscv_div_lib_udivsi3
 __riscv_div_lib_L11:                         # Compute udivsi3(a0, -a1), then negate
@@ -8410,8 +8285,10 @@ __riscv_div_lib_L12:
 .global __riscv_div_lib_modsi3
 __riscv_div_lib_modsi3:
 	addi	t0,ra,0
-	blt	a1,zero,__riscv_div_lib_L31
-	blt	a0,zero,__riscv_div_lib_L32
+	bge	a1,zero,.+8
+	jal	x0,__riscv_div_lib_L31
+	bge	a0,zero,.+8
+	jal	x0,__riscv_div_lib_L32
 __riscv_div_lib_L30:
 .Lpcrel_div3:
 	auipc	ra,%pcrel_hi(__riscv_div_lib_udivsi3)
@@ -8420,8 +8297,7 @@ __riscv_div_lib_L30:
 	jalr	zero,t0,0
 __riscv_div_lib_L31:
 	sub	a1,zero,a1
-	blt	a0,zero,.+8
-	jal	x0,__riscv_div_lib_L30
+	bge	a0,zero,__riscv_div_lib_L30
 __riscv_div_lib_L32:
 	sub	a0,zero,a0
 .Lpcrel_div4:

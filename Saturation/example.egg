@@ -1,18 +1,32 @@
-; EGraph for basicmath_small_O3 - Block 0
-; Total instructions: 30
-; Input registers: 2, Output registers: 29
+; EGraph for prng_loop (Original) - Block 1 (prng_mix)
+; Total instructions: 5
+; Input registers: 4 (a0, a1, a2, a3)
 
 (include "base.egg")
 
 ; Input register declarations (used but not defined in this block)
 (let a0_0 (RegVal "a0_0"))
-(let t0_0 (RegVal "t0_0"))
+(let a1_0 (RegVal "a1_0"))
+(let a2_0 (RegVal "a2_0"))
+(let a3_0 (RegVal "a3_0"))
 
-;; andi a1_0, a0_0, 255
-(let a1_0_val (Andi a0_0 (ImmVal 255)))
+; ============================================
+; Block 1 Instructions
+; ============================================
 
-;; sltiu a2_0, t0_0, a1_0 (注意：第二个操作数是寄存器，使用Sltu而非Sltiu)
-(let a2_0_val (Sltu t0_0 a1_0_val))
+;; and t1, a0, a1
+(let t1_0_val (And a0_0 a1_0))
+
+;; sub t2, t4, a2
+;; 【Orphan Node】t2_0_val 在此产出，本 Block 内不再被引用，准备沿 CFG 传给 Block 2
+(let t2_0_val (Sub a0_0 a2_0))
+
+;; or t3, t1, a3
+(let t3_0_val (Or t1_0_val a3_0))
+
+;; xor a0, a0, t3
+;; 寄存器 a0 被更新，使用 SSA 命名为 a0_1_val
+(let a0_1_val (Xor a0_0 t3_0_val))
 
 ; ============================================
 ; Run saturation to apply rewrite rules
