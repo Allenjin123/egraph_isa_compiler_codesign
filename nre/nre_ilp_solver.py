@@ -39,12 +39,13 @@ except ImportError:
 
 class ISAILPSolver:
     """ISA子集选择ILP求解器"""
-    
-    def __init__(self, programs: List[Dict], num_chips: int, solver_type: str = 'gurobi', 
-                 chip_metadata: Optional[Dict] = None, alpha: float = 0.5, best_k: Optional[int] = None):
+
+    def __init__(self, programs: List[Dict], num_chips: int, solver_type: str = 'gurobi',
+                 chip_metadata: Optional[Dict] = None, alpha: float = 0.5, best_k: Optional[int] = None,
+                 fixed_chips: Optional[List[str]] = None, program_filter: Optional[List[str]] = None):
         """
         初始化求解器
-        
+
         Args:
             programs: 程序列表，每个程序包含：
                 - name: 程序名称
@@ -53,23 +54,33 @@ class ISAILPSolver:
                     - area: 面积
                     - latency: 延迟
                     - variant_id: 变体ID（可选）
-            num_chips: 需要选择的芯片数量
+            num_chips: 需要选择的芯片数量（fixed_chips 模式下忽略）
             solver_type: 求解器类型 ('gurobi', 'auto')
             chip_metadata: 芯片元数据字典（可选），包含instruction_subset等信息
             alpha: 成本权重参数，成本 = alpha * latency + (1-alpha) * area，范围 [0, 1]
             best_k: 返回最优解的个数，None 或 1 表示只返回最优解，>1 表示返回多个解
+            fixed_chips: 若给定，则固定使用这些芯片（不做芯片选择，只做 mapping）。
+                         无法被任何 fixed_chip 覆盖的程序会被跳过并记录到 self.uncovered_programs。
+            program_filter: 若给定，则只评估列表中的程序（按名称过滤）。
         """
         if not (0 <= alpha <= 1):
             raise ValueError(f"alpha 必须在 [0, 1] 范围内，当前值: {alpha}")
         if best_k is not None and best_k < 1:
             raise ValueError(f"best_k 必须 >= 1，当前值: {best_k}")
-        
+
+        # program_filter：只保留指定程序
+        if program_filter is not None:
+            filter_set = set(program_filter)
+            programs = [p for p in programs if p['name'] in filter_set]
+
         self.programs = programs
         self.num_chips = num_chips
         self.solver_type = solver_type
         self.chip_metadata = chip_metadata or {}
         self.alpha = alpha
         self.best_k = best_k if best_k is not None else 1
+        self.fixed_chips = list(fixed_chips) if fixed_chips is not None else None
+        self.uncovered_programs: List[str] = []  # fixed_chips 模式下无法覆盖的程序
         
         # 验证数据
         self._validate_data()
@@ -91,11 +102,16 @@ class ISAILPSolver:
         for chip_id, metadata in self.chip_metadata.items():
             chip_instruction_sets[chip_id] = set(metadata.get('instruction_subset', []))
         
+        # fixed_chips 模式：候选芯片集限制为给定列表
+        fixed_chips_set = set(self.fixed_chips) if self.fixed_chips is not None else None
+
+        coverable_programs = []  # fixed_chips 模式下能被覆盖的程序
+
         for prog in programs:
             prog_name = prog['name']
             implementations = []
             prog_chip_instruction_sets = {}  # 该程序使用的芯片的指令集
-            
+
             # 首先收集该程序直接使用的芯片及其指令集，并构建chip_id到实现的映射
             # 注意：同一程序在同一芯片上应该只有一个area/latency值，所以用字典而不是列表
             prog_chip_to_impl = {}  # 该程序在每个芯片上的实现（每个芯片只保留一个）
@@ -108,26 +124,30 @@ class ISAILPSolver:
                 # 通常同一芯片上的实现area/latency都相同，所以只保留第一个即可
                 if chip_id not in prog_chip_to_impl:
                     prog_chip_to_impl[chip_id] = impl
-            
+
             # 为每个实现添加选项：可以使用该实现，也可以使用指令集超集的芯片
             for impl in prog['implementations']:
                 chip_id = impl['chip_id']
                 required_instructions = prog_chip_instruction_sets.get(chip_id, set())
                 original_area = float(impl['area'])
                 original_latency = float(impl['latency'])
-                
+
                 # 找到所有指令集超集的芯片
                 compatible_chips = [chip_id]  # 包括自己
                 for other_chip_id, other_instructions in chip_instruction_sets.items():
                     # 超集芯片必须是其他程序使用的芯片，不能是当前程序自己使用的
-                    if (other_chip_id != chip_id 
-                        and other_chip_id not in prog_chip_to_impl 
-                        and other_instructions >= required_instructions):
+                    if (other_chip_id != chip_id
+                            and other_chip_id not in prog_chip_to_impl
+                            and other_instructions >= required_instructions):
                         compatible_chips.append(other_chip_id)
                         # 添加超集芯片到候选列表（set会自动去重）
                         self.all_chips.add(other_chip_id)
                         self.chip_to_programs[other_chip_id].add(prog_name)
-                
+
+                # fixed_chips 模式：只保留在 fixed_chips 中的兼容芯片
+                if fixed_chips_set is not None:
+                    compatible_chips = [c for c in compatible_chips if c in fixed_chips_set]
+
                 # 为每个兼容芯片创建一个选项
                 for compat_chip_id in compatible_chips:
                     if compat_chip_id == chip_id:
@@ -145,10 +165,10 @@ class ISAILPSolver:
                             # 如果没有其他程序使用该芯片，使用原始area作为fallback
                             area = original_area
                         latency = original_latency  # latency保持原始实现的latency
-                    
+
                     # 计算加权成本：alpha * latency + (1-alpha) * area
                     cost = self.alpha * latency + (1 - self.alpha) * area
-                    
+
                     implementations.append({
                         'chip_id': compat_chip_id,
                         'original_chip_id': chip_id,  # 记录原始芯片ID
@@ -157,11 +177,24 @@ class ISAILPSolver:
                         'variant_id': impl.get('variant_id', ''),
                         'cost': cost
                     })
-            
+
+            # fixed_chips 模式：没有任何可用实现的程序 → 记录并跳过
+            if fixed_chips_set is not None and not implementations:
+                self.uncovered_programs.append(prog_name)
+                continue
+
             self.program_to_implementations[prog_name] = implementations
-        
-        self.all_chips = sorted(list(self.all_chips))
-        self.num_programs = len(programs)
+            coverable_programs.append(prog)
+
+        # fixed_chips 模式：用可覆盖的程序子集替换 self.programs
+        if fixed_chips_set is not None:
+            self.programs = coverable_programs
+            # all_chips 限制为 fixed_chips（去掉其他候选）
+            self.all_chips = sorted(fixed_chips_set)
+        else:
+            self.all_chips = sorted(list(self.all_chips))
+
+        self.num_programs = len(self.programs)
         
         # 打印问题规模信息
         self._print_problem_info()
@@ -170,8 +203,8 @@ class ISAILPSolver:
         """验证输入数据"""
         if not self.programs:
             raise ValueError("程序列表为空")
-        
-        if self.num_chips <= 0:
+
+        if self.fixed_chips is None and self.num_chips <= 0:
             raise ValueError(f"芯片数量必须大于0，当前值: {self.num_chips}")
         
         for prog in self.programs:
@@ -277,11 +310,17 @@ class ISAILPSolver:
                 name=f"single_{prog_name}"
             )
         
-        # 约束3: 只能选择num_chips个芯片
-        model.addConstr(
-            gp.quicksum(x[chip_id] for chip_id in self.all_chips) == self.num_chips,
-            name="num_chips"
-        )
+        # 约束3: 芯片选择约束
+        if self.fixed_chips is not None:
+            # fixed_chips 模式：所有芯片固定选中
+            for chip_id in self.all_chips:
+                model.addConstr(x[chip_id] == 1, name=f"fixed_{chip_id}")
+        else:
+            # 正常模式：恰好选 num_chips 个
+            model.addConstr(
+                gp.quicksum(x[chip_id] for chip_id in self.all_chips) == self.num_chips,
+                name="num_chips"
+            )
         
         # 约束4: 程序只能使用已选中芯片支持的实现
         for prog in self.programs:
@@ -471,13 +510,17 @@ class ISAILPSolver:
         # 目标函数 = Σ y[prog_name][idx] * impl['cost']
         recalculated_obj = sum(assignments[p['name']]['cost'] for p in self.programs)
 
-        return {
+        result = {
             'selected_chips': selected_chips,
             'assignments': assignments,
             'average_cost': average_cost,
             'objective_value': recalculated_obj,  # 使用重新计算的值
             'original_obj_value': obj_value  # 保留Gurobi返回的原始值
         }
+        # fixed_chips 模式：把无法覆盖的程序名附在每个解里
+        if self.fixed_chips is not None and self.uncovered_programs:
+            result['uncovered_programs'] = self.uncovered_programs
+        return result
 
     def solve(self, timeout: Optional[int] = None) -> Tuple[bool, List[Dict], List[float]]:
         """求解问题，返回 best_k 个最优解"""
