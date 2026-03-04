@@ -29,7 +29,7 @@ quicksort_range:
 	addi	op_0,x0,1
 	sra	a4,a5,op_0
 	addi	op_0,x0,-2
-	and	a5,a5,op_0
+	and	a5,op_0,a5
 	sub	op_0,x0,a5
 	sub	a5,a4,op_0
 	addi	op_0,x0,3
@@ -60,7 +60,8 @@ quicksort_range:
 	sll	a5,a5,op_0
 	sub	op_0,x0,a0
 	sub	a7,a5,op_0
-	bgeu	a6,a3,.L34
+	bltu	a6,a3,.+8
+	jal	x0,.L34
 .L12:
 	sub	op_0,x0,s1
 	sub	a4,a4,op_0
@@ -69,15 +70,14 @@ quicksort_range:
 	lw	a6,20(a4)
 	addi	a4,a4,24
 	addi	s0,s0,1
-	bgeu	a6,a3,.+8
-	jal	x0,.L25
+	bltu	a6,a3,.L25
 	bne	a6,a3,.L21
 	lw	a6,-8(a4)
-	bgeu	a6,t3,.+8
-	jal	x0,.L25
+	bltu	a6,t3,.L25
 .L21:
 	lw	a4,20(a7)
-	bgeu	a3,a4,.L35
+	bltu	a3,a4,.+8
+	jal	x0,.L35
 .L17:
 	sub	op_0,x0,s2
 	sub	a5,a5,op_0
@@ -86,12 +86,10 @@ quicksort_range:
 	lw	a4,20(a5)
 	addi	a5,a5,-24
 	addi	a2,a2,-1
-	bgeu	a3,a4,.+8
-	jal	x0,.L26
+	bltu	a3,a4,.L26
 	bne	a4,a3,.L22
 	lw	a4,40(a5)
-	bgeu	t3,a4,.+8
-	jal	x0,.L26
+	bltu	t3,a4,.L26
 .L22:
 	addi	a7,a6,0
 .L6:
@@ -141,22 +139,18 @@ quicksort_range:
 .L34:
 	bne	a6,a3,.L14
 	lw	a6,16(t1)
-	bgeu	a6,t3,.+8
-	jal	x0,.L12
+	bltu	a6,t3,.L12
 .L14:
 	lw	a4,20(a7)
-	bgeu	a3,a4,.+8
-	jal	x0,.L17
+	bltu	a3,a4,.L17
 	bne	a4,a3,.L19
 	lw	a4,16(a7)
-	bgeu	t3,a4,.+8
-	jal	x0,.L17
+	bltu	t3,a4,.L17
 	jal	x0,.L19
 .L35:
 	bne	a4,a3,.L6
 	lw	a4,16(a7)
-	bgeu	t3,a4,.+8
-	jal	x0,.L17
+	bltu	t3,a4,.L17
 	blt	a2,s0,.L10
 	jal	x0,.L19
 .L37:
@@ -264,8 +258,7 @@ main:
 	sub	a4,op_0,op_30
 	sub	op_0,x0,a3
 	sub	a5,a5,op_0
-	bgeu	a5,a3,.+8
-	jal	x0,.+12
+	bltu	a5,a3,.+12
 	addi	a3,x0,0
 	jal	x0,.+8
 	addi	a3,x0,1
@@ -392,8 +385,7 @@ main:
 	sub	a1,op_0,op_30
 	sub	op_0,x0,a5
 	sub	a4,a7,op_0
-	bgeu	a4,a5,.+8
-	jal	x0,.+12
+	bltu	a4,a5,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
@@ -430,8 +422,7 @@ main:
 	sra	a2,a5,op_0
 	sub	op_0,x0,a4
 	sub	a5,a5,op_0
-	bgeu	a5,a4,.+8
-	jal	x0,.+12
+	bltu	a5,a4,.+12
 	addi	a4,x0,0
 	jal	x0,.+8
 	addi	a4,x0,1
@@ -451,32 +442,11 @@ main:
 	sub	sp,t0,op_0
 	lw	ra,2028(sp)
 	and	op_1,a4,a3
-	and	op_4,a4,a3
-	and	op_8,a3,a4
-	sub	op_7,op_8,a4
-	sub	op_6,a3,op_7
-	and	op_9,a3,a4
-	sub	op_5,op_6,op_9
-	and	op_3,op_4,op_5
-	and	op_13,a3,a4
-	sub	op_12,op_13,a4
-	sub	op_11,a3,op_12
-	and	op_14,a3,a4
-	sub	op_10,op_11,op_14
-	sub	op_2,op_3,op_10
-	sub	op_0,op_1,op_2
-	and	op_16,a4,a3
-	and	op_20,a3,a4
-	sub	op_19,op_20,a4
-	sub	op_18,a3,op_19
-	and	op_21,a3,a4
-	sub	op_17,op_18,op_21
-	and	op_15,op_16,op_17
-	sub	a4,op_0,op_15
+	sub	op_0,op_1,a3
+	sub	a4,a4,op_0
 	lw	s0,2024(sp)
 	addi	op_0,x0,1
-	bgeu	a4,op_0,.+8
-	jal	x0,.+12
+	bltu	a4,op_0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
@@ -150501,7 +150471,7 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	op_0,x0,1
-	and	a3,a1,op_0
+	and	a3,op_0,a1
 	bne	a3,x0,.+8
 	jal	x0,.Mul_skip
 	sub	op_0,x0,a0

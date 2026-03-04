@@ -959,7 +959,7 @@ compdecomp:
 	sub	op_0,x0,a4
 	sub	a4,a2,op_0
 	addi	op_0,x0,3
-	and	a0,a4,op_0
+	and	a0,op_0,a4
 	sub	op_0,x0,a2
 	sub	a5,a5,op_0
 	bne	a0,zero,.L293

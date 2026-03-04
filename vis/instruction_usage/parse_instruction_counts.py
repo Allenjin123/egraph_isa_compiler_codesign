@@ -46,6 +46,9 @@ import scienceplots
 sys.path.insert(0, str(Path(__file__).parent))
 import matplotlib.pyplot as plt
 plt.style.use(['science', 'no-latex'])
+plt.rcParams.update({
+    'font.weight': 'normal',
+})
 import seaborn as sns
 import numpy as np
 
@@ -344,10 +347,13 @@ def visualize_results(summaries: List[Dict], output_path: str = "instruction_ana
     ax.set_xlim(-0.6, n - 0.4)
 
     # Configure axes
-    ax.set_ylabel('Number of Unique Instructions', fontsize=11, fontweight='bold')
+    from matplotlib.font_manager import FontProperties
+    bold_fp = FontProperties(family='DejaVu Serif', weight='bold')
+    ax.set_ylabel('Number of Unique Instructions', fontsize=11,
+                  fontproperties=bold_fp)
     ax.set_xticks(x)
     xlabels = ax.set_xticklabels(applications, rotation=60, ha='right', fontsize=10)
-    xlabels[-1].set_fontweight('bold')
+    xlabels[-1].set_fontproperties(FontProperties(family='DejaVu Serif', weight='bold', size=10))
     ax.tick_params(axis='y', labelsize=9)
     ax.grid(axis='y', alpha=0.3, linestyle='--')
 

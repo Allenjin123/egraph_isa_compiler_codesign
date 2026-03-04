@@ -153,7 +153,10 @@ fir_no_red_ld:
 latsynth:
 	addi	op_0,x0,1
 	sll	a4,a2,op_0
-	addi	a4,a4,-2
+	addi	op_1,x0,-2
+	or	op_0,x0,op_1
+	sub	op_2,x0,a4
+	sub	a4,op_0,op_2
 	sub	op_0,x0,a1
 	sub	a6,a4,op_0
 	sub	op_0,x0,a0
@@ -1150,11 +1153,19 @@ verify_benchmark:
 	addi	a4,sp,0
 .L97:
 	addi	op_0,x0,255
-	lw	op_1,0(a5)
-	and	a2,op_0,op_1
-	lw	op_0,0(a4)
-	addi	op_1,x0,255
-	and	a3,op_0,op_1
+	addi	op_3,x0,255
+	lw	op_4,0(a5)
+	or	op_2,op_3,op_4
+	lw	op_5,0(a5)
+	sub	op_1,op_2,op_5
+	sub	a2,op_0,op_1
+	addi	op_0,x0,255
+	addi	op_3,x0,255
+	lw	op_4,0(a4)
+	or	op_2,op_3,op_4
+	lw	op_5,0(a4)
+	sub	op_1,op_2,op_5
+	sub	a3,op_0,op_1
 	addi	a5,a5,1
 	addi	a4,a4,1
 	beq	a2,a3,.+8
@@ -1211,13 +1222,13 @@ main:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_9)
 	lw	ra,28(sp)
 	addi	op_1,x0,1
-	addi	op_4,x0,1
-	and	op_3,op_4,a0
-	sub	op_2,op_3,a0
-	sub	op_0,op_1,op_2
+	or	op_0,op_1,a0
+	addi	op_3,x0,1
 	addi	op_6,x0,1
-	and	op_5,op_6,a0
-	sub	a0,op_0,op_5
+	or	op_5,op_6,a0
+	sub	op_4,op_5,a0
+	sub	op_2,op_3,op_4
+	sub	a0,op_0,op_2
 	addi	sp,sp,32
 	jalr	zero,ra,0
 	.size	main, .-main
@@ -1867,8 +1878,11 @@ __mul:
 	sub	a2,x0,op_0
 	addi	a0,x0,0
 .Mul_loop:
-	addi	op_0,x0,1
-	and	a3,op_0,a1
+	addi	op_2,x0,1
+	or	op_1,a1,op_2
+	addi	op_3,x0,1
+	sub	op_0,op_1,op_3
+	sub	a3,a1,op_0
 	beq	a3,x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0

@@ -25,7 +25,7 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 
 
-def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enable_freq_analysis=False, core_name="ibex", enable_shift_constraints=False, enable_cache_latencies=False):
+def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enable_freq_analysis=False, core_name="ibex", enable_shift_constraints=False, enable_cache_latencies=False, use_ppdk=False):
     """
     Analyze a single variant (to be called in parallel).
 
@@ -109,7 +109,7 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enab
             print(f"Variant {variant_id}: Starting synthesis with EMPTY DSL (general purpose processor, full RV32IM)...")
             dsl_file_path = str(Path(dsl_dir) / f"{program_name}_variant_{variant_id}.dsl")
             start_time = time.time()
-            area, frequency = ap.parse_area(subset, dsl_file_path, use_empty_dsl=True, enable_freq_analysis=enable_freq_analysis, core_name=core_name)
+            area, frequency = ap.parse_area(subset, dsl_file_path, use_empty_dsl=True, enable_freq_analysis=enable_freq_analysis, core_name=core_name, use_ppdk=use_ppdk)
             synthesis_time = time.time() - start_time
             latency = lp.parse_latency(prog, frequency if enable_freq_analysis else None)
 
@@ -129,7 +129,7 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enab
             print(f"Variant {variant_id}: Starting synthesis...")
             dsl_file_path = str(Path(dsl_dir) / f"{program_name}_variant_{variant_id}.dsl")
             start_time = time.time()
-            area, frequency = ap.parse_area(subset, dsl_file_path, enable_freq_analysis=enable_freq_analysis, core_name=core_name)
+            area, frequency = ap.parse_area(subset, dsl_file_path, enable_freq_analysis=enable_freq_analysis, core_name=core_name, use_ppdk=use_ppdk)
             synthesis_time = time.time() - start_time
             latency = lp.parse_latency(prog, frequency if enable_freq_analysis else None)
 
@@ -150,7 +150,7 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enab
             print(f"Variant {variant_id}: Starting BASELINE synthesis (no shift constraints)...")
             dsl_file_path_baseline = str(Path(dsl_dir) / f"{program_name}_variant_{variant_id}_baseline.dsl")
             start_time = time.time()
-            area_baseline, frequency_baseline = ap.parse_area(subset, dsl_file_path_baseline, enable_freq_analysis=enable_freq_analysis, core_name=core_name)
+            area_baseline, frequency_baseline = ap.parse_area(subset, dsl_file_path_baseline, enable_freq_analysis=enable_freq_analysis, core_name=core_name, use_ppdk=use_ppdk)
             synthesis_time_baseline = time.time() - start_time
             latency_baseline = lp.parse_latency(prog, frequency_baseline if enable_freq_analysis else None)
 
@@ -170,7 +170,7 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enab
             print(f"Variant {variant_id}: Starting UARCHAWARE synthesis (with shift constraints{cache_msg})...")
             dsl_file_path_uarchaware = str(Path(dsl_dir) / f"{program_name}_variant_{variant_id}_uarchaware.dsl")
             start_time = time.time()
-            area_uarchaware, frequency_uarchaware = ap.parse_area(subset, dsl_file_path_uarchaware, enable_freq_analysis=enable_freq_analysis, core_name=core_name, shift_imm_dict=shift_imm_dict, add_cache_latencies=enable_cache_latencies)
+            area_uarchaware, frequency_uarchaware = ap.parse_area(subset, dsl_file_path_uarchaware, enable_freq_analysis=enable_freq_analysis, core_name=core_name, shift_imm_dict=shift_imm_dict, add_cache_latencies=enable_cache_latencies, use_ppdk=use_ppdk)
             synthesis_time_uarchaware = time.time() - start_time
             latency_uarchaware = lp.parse_latency(prog, frequency_uarchaware if enable_freq_analysis else None)
 
@@ -190,7 +190,7 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enab
             print(f"Variant {variant_id}: Starting synthesis with {len(subset)} instructions...")
             dsl_file_path = str(Path(dsl_dir) / f"{program_name}_variant_{variant_id}.dsl")
             start_time = time.time()
-            area, frequency = ap.parse_area(subset, dsl_file_path, enable_freq_analysis=enable_freq_analysis, core_name=core_name)
+            area, frequency = ap.parse_area(subset, dsl_file_path, enable_freq_analysis=enable_freq_analysis, core_name=core_name, use_ppdk=use_ppdk)
             synthesis_time = time.time() - start_time
             latency = lp.parse_latency(prog, frequency if enable_freq_analysis else None)
 
@@ -216,7 +216,7 @@ def analyze_single_variant(variant_id, variants_dir, program_name, dsl_dir, enab
 
 def main():
     if len(sys.argv) < 4:
-        print("Usage: python analyze_all_variants.py <variants_dir> <program_name> <output_dir> [num_processes] [--enable-freq-analysis] [--enable-shift-constraints] [--enable-cache-latencies] [--core-name CORE]")
+        print("Usage: python analyze_all_variants.py <variants_dir> <program_name> <output_dir> [num_processes] [--enable-freq-analysis] [--enable-shift-constraints] [--enable-cache-latencies] [--core-name CORE] [--ppdk]")
         print("Example: python analyze_all_variants.py output/backend/dijkstra_small_O3/variants dijkstra_small_O3 output/backend/dijkstra_small_O3 72")
         print("         python analyze_all_variants.py output/backend/dijkstra_small_O3/variants dijkstra_small_O3 output/backend/dijkstra_small_O3 72 --enable-freq-analysis")
         print("         python analyze_all_variants.py output/backend/dijkstra_small_O3/variants dijkstra_small_O3 output/backend/dijkstra_small_O3 72 --core-name rocket")
@@ -236,6 +236,9 @@ def main():
     # Check for cache latencies flag
     enable_cache_latencies = "--enable-cache-latencies" in sys.argv
 
+    # Check for PPDK flag
+    use_ppdk = "--ppdk" in sys.argv
+
     # Check for core name
     core_name = "ibex"  # default
     for i, arg in enumerate(sys.argv):
@@ -248,6 +251,7 @@ def main():
                          if arg != "--enable-freq-analysis" and
                          arg != "--enable-shift-constraints" and
                          arg != "--enable-cache-latencies" and
+                         arg != "--ppdk" and
                          (i == 4 or sys.argv[i-1] != "--core-name") and
                          arg != "--core-name"]
     num_processes = int(args_without_flags[0]) if len(args_without_flags) > 0 else 72  # Default to 72
@@ -274,6 +278,7 @@ def main():
     print(f"Frequency analysis: {'ENABLED (latency in seconds)' if enable_freq_analysis else 'DISABLED (latency in cycles)'}")
     print(f"Shift constraints: {'ENABLED (v2 DSL format)' if enable_shift_constraints else 'DISABLED'}")
     print(f"Cache latencies: {'ENABLED (uarchaware only)' if enable_cache_latencies else 'DISABLED'}")
+    print(f"PDK library: {'PPDK Standard Library (1.0V, 25C, TYP)' if use_ppdk else 'Skywater SKY130 (default)'}")
     print(f"DSL files: {dsl_dir}")
     print("=" * 80)
     print()
@@ -328,7 +333,8 @@ def main():
                               enable_freq_analysis=enable_freq_analysis,
                               core_name=core_name,
                               enable_shift_constraints=enable_shift_constraints,
-                              enable_cache_latencies=enable_cache_latencies)
+                              enable_cache_latencies=enable_cache_latencies,
+                              use_ppdk=use_ppdk)
 
         # Run analysis in parallel
         overall_start = time.time()

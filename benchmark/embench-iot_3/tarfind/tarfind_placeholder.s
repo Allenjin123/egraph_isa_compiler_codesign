@@ -60,10 +60,8 @@ benchmark_body.isra.0:
 	beq	a4,zero,.L18
 	sb	zero,0(a2)
 	addi	op_0,x0,2
-	and	a1,a1,op_0
-	beq	a1,zero,.+8
-	jal	x0,.+8
-	jal	x0,.L19
+	and	a1,op_0,a1
+	beq	a1,zero,.L19
 	sb	zero,1(a2)
 	beq	a4,s4,.+8
 	jal	x0,.L20
@@ -216,8 +214,8 @@ benchmark_body.isra.0:
 .L43:
 	beq	a3,t5,.+8
 	jal	x0,.L13
-	addi	op_0,x0,255
-	lw	op_1,0(a2)
+	lw	op_0,0(a2)
+	addi	op_1,x0,255
 	and	a3,op_0,op_1
 	beq	a3,zero,.L10
 .L9:
@@ -336,7 +334,7 @@ benchmark_body.constprop.0:
 .L50:
 	sub	a4,zero,s7
 	addi	op_0,x0,3
-	and	a5,a4,op_0
+	and	a5,op_0,a4
 	beq	a5,zero,.L60
 	sb	zero,0(s7)
 	addi	op_0,x0,2
@@ -482,8 +480,8 @@ benchmark_body.constprop.0:
 .L58:
 	addi	s7,t6,0
 .L57:
-	addi	op_0,x0,255
-	lw	op_1,0(s7)
+	lw	op_0,0(s7)
+	addi	op_1,x0,255
 	and	a4,op_0,op_1
 	addi	a3,s7,0
 	addi	a5,s8,0
@@ -498,8 +496,8 @@ benchmark_body.constprop.0:
 	and	a4,op_0,op_1
 	beq	a4,zero,.L52
 .L51:
-	lw	op_0,0(a5)
-	addi	op_1,x0,255
+	addi	op_0,x0,255
+	lw	op_1,0(a5)
 	and	a2,op_0,op_1
 	addi	a3,a3,1
 	addi	a5,a5,1
@@ -545,8 +543,8 @@ benchmark_body.constprop.0:
 	addi	sp,sp,48
 	jalr	zero,ra,0
 .L52:
-	addi	op_0,x0,255
-	lw	op_1,0(a5)
+	lw	op_0,0(a5)
+	addi	op_1,x0,255
 	and	a5,op_0,op_1
 	beq	a5,zero,.+8
 	jal	x0,.L55
@@ -687,9 +685,7 @@ __mul:
 .Mul_loop:
 	addi	op_0,x0,1
 	and	a3,op_0,a1
-	beq	a3,x0,.+8
-	jal	x0,.+8
-	jal	x0,.Mul_skip
+	beq	a3,x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
 .Mul_skip:

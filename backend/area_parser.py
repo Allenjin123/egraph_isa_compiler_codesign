@@ -184,7 +184,7 @@ def create_dsl(isa_subset: set, output_path: Optional[str] = None, shift_imm_dic
         # Return DSL content as string
         return dsl_content, has_shift_constraints
 
-def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl: bool = False, enable_freq_analysis: bool = False, core_name: str = "ibex", shift_imm_dict: Optional[dict] = None, add_cache_latencies: bool = False):
+def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl: bool = False, enable_freq_analysis: bool = False, core_name: str = "ibex", shift_imm_dict: Optional[dict] = None, add_cache_latencies: bool = False, use_ppdk: bool = False):
     """
     Generate DSL file, run synthesis, and extract chip area and optionally frequency.
 
@@ -245,8 +245,11 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl
     print(f"Created DSL file: {dsl_path_abs}")
 
     # Step 2: Call synthesis script
-    # Path to synthesis script
-    synth_script = Path(__file__).parent.parent / "PdatScorrWrapper" / "ScorrPdat" / "synth_core_simplified.sh"
+    # Path to synthesis script - select PPDK variant if requested
+    if use_ppdk:
+        synth_script = Path(__file__).parent.parent / "PdatScorrWrapper" / "ScorrPdat" / "synth_core_simplified_ppdk.sh"
+    else:
+        synth_script = Path(__file__).parent.parent / "PdatScorrWrapper" / "ScorrPdat" / "synth_core_simplified.sh"
 
     if not synth_script.exists():
         raise FileNotFoundError(f"Synthesis script not found: {synth_script}")
@@ -317,14 +320,17 @@ def parse_area(isa_subset: set, output_path: Optional[str] = None, use_empty_dsl
     chip_area = float(match.group(1))
 
     print(f"Parsed chip area: {chip_area} µm²")
-    print(f"PDK: Skywater SKY130 (sky130_fd_sc_hd, tt corner)")
-    print(f"Corner: tt_025C_1v80 (typical, 25°C, 1.8V)")
+    if use_ppdk:
+        print(f"PDK: PPDK Standard Library (1.0V, 25C, TYP)")
+    else:
+        print(f"PDK: Skywater SKY130 (sky130_fd_sc_hd, tt corner)")
+        print(f"Corner: tt_025C_1v80 (typical, 25°C, 1.8V)")
 
     # Step 4: Parse frequency from output if enabled
     frequency = None
     if enable_freq_analysis:
         # Looking for pattern: "Timing (10ns target period):" followed by "Optimized: XX.XX MHz"
-        frequency_pattern = r'Timing \(\d+ns target period\):\s*\n\s*Optimized:\s+([\d.]+)\s+MHz'
+        frequency_pattern = r'Timing \(\d+ns target period\):\s*\n\s*Optimized:\s+([\d.eE+-]+)\s+MHz'
         freq_match = re.search(frequency_pattern, synthesis_output, re.MULTILINE)
 
         if freq_match:

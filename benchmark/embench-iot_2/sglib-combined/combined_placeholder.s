@@ -656,8 +656,7 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L149
 .L234:
 	lw	a5,0(s0)
-	blt	a5,zero,.+8
-	jal	x0,.L149
+	bge	a5,zero,.L149
 	sw	s1,0(s0)
 	lw	ra,44(sp)
 	lw	s0,40(sp)
@@ -666,7 +665,8 @@ sglib___rbtree_consistency_check_recursive:
 	jalr	zero,ra,0
 .L257:
 	lw	a4,0(a1)
-	blt	a4,zero,.L268
+	bge	a4,zero,.+8
+	jal	x0,.L268
 .L155:
 	lw	a5,12(a5)
 	beq	a5,zero,.+8
@@ -674,7 +674,8 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L149
 .L248:
 	lw	a3,0(a1)
-	blt	a3,zero,.L269
+	bge	a3,zero,.+8
+	jal	x0,.L269
 	lw	a4,12(a4)
 	beq	a4,zero,.+8
 	jal	x0,.L187
@@ -683,7 +684,8 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L174
 .L243:
 	lw	a4,0(s0)
-	blt	a4,zero,.L270
+	bge	a4,zero,.+8
+	jal	x0,.L270
 .L174:
 	lw	a5,12(a5)
 	beq	a5,zero,.+8
@@ -698,8 +700,7 @@ sglib___rbtree_consistency_check_recursive:
 	jalr	zero,ra,0
 .L245:
 	lw	a5,0(s0)
-	blt	a5,zero,.+8
-	jal	x0,.L237
+	bge	a5,zero,.L237
 	sw	s3,0(s0)
 	lw	s3,28(sp)
 	jal	x0,.L149
@@ -800,7 +801,8 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L175
 .L253:
 	lw	a4,0(s0)
-	blt	a4,zero,.L277
+	bge	a4,zero,.+8
+	jal	x0,.L277
 	lw	a5,12(a5)
 	beq	a5,zero,.+8
 	jal	x0,.L201
@@ -842,15 +844,13 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L156
 .L250:
 	lw	a4,0(s0)
-	blt	a4,zero,.+8
-	jal	x0,.L230
+	bge	a4,zero,.L230
 	sw	s2,0(s0)
 	lw	s2,32(sp)
 	jal	x0,.L175
 .L255:
 	lw	a5,0(s0)
-	blt	a5,zero,.+8
-	jal	x0,.L233
+	bge	a5,zero,.L233
 	sw	s2,0(s0)
 	lw	s3,28(sp)
 	lw	s2,32(sp)
@@ -927,14 +927,16 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L199
 .L271:
 	lw	a3,0(a1)
-	blt	a3,zero,.L279
+	bge	a3,zero,.+8
+	jal	x0,.L279
 	lw	a4,12(a4)
 	beq	a4,zero,.+8
 	jal	x0,.L181
 	jal	x0,.L174
 .L264:
 	lw	a4,0(s0)
-	blt	a4,zero,.L280
+	bge	a4,zero,.+8
+	jal	x0,.L280
 	lw	a5,12(a5)
 	beq	a5,zero,.+8
 	jal	x0,.L171
@@ -942,7 +944,8 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L149
 .L274:
 	lw	a4,0(s0)
-	blt	a4,zero,.L281
+	bge	a4,zero,.+8
+	jal	x0,.L281
 	lw	a5,12(a5)
 	beq	a5,zero,.+8
 	jal	x0,.L195
@@ -950,7 +953,8 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L278
 .L259:
 	lw	a3,0(a1)
-	blt	a3,zero,.L282
+	bge	a3,zero,.+8
+	jal	x0,.L282
 	lw	a4,12(a4)
 	beq	a4,zero,.+8
 	jal	x0,.L162
@@ -959,15 +963,13 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L155
 .L266:
 	lw	a5,0(s0)
-	blt	a5,zero,.+8
-	jal	x0,.L239
+	bge	a5,zero,.L239
 	sw	s2,0(s0)
 	lw	s2,32(sp)
 	jal	x0,.L149
 .L261:
 	lw	a4,0(s0)
-	blt	a4,zero,.+8
-	jal	x0,.L228
+	bge	a4,zero,.L228
 	sw	s2,0(s0)
 	lw	s2,32(sp)
 	jal	x0,.L156
@@ -1265,8 +1267,7 @@ sglib___rbtree_consistency_check_recursive.constprop.2:
 	jalr	zero,ra,0
 .L327:
 	lw	a5,0(s0)
-	blt	a5,zero,.+8
-	jal	x0,.L283
+	bge	a5,zero,.L283
 	addi	a5,zero,2
 	lw	ra,28(sp)
 	sw	a5,0(s0)
@@ -1275,7 +1276,8 @@ sglib___rbtree_consistency_check_recursive.constprop.2:
 	jalr	zero,ra,0
 .L343:
 	lw	a4,0(a1)
-	blt	a4,zero,.L346
+	bge	a4,zero,.+8
+	jal	x0,.L346
 .L289:
 	lw	a5,12(a5)
 	beq	a5,zero,.+8
@@ -1283,7 +1285,8 @@ sglib___rbtree_consistency_check_recursive.constprop.2:
 	jal	x0,.L283
 .L333:
 	lw	a3,0(a1)
-	blt	a3,zero,.L347
+	bge	a3,zero,.+8
+	jal	x0,.L347
 .L301:
 	lw	a4,12(a4)
 	beq	a4,zero,.+8
@@ -1302,8 +1305,7 @@ sglib___rbtree_consistency_check_recursive.constprop.2:
 	jal	x0,.L328
 .L331:
 	lw	a4,0(a1)
-	blt	a4,zero,.+8
-	jal	x0,.L297
+	bge	a4,zero,.L297
 	addi	a4,zero,3
 	sw	a4,0(a1)
 	jal	x0,.L297
@@ -1326,14 +1328,14 @@ sglib___rbtree_consistency_check_recursive.constprop.2:
 	jal	x0,.L299
 .L337:
 	lw	a5,0(s0)
-	blt	a5,zero,.+8
-	jal	x0,.L283
+	bge	a5,zero,.L283
 	addi	a5,zero,3
 	sw	a5,0(s0)
 	jal	x0,.L283
 .L339:
 	lw	a4,0(s0)
-	blt	a4,zero,.L348
+	bge	a4,zero,.+8
+	jal	x0,.L348
 .L309:
 	lw	a5,12(a5)
 	beq	a5,zero,.+8
@@ -1440,15 +1442,13 @@ sglib___rbtree_consistency_check_recursive.constprop.2:
 	jal	x0,.L301
 .L341:
 	lw	a5,0(s0)
-	blt	a5,zero,.+8
-	jal	x0,.L283
+	bge	a5,zero,.L283
 	addi	a5,zero,4
 	sw	a5,0(s0)
 	jal	x0,.L283
 .L335:
 	lw	a4,0(s0)
-	blt	a4,zero,.+8
-	jal	x0,.L297
+	bge	a4,zero,.L297
 	addi	a4,zero,4
 	sw	a4,0(s0)
 	jal	x0,.L297
@@ -1548,8 +1548,7 @@ sglib___rbtree_consistency_check_recursive.constprop.0:
 	jalr	zero,ra,0
 .L400:
 	lw	a5,0(a1)
-	blt	a5,zero,.+8
-	jal	x0,.L349
+	bge	a5,zero,.L349
 	lw	ra,28(sp)
 	lw	s0,24(sp)
 	sw	zero,0(a1)
@@ -1557,7 +1556,8 @@ sglib___rbtree_consistency_check_recursive.constprop.0:
 	jalr	zero,ra,0
 .L403:
 	lw	a4,0(s0)
-	blt	a4,zero,.L409
+	bge	a4,zero,.+8
+	jal	x0,.L409
 .L356:
 	lw	a5,12(a5)
 	beq	a5,zero,.L349
@@ -1584,8 +1584,7 @@ sglib___rbtree_consistency_check_recursive.constprop.0:
 	jalr	zero,ra,0
 .L397:
 	lw	a4,0(s0)
-	blt	a4,zero,.+8
-	jal	x0,.L356
+	bge	a4,zero,.L356
 	addi	a4,zero,1
 	sw	a4,0(s0)
 	jal	x0,.L356
@@ -1640,8 +1639,7 @@ sglib___rbtree_consistency_check_recursive.constprop.0:
 	jal	x0,.L374
 .L399:
 	lw	a5,0(s0)
-	blt	a5,zero,.+8
-	jal	x0,.L349
+	bge	a5,zero,.L349
 	addi	a5,zero,1
 	sw	a5,0(s0)
 	jal	x0,.L349
@@ -1714,8 +1712,7 @@ sglib___rbtree_consistency_check_recursive.constprop.0:
 	jal	x0,.L371
 .L411:
 	lw	a3,0(a1)
-	blt	a3,zero,.+8
-	jal	x0,.L359
+	bge	a3,zero,.L359
 	sw	a7,0(a1)
 .L359:
 	lw	a4,12(a4)
@@ -1724,8 +1721,7 @@ sglib___rbtree_consistency_check_recursive.constprop.0:
 	jal	x0,.L356
 .L414:
 	lw	a4,0(s0)
-	blt	a4,zero,.+8
-	jal	x0,.L378
+	bge	a4,zero,.L378
 	sw	a3,0(s0)
 .L378:
 	lw	a5,12(a5)
@@ -1734,8 +1730,7 @@ sglib___rbtree_consistency_check_recursive.constprop.0:
 	jal	x0,.L349
 .L405:
 	lw	a3,0(s0)
-	blt	a3,zero,.+8
-	jal	x0,.L369
+	bge	a3,zero,.L369
 	addi	a3,zero,3
 	sw	a3,0(s0)
 .L369:
@@ -1827,8 +1822,7 @@ sglib___rbtree_consistency_check_recursive.constprop.0:
 	jal	x0,.L365
 .L407:
 	lw	a4,0(s0)
-	blt	a4,zero,.+8
-	jal	x0,.L356
+	bge	a4,zero,.L356
 	addi	a4,zero,3
 	sw	a4,0(s0)
 	jal	x0,.L356
@@ -1844,7 +1838,8 @@ sglib___rbtree_add_recursive.constprop.0:
 	sw	ra,28(sp)
 	sub	a4,a2,a4
 	addi	a3,a0,0
-	blt	a4,zero,.L420
+	bge	a4,zero,.+8
+	jal	x0,.L420
 	beq	a4,zero,.+8
 	jal	x0,.L421
 	bltu	a1,a5,.+8
@@ -1854,7 +1849,8 @@ sglib___rbtree_add_recursive.constprop.0:
 	beq	a4,zero,.L578
 	lw	a0,0(a4)
 	sub	a0,a2,a0
-	blt	a0,zero,.L424
+	bge	a0,zero,.+8
+	jal	x0,.L424
 	beq	a0,zero,.+8
 	jal	x0,.L425
 	bltu	a1,a4,.+8
@@ -1864,7 +1860,8 @@ sglib___rbtree_add_recursive.constprop.0:
 	beq	a6,zero,.L579
 	lw	a0,0(a6)
 	sub	a2,a2,a0
-	blt	a2,zero,.L428
+	bge	a2,zero,.+8
+	jal	x0,.L428
 	beq	a2,zero,.+8
 	jal	x0,.L429
 	bltu	a1,a6,.+8
@@ -2849,18 +2846,16 @@ sglib_dllist_sort:
 .L815:
 	addi	a4,a1,0
 	addi	a2,zero,1
-	blt	t3,a6,.+8
-	jal	x0,.L875
+	bge	t3,a6,.L875
 .L816:
 	lw	a4,4(a4)
 	addi	a2,a2,1
-	blt	a2,a6,.+12
+	bge	a2,a6,.+8
+	jal	x0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
-	bltu	zero,a4,.+8
-	jal	x0,.+8
-	jal	x0,.+12
+	bltu	zero,a4,.+12
 	addi	a7,x0,0
 	jal	x0,.+8
 	addi	a7,x0,1
@@ -2878,8 +2873,7 @@ sglib_dllist_sort:
 .L821:
 	addi	a2,a2,1
 	lw	a4,4(a4)
-	blt	a2,a6,.+8
-	jal	x0,.L823
+	bge	a2,a6,.L823
 	beq	a4,zero,.+8
 	jal	x0,.L821
 .L823:
@@ -2892,7 +2886,8 @@ sglib_dllist_sort:
 .L874:
 	lw	a4,0(a5)
 .L831:
-	blt	a2,a4,.L877
+	bge	a2,a4,.+8
+	jal	x0,.L877
 	sw	a5,0(a3)
 	addi	a3,a5,4
 	lw	a5,4(a5)
@@ -3353,18 +3348,16 @@ sglib_ilist_sort:
 .L1015:
 	addi	a4,a1,0
 	addi	a2,zero,1
-	blt	t3,a6,.+8
-	jal	x0,.L1061
+	bge	t3,a6,.L1061
 .L1017:
 	lw	a4,4(a4)
 	addi	a2,a2,1
-	blt	a2,a6,.+12
+	bge	a2,a6,.+8
+	jal	x0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
-	bltu	zero,a4,.+8
-	jal	x0,.+8
-	jal	x0,.+12
+	bltu	zero,a4,.+12
 	addi	a7,x0,0
 	jal	x0,.+8
 	addi	a7,x0,1
@@ -3382,8 +3375,7 @@ sglib_ilist_sort:
 .L1021:
 	addi	a2,a2,1
 	lw	a4,4(a4)
-	blt	a2,a6,.+8
-	jal	x0,.L1023
+	bge	a2,a6,.L1023
 	beq	a4,zero,.+8
 	jal	x0,.L1021
 .L1023:
@@ -3396,7 +3388,8 @@ sglib_ilist_sort:
 .L1060:
 	lw	a4,0(a5)
 .L1031:
-	blt	a2,a4,.L1063
+	bge	a2,a4,.+8
+	jal	x0,.L1063
 	sw	a5,0(a3)
 	addi	a3,a5,4
 	lw	a5,4(a5)
@@ -5051,7 +5044,8 @@ sglib_hashed_ilist_it_next:
 .L1180:
 	addi	a5,a5,1
 	sw	a5,20(s1)
-	blt	s4,a5,.L1201
+	bge	s4,a5,.+8
+	jal	x0,.L1201
 .L1187:
 	lw	a4,16(s1)
 	lw	s2,24(s1)
@@ -5100,8 +5094,7 @@ sglib_hashed_ilist_it_next:
 	sw	zero,0(s1)
 	addi	a5,a5,1
 	sw	a5,20(s1)
-	blt	s4,a5,.+8
-	jal	x0,.L1187
+	bge	s4,a5,.L1187
 .L1201:
 	lw	s4,8(sp)
 	addi	s0,zero,0
@@ -5965,7 +5958,8 @@ sglib___rbtree_delete_recursive:
 	sw	ra,44(sp)
 	sub	a4,a3,a4
 	addi	s0,a0,0
-	blt	a4,zero,.L1235
+	bge	a4,zero,.+8
+	jal	x0,.L1235
 	beq	a4,zero,.+8
 	jal	x0,.L1281
 	bltu	a1,a5,.+8
@@ -5977,7 +5971,8 @@ sglib___rbtree_delete_recursive:
 	sw	s1,36(sp)
 	addi	s1,a5,8
 	sub	a2,a3,a2
-	blt	a2,zero,.L1238
+	bge	a2,zero,.+8
+	jal	x0,.L1238
 	beq	a2,zero,.+8
 	jal	x0,.L1239
 	bltu	a1,a4,.+8
@@ -5989,7 +5984,8 @@ sglib___rbtree_delete_recursive:
 	sw	s2,32(sp)
 	addi	s2,a4,8
 	sub	a3,a3,a2
-	blt	a3,zero,.L1242
+	bge	a3,zero,.+8
+	jal	x0,.L1242
 	beq	a3,zero,.+8
 	jal	x0,.L1243
 	bltu	a1,a5,.+8
@@ -6021,7 +6017,8 @@ sglib___rbtree_delete_recursive:
 	sw	s1,36(sp)
 	addi	s1,a5,12
 	sub	a3,a3,a2
-	blt	a3,zero,.L1265
+	bge	a3,zero,.+8
+	jal	x0,.L1265
 	beq	a3,zero,.+8
 	jal	x0,.L1282
 	bltu	a1,a4,.+8
@@ -6329,7 +6326,8 @@ sglib_rbtree_add:
 	sw	ra,28(sp)
 	sub	a4,a3,a4
 	addi	a2,a0,0
-	blt	a4,zero,.L1369
+	bge	a4,zero,.+8
+	jal	x0,.L1369
 	beq	a4,zero,.+8
 	jal	x0,.L1370
 	bltu	a1,a5,.+8
@@ -6339,7 +6337,8 @@ sglib_rbtree_add:
 	beq	a4,zero,.L1473
 	lw	a0,0(a4)
 	sub	a3,a3,a0
-	blt	a3,zero,.L1373
+	bge	a3,zero,.+8
+	jal	x0,.L1373
 	beq	a3,zero,.+8
 	jal	x0,.L1374
 	bltu	a1,a4,.+8
@@ -6653,7 +6652,8 @@ sglib_rbtree_delete:
 	sw	ra,44(sp)
 	sub	a4,a3,a4
 	addi	s0,a0,0
-	blt	a4,zero,.L1487
+	bge	a4,zero,.+8
+	jal	x0,.L1487
 	beq	a4,zero,.+8
 	jal	x0,.L1511
 	bltu	a1,a5,.+8
@@ -6665,7 +6665,8 @@ sglib_rbtree_delete:
 	sw	s1,36(sp)
 	addi	s1,a5,8
 	sub	a3,a3,a2
-	blt	a3,zero,.L1491
+	bge	a3,zero,.+8
+	jal	x0,.L1491
 	beq	a3,zero,.+8
 	jal	x0,.L1510
 	bltu	a1,a4,.+8
@@ -6837,7 +6838,8 @@ sglib_rbtree_find_member:
 .L1543:
 	lw	a5,0(a0)
 	sub	a5,a4,a5
-	blt	a5,zero,.L1549
+	bge	a5,zero,.+8
+	jal	x0,.L1549
 	beq	a5,zero,.L1539
 	lw	a0,12(a0)
 	beq	a0,zero,.+8
@@ -6859,7 +6861,8 @@ sglib_rbtree_is_member:
 .L1556:
 	lw	a5,0(a0)
 	sub	a5,a4,a5
-	blt	a5,zero,.L1552
+	bge	a5,zero,.+8
+	jal	x0,.L1552
 	beq	a5,zero,.+8
 	jal	x0,.L1553
 	bltu	a1,a0,.+8
@@ -6892,7 +6895,8 @@ sglib_rbtree_delete_if_member:
 .L1572:
 	lw	a5,0(a4)
 	sub	a5,a3,a5
-	blt	a5,zero,.L1583
+	bge	a5,zero,.+8
+	jal	x0,.L1583
 	beq	a5,zero,.L1571
 	lw	a4,12(a4)
 	beq	a4,zero,.+8
@@ -6935,7 +6939,8 @@ sglib_rbtree_add_if_not_member:
 .L1589:
 	lw	a5,0(a4)
 	sub	a5,a3,a5
-	blt	a5,zero,.L1598
+	bge	a5,zero,.+8
+	jal	x0,.L1598
 	beq	a5,zero,.L1588
 	lw	a4,12(a4)
 	beq	a4,zero,.+8
@@ -7027,7 +7032,8 @@ sglib_rbtree_len:
 	sub	op_0,x0,a0
 	sub	a0,a4,op_0
 	lw	a4,0(a1)
-	blt	zero,a3,.L1619
+	bge	zero,a3,.+8
+	jal	x0,.L1619
 	addi	op_0,x0,2
 	sll	a3,a3,op_0
 	sub	op_0,x0,t1
@@ -7060,8 +7066,7 @@ sglib__rbtree_it_compute_current_elem:
 	sw	zero,0(a0)
 	lw	s2,648(a0)
 	lw	s4,652(a0)
-	blt	zero,a5,.+8
-	jal	x0,.L1620
+	bge	zero,a5,.L1620
 	sw	s1,36(sp)
 	sw	s7,12(sp)
 	sw	s0,40(sp)
@@ -7084,8 +7089,7 @@ sglib__rbtree_it_compute_current_elem:
 	sra	a5,a5,op_0
 	sh	a5,644(s1)
 .L1623:
-	blt	zero,a5,.+8
-	jal	x0,.L1656
+	bge	zero,a5,.L1656
 	addi	a3,a5,-1
 	sub	op_0,x0,s1
 	sub	a4,a3,op_0
@@ -7132,7 +7136,8 @@ sglib__rbtree_it_compute_current_elem:
 	addi	a1,s0,0
 	addi	a0,s2,0
 	jalr	ra,s4,0
-	blt	a0,zero,.L1660
+	bge	a0,zero,.+8
+	jal	x0,.L1660
 	beq	a0,zero,.L1633
 	lw	s0,12(s0)
 	beq	s0,zero,.+8
@@ -7176,7 +7181,8 @@ sglib__rbtree_it_compute_current_elem:
 	lw	a4,0(s2)
 	lw	a5,0(s0)
 	sub	a5,a4,a5
-	blt	a5,zero,.L1661
+	bge	a5,zero,.+8
+	jal	x0,.L1661
 .L1631:
 	beq	a5,zero,.L1633
 	lw	s0,12(s0)
@@ -7184,8 +7190,7 @@ sglib__rbtree_it_compute_current_elem:
 .L1659:
 	lw	a5,0(s0)
 	sub	a5,a4,a5
-	blt	a5,zero,.+8
-	jal	x0,.L1631
+	bge	a5,zero,.L1631
 .L1661:
 	lw	s0,8(s0)
 	beq	s0,zero,.+8
@@ -7200,8 +7205,7 @@ sglib__rbtree_it_compute_current_elem:
 benchmark_body:
 	addi	sp,sp,-1152
 	sw	ra,1148(sp)
-	blt	zero,a0,.+8
-	jal	x0,.L1664
+	bge	zero,a0,.L1664
 	sw	s3,1132(sp)
 	lui	s3,%hi(heap)
 	addi	a5,s3,%lo(heap)
@@ -7257,8 +7261,7 @@ benchmark_body:
 	sub	a5,a7,a6
 	addi	t5,t1,0
 .L1820:
-	blt	t3,a5,.+8
-	jal	x0,.L1666
+	bge	t3,a5,.L1666
 .L1825:
 	addi	a3,a7,-1
 	addi	op_0,x0,2
@@ -7268,11 +7271,11 @@ benchmark_body:
 	sll	t1,a3,op_0
 	sub	op_0,x0,s1
 	sub	t6,a1,op_0
-	blt	a5,a3,.+8
-	jal	x0,.L1823
+	bge	a5,a3,.L1823
 .L1667:
 	lw	a0,0(t6)
-	blt	a3,a5,.L1669
+	bge	a3,a5,.+8
+	jal	x0,.L1669
 	addi	op_0,x0,2
 	sll	a4,a5,op_0
 	sub	op_0,x0,s1
@@ -7281,21 +7284,22 @@ benchmark_body:
 .L1670:
 	addi	a5,a5,1
 	addi	a4,a4,4
-	blt	a3,a5,.L1669
+	bge	a3,a5,.+8
+	jal	x0,.L1669
 .L1681:
 	lw	t0,0(a4)
-	blt	a0,t0,.+8
-	jal	x0,.L1670
-	blt	a3,a5,.L1669
+	bge	a0,t0,.L1670
+	bge	a3,a5,.+8
+	jal	x0,.L1669
 	sub	op_0,x0,s1
 	sub	t1,t1,op_0
 .L1671:
 	lw	a4,0(t1)
-	blt	a4,a0,.L1824
+	bge	a4,a0,.+8
+	jal	x0,.L1824
 	addi	a3,a3,-1
 	addi	t1,t1,-4
-	blt	a3,a5,.+8
-	jal	x0,.L1671
+	bge	a3,a5,.L1671
 .L1673:
 	addi	op_0,x0,2
 	sll	a5,a3,op_0
@@ -7309,15 +7313,12 @@ benchmark_body:
 	sub	a5,a3,a6
 	addi	a1,a3,0
 .L1680:
-	blt	s5,a5,.+8
-	jal	x0,.L1668
+	bge	s5,a5,.L1668
 	sub	a4,a7,a1
-	blt	s5,a4,.+8
-	jal	x0,.L1753
+	bge	s5,a4,.L1753
 	addi	a4,a4,-1
 	addi	a1,a1,1
-	blt	a5,a4,.+8
-	jal	x0,.L1683
+	bge	a5,a4,.L1683
 	addi	op_0,x0,2
 	sll	a4,t5,op_0
 	sub	op_0,x0,t4
@@ -7328,12 +7329,12 @@ benchmark_body:
 	sw	a1,0(a4)
 	addi	t5,t5,1
 	addi	a7,a3,0
-	blt	t3,a5,.L1825
+	bge	t3,a5,.+8
+	jal	x0,.L1825
 .L1666:
 	beq	a5,t3,.L1826
 .L1685:
-	blt	zero,t5,.+8
-	jal	x0,.L1686
+	bge	zero,t5,.L1686
 .L1828:
 	addi	t1,t5,-1
 	addi	op_0,x0,2
@@ -7357,9 +7358,9 @@ benchmark_body:
 	sub	a5,a3,a6
 	jal	x0,.L1680
 .L1824:
-	blt	a3,a5,.L1673
-	blt	a5,a3,.+8
-	jal	x0,.L1751
+	bge	a3,a5,.+8
+	jal	x0,.L1673
+	bge	a5,a3,.L1751
 	addi	op_0,x0,2
 	sll	t1,a3,op_0
 	sub	op_0,x0,s1
@@ -7374,16 +7375,17 @@ benchmark_body:
 	addi	a0,a5,2
 	sw	t2,0(t0)
 	addi	a4,a5,1
-	blt	a0,a3,.L1827
-	blt	a4,a3,.L1677
+	bge	a0,a3,.+8
+	jal	x0,.L1827
+	bge	a4,a3,.+8
+	jal	x0,.L1677
 	addi	a4,a5,0
 .L1677:
 	addi	a5,a4,0
 	jal	x0,.L1667
 .L1827:
 	addi	a3,a3,-1
-	blt	a4,a3,.+8
-	jal	x0,.L1809
+	bge	a4,a3,.L1809
 	addi	op_0,x0,2
 	sll	t1,a3,op_0
 	addi	a5,a4,0
@@ -7427,11 +7429,11 @@ benchmark_body:
 	sub	a4,a4,op_0
 	lw	a1,0(a5)
 	lw	a3,0(a4)
-	blt	a1,a3,.+8
-	jal	x0,.L1685
+	bge	a1,a3,.L1685
 	sw	a1,0(a4)
 	sw	a3,0(a5)
-	blt	zero,t5,.L1828
+	bge	zero,t5,.+8
+	jal	x0,.L1828
 .L1686:
 	lw	a5,4(sp)
 	lw	s11,4(sp)
@@ -7754,7 +7756,8 @@ benchmark_body:
 	sub	a4,a4,op_0
 .L1710:
 	addi	a5,a5,1
-	blt	a1,a5,.L1707
+	bge	a1,a5,.+8
+	jal	x0,.L1707
 	lw	a3,0(a4)
 	addi	a4,a4,4
 	beq	a3,zero,.L1710
@@ -8090,7 +8093,8 @@ benchmark_body:
 	sub	op_0,x0,s0
 	sub	a4,a4,op_0
 	lw	a0,0(a4)
-	blt	a0,a1,.L1722
+	bge	a0,a1,.+8
+	jal	x0,.L1722
 .L1721:
 	beq	a6,t3,.L1832
 .L1719:
@@ -8120,25 +8124,24 @@ benchmark_body:
 	addi	op_0,x0,1
 	sll	a4,a5,op_0
 	addi	a3,a4,1
-	blt	a3,a0,.+8
-	jal	x0,.L1723
+	bge	a3,a0,.L1723
 	addi	op_0,x0,2
 	sll	a1,a3,op_0
 	sub	op_0,x0,s0
 	sub	a1,a1,op_0
 	lw	a1,0(a1)
 	addi	a4,a4,2
-	blt	a6,a1,.L1724
-	blt	a4,a0,.+8
-	jal	x0,.L1723
+	bge	a6,a1,.+8
+	jal	x0,.L1724
+	bge	a4,a0,.L1723
 	addi	op_0,x0,2
 	sll	a3,a4,op_0
 	sub	op_0,x0,s0
 	sub	a3,a3,op_0
 	lw	a1,0(a3)
-	blt	a1,a6,.L1723
-	blt	a6,a1,.+8
+	bge	a1,a6,.+8
 	jal	x0,.L1723
+	bge	a6,a1,.L1723
 	addi	a3,a4,0
 .L1726:
 	beq	a5,a3,.L1723
@@ -8155,16 +8158,15 @@ benchmark_body:
 	addi	a5,a3,0
 	jal	x0,.L1727
 .L1724:
-	blt	a4,a0,.+8
-	jal	x0,.L1726
+	bge	a4,a0,.L1726
 	addi	op_0,x0,2
 	sll	t1,a4,op_0
 	sub	op_0,x0,s0
 	sub	t1,t1,op_0
 	lw	t1,0(t1)
-	blt	t1,a1,.L1726
-	blt	a1,t1,.+8
+	bge	t1,a1,.+8
 	jal	x0,.L1726
+	bge	a1,t1,.L1726
 	addi	a1,t1,0
 	addi	a3,a4,0
 	jal	x0,.L1726
@@ -8203,13 +8205,16 @@ benchmark_body:
 	lw	a1,24(sp)
 	addi	s7,s7,4
 	sb	zero,4(a1)
-	beq	s6,s7,.L1736
+	beq	s6,s7,.+8
+	jal	x0,.+8
+	jal	x0,.L1736
 .L1821:
 	addi	a4,a1,0
 	lw	a3,0(s7)
 	lw	a5,0(a4)
 	sub	a5,a3,a5
-	blt	a5,zero,.L1834
+	bge	a5,zero,.+8
+	jal	x0,.L1834
 .L1730:
 	beq	a5,zero,.L1732
 	lw	a4,12(a4)
@@ -8217,8 +8222,7 @@ benchmark_body:
 .L1822:
 	lw	a5,0(a4)
 	sub	a5,a3,a5
-	blt	a5,zero,.+8
-	jal	x0,.L1730
+	bge	a5,zero,.L1730
 .L1834:
 	lw	a4,8(a4)
 	beq	a4,zero,.+8
@@ -8264,8 +8268,7 @@ benchmark_body:
 .L1740:
 	addi	a4,a4,1
 	sb	a4,-652(a0)
-	blt	zero,a5,.+8
-	jal	x0,.L1741
+	bge	zero,a5,.L1741
 .L1836:
 	addi	a3,a5,-1
 	addi	a4,a3,1072
@@ -8282,7 +8285,8 @@ benchmark_body:
 	addi	op_0,x0,16
 	sra	a5,a5,op_0
 	addi	a7,zero,1
-	blt	zero,a5,.L1836
+	bge	zero,a5,.+8
+	jal	x0,.L1836
 .L1741:
 	lw	a5,0(sp)
 	addi	a5,a5,1
@@ -8408,7 +8412,8 @@ sglib__rbtree_it_init:
 	addi	a1,s0,0
 	addi	a0,s1,0
 	jalr	ra,s2,0
-	blt	a0,zero,.L1873
+	bge	a0,zero,.+8
+	jal	x0,.L1873
 	beq	a0,zero,.L1871
 	lw	s0,12(s0)
 	beq	s0,zero,.+8
@@ -8463,7 +8468,8 @@ sglib__rbtree_it_init:
 	lw	a4,0(a4)
 	lw	a5,0(s0)
 	sub	a5,a4,a5
-	blt	a5,zero,.L1874
+	bge	a5,zero,.+8
+	jal	x0,.L1874
 .L1844:
 	beq	a5,zero,.L1871
 	lw	s0,12(s0)
@@ -8471,8 +8477,7 @@ sglib__rbtree_it_init:
 .L1872:
 	lw	a5,0(s0)
 	sub	a5,a4,a5
-	blt	a5,zero,.+8
-	jal	x0,.L1844
+	bge	a5,zero,.L1844
 .L1874:
 	lw	s0,8(s0)
 	beq	s0,zero,.+8
@@ -8535,8 +8540,7 @@ sglib_rbtree_it_init:
 .L1884:
 	addi	a3,a3,1
 	sb	a3,4(a2)
-	blt	zero,a5,.+8
-	jal	x0,.L1896
+	bge	zero,a5,.L1896
 .L1885:
 	addi	a2,a5,-1
 	sub	op_0,x0,a4
@@ -8558,7 +8562,8 @@ sglib_rbtree_it_init:
 	addi	op_0,x0,16
 	sra	a5,a5,op_0
 	sh	a5,644(a4)
-	blt	zero,a5,.L1885
+	bge	zero,a5,.+8
+	jal	x0,.L1885
 .L1896:
 	addi	a0,zero,0
 	jalr	zero,ra,0
@@ -8623,8 +8628,7 @@ sglib_rbtree_it_init_inorder:
 	addi	op_0,x0,16
 	sra	a5,a5,op_0
 	sh	a5,644(a4)
-	blt	zero,a5,.+8
-	jal	x0,.L1918
+	bge	zero,a5,.L1918
 .L1909:
 	addi	a2,a5,-1
 	sub	op_0,x0,a4
@@ -8664,7 +8668,8 @@ sglib_rbtree_it_init_inorder:
 .L1908:
 	addi	a3,a3,1
 	sb	a3,4(a2)
-	blt	zero,a5,.L1909
+	bge	zero,a5,.+8
+	jal	x0,.L1909
 .L1918:
 	addi	a0,zero,0
 	jalr	zero,ra,0
@@ -8738,8 +8743,7 @@ sglib_rbtree_it_init_postorder:
 .L1929:
 	addi	a3,a3,1
 	sb	a3,4(a2)
-	blt	zero,a5,.+8
-	jal	x0,.L1941
+	bge	zero,a5,.L1941
 .L1930:
 	addi	a2,a5,-1
 	sub	op_0,x0,a4
@@ -8761,7 +8765,8 @@ sglib_rbtree_it_init_postorder:
 	addi	op_0,x0,16
 	sra	a5,a5,op_0
 	sh	a5,644(a4)
-	blt	zero,a5,.L1930
+	bge	zero,a5,.+8
+	jal	x0,.L1930
 .L1941:
 	addi	a0,zero,0
 	jalr	zero,ra,0
@@ -8920,7 +8925,8 @@ sglib___rbtree_consistency_check:
 	jalr	zero,ra,0
 .L2009:
 	lw	a4,28(sp)
-	blt	a4,zero,.L2015
+	bge	a4,zero,.+8
+	jal	x0,.L2015
 .L2002:
 	lw	s0,40(sp)
 .L1953:
@@ -9050,8 +9056,7 @@ sglib___rbtree_consistency_check:
 .L2019:
 	lw	a4,28(sp)
 	lw	s0,40(sp)
-	blt	a4,zero,.+8
-	jal	x0,.L1953
+	bge	a4,zero,.L1953
 .L1960:
 	addi	a4,zero,1
 	sw	a4,28(sp)
@@ -9084,8 +9089,7 @@ sglib___rbtree_consistency_check:
 	jal	x0,.L1968
 .L2021:
 	lw	a4,28(sp)
-	blt	a4,zero,.+8
-	jal	x0,.L1974
+	bge	a4,zero,.L1974
 	sw	a3,28(sp)
 .L1974:
 	lw	a5,12(a5)
@@ -9097,8 +9101,7 @@ sglib___rbtree_consistency_check:
 	jal	x0,.L1948
 .L2011:
 	lw	a3,28(sp)
-	blt	a3,zero,.+8
-	jal	x0,.L1966
+	bge	a3,zero,.L1966
 	addi	a3,zero,3
 	sw	a3,28(sp)
 .L1966:
@@ -9194,8 +9197,7 @@ sglib___rbtree_consistency_check:
 	jal	x0,.L1962
 .L2013:
 	lw	a4,28(sp)
-	blt	a4,zero,.+8
-	jal	x0,.L2002
+	bge	a4,zero,.L2002
 	addi	a4,zero,3
 	lw	s0,40(sp)
 	sw	a4,28(sp)

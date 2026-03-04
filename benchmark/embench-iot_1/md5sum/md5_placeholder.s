@@ -89,8 +89,7 @@ md5.constprop.0:
 	lui	a3,%hi(heap_end)
 	lw	a3,%lo(heap_end)(a3)
 	sw	a5,%lo(heap_requested)(a7)
-	bgeu	a3,a4,.+8
-	jal	x0,.L7
+	bltu	a3,a4,.L7
 	sw	a4,%lo(heap_ptr)(a6)
 	beq	t2,zero,.L7
 	sub	a4,zero,t2
@@ -148,8 +147,7 @@ md5.constprop.0:
 	sub	a4,t2,a0
 	addi	a4,a4,-1
 	addi	op_0,x0,3
-	bgeu	a4,op_0,.+8
-	jal	x0,.+12
+	bltu	a4,op_0,.+12
 	addi	a4,x0,0
 	jal	x0,.+8
 	addi	a4,x0,1
@@ -167,7 +165,7 @@ md5.constprop.0:
 	addi	a5,zero,-128
 	sb	a5,1000(t2)
 	addi	op_0,x0,3
-	and	a5,op_0,t2
+	and	a5,t2,op_0
 	beq	a5,zero,.+8
 	jal	x0,.L16
 .L55:
@@ -716,21 +714,21 @@ md5.constprop.0:
 	and	op_3,a2,a0
 	sub	a4,op_0,op_3
 	and	a4,a4,a6
-	bgeu	s1,a1,.L53
+	bltu	s1,a1,.+8
+	jal	x0,.L53
 	and	op_2,a6,a0
 	sub	op_1,op_2,a0
 	sub	op_0,a6,op_1
 	and	op_3,a6,a0
 	sub	a4,op_0,op_3
-	bgeu	s2,a1,.+8
-	jal	x0,.L23
+	bltu	s2,a1,.L23
 	and	op_2,a2,a4
 	sub	op_1,op_2,a4
 	sub	op_0,a2,op_1
 	and	op_3,a2,a4
 	sub	a4,op_0,op_3
 	addi	op_0,x0,15
-	and	a3,op_0,t4
+	and	a3,t4,op_0
 	jal	x0,.L22
 .L23:
 	addi	op_1,x0,-1
@@ -750,7 +748,7 @@ md5.constprop.0:
 	and	op_3,a0,a4
 	sub	a4,op_0,op_3
 	addi	op_0,x0,15
-	and	a3,op_0,t5
+	and	a3,t5,op_0
 	jal	x0,.L22
 .L52:
 	lw	s6,0(sp)
@@ -918,8 +916,7 @@ benchmark_body.constprop.0:
 	.align	2
 	.type	benchmark_body.constprop.1.isra.0, @function
 benchmark_body.constprop.1.isra.0:
-	blt	zero,a0,.+8
-	jal	x0,.L69
+	bge	zero,a0,.L69
 	addi	sp,sp,-48
 	sw	s2,32(sp)
 	sw	s4,24(sp)
@@ -1087,8 +1084,7 @@ md5:
 	sw	a5,%lo(heap_requested)(t4)
 	lui	a5,%hi(heap_end)
 	lw	a5,%lo(heap_end)(a5)
-	bgeu	a5,a4,.+8
-	jal	x0,.L83
+	bltu	a5,a4,.L83
 	sw	a4,%lo(heap_ptr)(t3)
 	beq	t2,zero,.L83
 	sub	a4,zero,t2
@@ -1128,27 +1124,32 @@ md5:
 	sub	a4,a5,op_0
 	sb	zero,0(a4)
 	addi	a4,a5,1
-	bgeu	a4,a2,.L89
+	bltu	a4,a2,.+8
+	jal	x0,.L89
 	sub	op_0,x0,t2
 	sub	a4,a4,op_0
 	sb	zero,0(a4)
 	addi	a4,a5,2
-	bgeu	a4,a2,.L89
+	bltu	a4,a2,.+8
+	jal	x0,.L89
 	sub	op_0,x0,t2
 	sub	a4,a4,op_0
 	sb	zero,0(a4)
 	addi	a4,a5,3
-	bgeu	a4,a2,.L89
+	bltu	a4,a2,.+8
+	jal	x0,.L89
 	sub	op_0,x0,t2
 	sub	a4,a4,op_0
 	sb	zero,0(a4)
 	addi	a4,a5,4
-	bgeu	a4,a2,.L89
+	bltu	a4,a2,.+8
+	jal	x0,.L89
 	sub	op_0,x0,t2
 	sub	a4,a4,op_0
 	sb	zero,0(a4)
 	addi	a5,a5,5
-	bgeu	a5,a2,.L89
+	bltu	a5,a2,.+8
+	jal	x0,.L89
 	sub	op_0,x0,t2
 	sub	a5,a5,op_0
 	sb	zero,0(a5)
@@ -1157,7 +1158,8 @@ md5:
 .L80:
 	addi	a5,a1,-1
 	addi	a4,zero,6
-	bgeu	a4,a5,.L90
+	bltu	a4,a5,.+8
+	jal	x0,.L90
 	and	op_1,a0,t2
 	sub	op_0,op_1,t2
 	sub	a3,a0,op_0
@@ -1170,15 +1172,14 @@ md5:
 	sub	a3,t2,a0
 	addi	a3,a3,-1
 	addi	op_0,x0,3
-	bgeu	a3,op_0,.+8
-	jal	x0,.+12
+	bltu	a3,op_0,.+12
 	addi	a3,x0,0
 	jal	x0,.+8
 	addi	a3,x0,1
 	beq	a3,zero,.+8
 	jal	x0,.L90
 	addi	op_0,x0,-4
-	and	a7,op_0,a1
+	and	a7,a1,op_0
 	sub	op_0,x0,a0
 	sub	a2,a7,op_0
 .L91:
@@ -1196,21 +1197,23 @@ md5:
 	sub	a4,a7,op_0
 	addi	a5,a7,1
 	sb	a3,0(a4)
-	bgeu	a5,a1,.L93
+	bltu	a5,a1,.+8
+	jal	x0,.L93
 	sub	op_0,x0,a0
 	sub	a4,a5,op_0
-	lw	op_0,0(a4)
-	addi	op_1,x0,255
+	addi	op_0,x0,255
+	lw	op_1,0(a4)
 	and	a4,op_0,op_1
 	sub	op_0,x0,t2
 	sub	a5,a5,op_0
 	addi	a7,a7,2
 	sb	a4,0(a5)
-	bgeu	a7,a1,.L93
+	bltu	a7,a1,.+8
+	jal	x0,.L93
 	sub	op_0,x0,a0
 	sub	a5,a7,op_0
-	addi	op_0,x0,255
-	lw	op_1,0(a5)
+	lw	op_0,0(a5)
+	addi	op_1,x0,255
 	and	a5,op_0,op_1
 	sub	op_0,x0,t2
 	sub	a7,a7,op_0
@@ -1230,8 +1233,7 @@ md5:
 	jal	x0,.L132
 	sw	a1,0(a4)
 .L97:
-	blt	zero,s10,.+8
-	jal	x0,.L75
+	bge	zero,s10,.L75
 .L81:
 	lui	t5,1005505
 	lui	t4,292988
@@ -1777,14 +1779,14 @@ md5:
 	and	op_3,a0,a2
 	sub	a4,op_0,op_3
 	and	a4,a4,a6
-	bgeu	s1,a1,.L134
+	bltu	s1,a1,.+8
+	jal	x0,.L134
 	and	op_2,a6,a2
 	sub	op_1,op_2,a2
 	sub	op_0,a6,op_1
 	and	op_3,a6,a2
 	sub	a4,op_0,op_3
-	bgeu	s2,a1,.+8
-	jal	x0,.L104
+	bltu	s2,a1,.L104
 	and	op_2,a0,a4
 	sub	op_1,op_2,a4
 	sub	op_0,a0,op_1
@@ -1825,7 +1827,8 @@ md5:
 	sub	op_0,x0,s5
 	sub	s5,a0,op_0
 	addi	t6,t6,64
-	blt	t0,a5,.L100
+	bge	t0,a5,.+8
+	jal	x0,.L100
 	lui	a5,%hi(h0)
 	sw	s6,%lo(h0)(a5)
 	lui	a5,%hi(h1)
@@ -1940,8 +1943,7 @@ main:
 	addi	a5,a5,-948
 	sub	op_0,x0,a0
 	sub	a0,a5,op_0
-	bgeu	zero,a0,.+8
-	jal	x0,.+12
+	bltu	zero,a0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
@@ -1958,8 +1960,7 @@ verify_benchmark:
 	sub	op_0,x0,a0
 	sub	a0,a5,op_0
 	addi	op_0,x0,1
-	bgeu	a0,op_0,.+8
-	jal	x0,.+12
+	bltu	a0,op_0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1

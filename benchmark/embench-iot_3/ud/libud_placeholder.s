@@ -85,13 +85,15 @@ ludcmp.constprop.0.isra.0:
 	lw	s5,84(a4)
 	callmul	s4,s4,s5
 	sub	a2,a2,s4
-	beq	a0,t1,.L38
+	bne	a0,t1,.+8
+	jal	x0,.L38
 .L5:
 	lw	s4,168(a5)
 	lw	s5,164(a4)
 	callmul	s4,s4,s5
 	sub	a2,a2,s4
-	beq	a0,t4,.L39
+	bne	a0,t4,.+8
+	jal	x0,.L39
 	lw	s6,172(a5)
 	lw	s7,244(a4)
 	lw	s5,84(a3)
@@ -100,7 +102,8 @@ ludcmp.constprop.0.isra.0:
 	sub	a2,a2,s6
 	calldiv	a2,a2,s5
 	sw	a2,164(a3)
-	beq	s4,t5,.L40
+	bne	s4,t5,.+8
+	jal	x0,.L40
 .L6:
 	lw	s7,240(a5)
 	lw	s6,244(a5)
@@ -110,12 +113,14 @@ ludcmp.constprop.0.isra.0:
 	callmul	s6,s6,s8
 	sub	a2,a2,s7
 	sub	a2,a2,s6
-	beq	a0,t1,.L34
+	bne	a0,t1,.+8
+	jal	x0,.L34
 	lw	s6,248(a5)
 	lw	s7,164(a4)
 	callmul	s6,s6,s7
 	sub	a2,a2,s6
-	beq	a0,t4,.L9
+	bne	a0,t4,.+8
+	jal	x0,.L9
 	lw	s6,252(a5)
 	lw	s7,244(a4)
 	callmul	s6,s6,s7
@@ -131,7 +136,8 @@ ludcmp.constprop.0.isra.0:
 	callmul	s6,s6,s8
 	sub	a2,a2,s7
 	sub	a2,a2,s6
-	beq	a0,t1,.L41
+	bne	a0,t1,.+8
+	jal	x0,.L41
 	lw	s8,328(a5)
 	lw	s6,164(a4)
 	lw	s7,332(a5)
@@ -196,14 +202,16 @@ ludcmp.constprop.0.isra.0:
 	lw	s5,248(a4)
 	callmul	a6,a6,s5
 	sub	a2,a2,a6
-	beq	a0,t4,.L12
+	bne	a0,t4,.+8
+	jal	x0,.L12
 	lw	a6,176(a5)
 	lw	s5,328(a4)
 	callmul	a6,a6,s5
 	sub	a2,a2,a6
 .L12:
 	sw	a2,168(a3)
-	beq	s4,t5,.L17
+	bne	s4,t5,.+8
+	jal	x0,.L17
 .L23:
 	lw	a2,160(a5)
 	lw	s4,12(a4)
@@ -214,17 +222,20 @@ ludcmp.constprop.0.isra.0:
 	callmul	a6,a6,s5
 	sub	a2,a2,s4
 	sub	a2,a2,a6
-	beq	a0,t3,.L13
+	bne	a0,t3,.+8
+	jal	x0,.L13
 	lw	a6,168(a5)
 	lw	s4,172(a4)
 	callmul	a6,a6,s4
 	sub	a2,a2,a6
-	beq	a0,t1,.L13
+	bne	a0,t1,.+8
+	jal	x0,.L13
 	lw	a6,172(a5)
 	lw	s4,252(a4)
 	callmul	a6,a6,s4
 	sub	a2,a2,a6
-	beq	a0,t4,.L14
+	bne	a0,t4,.+8
+	jal	x0,.L14
 	lw	a6,332(a4)
 	lw	s4,176(a5)
 	callmul	a6,a6,s4
@@ -240,12 +251,14 @@ ludcmp.constprop.0.isra.0:
 	callmul	a6,a6,s5
 	sub	a2,a2,s4
 	sub	a2,a2,a6
-	beq	a0,t3,.L16
+	bne	a0,t3,.+8
+	jal	x0,.L16
 	lw	a6,168(a5)
 	lw	s4,176(a4)
 	callmul	a6,a6,s4
 	sub	a2,a2,a6
-	beq	a0,t1,.L15
+	bne	a0,t1,.+8
+	jal	x0,.L15
 	lw	s5,256(a4)
 	lw	s4,172(a5)
 	lw	a6,176(a5)
@@ -265,14 +278,12 @@ ludcmp.constprop.0.isra.0:
 	callmul	a6,a6,s5
 	sub	a2,a2,s4
 	sub	a2,a2,a6
-	beq	a0,t3,.L42
+	bne	a0,t3,.+8
+	jal	x0,.L42
 	lw	s4,180(a4)
 	lw	a6,168(a5)
 	lw	a0,172(a5)
-	addi	op_1,x0,1
-	or	op_0,x0,op_1
-	sub	op_2,x0,a7
-	sub	a7,op_0,op_2
+	addi	a7,a7,1
 	callmul	a6,a6,s4
 	lw	s4,260(a4)
 	sub	a2,a2,a6
@@ -305,7 +316,8 @@ ludcmp.constprop.0.isra.0:
 	sub	a2,a2,a6
 	sub	a2,a2,a0
 	sw	a2,184(a3)
-	beq	a7,s3,.L17
+	bne	a7,s3,.+8
+	jal	x0,.L17
 	lw	a6,8(a4)
 	lw	s4,240(a5)
 	lw	a2,248(a3)
@@ -338,8 +350,7 @@ ludcmp.constprop.0.isra.0:
 	sub	a2,s5,a2
 	calldiv	a2,a2,s4
 	sw	a2,404(a3)
-	beq	a7,t3,.+8
-	jal	x0,.L3
+	bne	a7,t3,.L3
 	addi	s4,zero,3
 .L4:
 	lw	a2,8(a4)
@@ -351,17 +362,16 @@ ludcmp.constprop.0.isra.0:
 	callmul	a6,a6,s6
 	sub	a2,a2,s5
 	sub	a2,a2,a6
-	beq	a0,t3,.L12
+	bne	a0,t3,.+8
+	jal	x0,.L12
 .L10:
 	lw	a6,168(a5)
 	lw	s5,168(a4)
 	callmul	a6,a6,s5
 	sub	a2,a2,a6
-	beq	a0,t1,.+8
-	jal	x0,.L11
+	bne	a0,t1,.L11
 	sw	a2,168(a3)
-	beq	s4,t5,.+8
-	jal	x0,.L23
+	bne	s4,t5,.L23
 .L17:
 	lw	a4,1600(a1)
 	lw	a3,80(a1)
@@ -502,8 +512,7 @@ ludcmp.constprop.0.isra.0:
 	lw	s4,164(a5)
 	callmul	s4,s4,s5
 	sub	a2,a2,s4
-	beq	a0,t1,.+8
-	jal	x0,.L5
+	bne	a0,t1,.L5
 .L38:
 	lw	s5,84(a3)
 	addi	s4,zero,4
@@ -688,8 +697,7 @@ benchmark_body.constprop.0:
 	auipc	ra,%pcrel_hi(ludcmp.constprop.0.isra.0)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_1)
 	sw	zero,%lo(chkerr)(s7)
-	beq	s6,zero,.+8
-	jal	x0,.L44
+	bne	s6,zero,.L44
 	lw	ra,44(sp)
 	lw	s0,40(sp)
 	lw	a0,%lo(chkerr)(s7)
@@ -796,8 +804,7 @@ benchmark_body.isra.0:
 	auipc	ra,%pcrel_hi(ludcmp.constprop.0.isra.0)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_2)
 	sw	zero,%lo(chkerr)(s8)
-	beq	s6,s7,.+8
-	jal	x0,.L49
+	bne	s6,s7,.L49
 	lw	s0,40(sp)
 	lw	s1,36(sp)
 	lw	s2,32(sp)
@@ -853,8 +860,7 @@ verify_benchmark:
 	sw	a2,12(a4)
 	addi	a5,a5,16
 	addi	a4,a4,16
-	beq	a5,a3,.+8
-	jal	x0,.L58
+	bne	a5,a3,.L58
 	lui	a1,%hi(.LANCHOR0)
 	addi	a1,a1,%lo(.LANCHOR0)
 	addi	a5,a1,1680
@@ -877,10 +883,8 @@ verify_benchmark:
 	sub	a2,op_0,op_1
 	addi	a5,a5,1
 	addi	a4,a4,1
-	beq	a3,a2,.+8
-	jal	x0,.L65
-	beq	a1,a5,.+8
-	jal	x0,.L61
+	bne	a3,a2,.L65
+	bne	a1,a5,.L61
 	addi	op_0,x0,1
 	bltu	a0,op_0,.+12
 	addi	a0,x0,0
@@ -1003,22 +1007,17 @@ ludcmp:
 	addi	t6,zero,0
 	addi	s3,s1,-4
 .L83:
-	addi	op_1,x0,1
-	or	op_0,x0,op_1
-	sub	op_2,x0,t6
-	sub	t6,op_0,op_2
+	addi	t6,t6,1
 	blt	a1,t6,.L75
 	addi	a6,t2,0
 .L80:
 	lw	a2,0(a6)
-	beq	t5,zero,.+8
-	jal	x0,.L105
+	bne	t5,zero,.L105
 	lw	a5,0(a7)
 	addi	a6,a6,80
 	calldiv	a5,a2,a5
 	sw	a5,-80(a6)
-	beq	a6,t1,.+8
-	jal	x0,.L80
+	bne	a6,t1,.L80
 .L78:
 	addi	a7,a7,84
 	addi	s6,s6,-80
@@ -1036,20 +1035,17 @@ ludcmp:
 	addi	a3,a3,4
 	callmul	a4,a4,a0
 	sub	a2,a2,a4
-	beq	a5,a6,.+8
-	jal	x0,.L81
+	bne	a5,a6,.L81
 	sw	a2,4(s5)
 	addi	s5,s5,4
 	addi	a6,a5,4
-	beq	s5,t4,.+8
-	jal	x0,.L82
+	bne	s5,t4,.L82
 	addi	t5,t5,1
 	addi	t4,t4,80
 	addi	t3,t3,80
 	addi	t2,t2,84
 	addi	t1,t1,4
-	beq	a1,t6,.+8
-	jal	x0,.L83
+	bne	a1,t6,.L83
 .L75:
 	addi	a6,sp,4
 	sw	s4,0(sp)
@@ -1068,14 +1064,12 @@ ludcmp:
 	addi	a3,a3,4
 	callmul	a4,a4,a0
 	sub	a2,a2,a4
-	beq	a5,a6,.+8
-	jal	x0,.L85
+	bne	a5,a6,.L85
 	sw	a2,0(a5)
 	addi	a6,a5,4
 	addi	t1,t1,4
 	addi	s0,s0,80
-	beq	a6,t3,.+8
-	jal	x0,.L86
+	bne	a6,t3,.L86
 	addi	a5,zero,84
 	callmul	a5,a1,a5
 	sub	op_0,x0,a7
@@ -1113,16 +1107,13 @@ ludcmp:
 	addi	a3,a3,4
 	callmul	a4,a4,a0
 	sub	a2,a2,a4
-	beq	a6,a5,.+8
-	jal	x0,.L88
+	bne	a6,a5,.L88
 	lw	a5,-4(t1)
-	addi	op_1,x0,-1
-	or	op_0,x0,op_1
-	sub	op_2,x0,t0
-	sub	t0,op_0,op_2
+	addi	t0,t0,-1
 	calldiv	a2,a2,a5
 	sw	a2,-4(t3)
-	beq	t0,zero,.L104
+	bne	t0,zero,.+8
+	jal	x0,.L104
 	addi	a7,a7,-4
 	addi	t3,t3,-4
 	addi	t1,t1,-84
@@ -1155,13 +1146,13 @@ ludcmp:
 	addi	a3,a3,4
 	callmul	a4,a4,a0
 	sub	a2,a2,a4
-	beq	a5,a7,.+8
-	jal	x0,.L77
+	bne	a5,a7,.L77
 	lw	a5,0(a7)
 	addi	a6,a6,80
 	calldiv	a5,a2,a5
 	sw	a5,-80(a6)
-	beq	a6,t1,.L78
+	bne	a6,t1,.+8
+	jal	x0,.L78
 	lw	a2,0(a6)
 	jal	x0,.L79
 .L104:
@@ -1263,7 +1254,8 @@ __mul:
 	or	op_2,op_3,a1
 	sub	op_1,op_2,a1
 	sub	a3,op_0,op_1
-	beq	a3,x0,.Mul_skip
+	bne	a3,x0,.+8
+	jal	x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
 .Mul_skip:
@@ -1271,8 +1263,7 @@ __mul:
 	srl	a1,a1,op_0
 	addi	op_0,x0,1
 	sll	a2,a2,op_0
-	beq	a1,x0,.+8
-	jal	x0,.Mul_loop
+	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
 
 .text
@@ -1291,7 +1282,8 @@ __riscv_div_lib_udivsi3:
 	addi	a2,a1,0
 	addi	a1,a0,0
 	addi	a0,zero,-1
-	beq	a2,zero,__riscv_div_lib_L5
+	bne	a2,zero,.+8
+	jal	x0,__riscv_div_lib_L5
 	addi	a3,zero,1
 	bltu	a2,a1,.+8
 	jal	x0,__riscv_div_lib_L2
@@ -1314,8 +1306,7 @@ __riscv_div_lib_L4:
 	srl	a3,a3,op_0
 	addi	op_0,x0,1
 	srl	a2,a2,op_0
-	beq	a3,zero,.+8
-	jal	x0,__riscv_div_lib_L3
+	bne	a3,zero,__riscv_div_lib_L3
 __riscv_div_lib_L5:
 	jalr	zero,ra,0
 

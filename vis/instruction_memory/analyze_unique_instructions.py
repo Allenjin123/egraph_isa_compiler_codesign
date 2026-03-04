@@ -137,6 +137,26 @@ def bits_needed(n_unique: int) -> int:
     return math.ceil(math.log2(n_unique))
 
 
+def compute_uniform_code_size(instrs: List[str], counts: Counter) -> Dict:
+    """Compute uniform (dictionary) encoding size for a set of instructions.
+
+    Returns a dict with:
+        n_unique:      number of unique instruction words
+        bits_per_instr: ceil(log2(n_unique))
+        total_instr:   total instruction count
+        code_bytes:    total_instr * bits_per_instr / 8
+    """
+    n_unique = len(counts)
+    bpi = bits_needed(n_unique)
+    total = len(instrs)
+    return {
+        'n_unique': n_unique,
+        'bits_per_instr': bpi,
+        'total_instr': total,
+        'code_bytes': total * bpi / 8,
+    }
+
+
 # ── finding result JSONs & variant mapping ──────────────────────────────────
 
 def find_all_result_jsons(backend_dir: Path) -> List[Path]:

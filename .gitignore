@@ -1,7 +1,6 @@
 tmp/
 benchmark/*/*/*_rewrite_variant_*.s
-benchmark/**/*_placeholder.s
-
+benchmark/*/*/*_placeholder.s
 PdatScorrWrapper/
 # python
 egraph_isa_compiler_codesign.egg-info/
