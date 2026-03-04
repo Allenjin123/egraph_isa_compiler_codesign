@@ -12,7 +12,15 @@ from pathlib import Path
 # Import instruction set from local util
 from util import ALL_INSTRUCTIONS
 
+SCALES_3="0 0.0005 0.001 0.002 0.005 0.01 0.1 0.5 1"
+SCALES_4="0 0.0005 0.001 0.003 0.01 0.3 1"
+SCALES_5="0 0.0005 0.003 0.01 0.3 1"
 
+SCALES_MAP = {
+    3: SCALES_3,
+    4: SCALES_4,
+    5: SCALES_5
+}
 
 def find_best_chip_configs(input_file: Path, output_file: Path):
     """
@@ -59,7 +67,10 @@ def find_best_chip_configs(input_file: Path, output_file: Path):
             chip_ban_inst[chip_name] = ban_inst
         
         # Store results for this num_chips setting
-        results[key] = chip_ban_inst
+        results[key] = {
+            'scales': SCALES_MAP[num_chips],
+            'chip_ban_inst': chip_ban_inst
+        }
         
         # Print summary
         print(f"\n{key}:")
