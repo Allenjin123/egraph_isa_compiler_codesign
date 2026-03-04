@@ -1,0 +1,3 @@
+python train_test/gen_embench_ilp_input.py
+python train_test/run_embench_pareto.py
+python train_test/eval_mibench.py --run-train-chips --all-combos

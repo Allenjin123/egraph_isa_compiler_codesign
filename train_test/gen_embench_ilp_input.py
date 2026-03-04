@@ -1,66 +1,74 @@
 #!/usr/bin/env python3
 """
-从 nre/ilp_input.json 中过滤出14个embench程序，
-生成 train_test/ilp_input_embench.json
+从 nre/ilp_input.json 中过滤出 TRAIN_SET 的程序，
+生成对应的 ilp_input_train.json
+
+用法:
+  python train_test/gen_embench_ilp_input.py
+  python train_test/gen_embench_ilp_input.py --input nre/ilp_input.json --output train_test/ilp_input_train.json
 """
 
+import argparse
 import json
 import sys
 from pathlib import Path
 
-# 14个embench程序（normalize_program_name之后的名字）
-EMBENCH = {
-    'mont64', 'edn', 'huffbench', 'matmult-int', 'md5',
-    'nsichneu', 'picojpeg_test', 'primecount', 'combined',
-    'slre', 'statemate', 'tarfind', 'ud', 'wikisort',
-}
+HERE = Path(__file__).parent
+REPO_ROOT = HERE.parent
+sys.path.insert(0, str(HERE))
 
-REPO_ROOT = Path(__file__).parent.parent
-INPUT_FILE = REPO_ROOT / 'nre' / 'ilp_input.json'
-OUTPUT_FILE = Path(__file__).parent / 'ilp_input_embench.json'
+from util import TRAIN_SET
 
 
 def main():
-    if not INPUT_FILE.exists():
-        print(f"错误: 找不到 {INPUT_FILE}", file=sys.stderr)
+    parser = argparse.ArgumentParser(
+        description='从全局 ilp_input.json 过滤出 TRAIN_SET 程序，生成 ilp_input_train.json')
+    parser.add_argument('--input', default=str(REPO_ROOT / 'nre' / 'ilp_input.json'))
+    parser.add_argument('--output', default=None,
+                        help='默认 train_test/ilp_input_train.json')
+    args = parser.parse_args()
+
+    program_set = set(TRAIN_SET)
+    input_file = Path(args.input)
+    output_file = Path(args.output) if args.output else HERE / 'ilp_input_train.json'
+
+    if not input_file.exists():
+        print(f"错误: 找不到 {input_file}", file=sys.stderr)
         sys.exit(1)
 
-    d = json.loads(INPUT_FILE.read_text())
+    d = json.loads(input_file.read_text())
 
-    # 过滤程序
-    embench_programs = [p for p in d['programs'] if p['name'] in EMBENCH]
+    programs = [p for p in d['programs'] if p['name'] in program_set]
 
-    missing = EMBENCH - {p['name'] for p in embench_programs}
+    missing = program_set - {p['name'] for p in programs}
     if missing:
-        print(f"警告: 以下embench程序在输入中未找到: {sorted(missing)}", file=sys.stderr)
+        print(f"警告: 以下程序在输入中未找到: {sorted(missing)}", file=sys.stderr)
 
-    # 只保留embench程序实际用到的chip
-    used_chip_ids = {impl['chip_id'] for p in embench_programs for impl in p['implementations']}
-    embench_chip_metadata = {k: v for k, v in d['chip_metadata'].items() if k in used_chip_ids}
+    # 保留所有芯片的 metadata（ILP solver 需要用超集芯片做指令集兼容性检测）
+    chip_metadata = {k: dict(v) for k, v in d['chip_metadata'].items()}
 
-    # 重新计算chip_metadata中的programs和num_programs
-    embench_name_set = {p['name'] for p in embench_programs}
-    for meta in embench_chip_metadata.values():
-        meta['programs'] = [p for p in meta['programs'] if p in embench_name_set]
+    name_set = {p['name'] for p in programs}
+    for meta in chip_metadata.values():
+        meta['programs'] = [p for p in meta['programs'] if p in name_set]
         meta['num_programs'] = len(meta['programs'])
 
     output = {
-        'programs': embench_programs,
-        'chip_metadata': embench_chip_metadata,
+        'programs': programs,
+        'chip_metadata': chip_metadata,
         'statistics': {
-            'num_programs': len(embench_programs),
-            'num_chips': len(embench_chip_metadata),
-            'total_variants': sum(len(p['implementations']) for p in embench_programs),
-            'program_stats': {p['name']: len(p['implementations']) for p in embench_programs},
+            'num_programs': len(programs),
+            'num_chips': len(chip_metadata),
+            'total_variants': sum(len(p['implementations']) for p in programs),
+            'program_stats': {p['name']: len(p['implementations']) for p in programs},
         },
     }
 
-    OUTPUT_FILE.write_text(json.dumps(output, indent=2))
+    output_file.write_text(json.dumps(output, indent=2))
 
-    print(f"Programs ({output['statistics']['num_programs']}): {sorted(p['name'] for p in embench_programs)}")
+    print(f"TRAIN_SET programs ({output['statistics']['num_programs']}): {sorted(p['name'] for p in programs)}")
     print(f"Chips:    {output['statistics']['num_chips']}")
     print(f"Variants: {output['statistics']['total_variants']}")
-    print(f"Output:   {OUTPUT_FILE}")
+    print(f"Output:   {output_file}")
 
 
 if __name__ == '__main__':
