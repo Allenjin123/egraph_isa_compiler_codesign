@@ -6004,7 +6004,9 @@ verify_benchmark:
 	lw	a4,%lo(P1_is_marked)(a5)
 	addi	a5,zero,3
 	addi	a0,zero,0
-	bne	a4,a5,.L266
+	bne	a4,a5,.+8
+	jal	x0,.+8
+	jal	x0,.L266
 	lui	a5,%hi(P2_is_marked)
 	lw	a4,%lo(P2_is_marked)(a5)
 	addi	a5,zero,5

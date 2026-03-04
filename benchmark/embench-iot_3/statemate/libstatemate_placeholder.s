@@ -63,11 +63,11 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	lui	a3,%hi(FH_TUERMODUL_CTRL__N)
 	lw	a1,%lo(FH_TUERMODUL_CTRL__N)(a3)
 	addi	a3,zero,60
-	blt	a3,a1,.+8
-	jal	x0,.L15
+	bge	a3,a1,.L15
 	lui	a1,%hi(FH_TUERMODUL_CTRL__N_old)
 	lw	a1,%lo(FH_TUERMODUL_CTRL__N_old)(a1)
-	blt	a3,a1,.L15
+	bge	a3,a1,.+8
+	jal	x0,.L15
 	lui	a3,%hi(FH_TUERMODUL_CTRL__INREVERS1)
 	lui	a1,%hi(FH_TUERMODUL_CTRL__INREVERS2)
 	lbu	a3,%lo(FH_TUERMODUL_CTRL__INREVERS1)(a3)
@@ -100,8 +100,7 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	lui	a0,%hi(FH_TUERMODUL__POSITION)
 	lw	a6,%lo(FH_TUERMODUL__POSITION)(a0)
 	addi	a0,zero,404
-	blt	a0,a6,.+8
-	jal	x0,.L21
+	bge	a0,a6,.L21
 	lui	a2,%hi(stable)
 	lui	a4,%hi(FH_TUERMODUL__MFHA_copy)
 	sb	a1,%lo(INITIALISIERT_FH_TUERMODUL_CTRL_next_state)(a3)
@@ -271,8 +270,7 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	bne	a2,zero,.L47
 	lui	a1,%hi(FH_TUERMODUL_CTRL__N)
 	lw	a2,%lo(FH_TUERMODUL_CTRL__N)(a1)
-	blt	zero,a2,.+8
-	jal	x0,.L47
+	bge	zero,a2,.L47
 	addi	a2,a2,-1
 	lui	a0,%hi(stable)
 	sw	a2,%lo(FH_TUERMODUL_CTRL__N)(a1)
@@ -341,8 +339,7 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	bne	a4,zero,.L43
 	lui	a4,%hi(FH_TUERMODUL__POSITION)
 	lw	a4,%lo(FH_TUERMODUL__POSITION)(a4)
-	blt	zero,a4,.+8
-	jal	x0,.L43
+	bge	zero,a4,.L43
 	addi	a4,zero,1
 	lui	a7,%hi(stable)
 	lui	a6,%hi(SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)
@@ -358,8 +355,7 @@ generic_FH_TUERMODUL_CTRL.part.0:
 .L18:
 	lui	a2,%hi(FH_TUERMODUL__POSITION)
 	lw	a2,%lo(FH_TUERMODUL__POSITION)(a2)
-	blt	zero,a2,.+8
-	jal	x0,.L33
+	bge	zero,a2,.L33
 	lui	a0,%hi(SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)
 	lbu	a2,%lo(SCHLIESSEN_FH_TUERMODUL_CTRL_next_state)(a0)
 	addi	a1,zero,1
@@ -387,7 +383,8 @@ generic_FH_TUERMODUL_CTRL.part.0:
 	lui	a4,%hi(FH_TUERMODUL__POSITION)
 	lw	a2,%lo(FH_TUERMODUL__POSITION)(a4)
 	addi	a4,zero,404
-	blt	a4,a2,.L8
+	bge	a4,a2,.+8
+	jal	x0,.L8
 	lui	a4,%hi(stable)
 	sb	zero,%lo(stable)(a4)
 	lui	a0,%hi(FH_TUERMODUL__MFHA_copy)
@@ -1191,8 +1188,7 @@ generic_BLOCK_ERKENNUNG_CTRL:
 	lw	a1,%lo(FH_TUERMODUL__I_EIN_old)(a1)
 	bne	a1,a2,.+8
 	jal	x0,.L270
-	blt	zero,a2,.+8
-	jal	x0,.L270
+	bge	zero,a2,.L270
 	addi	a2,zero,2
 	lui	t3,%hi(stable)
 	lui	t1,%hi(FH_TUERMODUL__BLOCK_copy)
@@ -1236,7 +1232,8 @@ generic_BLOCK_ERKENNUNG_CTRL:
 	lui	a4,%hi(FH_TUERMODUL__I_EIN)
 	lw	a4,%lo(FH_TUERMODUL__I_EIN)(a4)
 	addi	a5,a5,-1
-	blt	a4,a5,.L270
+	bge	a4,a5,.+8
+	jal	x0,.L270
 	lui	a5,%hi(stable)
 	sb	zero,%lo(stable)(a5)
 	lui	a4,%hi(FH_TUERMODUL__BLOCK_copy)
@@ -2046,8 +2043,7 @@ benchmark_body.constprop.0.isra.0:
 	.align	2
 	.type	benchmark_body.isra.0, @function
 benchmark_body.isra.0:
-	blt	zero,a0,.+8
-	jal	x0,.L430
+	bge	zero,a0,.L430
 	addi	sp,sp,-80
 	lui	a5,%hi(.LANCHOR0)
 	sw	s0,72(sp)

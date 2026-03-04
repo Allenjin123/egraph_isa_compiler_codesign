@@ -57,15 +57,14 @@ benchmark_body.isra.0:
 	sub	a1,zero,a2
 	addi	op_0,x0,3
 	and	a4,op_0,a1
-	bne	a4,zero,.+8
-	jal	x0,.L18
+	beq	a4,zero,.L18
 	sb	zero,0(a2)
 	addi	op_0,x0,2
-	and	a1,a1,op_0
-	bne	a1,zero,.+8
-	jal	x0,.L19
+	and	a1,op_0,a1
+	beq	a1,zero,.L19
 	sb	zero,1(a2)
-	bne	a4,s4,.L20
+	beq	a4,s4,.+8
+	jal	x0,.L20
 	sb	zero,2(a2)
 	addi	t5,s4,0
 	addi	t0,zero,254
@@ -82,20 +81,18 @@ benchmark_body.isra.0:
 .L5:
 	sw	zero,0(a4)
 	addi	a4,a4,4
-	bne	a1,a4,.L5
-	bne	t6,a0,.+8
-	jal	x0,.L6
+	beq	a1,a4,.+8
+	jal	x0,.L5
+	beq	t6,a0,.L6
 	sub	op_0,x0,t6
 	sub	t5,t5,op_0
 	sub	op_0,x0,a2
 	sub	t5,t5,op_0
 	sb	zero,0(t5)
 	sub	t0,t0,t6
-	bne	t0,s5,.+8
-	jal	x0,.L6
+	beq	t0,s5,.L6
 	sb	zero,1(t5)
-	bne	t0,s6,.+8
-	jal	x0,.L6
+	beq	t0,s6,.L6
 	sb	zero,2(t5)
 .L6:
 	sb	s1,156(a2)
@@ -192,12 +189,14 @@ benchmark_body.isra.0:
 	sub	a4,a4,a1
 	addi	a4,a4,65
 	sb	a4,-1(a0)
-	bne	a3,a0,.L7
+	beq	a3,a0,.+8
+	jal	x0,.L7
 	sb	s1,124(a2)
 	addi	a2,a2,257
 	addi	a3,a3,258
 	addi	s0,s0,257
-	bne	a2,t2,.L8
+	beq	a2,t2,.+8
+	jal	x0,.L8
 	lw	a1,12(sp)
 	addi	a0,s11,0
 	addi	t0,s10,%lo(heap+4369)
@@ -209,30 +208,35 @@ benchmark_body.isra.0:
 	and	a3,op_0,op_1
 	addi	a2,t6,0
 	addi	a4,t0,0
-	bne	a3,zero,.L9
+	beq	a3,zero,.+8
+	jal	x0,.L9
 	jal	x0,.L10
 .L43:
-	bne	a3,t5,.L13
+	beq	a3,t5,.+8
+	jal	x0,.L13
 	lw	op_0,0(a2)
 	addi	op_1,x0,255
 	and	a3,op_0,op_1
-	bne	a3,zero,.+8
-	jal	x0,.L10
+	beq	a3,zero,.L10
 .L9:
 	addi	op_0,x0,255
 	lw	op_1,0(a4)
 	and	t5,op_0,op_1
 	addi	a2,a2,1
 	addi	a4,a4,1
-	bne	t5,zero,.L43
+	beq	t5,zero,.+8
+	jal	x0,.L43
 .L13:
 	addi	t6,t6,257
-	bne	t6,t2,.L15
+	beq	t6,t2,.+8
+	jal	x0,.L15
 .L14:
 	addi	t0,t0,257
-	bne	t0,s7,.L16
+	beq	t0,s7,.+8
+	jal	x0,.L16
 	addi	a1,a1,1
-	bne	a1,a0,.L17
+	beq	a1,a0,.+8
+	jal	x0,.L17
 	lw	s0,60(sp)
 	lui	a4,%hi(heap+8996)
 	lui	a3,2
@@ -259,13 +263,13 @@ benchmark_body.isra.0:
 	addi	sp,sp,64
 	jalr	zero,ra,0
 .L10:
-	addi	op_0,x0,255
-	lw	op_1,0(a4)
+	lw	op_0,0(a4)
+	addi	op_1,x0,255
 	and	a4,op_0,op_1
-	bne	a4,zero,.+8
-	jal	x0,.L14
+	beq	a4,zero,.L14
 	addi	t6,t6,257
-	bne	t6,t2,.L15
+	beq	t6,t2,.+8
+	jal	x0,.L15
 	jal	x0,.L14
 .L19:
 	addi	t5,zero,1
@@ -331,15 +335,14 @@ benchmark_body.constprop.0:
 	sub	a4,zero,s7
 	addi	op_0,x0,3
 	and	a5,op_0,a4
-	bne	a5,zero,.+8
-	jal	x0,.L60
+	beq	a5,zero,.L60
 	sb	zero,0(s7)
 	addi	op_0,x0,2
-	and	a4,a4,op_0
-	bne	a4,zero,.+8
-	jal	x0,.L61
+	and	a4,op_0,a4
+	beq	a4,zero,.L61
 	sb	zero,1(s7)
-	bne	a5,t2,.L62
+	beq	a5,t2,.+8
+	jal	x0,.L62
 	sb	zero,2(s7)
 	addi	a4,t2,0
 	addi	a3,zero,254
@@ -356,20 +359,18 @@ benchmark_body.constprop.0:
 .L47:
 	sw	zero,0(a5)
 	addi	a5,a5,4
-	bne	s10,a5,.L47
-	bne	s11,s9,.+8
-	jal	x0,.L48
+	beq	s10,a5,.+8
+	jal	x0,.L47
+	beq	s11,s9,.L48
 	sub	op_0,x0,s11
 	sub	a4,a4,op_0
 	sub	op_0,x0,s7
 	sub	a4,a4,op_0
 	sb	zero,0(a4)
 	sub	a3,a3,s11
-	bne	a3,s0,.+8
-	jal	x0,.L48
+	beq	a3,s0,.L48
 	sb	zero,1(a4)
-	bne	a3,s1,.+8
-	jal	x0,.L48
+	beq	a3,s1,.L48
 	sb	zero,2(a4)
 .L48:
 	sb	t5,156(s7)
@@ -466,12 +467,14 @@ benchmark_body.constprop.0:
 	sub	a5,a5,a4
 	addi	a5,a5,65
 	sb	a5,-1(a3)
-	bne	a2,a3,.L49
+	beq	a2,a3,.+8
+	jal	x0,.L49
 	sb	t5,124(s7)
 	addi	s7,s7,257
 	addi	a2,a2,258
 	addi	s8,s8,257
-	bne	s7,t4,.L50
+	beq	s7,t4,.+8
+	jal	x0,.L50
 	addi	s8,s5,%lo(heap+4369)
 	addi	s9,zero,0
 .L58:
@@ -482,30 +485,35 @@ benchmark_body.constprop.0:
 	and	a4,op_0,op_1
 	addi	a3,s7,0
 	addi	a5,s8,0
-	bne	a4,zero,.L51
+	beq	a4,zero,.+8
+	jal	x0,.L51
 	jal	x0,.L52
 .L78:
-	bne	a2,a4,.L55
+	beq	a2,a4,.+8
+	jal	x0,.L55
 	lw	op_0,0(a3)
 	addi	op_1,x0,255
 	and	a4,op_0,op_1
-	bne	a4,zero,.+8
-	jal	x0,.L52
+	beq	a4,zero,.L52
 .L51:
-	lw	op_0,0(a5)
-	addi	op_1,x0,255
+	addi	op_0,x0,255
+	lw	op_1,0(a5)
 	and	a2,op_0,op_1
 	addi	a3,a3,1
 	addi	a5,a5,1
-	bne	a2,zero,.L78
+	beq	a2,zero,.+8
+	jal	x0,.L78
 .L55:
 	addi	s7,s7,257
-	bne	s7,t4,.L57
+	beq	s7,t4,.+8
+	jal	x0,.L57
 	addi	s8,s8,257
-	bne	s8,s2,.L58
+	beq	s8,s2,.+8
+	jal	x0,.L58
 .L79:
 	addi	s3,s3,-1
-	bne	s3,zero,.L59
+	beq	s3,zero,.+8
+	jal	x0,.L59
 	lw	s0,44(sp)
 	lui	a5,%hi(heap+8996)
 	lui	a4,2
@@ -538,10 +546,12 @@ benchmark_body.constprop.0:
 	lw	op_0,0(a5)
 	addi	op_1,x0,255
 	and	a5,op_0,op_1
-	bne	a5,zero,.L55
+	beq	a5,zero,.+8
+	jal	x0,.L55
 	addi	s8,s8,257
 	addi	s9,s9,1
-	bne	s8,s2,.L58
+	beq	s8,s2,.+8
+	jal	x0,.L58
 	jal	x0,.L79
 .L61:
 	addi	a4,zero,1
@@ -675,8 +685,7 @@ __mul:
 .Mul_loop:
 	addi	op_0,x0,1
 	and	a3,op_0,a1
-	bne	a3,x0,.+8
-	jal	x0,.Mul_skip
+	beq	a3,x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
 .Mul_skip:
@@ -684,6 +693,7 @@ __mul:
 	srl	a1,a1,op_0
 	addi	op_0,x0,1
 	sll	a2,a2,op_0
-	bne	a1,x0,.Mul_loop
+	beq	a1,x0,.+8
+	jal	x0,.Mul_loop
 	jalr	x0,ra,0
 

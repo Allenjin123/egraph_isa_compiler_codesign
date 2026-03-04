@@ -656,8 +656,7 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L149
 .L234:
 	lw	a5,0(s0)
-	blt	a5,zero,.+8
-	jal	x0,.L149
+	bge	a5,zero,.L149
 	sw	s1,0(s0)
 	lw	ra,44(sp)
 	lw	s0,40(sp)
@@ -666,7 +665,8 @@ sglib___rbtree_consistency_check_recursive:
 	jalr	zero,ra,0
 .L257:
 	lw	a4,0(a1)
-	blt	a4,zero,.L268
+	bge	a4,zero,.+8
+	jal	x0,.L268
 .L155:
 	lw	a5,12(a5)
 	beq	a5,zero,.+8
@@ -674,7 +674,8 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L149
 .L248:
 	lw	a3,0(a1)
-	blt	a3,zero,.L269
+	bge	a3,zero,.+8
+	jal	x0,.L269
 	lw	a4,12(a4)
 	beq	a4,zero,.+8
 	jal	x0,.L187
@@ -683,7 +684,8 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L174
 .L243:
 	lw	a4,0(s0)
-	blt	a4,zero,.L270
+	bge	a4,zero,.+8
+	jal	x0,.L270
 .L174:
 	lw	a5,12(a5)
 	beq	a5,zero,.+8
@@ -698,8 +700,7 @@ sglib___rbtree_consistency_check_recursive:
 	jalr	zero,ra,0
 .L245:
 	lw	a5,0(s0)
-	blt	a5,zero,.+8
-	jal	x0,.L237
+	bge	a5,zero,.L237
 	sw	s3,0(s0)
 	lw	s3,28(sp)
 	jal	x0,.L149
@@ -800,7 +801,8 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L175
 .L253:
 	lw	a4,0(s0)
-	blt	a4,zero,.L277
+	bge	a4,zero,.+8
+	jal	x0,.L277
 	lw	a5,12(a5)
 	beq	a5,zero,.+8
 	jal	x0,.L201
@@ -842,15 +844,13 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L156
 .L250:
 	lw	a4,0(s0)
-	blt	a4,zero,.+8
-	jal	x0,.L230
+	bge	a4,zero,.L230
 	sw	s2,0(s0)
 	lw	s2,32(sp)
 	jal	x0,.L175
 .L255:
 	lw	a5,0(s0)
-	blt	a5,zero,.+8
-	jal	x0,.L233
+	bge	a5,zero,.L233
 	sw	s2,0(s0)
 	lw	s3,28(sp)
 	lw	s2,32(sp)
@@ -927,14 +927,16 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L199
 .L271:
 	lw	a3,0(a1)
-	blt	a3,zero,.L279
+	bge	a3,zero,.+8
+	jal	x0,.L279
 	lw	a4,12(a4)
 	beq	a4,zero,.+8
 	jal	x0,.L181
 	jal	x0,.L174
 .L264:
 	lw	a4,0(s0)
-	blt	a4,zero,.L280
+	bge	a4,zero,.+8
+	jal	x0,.L280
 	lw	a5,12(a5)
 	beq	a5,zero,.+8
 	jal	x0,.L171
@@ -942,7 +944,8 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L149
 .L274:
 	lw	a4,0(s0)
-	blt	a4,zero,.L281
+	bge	a4,zero,.+8
+	jal	x0,.L281
 	lw	a5,12(a5)
 	beq	a5,zero,.+8
 	jal	x0,.L195
@@ -950,7 +953,8 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L278
 .L259:
 	lw	a3,0(a1)
-	blt	a3,zero,.L282
+	bge	a3,zero,.+8
+	jal	x0,.L282
 	lw	a4,12(a4)
 	beq	a4,zero,.+8
 	jal	x0,.L162
@@ -959,15 +963,13 @@ sglib___rbtree_consistency_check_recursive:
 	jal	x0,.L155
 .L266:
 	lw	a5,0(s0)
-	blt	a5,zero,.+8
-	jal	x0,.L239
+	bge	a5,zero,.L239
 	sw	s2,0(s0)
 	lw	s2,32(sp)
 	jal	x0,.L149
 .L261:
 	lw	a4,0(s0)
-	blt	a4,zero,.+8
-	jal	x0,.L228
+	bge	a4,zero,.L228
 	sw	s2,0(s0)
 	lw	s2,32(sp)
 	jal	x0,.L156
@@ -1265,8 +1267,7 @@ sglib___rbtree_consistency_check_recursive.constprop.2:
 	jalr	zero,ra,0
 .L327:
 	lw	a5,0(s0)
-	blt	a5,zero,.+8
-	jal	x0,.L283
+	bge	a5,zero,.L283
 	addi	a5,zero,2
 	lw	ra,28(sp)
 	sw	a5,0(s0)
@@ -1275,7 +1276,8 @@ sglib___rbtree_consistency_check_recursive.constprop.2:
 	jalr	zero,ra,0
 .L343:
 	lw	a4,0(a1)
-	blt	a4,zero,.L346
+	bge	a4,zero,.+8
+	jal	x0,.L346
 .L289:
 	lw	a5,12(a5)
 	beq	a5,zero,.+8
@@ -1283,7 +1285,8 @@ sglib___rbtree_consistency_check_recursive.constprop.2:
 	jal	x0,.L283
 .L333:
 	lw	a3,0(a1)
-	blt	a3,zero,.L347
+	bge	a3,zero,.+8
+	jal	x0,.L347
 .L301:
 	lw	a4,12(a4)
 	beq	a4,zero,.+8
@@ -1302,8 +1305,7 @@ sglib___rbtree_consistency_check_recursive.constprop.2:
 	jal	x0,.L328
 .L331:
 	lw	a4,0(a1)
-	blt	a4,zero,.+8
-	jal	x0,.L297
+	bge	a4,zero,.L297
 	addi	a4,zero,3
 	sw	a4,0(a1)
 	jal	x0,.L297
@@ -1326,14 +1328,14 @@ sglib___rbtree_consistency_check_recursive.constprop.2:
 	jal	x0,.L299
 .L337:
 	lw	a5,0(s0)
-	blt	a5,zero,.+8
-	jal	x0,.L283
+	bge	a5,zero,.L283
 	addi	a5,zero,3
 	sw	a5,0(s0)
 	jal	x0,.L283
 .L339:
 	lw	a4,0(s0)
-	blt	a4,zero,.L348
+	bge	a4,zero,.+8
+	jal	x0,.L348
 .L309:
 	lw	a5,12(a5)
 	beq	a5,zero,.+8
@@ -1440,15 +1442,13 @@ sglib___rbtree_consistency_check_recursive.constprop.2:
 	jal	x0,.L301
 .L341:
 	lw	a5,0(s0)
-	blt	a5,zero,.+8
-	jal	x0,.L283
+	bge	a5,zero,.L283
 	addi	a5,zero,4
 	sw	a5,0(s0)
 	jal	x0,.L283
 .L335:
 	lw	a4,0(s0)
-	blt	a4,zero,.+8
-	jal	x0,.L297
+	bge	a4,zero,.L297
 	addi	a4,zero,4
 	sw	a4,0(s0)
 	jal	x0,.L297
@@ -1548,8 +1548,7 @@ sglib___rbtree_consistency_check_recursive.constprop.0:
 	jalr	zero,ra,0
 .L400:
 	lw	a5,0(a1)
-	blt	a5,zero,.+8
-	jal	x0,.L349
+	bge	a5,zero,.L349
 	lw	ra,28(sp)
 	lw	s0,24(sp)
 	sw	zero,0(a1)
@@ -1557,7 +1556,8 @@ sglib___rbtree_consistency_check_recursive.constprop.0:
 	jalr	zero,ra,0
 .L403:
 	lw	a4,0(s0)
-	blt	a4,zero,.L409
+	bge	a4,zero,.+8
+	jal	x0,.L409
 .L356:
 	lw	a5,12(a5)
 	beq	a5,zero,.L349
@@ -1584,8 +1584,7 @@ sglib___rbtree_consistency_check_recursive.constprop.0:
 	jalr	zero,ra,0
 .L397:
 	lw	a4,0(s0)
-	blt	a4,zero,.+8
-	jal	x0,.L356
+	bge	a4,zero,.L356
 	addi	a4,zero,1
 	sw	a4,0(s0)
 	jal	x0,.L356
@@ -1640,8 +1639,7 @@ sglib___rbtree_consistency_check_recursive.constprop.0:
 	jal	x0,.L374
 .L399:
 	lw	a5,0(s0)
-	blt	a5,zero,.+8
-	jal	x0,.L349
+	bge	a5,zero,.L349
 	addi	a5,zero,1
 	sw	a5,0(s0)
 	jal	x0,.L349
@@ -1714,8 +1712,7 @@ sglib___rbtree_consistency_check_recursive.constprop.0:
 	jal	x0,.L371
 .L411:
 	lw	a3,0(a1)
-	blt	a3,zero,.+8
-	jal	x0,.L359
+	bge	a3,zero,.L359
 	sw	a7,0(a1)
 .L359:
 	lw	a4,12(a4)
@@ -1724,8 +1721,7 @@ sglib___rbtree_consistency_check_recursive.constprop.0:
 	jal	x0,.L356
 .L414:
 	lw	a4,0(s0)
-	blt	a4,zero,.+8
-	jal	x0,.L378
+	bge	a4,zero,.L378
 	sw	a3,0(s0)
 .L378:
 	lw	a5,12(a5)
@@ -1734,8 +1730,7 @@ sglib___rbtree_consistency_check_recursive.constprop.0:
 	jal	x0,.L349
 .L405:
 	lw	a3,0(s0)
-	blt	a3,zero,.+8
-	jal	x0,.L369
+	bge	a3,zero,.L369
 	addi	a3,zero,3
 	sw	a3,0(s0)
 .L369:
@@ -1827,8 +1822,7 @@ sglib___rbtree_consistency_check_recursive.constprop.0:
 	jal	x0,.L365
 .L407:
 	lw	a4,0(s0)
-	blt	a4,zero,.+8
-	jal	x0,.L356
+	bge	a4,zero,.L356
 	addi	a4,zero,3
 	sw	a4,0(s0)
 	jal	x0,.L356
@@ -1844,7 +1838,8 @@ sglib___rbtree_add_recursive.constprop.0:
 	sw	ra,28(sp)
 	sub	a4,a2,a4
 	addi	a3,a0,0
-	blt	a4,zero,.L420
+	bge	a4,zero,.+8
+	jal	x0,.L420
 	beq	a4,zero,.+8
 	jal	x0,.L421
 	bltu	a1,a5,.+8
@@ -1854,7 +1849,8 @@ sglib___rbtree_add_recursive.constprop.0:
 	beq	a4,zero,.L578
 	lw	a0,0(a4)
 	sub	a0,a2,a0
-	blt	a0,zero,.L424
+	bge	a0,zero,.+8
+	jal	x0,.L424
 	beq	a0,zero,.+8
 	jal	x0,.L425
 	bltu	a1,a4,.+8
@@ -1864,7 +1860,8 @@ sglib___rbtree_add_recursive.constprop.0:
 	beq	a6,zero,.L579
 	lw	a0,0(a6)
 	sub	a2,a2,a0
-	blt	a2,zero,.L428
+	bge	a2,zero,.+8
+	jal	x0,.L428
 	beq	a2,zero,.+8
 	jal	x0,.L429
 	bltu	a1,a6,.+8
@@ -2849,12 +2846,12 @@ sglib_dllist_sort:
 .L815:
 	addi	a4,a1,0
 	addi	a2,zero,1
-	blt	t3,a6,.+8
-	jal	x0,.L875
+	bge	t3,a6,.L875
 .L816:
 	lw	a4,4(a4)
 	addi	a2,a2,1
-	blt	a2,a6,.+12
+	bge	a2,a6,.+8
+	jal	x0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
@@ -2862,7 +2859,9 @@ sglib_dllist_sort:
 	addi	a7,x0,0
 	jal	x0,.+8
 	addi	a7,x0,1
-	and	a5,a5,a7
+	or	op_1,a5,a7
+	sub	op_0,op_1,a7
+	sub	a5,a5,op_0
 	beq	a5,zero,.+8
 	jal	x0,.L816
 	beq	a4,zero,.L876
@@ -2874,8 +2873,7 @@ sglib_dllist_sort:
 .L821:
 	addi	a2,a2,1
 	lw	a4,4(a4)
-	blt	a2,a6,.+8
-	jal	x0,.L823
+	bge	a2,a6,.L823
 	beq	a4,zero,.+8
 	jal	x0,.L821
 .L823:
@@ -2888,7 +2886,8 @@ sglib_dllist_sort:
 .L874:
 	lw	a4,0(a5)
 .L831:
-	blt	a2,a4,.L877
+	bge	a2,a4,.+8
+	jal	x0,.L877
 	sw	a5,0(a3)
 	addi	a3,a5,4
 	lw	a5,4(a5)
@@ -3349,12 +3348,12 @@ sglib_ilist_sort:
 .L1015:
 	addi	a4,a1,0
 	addi	a2,zero,1
-	blt	t3,a6,.+8
-	jal	x0,.L1061
+	bge	t3,a6,.L1061
 .L1017:
 	lw	a4,4(a4)
 	addi	a2,a2,1
-	blt	a2,a6,.+12
+	bge	a2,a6,.+8
+	jal	x0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
@@ -3362,7 +3361,9 @@ sglib_ilist_sort:
 	addi	a7,x0,0
 	jal	x0,.+8
 	addi	a7,x0,1
-	and	a5,a5,a7
+	or	op_1,a5,a7
+	sub	op_0,op_1,a7
+	sub	a5,a5,op_0
 	beq	a5,zero,.+8
 	jal	x0,.L1017
 	beq	a4,zero,.L1062
@@ -3374,8 +3375,7 @@ sglib_ilist_sort:
 .L1021:
 	addi	a2,a2,1
 	lw	a4,4(a4)
-	blt	a2,a6,.+8
-	jal	x0,.L1023
+	bge	a2,a6,.L1023
 	beq	a4,zero,.+8
 	jal	x0,.L1021
 .L1023:
@@ -3388,7 +3388,8 @@ sglib_ilist_sort:
 .L1060:
 	lw	a4,0(a5)
 .L1031:
-	blt	a2,a4,.L1063
+	bge	a2,a4,.+8
+	jal	x0,.L1063
 	sw	a5,0(a3)
 	addi	a3,a5,4
 	lw	a5,4(a5)
@@ -3659,84 +3660,190 @@ sglib_hashed_ilist_add:
 	lw	a4,0(a1)
 	lui	a5,838861
 	addi	a5,a5,-819
-	lui	op_6,16
-	addi	op_5,op_6,-1
-	and	op_4,a4,op_5
-	lui	op_9,16
-	addi	op_8,op_9,-1
-	and	op_7,a5,op_8
-	callmul	op_3,op_4,op_7
-	addi	op_10,x0,16
-	srl	op_2,op_3,op_10
-	addi	op_17,x0,16
-	srl	op_16,a4,op_17
-	lui	op_19,16
-	addi	op_18,op_19,-1
-	and	op_15,op_16,op_18
-	lui	op_22,16
-	addi	op_21,op_22,-1
-	and	op_20,a5,op_21
-	callmul	op_14,op_15,op_20
-	lui	op_24,16
-	addi	op_23,op_24,-1
-	and	op_13,op_14,op_23
-	lui	op_30,16
-	addi	op_29,op_30,-1
-	and	op_28,a4,op_29
-	addi	op_33,x0,16
-	srl	op_32,a5,op_33
-	lui	op_35,16
-	addi	op_34,op_35,-1
-	and	op_31,op_32,op_34
-	callmul	op_27,op_28,op_31
-	lui	op_37,16
-	addi	op_36,op_37,-1
-	and	op_26,op_27,op_36
-	sub	op_25,x0,op_26
-	sub	op_12,op_13,op_25
-	sub	op_11,x0,op_12
-	sub	op_1,op_2,op_11
-	addi	op_38,x0,16
-	srl	op_0,op_1,op_38
-	addi	op_45,x0,16
-	srl	op_44,a4,op_45
-	lui	op_47,16
-	addi	op_46,op_47,-1
-	and	op_43,op_44,op_46
-	lui	op_50,16
-	addi	op_49,op_50,-1
-	and	op_48,a5,op_49
-	callmul	op_42,op_43,op_48
-	addi	op_51,x0,16
-	srl	op_41,op_42,op_51
-	lui	op_58,16
-	addi	op_57,op_58,-1
-	and	op_56,a4,op_57
-	addi	op_61,x0,16
-	srl	op_60,a5,op_61
+	lui	op_8,16
+	addi	op_7,op_8,-1
+	or	op_6,a4,op_7
+	lui	op_10,16
+	addi	op_9,op_10,-1
+	sub	op_5,op_6,op_9
+	sub	op_4,a4,op_5
+	lui	op_15,16
+	addi	op_14,op_15,-1
+	or	op_13,a5,op_14
+	lui	op_17,16
+	addi	op_16,op_17,-1
+	sub	op_12,op_13,op_16
+	sub	op_11,a5,op_12
+	callmul	op_3,op_4,op_11
+	addi	op_18,x0,16
+	srl	op_2,op_3,op_18
+	addi	op_25,x0,16
+	srl	op_24,a4,op_25
+	addi	op_29,x0,16
+	srl	op_28,a4,op_29
+	lui	op_31,16
+	addi	op_30,op_31,-1
+	or	op_27,op_28,op_30
+	lui	op_33,16
+	addi	op_32,op_33,-1
+	sub	op_26,op_27,op_32
+	sub	op_23,op_24,op_26
+	lui	op_38,16
+	addi	op_37,op_38,-1
+	or	op_36,a5,op_37
+	lui	op_40,16
+	addi	op_39,op_40,-1
+	sub	op_35,op_36,op_39
+	sub	op_34,a5,op_35
+	callmul	op_22,op_23,op_34
+	addi	op_46,x0,16
+	srl	op_45,a4,op_46
+	addi	op_50,x0,16
+	srl	op_49,a4,op_50
+	lui	op_52,16
+	addi	op_51,op_52,-1
+	or	op_48,op_49,op_51
+	lui	op_54,16
+	addi	op_53,op_54,-1
+	sub	op_47,op_48,op_53
+	sub	op_44,op_45,op_47
+	lui	op_59,16
+	addi	op_58,op_59,-1
+	or	op_57,a5,op_58
+	lui	op_61,16
+	addi	op_60,op_61,-1
+	sub	op_56,op_57,op_60
+	sub	op_55,a5,op_56
+	callmul	op_43,op_44,op_55
 	lui	op_63,16
 	addi	op_62,op_63,-1
-	and	op_59,op_60,op_62
-	callmul	op_55,op_56,op_59
-	addi	op_64,x0,16
-	srl	op_54,op_55,op_64
-	addi	op_69,x0,16
-	srl	op_68,a4,op_69
-	lui	op_71,16
-	addi	op_70,op_71,-1
-	and	op_67,op_68,op_70
-	addi	op_74,x0,16
-	srl	op_73,a5,op_74
-	lui	op_76,16
-	addi	op_75,op_76,-1
-	and	op_72,op_73,op_75
-	callmul	op_66,op_67,op_72
-	sub	op_65,x0,op_66
-	sub	op_53,op_54,op_65
-	sub	op_52,x0,op_53
-	sub	op_40,op_41,op_52
-	sub	op_39,x0,op_40
-	sub	a5,op_0,op_39
+	or	op_42,op_43,op_62
+	lui	op_65,16
+	addi	op_64,op_65,-1
+	sub	op_41,op_42,op_64
+	sub	op_21,op_22,op_41
+	lui	op_73,16
+	addi	op_72,op_73,-1
+	or	op_71,a4,op_72
+	lui	op_75,16
+	addi	op_74,op_75,-1
+	sub	op_70,op_71,op_74
+	sub	op_69,a4,op_70
+	addi	op_78,x0,16
+	srl	op_77,a5,op_78
+	addi	op_82,x0,16
+	srl	op_81,a5,op_82
+	lui	op_84,16
+	addi	op_83,op_84,-1
+	or	op_80,op_81,op_83
+	lui	op_86,16
+	addi	op_85,op_86,-1
+	sub	op_79,op_80,op_85
+	sub	op_76,op_77,op_79
+	callmul	op_68,op_69,op_76
+	lui	op_94,16
+	addi	op_93,op_94,-1
+	or	op_92,a4,op_93
+	lui	op_96,16
+	addi	op_95,op_96,-1
+	sub	op_91,op_92,op_95
+	sub	op_90,a4,op_91
+	addi	op_99,x0,16
+	srl	op_98,a5,op_99
+	addi	op_103,x0,16
+	srl	op_102,a5,op_103
+	lui	op_105,16
+	addi	op_104,op_105,-1
+	or	op_101,op_102,op_104
+	lui	op_107,16
+	addi	op_106,op_107,-1
+	sub	op_100,op_101,op_106
+	sub	op_97,op_98,op_100
+	callmul	op_89,op_90,op_97
+	lui	op_109,16
+	addi	op_108,op_109,-1
+	or	op_88,op_89,op_108
+	lui	op_111,16
+	addi	op_110,op_111,-1
+	sub	op_87,op_88,op_110
+	sub	op_67,op_68,op_87
+	sub	op_66,x0,op_67
+	sub	op_20,op_21,op_66
+	sub	op_19,x0,op_20
+	sub	op_1,op_2,op_19
+	addi	op_112,x0,16
+	srl	op_0,op_1,op_112
+	addi	op_119,x0,16
+	srl	op_118,a4,op_119
+	addi	op_123,x0,16
+	srl	op_122,a4,op_123
+	lui	op_125,16
+	addi	op_124,op_125,-1
+	or	op_121,op_122,op_124
+	lui	op_127,16
+	addi	op_126,op_127,-1
+	sub	op_120,op_121,op_126
+	sub	op_117,op_118,op_120
+	lui	op_132,16
+	addi	op_131,op_132,-1
+	or	op_130,a5,op_131
+	lui	op_134,16
+	addi	op_133,op_134,-1
+	sub	op_129,op_130,op_133
+	sub	op_128,a5,op_129
+	callmul	op_116,op_117,op_128
+	addi	op_135,x0,16
+	srl	op_115,op_116,op_135
+	lui	op_144,16
+	addi	op_143,op_144,-1
+	or	op_142,a4,op_143
+	lui	op_146,16
+	addi	op_145,op_146,-1
+	sub	op_141,op_142,op_145
+	sub	op_140,a4,op_141
+	addi	op_149,x0,16
+	srl	op_148,a5,op_149
+	addi	op_153,x0,16
+	srl	op_152,a5,op_153
+	lui	op_155,16
+	addi	op_154,op_155,-1
+	or	op_151,op_152,op_154
+	lui	op_157,16
+	addi	op_156,op_157,-1
+	sub	op_150,op_151,op_156
+	sub	op_147,op_148,op_150
+	callmul	op_139,op_140,op_147
+	addi	op_158,x0,16
+	srl	op_138,op_139,op_158
+	addi	op_163,x0,16
+	srl	op_162,a4,op_163
+	addi	op_167,x0,16
+	srl	op_166,a4,op_167
+	lui	op_169,16
+	addi	op_168,op_169,-1
+	or	op_165,op_166,op_168
+	lui	op_171,16
+	addi	op_170,op_171,-1
+	sub	op_164,op_165,op_170
+	sub	op_161,op_162,op_164
+	addi	op_174,x0,16
+	srl	op_173,a5,op_174
+	addi	op_178,x0,16
+	srl	op_177,a5,op_178
+	lui	op_180,16
+	addi	op_179,op_180,-1
+	or	op_176,op_177,op_179
+	lui	op_182,16
+	addi	op_181,op_182,-1
+	sub	op_175,op_176,op_181
+	sub	op_172,op_173,op_175
+	callmul	op_160,op_161,op_172
+	sub	op_159,x0,op_160
+	sub	op_137,op_138,op_159
+	sub	op_136,x0,op_137
+	sub	op_114,op_115,op_136
+	sub	op_113,x0,op_114
+	sub	a5,op_0,op_113
 	addi	op_0,x0,4
 	srl	a5,a5,op_0
 	addi	op_0,x0,2
@@ -3762,84 +3869,190 @@ sglib_hashed_ilist_add_if_not_member:
 	lw	a3,0(a1)
 	lui	a4,838861
 	addi	a4,a4,-819
-	lui	op_6,16
-	addi	op_5,op_6,-1
-	and	op_4,a3,op_5
-	lui	op_9,16
-	addi	op_8,op_9,-1
-	and	op_7,a4,op_8
-	callmul	op_3,op_4,op_7
-	addi	op_10,x0,16
-	srl	op_2,op_3,op_10
-	addi	op_17,x0,16
-	srl	op_16,a3,op_17
-	lui	op_19,16
-	addi	op_18,op_19,-1
-	and	op_15,op_16,op_18
-	lui	op_22,16
-	addi	op_21,op_22,-1
-	and	op_20,a4,op_21
-	callmul	op_14,op_15,op_20
-	lui	op_24,16
-	addi	op_23,op_24,-1
-	and	op_13,op_14,op_23
-	lui	op_30,16
-	addi	op_29,op_30,-1
-	and	op_28,a3,op_29
-	addi	op_33,x0,16
-	srl	op_32,a4,op_33
-	lui	op_35,16
-	addi	op_34,op_35,-1
-	and	op_31,op_32,op_34
-	callmul	op_27,op_28,op_31
-	lui	op_37,16
-	addi	op_36,op_37,-1
-	and	op_26,op_27,op_36
-	sub	op_25,x0,op_26
-	sub	op_12,op_13,op_25
-	sub	op_11,x0,op_12
-	sub	op_1,op_2,op_11
-	addi	op_38,x0,16
-	srl	op_0,op_1,op_38
-	addi	op_45,x0,16
-	srl	op_44,a3,op_45
-	lui	op_47,16
-	addi	op_46,op_47,-1
-	and	op_43,op_44,op_46
-	lui	op_50,16
-	addi	op_49,op_50,-1
-	and	op_48,a4,op_49
-	callmul	op_42,op_43,op_48
-	addi	op_51,x0,16
-	srl	op_41,op_42,op_51
-	lui	op_58,16
-	addi	op_57,op_58,-1
-	and	op_56,a3,op_57
-	addi	op_61,x0,16
-	srl	op_60,a4,op_61
+	lui	op_8,16
+	addi	op_7,op_8,-1
+	or	op_6,a3,op_7
+	lui	op_10,16
+	addi	op_9,op_10,-1
+	sub	op_5,op_6,op_9
+	sub	op_4,a3,op_5
+	lui	op_15,16
+	addi	op_14,op_15,-1
+	or	op_13,a4,op_14
+	lui	op_17,16
+	addi	op_16,op_17,-1
+	sub	op_12,op_13,op_16
+	sub	op_11,a4,op_12
+	callmul	op_3,op_4,op_11
+	addi	op_18,x0,16
+	srl	op_2,op_3,op_18
+	addi	op_25,x0,16
+	srl	op_24,a3,op_25
+	addi	op_29,x0,16
+	srl	op_28,a3,op_29
+	lui	op_31,16
+	addi	op_30,op_31,-1
+	or	op_27,op_28,op_30
+	lui	op_33,16
+	addi	op_32,op_33,-1
+	sub	op_26,op_27,op_32
+	sub	op_23,op_24,op_26
+	lui	op_38,16
+	addi	op_37,op_38,-1
+	or	op_36,a4,op_37
+	lui	op_40,16
+	addi	op_39,op_40,-1
+	sub	op_35,op_36,op_39
+	sub	op_34,a4,op_35
+	callmul	op_22,op_23,op_34
+	addi	op_46,x0,16
+	srl	op_45,a3,op_46
+	addi	op_50,x0,16
+	srl	op_49,a3,op_50
+	lui	op_52,16
+	addi	op_51,op_52,-1
+	or	op_48,op_49,op_51
+	lui	op_54,16
+	addi	op_53,op_54,-1
+	sub	op_47,op_48,op_53
+	sub	op_44,op_45,op_47
+	lui	op_59,16
+	addi	op_58,op_59,-1
+	or	op_57,a4,op_58
+	lui	op_61,16
+	addi	op_60,op_61,-1
+	sub	op_56,op_57,op_60
+	sub	op_55,a4,op_56
+	callmul	op_43,op_44,op_55
 	lui	op_63,16
 	addi	op_62,op_63,-1
-	and	op_59,op_60,op_62
-	callmul	op_55,op_56,op_59
-	addi	op_64,x0,16
-	srl	op_54,op_55,op_64
-	addi	op_69,x0,16
-	srl	op_68,a3,op_69
-	lui	op_71,16
-	addi	op_70,op_71,-1
-	and	op_67,op_68,op_70
-	addi	op_74,x0,16
-	srl	op_73,a4,op_74
-	lui	op_76,16
-	addi	op_75,op_76,-1
-	and	op_72,op_73,op_75
-	callmul	op_66,op_67,op_72
-	sub	op_65,x0,op_66
-	sub	op_53,op_54,op_65
-	sub	op_52,x0,op_53
-	sub	op_40,op_41,op_52
-	sub	op_39,x0,op_40
-	sub	a4,op_0,op_39
+	or	op_42,op_43,op_62
+	lui	op_65,16
+	addi	op_64,op_65,-1
+	sub	op_41,op_42,op_64
+	sub	op_21,op_22,op_41
+	lui	op_73,16
+	addi	op_72,op_73,-1
+	or	op_71,a3,op_72
+	lui	op_75,16
+	addi	op_74,op_75,-1
+	sub	op_70,op_71,op_74
+	sub	op_69,a3,op_70
+	addi	op_78,x0,16
+	srl	op_77,a4,op_78
+	addi	op_82,x0,16
+	srl	op_81,a4,op_82
+	lui	op_84,16
+	addi	op_83,op_84,-1
+	or	op_80,op_81,op_83
+	lui	op_86,16
+	addi	op_85,op_86,-1
+	sub	op_79,op_80,op_85
+	sub	op_76,op_77,op_79
+	callmul	op_68,op_69,op_76
+	lui	op_94,16
+	addi	op_93,op_94,-1
+	or	op_92,a3,op_93
+	lui	op_96,16
+	addi	op_95,op_96,-1
+	sub	op_91,op_92,op_95
+	sub	op_90,a3,op_91
+	addi	op_99,x0,16
+	srl	op_98,a4,op_99
+	addi	op_103,x0,16
+	srl	op_102,a4,op_103
+	lui	op_105,16
+	addi	op_104,op_105,-1
+	or	op_101,op_102,op_104
+	lui	op_107,16
+	addi	op_106,op_107,-1
+	sub	op_100,op_101,op_106
+	sub	op_97,op_98,op_100
+	callmul	op_89,op_90,op_97
+	lui	op_109,16
+	addi	op_108,op_109,-1
+	or	op_88,op_89,op_108
+	lui	op_111,16
+	addi	op_110,op_111,-1
+	sub	op_87,op_88,op_110
+	sub	op_67,op_68,op_87
+	sub	op_66,x0,op_67
+	sub	op_20,op_21,op_66
+	sub	op_19,x0,op_20
+	sub	op_1,op_2,op_19
+	addi	op_112,x0,16
+	srl	op_0,op_1,op_112
+	addi	op_119,x0,16
+	srl	op_118,a3,op_119
+	addi	op_123,x0,16
+	srl	op_122,a3,op_123
+	lui	op_125,16
+	addi	op_124,op_125,-1
+	or	op_121,op_122,op_124
+	lui	op_127,16
+	addi	op_126,op_127,-1
+	sub	op_120,op_121,op_126
+	sub	op_117,op_118,op_120
+	lui	op_132,16
+	addi	op_131,op_132,-1
+	or	op_130,a4,op_131
+	lui	op_134,16
+	addi	op_133,op_134,-1
+	sub	op_129,op_130,op_133
+	sub	op_128,a4,op_129
+	callmul	op_116,op_117,op_128
+	addi	op_135,x0,16
+	srl	op_115,op_116,op_135
+	lui	op_144,16
+	addi	op_143,op_144,-1
+	or	op_142,a3,op_143
+	lui	op_146,16
+	addi	op_145,op_146,-1
+	sub	op_141,op_142,op_145
+	sub	op_140,a3,op_141
+	addi	op_149,x0,16
+	srl	op_148,a4,op_149
+	addi	op_153,x0,16
+	srl	op_152,a4,op_153
+	lui	op_155,16
+	addi	op_154,op_155,-1
+	or	op_151,op_152,op_154
+	lui	op_157,16
+	addi	op_156,op_157,-1
+	sub	op_150,op_151,op_156
+	sub	op_147,op_148,op_150
+	callmul	op_139,op_140,op_147
+	addi	op_158,x0,16
+	srl	op_138,op_139,op_158
+	addi	op_163,x0,16
+	srl	op_162,a3,op_163
+	addi	op_167,x0,16
+	srl	op_166,a3,op_167
+	lui	op_169,16
+	addi	op_168,op_169,-1
+	or	op_165,op_166,op_168
+	lui	op_171,16
+	addi	op_170,op_171,-1
+	sub	op_164,op_165,op_170
+	sub	op_161,op_162,op_164
+	addi	op_174,x0,16
+	srl	op_173,a4,op_174
+	addi	op_178,x0,16
+	srl	op_177,a4,op_178
+	lui	op_180,16
+	addi	op_179,op_180,-1
+	or	op_176,op_177,op_179
+	lui	op_182,16
+	addi	op_181,op_182,-1
+	sub	op_175,op_176,op_181
+	sub	op_172,op_173,op_175
+	callmul	op_160,op_161,op_172
+	sub	op_159,x0,op_160
+	sub	op_137,op_138,op_159
+	sub	op_136,x0,op_137
+	sub	op_114,op_115,op_136
+	sub	op_113,x0,op_114
+	sub	a4,op_0,op_113
 	addi	op_0,x0,4
 	srl	a4,a4,op_0
 	addi	op_0,x0,2
@@ -3887,84 +4100,190 @@ sglib_hashed_ilist_delete:
 	lw	a4,0(a1)
 	lui	a5,838861
 	addi	a5,a5,-819
-	lui	op_6,16
-	addi	op_5,op_6,-1
-	and	op_4,a4,op_5
-	lui	op_9,16
-	addi	op_8,op_9,-1
-	and	op_7,a5,op_8
-	callmul	op_3,op_4,op_7
-	addi	op_10,x0,16
-	srl	op_2,op_3,op_10
-	addi	op_17,x0,16
-	srl	op_16,a4,op_17
-	lui	op_19,16
-	addi	op_18,op_19,-1
-	and	op_15,op_16,op_18
-	lui	op_22,16
-	addi	op_21,op_22,-1
-	and	op_20,a5,op_21
-	callmul	op_14,op_15,op_20
-	lui	op_24,16
-	addi	op_23,op_24,-1
-	and	op_13,op_14,op_23
-	lui	op_30,16
-	addi	op_29,op_30,-1
-	and	op_28,a4,op_29
-	addi	op_33,x0,16
-	srl	op_32,a5,op_33
-	lui	op_35,16
-	addi	op_34,op_35,-1
-	and	op_31,op_32,op_34
-	callmul	op_27,op_28,op_31
-	lui	op_37,16
-	addi	op_36,op_37,-1
-	and	op_26,op_27,op_36
-	sub	op_25,x0,op_26
-	sub	op_12,op_13,op_25
-	sub	op_11,x0,op_12
-	sub	op_1,op_2,op_11
-	addi	op_38,x0,16
-	srl	op_0,op_1,op_38
-	addi	op_45,x0,16
-	srl	op_44,a4,op_45
-	lui	op_47,16
-	addi	op_46,op_47,-1
-	and	op_43,op_44,op_46
-	lui	op_50,16
-	addi	op_49,op_50,-1
-	and	op_48,a5,op_49
-	callmul	op_42,op_43,op_48
-	addi	op_51,x0,16
-	srl	op_41,op_42,op_51
-	lui	op_58,16
-	addi	op_57,op_58,-1
-	and	op_56,a4,op_57
-	addi	op_61,x0,16
-	srl	op_60,a5,op_61
+	lui	op_8,16
+	addi	op_7,op_8,-1
+	or	op_6,a4,op_7
+	lui	op_10,16
+	addi	op_9,op_10,-1
+	sub	op_5,op_6,op_9
+	sub	op_4,a4,op_5
+	lui	op_15,16
+	addi	op_14,op_15,-1
+	or	op_13,a5,op_14
+	lui	op_17,16
+	addi	op_16,op_17,-1
+	sub	op_12,op_13,op_16
+	sub	op_11,a5,op_12
+	callmul	op_3,op_4,op_11
+	addi	op_18,x0,16
+	srl	op_2,op_3,op_18
+	addi	op_25,x0,16
+	srl	op_24,a4,op_25
+	addi	op_29,x0,16
+	srl	op_28,a4,op_29
+	lui	op_31,16
+	addi	op_30,op_31,-1
+	or	op_27,op_28,op_30
+	lui	op_33,16
+	addi	op_32,op_33,-1
+	sub	op_26,op_27,op_32
+	sub	op_23,op_24,op_26
+	lui	op_38,16
+	addi	op_37,op_38,-1
+	or	op_36,a5,op_37
+	lui	op_40,16
+	addi	op_39,op_40,-1
+	sub	op_35,op_36,op_39
+	sub	op_34,a5,op_35
+	callmul	op_22,op_23,op_34
+	addi	op_46,x0,16
+	srl	op_45,a4,op_46
+	addi	op_50,x0,16
+	srl	op_49,a4,op_50
+	lui	op_52,16
+	addi	op_51,op_52,-1
+	or	op_48,op_49,op_51
+	lui	op_54,16
+	addi	op_53,op_54,-1
+	sub	op_47,op_48,op_53
+	sub	op_44,op_45,op_47
+	lui	op_59,16
+	addi	op_58,op_59,-1
+	or	op_57,a5,op_58
+	lui	op_61,16
+	addi	op_60,op_61,-1
+	sub	op_56,op_57,op_60
+	sub	op_55,a5,op_56
+	callmul	op_43,op_44,op_55
 	lui	op_63,16
 	addi	op_62,op_63,-1
-	and	op_59,op_60,op_62
-	callmul	op_55,op_56,op_59
-	addi	op_64,x0,16
-	srl	op_54,op_55,op_64
-	addi	op_69,x0,16
-	srl	op_68,a4,op_69
-	lui	op_71,16
-	addi	op_70,op_71,-1
-	and	op_67,op_68,op_70
-	addi	op_74,x0,16
-	srl	op_73,a5,op_74
-	lui	op_76,16
-	addi	op_75,op_76,-1
-	and	op_72,op_73,op_75
-	callmul	op_66,op_67,op_72
-	sub	op_65,x0,op_66
-	sub	op_53,op_54,op_65
-	sub	op_52,x0,op_53
-	sub	op_40,op_41,op_52
-	sub	op_39,x0,op_40
-	sub	a5,op_0,op_39
+	or	op_42,op_43,op_62
+	lui	op_65,16
+	addi	op_64,op_65,-1
+	sub	op_41,op_42,op_64
+	sub	op_21,op_22,op_41
+	lui	op_73,16
+	addi	op_72,op_73,-1
+	or	op_71,a4,op_72
+	lui	op_75,16
+	addi	op_74,op_75,-1
+	sub	op_70,op_71,op_74
+	sub	op_69,a4,op_70
+	addi	op_78,x0,16
+	srl	op_77,a5,op_78
+	addi	op_82,x0,16
+	srl	op_81,a5,op_82
+	lui	op_84,16
+	addi	op_83,op_84,-1
+	or	op_80,op_81,op_83
+	lui	op_86,16
+	addi	op_85,op_86,-1
+	sub	op_79,op_80,op_85
+	sub	op_76,op_77,op_79
+	callmul	op_68,op_69,op_76
+	lui	op_94,16
+	addi	op_93,op_94,-1
+	or	op_92,a4,op_93
+	lui	op_96,16
+	addi	op_95,op_96,-1
+	sub	op_91,op_92,op_95
+	sub	op_90,a4,op_91
+	addi	op_99,x0,16
+	srl	op_98,a5,op_99
+	addi	op_103,x0,16
+	srl	op_102,a5,op_103
+	lui	op_105,16
+	addi	op_104,op_105,-1
+	or	op_101,op_102,op_104
+	lui	op_107,16
+	addi	op_106,op_107,-1
+	sub	op_100,op_101,op_106
+	sub	op_97,op_98,op_100
+	callmul	op_89,op_90,op_97
+	lui	op_109,16
+	addi	op_108,op_109,-1
+	or	op_88,op_89,op_108
+	lui	op_111,16
+	addi	op_110,op_111,-1
+	sub	op_87,op_88,op_110
+	sub	op_67,op_68,op_87
+	sub	op_66,x0,op_67
+	sub	op_20,op_21,op_66
+	sub	op_19,x0,op_20
+	sub	op_1,op_2,op_19
+	addi	op_112,x0,16
+	srl	op_0,op_1,op_112
+	addi	op_119,x0,16
+	srl	op_118,a4,op_119
+	addi	op_123,x0,16
+	srl	op_122,a4,op_123
+	lui	op_125,16
+	addi	op_124,op_125,-1
+	or	op_121,op_122,op_124
+	lui	op_127,16
+	addi	op_126,op_127,-1
+	sub	op_120,op_121,op_126
+	sub	op_117,op_118,op_120
+	lui	op_132,16
+	addi	op_131,op_132,-1
+	or	op_130,a5,op_131
+	lui	op_134,16
+	addi	op_133,op_134,-1
+	sub	op_129,op_130,op_133
+	sub	op_128,a5,op_129
+	callmul	op_116,op_117,op_128
+	addi	op_135,x0,16
+	srl	op_115,op_116,op_135
+	lui	op_144,16
+	addi	op_143,op_144,-1
+	or	op_142,a4,op_143
+	lui	op_146,16
+	addi	op_145,op_146,-1
+	sub	op_141,op_142,op_145
+	sub	op_140,a4,op_141
+	addi	op_149,x0,16
+	srl	op_148,a5,op_149
+	addi	op_153,x0,16
+	srl	op_152,a5,op_153
+	lui	op_155,16
+	addi	op_154,op_155,-1
+	or	op_151,op_152,op_154
+	lui	op_157,16
+	addi	op_156,op_157,-1
+	sub	op_150,op_151,op_156
+	sub	op_147,op_148,op_150
+	callmul	op_139,op_140,op_147
+	addi	op_158,x0,16
+	srl	op_138,op_139,op_158
+	addi	op_163,x0,16
+	srl	op_162,a4,op_163
+	addi	op_167,x0,16
+	srl	op_166,a4,op_167
+	lui	op_169,16
+	addi	op_168,op_169,-1
+	or	op_165,op_166,op_168
+	lui	op_171,16
+	addi	op_170,op_171,-1
+	sub	op_164,op_165,op_170
+	sub	op_161,op_162,op_164
+	addi	op_174,x0,16
+	srl	op_173,a5,op_174
+	addi	op_178,x0,16
+	srl	op_177,a5,op_178
+	lui	op_180,16
+	addi	op_179,op_180,-1
+	or	op_176,op_177,op_179
+	lui	op_182,16
+	addi	op_181,op_182,-1
+	sub	op_175,op_176,op_181
+	sub	op_172,op_173,op_175
+	callmul	op_160,op_161,op_172
+	sub	op_159,x0,op_160
+	sub	op_137,op_138,op_159
+	sub	op_136,x0,op_137
+	sub	op_114,op_115,op_136
+	sub	op_113,x0,op_114
+	sub	a5,op_0,op_113
 	addi	op_0,x0,4
 	srl	a5,a5,op_0
 	addi	op_0,x0,2
@@ -4000,84 +4319,190 @@ sglib_hashed_ilist_delete_if_member:
 	lw	a3,0(a1)
 	lui	a4,838861
 	addi	a4,a4,-819
-	lui	op_6,16
-	addi	op_5,op_6,-1
-	and	op_4,a3,op_5
-	lui	op_9,16
-	addi	op_8,op_9,-1
-	and	op_7,a4,op_8
-	callmul	op_3,op_4,op_7
-	addi	op_10,x0,16
-	srl	op_2,op_3,op_10
-	addi	op_17,x0,16
-	srl	op_16,a3,op_17
-	lui	op_19,16
-	addi	op_18,op_19,-1
-	and	op_15,op_16,op_18
-	lui	op_22,16
-	addi	op_21,op_22,-1
-	and	op_20,a4,op_21
-	callmul	op_14,op_15,op_20
-	lui	op_24,16
-	addi	op_23,op_24,-1
-	and	op_13,op_14,op_23
-	lui	op_30,16
-	addi	op_29,op_30,-1
-	and	op_28,a3,op_29
-	addi	op_33,x0,16
-	srl	op_32,a4,op_33
-	lui	op_35,16
-	addi	op_34,op_35,-1
-	and	op_31,op_32,op_34
-	callmul	op_27,op_28,op_31
-	lui	op_37,16
-	addi	op_36,op_37,-1
-	and	op_26,op_27,op_36
-	sub	op_25,x0,op_26
-	sub	op_12,op_13,op_25
-	sub	op_11,x0,op_12
-	sub	op_1,op_2,op_11
-	addi	op_38,x0,16
-	srl	op_0,op_1,op_38
-	addi	op_45,x0,16
-	srl	op_44,a3,op_45
-	lui	op_47,16
-	addi	op_46,op_47,-1
-	and	op_43,op_44,op_46
-	lui	op_50,16
-	addi	op_49,op_50,-1
-	and	op_48,a4,op_49
-	callmul	op_42,op_43,op_48
-	addi	op_51,x0,16
-	srl	op_41,op_42,op_51
-	lui	op_58,16
-	addi	op_57,op_58,-1
-	and	op_56,a3,op_57
-	addi	op_61,x0,16
-	srl	op_60,a4,op_61
+	lui	op_8,16
+	addi	op_7,op_8,-1
+	or	op_6,a3,op_7
+	lui	op_10,16
+	addi	op_9,op_10,-1
+	sub	op_5,op_6,op_9
+	sub	op_4,a3,op_5
+	lui	op_15,16
+	addi	op_14,op_15,-1
+	or	op_13,a4,op_14
+	lui	op_17,16
+	addi	op_16,op_17,-1
+	sub	op_12,op_13,op_16
+	sub	op_11,a4,op_12
+	callmul	op_3,op_4,op_11
+	addi	op_18,x0,16
+	srl	op_2,op_3,op_18
+	addi	op_25,x0,16
+	srl	op_24,a3,op_25
+	addi	op_29,x0,16
+	srl	op_28,a3,op_29
+	lui	op_31,16
+	addi	op_30,op_31,-1
+	or	op_27,op_28,op_30
+	lui	op_33,16
+	addi	op_32,op_33,-1
+	sub	op_26,op_27,op_32
+	sub	op_23,op_24,op_26
+	lui	op_38,16
+	addi	op_37,op_38,-1
+	or	op_36,a4,op_37
+	lui	op_40,16
+	addi	op_39,op_40,-1
+	sub	op_35,op_36,op_39
+	sub	op_34,a4,op_35
+	callmul	op_22,op_23,op_34
+	addi	op_46,x0,16
+	srl	op_45,a3,op_46
+	addi	op_50,x0,16
+	srl	op_49,a3,op_50
+	lui	op_52,16
+	addi	op_51,op_52,-1
+	or	op_48,op_49,op_51
+	lui	op_54,16
+	addi	op_53,op_54,-1
+	sub	op_47,op_48,op_53
+	sub	op_44,op_45,op_47
+	lui	op_59,16
+	addi	op_58,op_59,-1
+	or	op_57,a4,op_58
+	lui	op_61,16
+	addi	op_60,op_61,-1
+	sub	op_56,op_57,op_60
+	sub	op_55,a4,op_56
+	callmul	op_43,op_44,op_55
 	lui	op_63,16
 	addi	op_62,op_63,-1
-	and	op_59,op_60,op_62
-	callmul	op_55,op_56,op_59
-	addi	op_64,x0,16
-	srl	op_54,op_55,op_64
-	addi	op_69,x0,16
-	srl	op_68,a3,op_69
-	lui	op_71,16
-	addi	op_70,op_71,-1
-	and	op_67,op_68,op_70
-	addi	op_74,x0,16
-	srl	op_73,a4,op_74
-	lui	op_76,16
-	addi	op_75,op_76,-1
-	and	op_72,op_73,op_75
-	callmul	op_66,op_67,op_72
-	sub	op_65,x0,op_66
-	sub	op_53,op_54,op_65
-	sub	op_52,x0,op_53
-	sub	op_40,op_41,op_52
-	sub	op_39,x0,op_40
-	sub	a4,op_0,op_39
+	or	op_42,op_43,op_62
+	lui	op_65,16
+	addi	op_64,op_65,-1
+	sub	op_41,op_42,op_64
+	sub	op_21,op_22,op_41
+	lui	op_73,16
+	addi	op_72,op_73,-1
+	or	op_71,a3,op_72
+	lui	op_75,16
+	addi	op_74,op_75,-1
+	sub	op_70,op_71,op_74
+	sub	op_69,a3,op_70
+	addi	op_78,x0,16
+	srl	op_77,a4,op_78
+	addi	op_82,x0,16
+	srl	op_81,a4,op_82
+	lui	op_84,16
+	addi	op_83,op_84,-1
+	or	op_80,op_81,op_83
+	lui	op_86,16
+	addi	op_85,op_86,-1
+	sub	op_79,op_80,op_85
+	sub	op_76,op_77,op_79
+	callmul	op_68,op_69,op_76
+	lui	op_94,16
+	addi	op_93,op_94,-1
+	or	op_92,a3,op_93
+	lui	op_96,16
+	addi	op_95,op_96,-1
+	sub	op_91,op_92,op_95
+	sub	op_90,a3,op_91
+	addi	op_99,x0,16
+	srl	op_98,a4,op_99
+	addi	op_103,x0,16
+	srl	op_102,a4,op_103
+	lui	op_105,16
+	addi	op_104,op_105,-1
+	or	op_101,op_102,op_104
+	lui	op_107,16
+	addi	op_106,op_107,-1
+	sub	op_100,op_101,op_106
+	sub	op_97,op_98,op_100
+	callmul	op_89,op_90,op_97
+	lui	op_109,16
+	addi	op_108,op_109,-1
+	or	op_88,op_89,op_108
+	lui	op_111,16
+	addi	op_110,op_111,-1
+	sub	op_87,op_88,op_110
+	sub	op_67,op_68,op_87
+	sub	op_66,x0,op_67
+	sub	op_20,op_21,op_66
+	sub	op_19,x0,op_20
+	sub	op_1,op_2,op_19
+	addi	op_112,x0,16
+	srl	op_0,op_1,op_112
+	addi	op_119,x0,16
+	srl	op_118,a3,op_119
+	addi	op_123,x0,16
+	srl	op_122,a3,op_123
+	lui	op_125,16
+	addi	op_124,op_125,-1
+	or	op_121,op_122,op_124
+	lui	op_127,16
+	addi	op_126,op_127,-1
+	sub	op_120,op_121,op_126
+	sub	op_117,op_118,op_120
+	lui	op_132,16
+	addi	op_131,op_132,-1
+	or	op_130,a4,op_131
+	lui	op_134,16
+	addi	op_133,op_134,-1
+	sub	op_129,op_130,op_133
+	sub	op_128,a4,op_129
+	callmul	op_116,op_117,op_128
+	addi	op_135,x0,16
+	srl	op_115,op_116,op_135
+	lui	op_144,16
+	addi	op_143,op_144,-1
+	or	op_142,a3,op_143
+	lui	op_146,16
+	addi	op_145,op_146,-1
+	sub	op_141,op_142,op_145
+	sub	op_140,a3,op_141
+	addi	op_149,x0,16
+	srl	op_148,a4,op_149
+	addi	op_153,x0,16
+	srl	op_152,a4,op_153
+	lui	op_155,16
+	addi	op_154,op_155,-1
+	or	op_151,op_152,op_154
+	lui	op_157,16
+	addi	op_156,op_157,-1
+	sub	op_150,op_151,op_156
+	sub	op_147,op_148,op_150
+	callmul	op_139,op_140,op_147
+	addi	op_158,x0,16
+	srl	op_138,op_139,op_158
+	addi	op_163,x0,16
+	srl	op_162,a3,op_163
+	addi	op_167,x0,16
+	srl	op_166,a3,op_167
+	lui	op_169,16
+	addi	op_168,op_169,-1
+	or	op_165,op_166,op_168
+	lui	op_171,16
+	addi	op_170,op_171,-1
+	sub	op_164,op_165,op_170
+	sub	op_161,op_162,op_164
+	addi	op_174,x0,16
+	srl	op_173,a4,op_174
+	addi	op_178,x0,16
+	srl	op_177,a4,op_178
+	lui	op_180,16
+	addi	op_179,op_180,-1
+	or	op_176,op_177,op_179
+	lui	op_182,16
+	addi	op_181,op_182,-1
+	sub	op_175,op_176,op_181
+	sub	op_172,op_173,op_175
+	callmul	op_160,op_161,op_172
+	sub	op_159,x0,op_160
+	sub	op_137,op_138,op_159
+	sub	op_136,x0,op_137
+	sub	op_114,op_115,op_136
+	sub	op_113,x0,op_114
+	sub	a4,op_0,op_113
 	addi	op_0,x0,4
 	srl	a4,a4,op_0
 	addi	op_0,x0,2
@@ -4124,84 +4549,190 @@ sglib_hashed_ilist_is_member:
 	lw	a4,0(a1)
 	lui	a5,838861
 	addi	a5,a5,-819
-	lui	op_6,16
-	addi	op_5,op_6,-1
-	and	op_4,a4,op_5
-	lui	op_9,16
-	addi	op_8,op_9,-1
-	and	op_7,a5,op_8
-	callmul	op_3,op_4,op_7
-	addi	op_10,x0,16
-	srl	op_2,op_3,op_10
-	addi	op_17,x0,16
-	srl	op_16,a4,op_17
-	lui	op_19,16
-	addi	op_18,op_19,-1
-	and	op_15,op_16,op_18
-	lui	op_22,16
-	addi	op_21,op_22,-1
-	and	op_20,a5,op_21
-	callmul	op_14,op_15,op_20
-	lui	op_24,16
-	addi	op_23,op_24,-1
-	and	op_13,op_14,op_23
-	lui	op_30,16
-	addi	op_29,op_30,-1
-	and	op_28,a4,op_29
-	addi	op_33,x0,16
-	srl	op_32,a5,op_33
-	lui	op_35,16
-	addi	op_34,op_35,-1
-	and	op_31,op_32,op_34
-	callmul	op_27,op_28,op_31
-	lui	op_37,16
-	addi	op_36,op_37,-1
-	and	op_26,op_27,op_36
-	sub	op_25,x0,op_26
-	sub	op_12,op_13,op_25
-	sub	op_11,x0,op_12
-	sub	op_1,op_2,op_11
-	addi	op_38,x0,16
-	srl	op_0,op_1,op_38
-	addi	op_45,x0,16
-	srl	op_44,a4,op_45
-	lui	op_47,16
-	addi	op_46,op_47,-1
-	and	op_43,op_44,op_46
-	lui	op_50,16
-	addi	op_49,op_50,-1
-	and	op_48,a5,op_49
-	callmul	op_42,op_43,op_48
-	addi	op_51,x0,16
-	srl	op_41,op_42,op_51
-	lui	op_58,16
-	addi	op_57,op_58,-1
-	and	op_56,a4,op_57
-	addi	op_61,x0,16
-	srl	op_60,a5,op_61
+	lui	op_8,16
+	addi	op_7,op_8,-1
+	or	op_6,a4,op_7
+	lui	op_10,16
+	addi	op_9,op_10,-1
+	sub	op_5,op_6,op_9
+	sub	op_4,a4,op_5
+	lui	op_15,16
+	addi	op_14,op_15,-1
+	or	op_13,a5,op_14
+	lui	op_17,16
+	addi	op_16,op_17,-1
+	sub	op_12,op_13,op_16
+	sub	op_11,a5,op_12
+	callmul	op_3,op_4,op_11
+	addi	op_18,x0,16
+	srl	op_2,op_3,op_18
+	addi	op_25,x0,16
+	srl	op_24,a4,op_25
+	addi	op_29,x0,16
+	srl	op_28,a4,op_29
+	lui	op_31,16
+	addi	op_30,op_31,-1
+	or	op_27,op_28,op_30
+	lui	op_33,16
+	addi	op_32,op_33,-1
+	sub	op_26,op_27,op_32
+	sub	op_23,op_24,op_26
+	lui	op_38,16
+	addi	op_37,op_38,-1
+	or	op_36,a5,op_37
+	lui	op_40,16
+	addi	op_39,op_40,-1
+	sub	op_35,op_36,op_39
+	sub	op_34,a5,op_35
+	callmul	op_22,op_23,op_34
+	addi	op_46,x0,16
+	srl	op_45,a4,op_46
+	addi	op_50,x0,16
+	srl	op_49,a4,op_50
+	lui	op_52,16
+	addi	op_51,op_52,-1
+	or	op_48,op_49,op_51
+	lui	op_54,16
+	addi	op_53,op_54,-1
+	sub	op_47,op_48,op_53
+	sub	op_44,op_45,op_47
+	lui	op_59,16
+	addi	op_58,op_59,-1
+	or	op_57,a5,op_58
+	lui	op_61,16
+	addi	op_60,op_61,-1
+	sub	op_56,op_57,op_60
+	sub	op_55,a5,op_56
+	callmul	op_43,op_44,op_55
 	lui	op_63,16
 	addi	op_62,op_63,-1
-	and	op_59,op_60,op_62
-	callmul	op_55,op_56,op_59
-	addi	op_64,x0,16
-	srl	op_54,op_55,op_64
-	addi	op_69,x0,16
-	srl	op_68,a4,op_69
-	lui	op_71,16
-	addi	op_70,op_71,-1
-	and	op_67,op_68,op_70
-	addi	op_74,x0,16
-	srl	op_73,a5,op_74
-	lui	op_76,16
-	addi	op_75,op_76,-1
-	and	op_72,op_73,op_75
-	callmul	op_66,op_67,op_72
-	sub	op_65,x0,op_66
-	sub	op_53,op_54,op_65
-	sub	op_52,x0,op_53
-	sub	op_40,op_41,op_52
-	sub	op_39,x0,op_40
-	sub	a5,op_0,op_39
+	or	op_42,op_43,op_62
+	lui	op_65,16
+	addi	op_64,op_65,-1
+	sub	op_41,op_42,op_64
+	sub	op_21,op_22,op_41
+	lui	op_73,16
+	addi	op_72,op_73,-1
+	or	op_71,a4,op_72
+	lui	op_75,16
+	addi	op_74,op_75,-1
+	sub	op_70,op_71,op_74
+	sub	op_69,a4,op_70
+	addi	op_78,x0,16
+	srl	op_77,a5,op_78
+	addi	op_82,x0,16
+	srl	op_81,a5,op_82
+	lui	op_84,16
+	addi	op_83,op_84,-1
+	or	op_80,op_81,op_83
+	lui	op_86,16
+	addi	op_85,op_86,-1
+	sub	op_79,op_80,op_85
+	sub	op_76,op_77,op_79
+	callmul	op_68,op_69,op_76
+	lui	op_94,16
+	addi	op_93,op_94,-1
+	or	op_92,a4,op_93
+	lui	op_96,16
+	addi	op_95,op_96,-1
+	sub	op_91,op_92,op_95
+	sub	op_90,a4,op_91
+	addi	op_99,x0,16
+	srl	op_98,a5,op_99
+	addi	op_103,x0,16
+	srl	op_102,a5,op_103
+	lui	op_105,16
+	addi	op_104,op_105,-1
+	or	op_101,op_102,op_104
+	lui	op_107,16
+	addi	op_106,op_107,-1
+	sub	op_100,op_101,op_106
+	sub	op_97,op_98,op_100
+	callmul	op_89,op_90,op_97
+	lui	op_109,16
+	addi	op_108,op_109,-1
+	or	op_88,op_89,op_108
+	lui	op_111,16
+	addi	op_110,op_111,-1
+	sub	op_87,op_88,op_110
+	sub	op_67,op_68,op_87
+	sub	op_66,x0,op_67
+	sub	op_20,op_21,op_66
+	sub	op_19,x0,op_20
+	sub	op_1,op_2,op_19
+	addi	op_112,x0,16
+	srl	op_0,op_1,op_112
+	addi	op_119,x0,16
+	srl	op_118,a4,op_119
+	addi	op_123,x0,16
+	srl	op_122,a4,op_123
+	lui	op_125,16
+	addi	op_124,op_125,-1
+	or	op_121,op_122,op_124
+	lui	op_127,16
+	addi	op_126,op_127,-1
+	sub	op_120,op_121,op_126
+	sub	op_117,op_118,op_120
+	lui	op_132,16
+	addi	op_131,op_132,-1
+	or	op_130,a5,op_131
+	lui	op_134,16
+	addi	op_133,op_134,-1
+	sub	op_129,op_130,op_133
+	sub	op_128,a5,op_129
+	callmul	op_116,op_117,op_128
+	addi	op_135,x0,16
+	srl	op_115,op_116,op_135
+	lui	op_144,16
+	addi	op_143,op_144,-1
+	or	op_142,a4,op_143
+	lui	op_146,16
+	addi	op_145,op_146,-1
+	sub	op_141,op_142,op_145
+	sub	op_140,a4,op_141
+	addi	op_149,x0,16
+	srl	op_148,a5,op_149
+	addi	op_153,x0,16
+	srl	op_152,a5,op_153
+	lui	op_155,16
+	addi	op_154,op_155,-1
+	or	op_151,op_152,op_154
+	lui	op_157,16
+	addi	op_156,op_157,-1
+	sub	op_150,op_151,op_156
+	sub	op_147,op_148,op_150
+	callmul	op_139,op_140,op_147
+	addi	op_158,x0,16
+	srl	op_138,op_139,op_158
+	addi	op_163,x0,16
+	srl	op_162,a4,op_163
+	addi	op_167,x0,16
+	srl	op_166,a4,op_167
+	lui	op_169,16
+	addi	op_168,op_169,-1
+	or	op_165,op_166,op_168
+	lui	op_171,16
+	addi	op_170,op_171,-1
+	sub	op_164,op_165,op_170
+	sub	op_161,op_162,op_164
+	addi	op_174,x0,16
+	srl	op_173,a5,op_174
+	addi	op_178,x0,16
+	srl	op_177,a5,op_178
+	lui	op_180,16
+	addi	op_179,op_180,-1
+	or	op_176,op_177,op_179
+	lui	op_182,16
+	addi	op_181,op_182,-1
+	sub	op_175,op_176,op_181
+	sub	op_172,op_173,op_175
+	callmul	op_160,op_161,op_172
+	sub	op_159,x0,op_160
+	sub	op_137,op_138,op_159
+	sub	op_136,x0,op_137
+	sub	op_114,op_115,op_136
+	sub	op_113,x0,op_114
+	sub	a5,op_0,op_113
 	addi	op_0,x0,4
 	srl	a5,a5,op_0
 	addi	op_0,x0,2
@@ -4240,84 +4771,190 @@ sglib_hashed_ilist_find_member:
 	lw	a4,0(a1)
 	lui	a3,838861
 	addi	a3,a3,-819
-	lui	op_6,16
-	addi	op_5,op_6,-1
-	and	op_4,a4,op_5
-	lui	op_9,16
-	addi	op_8,op_9,-1
-	and	op_7,a3,op_8
-	callmul	op_3,op_4,op_7
-	addi	op_10,x0,16
-	srl	op_2,op_3,op_10
-	addi	op_17,x0,16
-	srl	op_16,a4,op_17
-	lui	op_19,16
-	addi	op_18,op_19,-1
-	and	op_15,op_16,op_18
-	lui	op_22,16
-	addi	op_21,op_22,-1
-	and	op_20,a3,op_21
-	callmul	op_14,op_15,op_20
-	lui	op_24,16
-	addi	op_23,op_24,-1
-	and	op_13,op_14,op_23
-	lui	op_30,16
-	addi	op_29,op_30,-1
-	and	op_28,a4,op_29
-	addi	op_33,x0,16
-	srl	op_32,a3,op_33
-	lui	op_35,16
-	addi	op_34,op_35,-1
-	and	op_31,op_32,op_34
-	callmul	op_27,op_28,op_31
-	lui	op_37,16
-	addi	op_36,op_37,-1
-	and	op_26,op_27,op_36
-	sub	op_25,x0,op_26
-	sub	op_12,op_13,op_25
-	sub	op_11,x0,op_12
-	sub	op_1,op_2,op_11
-	addi	op_38,x0,16
-	srl	op_0,op_1,op_38
-	addi	op_45,x0,16
-	srl	op_44,a4,op_45
-	lui	op_47,16
-	addi	op_46,op_47,-1
-	and	op_43,op_44,op_46
-	lui	op_50,16
-	addi	op_49,op_50,-1
-	and	op_48,a3,op_49
-	callmul	op_42,op_43,op_48
-	addi	op_51,x0,16
-	srl	op_41,op_42,op_51
-	lui	op_58,16
-	addi	op_57,op_58,-1
-	and	op_56,a4,op_57
-	addi	op_61,x0,16
-	srl	op_60,a3,op_61
+	lui	op_8,16
+	addi	op_7,op_8,-1
+	or	op_6,a4,op_7
+	lui	op_10,16
+	addi	op_9,op_10,-1
+	sub	op_5,op_6,op_9
+	sub	op_4,a4,op_5
+	lui	op_15,16
+	addi	op_14,op_15,-1
+	or	op_13,a3,op_14
+	lui	op_17,16
+	addi	op_16,op_17,-1
+	sub	op_12,op_13,op_16
+	sub	op_11,a3,op_12
+	callmul	op_3,op_4,op_11
+	addi	op_18,x0,16
+	srl	op_2,op_3,op_18
+	addi	op_25,x0,16
+	srl	op_24,a4,op_25
+	addi	op_29,x0,16
+	srl	op_28,a4,op_29
+	lui	op_31,16
+	addi	op_30,op_31,-1
+	or	op_27,op_28,op_30
+	lui	op_33,16
+	addi	op_32,op_33,-1
+	sub	op_26,op_27,op_32
+	sub	op_23,op_24,op_26
+	lui	op_38,16
+	addi	op_37,op_38,-1
+	or	op_36,a3,op_37
+	lui	op_40,16
+	addi	op_39,op_40,-1
+	sub	op_35,op_36,op_39
+	sub	op_34,a3,op_35
+	callmul	op_22,op_23,op_34
+	addi	op_46,x0,16
+	srl	op_45,a4,op_46
+	addi	op_50,x0,16
+	srl	op_49,a4,op_50
+	lui	op_52,16
+	addi	op_51,op_52,-1
+	or	op_48,op_49,op_51
+	lui	op_54,16
+	addi	op_53,op_54,-1
+	sub	op_47,op_48,op_53
+	sub	op_44,op_45,op_47
+	lui	op_59,16
+	addi	op_58,op_59,-1
+	or	op_57,a3,op_58
+	lui	op_61,16
+	addi	op_60,op_61,-1
+	sub	op_56,op_57,op_60
+	sub	op_55,a3,op_56
+	callmul	op_43,op_44,op_55
 	lui	op_63,16
 	addi	op_62,op_63,-1
-	and	op_59,op_60,op_62
-	callmul	op_55,op_56,op_59
-	addi	op_64,x0,16
-	srl	op_54,op_55,op_64
-	addi	op_69,x0,16
-	srl	op_68,a4,op_69
-	lui	op_71,16
-	addi	op_70,op_71,-1
-	and	op_67,op_68,op_70
-	addi	op_74,x0,16
-	srl	op_73,a3,op_74
-	lui	op_76,16
-	addi	op_75,op_76,-1
-	and	op_72,op_73,op_75
-	callmul	op_66,op_67,op_72
-	sub	op_65,x0,op_66
-	sub	op_53,op_54,op_65
-	sub	op_52,x0,op_53
-	sub	op_40,op_41,op_52
-	sub	op_39,x0,op_40
-	sub	a3,op_0,op_39
+	or	op_42,op_43,op_62
+	lui	op_65,16
+	addi	op_64,op_65,-1
+	sub	op_41,op_42,op_64
+	sub	op_21,op_22,op_41
+	lui	op_73,16
+	addi	op_72,op_73,-1
+	or	op_71,a4,op_72
+	lui	op_75,16
+	addi	op_74,op_75,-1
+	sub	op_70,op_71,op_74
+	sub	op_69,a4,op_70
+	addi	op_78,x0,16
+	srl	op_77,a3,op_78
+	addi	op_82,x0,16
+	srl	op_81,a3,op_82
+	lui	op_84,16
+	addi	op_83,op_84,-1
+	or	op_80,op_81,op_83
+	lui	op_86,16
+	addi	op_85,op_86,-1
+	sub	op_79,op_80,op_85
+	sub	op_76,op_77,op_79
+	callmul	op_68,op_69,op_76
+	lui	op_94,16
+	addi	op_93,op_94,-1
+	or	op_92,a4,op_93
+	lui	op_96,16
+	addi	op_95,op_96,-1
+	sub	op_91,op_92,op_95
+	sub	op_90,a4,op_91
+	addi	op_99,x0,16
+	srl	op_98,a3,op_99
+	addi	op_103,x0,16
+	srl	op_102,a3,op_103
+	lui	op_105,16
+	addi	op_104,op_105,-1
+	or	op_101,op_102,op_104
+	lui	op_107,16
+	addi	op_106,op_107,-1
+	sub	op_100,op_101,op_106
+	sub	op_97,op_98,op_100
+	callmul	op_89,op_90,op_97
+	lui	op_109,16
+	addi	op_108,op_109,-1
+	or	op_88,op_89,op_108
+	lui	op_111,16
+	addi	op_110,op_111,-1
+	sub	op_87,op_88,op_110
+	sub	op_67,op_68,op_87
+	sub	op_66,x0,op_67
+	sub	op_20,op_21,op_66
+	sub	op_19,x0,op_20
+	sub	op_1,op_2,op_19
+	addi	op_112,x0,16
+	srl	op_0,op_1,op_112
+	addi	op_119,x0,16
+	srl	op_118,a4,op_119
+	addi	op_123,x0,16
+	srl	op_122,a4,op_123
+	lui	op_125,16
+	addi	op_124,op_125,-1
+	or	op_121,op_122,op_124
+	lui	op_127,16
+	addi	op_126,op_127,-1
+	sub	op_120,op_121,op_126
+	sub	op_117,op_118,op_120
+	lui	op_132,16
+	addi	op_131,op_132,-1
+	or	op_130,a3,op_131
+	lui	op_134,16
+	addi	op_133,op_134,-1
+	sub	op_129,op_130,op_133
+	sub	op_128,a3,op_129
+	callmul	op_116,op_117,op_128
+	addi	op_135,x0,16
+	srl	op_115,op_116,op_135
+	lui	op_144,16
+	addi	op_143,op_144,-1
+	or	op_142,a4,op_143
+	lui	op_146,16
+	addi	op_145,op_146,-1
+	sub	op_141,op_142,op_145
+	sub	op_140,a4,op_141
+	addi	op_149,x0,16
+	srl	op_148,a3,op_149
+	addi	op_153,x0,16
+	srl	op_152,a3,op_153
+	lui	op_155,16
+	addi	op_154,op_155,-1
+	or	op_151,op_152,op_154
+	lui	op_157,16
+	addi	op_156,op_157,-1
+	sub	op_150,op_151,op_156
+	sub	op_147,op_148,op_150
+	callmul	op_139,op_140,op_147
+	addi	op_158,x0,16
+	srl	op_138,op_139,op_158
+	addi	op_163,x0,16
+	srl	op_162,a4,op_163
+	addi	op_167,x0,16
+	srl	op_166,a4,op_167
+	lui	op_169,16
+	addi	op_168,op_169,-1
+	or	op_165,op_166,op_168
+	lui	op_171,16
+	addi	op_170,op_171,-1
+	sub	op_164,op_165,op_170
+	sub	op_161,op_162,op_164
+	addi	op_174,x0,16
+	srl	op_173,a3,op_174
+	addi	op_178,x0,16
+	srl	op_177,a3,op_178
+	lui	op_180,16
+	addi	op_179,op_180,-1
+	or	op_176,op_177,op_179
+	lui	op_182,16
+	addi	op_181,op_182,-1
+	sub	op_175,op_176,op_181
+	sub	op_172,op_173,op_175
+	callmul	op_160,op_161,op_172
+	sub	op_159,x0,op_160
+	sub	op_137,op_138,op_159
+	sub	op_136,x0,op_137
+	sub	op_114,op_115,op_136
+	sub	op_113,x0,op_114
+	sub	a3,op_0,op_113
 	addi	op_0,x0,4
 	srl	a3,a3,op_0
 	addi	op_0,x0,2
@@ -4407,7 +5044,8 @@ sglib_hashed_ilist_it_next:
 .L1180:
 	addi	a5,a5,1
 	sw	a5,20(s1)
-	blt	s4,a5,.L1201
+	bge	s4,a5,.+8
+	jal	x0,.L1201
 .L1187:
 	lw	a4,16(s1)
 	lw	s2,24(s1)
@@ -4456,8 +5094,7 @@ sglib_hashed_ilist_it_next:
 	sw	zero,0(s1)
 	addi	a5,a5,1
 	sw	a5,20(s1)
-	blt	s4,a5,.+8
-	jal	x0,.L1187
+	bge	s4,a5,.L1187
 .L1201:
 	lw	s4,8(sp)
 	addi	s0,zero,0
@@ -4592,64 +5229,125 @@ sglib_iq_is_full:
 	lui	a5,166111
 	addi	a5,a5,203
 	addi	a4,a4,1
-	lui	op_5,16
-	addi	op_4,op_5,-1
-	and	op_3,a4,op_4
-	addi	op_7,x0,16
-	sra	op_6,a5,op_7
-	callmul	op_2,op_3,op_6
-	lui	op_15,16
-	addi	op_14,op_15,-1
-	and	op_13,a4,op_14
-	lui	op_18,16
-	addi	op_17,op_18,-1
-	and	op_16,a5,op_17
-	callmul	op_12,op_13,op_16
-	addi	op_19,x0,16
-	srl	op_11,op_12,op_19
-	addi	op_23,x0,16
-	sra	op_22,a4,op_23
-	lui	op_26,16
-	addi	op_25,op_26,-1
-	and	op_24,a5,op_25
-	callmul	op_21,op_22,op_24
-	sub	op_20,x0,op_21
-	sub	op_10,op_11,op_20
+	lui	op_7,16
+	addi	op_6,op_7,-1
+	or	op_5,a4,op_6
+	lui	op_9,16
+	addi	op_8,op_9,-1
+	sub	op_4,op_5,op_8
+	sub	op_3,a4,op_4
+	addi	op_11,x0,16
+	sra	op_10,a5,op_11
+	callmul	op_2,op_3,op_10
+	lui	op_21,16
+	addi	op_20,op_21,-1
+	or	op_19,a4,op_20
+	lui	op_23,16
+	addi	op_22,op_23,-1
+	sub	op_18,op_19,op_22
+	sub	op_17,a4,op_18
 	lui	op_28,16
 	addi	op_27,op_28,-1
-	and	op_9,op_10,op_27
-	sub	op_8,x0,op_9
-	sub	op_1,op_2,op_8
-	addi	op_29,x0,16
-	sra	op_0,op_1,op_29
-	lui	op_38,16
-	addi	op_37,op_38,-1
-	and	op_36,a4,op_37
-	lui	op_41,16
-	addi	op_40,op_41,-1
-	and	op_39,a5,op_40
-	callmul	op_35,op_36,op_39
-	addi	op_42,x0,16
-	srl	op_34,op_35,op_42
-	addi	op_46,x0,16
-	sra	op_45,a4,op_46
-	lui	op_49,16
-	addi	op_48,op_49,-1
-	and	op_47,a5,op_48
-	callmul	op_44,op_45,op_47
-	sub	op_43,x0,op_44
-	sub	op_33,op_34,op_43
-	addi	op_50,x0,16
-	sra	op_32,op_33,op_50
-	addi	op_54,x0,16
-	sra	op_53,a4,op_54
-	addi	op_56,x0,16
-	sra	op_55,a5,op_56
-	callmul	op_52,op_53,op_55
-	sub	op_51,x0,op_52
-	sub	op_31,op_32,op_51
-	sub	op_30,x0,op_31
-	sub	a5,op_0,op_30
+	or	op_26,a5,op_27
+	lui	op_30,16
+	addi	op_29,op_30,-1
+	sub	op_25,op_26,op_29
+	sub	op_24,a5,op_25
+	callmul	op_16,op_17,op_24
+	addi	op_31,x0,16
+	srl	op_15,op_16,op_31
+	addi	op_35,x0,16
+	sra	op_34,a4,op_35
+	lui	op_40,16
+	addi	op_39,op_40,-1
+	or	op_38,a5,op_39
+	lui	op_42,16
+	addi	op_41,op_42,-1
+	sub	op_37,op_38,op_41
+	sub	op_36,a5,op_37
+	callmul	op_33,op_34,op_36
+	sub	op_32,x0,op_33
+	sub	op_14,op_15,op_32
+	lui	op_52,16
+	addi	op_51,op_52,-1
+	or	op_50,a4,op_51
+	lui	op_54,16
+	addi	op_53,op_54,-1
+	sub	op_49,op_50,op_53
+	sub	op_48,a4,op_49
+	lui	op_59,16
+	addi	op_58,op_59,-1
+	or	op_57,a5,op_58
+	lui	op_61,16
+	addi	op_60,op_61,-1
+	sub	op_56,op_57,op_60
+	sub	op_55,a5,op_56
+	callmul	op_47,op_48,op_55
+	addi	op_62,x0,16
+	srl	op_46,op_47,op_62
+	addi	op_66,x0,16
+	sra	op_65,a4,op_66
+	lui	op_71,16
+	addi	op_70,op_71,-1
+	or	op_69,a5,op_70
+	lui	op_73,16
+	addi	op_72,op_73,-1
+	sub	op_68,op_69,op_72
+	sub	op_67,a5,op_68
+	callmul	op_64,op_65,op_67
+	sub	op_63,x0,op_64
+	sub	op_45,op_46,op_63
+	lui	op_75,16
+	addi	op_74,op_75,-1
+	or	op_44,op_45,op_74
+	lui	op_77,16
+	addi	op_76,op_77,-1
+	sub	op_43,op_44,op_76
+	sub	op_13,op_14,op_43
+	sub	op_12,x0,op_13
+	sub	op_1,op_2,op_12
+	addi	op_78,x0,16
+	sra	op_0,op_1,op_78
+	lui	op_89,16
+	addi	op_88,op_89,-1
+	or	op_87,a4,op_88
+	lui	op_91,16
+	addi	op_90,op_91,-1
+	sub	op_86,op_87,op_90
+	sub	op_85,a4,op_86
+	lui	op_96,16
+	addi	op_95,op_96,-1
+	or	op_94,a5,op_95
+	lui	op_98,16
+	addi	op_97,op_98,-1
+	sub	op_93,op_94,op_97
+	sub	op_92,a5,op_93
+	callmul	op_84,op_85,op_92
+	addi	op_99,x0,16
+	srl	op_83,op_84,op_99
+	addi	op_103,x0,16
+	sra	op_102,a4,op_103
+	lui	op_108,16
+	addi	op_107,op_108,-1
+	or	op_106,a5,op_107
+	lui	op_110,16
+	addi	op_109,op_110,-1
+	sub	op_105,op_106,op_109
+	sub	op_104,a5,op_105
+	callmul	op_101,op_102,op_104
+	sub	op_100,x0,op_101
+	sub	op_82,op_83,op_100
+	addi	op_111,x0,16
+	sra	op_81,op_82,op_111
+	addi	op_115,x0,16
+	sra	op_114,a4,op_115
+	addi	op_117,x0,16
+	sra	op_116,a5,op_117
+	callmul	op_113,op_114,op_116
+	sub	op_112,x0,op_113
+	sub	op_80,op_81,op_112
+	sub	op_79,x0,op_80
+	sub	a5,op_0,op_79
 	addi	op_0,x0,31
 	sra	a1,a4,op_0
 	addi	a2,zero,101
@@ -4698,64 +5396,125 @@ sglib_iq_add_next:
 	lui	a5,166111
 	addi	a5,a5,203
 	addi	a4,a4,1
-	lui	op_5,16
-	addi	op_4,op_5,-1
-	and	op_3,a4,op_4
-	addi	op_7,x0,16
-	sra	op_6,a5,op_7
-	callmul	op_2,op_3,op_6
-	lui	op_15,16
-	addi	op_14,op_15,-1
-	and	op_13,a4,op_14
-	lui	op_18,16
-	addi	op_17,op_18,-1
-	and	op_16,a5,op_17
-	callmul	op_12,op_13,op_16
-	addi	op_19,x0,16
-	srl	op_11,op_12,op_19
-	addi	op_23,x0,16
-	sra	op_22,a4,op_23
-	lui	op_26,16
-	addi	op_25,op_26,-1
-	and	op_24,a5,op_25
-	callmul	op_21,op_22,op_24
-	sub	op_20,x0,op_21
-	sub	op_10,op_11,op_20
+	lui	op_7,16
+	addi	op_6,op_7,-1
+	or	op_5,a4,op_6
+	lui	op_9,16
+	addi	op_8,op_9,-1
+	sub	op_4,op_5,op_8
+	sub	op_3,a4,op_4
+	addi	op_11,x0,16
+	sra	op_10,a5,op_11
+	callmul	op_2,op_3,op_10
+	lui	op_21,16
+	addi	op_20,op_21,-1
+	or	op_19,a4,op_20
+	lui	op_23,16
+	addi	op_22,op_23,-1
+	sub	op_18,op_19,op_22
+	sub	op_17,a4,op_18
 	lui	op_28,16
 	addi	op_27,op_28,-1
-	and	op_9,op_10,op_27
-	sub	op_8,x0,op_9
-	sub	op_1,op_2,op_8
-	addi	op_29,x0,16
-	sra	op_0,op_1,op_29
-	lui	op_38,16
-	addi	op_37,op_38,-1
-	and	op_36,a4,op_37
-	lui	op_41,16
-	addi	op_40,op_41,-1
-	and	op_39,a5,op_40
-	callmul	op_35,op_36,op_39
-	addi	op_42,x0,16
-	srl	op_34,op_35,op_42
-	addi	op_46,x0,16
-	sra	op_45,a4,op_46
-	lui	op_49,16
-	addi	op_48,op_49,-1
-	and	op_47,a5,op_48
-	callmul	op_44,op_45,op_47
-	sub	op_43,x0,op_44
-	sub	op_33,op_34,op_43
-	addi	op_50,x0,16
-	sra	op_32,op_33,op_50
-	addi	op_54,x0,16
-	sra	op_53,a4,op_54
-	addi	op_56,x0,16
-	sra	op_55,a5,op_56
-	callmul	op_52,op_53,op_55
-	sub	op_51,x0,op_52
-	sub	op_31,op_32,op_51
-	sub	op_30,x0,op_31
-	sub	a5,op_0,op_30
+	or	op_26,a5,op_27
+	lui	op_30,16
+	addi	op_29,op_30,-1
+	sub	op_25,op_26,op_29
+	sub	op_24,a5,op_25
+	callmul	op_16,op_17,op_24
+	addi	op_31,x0,16
+	srl	op_15,op_16,op_31
+	addi	op_35,x0,16
+	sra	op_34,a4,op_35
+	lui	op_40,16
+	addi	op_39,op_40,-1
+	or	op_38,a5,op_39
+	lui	op_42,16
+	addi	op_41,op_42,-1
+	sub	op_37,op_38,op_41
+	sub	op_36,a5,op_37
+	callmul	op_33,op_34,op_36
+	sub	op_32,x0,op_33
+	sub	op_14,op_15,op_32
+	lui	op_52,16
+	addi	op_51,op_52,-1
+	or	op_50,a4,op_51
+	lui	op_54,16
+	addi	op_53,op_54,-1
+	sub	op_49,op_50,op_53
+	sub	op_48,a4,op_49
+	lui	op_59,16
+	addi	op_58,op_59,-1
+	or	op_57,a5,op_58
+	lui	op_61,16
+	addi	op_60,op_61,-1
+	sub	op_56,op_57,op_60
+	sub	op_55,a5,op_56
+	callmul	op_47,op_48,op_55
+	addi	op_62,x0,16
+	srl	op_46,op_47,op_62
+	addi	op_66,x0,16
+	sra	op_65,a4,op_66
+	lui	op_71,16
+	addi	op_70,op_71,-1
+	or	op_69,a5,op_70
+	lui	op_73,16
+	addi	op_72,op_73,-1
+	sub	op_68,op_69,op_72
+	sub	op_67,a5,op_68
+	callmul	op_64,op_65,op_67
+	sub	op_63,x0,op_64
+	sub	op_45,op_46,op_63
+	lui	op_75,16
+	addi	op_74,op_75,-1
+	or	op_44,op_45,op_74
+	lui	op_77,16
+	addi	op_76,op_77,-1
+	sub	op_43,op_44,op_76
+	sub	op_13,op_14,op_43
+	sub	op_12,x0,op_13
+	sub	op_1,op_2,op_12
+	addi	op_78,x0,16
+	sra	op_0,op_1,op_78
+	lui	op_89,16
+	addi	op_88,op_89,-1
+	or	op_87,a4,op_88
+	lui	op_91,16
+	addi	op_90,op_91,-1
+	sub	op_86,op_87,op_90
+	sub	op_85,a4,op_86
+	lui	op_96,16
+	addi	op_95,op_96,-1
+	or	op_94,a5,op_95
+	lui	op_98,16
+	addi	op_97,op_98,-1
+	sub	op_93,op_94,op_97
+	sub	op_92,a5,op_93
+	callmul	op_84,op_85,op_92
+	addi	op_99,x0,16
+	srl	op_83,op_84,op_99
+	addi	op_103,x0,16
+	sra	op_102,a4,op_103
+	lui	op_108,16
+	addi	op_107,op_108,-1
+	or	op_106,a5,op_107
+	lui	op_110,16
+	addi	op_109,op_110,-1
+	sub	op_105,op_106,op_109
+	sub	op_104,a5,op_105
+	callmul	op_101,op_102,op_104
+	sub	op_100,x0,op_101
+	sub	op_82,op_83,op_100
+	addi	op_111,x0,16
+	sra	op_81,op_82,op_111
+	addi	op_115,x0,16
+	sra	op_114,a4,op_115
+	addi	op_117,x0,16
+	sra	op_116,a5,op_117
+	callmul	op_113,op_114,op_116
+	sub	op_112,x0,op_113
+	sub	op_80,op_81,op_112
+	sub	op_79,x0,op_80
+	sub	a5,op_0,op_79
 	addi	op_0,x0,31
 	sra	a2,a4,op_0
 	addi	a3,zero,101
@@ -4775,64 +5534,125 @@ sglib_iq_add:
 	lui	a5,166111
 	addi	a5,a5,203
 	addi	a3,a4,1
-	lui	op_5,16
-	addi	op_4,op_5,-1
-	and	op_3,a3,op_4
-	addi	op_7,x0,16
-	sra	op_6,a5,op_7
-	callmul	op_2,op_3,op_6
-	lui	op_15,16
-	addi	op_14,op_15,-1
-	and	op_13,a3,op_14
-	lui	op_18,16
-	addi	op_17,op_18,-1
-	and	op_16,a5,op_17
-	callmul	op_12,op_13,op_16
-	addi	op_19,x0,16
-	srl	op_11,op_12,op_19
-	addi	op_23,x0,16
-	sra	op_22,a3,op_23
-	lui	op_26,16
-	addi	op_25,op_26,-1
-	and	op_24,a5,op_25
-	callmul	op_21,op_22,op_24
-	sub	op_20,x0,op_21
-	sub	op_10,op_11,op_20
+	lui	op_7,16
+	addi	op_6,op_7,-1
+	or	op_5,a3,op_6
+	lui	op_9,16
+	addi	op_8,op_9,-1
+	sub	op_4,op_5,op_8
+	sub	op_3,a3,op_4
+	addi	op_11,x0,16
+	sra	op_10,a5,op_11
+	callmul	op_2,op_3,op_10
+	lui	op_21,16
+	addi	op_20,op_21,-1
+	or	op_19,a3,op_20
+	lui	op_23,16
+	addi	op_22,op_23,-1
+	sub	op_18,op_19,op_22
+	sub	op_17,a3,op_18
 	lui	op_28,16
 	addi	op_27,op_28,-1
-	and	op_9,op_10,op_27
-	sub	op_8,x0,op_9
-	sub	op_1,op_2,op_8
-	addi	op_29,x0,16
-	sra	op_0,op_1,op_29
-	lui	op_38,16
-	addi	op_37,op_38,-1
-	and	op_36,a3,op_37
-	lui	op_41,16
-	addi	op_40,op_41,-1
-	and	op_39,a5,op_40
-	callmul	op_35,op_36,op_39
-	addi	op_42,x0,16
-	srl	op_34,op_35,op_42
-	addi	op_46,x0,16
-	sra	op_45,a3,op_46
-	lui	op_49,16
-	addi	op_48,op_49,-1
-	and	op_47,a5,op_48
-	callmul	op_44,op_45,op_47
-	sub	op_43,x0,op_44
-	sub	op_33,op_34,op_43
-	addi	op_50,x0,16
-	sra	op_32,op_33,op_50
-	addi	op_54,x0,16
-	sra	op_53,a3,op_54
-	addi	op_56,x0,16
-	sra	op_55,a5,op_56
-	callmul	op_52,op_53,op_55
-	sub	op_51,x0,op_52
-	sub	op_31,op_32,op_51
-	sub	op_30,x0,op_31
-	sub	a5,op_0,op_30
+	or	op_26,a5,op_27
+	lui	op_30,16
+	addi	op_29,op_30,-1
+	sub	op_25,op_26,op_29
+	sub	op_24,a5,op_25
+	callmul	op_16,op_17,op_24
+	addi	op_31,x0,16
+	srl	op_15,op_16,op_31
+	addi	op_35,x0,16
+	sra	op_34,a3,op_35
+	lui	op_40,16
+	addi	op_39,op_40,-1
+	or	op_38,a5,op_39
+	lui	op_42,16
+	addi	op_41,op_42,-1
+	sub	op_37,op_38,op_41
+	sub	op_36,a5,op_37
+	callmul	op_33,op_34,op_36
+	sub	op_32,x0,op_33
+	sub	op_14,op_15,op_32
+	lui	op_52,16
+	addi	op_51,op_52,-1
+	or	op_50,a3,op_51
+	lui	op_54,16
+	addi	op_53,op_54,-1
+	sub	op_49,op_50,op_53
+	sub	op_48,a3,op_49
+	lui	op_59,16
+	addi	op_58,op_59,-1
+	or	op_57,a5,op_58
+	lui	op_61,16
+	addi	op_60,op_61,-1
+	sub	op_56,op_57,op_60
+	sub	op_55,a5,op_56
+	callmul	op_47,op_48,op_55
+	addi	op_62,x0,16
+	srl	op_46,op_47,op_62
+	addi	op_66,x0,16
+	sra	op_65,a3,op_66
+	lui	op_71,16
+	addi	op_70,op_71,-1
+	or	op_69,a5,op_70
+	lui	op_73,16
+	addi	op_72,op_73,-1
+	sub	op_68,op_69,op_72
+	sub	op_67,a5,op_68
+	callmul	op_64,op_65,op_67
+	sub	op_63,x0,op_64
+	sub	op_45,op_46,op_63
+	lui	op_75,16
+	addi	op_74,op_75,-1
+	or	op_44,op_45,op_74
+	lui	op_77,16
+	addi	op_76,op_77,-1
+	sub	op_43,op_44,op_76
+	sub	op_13,op_14,op_43
+	sub	op_12,x0,op_13
+	sub	op_1,op_2,op_12
+	addi	op_78,x0,16
+	sra	op_0,op_1,op_78
+	lui	op_89,16
+	addi	op_88,op_89,-1
+	or	op_87,a3,op_88
+	lui	op_91,16
+	addi	op_90,op_91,-1
+	sub	op_86,op_87,op_90
+	sub	op_85,a3,op_86
+	lui	op_96,16
+	addi	op_95,op_96,-1
+	or	op_94,a5,op_95
+	lui	op_98,16
+	addi	op_97,op_98,-1
+	sub	op_93,op_94,op_97
+	sub	op_92,a5,op_93
+	callmul	op_84,op_85,op_92
+	addi	op_99,x0,16
+	srl	op_83,op_84,op_99
+	addi	op_103,x0,16
+	sra	op_102,a3,op_103
+	lui	op_108,16
+	addi	op_107,op_108,-1
+	or	op_106,a5,op_107
+	lui	op_110,16
+	addi	op_109,op_110,-1
+	sub	op_105,op_106,op_109
+	sub	op_104,a5,op_105
+	callmul	op_101,op_102,op_104
+	sub	op_100,x0,op_101
+	sub	op_82,op_83,op_100
+	addi	op_111,x0,16
+	sra	op_81,op_82,op_111
+	addi	op_115,x0,16
+	sra	op_114,a3,op_115
+	addi	op_117,x0,16
+	sra	op_116,a5,op_117
+	callmul	op_113,op_114,op_116
+	sub	op_112,x0,op_113
+	sub	op_80,op_81,op_112
+	sub	op_79,x0,op_80
+	sub	a5,op_0,op_79
 	addi	op_0,x0,31
 	sra	a6,a3,op_0
 	addi	a2,zero,101
@@ -4857,64 +5677,125 @@ sglib_iq_delete_first:
 	lui	a5,166111
 	addi	a5,a5,203
 	addi	a4,a4,1
-	lui	op_5,16
-	addi	op_4,op_5,-1
-	and	op_3,a4,op_4
-	addi	op_7,x0,16
-	sra	op_6,a5,op_7
-	callmul	op_2,op_3,op_6
-	lui	op_15,16
-	addi	op_14,op_15,-1
-	and	op_13,a4,op_14
-	lui	op_18,16
-	addi	op_17,op_18,-1
-	and	op_16,a5,op_17
-	callmul	op_12,op_13,op_16
-	addi	op_19,x0,16
-	srl	op_11,op_12,op_19
-	addi	op_23,x0,16
-	sra	op_22,a4,op_23
-	lui	op_26,16
-	addi	op_25,op_26,-1
-	and	op_24,a5,op_25
-	callmul	op_21,op_22,op_24
-	sub	op_20,x0,op_21
-	sub	op_10,op_11,op_20
+	lui	op_7,16
+	addi	op_6,op_7,-1
+	or	op_5,a4,op_6
+	lui	op_9,16
+	addi	op_8,op_9,-1
+	sub	op_4,op_5,op_8
+	sub	op_3,a4,op_4
+	addi	op_11,x0,16
+	sra	op_10,a5,op_11
+	callmul	op_2,op_3,op_10
+	lui	op_21,16
+	addi	op_20,op_21,-1
+	or	op_19,a4,op_20
+	lui	op_23,16
+	addi	op_22,op_23,-1
+	sub	op_18,op_19,op_22
+	sub	op_17,a4,op_18
 	lui	op_28,16
 	addi	op_27,op_28,-1
-	and	op_9,op_10,op_27
-	sub	op_8,x0,op_9
-	sub	op_1,op_2,op_8
-	addi	op_29,x0,16
-	sra	op_0,op_1,op_29
-	lui	op_38,16
-	addi	op_37,op_38,-1
-	and	op_36,a4,op_37
-	lui	op_41,16
-	addi	op_40,op_41,-1
-	and	op_39,a5,op_40
-	callmul	op_35,op_36,op_39
-	addi	op_42,x0,16
-	srl	op_34,op_35,op_42
-	addi	op_46,x0,16
-	sra	op_45,a4,op_46
-	lui	op_49,16
-	addi	op_48,op_49,-1
-	and	op_47,a5,op_48
-	callmul	op_44,op_45,op_47
-	sub	op_43,x0,op_44
-	sub	op_33,op_34,op_43
-	addi	op_50,x0,16
-	sra	op_32,op_33,op_50
-	addi	op_54,x0,16
-	sra	op_53,a4,op_54
-	addi	op_56,x0,16
-	sra	op_55,a5,op_56
-	callmul	op_52,op_53,op_55
-	sub	op_51,x0,op_52
-	sub	op_31,op_32,op_51
-	sub	op_30,x0,op_31
-	sub	a5,op_0,op_30
+	or	op_26,a5,op_27
+	lui	op_30,16
+	addi	op_29,op_30,-1
+	sub	op_25,op_26,op_29
+	sub	op_24,a5,op_25
+	callmul	op_16,op_17,op_24
+	addi	op_31,x0,16
+	srl	op_15,op_16,op_31
+	addi	op_35,x0,16
+	sra	op_34,a4,op_35
+	lui	op_40,16
+	addi	op_39,op_40,-1
+	or	op_38,a5,op_39
+	lui	op_42,16
+	addi	op_41,op_42,-1
+	sub	op_37,op_38,op_41
+	sub	op_36,a5,op_37
+	callmul	op_33,op_34,op_36
+	sub	op_32,x0,op_33
+	sub	op_14,op_15,op_32
+	lui	op_52,16
+	addi	op_51,op_52,-1
+	or	op_50,a4,op_51
+	lui	op_54,16
+	addi	op_53,op_54,-1
+	sub	op_49,op_50,op_53
+	sub	op_48,a4,op_49
+	lui	op_59,16
+	addi	op_58,op_59,-1
+	or	op_57,a5,op_58
+	lui	op_61,16
+	addi	op_60,op_61,-1
+	sub	op_56,op_57,op_60
+	sub	op_55,a5,op_56
+	callmul	op_47,op_48,op_55
+	addi	op_62,x0,16
+	srl	op_46,op_47,op_62
+	addi	op_66,x0,16
+	sra	op_65,a4,op_66
+	lui	op_71,16
+	addi	op_70,op_71,-1
+	or	op_69,a5,op_70
+	lui	op_73,16
+	addi	op_72,op_73,-1
+	sub	op_68,op_69,op_72
+	sub	op_67,a5,op_68
+	callmul	op_64,op_65,op_67
+	sub	op_63,x0,op_64
+	sub	op_45,op_46,op_63
+	lui	op_75,16
+	addi	op_74,op_75,-1
+	or	op_44,op_45,op_74
+	lui	op_77,16
+	addi	op_76,op_77,-1
+	sub	op_43,op_44,op_76
+	sub	op_13,op_14,op_43
+	sub	op_12,x0,op_13
+	sub	op_1,op_2,op_12
+	addi	op_78,x0,16
+	sra	op_0,op_1,op_78
+	lui	op_89,16
+	addi	op_88,op_89,-1
+	or	op_87,a4,op_88
+	lui	op_91,16
+	addi	op_90,op_91,-1
+	sub	op_86,op_87,op_90
+	sub	op_85,a4,op_86
+	lui	op_96,16
+	addi	op_95,op_96,-1
+	or	op_94,a5,op_95
+	lui	op_98,16
+	addi	op_97,op_98,-1
+	sub	op_93,op_94,op_97
+	sub	op_92,a5,op_93
+	callmul	op_84,op_85,op_92
+	addi	op_99,x0,16
+	srl	op_83,op_84,op_99
+	addi	op_103,x0,16
+	sra	op_102,a4,op_103
+	lui	op_108,16
+	addi	op_107,op_108,-1
+	or	op_106,a5,op_107
+	lui	op_110,16
+	addi	op_109,op_110,-1
+	sub	op_105,op_106,op_109
+	sub	op_104,a5,op_105
+	callmul	op_101,op_102,op_104
+	sub	op_100,x0,op_101
+	sub	op_82,op_83,op_100
+	addi	op_111,x0,16
+	sra	op_81,op_82,op_111
+	addi	op_115,x0,16
+	sra	op_114,a4,op_115
+	addi	op_117,x0,16
+	sra	op_116,a5,op_117
+	callmul	op_113,op_114,op_116
+	sub	op_112,x0,op_113
+	sub	op_80,op_81,op_112
+	sub	op_79,x0,op_80
+	sub	a5,op_0,op_79
 	addi	op_0,x0,31
 	sra	a2,a4,op_0
 	addi	a3,zero,101
@@ -4934,64 +5815,125 @@ sglib_iq_delete:
 	lui	a5,166111
 	addi	a5,a5,203
 	addi	a4,a4,1
-	lui	op_5,16
-	addi	op_4,op_5,-1
-	and	op_3,a4,op_4
-	addi	op_7,x0,16
-	sra	op_6,a5,op_7
-	callmul	op_2,op_3,op_6
-	lui	op_15,16
-	addi	op_14,op_15,-1
-	and	op_13,a4,op_14
-	lui	op_18,16
-	addi	op_17,op_18,-1
-	and	op_16,a5,op_17
-	callmul	op_12,op_13,op_16
-	addi	op_19,x0,16
-	srl	op_11,op_12,op_19
-	addi	op_23,x0,16
-	sra	op_22,a4,op_23
-	lui	op_26,16
-	addi	op_25,op_26,-1
-	and	op_24,a5,op_25
-	callmul	op_21,op_22,op_24
-	sub	op_20,x0,op_21
-	sub	op_10,op_11,op_20
+	lui	op_7,16
+	addi	op_6,op_7,-1
+	or	op_5,a4,op_6
+	lui	op_9,16
+	addi	op_8,op_9,-1
+	sub	op_4,op_5,op_8
+	sub	op_3,a4,op_4
+	addi	op_11,x0,16
+	sra	op_10,a5,op_11
+	callmul	op_2,op_3,op_10
+	lui	op_21,16
+	addi	op_20,op_21,-1
+	or	op_19,a4,op_20
+	lui	op_23,16
+	addi	op_22,op_23,-1
+	sub	op_18,op_19,op_22
+	sub	op_17,a4,op_18
 	lui	op_28,16
 	addi	op_27,op_28,-1
-	and	op_9,op_10,op_27
-	sub	op_8,x0,op_9
-	sub	op_1,op_2,op_8
-	addi	op_29,x0,16
-	sra	op_0,op_1,op_29
-	lui	op_38,16
-	addi	op_37,op_38,-1
-	and	op_36,a4,op_37
-	lui	op_41,16
-	addi	op_40,op_41,-1
-	and	op_39,a5,op_40
-	callmul	op_35,op_36,op_39
-	addi	op_42,x0,16
-	srl	op_34,op_35,op_42
-	addi	op_46,x0,16
-	sra	op_45,a4,op_46
-	lui	op_49,16
-	addi	op_48,op_49,-1
-	and	op_47,a5,op_48
-	callmul	op_44,op_45,op_47
-	sub	op_43,x0,op_44
-	sub	op_33,op_34,op_43
-	addi	op_50,x0,16
-	sra	op_32,op_33,op_50
-	addi	op_54,x0,16
-	sra	op_53,a4,op_54
-	addi	op_56,x0,16
-	sra	op_55,a5,op_56
-	callmul	op_52,op_53,op_55
-	sub	op_51,x0,op_52
-	sub	op_31,op_32,op_51
-	sub	op_30,x0,op_31
-	sub	a5,op_0,op_30
+	or	op_26,a5,op_27
+	lui	op_30,16
+	addi	op_29,op_30,-1
+	sub	op_25,op_26,op_29
+	sub	op_24,a5,op_25
+	callmul	op_16,op_17,op_24
+	addi	op_31,x0,16
+	srl	op_15,op_16,op_31
+	addi	op_35,x0,16
+	sra	op_34,a4,op_35
+	lui	op_40,16
+	addi	op_39,op_40,-1
+	or	op_38,a5,op_39
+	lui	op_42,16
+	addi	op_41,op_42,-1
+	sub	op_37,op_38,op_41
+	sub	op_36,a5,op_37
+	callmul	op_33,op_34,op_36
+	sub	op_32,x0,op_33
+	sub	op_14,op_15,op_32
+	lui	op_52,16
+	addi	op_51,op_52,-1
+	or	op_50,a4,op_51
+	lui	op_54,16
+	addi	op_53,op_54,-1
+	sub	op_49,op_50,op_53
+	sub	op_48,a4,op_49
+	lui	op_59,16
+	addi	op_58,op_59,-1
+	or	op_57,a5,op_58
+	lui	op_61,16
+	addi	op_60,op_61,-1
+	sub	op_56,op_57,op_60
+	sub	op_55,a5,op_56
+	callmul	op_47,op_48,op_55
+	addi	op_62,x0,16
+	srl	op_46,op_47,op_62
+	addi	op_66,x0,16
+	sra	op_65,a4,op_66
+	lui	op_71,16
+	addi	op_70,op_71,-1
+	or	op_69,a5,op_70
+	lui	op_73,16
+	addi	op_72,op_73,-1
+	sub	op_68,op_69,op_72
+	sub	op_67,a5,op_68
+	callmul	op_64,op_65,op_67
+	sub	op_63,x0,op_64
+	sub	op_45,op_46,op_63
+	lui	op_75,16
+	addi	op_74,op_75,-1
+	or	op_44,op_45,op_74
+	lui	op_77,16
+	addi	op_76,op_77,-1
+	sub	op_43,op_44,op_76
+	sub	op_13,op_14,op_43
+	sub	op_12,x0,op_13
+	sub	op_1,op_2,op_12
+	addi	op_78,x0,16
+	sra	op_0,op_1,op_78
+	lui	op_89,16
+	addi	op_88,op_89,-1
+	or	op_87,a4,op_88
+	lui	op_91,16
+	addi	op_90,op_91,-1
+	sub	op_86,op_87,op_90
+	sub	op_85,a4,op_86
+	lui	op_96,16
+	addi	op_95,op_96,-1
+	or	op_94,a5,op_95
+	lui	op_98,16
+	addi	op_97,op_98,-1
+	sub	op_93,op_94,op_97
+	sub	op_92,a5,op_93
+	callmul	op_84,op_85,op_92
+	addi	op_99,x0,16
+	srl	op_83,op_84,op_99
+	addi	op_103,x0,16
+	sra	op_102,a4,op_103
+	lui	op_108,16
+	addi	op_107,op_108,-1
+	or	op_106,a5,op_107
+	lui	op_110,16
+	addi	op_109,op_110,-1
+	sub	op_105,op_106,op_109
+	sub	op_104,a5,op_105
+	callmul	op_101,op_102,op_104
+	sub	op_100,x0,op_101
+	sub	op_82,op_83,op_100
+	addi	op_111,x0,16
+	sra	op_81,op_82,op_111
+	addi	op_115,x0,16
+	sra	op_114,a4,op_115
+	addi	op_117,x0,16
+	sra	op_116,a5,op_117
+	callmul	op_113,op_114,op_116
+	sub	op_112,x0,op_113
+	sub	op_80,op_81,op_112
+	sub	op_79,x0,op_80
+	sub	a5,op_0,op_79
 	addi	op_0,x0,31
 	sra	a2,a4,op_0
 	addi	a3,zero,101
@@ -5016,7 +5958,8 @@ sglib___rbtree_delete_recursive:
 	sw	ra,44(sp)
 	sub	a4,a3,a4
 	addi	s0,a0,0
-	blt	a4,zero,.L1235
+	bge	a4,zero,.+8
+	jal	x0,.L1235
 	beq	a4,zero,.+8
 	jal	x0,.L1281
 	bltu	a1,a5,.+8
@@ -5028,7 +5971,8 @@ sglib___rbtree_delete_recursive:
 	sw	s1,36(sp)
 	addi	s1,a5,8
 	sub	a2,a3,a2
-	blt	a2,zero,.L1238
+	bge	a2,zero,.+8
+	jal	x0,.L1238
 	beq	a2,zero,.+8
 	jal	x0,.L1239
 	bltu	a1,a4,.+8
@@ -5040,7 +5984,8 @@ sglib___rbtree_delete_recursive:
 	sw	s2,32(sp)
 	addi	s2,a4,8
 	sub	a3,a3,a2
-	blt	a3,zero,.L1242
+	bge	a3,zero,.+8
+	jal	x0,.L1242
 	beq	a3,zero,.+8
 	jal	x0,.L1243
 	bltu	a1,a5,.+8
@@ -5072,7 +6017,8 @@ sglib___rbtree_delete_recursive:
 	sw	s1,36(sp)
 	addi	s1,a5,12
 	sub	a3,a3,a2
-	blt	a3,zero,.L1265
+	bge	a3,zero,.+8
+	jal	x0,.L1265
 	beq	a3,zero,.+8
 	jal	x0,.L1282
 	bltu	a1,a4,.+8
@@ -5380,7 +6326,8 @@ sglib_rbtree_add:
 	sw	ra,28(sp)
 	sub	a4,a3,a4
 	addi	a2,a0,0
-	blt	a4,zero,.L1369
+	bge	a4,zero,.+8
+	jal	x0,.L1369
 	beq	a4,zero,.+8
 	jal	x0,.L1370
 	bltu	a1,a5,.+8
@@ -5390,7 +6337,8 @@ sglib_rbtree_add:
 	beq	a4,zero,.L1473
 	lw	a0,0(a4)
 	sub	a3,a3,a0
-	blt	a3,zero,.L1373
+	bge	a3,zero,.+8
+	jal	x0,.L1373
 	beq	a3,zero,.+8
 	jal	x0,.L1374
 	bltu	a1,a4,.+8
@@ -5704,7 +6652,8 @@ sglib_rbtree_delete:
 	sw	ra,44(sp)
 	sub	a4,a3,a4
 	addi	s0,a0,0
-	blt	a4,zero,.L1487
+	bge	a4,zero,.+8
+	jal	x0,.L1487
 	beq	a4,zero,.+8
 	jal	x0,.L1511
 	bltu	a1,a5,.+8
@@ -5716,7 +6665,8 @@ sglib_rbtree_delete:
 	sw	s1,36(sp)
 	addi	s1,a5,8
 	sub	a3,a3,a2
-	blt	a3,zero,.L1491
+	bge	a3,zero,.+8
+	jal	x0,.L1491
 	beq	a3,zero,.+8
 	jal	x0,.L1510
 	bltu	a1,a4,.+8
@@ -5888,7 +6838,8 @@ sglib_rbtree_find_member:
 .L1543:
 	lw	a5,0(a0)
 	sub	a5,a4,a5
-	blt	a5,zero,.L1549
+	bge	a5,zero,.+8
+	jal	x0,.L1549
 	beq	a5,zero,.L1539
 	lw	a0,12(a0)
 	beq	a0,zero,.+8
@@ -5910,7 +6861,8 @@ sglib_rbtree_is_member:
 .L1556:
 	lw	a5,0(a0)
 	sub	a5,a4,a5
-	blt	a5,zero,.L1552
+	bge	a5,zero,.+8
+	jal	x0,.L1552
 	beq	a5,zero,.+8
 	jal	x0,.L1553
 	bltu	a1,a0,.+8
@@ -5943,7 +6895,8 @@ sglib_rbtree_delete_if_member:
 .L1572:
 	lw	a5,0(a4)
 	sub	a5,a3,a5
-	blt	a5,zero,.L1583
+	bge	a5,zero,.+8
+	jal	x0,.L1583
 	beq	a5,zero,.L1571
 	lw	a4,12(a4)
 	beq	a4,zero,.+8
@@ -5986,7 +6939,8 @@ sglib_rbtree_add_if_not_member:
 .L1589:
 	lw	a5,0(a4)
 	sub	a5,a3,a5
-	blt	a5,zero,.L1598
+	bge	a5,zero,.+8
+	jal	x0,.L1598
 	beq	a5,zero,.L1588
 	lw	a4,12(a4)
 	beq	a4,zero,.+8
@@ -6078,7 +7032,8 @@ sglib_rbtree_len:
 	sub	op_0,x0,a0
 	sub	a0,a4,op_0
 	lw	a4,0(a1)
-	blt	zero,a3,.L1619
+	bge	zero,a3,.+8
+	jal	x0,.L1619
 	addi	op_0,x0,2
 	sll	a3,a3,op_0
 	sub	op_0,x0,t1
@@ -6111,8 +7066,7 @@ sglib__rbtree_it_compute_current_elem:
 	sw	zero,0(a0)
 	lw	s2,648(a0)
 	lw	s4,652(a0)
-	blt	zero,a5,.+8
-	jal	x0,.L1620
+	bge	zero,a5,.L1620
 	sw	s1,36(sp)
 	sw	s7,12(sp)
 	sw	s0,40(sp)
@@ -6135,8 +7089,7 @@ sglib__rbtree_it_compute_current_elem:
 	sra	a5,a5,op_0
 	sh	a5,644(s1)
 .L1623:
-	blt	zero,a5,.+8
-	jal	x0,.L1656
+	bge	zero,a5,.L1656
 	addi	a3,a5,-1
 	sub	op_0,x0,s1
 	sub	a4,a3,op_0
@@ -6183,7 +7136,8 @@ sglib__rbtree_it_compute_current_elem:
 	addi	a1,s0,0
 	addi	a0,s2,0
 	jalr	ra,s4,0
-	blt	a0,zero,.L1660
+	bge	a0,zero,.+8
+	jal	x0,.L1660
 	beq	a0,zero,.L1633
 	lw	s0,12(s0)
 	beq	s0,zero,.+8
@@ -6227,7 +7181,8 @@ sglib__rbtree_it_compute_current_elem:
 	lw	a4,0(s2)
 	lw	a5,0(s0)
 	sub	a5,a4,a5
-	blt	a5,zero,.L1661
+	bge	a5,zero,.+8
+	jal	x0,.L1661
 .L1631:
 	beq	a5,zero,.L1633
 	lw	s0,12(s0)
@@ -6235,8 +7190,7 @@ sglib__rbtree_it_compute_current_elem:
 .L1659:
 	lw	a5,0(s0)
 	sub	a5,a4,a5
-	blt	a5,zero,.+8
-	jal	x0,.L1631
+	bge	a5,zero,.L1631
 .L1661:
 	lw	s0,8(s0)
 	beq	s0,zero,.+8
@@ -6251,8 +7205,7 @@ sglib__rbtree_it_compute_current_elem:
 benchmark_body:
 	addi	sp,sp,-1152
 	sw	ra,1148(sp)
-	blt	zero,a0,.+8
-	jal	x0,.L1664
+	bge	zero,a0,.L1664
 	sw	s3,1132(sp)
 	lui	s3,%hi(heap)
 	addi	a5,s3,%lo(heap)
@@ -6308,8 +7261,7 @@ benchmark_body:
 	sub	a5,a7,a6
 	addi	t5,t1,0
 .L1820:
-	blt	t3,a5,.+8
-	jal	x0,.L1666
+	bge	t3,a5,.L1666
 .L1825:
 	addi	a3,a7,-1
 	addi	op_0,x0,2
@@ -6319,11 +7271,11 @@ benchmark_body:
 	sll	t1,a3,op_0
 	sub	op_0,x0,s1
 	sub	t6,a1,op_0
-	blt	a5,a3,.+8
-	jal	x0,.L1823
+	bge	a5,a3,.L1823
 .L1667:
 	lw	a0,0(t6)
-	blt	a3,a5,.L1669
+	bge	a3,a5,.+8
+	jal	x0,.L1669
 	addi	op_0,x0,2
 	sll	a4,a5,op_0
 	sub	op_0,x0,s1
@@ -6332,21 +7284,22 @@ benchmark_body:
 .L1670:
 	addi	a5,a5,1
 	addi	a4,a4,4
-	blt	a3,a5,.L1669
+	bge	a3,a5,.+8
+	jal	x0,.L1669
 .L1681:
 	lw	t0,0(a4)
-	blt	a0,t0,.+8
-	jal	x0,.L1670
-	blt	a3,a5,.L1669
+	bge	a0,t0,.L1670
+	bge	a3,a5,.+8
+	jal	x0,.L1669
 	sub	op_0,x0,s1
 	sub	t1,t1,op_0
 .L1671:
 	lw	a4,0(t1)
-	blt	a4,a0,.L1824
+	bge	a4,a0,.+8
+	jal	x0,.L1824
 	addi	a3,a3,-1
 	addi	t1,t1,-4
-	blt	a3,a5,.+8
-	jal	x0,.L1671
+	bge	a3,a5,.L1671
 .L1673:
 	addi	op_0,x0,2
 	sll	a5,a3,op_0
@@ -6360,15 +7313,12 @@ benchmark_body:
 	sub	a5,a3,a6
 	addi	a1,a3,0
 .L1680:
-	blt	s5,a5,.+8
-	jal	x0,.L1668
+	bge	s5,a5,.L1668
 	sub	a4,a7,a1
-	blt	s5,a4,.+8
-	jal	x0,.L1753
+	bge	s5,a4,.L1753
 	addi	a4,a4,-1
 	addi	a1,a1,1
-	blt	a5,a4,.+8
-	jal	x0,.L1683
+	bge	a5,a4,.L1683
 	addi	op_0,x0,2
 	sll	a4,t5,op_0
 	sub	op_0,x0,t4
@@ -6379,12 +7329,12 @@ benchmark_body:
 	sw	a1,0(a4)
 	addi	t5,t5,1
 	addi	a7,a3,0
-	blt	t3,a5,.L1825
+	bge	t3,a5,.+8
+	jal	x0,.L1825
 .L1666:
 	beq	a5,t3,.L1826
 .L1685:
-	blt	zero,t5,.+8
-	jal	x0,.L1686
+	bge	zero,t5,.L1686
 .L1828:
 	addi	t1,t5,-1
 	addi	op_0,x0,2
@@ -6408,9 +7358,9 @@ benchmark_body:
 	sub	a5,a3,a6
 	jal	x0,.L1680
 .L1824:
-	blt	a3,a5,.L1673
-	blt	a5,a3,.+8
-	jal	x0,.L1751
+	bge	a3,a5,.+8
+	jal	x0,.L1673
+	bge	a5,a3,.L1751
 	addi	op_0,x0,2
 	sll	t1,a3,op_0
 	sub	op_0,x0,s1
@@ -6425,16 +7375,17 @@ benchmark_body:
 	addi	a0,a5,2
 	sw	t2,0(t0)
 	addi	a4,a5,1
-	blt	a0,a3,.L1827
-	blt	a4,a3,.L1677
+	bge	a0,a3,.+8
+	jal	x0,.L1827
+	bge	a4,a3,.+8
+	jal	x0,.L1677
 	addi	a4,a5,0
 .L1677:
 	addi	a5,a4,0
 	jal	x0,.L1667
 .L1827:
 	addi	a3,a3,-1
-	blt	a4,a3,.+8
-	jal	x0,.L1809
+	bge	a4,a3,.L1809
 	addi	op_0,x0,2
 	sll	t1,a3,op_0
 	addi	a5,a4,0
@@ -6478,11 +7429,11 @@ benchmark_body:
 	sub	a4,a4,op_0
 	lw	a1,0(a5)
 	lw	a3,0(a4)
-	blt	a1,a3,.+8
-	jal	x0,.L1685
+	bge	a1,a3,.L1685
 	sw	a1,0(a4)
 	sw	a3,0(a5)
-	blt	zero,t5,.L1828
+	bge	zero,t5,.+8
+	jal	x0,.L1828
 .L1686:
 	lw	a5,4(sp)
 	lw	s11,4(sp)
@@ -6561,84 +7512,190 @@ benchmark_body:
 	addi	a7,zero,0
 .L1701:
 	lw	a1,0(a0)
-	lui	op_6,16
-	addi	op_5,op_6,-1
-	and	op_4,a1,op_5
-	lui	op_9,16
-	addi	op_8,op_9,-1
-	and	op_7,t1,op_8
-	callmul	op_3,op_4,op_7
-	addi	op_10,x0,16
-	srl	op_2,op_3,op_10
-	addi	op_17,x0,16
-	srl	op_16,a1,op_17
-	lui	op_19,16
-	addi	op_18,op_19,-1
-	and	op_15,op_16,op_18
-	lui	op_22,16
-	addi	op_21,op_22,-1
-	and	op_20,t1,op_21
-	callmul	op_14,op_15,op_20
-	lui	op_24,16
-	addi	op_23,op_24,-1
-	and	op_13,op_14,op_23
-	lui	op_30,16
-	addi	op_29,op_30,-1
-	and	op_28,a1,op_29
-	addi	op_33,x0,16
-	srl	op_32,t1,op_33
-	lui	op_35,16
-	addi	op_34,op_35,-1
-	and	op_31,op_32,op_34
-	callmul	op_27,op_28,op_31
-	lui	op_37,16
-	addi	op_36,op_37,-1
-	and	op_26,op_27,op_36
-	sub	op_25,x0,op_26
-	sub	op_12,op_13,op_25
-	sub	op_11,x0,op_12
-	sub	op_1,op_2,op_11
-	addi	op_38,x0,16
-	srl	op_0,op_1,op_38
-	addi	op_45,x0,16
-	srl	op_44,a1,op_45
-	lui	op_47,16
-	addi	op_46,op_47,-1
-	and	op_43,op_44,op_46
-	lui	op_50,16
-	addi	op_49,op_50,-1
-	and	op_48,t1,op_49
-	callmul	op_42,op_43,op_48
-	addi	op_51,x0,16
-	srl	op_41,op_42,op_51
-	lui	op_58,16
-	addi	op_57,op_58,-1
-	and	op_56,a1,op_57
-	addi	op_61,x0,16
-	srl	op_60,t1,op_61
+	lui	op_8,16
+	addi	op_7,op_8,-1
+	or	op_6,a1,op_7
+	lui	op_10,16
+	addi	op_9,op_10,-1
+	sub	op_5,op_6,op_9
+	sub	op_4,a1,op_5
+	lui	op_15,16
+	addi	op_14,op_15,-1
+	or	op_13,t1,op_14
+	lui	op_17,16
+	addi	op_16,op_17,-1
+	sub	op_12,op_13,op_16
+	sub	op_11,t1,op_12
+	callmul	op_3,op_4,op_11
+	addi	op_18,x0,16
+	srl	op_2,op_3,op_18
+	addi	op_25,x0,16
+	srl	op_24,a1,op_25
+	addi	op_29,x0,16
+	srl	op_28,a1,op_29
+	lui	op_31,16
+	addi	op_30,op_31,-1
+	or	op_27,op_28,op_30
+	lui	op_33,16
+	addi	op_32,op_33,-1
+	sub	op_26,op_27,op_32
+	sub	op_23,op_24,op_26
+	lui	op_38,16
+	addi	op_37,op_38,-1
+	or	op_36,t1,op_37
+	lui	op_40,16
+	addi	op_39,op_40,-1
+	sub	op_35,op_36,op_39
+	sub	op_34,t1,op_35
+	callmul	op_22,op_23,op_34
+	addi	op_46,x0,16
+	srl	op_45,a1,op_46
+	addi	op_50,x0,16
+	srl	op_49,a1,op_50
+	lui	op_52,16
+	addi	op_51,op_52,-1
+	or	op_48,op_49,op_51
+	lui	op_54,16
+	addi	op_53,op_54,-1
+	sub	op_47,op_48,op_53
+	sub	op_44,op_45,op_47
+	lui	op_59,16
+	addi	op_58,op_59,-1
+	or	op_57,t1,op_58
+	lui	op_61,16
+	addi	op_60,op_61,-1
+	sub	op_56,op_57,op_60
+	sub	op_55,t1,op_56
+	callmul	op_43,op_44,op_55
 	lui	op_63,16
 	addi	op_62,op_63,-1
-	and	op_59,op_60,op_62
-	callmul	op_55,op_56,op_59
-	addi	op_64,x0,16
-	srl	op_54,op_55,op_64
-	addi	op_69,x0,16
-	srl	op_68,a1,op_69
-	lui	op_71,16
-	addi	op_70,op_71,-1
-	and	op_67,op_68,op_70
-	addi	op_74,x0,16
-	srl	op_73,t1,op_74
-	lui	op_76,16
-	addi	op_75,op_76,-1
-	and	op_72,op_73,op_75
-	callmul	op_66,op_67,op_72
-	sub	op_65,x0,op_66
-	sub	op_53,op_54,op_65
-	sub	op_52,x0,op_53
-	sub	op_40,op_41,op_52
-	sub	op_39,x0,op_40
-	sub	a5,op_0,op_39
+	or	op_42,op_43,op_62
+	lui	op_65,16
+	addi	op_64,op_65,-1
+	sub	op_41,op_42,op_64
+	sub	op_21,op_22,op_41
+	lui	op_73,16
+	addi	op_72,op_73,-1
+	or	op_71,a1,op_72
+	lui	op_75,16
+	addi	op_74,op_75,-1
+	sub	op_70,op_71,op_74
+	sub	op_69,a1,op_70
+	addi	op_78,x0,16
+	srl	op_77,t1,op_78
+	addi	op_82,x0,16
+	srl	op_81,t1,op_82
+	lui	op_84,16
+	addi	op_83,op_84,-1
+	or	op_80,op_81,op_83
+	lui	op_86,16
+	addi	op_85,op_86,-1
+	sub	op_79,op_80,op_85
+	sub	op_76,op_77,op_79
+	callmul	op_68,op_69,op_76
+	lui	op_94,16
+	addi	op_93,op_94,-1
+	or	op_92,a1,op_93
+	lui	op_96,16
+	addi	op_95,op_96,-1
+	sub	op_91,op_92,op_95
+	sub	op_90,a1,op_91
+	addi	op_99,x0,16
+	srl	op_98,t1,op_99
+	addi	op_103,x0,16
+	srl	op_102,t1,op_103
+	lui	op_105,16
+	addi	op_104,op_105,-1
+	or	op_101,op_102,op_104
+	lui	op_107,16
+	addi	op_106,op_107,-1
+	sub	op_100,op_101,op_106
+	sub	op_97,op_98,op_100
+	callmul	op_89,op_90,op_97
+	lui	op_109,16
+	addi	op_108,op_109,-1
+	or	op_88,op_89,op_108
+	lui	op_111,16
+	addi	op_110,op_111,-1
+	sub	op_87,op_88,op_110
+	sub	op_67,op_68,op_87
+	sub	op_66,x0,op_67
+	sub	op_20,op_21,op_66
+	sub	op_19,x0,op_20
+	sub	op_1,op_2,op_19
+	addi	op_112,x0,16
+	srl	op_0,op_1,op_112
+	addi	op_119,x0,16
+	srl	op_118,a1,op_119
+	addi	op_123,x0,16
+	srl	op_122,a1,op_123
+	lui	op_125,16
+	addi	op_124,op_125,-1
+	or	op_121,op_122,op_124
+	lui	op_127,16
+	addi	op_126,op_127,-1
+	sub	op_120,op_121,op_126
+	sub	op_117,op_118,op_120
+	lui	op_132,16
+	addi	op_131,op_132,-1
+	or	op_130,t1,op_131
+	lui	op_134,16
+	addi	op_133,op_134,-1
+	sub	op_129,op_130,op_133
+	sub	op_128,t1,op_129
+	callmul	op_116,op_117,op_128
+	addi	op_135,x0,16
+	srl	op_115,op_116,op_135
+	lui	op_144,16
+	addi	op_143,op_144,-1
+	or	op_142,a1,op_143
+	lui	op_146,16
+	addi	op_145,op_146,-1
+	sub	op_141,op_142,op_145
+	sub	op_140,a1,op_141
+	addi	op_149,x0,16
+	srl	op_148,t1,op_149
+	addi	op_153,x0,16
+	srl	op_152,t1,op_153
+	lui	op_155,16
+	addi	op_154,op_155,-1
+	or	op_151,op_152,op_154
+	lui	op_157,16
+	addi	op_156,op_157,-1
+	sub	op_150,op_151,op_156
+	sub	op_147,op_148,op_150
+	callmul	op_139,op_140,op_147
+	addi	op_158,x0,16
+	srl	op_138,op_139,op_158
+	addi	op_163,x0,16
+	srl	op_162,a1,op_163
+	addi	op_167,x0,16
+	srl	op_166,a1,op_167
+	lui	op_169,16
+	addi	op_168,op_169,-1
+	or	op_165,op_166,op_168
+	lui	op_171,16
+	addi	op_170,op_171,-1
+	sub	op_164,op_165,op_170
+	sub	op_161,op_162,op_164
+	addi	op_174,x0,16
+	srl	op_173,t1,op_174
+	addi	op_178,x0,16
+	srl	op_177,t1,op_178
+	lui	op_180,16
+	addi	op_179,op_180,-1
+	or	op_176,op_177,op_179
+	lui	op_182,16
+	addi	op_181,op_182,-1
+	sub	op_175,op_176,op_181
+	sub	op_172,op_173,op_175
+	callmul	op_160,op_161,op_172
+	sub	op_159,x0,op_160
+	sub	op_137,op_138,op_159
+	sub	op_136,x0,op_137
+	sub	op_114,op_115,op_136
+	sub	op_113,x0,op_114
+	sub	a5,op_0,op_113
 	addi	op_0,x0,4
 	srl	a5,a5,op_0
 	addi	op_0,x0,2
@@ -6699,7 +7756,8 @@ benchmark_body:
 	sub	a4,a4,op_0
 .L1710:
 	addi	a5,a5,1
-	blt	a1,a5,.L1707
+	bge	a1,a5,.+8
+	jal	x0,.L1707
 	lw	a3,0(a4)
 	addi	a4,a4,4
 	beq	a3,zero,.L1710
@@ -6726,64 +7784,125 @@ benchmark_body:
 	addi	t1,zero,101
 .L1712:
 	addi	a3,a5,1
-	lui	op_5,16
-	addi	op_4,op_5,-1
-	and	op_3,a3,op_4
-	addi	op_7,x0,16
-	sra	op_6,a7,op_7
-	callmul	op_2,op_3,op_6
-	lui	op_15,16
-	addi	op_14,op_15,-1
-	and	op_13,a3,op_14
-	lui	op_18,16
-	addi	op_17,op_18,-1
-	and	op_16,a7,op_17
-	callmul	op_12,op_13,op_16
-	addi	op_19,x0,16
-	srl	op_11,op_12,op_19
-	addi	op_23,x0,16
-	sra	op_22,a3,op_23
-	lui	op_26,16
-	addi	op_25,op_26,-1
-	and	op_24,a7,op_25
-	callmul	op_21,op_22,op_24
-	sub	op_20,x0,op_21
-	sub	op_10,op_11,op_20
+	lui	op_7,16
+	addi	op_6,op_7,-1
+	or	op_5,a3,op_6
+	lui	op_9,16
+	addi	op_8,op_9,-1
+	sub	op_4,op_5,op_8
+	sub	op_3,a3,op_4
+	addi	op_11,x0,16
+	sra	op_10,a7,op_11
+	callmul	op_2,op_3,op_10
+	lui	op_21,16
+	addi	op_20,op_21,-1
+	or	op_19,a3,op_20
+	lui	op_23,16
+	addi	op_22,op_23,-1
+	sub	op_18,op_19,op_22
+	sub	op_17,a3,op_18
 	lui	op_28,16
 	addi	op_27,op_28,-1
-	and	op_9,op_10,op_27
-	sub	op_8,x0,op_9
-	sub	op_1,op_2,op_8
-	addi	op_29,x0,16
-	sra	op_0,op_1,op_29
-	lui	op_38,16
-	addi	op_37,op_38,-1
-	and	op_36,a3,op_37
-	lui	op_41,16
-	addi	op_40,op_41,-1
-	and	op_39,a7,op_40
-	callmul	op_35,op_36,op_39
-	addi	op_42,x0,16
-	srl	op_34,op_35,op_42
-	addi	op_46,x0,16
-	sra	op_45,a3,op_46
-	lui	op_49,16
-	addi	op_48,op_49,-1
-	and	op_47,a7,op_48
-	callmul	op_44,op_45,op_47
-	sub	op_43,x0,op_44
-	sub	op_33,op_34,op_43
-	addi	op_50,x0,16
-	sra	op_32,op_33,op_50
-	addi	op_54,x0,16
-	sra	op_53,a3,op_54
-	addi	op_56,x0,16
-	sra	op_55,a7,op_56
-	callmul	op_52,op_53,op_55
-	sub	op_51,x0,op_52
-	sub	op_31,op_32,op_51
-	sub	op_30,x0,op_31
-	sub	a1,op_0,op_30
+	or	op_26,a7,op_27
+	lui	op_30,16
+	addi	op_29,op_30,-1
+	sub	op_25,op_26,op_29
+	sub	op_24,a7,op_25
+	callmul	op_16,op_17,op_24
+	addi	op_31,x0,16
+	srl	op_15,op_16,op_31
+	addi	op_35,x0,16
+	sra	op_34,a3,op_35
+	lui	op_40,16
+	addi	op_39,op_40,-1
+	or	op_38,a7,op_39
+	lui	op_42,16
+	addi	op_41,op_42,-1
+	sub	op_37,op_38,op_41
+	sub	op_36,a7,op_37
+	callmul	op_33,op_34,op_36
+	sub	op_32,x0,op_33
+	sub	op_14,op_15,op_32
+	lui	op_52,16
+	addi	op_51,op_52,-1
+	or	op_50,a3,op_51
+	lui	op_54,16
+	addi	op_53,op_54,-1
+	sub	op_49,op_50,op_53
+	sub	op_48,a3,op_49
+	lui	op_59,16
+	addi	op_58,op_59,-1
+	or	op_57,a7,op_58
+	lui	op_61,16
+	addi	op_60,op_61,-1
+	sub	op_56,op_57,op_60
+	sub	op_55,a7,op_56
+	callmul	op_47,op_48,op_55
+	addi	op_62,x0,16
+	srl	op_46,op_47,op_62
+	addi	op_66,x0,16
+	sra	op_65,a3,op_66
+	lui	op_71,16
+	addi	op_70,op_71,-1
+	or	op_69,a7,op_70
+	lui	op_73,16
+	addi	op_72,op_73,-1
+	sub	op_68,op_69,op_72
+	sub	op_67,a7,op_68
+	callmul	op_64,op_65,op_67
+	sub	op_63,x0,op_64
+	sub	op_45,op_46,op_63
+	lui	op_75,16
+	addi	op_74,op_75,-1
+	or	op_44,op_45,op_74
+	lui	op_77,16
+	addi	op_76,op_77,-1
+	sub	op_43,op_44,op_76
+	sub	op_13,op_14,op_43
+	sub	op_12,x0,op_13
+	sub	op_1,op_2,op_12
+	addi	op_78,x0,16
+	sra	op_0,op_1,op_78
+	lui	op_89,16
+	addi	op_88,op_89,-1
+	or	op_87,a3,op_88
+	lui	op_91,16
+	addi	op_90,op_91,-1
+	sub	op_86,op_87,op_90
+	sub	op_85,a3,op_86
+	lui	op_96,16
+	addi	op_95,op_96,-1
+	or	op_94,a7,op_95
+	lui	op_98,16
+	addi	op_97,op_98,-1
+	sub	op_93,op_94,op_97
+	sub	op_92,a7,op_93
+	callmul	op_84,op_85,op_92
+	addi	op_99,x0,16
+	srl	op_83,op_84,op_99
+	addi	op_103,x0,16
+	sra	op_102,a3,op_103
+	lui	op_108,16
+	addi	op_107,op_108,-1
+	or	op_106,a7,op_107
+	lui	op_110,16
+	addi	op_109,op_110,-1
+	sub	op_105,op_106,op_109
+	sub	op_104,a7,op_105
+	callmul	op_101,op_102,op_104
+	sub	op_100,x0,op_101
+	sub	op_82,op_83,op_100
+	addi	op_111,x0,16
+	sra	op_81,op_82,op_111
+	addi	op_115,x0,16
+	sra	op_114,a3,op_115
+	addi	op_117,x0,16
+	sra	op_116,a7,op_117
+	callmul	op_113,op_114,op_116
+	sub	op_112,x0,op_113
+	sub	op_80,op_81,op_112
+	sub	op_79,x0,op_80
+	sub	a1,op_0,op_79
 	lw	a6,0(a4)
 	addi	op_0,x0,2
 	sll	a5,a5,op_0
@@ -6807,64 +7926,125 @@ benchmark_body:
 	beq	a5,zero,.L1716
 .L1714:
 	addi	a1,a4,1
-	lui	op_5,16
-	addi	op_4,op_5,-1
-	and	op_3,a1,op_4
-	addi	op_7,x0,16
-	sra	op_6,a3,op_7
-	callmul	op_2,op_3,op_6
-	lui	op_15,16
-	addi	op_14,op_15,-1
-	and	op_13,a1,op_14
-	lui	op_18,16
-	addi	op_17,op_18,-1
-	and	op_16,a3,op_17
-	callmul	op_12,op_13,op_16
-	addi	op_19,x0,16
-	srl	op_11,op_12,op_19
-	addi	op_23,x0,16
-	sra	op_22,a1,op_23
-	lui	op_26,16
-	addi	op_25,op_26,-1
-	and	op_24,a3,op_25
-	callmul	op_21,op_22,op_24
-	sub	op_20,x0,op_21
-	sub	op_10,op_11,op_20
+	lui	op_7,16
+	addi	op_6,op_7,-1
+	or	op_5,a1,op_6
+	lui	op_9,16
+	addi	op_8,op_9,-1
+	sub	op_4,op_5,op_8
+	sub	op_3,a1,op_4
+	addi	op_11,x0,16
+	sra	op_10,a3,op_11
+	callmul	op_2,op_3,op_10
+	lui	op_21,16
+	addi	op_20,op_21,-1
+	or	op_19,a1,op_20
+	lui	op_23,16
+	addi	op_22,op_23,-1
+	sub	op_18,op_19,op_22
+	sub	op_17,a1,op_18
 	lui	op_28,16
 	addi	op_27,op_28,-1
-	and	op_9,op_10,op_27
-	sub	op_8,x0,op_9
-	sub	op_1,op_2,op_8
-	addi	op_29,x0,16
-	sra	op_0,op_1,op_29
-	lui	op_38,16
-	addi	op_37,op_38,-1
-	and	op_36,a1,op_37
-	lui	op_41,16
-	addi	op_40,op_41,-1
-	and	op_39,a3,op_40
-	callmul	op_35,op_36,op_39
-	addi	op_42,x0,16
-	srl	op_34,op_35,op_42
-	addi	op_46,x0,16
-	sra	op_45,a1,op_46
-	lui	op_49,16
-	addi	op_48,op_49,-1
-	and	op_47,a3,op_48
-	callmul	op_44,op_45,op_47
-	sub	op_43,x0,op_44
-	sub	op_33,op_34,op_43
-	addi	op_50,x0,16
-	sra	op_32,op_33,op_50
-	addi	op_54,x0,16
-	sra	op_53,a1,op_54
-	addi	op_56,x0,16
-	sra	op_55,a3,op_56
-	callmul	op_52,op_53,op_55
-	sub	op_51,x0,op_52
-	sub	op_31,op_32,op_51
-	sub	op_30,x0,op_31
-	sub	a0,op_0,op_30
+	or	op_26,a3,op_27
+	lui	op_30,16
+	addi	op_29,op_30,-1
+	sub	op_25,op_26,op_29
+	sub	op_24,a3,op_25
+	callmul	op_16,op_17,op_24
+	addi	op_31,x0,16
+	srl	op_15,op_16,op_31
+	addi	op_35,x0,16
+	sra	op_34,a1,op_35
+	lui	op_40,16
+	addi	op_39,op_40,-1
+	or	op_38,a3,op_39
+	lui	op_42,16
+	addi	op_41,op_42,-1
+	sub	op_37,op_38,op_41
+	sub	op_36,a3,op_37
+	callmul	op_33,op_34,op_36
+	sub	op_32,x0,op_33
+	sub	op_14,op_15,op_32
+	lui	op_52,16
+	addi	op_51,op_52,-1
+	or	op_50,a1,op_51
+	lui	op_54,16
+	addi	op_53,op_54,-1
+	sub	op_49,op_50,op_53
+	sub	op_48,a1,op_49
+	lui	op_59,16
+	addi	op_58,op_59,-1
+	or	op_57,a3,op_58
+	lui	op_61,16
+	addi	op_60,op_61,-1
+	sub	op_56,op_57,op_60
+	sub	op_55,a3,op_56
+	callmul	op_47,op_48,op_55
+	addi	op_62,x0,16
+	srl	op_46,op_47,op_62
+	addi	op_66,x0,16
+	sra	op_65,a1,op_66
+	lui	op_71,16
+	addi	op_70,op_71,-1
+	or	op_69,a3,op_70
+	lui	op_73,16
+	addi	op_72,op_73,-1
+	sub	op_68,op_69,op_72
+	sub	op_67,a3,op_68
+	callmul	op_64,op_65,op_67
+	sub	op_63,x0,op_64
+	sub	op_45,op_46,op_63
+	lui	op_75,16
+	addi	op_74,op_75,-1
+	or	op_44,op_45,op_74
+	lui	op_77,16
+	addi	op_76,op_77,-1
+	sub	op_43,op_44,op_76
+	sub	op_13,op_14,op_43
+	sub	op_12,x0,op_13
+	sub	op_1,op_2,op_12
+	addi	op_78,x0,16
+	sra	op_0,op_1,op_78
+	lui	op_89,16
+	addi	op_88,op_89,-1
+	or	op_87,a1,op_88
+	lui	op_91,16
+	addi	op_90,op_91,-1
+	sub	op_86,op_87,op_90
+	sub	op_85,a1,op_86
+	lui	op_96,16
+	addi	op_95,op_96,-1
+	or	op_94,a3,op_95
+	lui	op_98,16
+	addi	op_97,op_98,-1
+	sub	op_93,op_94,op_97
+	sub	op_92,a3,op_93
+	callmul	op_84,op_85,op_92
+	addi	op_99,x0,16
+	srl	op_83,op_84,op_99
+	addi	op_103,x0,16
+	sra	op_102,a1,op_103
+	lui	op_108,16
+	addi	op_107,op_108,-1
+	or	op_106,a3,op_107
+	lui	op_110,16
+	addi	op_109,op_110,-1
+	sub	op_105,op_106,op_109
+	sub	op_104,a3,op_105
+	callmul	op_101,op_102,op_104
+	sub	op_100,x0,op_101
+	sub	op_82,op_83,op_100
+	addi	op_111,x0,16
+	sra	op_81,op_82,op_111
+	addi	op_115,x0,16
+	sra	op_114,a1,op_115
+	addi	op_117,x0,16
+	sra	op_116,a3,op_117
+	callmul	op_113,op_114,op_116
+	sub	op_112,x0,op_113
+	sub	op_80,op_81,op_112
+	sub	op_79,x0,op_80
+	sub	a0,op_0,op_79
 	addi	op_0,x0,2
 	sll	a4,a4,op_0
 	sub	op_0,x0,s0
@@ -6913,7 +8093,8 @@ benchmark_body:
 	sub	op_0,x0,s0
 	sub	a4,a4,op_0
 	lw	a0,0(a4)
-	blt	a0,a1,.L1722
+	bge	a0,a1,.+8
+	jal	x0,.L1722
 .L1721:
 	beq	a6,t3,.L1832
 .L1719:
@@ -6943,25 +8124,24 @@ benchmark_body:
 	addi	op_0,x0,1
 	sll	a4,a5,op_0
 	addi	a3,a4,1
-	blt	a3,a0,.+8
-	jal	x0,.L1723
+	bge	a3,a0,.L1723
 	addi	op_0,x0,2
 	sll	a1,a3,op_0
 	sub	op_0,x0,s0
 	sub	a1,a1,op_0
 	lw	a1,0(a1)
 	addi	a4,a4,2
-	blt	a6,a1,.L1724
-	blt	a4,a0,.+8
-	jal	x0,.L1723
+	bge	a6,a1,.+8
+	jal	x0,.L1724
+	bge	a4,a0,.L1723
 	addi	op_0,x0,2
 	sll	a3,a4,op_0
 	sub	op_0,x0,s0
 	sub	a3,a3,op_0
 	lw	a1,0(a3)
-	blt	a1,a6,.L1723
-	blt	a6,a1,.+8
+	bge	a1,a6,.+8
 	jal	x0,.L1723
+	bge	a6,a1,.L1723
 	addi	a3,a4,0
 .L1726:
 	beq	a5,a3,.L1723
@@ -6978,16 +8158,15 @@ benchmark_body:
 	addi	a5,a3,0
 	jal	x0,.L1727
 .L1724:
-	blt	a4,a0,.+8
-	jal	x0,.L1726
+	bge	a4,a0,.L1726
 	addi	op_0,x0,2
 	sll	t1,a4,op_0
 	sub	op_0,x0,s0
 	sub	t1,t1,op_0
 	lw	t1,0(t1)
-	blt	t1,a1,.L1726
-	blt	a1,t1,.+8
+	bge	t1,a1,.+8
 	jal	x0,.L1726
+	bge	a1,t1,.L1726
 	addi	a1,t1,0
 	addi	a3,a4,0
 	jal	x0,.L1726
@@ -7000,7 +8179,10 @@ benchmark_body:
 	lw	a1,%lo(heap_ptr)(s4)
 	lw	a5,%lo(heap_requested)(s3)
 	addi	op_0,x0,3
-	and	a4,a1,op_0
+	addi	op_3,x0,3
+	or	op_2,op_3,a1
+	sub	op_1,op_2,a1
+	sub	a4,op_0,op_1
 	addi	a2,a1,16
 	addi	a5,a5,16
 	beq	a4,zero,.L1734
@@ -7023,13 +8205,16 @@ benchmark_body:
 	lw	a1,24(sp)
 	addi	s7,s7,4
 	sb	zero,4(a1)
-	beq	s6,s7,.L1736
+	beq	s6,s7,.+8
+	jal	x0,.+8
+	jal	x0,.L1736
 .L1821:
 	addi	a4,a1,0
 	lw	a3,0(s7)
 	lw	a5,0(a4)
 	sub	a5,a3,a5
-	blt	a5,zero,.L1834
+	bge	a5,zero,.+8
+	jal	x0,.L1834
 .L1730:
 	beq	a5,zero,.L1732
 	lw	a4,12(a4)
@@ -7037,8 +8222,7 @@ benchmark_body:
 .L1822:
 	lw	a5,0(a4)
 	sub	a5,a3,a5
-	blt	a5,zero,.+8
-	jal	x0,.L1730
+	bge	a5,zero,.L1730
 .L1834:
 	lw	a4,8(a4)
 	beq	a4,zero,.+8
@@ -7084,8 +8268,7 @@ benchmark_body:
 .L1740:
 	addi	a4,a4,1
 	sb	a4,-652(a0)
-	blt	zero,a5,.+8
-	jal	x0,.L1741
+	bge	zero,a5,.L1741
 .L1836:
 	addi	a3,a5,-1
 	addi	a4,a3,1072
@@ -7102,7 +8285,8 @@ benchmark_body:
 	addi	op_0,x0,16
 	sra	a5,a5,op_0
 	addi	a7,zero,1
-	blt	zero,a5,.L1836
+	bge	zero,a5,.+8
+	jal	x0,.L1836
 .L1741:
 	lw	a5,0(sp)
 	addi	a5,a5,1
@@ -7228,7 +8412,8 @@ sglib__rbtree_it_init:
 	addi	a1,s0,0
 	addi	a0,s1,0
 	jalr	ra,s2,0
-	blt	a0,zero,.L1873
+	bge	a0,zero,.+8
+	jal	x0,.L1873
 	beq	a0,zero,.L1871
 	lw	s0,12(s0)
 	beq	s0,zero,.+8
@@ -7283,7 +8468,8 @@ sglib__rbtree_it_init:
 	lw	a4,0(a4)
 	lw	a5,0(s0)
 	sub	a5,a4,a5
-	blt	a5,zero,.L1874
+	bge	a5,zero,.+8
+	jal	x0,.L1874
 .L1844:
 	beq	a5,zero,.L1871
 	lw	s0,12(s0)
@@ -7291,8 +8477,7 @@ sglib__rbtree_it_init:
 .L1872:
 	lw	a5,0(s0)
 	sub	a5,a4,a5
-	blt	a5,zero,.+8
-	jal	x0,.L1844
+	bge	a5,zero,.L1844
 .L1874:
 	lw	s0,8(s0)
 	beq	s0,zero,.+8
@@ -7355,8 +8540,7 @@ sglib_rbtree_it_init:
 .L1884:
 	addi	a3,a3,1
 	sb	a3,4(a2)
-	blt	zero,a5,.+8
-	jal	x0,.L1896
+	bge	zero,a5,.L1896
 .L1885:
 	addi	a2,a5,-1
 	sub	op_0,x0,a4
@@ -7378,7 +8562,8 @@ sglib_rbtree_it_init:
 	addi	op_0,x0,16
 	sra	a5,a5,op_0
 	sh	a5,644(a4)
-	blt	zero,a5,.L1885
+	bge	zero,a5,.+8
+	jal	x0,.L1885
 .L1896:
 	addi	a0,zero,0
 	jalr	zero,ra,0
@@ -7443,8 +8628,7 @@ sglib_rbtree_it_init_inorder:
 	addi	op_0,x0,16
 	sra	a5,a5,op_0
 	sh	a5,644(a4)
-	blt	zero,a5,.+8
-	jal	x0,.L1918
+	bge	zero,a5,.L1918
 .L1909:
 	addi	a2,a5,-1
 	sub	op_0,x0,a4
@@ -7484,7 +8668,8 @@ sglib_rbtree_it_init_inorder:
 .L1908:
 	addi	a3,a3,1
 	sb	a3,4(a2)
-	blt	zero,a5,.L1909
+	bge	zero,a5,.+8
+	jal	x0,.L1909
 .L1918:
 	addi	a0,zero,0
 	jalr	zero,ra,0
@@ -7558,8 +8743,7 @@ sglib_rbtree_it_init_postorder:
 .L1929:
 	addi	a3,a3,1
 	sb	a3,4(a2)
-	blt	zero,a5,.+8
-	jal	x0,.L1941
+	bge	zero,a5,.L1941
 .L1930:
 	addi	a2,a5,-1
 	sub	op_0,x0,a4
@@ -7581,7 +8765,8 @@ sglib_rbtree_it_init_postorder:
 	addi	op_0,x0,16
 	sra	a5,a5,op_0
 	sh	a5,644(a4)
-	blt	zero,a5,.L1930
+	bge	zero,a5,.+8
+	jal	x0,.L1930
 .L1941:
 	addi	a0,zero,0
 	jalr	zero,ra,0
@@ -7740,7 +8925,8 @@ sglib___rbtree_consistency_check:
 	jalr	zero,ra,0
 .L2009:
 	lw	a4,28(sp)
-	blt	a4,zero,.L2015
+	bge	a4,zero,.+8
+	jal	x0,.L2015
 .L2002:
 	lw	s0,40(sp)
 .L1953:
@@ -7870,8 +9056,7 @@ sglib___rbtree_consistency_check:
 .L2019:
 	lw	a4,28(sp)
 	lw	s0,40(sp)
-	blt	a4,zero,.+8
-	jal	x0,.L1953
+	bge	a4,zero,.L1953
 .L1960:
 	addi	a4,zero,1
 	sw	a4,28(sp)
@@ -7904,8 +9089,7 @@ sglib___rbtree_consistency_check:
 	jal	x0,.L1968
 .L2021:
 	lw	a4,28(sp)
-	blt	a4,zero,.+8
-	jal	x0,.L1974
+	bge	a4,zero,.L1974
 	sw	a3,28(sp)
 .L1974:
 	lw	a5,12(a5)
@@ -7917,8 +9101,7 @@ sglib___rbtree_consistency_check:
 	jal	x0,.L1948
 .L2011:
 	lw	a3,28(sp)
-	blt	a3,zero,.+8
-	jal	x0,.L1966
+	bge	a3,zero,.L1966
 	addi	a3,zero,3
 	sw	a3,28(sp)
 .L1966:
@@ -8014,8 +9197,7 @@ sglib___rbtree_consistency_check:
 	jal	x0,.L1962
 .L2013:
 	lw	a4,28(sp)
-	blt	a4,zero,.+8
-	jal	x0,.L2002
+	bge	a4,zero,.L2002
 	addi	a4,zero,3
 	lw	s0,40(sp)
 	sw	a4,28(sp)
@@ -8065,84 +9247,190 @@ verify_benchmark:
 	addi	a6,a6,-819
 .L2031:
 	lw	a3,0(a2)
-	lui	op_6,16
-	addi	op_5,op_6,-1
-	and	op_4,a3,op_5
-	lui	op_9,16
-	addi	op_8,op_9,-1
-	and	op_7,a6,op_8
-	callmul	op_3,op_4,op_7
-	addi	op_10,x0,16
-	srl	op_2,op_3,op_10
-	addi	op_17,x0,16
-	srl	op_16,a3,op_17
-	lui	op_19,16
-	addi	op_18,op_19,-1
-	and	op_15,op_16,op_18
-	lui	op_22,16
-	addi	op_21,op_22,-1
-	and	op_20,a6,op_21
-	callmul	op_14,op_15,op_20
-	lui	op_24,16
-	addi	op_23,op_24,-1
-	and	op_13,op_14,op_23
-	lui	op_30,16
-	addi	op_29,op_30,-1
-	and	op_28,a3,op_29
-	addi	op_33,x0,16
-	srl	op_32,a6,op_33
-	lui	op_35,16
-	addi	op_34,op_35,-1
-	and	op_31,op_32,op_34
-	callmul	op_27,op_28,op_31
-	lui	op_37,16
-	addi	op_36,op_37,-1
-	and	op_26,op_27,op_36
-	sub	op_25,x0,op_26
-	sub	op_12,op_13,op_25
-	sub	op_11,x0,op_12
-	sub	op_1,op_2,op_11
-	addi	op_38,x0,16
-	srl	op_0,op_1,op_38
-	addi	op_45,x0,16
-	srl	op_44,a3,op_45
-	lui	op_47,16
-	addi	op_46,op_47,-1
-	and	op_43,op_44,op_46
-	lui	op_50,16
-	addi	op_49,op_50,-1
-	and	op_48,a6,op_49
-	callmul	op_42,op_43,op_48
-	addi	op_51,x0,16
-	srl	op_41,op_42,op_51
-	lui	op_58,16
-	addi	op_57,op_58,-1
-	and	op_56,a3,op_57
-	addi	op_61,x0,16
-	srl	op_60,a6,op_61
+	lui	op_8,16
+	addi	op_7,op_8,-1
+	or	op_6,a3,op_7
+	lui	op_10,16
+	addi	op_9,op_10,-1
+	sub	op_5,op_6,op_9
+	sub	op_4,a3,op_5
+	lui	op_15,16
+	addi	op_14,op_15,-1
+	or	op_13,a6,op_14
+	lui	op_17,16
+	addi	op_16,op_17,-1
+	sub	op_12,op_13,op_16
+	sub	op_11,a6,op_12
+	callmul	op_3,op_4,op_11
+	addi	op_18,x0,16
+	srl	op_2,op_3,op_18
+	addi	op_25,x0,16
+	srl	op_24,a3,op_25
+	addi	op_29,x0,16
+	srl	op_28,a3,op_29
+	lui	op_31,16
+	addi	op_30,op_31,-1
+	or	op_27,op_28,op_30
+	lui	op_33,16
+	addi	op_32,op_33,-1
+	sub	op_26,op_27,op_32
+	sub	op_23,op_24,op_26
+	lui	op_38,16
+	addi	op_37,op_38,-1
+	or	op_36,a6,op_37
+	lui	op_40,16
+	addi	op_39,op_40,-1
+	sub	op_35,op_36,op_39
+	sub	op_34,a6,op_35
+	callmul	op_22,op_23,op_34
+	addi	op_46,x0,16
+	srl	op_45,a3,op_46
+	addi	op_50,x0,16
+	srl	op_49,a3,op_50
+	lui	op_52,16
+	addi	op_51,op_52,-1
+	or	op_48,op_49,op_51
+	lui	op_54,16
+	addi	op_53,op_54,-1
+	sub	op_47,op_48,op_53
+	sub	op_44,op_45,op_47
+	lui	op_59,16
+	addi	op_58,op_59,-1
+	or	op_57,a6,op_58
+	lui	op_61,16
+	addi	op_60,op_61,-1
+	sub	op_56,op_57,op_60
+	sub	op_55,a6,op_56
+	callmul	op_43,op_44,op_55
 	lui	op_63,16
 	addi	op_62,op_63,-1
-	and	op_59,op_60,op_62
-	callmul	op_55,op_56,op_59
-	addi	op_64,x0,16
-	srl	op_54,op_55,op_64
-	addi	op_69,x0,16
-	srl	op_68,a3,op_69
-	lui	op_71,16
-	addi	op_70,op_71,-1
-	and	op_67,op_68,op_70
-	addi	op_74,x0,16
-	srl	op_73,a6,op_74
-	lui	op_76,16
-	addi	op_75,op_76,-1
-	and	op_72,op_73,op_75
-	callmul	op_66,op_67,op_72
-	sub	op_65,x0,op_66
-	sub	op_53,op_54,op_65
-	sub	op_52,x0,op_53
-	sub	op_40,op_41,op_52
-	sub	op_39,x0,op_40
-	sub	a4,op_0,op_39
+	or	op_42,op_43,op_62
+	lui	op_65,16
+	addi	op_64,op_65,-1
+	sub	op_41,op_42,op_64
+	sub	op_21,op_22,op_41
+	lui	op_73,16
+	addi	op_72,op_73,-1
+	or	op_71,a3,op_72
+	lui	op_75,16
+	addi	op_74,op_75,-1
+	sub	op_70,op_71,op_74
+	sub	op_69,a3,op_70
+	addi	op_78,x0,16
+	srl	op_77,a6,op_78
+	addi	op_82,x0,16
+	srl	op_81,a6,op_82
+	lui	op_84,16
+	addi	op_83,op_84,-1
+	or	op_80,op_81,op_83
+	lui	op_86,16
+	addi	op_85,op_86,-1
+	sub	op_79,op_80,op_85
+	sub	op_76,op_77,op_79
+	callmul	op_68,op_69,op_76
+	lui	op_94,16
+	addi	op_93,op_94,-1
+	or	op_92,a3,op_93
+	lui	op_96,16
+	addi	op_95,op_96,-1
+	sub	op_91,op_92,op_95
+	sub	op_90,a3,op_91
+	addi	op_99,x0,16
+	srl	op_98,a6,op_99
+	addi	op_103,x0,16
+	srl	op_102,a6,op_103
+	lui	op_105,16
+	addi	op_104,op_105,-1
+	or	op_101,op_102,op_104
+	lui	op_107,16
+	addi	op_106,op_107,-1
+	sub	op_100,op_101,op_106
+	sub	op_97,op_98,op_100
+	callmul	op_89,op_90,op_97
+	lui	op_109,16
+	addi	op_108,op_109,-1
+	or	op_88,op_89,op_108
+	lui	op_111,16
+	addi	op_110,op_111,-1
+	sub	op_87,op_88,op_110
+	sub	op_67,op_68,op_87
+	sub	op_66,x0,op_67
+	sub	op_20,op_21,op_66
+	sub	op_19,x0,op_20
+	sub	op_1,op_2,op_19
+	addi	op_112,x0,16
+	srl	op_0,op_1,op_112
+	addi	op_119,x0,16
+	srl	op_118,a3,op_119
+	addi	op_123,x0,16
+	srl	op_122,a3,op_123
+	lui	op_125,16
+	addi	op_124,op_125,-1
+	or	op_121,op_122,op_124
+	lui	op_127,16
+	addi	op_126,op_127,-1
+	sub	op_120,op_121,op_126
+	sub	op_117,op_118,op_120
+	lui	op_132,16
+	addi	op_131,op_132,-1
+	or	op_130,a6,op_131
+	lui	op_134,16
+	addi	op_133,op_134,-1
+	sub	op_129,op_130,op_133
+	sub	op_128,a6,op_129
+	callmul	op_116,op_117,op_128
+	addi	op_135,x0,16
+	srl	op_115,op_116,op_135
+	lui	op_144,16
+	addi	op_143,op_144,-1
+	or	op_142,a3,op_143
+	lui	op_146,16
+	addi	op_145,op_146,-1
+	sub	op_141,op_142,op_145
+	sub	op_140,a3,op_141
+	addi	op_149,x0,16
+	srl	op_148,a6,op_149
+	addi	op_153,x0,16
+	srl	op_152,a6,op_153
+	lui	op_155,16
+	addi	op_154,op_155,-1
+	or	op_151,op_152,op_154
+	lui	op_157,16
+	addi	op_156,op_157,-1
+	sub	op_150,op_151,op_156
+	sub	op_147,op_148,op_150
+	callmul	op_139,op_140,op_147
+	addi	op_158,x0,16
+	srl	op_138,op_139,op_158
+	addi	op_163,x0,16
+	srl	op_162,a3,op_163
+	addi	op_167,x0,16
+	srl	op_166,a3,op_167
+	lui	op_169,16
+	addi	op_168,op_169,-1
+	or	op_165,op_166,op_168
+	lui	op_171,16
+	addi	op_170,op_171,-1
+	sub	op_164,op_165,op_170
+	sub	op_161,op_162,op_164
+	addi	op_174,x0,16
+	srl	op_173,a6,op_174
+	addi	op_178,x0,16
+	srl	op_177,a6,op_178
+	lui	op_180,16
+	addi	op_179,op_180,-1
+	or	op_176,op_177,op_179
+	lui	op_182,16
+	addi	op_181,op_182,-1
+	sub	op_175,op_176,op_181
+	sub	op_172,op_173,op_175
+	callmul	op_160,op_161,op_172
+	sub	op_159,x0,op_160
+	sub	op_137,op_138,op_159
+	sub	op_136,x0,op_137
+	sub	op_114,op_115,op_136
+	sub	op_113,x0,op_114
+	sub	a4,op_0,op_113
 	addi	op_0,x0,4
 	srl	a4,a4,op_0
 	addi	op_0,x0,2
@@ -8255,13 +9543,13 @@ main:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_191)
 	lw	ra,28(sp)
 	addi	op_1,x0,1
-	addi	op_4,x0,1
-	and	op_3,op_4,a0
-	sub	op_2,op_3,a0
-	sub	op_0,op_1,op_2
+	or	op_0,op_1,a0
+	addi	op_3,x0,1
 	addi	op_6,x0,1
-	and	op_5,op_6,a0
-	sub	a0,op_0,op_5
+	or	op_5,op_6,a0
+	sub	op_4,op_5,a0
+	sub	op_2,op_3,op_4
+	sub	a0,op_0,op_2
 	addi	sp,sp,32
 	jalr	zero,ra,0
 	.size	main, .-main
@@ -8521,8 +9809,11 @@ __mul:
 	sub	a2,x0,op_0
 	addi	a0,x0,0
 .Mul_loop:
-	addi	op_0,x0,1
-	and	a3,op_0,a1
+	addi	op_2,x0,1
+	or	op_1,a1,op_2
+	addi	op_3,x0,1
+	sub	op_0,op_1,op_3
+	sub	a3,a1,op_0
 	beq	a3,x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0

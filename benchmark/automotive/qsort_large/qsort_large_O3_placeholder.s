@@ -71,8 +71,7 @@ quicksort_range:
 	addi	a4,a4,24
 	addi	s0,s0,1
 	bltu	a6,a3,.L25
-	beq	a6,a3,.+8
-	jal	x0,.L21
+	bne	a6,a3,.L21
 	lw	a6,-8(a4)
 	bltu	a6,t3,.L25
 .L21:
@@ -88,8 +87,7 @@ quicksort_range:
 	addi	a5,a5,-24
 	addi	a2,a2,-1
 	bltu	a3,a4,.L26
-	beq	a4,a3,.+8
-	jal	x0,.L22
+	bne	a4,a3,.L22
 	lw	a4,40(a5)
 	bltu	t3,a4,.L26
 .L22:
@@ -139,21 +137,18 @@ quicksort_range:
 	addi	a1,s0,0
 	jal	x0,.L2
 .L34:
-	beq	a6,a3,.+8
-	jal	x0,.L14
+	bne	a6,a3,.L14
 	lw	a6,16(t1)
 	bltu	a6,t3,.L12
 .L14:
 	lw	a4,20(a7)
 	bltu	a3,a4,.L17
-	beq	a4,a3,.+8
-	jal	x0,.L19
+	bne	a4,a3,.L19
 	lw	a4,16(a7)
 	bltu	t3,a4,.L17
 	jal	x0,.L19
 .L35:
-	beq	a4,a3,.+8
-	jal	x0,.L6
+	bne	a4,a3,.L6
 	lw	a4,16(a7)
 	bltu	t3,a4,.L17
 	blt	a2,s0,.L10
@@ -404,8 +399,7 @@ main:
 	addi	a5,a5,-128
 	sub	op_0,x0,a5
 	sub	a5,sp,op_0
-	beq	a5,a2,.+8
-	jal	x0,.L40
+	bne	a5,a2,.L40
 	lui	a2,12
 	addi	a0,sp,0
 	addi	a2,a2,847
@@ -441,8 +435,7 @@ main:
 	addi	a5,a5,-128
 	sub	op_0,x0,a5
 	sub	a5,sp,op_0
-	beq	a5,s0,.+8
-	jal	x0,.L41
+	bne	a5,s0,.L41
 	lui	t0,292
 	addi	t0,t0,1952
 	sub	op_0,x0,sp
@@ -150479,7 +150472,8 @@ __mul:
 .Mul_loop:
 	addi	op_0,x0,1
 	and	a3,op_0,a1
-	beq	a3,x0,.Mul_skip
+	bne	a3,x0,.+8
+	jal	x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
 .Mul_skip:
@@ -150487,7 +150481,6 @@ __mul:
 	srl	a1,a1,op_0
 	addi	op_0,x0,1
 	sll	a2,a2,op_0
-	beq	a1,x0,.+8
-	jal	x0,.Mul_loop
+	bne	a1,x0,.Mul_loop
 	jalr	x0,ra,0
 

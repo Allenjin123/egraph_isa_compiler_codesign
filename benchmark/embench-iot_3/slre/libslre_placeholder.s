@@ -10,31 +10,31 @@
 match_op:
 	lbu	a5,0(a0)
 	addi	a4,zero,92
-	beq	a5,a4,.L2
+	bne	a5,a4,.+8
+	jal	x0,.L2
 	bltu	a4,a5,.L3
 	addi	a4,zero,36
 	addi	a0,zero,-1
-	beq	a5,a4,.L1
+	bne	a5,a4,.+8
+	jal	x0,.L1
 	addi	a4,zero,46
 	addi	a0,zero,1
-	beq	a5,a4,.+8
-	jal	x0,.L5
+	bne	a5,a4,.L5
 .L1:
 	jalr	zero,ra,0
 .L3:
 	addi	a4,zero,124
 	addi	a0,zero,-4
-	beq	a5,a4,.L1
+	bne	a5,a4,.+8
+	jal	x0,.L1
 .L5:
 	addi	a2,a2,2047
 	lw	a4,369(a2)
 	lbu	a3,0(a1)
-	addi	op_2,x0,1
-	or	op_1,a4,op_2
-	addi	op_3,x0,1
-	sub	op_0,op_1,op_3
-	sub	a4,a4,op_0
-	beq	a4,zero,.L18
+	addi	op_0,x0,1
+	and	a4,op_0,a4
+	bne	a4,zero,.+8
+	jal	x0,.L18
 	lui	a4,%hi(_ctype_+1)
 	addi	a4,a4,%lo(_ctype_+1)
 	sub	op_0,x0,a4
@@ -42,12 +42,8 @@ match_op:
 	lbu	a2,0(a2)
 	addi	a1,zero,1
 	addi	op_0,x0,3
-	addi	op_3,x0,3
-	or	op_2,op_3,a2
-	sub	op_1,op_2,a2
-	sub	a2,op_0,op_1
-	beq	a2,a1,.+8
-	jal	x0,.L19
+	and	a2,a2,op_0
+	bne	a2,a1,.L19
 	addi	a5,a5,32
 .L19:
 	sub	op_0,x0,a4
@@ -55,14 +51,11 @@ match_op:
 	lbu	a4,0(a4)
 	addi	a2,zero,1
 	addi	op_0,x0,3
-	addi	op_3,x0,3
-	or	op_2,op_3,a4
-	sub	op_1,op_2,a4
-	sub	a4,op_0,op_1
-	beq	a4,a2,.L38
+	and	a4,a4,op_0
+	bne	a4,a2,.+8
+	jal	x0,.L38
 .L18:
-	beq	a5,a3,.+8
-	jal	x0,.L30
+	bne	a5,a3,.L30
 .L34:
 	addi	a0,zero,1
 	jalr	zero,ra,0
@@ -70,36 +63,36 @@ match_op:
 	lbu	a5,1(a0)
 	addi	a4,zero,115
 	lbu	a3,0(a1)
-	beq	a5,a4,.L6
+	bne	a5,a4,.+8
+	jal	x0,.L6
 	bltu	a4,a5,.L7
 	addi	a4,zero,83
-	beq	a5,a4,.L8
+	bne	a5,a4,.+8
+	jal	x0,.L8
 	addi	a4,zero,100
-	beq	a5,a4,.+8
-	jal	x0,.L18
+	bne	a5,a4,.L18
 	lui	a5,%hi(_ctype_+1)
 	addi	a5,a5,%lo(_ctype_+1)
 	sub	op_0,x0,a3
 	sub	a5,a5,op_0
 	lbu	a0,0(a5)
 	addi	op_0,x0,4
-	addi	op_3,x0,4
-	or	op_2,op_3,a0
-	sub	op_1,op_2,a0
-	sub	a0,op_0,op_1
+	and	a0,op_0,a0
 	addi	op_0,x0,1
 	bltu	a0,op_0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
 	sub	a0,zero,a0
-	addi	op_0,x0,1
-	or	a0,a0,op_0
+	addi	op_2,x0,1
+	and	op_1,a0,op_2
+	addi	op_3,x0,1
+	sub	op_0,op_1,op_3
+	sub	a0,a0,op_0
 	jalr	zero,ra,0
 .L7:
 	addi	a4,zero,120
-	beq	a5,a4,.+8
-	jal	x0,.L18
+	bne	a5,a4,.L18
 	lbu	a2,2(a0)
 	lui	a4,%hi(_ctype_+1)
 	addi	a4,a4,%lo(_ctype_+1)
@@ -109,12 +102,8 @@ match_op:
 	addi	a6,zero,1
 	addi	a1,a2,0
 	addi	op_0,x0,3
-	addi	op_3,x0,3
-	or	op_2,op_3,a5
-	sub	op_1,op_2,a5
-	sub	a7,op_0,op_1
-	beq	a7,a6,.+8
-	jal	x0,.L12
+	and	a7,op_0,a5
+	bne	a7,a6,.L12
 	lui	a5,%hi(_ctype_+33)
 	addi	a5,a5,%lo(_ctype_+33)
 	sub	op_0,x0,a2
@@ -122,30 +111,26 @@ match_op:
 	lbu	a5,0(a2)
 	addi	a1,a1,32
 .L12:
-	addi	op_2,x0,4
-	or	op_1,a5,op_2
-	addi	op_3,x0,4
-	sub	op_0,op_1,op_3
-	sub	a2,a5,op_0
+	addi	op_0,x0,4
+	and	a2,a5,op_0
 	addi	a5,a1,-87
-	beq	a2,zero,.L14
+	bne	a2,zero,.+8
+	jal	x0,.L14
 	addi	a5,a1,-48
 .L14:
 	lbu	a2,3(a0)
 	addi	a0,zero,1
-	addi	op_0,x0,4
-	sll	a5,a5,op_0
+	addi	op_1,x0,2
+	sll	op_0,a5,op_1
+	addi	op_2,x0,2
+	sll	a5,op_0,op_2
 	sub	op_0,x0,a4
 	sub	a4,a2,op_0
 	lbu	a4,0(a4)
 	addi	a1,a2,0
 	addi	op_0,x0,3
-	addi	op_3,x0,3
-	or	op_2,op_3,a4
-	sub	op_1,op_2,a4
-	sub	a6,op_0,op_1
-	beq	a6,a0,.+8
-	jal	x0,.L15
+	and	a6,op_0,a4
+	bne	a6,a0,.L15
 	lui	a4,%hi(_ctype_+33)
 	addi	a4,a4,%lo(_ctype_+33)
 	sub	op_0,x0,a2
@@ -153,17 +138,18 @@ match_op:
 	lbu	a4,0(a2)
 	addi	a1,a1,32
 .L15:
-	addi	op_2,x0,4
-	or	op_1,a4,op_2
-	addi	op_3,x0,4
-	sub	op_0,op_1,op_3
-	sub	a4,a4,op_0
+	addi	op_0,x0,4
+	and	a4,op_0,a4
 	addi	a2,a1,-87
-	beq	a4,zero,.L17
+	bne	a4,zero,.+8
+	jal	x0,.L17
 	addi	a2,a1,-48
 .L17:
-	or	a5,a5,a2
-	beq	a3,a5,.L34
+	and	op_1,a5,a2
+	sub	op_0,op_1,a2
+	sub	a5,a5,op_0
+	bne	a3,a5,.+8
+	jal	x0,.L34
 .L30:
 	addi	a0,zero,-1
 	jalr	zero,ra,0
@@ -174,18 +160,18 @@ match_op:
 	sub	a5,a5,op_0
 	lbu	a0,0(a5)
 	addi	op_0,x0,8
-	addi	op_3,x0,8
-	or	op_2,op_3,a0
-	sub	op_1,op_2,a0
-	sub	a0,op_0,op_1
+	and	a0,a0,op_0
 	addi	op_0,x0,1
 	bltu	a0,op_0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
 	sub	a0,zero,a0
-	addi	op_0,x0,1
-	or	a0,a0,op_0
+	addi	op_2,x0,1
+	and	op_1,a0,op_2
+	addi	op_3,x0,1
+	sub	op_0,op_1,op_3
+	sub	a0,a0,op_0
 	jalr	zero,ra,0
 .L38:
 	addi	a3,a3,32
@@ -200,36 +186,39 @@ match_op:
 	sll	a5,a0,op_0
 	addi	op_0,x0,31
 	sra	a0,a5,op_0
-	addi	op_0,x0,1
-	or	a0,a0,op_0
+	addi	op_2,x0,1
+	and	op_1,a0,op_2
+	addi	op_3,x0,1
+	sub	op_0,op_1,op_3
+	sub	a0,a0,op_0
 	jalr	zero,ra,0
 	.size	match_op, .-match_op
 	.align	2
 	.type	bar, @function
 bar:
 	addi	op_1,x0,-1
-	or	op_0,op_1,a3
-	addi	op_3,x0,-1
+	addi	op_4,x0,-1
+	and	op_3,op_4,a3
+	sub	op_2,op_3,a3
+	sub	op_0,op_1,op_2
 	addi	op_6,x0,-1
-	or	op_5,op_6,a3
-	sub	op_4,op_5,a3
-	sub	op_2,op_3,op_4
-	sub	a6,op_0,op_2
+	and	op_5,op_6,a3
+	sub	a6,op_0,op_5
 	addi	op_0,x0,31
 	srl	a6,a6,op_0
-	blt	zero,a1,.+12
+	bge	zero,a1,.+8
+	jal	x0,.+12
 	addi	a7,x0,0
 	jal	x0,.+8
 	addi	a7,x0,1
 	addi	sp,sp,-112
-	or	op_1,a7,a6
-	sub	op_0,op_1,a6
-	sub	a6,a7,op_0
+	and	a6,a7,a6
 	sw	ra,108(sp)
 	sw	s10,64(sp)
 	sw	a6,20(sp)
 	sw	a5,16(sp)
-	beq	a6,zero,.L114
+	bne	a6,zero,.+8
+	jal	x0,.L114
 	sw	s1,100(sp)
 	sw	s2,96(sp)
 	sw	s5,84(sp)
@@ -253,24 +242,26 @@ bar:
 	sub	a0,s5,op_0
 	lbu	a1,0(a0)
 	addi	a5,zero,40
-	beq	a1,a5,.L208
+	bne	a1,a5,.+8
+	jal	x0,.L208
 	addi	a5,zero,91
-	beq	a1,a5,.L209
+	bne	a1,a5,.+8
+	jal	x0,.L209
 	addi	a5,zero,92
-	beq	a1,a5,.L52
+	bne	a1,a5,.+8
+	jal	x0,.L52
 	addi	a5,a1,-42
 	addi	op_0,x0,2
 	bltu	a5,op_0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
-	beq	a5,zero,.+8
-	jal	x0,.L130
+	bne	a5,zero,.L130
 	addi	a5,a1,-63
-	beq	a5,zero,.L130
+	bne	a5,zero,.+8
+	jal	x0,.L130
 	addi	a4,s5,1
-	blt	a4,s9,.+8
-	jal	x0,.L210
+	bge	a4,s9,.L210
 	addi	s6,zero,1
 	addi	s3,s6,0
 .L53:
@@ -291,14 +282,12 @@ bar:
 	addi	a7,x0,0
 	jal	x0,.+8
 	addi	a7,x0,1
-	beq	a5,zero,.+8
-	jal	x0,.L117
-	beq	a7,zero,.+8
-	jal	x0,.L117
+	bne	a5,zero,.L117
+	bne	a7,zero,.L117
 	addi	a5,zero,94
-	beq	a1,a5,.+8
-	jal	x0,.L113
-	beq	s11,zero,.L206
+	bne	a1,a5,.L113
+	bne	s11,zero,.+8
+	jal	x0,.L206
 .L83:
 	addi	s10,zero,-1
 	jal	x0,.L203
@@ -311,22 +300,22 @@ bar:
 	sub	a5,a5,op_0
 	lw	s3,4(a5)
 	addi	s3,s3,2
-	blt	zero,s3,.+8
-	jal	x0,.L129
+	bge	zero,s3,.L129
 	sub	op_0,x0,s3
 	sub	s0,s5,op_0
 	addi	a4,s0,0
-	blt	s0,s9,.L46
+	bge	s0,s9,.+8
+	jal	x0,.L46
 .L57:
 	lw	a5,1600(s8)
-	blt	s6,a5,.+8
-	jal	x0,.L138
+	bge	s6,a5,.L138
 	lw	a5,12(sp)
 	sub	s4,s9,a4
 	sub	s3,s1,s11
 	sub	op_0,x0,a5
 	sub	s5,s11,op_0
-	blt	zero,s4,.L139
+	bge	zero,s4,.+8
+	jal	x0,.L139
 	addi	a1,s3,0
 	addi	a3,s6,0
 	addi	a2,s8,0
@@ -338,14 +327,14 @@ bar:
 	lw	a4,24(sp)
 	addi	s10,a0,0
 .L107:
-	blt	s10,zero,.L203
+	bge	s10,zero,.+8
+	jal	x0,.L203
 	sub	op_0,x0,s10
 	sub	a7,s11,op_0
 .L110:
 	addi	a5,s8,2047
 	lw	a5,361(a5)
-	beq	a5,zero,.+8
-	jal	x0,.+8
+	bne	a5,zero,.+8
 	jal	x0,.L112
 	lw	a3,16(sp)
 	addi	op_0,x0,3
@@ -355,7 +344,8 @@ bar:
 	sw	s5,0(a5)
 	sw	s10,4(a5)
 .L112:
-	blt	s1,a7,.+12
+	bge	s1,a7,.+8
+	jal	x0,.+12
 	addi	a2,x0,0
 	jal	x0,.+8
 	addi	a2,x0,1
@@ -363,31 +353,28 @@ bar:
 	addi	s5,a4,0
 	sw	s6,16(sp)
 	addi	op_1,x0,1
-	or	op_0,op_1,a2
-	addi	op_3,x0,1
+	addi	op_4,x0,1
+	and	op_3,op_4,a2
+	sub	op_2,op_3,a2
+	sub	op_0,op_1,op_2
 	addi	op_6,x0,1
-	or	op_5,op_6,a2
-	sub	op_4,op_5,a2
-	sub	op_2,op_3,op_4
-	sub	a5,op_0,op_2
+	and	op_5,op_6,a2
+	sub	a5,op_0,op_5
 .L62:
-	blt	s5,s9,.+8
-	jal	x0,.L144
-	beq	a5,zero,.+8
-	jal	x0,.L40
+	bge	s5,s9,.L144
+	bne	a5,zero,.L40
 .L144:
 	addi	s10,s11,0
 	jal	x0,.L203
 .L49:
-	blt	a4,a3,.L129
-	addi	s3,a3,2
-	blt	zero,s3,.+8
+	bge	a4,a3,.+8
 	jal	x0,.L129
+	addi	s3,a3,2
+	bge	zero,s3,.L129
 	sub	op_0,x0,s5
 	sub	a4,s3,op_0
 	addi	s0,a4,0
-	blt	a4,s9,.+8
-	jal	x0,.L186
+	bge	a4,s9,.L186
 .L46:
 	sub	op_0,x0,s2
 	sub	s6,s0,op_0
@@ -404,12 +391,11 @@ bar:
 	addi	a7,x0,0
 	jal	x0,.+8
 	addi	a7,x0,1
-	beq	a5,zero,.+8
-	jal	x0,.L117
-	beq	a7,zero,.+8
-	jal	x0,.L117
+	bne	a5,zero,.L117
+	bne	a7,zero,.L117
 	addi	a5,zero,91
-	beq	a1,a5,.L186
+	bne	a1,a5,.+8
+	jal	x0,.L186
 	lw	a5,16(sp)
 	addi	s6,a5,1
 	jal	x0,.L57
@@ -418,21 +404,20 @@ bar:
 	sub	a3,s1,s11
 	sub	op_0,x0,a5
 	sub	a2,s11,op_0
-	beq	a7,zero,.+8
-	jal	x0,.L211
+	bne	a7,zero,.L211
 	addi	s0,s8,0
 	sw	a2,24(sp)
 	sw	a3,28(sp)
 	addi	s8,a4,1
 	addi	s4,a5,0
 	addi	s7,a0,0
-	blt	s8,s9,.+8
-	jal	x0,.L63
+	bge	s8,s9,.L63
 	sub	op_0,x0,s2
 	sub	a5,s8,op_0
 	lbu	a3,0(a5)
 	addi	a5,zero,63
-	beq	a3,a5,.L212
+	bne	a3,a5,.+8
+	jal	x0,.L212
 .L64:
 	sub	a5,s9,s8
 	sw	a5,12(sp)
@@ -464,8 +449,7 @@ bar:
 	lw	a1,12(sp)
 	lw	a0,20(sp)
 	addi	a4,s0,0
-	blt	zero,s9,.+8
-	jal	x0,.L213
+	bge	zero,s9,.L213
 	sub	op_0,x0,s2
 	sub	s2,s9,op_0
 	sub	s8,s1,s2
@@ -476,13 +460,14 @@ bar:
 .Lpcrel_3:
 	auipc	ra,%pcrel_hi(bar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_3)
-	blt	a0,zero,.L68
+	bge	a0,zero,.+8
+	jal	x0,.L68
 	sub	op_0,x0,s2
 	sub	s10,a0,op_0
 .L68:
-	blt	s11,s10,.+8
+	bge	s11,s10,.L74
+	bne	s5,zero,.+8
 	jal	x0,.L74
-	beq	s5,zero,.L74
 	addi	s5,s9,0
 	lw	s6,32(sp)
 	lw	s8,36(sp)
@@ -491,25 +476,28 @@ bar:
 .L67:
 	lbu	a5,0(s6)
 .L79:
-	blt	s5,zero,.L214
+	bge	s5,zero,.+8
+	jal	x0,.L214
 .L80:
 	addi	a4,zero,43
-	beq	a5,a4,.L69
+	bne	a5,a4,.+8
+	jal	x0,.L69
 	sub	a6,s10,s11
 	addi	op_0,x0,1
 	bltu	a6,op_0,.+12
 	addi	a6,x0,0
 	jal	x0,.+8
 	addi	a6,x0,1
-	blt	s8,s9,.+12
+	bge	s8,s9,.+8
+	jal	x0,.+12
 	addi	t6,x0,0
 	jal	x0,.+8
 	addi	t6,x0,1
-	or	op_1,a6,t6
-	sub	op_0,op_1,t6
-	sub	a6,a6,op_0
-	beq	a6,zero,.L203
-	blt	a0,zero,.L83
+	and	a6,a6,t6
+	bne	a6,zero,.+8
+	jal	x0,.L203
+	bge	a0,zero,.+8
+	jal	x0,.L83
 .L203:
 	lw	s0,104(sp)
 	lw	ra,108(sp)
@@ -530,7 +518,8 @@ bar:
 .L212:
 	addi	s8,a4,2
 	lw	a7,20(sp)
-	blt	s8,s9,.L64
+	bge	s8,s9,.+8
+	jal	x0,.L64
 .L63:
 	addi	s10,s11,0
 	addi	s5,a7,0
@@ -545,13 +534,12 @@ bar:
 .Lpcrel_4:
 	auipc	ra,%pcrel_hi(bar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_4)
-	blt	zero,a0,.+8
-	jal	x0,.L75
+	bge	zero,a0,.L75
 	sub	op_0,x0,s10
 	sub	s10,a0,op_0
-	blt	s11,s10,.+8
+	bge	s11,s10,.L77
+	bne	s5,zero,.+8
 	jal	x0,.L77
-	beq	s5,zero,.L77
 	addi	s5,a0,0
 	lbu	a5,0(s6)
 	addi	a0,zero,-1
@@ -560,14 +548,11 @@ bar:
 	lbu	a5,0(s6)
 	addi	s5,a0,0
 	addi	a4,a5,-43
-	beq	a4,zero,.+8
-	jal	x0,.L143
-	beq	a0,zero,.+8
-	jal	x0,.L69
+	bne	a4,zero,.L143
+	bne	a0,zero,.L69
 .L143:
 	addi	a0,zero,-1
-	blt	s5,zero,.+8
-	jal	x0,.L80
+	bge	s5,zero,.L80
 	jal	x0,.L214
 .L209:
 	sub	a4,s9,s5
@@ -576,26 +561,25 @@ bar:
 	addi	a7,zero,93
 	addi	t1,zero,92
 	addi	t3,zero,120
-	beq	a4,zero,.+8
-	jal	x0,.L45
+	bne	a4,zero,.L45
 	jal	x0,.L215
 .L48:
 	sub	op_0,x0,a3
 	sub	a3,a6,op_0
-	blt	a3,a4,.+8
-	jal	x0,.L49
+	bge	a3,a4,.L49
 .L45:
 	addi	a5,a3,1
 	sub	op_0,x0,a0
 	sub	a5,a5,op_0
 	lbu	a2,0(a5)
 	addi	a6,zero,1
-	beq	a2,a7,.L49
-	beq	a2,t1,.+8
-	jal	x0,.L48
+	bne	a2,a7,.+8
+	jal	x0,.L49
+	bne	a2,t1,.L48
 	lbu	a5,1(a5)
 	addi	a6,zero,4
-	beq	a5,t3,.L48
+	bne	a5,t3,.+8
+	jal	x0,.L48
 	addi	a6,zero,2
 	jal	x0,.L48
 .L186:
@@ -607,8 +591,10 @@ bar:
 	lbu	a2,0(s5)
 	addi	a3,zero,94
 	sub	s10,s9,a5
-	beq	a2,a3,.L216
-	blt	s10,zero,.L83
+	bne	a2,a3,.+8
+	jal	x0,.L216
+	bge	s10,zero,.+8
+	jal	x0,.L83
 	addi	s4,a2,0
 .L87:
 	lw	a5,12(sp)
@@ -625,15 +611,19 @@ bar:
 	addi	s1,s5,0
 	sub	op_0,x0,a5
 	sub	s0,s11,op_0
-	beq	s4,s6,.L204
+	bne	s4,s6,.+8
+	jal	x0,.L204
 .L105:
-	beq	a0,s7,.L187
+	bne	a0,s7,.+8
+	jal	x0,.L187
 	sub	op_0,x0,s1
 	sub	s5,s2,op_0
 .L96:
-	beq	s4,s3,.L88
+	bne	s4,s3,.+8
+	jal	x0,.L88
 	lbu	a5,1(s5)
-	beq	a5,s3,.L217
+	bne	a5,s3,.+8
+	jal	x0,.L217
 .L89:
 	addi	a2,s8,0
 	addi	a1,s0,0
@@ -643,23 +633,23 @@ bar:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_5)
 	addi	a5,zero,92
 	addi	a3,zero,1
-	beq	s4,a5,.+8
-	jal	x0,.L100
+	bne	s4,a5,.L100
 	lbu	a5,1(s5)
 	addi	a4,zero,120
 	addi	a3,zero,4
-	beq	a5,a4,.L100
+	bne	a5,a4,.+8
+	jal	x0,.L100
 	addi	a3,zero,2
 .L100:
 	sub	op_0,x0,s2
 	sub	s2,a3,op_0
 .L99:
-	blt	s10,s2,.L204
+	bge	s10,s2,.+8
+	jal	x0,.L204
 	sub	op_0,x0,s1
 	sub	s5,s2,op_0
 	lbu	s4,0(s5)
-	beq	s4,s6,.+8
-	jal	x0,.L105
+	bne	s4,s6,.L105
 .L204:
 	lw	a2,24(sp)
 	lw	a4,28(sp)
@@ -676,33 +666,36 @@ bar:
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
-	beq	a5,a0,.L83
+	bne	a5,a0,.+8
+	jal	x0,.L83
 .L86:
 	addi	s11,s11,1
-	blt	s1,s11,.+12
+	bge	s1,s11,.+8
+	jal	x0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
 	addi	s5,a4,0
 	addi	op_1,x0,1
-	or	op_0,op_1,a5
-	addi	op_3,x0,1
+	addi	op_4,x0,1
+	and	op_3,op_4,a5
+	sub	op_2,op_3,a5
+	sub	op_0,op_1,op_2
 	addi	op_6,x0,1
-	or	op_5,op_6,a5
-	sub	op_4,op_5,a5
-	sub	op_2,op_3,op_4
-	sub	a5,op_0,op_2
+	and	op_5,op_6,a5
+	sub	a5,op_0,op_5
 	jal	x0,.L62
 .L52:
 	lbu	a4,1(a0)
 	addi	a5,zero,120
-	beq	a4,a5,.L218
+	bne	a4,a5,.+8
+	jal	x0,.L218
 	addi	a4,s5,2
 	addi	s3,zero,2
-	blt	a4,s9,.L219
+	bge	a4,s9,.+8
+	jal	x0,.L219
 .L115:
-	blt	s11,s1,.+8
-	jal	x0,.L83
+	bge	s11,s1,.L83
 	lw	a5,12(sp)
 	addi	a2,s8,0
 	sub	op_0,x0,a5
@@ -712,40 +705,38 @@ bar:
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_6)
 	addi	a5,zero,1
 	addi	s10,a0,0
-	beq	a0,a5,.+8
-	jal	x0,.L203
+	bne	a0,a5,.L203
 	sub	op_0,x0,s11
 	sub	s11,a5,op_0
-	blt	s1,s11,.+12
+	bge	s1,s11,.+8
+	jal	x0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
 	sub	op_0,x0,s5
 	sub	s5,s3,op_0
-	or	op_0,a0,a5
-	or	op_3,a0,a5
-	sub	op_2,op_3,a5
-	sub	op_1,a0,op_2
-	sub	a5,op_0,op_1
+	and	op_2,a0,a5
+	sub	op_1,op_2,a5
+	sub	op_0,a0,op_1
+	and	op_3,a0,a5
+	sub	a5,op_0,op_3
 	jal	x0,.L62
 .L210:
 	addi	a5,zero,94
-	beq	a1,a5,.L220
+	bne	a1,a5,.+8
+	jal	x0,.L220
 	addi	s3,zero,1
 .L113:
 	addi	a5,zero,36
-	beq	a1,a5,.+8
-	jal	x0,.L115
-	beq	s1,s11,.+8
-	jal	x0,.L83
+	bne	a1,a5,.L115
+	bne	s1,s11,.L83
 .L206:
 	lw	a5,20(sp)
 	addi	s5,a4,0
 	jal	x0,.L62
 .L214:
 	addi	a4,zero,42
-	beq	a5,a4,.+8
-	jal	x0,.L80
+	bne	a5,a4,.L80
 	lw	a5,16(sp)
 	lw	a3,28(sp)
 	lw	a2,24(sp)
@@ -756,8 +747,7 @@ bar:
 .Lpcrel_7:
 	auipc	ra,%pcrel_hi(bar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_7)
-	blt	zero,a0,.+8
-	jal	x0,.L221
+	bge	zero,a0,.L221
 	sub	op_0,x0,a0
 	sub	s10,s11,op_0
 	jal	x0,.L203
@@ -776,11 +766,11 @@ bar:
 	auipc	ra,%pcrel_hi(doh)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_8)
 	addi	s10,a0,0
-	blt	a0,zero,.+8
-	jal	x0,.L222
+	bge	a0,zero,.L222
 .L188:
 	addi	s2,s2,1
-	blt	s3,s2,.L203
+	bge	s3,s2,.+8
+	jal	x0,.L203
 	addi	a3,s6,0
 	addi	a2,s8,0
 	sub	a1,s3,s2
@@ -789,7 +779,8 @@ bar:
 	auipc	ra,%pcrel_hi(doh)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_9)
 	addi	s10,a0,0
-	blt	a0,zero,.L188
+	bge	a0,zero,.+8
+	jal	x0,.L188
 .L222:
 	lw	a5,12(sp)
 	sub	op_0,x0,a0
@@ -805,16 +796,13 @@ bar:
 	auipc	ra,%pcrel_hi(bar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_10)
 	addi	s2,s2,1
-	blt	a0,zero,.+8
-	jal	x0,.L223
-	blt	s3,s2,.+8
-	jal	x0,.L106
+	bge	a0,zero,.L223
+	bge	s3,s2,.L106
 	lw	a4,24(sp)
 	lw	s2,28(sp)
 	jal	x0,.L107
 .L69:
-	beq	s11,s10,.+8
-	jal	x0,.L203
+	bne	s11,s10,.L203
 	addi	s10,zero,-1
 	jal	x0,.L203
 .L88:
@@ -831,13 +819,14 @@ bar:
 .L217:
 	lbu	a3,2(s5)
 	addi	a5,a3,-93
-	beq	a5,zero,.L89
-	beq	a3,zero,.L89
+	bne	a5,zero,.+8
+	jal	x0,.L89
+	bne	a3,zero,.+8
+	jal	x0,.L89
 	addi	a5,s8,2047
 	lw	a0,369(a5)
 	lbu	a2,0(s0)
-	beq	a0,zero,.+8
-	jal	x0,.L224
+	bne	a0,zero,.L224
 	lui	a1,%hi(_ctype_+1)
 	addi	a1,a1,%lo(_ctype_+1)
 	sub	op_0,x0,a1
@@ -845,12 +834,8 @@ bar:
 	lbu	a5,0(a5)
 	addi	a4,zero,1
 	addi	op_0,x0,3
-	addi	op_3,x0,3
-	or	op_2,op_3,a5
-	sub	op_1,op_2,a5
-	sub	a5,op_0,op_1
-	beq	a5,a4,.+8
-	jal	x0,.L92
+	and	a5,op_0,a5
+	bne	a5,a4,.L92
 	addi	a2,a2,32
 .L92:
 	sub	op_0,x0,a1
@@ -858,22 +843,19 @@ bar:
 	lbu	a5,0(a5)
 	addi	a4,zero,1
 	addi	op_0,x0,3
-	addi	op_3,x0,3
-	or	op_2,op_3,a5
-	sub	op_1,op_2,a5
-	sub	a5,op_0,op_1
-	beq	a5,a4,.L225
+	and	a5,op_0,a5
+	bne	a5,a4,.+8
+	jal	x0,.L225
 .L93:
-	blt	a2,s4,.+8
-	jal	x0,.L94
+	bge	a2,s4,.L94
 	addi	s2,s2,3
-	blt	s10,s2,.L204
+	bge	s10,s2,.+8
+	jal	x0,.L204
 	sub	op_0,x0,s1
 	sub	s5,s2,op_0
 	lbu	s4,0(s5)
 	addi	a5,zero,93
-	beq	s4,a5,.+8
-	jal	x0,.L96
+	bne	s4,a5,.L96
 	jal	x0,.L204
 .L219:
 	addi	s6,zero,2
@@ -881,7 +863,8 @@ bar:
 	jal	x0,.L53
 .L216:
 	addi	s10,s10,-1
-	blt	s10,zero,.L86
+	bge	s10,zero,.+8
+	jal	x0,.L86
 	lbu	s4,1(s5)
 	addi	s5,s5,1
 	jal	x0,.L87
@@ -904,36 +887,13 @@ bar:
 	addi	a2,x0,0
 	jal	x0,.+8
 	addi	a2,x0,1
-	or	op_2,a2,a0
-	or	op_5,a2,a0
-	sub	op_4,op_5,a0
-	sub	op_3,a2,op_4
-	sub	op_1,op_2,op_3
-	or	op_6,a0,a2
-	or	op_0,op_1,op_6
-	or	op_9,a2,a0
-	or	op_12,a2,a0
-	sub	op_11,op_12,a0
-	sub	op_10,a2,op_11
-	sub	op_8,op_9,op_10
-	or	op_16,a2,a0
-	or	op_19,a2,a0
-	sub	op_18,op_19,a0
-	sub	op_17,a2,op_18
-	sub	op_15,op_16,op_17
-	or	op_20,a0,a2
-	or	op_14,op_15,op_20
-	or	op_21,a0,a2
-	sub	op_13,op_14,op_21
-	sub	op_7,op_8,op_13
-	sub	a0,op_0,op_7
+	and	a0,a0,a2
 	addi	s2,s2,3
 	jal	x0,.L99
 .L218:
 	addi	a4,s5,4
 	addi	s3,zero,4
-	blt	a4,s9,.+8
-	jal	x0,.L115
+	bge	a4,s9,.L115
 	addi	s6,zero,4
 	addi	s3,s6,0
 	jal	x0,.L53
@@ -941,8 +901,7 @@ bar:
 	addi	s4,s4,32
 	jal	x0,.L93
 .L220:
-	beq	s11,zero,.+8
-	jal	x0,.L83
+	bne	s11,zero,.L83
 	lw	s0,104(sp)
 	lw	s1,100(sp)
 	lw	s2,96(sp)
@@ -976,35 +935,34 @@ bar:
 	auipc	ra,%pcrel_hi(bar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_12)
 	addi	op_1,x0,-1
-	or	op_0,op_1,a0
-	addi	op_3,x0,-1
+	addi	op_4,x0,-1
+	and	op_3,op_4,a0
+	sub	op_2,op_3,a0
+	sub	op_0,op_1,op_2
 	addi	op_6,x0,-1
-	or	op_5,op_6,a0
-	sub	op_4,op_5,a0
-	sub	op_2,op_3,op_4
-	sub	a5,op_0,op_2
+	and	op_5,op_6,a0
+	sub	a5,op_0,op_5
 	addi	op_0,x0,31
 	sra	a5,a5,op_0
-	or	op_1,a0,a5
-	sub	op_0,op_1,a5
-	sub	a0,a0,op_0
+	and	a0,a0,a5
 	sub	op_0,x0,s11
 	sub	s11,a0,op_0
 	addi	s5,s5,1
-	blt	s1,s11,.+12
+	bge	s1,s11,.+8
+	jal	x0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
 	sub	op_0,x0,s5
 	sub	s5,s3,op_0
 	addi	op_1,x0,1
-	or	op_0,op_1,a5
-	addi	op_3,x0,1
+	addi	op_4,x0,1
+	and	op_3,op_4,a5
+	sub	op_2,op_3,a5
+	sub	op_0,op_1,op_2
 	addi	op_6,x0,1
-	or	op_5,op_6,a5
-	sub	op_4,op_5,a5
-	sub	op_2,op_3,op_4
-	sub	a5,op_0,op_2
+	and	op_5,op_6,a5
+	sub	a5,op_0,op_5
 	jal	x0,.L62
 .L94:
 	sub	op_0,x0,a1
@@ -1013,15 +971,12 @@ bar:
 	lbu	a3,0(a1)
 	addi	a1,zero,1
 	addi	op_0,x0,3
-	addi	op_3,x0,3
-	or	op_2,op_3,a3
-	sub	op_1,op_2,a3
-	sub	a3,op_0,op_1
-	beq	a3,a1,.+8
-	jal	x0,.L98
+	and	a3,op_0,a3
+	bne	a3,a1,.L98
 	addi	a5,a5,32
 .L98:
-	blt	a5,a2,.+12
+	bge	a5,a2,.+8
+	jal	x0,.+12
 	addi	a2,x0,0
 	jal	x0,.+8
 	addi	a2,x0,1
@@ -1054,10 +1009,8 @@ bar:
 	addi	a5,a5,-43
 	lw	s8,36(sp)
 	lw	s2,44(sp)
-	beq	a5,zero,.+8
-	jal	x0,.L71
-	beq	s5,zero,.+8
-	jal	x0,.L69
+	bne	a5,zero,.L71
+	bne	s5,zero,.L69
 .L71:
 	lw	a5,16(sp)
 	addi	a4,s0,0
@@ -1069,7 +1022,8 @@ bar:
 	auipc	ra,%pcrel_hi(bar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_13)
 	lw	a6,12(sp)
-	blt	a0,zero,.L67
+	bge	a0,zero,.+8
+	jal	x0,.L67
 	lbu	a5,0(s6)
 	sub	op_0,x0,a0
 	sub	s10,a6,op_0
@@ -1077,8 +1031,7 @@ bar:
 .L215:
 	addi	a4,s5,2
 	addi	a5,a4,0
-	blt	a4,s9,.+8
-	jal	x0,.L47
+	bge	a4,s9,.L47
 	addi	s3,zero,2
 	addi	s0,a4,0
 	jal	x0,.L46
@@ -1094,10 +1047,8 @@ bar:
 doh:
 	addi	sp,sp,-32
 	sw	s5,4(sp)
-	addi	op_1,x0,2
-	sll	op_0,a3,op_1
-	addi	op_2,x0,2
-	sll	s5,op_0,op_2
+	addi	op_0,x0,4
+	sll	s5,a3,op_0
 	sub	op_0,x0,a2
 	sub	s5,s5,op_0
 	sw	s0,24(sp)
@@ -1112,7 +1063,8 @@ doh:
 	lw	a0,0(s5)
 	addi	s4,a2,0
 	addi	s3,a1,0
-	beq	s0,zero,.L234
+	bne	s0,zero,.+8
+	jal	x0,.L234
 	lw	a3,8(s5)
 	addi	s0,zero,0
 .L227:
@@ -1132,11 +1084,11 @@ doh:
 .Lpcrel_14:
 	auipc	ra,%pcrel_hi(bar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_14)
-	blt	zero,a0,.L226
+	bge	zero,a0,.+8
+	jal	x0,.L226
 .L235:
 	lw	a4,12(s5)
-	blt	s0,a4,.+8
-	jal	x0,.L226
+	bge	s0,a4,.L226
 	lw	a3,8(s5)
 	addi	s0,s0,1
 	sub	op_0,x0,s0
@@ -1147,8 +1099,7 @@ doh:
 	sub	a5,a5,op_0
 	lw	a0,1600(a5)
 	addi	a0,a0,1
-	beq	a4,s0,.+8
-	jal	x0,.L227
+	bne	a4,s0,.L227
 	lw	a5,4(s5)
 	lw	a1,0(s5)
 	addi	a4,s4,0
@@ -1161,8 +1112,7 @@ doh:
 .Lpcrel_15:
 	auipc	ra,%pcrel_hi(bar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_15)
-	blt	zero,a0,.+8
-	jal	x0,.L235
+	bge	zero,a0,.L235
 .L226:
 	lw	ra,28(sp)
 	lw	s0,24(sp)
@@ -1195,8 +1145,7 @@ foo:
 	sw	a0,0(a4)
 	sw	a1,4(a4)
 	sw	t3,1600(a4)
-	blt	zero,a1,.+8
-	jal	x0,.L322
+	bge	zero,a1,.L322
 	lui	s0,1
 	lui	s5,%hi(_ctype_+1)
 	addi	s2,zero,-1
@@ -1221,13 +1170,16 @@ foo:
 	sub	op_0,x0,a0
 	sub	t3,t4,op_0
 	lbu	a5,0(t3)
-	beq	a5,t2,.L328
-	beq	a5,t6,.L329
-	beq	a5,s4,.L330
-	beq	a5,s6,.+8
-	jal	x0,.L259
+	bne	a5,t2,.+8
+	jal	x0,.L328
+	bne	a5,t6,.+8
+	jal	x0,.L329
+	bne	a5,s4,.+8
+	jal	x0,.L330
+	bne	a5,s6,.L259
 	lw	a5,1600(a4)
-	blt	s3,a5,.L306
+	bge	s3,a5,.+8
+	jal	x0,.L306
 	addi	t4,t4,1
 	addi	op_1,x0,2
 	sll	op_0,a5,op_1
@@ -1242,22 +1194,21 @@ foo:
 	lw	a6,-1684(s0)
 	addi	a7,a5,1
 	sw	a7,1600(a4)
-	blt	a6,a5,.+8
-	jal	x0,.L311
-	blt	zero,a6,.L307
+	bge	a6,a5,.L311
+	bge	zero,a6,.+8
+	jal	x0,.L307
 .L311:
 	addi	s1,s1,1
 .L248:
-	blt	t4,a1,.L237
+	bge	t4,a1,.+8
+	jal	x0,.L237
 .L332:
-	beq	s1,zero,.+8
-	jal	x0,.L266
+	bne	s1,zero,.L266
 	addi	a5,a4,2047
 	lw	a6,357(a5)
 	lw	s9,4(sp)
 	lw	s10,0(sp)
-	blt	zero,a6,.+8
-	jal	x0,.L240
+	bge	zero,a6,.L240
 .L239:
 	lui	t4,1
 	sub	op_0,x0,a4
@@ -1266,15 +1217,13 @@ foo:
 	addi	t3,zero,0
 .L272:
 	addi	t3,t3,1
-	blt	t3,a6,.+8
-	jal	x0,.L240
+	bge	t3,a6,.L240
 	lw	t1,1604(a7)
 	addi	a5,a7,0
 	addi	a1,t3,0
 .L271:
 	lw	a0,1612(a5)
-	blt	a0,t1,.+8
-	jal	x0,.L268
+	bge	a0,t1,.L268
 .L331:
 	sw	a0,1604(a7)
 	lw	a6,1616(a5)
@@ -1285,28 +1234,31 @@ foo:
 	sw	t1,1612(a5)
 	lw	a6,-1692(t4)
 	addi	a5,a5,8
-	blt	a1,a6,.+8
-	jal	x0,.L269
+	bge	a1,a6,.L269
 	lw	t1,1604(a7)
 	lw	a0,1612(a5)
-	blt	a0,t1,.L331
+	bge	a0,t1,.+8
+	jal	x0,.L331
 .L268:
 	addi	a1,a1,1
-	blt	a1,a6,.+8
-	jal	x0,.L269
+	bge	a1,a6,.L269
 	addi	a5,a5,8
 	jal	x0,.L271
 .L330:
 	lw	a5,-1692(s0)
-	blt	s3,a5,.L300
+	bge	s3,a5,.+8
+	jal	x0,.L300
 	lw	a6,1600(a4)
 	addi	a6,a6,-1
-	addi	op_0,x0,4
-	sll	a7,a6,op_0
+	addi	op_1,x0,2
+	sll	op_0,a6,op_1
+	addi	op_2,x0,2
+	sll	a7,op_0,op_2
 	sub	op_0,x0,a4
 	sub	a7,a7,op_0
 	lw	a7,4(a7)
-	beq	a7,s2,.L254
+	bne	a7,s2,.+8
+	jal	x0,.L254
 	addi	a6,s1,0
 .L254:
 	addi	op_0,x0,3
@@ -1318,88 +1270,85 @@ foo:
 	addi	a5,a5,1
 	addi	t4,t4,1
 	sw	a5,-1692(s0)
-	blt	t4,a1,.L237
+	bge	t4,a1,.+8
+	jal	x0,.L237
 	jal	x0,.L332
 .L328:
 	sub	t5,a1,t4
 	addi	t5,t5,-1
 	addi	a5,zero,0
 	addi	s10,zero,93
-	beq	t5,zero,.+8
-	jal	x0,.L242
+	bne	t5,zero,.L242
 	jal	x0,.L333
 .L244:
 	sub	op_0,x0,a5
 	sub	a5,t1,op_0
-	blt	a5,t5,.+8
-	jal	x0,.L245
+	bge	a5,t5,.L245
 .L242:
 	addi	a6,a5,1
 	sub	op_0,x0,t3
 	sub	a6,a6,op_0
 	lbu	a7,0(a6)
 	addi	t1,zero,1
-	beq	a7,s10,.L245
-	beq	a7,t6,.+8
-	jal	x0,.L244
+	bne	a7,s10,.+8
+	jal	x0,.L245
+	bne	a7,t6,.L244
 	lbu	a6,1(a6)
 	addi	t1,zero,4
-	beq	a6,t0,.L244
+	bne	a6,t0,.+8
+	jal	x0,.L244
 	addi	t1,zero,2
 	sub	op_0,x0,a5
 	sub	a5,t1,op_0
-	blt	a5,t5,.L242
+	bge	a5,t5,.+8
+	jal	x0,.L242
 .L245:
-	blt	t5,a5,.L248
+	bge	t5,a5,.+8
+	jal	x0,.L248
 	addi	a5,a5,2
 	sub	op_0,x0,t4
 	sub	t4,a5,op_0
 .L341:
-	blt	t4,a1,.L237
+	bge	t4,a1,.+8
+	jal	x0,.L237
 	jal	x0,.L332
 .L329:
 	lbu	a5,1(t3)
 	addi	a7,zero,2
-	beq	a5,t0,.L334
+	bne	a5,t0,.+8
+	jal	x0,.L334
 .L251:
-	blt	t4,s7,.+8
-	jal	x0,.L305
+	bge	t4,s7,.L305
 	lbu	a5,1(t3)
-	beq	a5,t0,.+8
-	jal	x0,.L335
-	blt	t4,s8,.+8
-	jal	x0,.L305
+	bne	a5,t0,.L335
+	bge	t4,s8,.L305
 	lbu	a5,2(t3)
 	sub	op_0,x0,a5
 	sub	a5,s5,op_0
 	lbu	a5,0(a5)
 	addi	op_0,x0,68
-	addi	op_3,x0,68
-	or	op_2,op_3,a5
-	sub	op_1,op_2,a5
-	sub	a5,op_0,op_1
-	beq	a5,zero,.L305
+	and	a5,op_0,a5
+	bne	a5,zero,.+8
+	jal	x0,.L305
 	lbu	a5,3(t3)
 	sub	op_0,x0,a5
 	sub	a5,s5,op_0
 	lbu	a5,0(a5)
 	addi	op_0,x0,68
-	addi	op_3,x0,68
-	or	op_2,op_3,a5
-	sub	op_1,op_2,a5
-	sub	a5,op_0,op_1
-	beq	a5,zero,.L305
+	and	a5,a5,op_0
+	bne	a5,zero,.+8
+	jal	x0,.L305
 .L327:
 	sub	op_0,x0,t4
 	sub	t4,a7,op_0
-	blt	t4,a1,.L237
+	bge	t4,a1,.+8
+	jal	x0,.L237
 	jal	x0,.L332
 .L334:
 	addi	a7,zero,4
 	jal	x0,.L251
 .L259:
-	beq	a5,s9,.+8
-	jal	x0,.L265
+	bne	a5,s9,.L265
 	lw	a5,1600(a4)
 	addi	a5,a5,-1
 	addi	op_0,x0,4
@@ -1407,7 +1356,8 @@ foo:
 	sub	op_0,x0,a4
 	sub	a6,a5,op_0
 	lw	a6,4(a6)
-	beq	a6,s2,.L262
+	bne	a6,s2,.+8
+	jal	x0,.L262
 	addi	op_1,x0,2
 	sll	op_0,s1,op_1
 	addi	op_2,x0,2
@@ -1419,31 +1369,27 @@ foo:
 	addi	s1,s1,-1
 	sub	a6,t3,a6
 	sw	a6,4(a5)
-	blt	s1,zero,.L266
-	blt	zero,t4,.+8
-	jal	x0,.L265
+	bge	s1,zero,.+8
+	jal	x0,.L266
+	bge	zero,t4,.L265
 	lbu	a6,-1(t3)
 	addi	a5,zero,40
-	beq	a6,a5,.L336
+	bne	a6,a5,.+8
+	jal	x0,.L336
 .L265:
 	addi	t4,t4,1
-	blt	t4,a1,.L237
+	bge	t4,a1,.+8
+	jal	x0,.L237
 	jal	x0,.L332
 .L335:
 	addi	a6,a5,-40
 	addi	op_0,x0,255
-	addi	op_3,x0,255
-	or	op_2,op_3,a6
-	sub	op_1,op_2,a6
-	sub	a6,op_0,op_1
+	and	a6,op_0,a6
 	addi	t1,zero,23
 	bltu	t1,a6,.+8
 	jal	x0,.L256
-	addi	op_2,x0,191
-	or	op_1,a5,op_2
-	addi	op_3,x0,191
-	sub	op_0,op_1,op_3
-	sub	a6,a5,op_0
+	addi	op_0,x0,191
+	and	a6,a5,op_0
 	addi	a6,a6,-36
 	addi	op_0,x0,1
 	bltu	a6,op_0,.+12
@@ -1462,30 +1408,31 @@ foo:
 	addi	t3,x0,0
 	jal	x0,.+8
 	addi	t3,x0,1
-	or	t3,t3,t1
+	and	op_1,t3,t1
+	sub	op_0,op_1,t1
+	sub	t3,t3,op_0
 	addi	t1,a5,-91
-	addi	op_2,x0,223
-	or	op_1,a5,op_2
-	addi	op_3,x0,223
-	sub	op_0,op_1,op_3
-	sub	a5,a5,op_0
+	addi	op_0,x0,223
+	and	a5,op_0,a5
 	addi	op_0,x0,4
 	bltu	t1,op_0,.+12
 	addi	t1,x0,0
 	jal	x0,.+8
 	addi	t1,x0,1
 	addi	a5,a5,-83
-	or	t1,t1,t3
+	and	op_1,t1,t3
+	sub	op_0,op_1,t3
+	sub	t1,t1,op_0
 	addi	op_0,x0,1
 	bltu	a5,op_0,.+12
 	addi	a5,x0,0
 	jal	x0,.+8
 	addi	a5,x0,1
-	or	a5,a5,t1
-	beq	a5,zero,.+8
-	jal	x0,.L327
-	beq	a6,zero,.+8
-	jal	x0,.L327
+	and	op_1,a5,t1
+	sub	op_0,op_1,t1
+	sub	a5,a5,op_0
+	bne	a5,zero,.L327
+	bne	a6,zero,.L327
 .L305:
 	lw	s9,4(sp)
 	lw	s10,0(sp)
@@ -1507,35 +1454,31 @@ foo:
 	lui	t1,1046528
 	addi	t1,t1,-80
 	sra	a6,t1,a6
-	addi	op_2,x0,1
-	or	op_1,a6,op_2
-	addi	op_3,x0,1
-	sub	op_0,op_1,op_3
-	sub	a6,a6,op_0
+	addi	op_0,x0,1
+	and	a6,op_0,a6
 	addi	op_1,x0,1
-	or	op_0,op_1,a6
-	addi	op_3,x0,1
+	addi	op_4,x0,1
+	and	op_3,op_4,a6
+	sub	op_2,op_3,a6
+	sub	op_0,op_1,op_2
 	addi	op_6,x0,1
-	or	op_5,op_6,a6
-	sub	op_4,op_5,a6
-	sub	op_2,op_3,op_4
-	sub	a6,op_0,op_2
+	and	op_5,op_6,a6
+	sub	a6,op_0,op_5
 	jal	x0,.L257
 .L269:
 	addi	a7,a7,8
-	blt	t3,a6,.L272
+	bge	t3,a6,.+8
+	jal	x0,.L272
 .L240:
 	lw	t3,1600(a4)
-	blt	zero,t3,.+8
-	jal	x0,.L280
+	bge	zero,t3,.L280
 .L273:
 	addi	a0,zero,0
 	sw	zero,12(a4)
 	sw	a0,8(a4)
 	addi	a7,a4,12
 	addi	t1,zero,0
-	blt	t1,a6,.+8
-	jal	x0,.L276
+	bge	t1,a6,.L276
 .L337:
 	addi	op_0,x0,3
 	sll	a1,a0,op_0
@@ -1547,35 +1490,40 @@ foo:
 	addi	a0,a0,1
 	addi	a5,a5,1
 	sw	a5,0(a7)
-	beq	a0,a6,.L278
+	bne	a0,a6,.+8
+	jal	x0,.L278
 .L277:
 	lw	a5,1604(a1)
 	addi	a1,a1,8
-	beq	a5,t1,.L279
+	bne	a5,t1,.+8
+	jal	x0,.L279
 .L278:
 	addi	t1,t1,1
-	beq	t1,t3,.L280
+	bne	t1,t3,.+8
+	jal	x0,.L280
 	sw	zero,16(a7)
 	sw	a0,12(a7)
 	addi	a7,a7,16
-	blt	a0,a6,.L337
+	bge	a0,a6,.+8
+	jal	x0,.L337
 .L276:
 	addi	t1,t1,1
-	addi	op_1,x0,2
-	sll	op_0,t1,op_1
-	addi	op_2,x0,2
-	sll	a5,op_0,op_2
+	addi	op_0,x0,4
+	sll	a5,t1,op_0
 	sub	op_0,x0,a4
 	sub	a5,a5,op_0
-	beq	t1,t3,.L280
+	bne	t1,t3,.+8
+	jal	x0,.L280
 .L281:
 	sw	zero,12(a5)
 	sw	a0,8(a5)
 	addi	t1,t1,1
 	addi	a5,a5,16
-	blt	t1,t3,.L281
+	bge	t1,t3,.+8
+	jal	x0,.L281
 .L280:
-	blt	a3,zero,.L275
+	bge	a3,zero,.+8
+	jal	x0,.L275
 	lw	a5,0(a4)
 	addi	s4,a3,0
 	lw	a3,12(a4)
@@ -1590,7 +1538,8 @@ foo:
 	sub	op_0,x0,s5
 	sub	s1,s3,op_0
 	sub	s2,s4,s3
-	beq	a3,zero,.L338
+	bne	a3,zero,.+8
+	jal	x0,.L338
 	lw	a4,8(s0)
 	addi	s8,zero,0
 .L283:
@@ -1610,11 +1559,11 @@ foo:
 .Lpcrel_16:
 	auipc	ra,%pcrel_hi(bar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_16)
-	blt	zero,a0,.L339
+	bge	zero,a0,.+8
+	jal	x0,.L339
 .L286:
 	lw	a3,12(s0)
-	blt	s8,a3,.+8
-	jal	x0,.L288
+	bge	s8,a3,.L288
 	lw	a4,8(s0)
 	addi	s8,s8,1
 	sub	op_0,x0,s8
@@ -1625,8 +1574,7 @@ foo:
 	sub	a5,a5,op_0
 	lw	a0,1600(a5)
 	addi	a0,a0,1
-	beq	s8,a3,.+8
-	jal	x0,.L283
+	bne	s8,a3,.L283
 	lw	a5,4(s0)
 	lw	a1,0(s0)
 	addi	a4,s0,0
@@ -1639,8 +1587,7 @@ foo:
 .Lpcrel_17:
 	auipc	ra,%pcrel_hi(bar)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_17)
-	blt	zero,a0,.+8
-	jal	x0,.L286
+	bge	zero,a0,.L286
 .L339:
 	sub	op_0,x0,a0
 	sub	a0,s3,op_0
@@ -1649,11 +1596,12 @@ foo:
 	lw	a1,4(s0)
 	jal	x0,.L285
 .L288:
-	beq	a0,zero,.L340
-	beq	s7,s6,.L236
+	bne	a0,zero,.+8
+	jal	x0,.L340
+	bne	s7,s6,.+8
+	jal	x0,.L236
 	addi	s3,s3,1
-	blt	s4,s3,.+8
-	jal	x0,.L291
+	bge	s4,s3,.L291
 	jal	x0,.L236
 .L333:
 	addi	a5,zero,2
@@ -1689,7 +1637,8 @@ foo:
 .L322:
 	addi	a5,a4,2047
 	lw	a6,357(a5)
-	blt	zero,a6,.L239
+	bge	zero,a6,.+8
+	jal	x0,.L239
 	jal	x0,.L273
 .L340:
 	addi	a0,s3,0
@@ -1718,27 +1667,24 @@ slre_match.constprop.0:
 	sw	zero,1612(sp)
 	addi	a4,zero,40
 	addi	a3,a1,0
-	beq	a6,a4,.+8
-	jal	x0,.L343
+	bne	a6,a4,.L343
 	lbu	a2,1(a0)
 	addi	a4,zero,63
-	beq	a2,a4,.+8
-	jal	x0,.L344
+	bne	a2,a4,.L344
 	lbu	a2,2(a0)
 	addi	a4,zero,105
-	beq	a2,a4,.+8
-	jal	x0,.L344
+	bne	a2,a4,.L344
 	lbu	a2,3(a0)
 	addi	a4,zero,41
-	beq	a2,a4,.+8
-	jal	x0,.L344
+	bne	a2,a4,.L344
 	addi	a4,sp,2047
 	addi	a4,a4,381
 	addi	a0,a0,4
 	sw	a5,0(a4)
 .L343:
 	lbu	a5,0(a0)
-	beq	a5,zero,.L347
+	bne	a5,zero,.+8
+	jal	x0,.L347
 .L344:
 	addi	a5,zero,0
 .L346:
@@ -1746,8 +1692,7 @@ slre_match.constprop.0:
 	sub	op_0,x0,a0
 	sub	a4,a5,op_0
 	lbu	a4,0(a4)
-	beq	a4,zero,.+8
-	jal	x0,.L346
+	bne	a4,zero,.L346
 	addi	a1,a5,0
 .L345:
 	lui	a2,%hi(.LANCHOR0)
@@ -1787,13 +1732,13 @@ benchmark_body.constprop.0:
 	lbu	a4,0(s4)
 	addi	a5,s4,0
 	addi	s1,zero,0
-	beq	a4,zero,.L356
+	bne	a4,zero,.+8
+	jal	x0,.L356
 .L352:
 	addi	a1,a5,0
 	lbu	a4,1(a5)
 	addi	a5,a5,1
-	beq	a4,zero,.+8
-	jal	x0,.L352
+	bne	a4,zero,.L352
 	sub	op_0,x0,s5
 	sub	s1,a1,op_0
 .L356:
@@ -1811,11 +1756,9 @@ benchmark_body.constprop.0:
 	sub	op_0,x0,a0
 	sub	a0,a5,op_0
 	sw	a0,4(sp)
-	beq	s0,s2,.+8
-	jal	x0,.L353
+	bne	s0,s2,.L353
 	addi	s3,s3,-1
-	beq	s3,zero,.+8
-	jal	x0,.L351
+	bne	s3,zero,.L351
 	lw	ra,44(sp)
 	lw	s0,40(sp)
 	lw	a0,4(sp)
@@ -1833,8 +1776,7 @@ benchmark_body.constprop.0:
 benchmark_body.isra.0:
 	addi	sp,sp,-64
 	sw	ra,60(sp)
-	blt	zero,a0,.+8
-	jal	x0,.L363
+	bge	zero,a0,.L363
 	sw	s3,44(sp)
 	lui	s3,%hi(.LANCHOR0)
 	addi	s3,s3,%lo(.LANCHOR0)
@@ -1855,13 +1797,13 @@ benchmark_body.isra.0:
 	lbu	a4,0(s3)
 	addi	a5,s3,0
 	addi	s7,zero,0
-	beq	a4,zero,.L367
+	bne	a4,zero,.+8
+	jal	x0,.L367
 .L364:
 	addi	a1,a5,0
 	lbu	a4,1(a5)
 	addi	a5,a5,1
-	beq	a4,zero,.+8
-	jal	x0,.L364
+	bne	a4,zero,.L364
 	sub	op_0,x0,s5
 	sub	s7,a1,op_0
 .L367:
@@ -1879,11 +1821,9 @@ benchmark_body.isra.0:
 	sub	op_0,x0,a0
 	sub	a0,a5,op_0
 	sw	a0,4(sp)
-	beq	s0,s1,.+8
-	jal	x0,.L365
+	bne	s0,s1,.L365
 	addi	s2,s2,1
-	beq	s2,s4,.+8
-	jal	x0,.L362
+	bne	s2,s4,.L362
 	lw	s0,56(sp)
 	lw	s1,52(sp)
 	lw	s2,48(sp)
@@ -1939,20 +1879,16 @@ slre_match:
 	sw	zero,1612(sp)
 	addi	a5,zero,40
 	addi	a3,a2,0
-	beq	a6,a5,.+8
-	jal	x0,.L377
+	bne	a6,a5,.L377
 	lbu	a4,1(a0)
 	addi	a5,zero,63
-	beq	a4,a5,.+8
-	jal	x0,.L378
+	bne	a4,a5,.L378
 	lbu	a4,2(a0)
 	addi	a5,zero,105
-	beq	a4,a5,.+8
-	jal	x0,.L378
+	bne	a4,a5,.L378
 	lbu	a4,3(a0)
 	addi	a5,zero,41
-	beq	a4,a5,.+8
-	jal	x0,.L378
+	bne	a4,a5,.L378
 	addi	a4,sp,2047
 	addi	a5,zero,1
 	addi	a4,a4,381
@@ -1960,7 +1896,8 @@ slre_match:
 	sw	a5,0(a4)
 .L377:
 	lbu	a5,0(a0)
-	beq	a5,zero,.L379
+	bne	a5,zero,.+8
+	jal	x0,.L379
 .L378:
 	addi	a5,zero,0
 .L380:
@@ -1968,8 +1905,7 @@ slre_match:
 	sub	op_0,x0,a0
 	sub	a4,a5,op_0
 	lbu	a4,0(a4)
-	beq	a4,zero,.+8
-	jal	x0,.L380
+	bne	a4,zero,.L380
 .L379:
 	addi	a2,a1,0
 	addi	a4,sp,12

@@ -94,7 +94,7 @@ md5.constprop.0:
 	beq	t2,zero,.L7
 	sub	a4,zero,t2
 	addi	op_0,x0,3
-	and	a5,op_0,a4
+	and	a5,a4,op_0
 	beq	a5,zero,.L25
 	sb	zero,0(t2)
 	addi	op_0,x0,2
@@ -110,7 +110,7 @@ md5.constprop.0:
 	addi	a6,zero,1080
 	sub	a6,a6,a5
 	addi	op_0,x0,-4
-	and	a1,op_0,a6
+	and	a1,a6,op_0
 	sub	op_0,x0,t2
 	sub	a5,a5,op_0
 	sub	op_0,x0,a1
@@ -138,7 +138,7 @@ md5.constprop.0:
 	sub	op_0,op_1,a0
 	sub	a4,t2,op_0
 	addi	op_0,x0,3
-	and	a4,op_0,a4
+	and	a4,a4,op_0
 	addi	a5,a0,0
 	addi	t6,t2,0
 	beq	a4,zero,.+8
@@ -801,8 +801,8 @@ md5.constprop.0:
 	addi	a3,a0,1000
 	addi	a4,t2,0
 .L15:
-	lw	op_0,0(a5)
-	addi	op_1,x0,255
+	addi	op_0,x0,255
+	lw	op_1,0(a5)
 	and	a2,op_0,op_1
 	addi	a5,a5,1
 	addi	a4,a4,1
@@ -812,7 +812,7 @@ md5.constprop.0:
 	addi	a5,zero,-128
 	sb	a5,1000(t2)
 	addi	op_0,x0,3
-	and	a5,op_0,t2
+	and	a5,t2,op_0
 	beq	a5,zero,.L55
 .L16:
 	addi	a4,zero,64
@@ -916,8 +916,7 @@ benchmark_body.constprop.0:
 	.align	2
 	.type	benchmark_body.constprop.1.isra.0, @function
 benchmark_body.constprop.1.isra.0:
-	blt	zero,a0,.+8
-	jal	x0,.L69
+	bge	zero,a0,.L69
 	addi	sp,sp,-48
 	sw	s2,32(sp)
 	sw	s4,24(sp)
@@ -1061,7 +1060,7 @@ md5:
 	sw	a7,%lo(h1)(t1)
 	lui	a7,%hi(h2)
 	addi	op_0,x0,-64
-	and	a6,op_0,a6
+	and	a6,a6,op_0
 	addi	a4,a4,1142
 	sw	a3,%lo(h2)(a7)
 	lui	a3,%hi(h3)
@@ -1090,12 +1089,12 @@ md5:
 	beq	t2,zero,.L83
 	sub	a4,zero,t2
 	addi	op_0,x0,3
-	and	a5,a4,op_0
+	and	a5,op_0,a4
 	addi	a7,zero,0
 	beq	a5,zero,.L86
 	sb	zero,0(t2)
 	addi	op_0,x0,2
-	and	a4,op_0,a4
+	and	a4,a4,op_0
 	addi	a7,zero,1
 	beq	a4,zero,.L86
 	sb	zero,1(t2)
@@ -1108,7 +1107,7 @@ md5:
 .L86:
 	sub	t1,a2,a5
 	addi	op_0,x0,-4
-	and	a4,t1,op_0
+	and	a4,op_0,t1
 	sub	op_0,x0,t2
 	sub	a5,a5,op_0
 	sub	op_0,x0,a4
@@ -1165,7 +1164,7 @@ md5:
 	sub	op_0,op_1,t2
 	sub	a3,a0,op_0
 	addi	op_0,x0,3
-	and	a3,op_0,a3
+	and	a3,a3,op_0
 	addi	a4,t2,0
 	addi	a5,a0,0
 	beq	a3,zero,.+8
@@ -1191,8 +1190,8 @@ md5:
 	beq	a2,a5,.+8
 	jal	x0,.L91
 	beq	a1,a7,.L93
-	lw	op_0,0(a2)
-	addi	op_1,x0,255
+	addi	op_0,x0,255
+	lw	op_1,0(a2)
 	and	a3,op_0,op_1
 	sub	op_0,x0,t2
 	sub	a4,a7,op_0
@@ -1234,8 +1233,7 @@ md5:
 	jal	x0,.L132
 	sw	a1,0(a4)
 .L97:
-	blt	zero,s10,.+8
-	jal	x0,.L75
+	bge	zero,s10,.L75
 .L81:
 	lui	t5,1005505
 	lui	t4,292988
@@ -1829,7 +1827,8 @@ md5:
 	sub	op_0,x0,s5
 	sub	s5,a0,op_0
 	addi	t6,t6,64
-	blt	t0,a5,.L100
+	bge	t0,a5,.+8
+	jal	x0,.L100
 	lui	a5,%hi(h0)
 	sw	s6,%lo(h0)(a5)
 	lui	a5,%hi(h1)
@@ -1881,8 +1880,8 @@ md5:
 	sub	a2,a1,op_0
 	addi	a4,t2,0
 .L95:
-	addi	op_0,x0,255
-	lw	op_1,0(a5)
+	lw	op_0,0(a5)
+	addi	op_1,x0,255
 	and	a3,op_0,op_1
 	addi	a5,a5,1
 	addi	a4,a4,1
@@ -1944,9 +1943,7 @@ main:
 	addi	a5,a5,-948
 	sub	op_0,x0,a0
 	sub	a0,a5,op_0
-	bltu	zero,a0,.+8
-	jal	x0,.+8
-	jal	x0,.+12
+	bltu	zero,a0,.+12
 	addi	a0,x0,0
 	jal	x0,.+8
 	addi	a0,x0,1
