@@ -29,10 +29,10 @@ ALL_INSTRUCTIONS = {
     'Jal', 'Jalr',
     # Upper immediate
     'Lui', 'Auipc',
-    # System
-    'Ecall', 'Ebreak',
-    # Fence
-    'Fence',
+    # # System
+    # 'Ecall', 'Ebreak',
+    # # Fence
+    # 'Fence',
     # M extension: multiply
     'Mul', 'Mulh', 'Mulhsu', 'Mulhu',
     # M extension: divide
