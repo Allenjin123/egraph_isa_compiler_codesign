@@ -1,82 +1,142 @@
 import json
+
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
+import seaborn as sns
+from matplotlib.font_manager import FontProperties
+from matplotlib.patches import Patch
+
+plt.rcParams['font.family'] = 'sans-serif'
+
+BOLD_FP = FontProperties(size=22, family='sans-serif')
+NORM_FP = FontProperties(size=20, family='sans-serif')
+
+NAME_MAPPING = {
+    'basicmath_small_O3': 'basicmath',
+    'bitcnts_O3': 'bitcnts',
+    'dijkstra_small_O3': 'dijkstra',
+    'matmult-int': 'matmult-int',
+    'qsort_large_O3': 'qsort-num',
+    'qsort_small_O3': 'qsort-str',
+    'sha_O3': 'sha',
+    'patricia_O3': 'patricia',
+    'picojpeg_test': 'picojpeg',
+    'rijndael_Oz': 'rijndael',
+    'libhuffbench': 'huffbench',
+    'combined': 'combined',
+    'libedn': 'edn',
+    'libnsichneu': 'nsichneu',
+    'libslre': 'slre',
+    'libstatemate': 'statemate',
+    'libud': 'ud',
+    'libwikisort': 'wikisort',
+    'md5': 'md5sum',
+}
 
 with open("timing.json") as f:
     data = json.load(f)
 
 programs = data["programs"]
 
-# Sort by insn_count
-items = sorted(programs.items(), key=lambda x: x[1]["insn_count"])
+# Sort alphabetically by program name (same order as parse_instruction_counts.py)
+items = sorted(programs.items(), key=lambda x: x[0])
 names = [k for k, _ in items]
-insn  = [v["insn_count"]     for _, v in items]
+insn  = [v["insn_count"]            for _, v in items]
 sat   = [v["saturation_ms"]       / 1000 for _, v in items]
 ext   = [v["extraction_ms_average"] / 1000 for _, v in items]
 scorr = [v["scorr_ms_average"]    / 1000 for _, v in items]
 total = [s + e + c for s, e, c in zip(sat, ext, scorr)]
 
-# Shorten labels
-short = [n.replace("_small","_str").replace("_large","_num").replace("_O3","").replace("_Oz","").replace("_test","")  for n in names]
+# Shorten labels via name mapping
+short = [NAME_MAPPING.get(n, n) for n in names]
 
-x = np.arange(len(names))
-insn_arr = np.array(insn)
-bar_width = (insn_arr.max() - insn_arr.min()) / len(insn_arr) * 0.6
+n = len(names)
+x = np.arange(n)
 
-sat_arr   = np.array(sat)
-ext_arr   = np.array(ext)
-scorr_arr = np.array(scorr)
+sns.set_palette("Set2")
+cat_colors = sns.color_palette("Set2", 3)
 
-fig, axes = plt.subplots(1, 1, figsize=(14, 5))
-fig.suptitle("Timing vs Instruction Count", fontsize=14, fontweight="bold")
+# Y_MAX: clip outlier bars, label them with actual value
+# Find a reasonable max: second-largest total * 1.15
+sorted_totals = sorted(total)
+# Y_MAX = sorted_totals[-2] * 1.3 if len(sorted_totals) > 1 else max(total) * 1.1
+Y_MAX = 130
 
-# ── Top: Stacked bar (saturation + extraction + scorr) ──────────────────────
-ax1 = axes
-ax1.bar(x, sat,   label="Saturation (s)",  color="#4C72B0", alpha=0.85)
-ax1.bar(x, ext,   label="Extraction (s)",  color="#DD8452", alpha=0.85, bottom=sat)
+
+fig, ax = plt.subplots(figsize=(10, 4))
+
+# Stacked bar: saturation + extraction + pruner
+bar_w = 0.6
+ax.bar(x, sat, width=bar_w, edgecolor='black', linewidth=0.4, alpha=1,
+       color=cat_colors[0])
+ax.bar(x, ext, width=bar_w, edgecolor='black', linewidth=0.4, alpha=1,
+       color=cat_colors[1], bottom=sat)
 bottom_scorr = [s + e for s, e in zip(sat, ext)]
-ax1.bar(x, scorr, label="Pruner (s)",       color="#55A868", alpha=0.85, bottom=bottom_scorr)
-ax1.set_xticks(x)
-ax1.set_xticklabels(short, rotation=40, ha="right", fontsize=8)
-ax1.set_ylabel("Time (s)")
-ax1.set_title("")
-ax1.legend()
-ax1.yaxis.set_major_formatter(ticker.FuncFormatter(lambda v, _: f"{v:.1f}"))
-ax1.grid(axis="y", linestyle="--", alpha=0.4)
+ax.bar(x, scorr, width=bar_w, edgecolor='black', linewidth=0.4, alpha=1,
+       color=cat_colors[2], bottom=bottom_scorr)
 
-# Annotate instruction count above each bar
-for i, (ins, tot) in enumerate(zip(insn, total)):
-    ax1.text(i, tot + 0.2, f"{ins}", ha="center", va="bottom", fontsize=6.5, color="#333")
+# Label bars that exceed Y_MAX with actual value
+for i, tot in enumerate(total):
+    if tot > Y_MAX:
+        ax.text(x[i], Y_MAX - 3, f'{tot:.0f}s',
+                ha='center', va='top', fontsize=10,
+                bbox=dict(facecolor='white', alpha=0.7,
+                          edgecolor='none', pad=2),fontweight='bold')
 
-# # ── Second: Scatter – insn_count vs time ────────────────────────────────────
-# ax2 = axes[1]
-# ax2.scatter(insn, sat,   label="Saturation",  color="#4C72B0", alpha=0.8, s=60)
-# ax2.scatter(insn, ext,   label="Extraction",  color="#DD8452", alpha=0.8, s=60, marker="^")
-# ax2.scatter(insn, scorr, label="Pruner",       color="#55A868", alpha=0.8, s=60, marker="s")
-# ax2.scatter(insn, total, label="Total",       color="#8B5CF6", alpha=0.6, s=40, marker="D")
-# ax2.set_xlabel("Instruction Count")
-# ax2.set_ylabel("Time (s)")
-# ax2.set_title("Saturation / Extraction / Pruner vs Instruction Count (scatter)")
-# ax2.legend()
-# ax2.yaxis.set_major_formatter(ticker.FuncFormatter(lambda v, _: f"{v:.1f}"))
-# ax2.grid(linestyle="--", alpha=0.4)
+ax.set_xlim(-0.6, n - 0.4)
+ax.set_ylim(0, Y_MAX)
 
-# # ── Third: Narrow stacked bar with insn_count as x-axis, no labels ──────────
-# ax3 = axes[2]
-# narrow_width = bar_width * 0.2
-# ax3.bar(insn_arr, sat_arr,   width=narrow_width, label="Saturation (s)", color="#4C72B0", alpha=0.85)
-# ax3.bar(insn_arr, ext_arr,   width=narrow_width, label="Extraction (s)", color="#DD8452", alpha=0.85, bottom=sat_arr)
-# ax3.bar(insn_arr, scorr_arr, width=narrow_width, label="Pruner (s)",      color="#55A868", alpha=0.85, bottom=sat_arr + ext_arr)
-# ax3.set_xlabel("Instruction Count")
-# ax3.set_ylabel("Time (s)")
-# ax3.set_title("Saturation + Extraction + Pruner vs Instruction Count (narrow)")
-# ax3.legend()
-# ax3.yaxis.set_major_formatter(ticker.FuncFormatter(lambda v, _: f"{v:.1f}"))
-# ax3.grid(axis="y", linestyle="--", alpha=0.4)
+# Configure axes
+ax.set_ylabel('Tool Runtime (s)', fontsize=16, fontproperties=BOLD_FP)
+ax.set_xticks(x)
+ax.set_xticklabels([])
+ax.set_xticks([], minor=True)
+XLABEL_X_OFFSET = -0.1
+for i, label in enumerate(short):
+    ax.text(x[i] + XLABEL_X_OFFSET, -0.12, label,
+            transform=ax.get_xaxis_transform(),
+            rotation=40, ha='right', va='top', fontsize=14,
+            rotation_mode='anchor')
+ax.tick_params(axis='x', which='major', length=4, direction='out',
+               bottom=True, top=False, pad=5)
+ax.tick_params(axis='x', which='minor', length=0)
+ax.tick_params(axis='y', labelsize=12)
+ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda v, _: f"{int(v)}"))
+ax.grid(axis='y', alpha=0.3, linestyle='--')
+
+# Instruction counts below axis, above the labels
+insn_label_fp = FontProperties(weight='bold', size=9)
+insn_y_pts = -9
+
+ax.annotate('# Instr',
+            xy=(x[0], 0), xycoords=('data', 'axes fraction'),
+            xytext=(-26, insn_y_pts), textcoords='offset points',
+            ha='right', va='top', color='#2B547E',
+            fontproperties=insn_label_fp, annotation_clip=False)
+
+for i, ins in enumerate(insn):
+    ax.annotate(f'{ins}',
+                xy=(x[i], 0), xycoords=('data', 'axes fraction'),
+                xytext=(0, insn_y_pts), textcoords='offset points',
+                ha='center', va='top', color='#2B547E',
+                fontproperties=insn_label_fp, annotation_clip=False)
+
+# Legend: upper right inside figure
+legend_handles = [
+    Patch(facecolor=cat_colors[0], edgecolor='black', linewidth=0.6,
+          label='Saturation'),
+    Patch(facecolor=cat_colors[1], edgecolor='black', linewidth=0.6,
+          label='Extraction'),
+    Patch(facecolor=cat_colors[2], edgecolor='black', linewidth=0.6,
+          label='Pruner'),
+]
+ax.legend(handles=legend_handles, loc='lower center', bbox_to_anchor=(0.5, 1.04),
+          ncol=3, frameon=True, framealpha=0.9, fontsize=14,
+          columnspacing=1.0, handletextpad=0.4, borderpad=0.3, borderaxespad=0.0)
 
 plt.tight_layout()
-out = "timing_plot.png"
-plt.savefig(out, dpi=150, bbox_inches="tight")
+out = "timing_plot.pdf"
+plt.savefig(out, dpi=300, bbox_inches="tight")
 print(f"Saved: {out}")
-plt.show()
+plt.close()
