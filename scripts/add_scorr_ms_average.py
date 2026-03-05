@@ -1,34 +1,41 @@
 #!/usr/bin/env python3
 """
 Remove all scorr-related fields from timing.json, then append scorr_ms_average
-computed from /tmp/aesip_result_final_09/backend/<program>/analysis_results.json:
-    scorr_ms_average = total_synthesis_time / 27 * 1000
+computed from data.txt: scorr_ms_average = abc_scorr_s / 4 * 1000
 """
 
 import json
 import os
 
 TIMING_JSON = os.path.join(os.path.dirname(__file__), "timing.json")
-BACKEND_RESULT_DIR = "/tmp/aesip_result_final_09/backend"
-OUTPUT_BACKEND_DIR = os.path.join(
-    os.path.dirname(__file__), "..", "output", "backend"
-)
+DATA_TXT = os.path.join(os.path.dirname(__file__), "data.txt")
 
 SCORR_KEYS_TOP = {"scorr_ms", "scorr_ok", "scorr_ms_average"}
 SCORR_KEYS_VARIANT = {"scorr_ms", "scorr_ok"}
+
+
+def load_abc_scorr_table(path):
+    """Return {program: abc_scorr_s} from data.txt."""
+    table = {}
+    with open(path) as f:
+        lines = f.readlines()
+    header = lines[0].split()
+    idx = header.index("abc_scorr_s")
+    for line in lines[1:]:
+        parts = line.split()
+        if not parts:
+            continue
+        table[parts[0]] = float(parts[idx])
+    return table
 
 
 def main():
     with open(TIMING_JSON) as f:
         data = json.load(f)
 
-    programs_in_output = set(os.listdir(OUTPUT_BACKEND_DIR))
+    abc_scorr_table = load_abc_scorr_table(DATA_TXT)
 
     for prog_name, prog_info in data["programs"].items():
-        if prog_name not in programs_in_output:
-            print(f"[SKIP] {prog_name} not found in output/backend")
-            continue
-
         # Remove scorr fields from top-level program entry
         for key in SCORR_KEYS_TOP:
             prog_info.pop(key, None)
@@ -38,25 +45,14 @@ def main():
             for key in SCORR_KEYS_VARIANT:
                 variant.pop(key, None)
 
-        # Read total_synthesis_time from analysis_results.json
-        result_path = os.path.join(
-            BACKEND_RESULT_DIR, prog_name, "analysis_results.json"
-        )
-        if not os.path.exists(result_path):
-            print(f"[WARN] {result_path} not found, skipping scorr_ms_average")
+        if prog_name not in abc_scorr_table:
+            print(f"[WARN] {prog_name} not found in data.txt, skipping scorr_ms_average")
             continue
 
-        with open(result_path) as f:
-            result = json.load(f)
-
-        total_synthesis_time = result.get("total_synthesis_time")
-        if total_synthesis_time is None:
-            print(f"[WARN] {prog_name}: total_synthesis_time missing")
-            continue
-
-        scorr_ms_average = total_synthesis_time / 27 * 1000
+        abc_scorr_s = abc_scorr_table[prog_name]
+        scorr_ms_average = abc_scorr_s / 4 * 1000
         prog_info["scorr_ms_average"] = round(scorr_ms_average, 2)
-        print(f"[OK]   {prog_name}: total_synthesis_time={total_synthesis_time:.3f}s -> scorr_ms_average={scorr_ms_average:.2f}ms")
+        print(f"[OK]   {prog_name}: abc_scorr_s={abc_scorr_s}s -> scorr_ms_average={scorr_ms_average:.2f}ms")
 
     # Collect per-program averages for summary stats
     scorr_avgs = []

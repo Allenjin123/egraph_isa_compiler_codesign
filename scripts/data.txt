@@ -1,23 +1,23 @@
-program             saturation_s  extraction_s  synthesis_s  synlig_techmap_s  abc_scorr_s  odc_scorr_s  gate_synth_s  total_s
-basicmath_small_O3  3             4             361          53                265          0            42            368
-bitcnts_O3          1             3             192          55                100          0            35            196
-qsort_large_O3      1             1             386          55                286          0            40            388
-qsort_small_O3      1             1             184          54                97           0            30            186
-mont64              3             4             190          54                96           0            37            197
-libedn              4             1             190          55                97           0            37            195
-libhuffbench        7             3             182          53                96           0            32            192
-matmult-int         2             1             335          54                238          0            39            338
-md5                 5             14            185          56                98           0            31            204
-libnsichneu         18            4             190          53                104          0            31            212
-picojpeg_test       23            48            190          55                94           0            37            261
-primecount          1             0             188          53                96           0            37            189
-combined            33            11            367          53                272          0            39            411
-libslre             8             6             188          54                101          0            30            202
-libstatemate        9             2             184          53                100          0            28            195
-tarfind             2             1             194          53                102          0            37            197
-libud               3             1             955          54                855          0            44            959
-libwikisort         23            11            284          54                188          0            41            318
-dijkstra_small_O3   2             1             385          54                289          0            40            388
-patricia_O3         5             3             184          55                90           0            38            192
-rijndael_Oz         6             16            193          54                96           0            39            215
-sha_O3              3             4             182          54                96           0            31            189
+program             saturation_s  extraction_s  synthesis_s  synlig_techmap_s  abc_scorr_s  odc_scorr_s  gate_synth_s  total_s  scorr
+basicmath_small_O3  3             4             361          53                265          0            42            368  66.25
+bitcnts_O3          1             3             192          55                100          0            35            196  25
+qsort_large_O3      1             1             386          55                286          0            40            388  71.5
+qsort_small_O3      1             1             184          54                97           0            30            186  24.25
+mont64              3             4             190          54                96           0            37            197  24
+libedn              4             1             190          55                97           0            37            195  24.25
+libhuffbench        7             3             182          53                96           0            32            192  24
+matmult-int         2             1             335          54                238          0            39            338  59.5
+md5                 5             14            185          56                98           0            31            204  24.5
+libnsichneu         18            4             190          53                104          0            31            212  26
+picojpeg_test       23            48            190          55                94           0            37            261  23.5
+primecount          1             0             188          53                96           0            37            189  24
+combined            33            11            367          53                272          0            39            411  68
+libslre             8             6             188          54                101          0            30            202  25.25
+libstatemate        9             2             184          53                100          0            28            195  25
+tarfind             2             1             194          53                102          0            37            197  25.5
+libud               3             1             955          54                855          0            44            959  213.75
+libwikisort         23            11            284          54                188          0            41            318  47
+dijkstra_small_O3   2             1             385          54                289          0            40            388  72.25
+patricia_O3         5             3             184          55                90           0            38            192  22.5
+rijndael_Oz         6             16            193          54                96           0            39            215  24
+sha_O3              3             4             182          54                96           0            31            189  24
