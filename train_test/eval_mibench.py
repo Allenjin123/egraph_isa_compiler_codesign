@@ -32,11 +32,6 @@ from nre.sweep import sweep_parameters
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-try:
-    import scienceplots
-    plt.style.use(['science', 'no-latex'])
-except ImportError:
-    pass
 
 DEFAULT_ILP_INPUT       = REPO_ROOT / 'nre' / 'ilp_input.json'
 DEFAULT_GLOBAL_SWEEP    = REPO_ROOT / 'nre' / 'sweep_results.json'
@@ -246,7 +241,7 @@ def plot_comparison(
     results: Dict,
     output_file: str,
     num_eval_programs: int = None,
-    figsize: Tuple[int, int] = (8, 6),
+    figsize: Tuple[int, int] = (4, 5),
     dpi: int = 400,
 ):
     from matplotlib.ticker import FuncFormatter
@@ -257,23 +252,17 @@ def plot_comparison(
     num_chips_list = sorted(results.keys())
     fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
 
-    marker_list = ['o', 's', '^', 'v', 'D', 'p', 'h', '*']
-    # 四个 source 用完全不同的色系，n=3/4/5 浅→深
-    colors_global    = ['#74b9ff', '#0984e3', '#023e8a']  # 蓝
-    colors_test_nre  = ['#fab1a0', '#e17055', '#7d1a0a']  # 橙红
-    colors_test_best = ['#55efc4', '#00b894', '#00634f']  # 青绿
-    colors_train     = ['#dfe6e9', '#b2bec3', '#636e72']  # 灰（train 一般不显示）
+    # 每个 source 有自己的 marker、颜色、大小（类似 plot_pareto.py 中每条线一个 marker）
+    source_style = {
+        'global':    {'color': '#0984e3', 'marker': 'o', 's': 90},
+        'test_nre':  {'color': '#e17055', 'marker': 's', 's': 75},
+        'test_best': {'color': '#00b894', 'marker': '^', 's': 120},
+        'train':     {'color': '#636e72', 'marker': 'v', 's': 120},
+    }
 
-    handles_by_source = {'global': {}, 'test_nre': {}, 'test_best': {}}
+    handles_by_source = {}
 
-    for idx, n in enumerate(num_chips_list):
-        marker = marker_list[idx % len(marker_list)]
-        source_colors = {
-            'train':     colors_train[idx % len(colors_train)],
-            'global':    colors_global[idx % len(colors_global)],
-            'test_nre':  colors_test_nre[idx % len(colors_test_nre)],
-            'test_best': colors_test_best[idx % len(colors_test_best)],
-        }
+    for n in num_chips_list:
         for source in ('train', 'global', 'test_nre', 'test_best'):
             entries = [e for e in results[n].get(source, [])
                        if e.get('area') is not None and e.get('latency') is not None]
@@ -283,38 +272,30 @@ def plot_comparison(
             pareto = compute_pareto_frontier(pts)
             xs = [p[0] / num_eval_programs for p in pareto]
             ys = [p[1] / num_eval_programs for p in pareto]
-            color = source_colors[source]
-            label = f'n={n} {source}'
-            sc = ax.scatter(xs, ys, color=color, marker=marker,
-                            s=60, alpha=0.95, edgecolors='black', linewidths=0.8,
+            st = source_style[source]
+            label = source
+            sc = ax.scatter(xs, ys, color=st['color'], marker=st['marker'],
+                            s=st['s'], alpha=1.0, edgecolors='black', linewidths=0.7,
                             label=label)
-            if source in handles_by_source:
-                handles_by_source[source][n] = (sc, label)
+            if source not in handles_by_source:
+                handles_by_source[source] = (sc, label)
 
-    # legend：三列，左=global，中=test_nre，右=test_best
-    from matplotlib.patches import Patch
-    sorted_n = sorted(num_chips_list)
+    # legend：每个 source 一个条目，格式同 plot_pareto.py
     legend_handles, legend_labels = [], []
     for src in ('global', 'test_nre', 'test_best'):
-        hd = handles_by_source[src]
-        for n in sorted_n:
-            if n in hd:
-                legend_handles.append(hd[n][0])
-                legend_labels.append(hd[n][1])
-            else:
-                legend_handles.append(Patch(visible=False))
-                legend_labels.append('')
-    ncol = sum(1 for src in ('global', 'test_nre', 'test_best')
-               if any(n in handles_by_source[src] for n in sorted_n))
+        if src in handles_by_source:
+            legend_handles.append(handles_by_source[src][0])
+            legend_labels.append(handles_by_source[src][1])
+    ncol = 1
 
-    ax.set_xlabel('Area', fontsize=14, fontweight='bold')
-    ax.set_ylabel('Latency', fontsize=14, fontweight='bold')
+    ax.set_xlabel('Area', fontsize=16)
     ax.xaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{x:.0f}%'))
-    ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{x:.0f}%'))
-    ax.tick_params(axis='both', which='major', labelsize=12)
+    ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x/100)}x'))
+    ax.tick_params(axis='both', which='major', labelsize=10)
     ax.grid(True, alpha=0.3)
     ax.legend(legend_handles, legend_labels,
-              loc='upper right', ncol=ncol, fontsize=8, prop={'weight': 'bold'})
+              loc='upper right', ncol=ncol, fontsize=12,
+              columnspacing=0.3, handletextpad=-0.1)
 
     plt.tight_layout()
     Path(output_file).parent.mkdir(parents=True, exist_ok=True)
@@ -341,11 +322,11 @@ def main():
     parser.add_argument('--output',         default=str(DEFAULT_OUTPUT),       help='输出图片路径')
     parser.add_argument('--results-output', default=str(DEFAULT_RESULTS_OUT),  help='输出结果 JSON 路径')
     parser.add_argument('--num-chips-min',  type=int, default=3)
-    parser.add_argument('--num-chips-max',  type=int, default=5)
+    parser.add_argument('--num-chips-max',  type=int, default=3)
     parser.add_argument('--num-chips',      type=int, nargs='+', default=None,
                         help='直接指定 n 的列表，例如 --num-chips 3 5（优先于 min/max）')
     parser.add_argument('--timeout',        type=int, default=None)
-    parser.add_argument('--run-test-nre',   action='store_true', default=False,
+    parser.add_argument('--run-test-nre',   action='store_true', default=True,
                         help='跑实验D：只用 TEST_SET 程序做 NRE 搜索，在 TEST_SET 上评估')
     parser.add_argument('--test-nre-sweep', default=str(DEFAULT_TEST_NRE_SWEEP),
                         help='test_nre sweep 缓存路径（存在则直接复用）')

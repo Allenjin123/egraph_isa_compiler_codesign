@@ -96,28 +96,15 @@ def extract_points_for_num_chip(results: Dict, num_chip: str) -> List[Tuple[floa
 
 def print_pareto_points(
     results: Dict,
-    num_chips_range: Tuple[int, int] = None,
-    num_programs: int = None
+    num_chips_range: Tuple[int, int] = None
 ):
     """
     打印每个 num_chip 的帕累托点详细信息
-
+    
     Args:
         results: 结果字典
         num_chips_range: (min, max) 元组，指定要打印的 num_chip 范围
-        num_programs: 程序数量，用于计算每程序均值；为 None 时自动从数据推断
     """
-    # 若未传入 num_programs，尝试从第一个有效 entry 的 per_program 字段推断
-    if num_programs is None:
-        for entries in results.values():
-            for entry in entries:
-                pp = entry.get('per_program')
-                if pp:
-                    num_programs = len(pp)
-                    break
-            if num_programs is not None:
-                break
-
     # 获取所有 num_chip 键，按数值排序
     num_chip_keys = [k for k in results.keys() if k.startswith('num_chip_')]
     num_chip_keys = sorted(num_chip_keys, key=lambda x: int(x.split('_')[-1]))
@@ -162,13 +149,11 @@ def print_pareto_points(
         print(f"  帕累托点列表 (Area, Latency):")
         
         for idx, (area, latency) in enumerate(pareto_points, 1):
-            if num_programs:
-                area_per_prog = area / num_programs
-                lat_per_prog = latency / num_programs
-                print(f"    [{idx}] Area: {area:8.2f} ({area_per_prog:6.2f}), "
-                      f"Latency: {latency:8.2f} ({lat_per_prog:6.2f})")
-            else:
-                print(f"    [{idx}] Area: {area:8.2f}, Latency: {latency:8.2f}")
+            # 显示原始值和除以22后的值
+            area_normalized = area / 22.0
+            latency_normalized = latency / 22.0
+            print(f"    [{idx}] Area: {area:8.2f} ({area_normalized:6.2f}), "
+                  f"Latency: {latency:8.2f} ({latency_normalized:6.2f})")
     
     print("="*80)
 
@@ -216,7 +201,8 @@ def plot_pareto_curves(
     
     colors = sns.color_palette(palette, len(num_chip_keys))
     markers = ['o', 's', '^', 'v', 'D', 'p',  'h','*', 'X', 'P', '<']
-    markers_size = [90, 75, 120, 120, 70, 100, 100, 160, 110, 100, 120]
+    markers_size = [90, 75, 120, 120, 70, 100, 100, 160, 110, 100, 120] 
+    markers_size = np.array(markers_size) * 0.5
     
     # 为每个 num_chip 绘制帕累托曲线
     for idx, num_chip_key in enumerate(num_chip_keys):
@@ -244,17 +230,17 @@ def plot_pareto_curves(
         ax.scatter(
             pareto_areas, pareto_latencies,
             color=colors[idx], s=markers_size[idx % len(markers)], marker=markers[idx % len(markers)],
-            label=f'num={num_chip_value}',
-            alpha=1.0, edgecolors='black', linewidths=1
+            label=f'n={num_chip_value}',
+            alpha=1.0, edgecolors='black', linewidths=0.7
         )
 
 
         print(f"{num_chip_key}: {len(all_points)} 个总点, {len(pareto_points)} 个帕累托点")
     
     # 设置标签和标题
-    ax.set_xlabel('Area', fontsize=20)
-    ax.set_ylabel('Latency', fontsize=20)
-    ax.tick_params(axis='both', which='major', labelsize=14)
+    ax.set_xlabel('Area', fontsize=16)
+    ax.set_ylabel('Latency', fontsize=16)
+    ax.tick_params(axis='both', which='major', labelsize=10)
     ax.set_ylim(0,3500)
     from matplotlib.ticker import FuncFormatter
     ax.xaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{x:.0f}%'))
@@ -300,8 +286,8 @@ def plot_pareto_curves(
     sorted_handles = [item[1] for item in reordered]
     sorted_labels = [item[2] for item in reordered]
 
-    ax.legend(sorted_handles, sorted_labels, loc='upper right',
-              ncol=ncols, fontsize=16, columnspacing=0.5, handletextpad=0)
+    ax.legend(sorted_handles, sorted_labels, loc='upper right', ncol=ncols, fontsize=12,
+              columnspacing=0.3, handletextpad=-0.1)
 
     # 保存图片
     output_path = Path(output_file)
@@ -328,7 +314,7 @@ def main():
     parser.add_argument('--num-chips-min', type=int, default=None, help='最小芯片数量（可选）')
     parser.add_argument('--num-chips-max', type=int, default=None, help='最大芯片数量（可选）')
     parser.add_argument('--num-chips-n', type=int, default=7, help='显示 1~n 加上第22个，默认: 7')
-    parser.add_argument('--figsize', type=int, nargs=2, default=[10, 7], 
+    parser.add_argument('--figsize', type=int, nargs=2, default=[6, 5], 
                        help='图片大小（宽 高），默认: 8 6')
     parser.add_argument('--dpi', type=int, default=400, help='图片分辨率，默认: 400')
     parser.add_argument('--palette', type=str, default='Set2', help='seaborn 配色方案，默认: Set2')

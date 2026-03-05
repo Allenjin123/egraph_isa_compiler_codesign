@@ -282,9 +282,6 @@ def main():
             results=results,
             output_file=str(output_path),
             num_chips_range=num_chips_range,
-            figsize=tuple(args.figsize),
-            dpi=args.dpi,
-            palette=args.palette,
             num_programs=NUM_PROGRAMS,
         )
     else:
