@@ -66,8 +66,8 @@ process_program() {
     echo -e "${GREEN}找到文件: $ASM_FILE${NC}"
     echo ""
     
-    # 输出路径
-    local OUTPUT_BASE="$PROJECT_ROOT/output/frontend"
+    # 输出路径 (可由环境变量 FRONTEND_OUTPUT_BASE 覆盖)
+    local OUTPUT_BASE="${FRONTEND_OUTPUT_BASE:-$PROJECT_ROOT/output/frontend}"
     local OUTPUT_DIR="$OUTPUT_BASE/$PROGRAM_NAME"
     
     echo "输出目录: $OUTPUT_DIR"

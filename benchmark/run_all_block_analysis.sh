@@ -18,17 +18,33 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 cd "$SCRIPT_DIR"
 
+# If program names are passed as arguments, filter to only those programs
+# Usage: ./run_all_block_analysis.sh [program_name1] [program_name2] ...
+FILTER_PROGRAMS=("$@")
+
 # Dynamically find all *_clean.s files and generate program names
-readarray -t SOURCE_PATHS < <(find "$SCRIPT_DIR" -name "*_clean.s" -type f | \
+ALL_SOURCE_PATHS=()
+readarray -t ALL_SOURCE_PATHS < <(find "$SCRIPT_DIR" -name "*_clean.s" -type f | \
     grep -E "(automotive|network|security|embench-iot_[0-9]+)/[^/]+/[^/]+_clean\.s$" | \
     sed "s|$SCRIPT_DIR/||" | sort)
 
+declare -a SOURCE_PATHS=()
 declare -a PROGRAMS=()
-for source_path in "${SOURCE_PATHS[@]}"; do
-    # Extract program name from filename (remove _clean.s suffix)
+for source_path in "${ALL_SOURCE_PATHS[@]}"; do
     filename=$(basename "$source_path")
     program_name="${filename%_clean.s}"
-    PROGRAMS+=("$program_name")
+    if [ ${#FILTER_PROGRAMS[@]} -gt 0 ]; then
+        for filter in "${FILTER_PROGRAMS[@]}"; do
+            if [ "$program_name" = "$filter" ]; then
+                SOURCE_PATHS+=("$source_path")
+                PROGRAMS+=("$program_name")
+                break
+            fi
+        done
+    else
+        SOURCE_PATHS+=("$source_path")
+        PROGRAMS+=("$program_name")
+    fi
 done
 
 echo -e "${CYAN}========================================${NC}"

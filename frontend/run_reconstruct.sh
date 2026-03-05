@@ -37,7 +37,7 @@ echo ""
 echo "步骤 2/2: 重建完整汇编文件..."
 
 # 为每个变体重建汇编文件
-REWRITE_BASE="$PROJECT_ROOT/output/frontend/${PROGRAM}/basic_blocks_rewrite"
+REWRITE_BASE="${OUTPUT_BASE:-$PROJECT_ROOT/output}/frontend/${PROGRAM}/basic_blocks_rewrite"
 
 # 先移动整个 basic_blocks_rewrite 目录（只在第一次）
 if [ -d "$REWRITE_BASE" ] && [ ! -L "$REWRITE_BASE" ]; then
@@ -71,7 +71,7 @@ for ((i=0; i<NUM_VARIANTS; i++)); do
 
     # 调用重建脚本（不需要额外参数，它会自动找到 basic_blocks_rewrite）
     python3 "$SCRIPT_DIR/reconstruct_rewritten_asm.py" "$CLEAN_FILE" \
-        -o "$PROJECT_ROOT/output/frontend" || {
+        -o "${OUTPUT_BASE:-$PROJECT_ROOT/output}/frontend" || {
         echo "  错误: 重建变体 ${i} 失败"
         continue
     }

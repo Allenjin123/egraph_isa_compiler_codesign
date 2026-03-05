@@ -13,9 +13,10 @@ from ILP.ilp_solver import parse_solution_file, extract_solution
 from util import INSTRUCTIONS_WITHOUT_RD, RV32I_LOAD, ALL_ABI_REGS, parse_instruction, format_instruction, SPECIAL_REGS
 from reg_alloc import allocate_compact_mapping
 from mextension import replace_m_extension
-# 路径配置
-FRONTEND_OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output" / "frontend"
-ILP_OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output" / "ilp"
+# 路径配置 (可由环境变量 OUTPUT_BASE 覆盖)
+_OUTPUT_BASE = Path(os.environ["OUTPUT_BASE"]) if "OUTPUT_BASE" in os.environ else Path(__file__).resolve().parent.parent / "output"
+FRONTEND_OUTPUT_DIR = _OUTPUT_BASE / "frontend"
+ILP_OUTPUT_DIR = _OUTPUT_BASE / "ilp"
 
 # a2_0 -> a2
 def norm_reg(s: str) -> str:

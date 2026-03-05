@@ -200,13 +200,8 @@ __mul:
 	addi	a0,x0,0
 .Mul_loop:
 	addi	op_0,x0,1
-	addi	op_3,x0,1
-	or	op_2,op_3,a1
-	sub	op_1,op_2,a1
-	sub	a3,op_0,op_1
-	beq	a3,x0,.+8
-	jal	x0,.+8
-	jal	x0,.Mul_skip
+	and	a3,op_0,a1
+	beq	a3,x0,.Mul_skip
 	sub	op_0,x0,a0
 	sub	a0,a2,op_0
 .Mul_skip:

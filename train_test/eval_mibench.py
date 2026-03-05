@@ -27,6 +27,7 @@ sys.path.insert(0, str(REPO_ROOT / 'nre'))
 from util import TRAIN_SET, TEST_SET
 from nre.nre_ilp_solver import ISAILPSolver, load_data
 from nre.plot_pareto import compute_pareto_frontier
+from nre.sweep import sweep_parameters
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -40,6 +41,8 @@ except ImportError:
 DEFAULT_ILP_INPUT       = REPO_ROOT / 'nre' / 'ilp_input.json'
 DEFAULT_GLOBAL_SWEEP    = REPO_ROOT / 'nre' / 'sweep_results.json'
 DEFAULT_TRAIN_BEST      = HERE / 'pareto_curves_train_best_chips.json'
+DEFAULT_TEST_BEST       = HERE / 'pareto_curves_test_best_chips.json'
+DEFAULT_TEST_NRE_SWEEP  = HERE / 'sweep_results_test_nre.json'
 DEFAULT_OUTPUT          = HERE / 'eval_test_comparison.pdf'
 DEFAULT_RESULTS_OUT     = HERE / 'eval_test_results.json'
 
@@ -139,6 +142,74 @@ def sweep_fixed_chips(
     return points, entries
 
 
+def extract_test_best_entries(test_best: Dict, num_chips: int,
+                              num_eval_programs: int) -> List[Dict]:
+    """
+    从 pareto_curves_test_best_chips.json 读取 num_chip_N 的帕累托点，
+    转换为与 global/train entries 相同的 {area, latency} 格式（sum = avg * n）。
+    """
+    key = f"num_chip_{num_chips}"
+    if key not in test_best:
+        return []
+    result = []
+    for pt in test_best[key].get('pareto_points', []):
+        if pt.get('area') is None or pt.get('latency') is None:
+            continue
+        result.append({
+            'alpha':   pt.get('alpha'),
+            'area':    pt['area'] * num_eval_programs,
+            'latency': pt['latency'] * num_eval_programs,
+        })
+    return result
+
+
+def run_test_nre_sweep(
+    ilp_input_path: str,
+    eval_programs: List[str],
+    num_chips_range: List[int],
+    alpha_values: List[float],
+    timeout: Optional[int],
+    quiet: bool,
+    sweep_cache_path: str,
+) -> Dict:
+    """
+    实验 D：只用 TEST_SET 程序跑 NRE 搜索，搜完后直接在 TEST_SET 上评估。
+    结果缓存到 sweep_cache_path，下次可 --skip-test-nre-sweep 复用。
+    返回 sweep results dict（格式同 sweep_results.json 的 results 部分）。
+    """
+    cache = Path(sweep_cache_path)
+    if cache.exists():
+        print(f"  加载缓存 test_nre sweep: {cache}")
+        data = json.loads(cache.read_text())
+        return data.get('results', data)
+
+    print(f"  从 {ilp_input_path} 过滤 TEST_SET 程序...")
+    raw = json.loads(Path(ilp_input_path).read_text())
+    prog_set = set(eval_programs)
+    programs_filtered = [p for p in raw['programs'] if p['name'] in prog_set]
+    chip_metadata = raw['chip_metadata']
+    # 过滤每个 chip 的 programs 列表
+    for meta in chip_metadata.values():
+        meta['programs'] = [p for p in meta.get('programs', []) if p in prog_set]
+        meta['num_programs'] = len(meta['programs'])
+
+    print(f"  TEST_SET NRE sweep: {len(programs_filtered)} 个程序, num_chips={num_chips_range}")
+    results = sweep_parameters(
+        programs=programs_filtered,
+        chip_metadata=chip_metadata,
+        num_chips_range=num_chips_range,
+        best_k=1,
+        alpha_values=alpha_values,
+        timeout=timeout,
+        quiet=quiet,
+    )
+
+    cache.parent.mkdir(parents=True, exist_ok=True)
+    cache.write_text(json.dumps({'results': results}, indent=2, ensure_ascii=False))
+    print(f"  test_nre sweep 结果已缓存: {cache}")
+    return results
+
+
 def extract_global_entries_for_eval(global_sweep: Dict, num_chips: int,
                                     eval_programs: List[str]) -> List[Dict]:
     """
@@ -187,15 +258,23 @@ def plot_comparison(
     fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
 
     marker_list = ['o', 's', '^', 'v', 'D', 'p', 'h', '*']
-    palette_train  = sns.color_palette('Reds',  len(num_chips_list) + 2)[2:]
-    palette_global = sns.color_palette('Blues', len(num_chips_list) + 2)[2:]
+    # 四个 source 用完全不同的色系，n=3/4/5 浅→深
+    colors_global    = ['#74b9ff', '#0984e3', '#023e8a']  # 蓝
+    colors_test_nre  = ['#fab1a0', '#e17055', '#7d1a0a']  # 橙红
+    colors_test_best = ['#55efc4', '#00b894', '#00634f']  # 青绿
+    colors_train     = ['#dfe6e9', '#b2bec3', '#636e72']  # 灰（train 一般不显示）
 
-    legend_handles = []
-    legend_labels  = []
+    handles_by_source = {'global': {}, 'test_nre': {}, 'test_best': {}}
 
     for idx, n in enumerate(num_chips_list):
         marker = marker_list[idx % len(marker_list)]
-        for s_idx, source in enumerate(('train', 'global')):
+        source_colors = {
+            'train':     colors_train[idx % len(colors_train)],
+            'global':    colors_global[idx % len(colors_global)],
+            'test_nre':  colors_test_nre[idx % len(colors_test_nre)],
+            'test_best': colors_test_best[idx % len(colors_test_best)],
+        }
+        for source in ('train', 'global', 'test_nre', 'test_best'):
             entries = [e for e in results[n].get(source, [])
                        if e.get('area') is not None and e.get('latency') is not None]
             if not entries:
@@ -204,13 +283,29 @@ def plot_comparison(
             pareto = compute_pareto_frontier(pts)
             xs = [p[0] / num_eval_programs for p in pareto]
             ys = [p[1] / num_eval_programs for p in pareto]
-            color = palette_train[idx] if source == 'train' else palette_global[idx]
+            color = source_colors[source]
             label = f'n={n} {source}'
             sc = ax.scatter(xs, ys, color=color, marker=marker,
                             s=60, alpha=0.95, edgecolors='black', linewidths=0.8,
                             label=label)
-            legend_handles.append(sc)
-            legend_labels.append(label)
+            if source in handles_by_source:
+                handles_by_source[source][n] = (sc, label)
+
+    # legend：三列，左=global，中=test_nre，右=test_best
+    from matplotlib.patches import Patch
+    sorted_n = sorted(num_chips_list)
+    legend_handles, legend_labels = [], []
+    for src in ('global', 'test_nre', 'test_best'):
+        hd = handles_by_source[src]
+        for n in sorted_n:
+            if n in hd:
+                legend_handles.append(hd[n][0])
+                legend_labels.append(hd[n][1])
+            else:
+                legend_handles.append(Patch(visible=False))
+                legend_labels.append('')
+    ncol = sum(1 for src in ('global', 'test_nre', 'test_best')
+               if any(n in handles_by_source[src] for n in sorted_n))
 
     ax.set_xlabel('Area', fontsize=14, fontweight='bold')
     ax.set_ylabel('Latency', fontsize=14, fontweight='bold')
@@ -219,7 +314,7 @@ def plot_comparison(
     ax.tick_params(axis='both', which='major', labelsize=12)
     ax.grid(True, alpha=0.3)
     ax.legend(legend_handles, legend_labels,
-              loc='upper right', ncol=2, fontsize=8, prop={'weight': 'bold'})
+              loc='upper right', ncol=ncol, fontsize=8, prop={'weight': 'bold'})
 
     plt.tight_layout()
     Path(output_file).parent.mkdir(parents=True, exist_ok=True)
@@ -240,6 +335,8 @@ def main():
     parser.add_argument('--ilp-input',      default=str(DEFAULT_ILP_INPUT),    help='ilp_input.json 路径')
     parser.add_argument('--train-best',     default=str(DEFAULT_TRAIN_BEST),
                         help='训练集 best_chips.json 路径')
+    parser.add_argument('--test-best',      default=str(DEFAULT_TEST_BEST),
+                        help='测试集 best_chips pareto 路径（pareto_curves_test_best_chips.json）')
     parser.add_argument('--global-sweep',   default=str(DEFAULT_GLOBAL_SWEEP), help='全局 sweep_results.json 路径')
     parser.add_argument('--output',         default=str(DEFAULT_OUTPUT),       help='输出图片路径')
     parser.add_argument('--results-output', default=str(DEFAULT_RESULTS_OUT),  help='输出结果 JSON 路径')
@@ -248,6 +345,10 @@ def main():
     parser.add_argument('--num-chips',      type=int, nargs='+', default=None,
                         help='直接指定 n 的列表，例如 --num-chips 3 5（优先于 min/max）')
     parser.add_argument('--timeout',        type=int, default=None)
+    parser.add_argument('--run-test-nre',   action='store_true', default=False,
+                        help='跑实验D：只用 TEST_SET 程序做 NRE 搜索，在 TEST_SET 上评估')
+    parser.add_argument('--test-nre-sweep', default=str(DEFAULT_TEST_NRE_SWEEP),
+                        help='test_nre sweep 缓存路径（存在则直接复用）')
     parser.add_argument('--all-combos',     action='store_true', default=False,
                         help='遍历 train_best 中所有 pareto_combos 并合并结果（默认只取最优的第一个）')
     parser.add_argument('--no-dense',       action='store_true', help='alpha 均匀采样（步长0.1），不密集采样')
@@ -273,6 +374,14 @@ def main():
 
     print(f"\n加载训练集 best chips: {train_best_path}")
     train_best = json.loads(train_best_path.read_text())
+
+    test_best = None
+    test_best_path = Path(args.test_best)
+    if test_best_path.exists():
+        print(f"加载测试集 best chips pareto: {test_best_path}")
+        test_best = json.loads(test_best_path.read_text())
+    else:
+        print(f"警告: 找不到 test_best 文件 {test_best_path}，跳过 test_best 曲线")
 
     global_sweep = None
     global_sweep_path = Path(args.global_sweep)
@@ -337,6 +446,39 @@ def main():
         else:
             print(f"[A] 跳过 train-set chips（使用 --run-train-chips 启用）")
 
+        # 实验 C：test_best chips 在 test set 上的帕累托（直接读 pareto_curves_test_best_chips.json）
+        if test_best is not None:
+            entries_c = extract_test_best_entries(test_best, n, len(eval_programs))
+            if entries_c:
+                print(f"\n[C] Test-best chips pareto 直接读取，{len(entries_c)} 个点")
+                all_results[n]['test_best'] = entries_c
+            else:
+                print(f"[C] 跳过: test_best 中找不到 n={n} 的数据")
+
+        # 实验 D：只用 TEST_SET 程序跑 NRE 搜索，在 TEST_SET 上评估
+        if args.run_test_nre:
+            print(f"\n[D] Test-only NRE sweep, n={n}...")
+            test_nre_results = run_test_nre_sweep(
+                ilp_input_path=args.ilp_input,
+                eval_programs=eval_programs,
+                num_chips_range=[n],
+                alpha_values=alpha_values,
+                timeout=args.timeout,
+                quiet=args.quiet,
+                sweep_cache_path=args.test_nre_sweep,
+            )
+            key_d = f"num_chip_{n}"
+            entries_d = [
+                {'alpha': e.get('alpha'), 'area': e.get('area'), 'latency': e.get('latency')}
+                for e in test_nre_results.get(key_d, [])
+                if e.get('area') is not None and e.get('latency') is not None
+            ]
+            if entries_d:
+                print(f"  {len(entries_d)} 个点")
+                all_results[n]['test_nre'] = entries_d
+            else:
+                print(f"  跳过: test_nre sweep 中找不到 n={n} 的数据")
+
         # 实验 B：从全局 sweep 的 per_program 直接读取 eval bench 子集性能
         if global_sweep is not None:
             entries_b = extract_global_entries_for_eval(global_sweep, n, eval_programs)
@@ -366,7 +508,7 @@ def main():
     print(f"\n{'='*60}")
     print(f"{'n':>4}  {'source':>10}  {'pareto pts':>10}  {'best area%':>11}  {'best latency%':>14}  chips")
     for n in sorted(all_results.keys()):
-        for source in ('train', 'global'):
+        for source in ('train', 'global', 'test_nre', 'test_best'):
             entries = [e for e in all_results[n].get(source, [])
                        if e.get('area') is not None]
             if not entries:

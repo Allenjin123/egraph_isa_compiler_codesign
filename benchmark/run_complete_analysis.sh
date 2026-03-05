@@ -58,7 +58,7 @@ mkdir -p tmp
 echo -e "${CYAN}Step 2: Running Spike instruction counts (parallel)${NC}"
 echo ""
 
-if ! ./run_all_spike_counts.sh; then
+if ! ./run_all_spike_counts.sh "$@"; then
     echo ""
     echo -e "${RED}Spike instruction counts failed!${NC}"
     echo -e "${YELLOW}Check logs in benchmark/tmp/*_spike_run.log${NC}"
@@ -73,7 +73,7 @@ echo ""
 echo -e "${CYAN}Step 3: Running block execution analysis${NC}"
 echo ""
 
-if ! ./run_all_block_analysis.sh; then
+if ! ./run_all_block_analysis.sh "$@"; then
     echo ""
     echo -e "${RED}Block execution analysis failed!${NC}"
     exit 1

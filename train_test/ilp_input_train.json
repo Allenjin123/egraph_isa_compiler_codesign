@@ -1,335 +1,156 @@
 {
   "programs": [
     {
-      "name": "bitcnts",
+      "name": "basicmath",
       "implementations": [
         {
-          "chip_id": "chip_74",
-          "area": 70.83316806156044,
-          "latency": 127.79644621548674,
+          "chip_id": "chip_175",
+          "area": 70.34627741858712,
+          "latency": 32185.43459634593,
           "variant_id": "0_uarchaware"
         },
         {
-          "chip_id": "chip_37",
-          "area": 68.89453016540399,
-          "latency": 80.61583278962745,
+          "chip_id": "chip_143",
+          "area": 97.39300305422236,
+          "latency": 103.23795971457498,
           "variant_id": "10_uarchaware"
         },
         {
-          "chip_id": "chip_36",
-          "area": 68.84990678672008,
-          "latency": 79.4810345524089,
+          "chip_id": "chip_143",
+          "area": 97.39300305422236,
+          "latency": 103.23795971457498,
           "variant_id": "11_uarchaware"
         },
         {
-          "chip_id": "chip_31",
-          "area": 68.79338384038714,
-          "latency": 78.82675259295814,
+          "chip_id": "chip_143",
+          "area": 97.39300305422236,
+          "latency": 103.23795971457498,
           "variant_id": "12_uarchaware"
         },
         {
-          "chip_id": "chip_36",
-          "area": 68.84990678672008,
-          "latency": 79.4810345524089,
+          "chip_id": "chip_143",
+          "area": 97.39300305422236,
+          "latency": 103.23795971457498,
           "variant_id": "13_uarchaware"
         },
         {
-          "chip_id": "chip_24",
-          "area": 69.27729959144818,
-          "latency": 84.80629447236237,
+          "chip_id": "chip_143",
+          "area": 97.39300305422236,
+          "latency": 103.23795971457498,
           "variant_id": "14_uarchaware"
         },
         {
-          "chip_id": "chip_23",
-          "area": 68.8360239577962,
-          "latency": 79.02473644339103,
+          "chip_id": "chip_143",
+          "area": 97.39300305422236,
+          "latency": 103.23795971457498,
           "variant_id": "15_uarchaware"
         },
         {
-          "chip_id": "chip_23",
-          "area": 68.8360239577962,
-          "latency": 79.02473644339103,
+          "chip_id": "chip_143",
+          "area": 97.39300305422236,
+          "latency": 103.23795971457498,
           "variant_id": "16_uarchaware"
         },
         {
-          "chip_id": "chip_21",
-          "area": 86.71413271984451,
-          "latency": 92.86849345083502,
+          "chip_id": "chip_143",
+          "area": 97.39300305422236,
+          "latency": 103.23795971457498,
           "variant_id": "17_uarchaware"
         },
         {
-          "chip_id": "chip_21",
-          "area": 86.71413271984451,
-          "latency": 92.86849345083502,
+          "chip_id": "chip_143",
+          "area": 97.39300305422236,
+          "latency": 103.23795971457498,
           "variant_id": "18_uarchaware"
         },
         {
-          "chip_id": "chip_21",
-          "area": 86.71413271984451,
-          "latency": 92.86849345083502,
+          "chip_id": "chip_143",
+          "area": 97.39300305422236,
+          "latency": 103.23795971457498,
           "variant_id": "19_uarchaware"
         },
         {
-          "chip_id": "chip_35",
-          "area": 70.3006624092658,
-          "latency": 80.87696216660176,
-          "variant_id": "1_uarchaware"
-        },
-        {
-          "chip_id": "chip_21",
-          "area": 86.71413271984451,
-          "latency": 92.86849345083502,
+          "chip_id": "chip_32",
+          "area": 97.80651303002658,
+          "latency": 103.72470162742071,
           "variant_id": "20_uarchaware"
         },
         {
-          "chip_id": "chip_22",
-          "area": 86.22030066240927,
-          "latency": 92.8684961004738,
+          "chip_id": "chip_32",
+          "area": 97.80651303002658,
+          "latency": 103.72470162742071,
           "variant_id": "21_uarchaware"
         },
         {
-          "chip_id": "chip_22",
-          "area": 86.22030066240927,
-          "latency": 92.8684961004738,
+          "chip_id": "chip_32",
+          "area": 97.80651303002658,
+          "latency": 103.72470162742071,
           "variant_id": "22_uarchaware"
         },
         {
-          "chip_id": "chip_22",
-          "area": 86.22030066240927,
-          "latency": 92.8684961004738,
+          "chip_id": "chip_143",
+          "area": 97.39300305422236,
+          "latency": 103.23795971457498,
           "variant_id": "23_uarchaware"
         },
         {
-          "chip_id": "chip_22",
-          "area": 86.22030066240927,
-          "latency": 92.8684961004738,
+          "chip_id": "chip_143",
+          "area": 97.39300305422236,
+          "latency": 103.23795971457498,
           "variant_id": "24_uarchaware"
         },
         {
-          "chip_id": "chip_22",
-          "area": 86.22030066240927,
-          "latency": 92.8684961004738,
+          "chip_id": "chip_143",
+          "area": 97.39300305422236,
+          "latency": 103.23795971457498,
           "variant_id": "25_uarchaware"
         },
         {
-          "chip_id": "chip_20",
-          "area": 86.07651421998335,
-          "latency": 94.17808219178082,
+          "chip_id": "chip_138",
+          "area": 97.58042124469478,
+          "latency": 104.41385856668248,
           "variant_id": "26_uarchaware"
         },
         {
-          "chip_id": "chip_35",
-          "area": 70.3006624092658,
-          "latency": 80.87696216660176,
-          "variant_id": "2_uarchaware"
-        },
-        {
-          "chip_id": "chip_35",
-          "area": 70.3006624092658,
-          "latency": 80.87696216660176,
+          "chip_id": "chip_88",
+          "area": 98.0385545991829,
+          "latency": 105.36031852756555,
           "variant_id": "3_uarchaware"
         },
         {
-          "chip_id": "chip_37",
-          "area": 68.89453016540399,
-          "latency": 80.61583278962745,
+          "chip_id": "chip_75",
+          "area": 97.89278489548214,
+          "latency": 104.12315260529579,
           "variant_id": "4_uarchaware"
         },
         {
-          "chip_id": "chip_37",
-          "area": 68.89453016540399,
-          "latency": 80.61583278962745,
+          "chip_id": "chip_75",
+          "area": 97.89278489548214,
+          "latency": 104.12315260529579,
           "variant_id": "5_uarchaware"
         },
         {
-          "chip_id": "chip_37",
-          "area": 68.89453016540399,
-          "latency": 80.61583278962745,
+          "chip_id": "chip_143",
+          "area": 97.39300305422236,
+          "latency": 103.23795971457498,
           "variant_id": "6_uarchaware"
         },
         {
-          "chip_id": "chip_37",
-          "area": 68.89453016540399,
-          "latency": 80.61583278962745,
+          "chip_id": "chip_32",
+          "area": 97.80651303002658,
+          "latency": 103.72470162742071,
           "variant_id": "7_uarchaware"
         },
         {
-          "chip_id": "chip_37",
-          "area": 68.89453016540399,
-          "latency": 80.61583278962745,
+          "chip_id": "chip_143",
+          "area": 97.39300305422236,
+          "latency": 103.23795971457498,
           "variant_id": "8_uarchaware"
         },
         {
-          "chip_id": "chip_37",
-          "area": 68.89453016540399,
-          "latency": 80.61583278962745,
-          "variant_id": "9_uarchaware"
-        }
-      ]
-    },
-    {
-      "name": "combined",
-      "implementations": [
-        {
-          "chip_id": "chip_174",
-          "area": 70.93828090912697,
-          "latency": 1159.3148701354335,
-          "variant_id": "0_uarchaware"
-        },
-        {
-          "chip_id": "chip_63",
-          "area": 86.0983300940066,
-          "latency": 109.89062645775853,
-          "variant_id": "10_uarchaware"
-        },
-        {
-          "chip_id": "chip_63",
-          "area": 86.0983300940066,
-          "latency": 109.89062645775853,
-          "variant_id": "11_uarchaware"
-        },
-        {
-          "chip_id": "chip_63",
-          "area": 86.0983300940066,
-          "latency": 109.89062645775853,
-          "variant_id": "12_uarchaware"
-        },
-        {
-          "chip_id": "chip_62",
-          "area": 91.60683828487565,
-          "latency": 101.36917429044361,
-          "variant_id": "13_uarchaware"
-        },
-        {
-          "chip_id": "chip_6",
-          "area": 91.4868509777478,
-          "latency": 90.05350298638005,
-          "variant_id": "14_uarchaware"
-        },
-        {
-          "chip_id": "chip_6",
-          "area": 91.4868509777478,
-          "latency": 90.05350298638005,
-          "variant_id": "15_uarchaware"
-        },
-        {
-          "chip_id": "chip_6",
-          "area": 91.4868509777478,
-          "latency": 90.05350298638005,
-          "variant_id": "16_uarchaware"
-        },
-        {
-          "chip_id": "chip_6",
-          "area": 91.4868509777478,
-          "latency": 90.05350298638005,
-          "variant_id": "17_uarchaware"
-        },
-        {
-          "chip_id": "chip_6",
-          "area": 91.4868509777478,
-          "latency": 90.05350298638005,
-          "variant_id": "18_uarchaware"
-        },
-        {
-          "chip_id": "chip_6",
-          "area": 91.4868509777478,
-          "latency": 90.05350298638005,
-          "variant_id": "19_uarchaware"
-        },
-        {
-          "chip_id": "chip_104",
-          "area": 71.07512593709096,
-          "latency": 923.7951721709353,
-          "variant_id": "1_uarchaware"
-        },
-        {
-          "chip_id": "chip_6",
-          "area": 91.4868509777478,
-          "latency": 90.05350298638005,
-          "variant_id": "20_uarchaware"
-        },
-        {
-          "chip_id": "chip_6",
-          "area": 91.4868509777478,
-          "latency": 90.05350298638005,
-          "variant_id": "21_uarchaware"
-        },
-        {
-          "chip_id": "chip_6",
-          "area": 91.4868509777478,
-          "latency": 90.05350298638005,
-          "variant_id": "22_uarchaware"
-        },
-        {
-          "chip_id": "chip_5",
-          "area": 92.58359446273452,
-          "latency": 99.8188329381699,
-          "variant_id": "23_uarchaware"
-        },
-        {
-          "chip_id": "chip_4",
-          "area": 92.79580341914244,
-          "latency": 91.55252093038972,
-          "variant_id": "24_uarchaware"
-        },
-        {
-          "chip_id": "chip_6",
-          "area": 91.4868509777478,
-          "latency": 90.05350298638005,
-          "variant_id": "25_uarchaware"
-        },
-        {
-          "chip_id": "chip_3",
-          "area": 92.86025941057476,
-          "latency": 98.39450418941014,
-          "variant_id": "26_uarchaware"
-        },
-        {
-          "chip_id": "chip_104",
-          "area": 71.07512593709096,
-          "latency": 923.7951721709353,
-          "variant_id": "2_uarchaware"
-        },
-        {
-          "chip_id": "chip_76",
-          "area": 88.05779223354885,
-          "latency": 136.6484654520319,
-          "variant_id": "3_uarchaware"
-        },
-        {
-          "chip_id": "chip_77",
-          "area": 86.5167982229979,
-          "latency": 123.12056891078306,
-          "variant_id": "4_uarchaware"
-        },
-        {
-          "chip_id": "chip_77",
-          "area": 86.5167982229979,
-          "latency": 123.12056891078306,
-          "variant_id": "5_uarchaware"
-        },
-        {
-          "chip_id": "chip_67",
-          "area": 85.981317678791,
-          "latency": 119.79388238188027,
-          "variant_id": "6_uarchaware"
-        },
-        {
-          "chip_id": "chip_68",
-          "area": 86.96501527111182,
-          "latency": 113.60271662583301,
-          "variant_id": "7_uarchaware"
-        },
-        {
-          "chip_id": "chip_63",
-          "area": 86.0983300940066,
-          "latency": 109.89062645775853,
-          "variant_id": "8_uarchaware"
-        },
-        {
-          "chip_id": "chip_63",
-          "area": 86.0983300940066,
-          "latency": 109.89062645775853,
+          "chip_id": "chip_32",
+          "area": 97.80651303002658,
+          "latency": 103.72470162742071,
           "variant_id": "9_uarchaware"
         }
       ]
@@ -836,173 +657,6 @@
       ]
     },
     {
-      "name": "nsichneu",
-      "implementations": [
-        {
-          "chip_id": "chip_204",
-          "area": 70.01606441632622,
-          "latency": 96.18328972713834,
-          "variant_id": "0_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "10_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "11_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "12_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "13_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "14_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "15_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "16_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "17_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "18_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "19_uarchaware"
-        },
-        {
-          "chip_id": "chip_203",
-          "area": 69.68287652215304,
-          "latency": 94.9570019598837,
-          "variant_id": "1_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "20_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "21_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "22_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "23_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "24_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "25_uarchaware"
-        },
-        {
-          "chip_id": "chip_168",
-          "area": 68.23311253024474,
-          "latency": 80.0,
-          "variant_id": "26_uarchaware"
-        },
-        {
-          "chip_id": "chip_203",
-          "area": 69.68287652215304,
-          "latency": 94.9570019598837,
-          "variant_id": "2_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "3_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "4_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "5_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "6_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "7_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "8_uarchaware"
-        },
-        {
-          "chip_id": "chip_199",
-          "area": 69.67296021577883,
-          "latency": 81.39108763785241,
-          "variant_id": "9_uarchaware"
-        }
-      ]
-    },
-    {
       "name": "slre",
       "implementations": [
         {
@@ -1498,669 +1152,836 @@
       ]
     },
     {
-      "name": "wikisort",
+      "name": "matmult-int",
       "implementations": [
         {
-          "chip_id": "chip_134",
-          "area": 71.02752766649478,
-          "latency": 800.1091437104643,
+          "chip_id": "chip_131",
+          "area": 70.67054063702352,
+          "latency": 3549.831071793641,
           "variant_id": "0_uarchaware"
         },
         {
-          "chip_id": "chip_113",
-          "area": 88.15695529729088,
-          "latency": 129.311661600645,
+          "chip_id": "chip_130",
+          "area": 87.29621990401016,
+          "latency": 93.34926744749498,
           "variant_id": "10_uarchaware"
         },
         {
-          "chip_id": "chip_114",
-          "area": 85.55987465788743,
-          "latency": 118.32166242229125,
+          "chip_id": "chip_130",
+          "area": 87.29621990401016,
+          "latency": 93.34926744749498,
           "variant_id": "11_uarchaware"
         },
         {
-          "chip_id": "chip_70",
-          "area": 86.05568997659752,
-          "latency": 122.52161066035146,
+          "chip_id": "chip_124",
+          "area": 87.43802308516125,
+          "latency": 93.07564986696933,
           "variant_id": "12_uarchaware"
         },
         {
-          "chip_id": "chip_70",
-          "area": 86.05568997659752,
-          "latency": 122.52161066035146,
+          "chip_id": "chip_124",
+          "area": 87.43802308516125,
+          "latency": 93.07564986696933,
           "variant_id": "13_uarchaware"
         },
         {
-          "chip_id": "chip_70",
-          "area": 86.05568997659752,
-          "latency": 122.52161066035146,
+          "chip_id": "chip_125",
+          "area": 87.04732061401769,
+          "latency": 94.8050367547421,
           "variant_id": "14_uarchaware"
         },
         {
-          "chip_id": "chip_69",
-          "area": 86.84601959462141,
-          "latency": 100.3599918189866,
+          "chip_id": "chip_126",
+          "area": 85.48153583753124,
+          "latency": 95.46340850046421,
           "variant_id": "15_uarchaware"
         },
         {
-          "chip_id": "chip_18",
-          "area": 98.06433699575582,
-          "latency": 100.17949518686284,
+          "chip_id": "chip_126",
+          "area": 85.48153583753124,
+          "latency": 95.46340850046421,
           "variant_id": "16_uarchaware"
         },
         {
-          "chip_id": "chip_18",
-          "area": 98.06433699575582,
-          "latency": 100.17949518686284,
+          "chip_id": "chip_126",
+          "area": 85.48153583753124,
+          "latency": 95.46340850046421,
           "variant_id": "17_uarchaware"
         },
         {
-          "chip_id": "chip_140",
-          "area": 98.04351275236999,
-          "latency": 102.7517978177113,
+          "chip_id": "chip_180",
+          "area": 91.67922732140732,
+          "latency": 109.6712431432488,
           "variant_id": "18_uarchaware"
         },
         {
-          "chip_id": "chip_140",
-          "area": 98.04351275236999,
-          "latency": 102.7517978177113,
+          "chip_id": "chip_181",
+          "area": 91.87457855697909,
+          "latency": 101.19598592097236,
           "variant_id": "19_uarchaware"
         },
         {
-          "chip_id": "chip_137",
-          "area": 71.0176113601206,
-          "latency": 799.765840171205,
+          "chip_id": "chip_130",
+          "area": 87.29621990401016,
+          "latency": 105.03323122799888,
           "variant_id": "1_uarchaware"
         },
         {
-          "chip_id": "chip_141",
-          "area": 97.55067232557218,
-          "latency": 103.19581552703951,
+          "chip_id": "chip_163",
+          "area": 92.23454047836263,
+          "latency": 96.66084068198326,
           "variant_id": "20_uarchaware"
         },
         {
-          "chip_id": "chip_19",
-          "area": 97.60818690254254,
-          "latency": 103.29271300640761,
+          "chip_id": "chip_165",
+          "area": 91.24290984094245,
+          "latency": 92.70965023177413,
           "variant_id": "21_uarchaware"
         },
         {
-          "chip_id": "chip_17",
-          "area": 97.77478084962914,
-          "latency": 102.99625468164794,
+          "chip_id": "chip_164",
+          "area": 91.41049541866646,
+          "latency": 93.14143666053934,
           "variant_id": "22_uarchaware"
         },
         {
-          "chip_id": "chip_17",
-          "area": 97.77478084962914,
-          "latency": 102.99625468164794,
+          "chip_id": "chip_58",
+          "area": 92.1452937209948,
+          "latency": 96.44915113781548,
           "variant_id": "23_uarchaware"
         },
         {
-          "chip_id": "chip_17",
-          "area": 97.77478084962914,
-          "latency": 102.99625468164794,
+          "chip_id": "chip_122",
+          "area": 91.78434016897387,
+          "latency": 94.70515427989405,
           "variant_id": "24_uarchaware"
         },
         {
-          "chip_id": "chip_16",
-          "area": 97.80948792193882,
-          "latency": 101.2891344383057,
+          "chip_id": "chip_163",
+          "area": 92.23454047836263,
+          "latency": 96.66084068198326,
           "variant_id": "25_uarchaware"
         },
         {
-          "chip_id": "chip_0",
-          "area": 99.06489230891277,
-          "latency": 103.82255781028786,
+          "chip_id": "chip_165",
+          "area": 91.24290984094245,
+          "latency": 92.70965023177413,
           "variant_id": "26_uarchaware"
         },
         {
-          "chip_id": "chip_137",
-          "area": 71.0176113601206,
-          "latency": 799.765840171205,
+          "chip_id": "chip_130",
+          "area": 87.29621990401016,
+          "latency": 93.34926744749498,
           "variant_id": "2_uarchaware"
         },
         {
-          "chip_id": "chip_137",
-          "area": 71.0176113601206,
-          "latency": 799.765840171205,
+          "chip_id": "chip_130",
+          "area": 87.29621990401016,
+          "latency": 93.34926744749498,
           "variant_id": "3_uarchaware"
         },
         {
-          "chip_id": "chip_136",
-          "area": 87.58478441949943,
-          "latency": 129.94073768014238,
+          "chip_id": "chip_130",
+          "area": 87.29621990401016,
+          "latency": 93.34926744749498,
           "variant_id": "4_uarchaware"
         },
         {
-          "chip_id": "chip_115",
-          "area": 88.03300146761335,
-          "latency": 135.85565030641865,
+          "chip_id": "chip_130",
+          "area": 87.29621990401016,
+          "latency": 93.34926744749498,
           "variant_id": "5_uarchaware"
         },
         {
-          "chip_id": "chip_115",
-          "area": 88.03300146761335,
-          "latency": 135.85565030641865,
+          "chip_id": "chip_130",
+          "area": 87.29621990401016,
+          "latency": 93.34926744749498,
           "variant_id": "6_uarchaware"
         },
         {
-          "chip_id": "chip_115",
-          "area": 88.03300146761335,
-          "latency": 135.85565030641865,
+          "chip_id": "chip_130",
+          "area": 87.29621990401016,
+          "latency": 93.34926744749498,
           "variant_id": "7_uarchaware"
         },
         {
-          "chip_id": "chip_115",
-          "area": 88.03300146761335,
-          "latency": 132.52031566734286,
+          "chip_id": "chip_130",
+          "area": 87.29621990401016,
+          "latency": 93.34926744749498,
           "variant_id": "8_uarchaware"
         },
         {
-          "chip_id": "chip_115",
-          "area": 88.03300146761335,
-          "latency": 132.52031566734286,
+          "chip_id": "chip_130",
+          "area": 87.29621990401016,
+          "latency": 93.34926744749498,
           "variant_id": "9_uarchaware"
         }
       ]
     },
     {
-      "name": "md5",
+      "name": "patricia",
       "implementations": [
         {
-          "chip_id": "chip_195",
-          "area": 70.74887945737972,
-          "latency": 138.03174285795535,
+          "chip_id": "chip_133",
+          "area": 70.84407599857205,
+          "latency": 179.73298202000672,
           "variant_id": "0_uarchaware"
         },
         {
-          "chip_id": "chip_29",
-          "area": 70.65269128554996,
-          "latency": 78.69065355516356,
+          "chip_id": "chip_49",
+          "area": 86.86188568482012,
+          "latency": 92.42931841587028,
           "variant_id": "10_uarchaware"
         },
         {
-          "chip_id": "chip_29",
-          "area": 70.65269128554996,
-          "latency": 78.68169872039792,
+          "chip_id": "chip_49",
+          "area": 86.86188568482012,
+          "latency": 92.42931841587028,
           "variant_id": "11_uarchaware"
         },
         {
-          "chip_id": "chip_29",
-          "area": 70.65269128554996,
-          "latency": 78.67946001170651,
+          "chip_id": "chip_8",
+          "area": 86.167744238626,
+          "latency": 96.98179679989724,
           "variant_id": "12_uarchaware"
         },
         {
-          "chip_id": "chip_29",
-          "area": 70.65269128554996,
-          "latency": 78.67946001170651,
+          "chip_id": "chip_8",
+          "area": 86.167744238626,
+          "latency": 96.98179679989724,
           "variant_id": "13_uarchaware"
         },
         {
-          "chip_id": "chip_27",
-          "area": 70.65269128554996,
-          "latency": 78.10635058670546,
+          "chip_id": "chip_8",
+          "area": 86.167744238626,
+          "latency": 96.98179679989724,
           "variant_id": "14_uarchaware"
         },
         {
-          "chip_id": "chip_27",
-          "area": 70.65269128554996,
-          "latency": 78.10643669088589,
+          "chip_id": "chip_8",
+          "area": 86.167744238626,
+          "latency": 96.98179679989724,
           "variant_id": "15_uarchaware"
         },
         {
-          "chip_id": "chip_27",
-          "area": 70.65269128554996,
-          "latency": 78.10669500342722,
+          "chip_id": "chip_9",
+          "area": 86.74487326960454,
+          "latency": 93.8566552901024,
           "variant_id": "16_uarchaware"
         },
         {
-          "chip_id": "chip_26",
-          "area": 70.74094641228035,
-          "latency": 80.26281059219791,
+          "chip_id": "chip_9",
+          "area": 86.74487326960454,
+          "latency": 93.8566552901024,
           "variant_id": "17_uarchaware"
         },
         {
-          "chip_id": "chip_26",
-          "area": 70.74094641228035,
-          "latency": 80.26281059219791,
+          "chip_id": "chip_9",
+          "area": 86.74487326960454,
+          "latency": 93.8566552901024,
           "variant_id": "18_uarchaware"
         },
         {
-          "chip_id": "chip_26",
-          "area": 70.74094641228035,
-          "latency": 80.26298757539841,
+          "chip_id": "chip_9",
+          "area": 86.74487326960454,
+          "latency": 93.8566552901024,
           "variant_id": "19_uarchaware"
         },
         {
-          "chip_id": "chip_191",
-          "area": 70.82820990837332,
-          "latency": 137.51511160559096,
+          "chip_id": "chip_133",
+          "area": 70.84407599857205,
+          "latency": 179.65936578269995,
           "variant_id": "1_uarchaware"
         },
         {
-          "chip_id": "chip_26",
-          "area": 70.74094641228035,
-          "latency": 80.26281059219791,
+          "chip_id": "chip_9",
+          "area": 86.74487326960454,
+          "latency": 93.8566552901024,
           "variant_id": "20_uarchaware"
         },
         {
-          "chip_id": "chip_26",
-          "area": 70.74094641228035,
-          "latency": 80.26281059219791,
+          "chip_id": "chip_9",
+          "area": 86.74487326960454,
+          "latency": 93.8566552901024,
           "variant_id": "21_uarchaware"
         },
         {
-          "chip_id": "chip_26",
-          "area": 70.74094641228035,
-          "latency": 80.26281059219791,
+          "chip_id": "chip_9",
+          "area": 86.74487326960454,
+          "latency": 93.8566552901024,
           "variant_id": "22_uarchaware"
         },
         {
-          "chip_id": "chip_26",
-          "area": 70.74094641228035,
-          "latency": 80.26511137380452,
+          "chip_id": "chip_9",
+          "area": 86.74487326960454,
+          "latency": 93.8566552901024,
           "variant_id": "23_uarchaware"
         },
         {
-          "chip_id": "chip_26",
-          "area": 70.74094641228035,
-          "latency": 80.26281059219791,
+          "chip_id": "chip_9",
+          "area": 86.74487326960454,
+          "latency": 93.8566552901024,
           "variant_id": "24_uarchaware"
         },
         {
-          "chip_id": "chip_26",
-          "area": 70.74094641228035,
-          "latency": 80.26298757539841,
+          "chip_id": "chip_9",
+          "area": 86.74487326960454,
+          "latency": 93.8566552901024,
           "variant_id": "25_uarchaware"
         },
         {
-          "chip_id": "chip_11",
-          "area": 70.69334814168418,
-          "latency": 78.5433773652267,
+          "chip_id": "chip_7",
+          "area": 85.53508389195194,
+          "latency": 95.36201661167311,
           "variant_id": "26_uarchaware"
         },
         {
-          "chip_id": "chip_191",
-          "area": 70.82820990837332,
-          "latency": 137.51511160559096,
+          "chip_id": "chip_103",
+          "area": 70.65368291618738,
+          "latency": 171.84689912890533,
           "variant_id": "2_uarchaware"
         },
         {
-          "chip_id": "chip_112",
-          "area": 70.94720558486375,
-          "latency": 92.51740070086514,
+          "chip_id": "chip_55",
+          "area": 71.23081194716592,
+          "latency": 163.97148663970793,
           "variant_id": "3_uarchaware"
         },
         {
-          "chip_id": "chip_72",
-          "area": 70.70921423188291,
-          "latency": 89.10782979755741,
+          "chip_id": "chip_185",
+          "area": 88.03399309825076,
+          "latency": 98.1388388175571,
           "variant_id": "4_uarchaware"
         },
         {
-          "chip_id": "chip_71",
-          "area": 70.82721827773591,
-          "latency": 85.18052471558435,
+          "chip_id": "chip_53",
+          "area": 88.10836539605728,
+          "latency": 97.86539961492109,
           "variant_id": "5_uarchaware"
         },
         {
-          "chip_id": "chip_71",
-          "area": 70.82721827773591,
-          "latency": 85.18052471558435,
+          "chip_id": "chip_53",
+          "area": 88.10836539605728,
+          "latency": 97.86539961492109,
           "variant_id": "6_uarchaware"
         },
         {
-          "chip_id": "chip_28",
-          "area": 70.63087541152672,
-          "latency": 81.21298221287928,
+          "chip_id": "chip_53",
+          "area": 88.10836539605728,
+          "latency": 97.86539961492109,
           "variant_id": "7_uarchaware"
         },
         {
-          "chip_id": "chip_28",
-          "area": 70.63087541152672,
-          "latency": 81.21298221287928,
+          "chip_id": "chip_49",
+          "area": 86.86188568482012,
+          "latency": 92.42931841587028,
           "variant_id": "8_uarchaware"
         },
         {
-          "chip_id": "chip_28",
-          "area": 70.63087541152672,
-          "latency": 81.21298221287928,
+          "chip_id": "chip_49",
+          "area": 86.86188568482012,
+          "latency": 92.42931841587028,
           "variant_id": "9_uarchaware"
         }
       ]
     },
     {
-      "name": "mont64",
+      "name": "picojpeg_test",
       "implementations": [
         {
-          "chip_id": "chip_176",
-          "area": 70.53468723969696,
-          "latency": 1069.5360009155954,
+          "chip_id": "chip_172",
+          "area": 70.89663242235532,
+          "latency": 974.1949674945608,
           "variant_id": "0_uarchaware"
         },
         {
-          "chip_id": "chip_40",
-          "area": 85.6907699020269,
-          "latency": 116.3466324913574,
+          "chip_id": "chip_159",
+          "area": 88.72813454444488,
+          "latency": 92.44443043919168,
           "variant_id": "10_uarchaware"
         },
         {
-          "chip_id": "chip_39",
-          "area": 85.50136845027964,
-          "latency": 95.38886921640514,
+          "chip_id": "chip_156",
+          "area": 88.72813454444488,
+          "latency": 90.71172238623845,
           "variant_id": "11_uarchaware"
         },
         {
-          "chip_id": "chip_39",
-          "area": 85.50136845027964,
-          "latency": 95.38886921640514,
+          "chip_id": "chip_156",
+          "area": 88.72813454444488,
+          "latency": 90.71172238623845,
           "variant_id": "12_uarchaware"
         },
         {
-          "chip_id": "chip_39",
-          "area": 85.50136845027964,
-          "latency": 95.38886921640514,
+          "chip_id": "chip_157",
+          "area": 87.87235730435128,
+          "latency": 89.87308993035629,
           "variant_id": "13_uarchaware"
         },
         {
-          "chip_id": "chip_38",
-          "area": 85.73142675816112,
-          "latency": 89.79591836734694,
+          "chip_id": "chip_158",
+          "area": 88.0111855935901,
+          "latency": 90.27934250779322,
           "variant_id": "14_uarchaware"
         },
         {
-          "chip_id": "chip_38",
-          "area": 85.73142675816112,
-          "latency": 89.79591836734694,
+          "chip_id": "chip_158",
+          "area": 88.0111855935901,
+          "latency": 90.27934250779322,
           "variant_id": "15_uarchaware"
         },
         {
-          "chip_id": "chip_38",
-          "area": 85.73142675816112,
-          "latency": 89.79591836734694,
+          "chip_id": "chip_158",
+          "area": 88.0111855935901,
+          "latency": 90.27934250779322,
           "variant_id": "16_uarchaware"
         },
         {
-          "chip_id": "chip_38",
-          "area": 85.73142675816112,
-          "latency": 89.79591836734694,
+          "chip_id": "chip_158",
+          "area": 88.0111855935901,
+          "latency": 90.27934250779322,
           "variant_id": "17_uarchaware"
         },
         {
-          "chip_id": "chip_38",
-          "area": 85.73142675816112,
-          "latency": 89.79591836734694,
+          "chip_id": "chip_158",
+          "area": 88.0111855935901,
+          "latency": 90.27934250779322,
           "variant_id": "18_uarchaware"
         },
         {
-          "chip_id": "chip_38",
-          "area": 85.73142675816112,
-          "latency": 89.79591836734694,
+          "chip_id": "chip_155",
+          "area": 88.69144421086034,
+          "latency": 92.0137234008603,
           "variant_id": "19_uarchaware"
         },
         {
-          "chip_id": "chip_178",
-          "area": 70.56443615881956,
-          "latency": 1054.8430097227827,
+          "chip_id": "chip_183",
+          "area": 87.04137083019317,
+          "latency": 127.11601021953729,
           "variant_id": "1_uarchaware"
         },
         {
-          "chip_id": "chip_38",
-          "area": 85.73142675816112,
-          "latency": 89.79591836734694,
+          "chip_id": "chip_155",
+          "area": 88.69144421086034,
+          "latency": 92.0137234008603,
           "variant_id": "20_uarchaware"
         },
         {
-          "chip_id": "chip_38",
-          "area": 85.73142675816112,
-          "latency": 89.79591836734694,
+          "chip_id": "chip_155",
+          "area": 88.69144421086034,
+          "latency": 92.0137234008603,
           "variant_id": "21_uarchaware"
         },
         {
-          "chip_id": "chip_38",
-          "area": 85.73142675816112,
-          "latency": 89.79591836734694,
+          "chip_id": "chip_46",
+          "area": 87.83467534012932,
+          "latency": 93.26021589293497,
           "variant_id": "22_uarchaware"
         },
         {
-          "chip_id": "chip_38",
-          "area": 85.73142675816112,
-          "latency": 89.79591836734694,
+          "chip_id": "chip_46",
+          "area": 87.83467534012932,
+          "latency": 93.26021589293497,
           "variant_id": "23_uarchaware"
         },
         {
-          "chip_id": "chip_38",
-          "area": 85.73142675816112,
-          "latency": 89.79591836734694,
+          "chip_id": "chip_46",
+          "area": 87.83467534012932,
+          "latency": 93.26021589293497,
           "variant_id": "24_uarchaware"
         },
         {
-          "chip_id": "chip_38",
-          "area": 85.73142675816112,
-          "latency": 89.79591836734694,
+          "chip_id": "chip_45",
+          "area": 88.66863670619966,
+          "latency": 96.6608333125786,
           "variant_id": "25_uarchaware"
         },
         {
-          "chip_id": "chip_25",
-          "area": 86.16873586926343,
-          "latency": 88.45999195818254,
+          "chip_id": "chip_2",
+          "area": 88.42568720003173,
+          "latency": 108.74938210578348,
           "variant_id": "26_uarchaware"
         },
         {
-          "chip_id": "chip_177",
-          "area": 87.30712784102177,
-          "latency": 191.6814719632682,
+          "chip_id": "chip_183",
+          "area": 87.04137083019317,
+          "latency": 127.11601021953729,
           "variant_id": "2_uarchaware"
         },
         {
-          "chip_id": "chip_118",
-          "area": 87.65122367220658,
-          "latency": 157.41729826578654,
+          "chip_id": "chip_173",
+          "area": 87.78410217762088,
+          "latency": 129.03335821408928,
           "variant_id": "3_uarchaware"
         },
         {
-          "chip_id": "chip_91",
-          "area": 85.11859902423546,
-          "latency": 108.36460660714033,
+          "chip_id": "chip_160",
+          "area": 87.67601443814208,
+          "latency": 95.49499323984197,
           "variant_id": "4_uarchaware"
         },
         {
-          "chip_id": "chip_91",
-          "area": 85.11859902423546,
-          "latency": 108.36460660714033,
+          "chip_id": "chip_160",
+          "area": 87.67601443814208,
+          "latency": 94.58455847791491,
           "variant_id": "5_uarchaware"
         },
         {
-          "chip_id": "chip_91",
-          "area": 85.11859902423546,
-          "latency": 108.36460660714033,
+          "chip_id": "chip_160",
+          "area": 87.67601443814208,
+          "latency": 95.27068322603385,
           "variant_id": "6_uarchaware"
         },
         {
-          "chip_id": "chip_91",
-          "area": 85.11859902423546,
-          "latency": 108.36460660714033,
+          "chip_id": "chip_159",
+          "area": 88.72813454444488,
+          "latency": 94.02586645181098,
           "variant_id": "7_uarchaware"
         },
         {
-          "chip_id": "chip_40",
-          "area": 85.6907699020269,
-          "latency": 116.3466324913574,
+          "chip_id": "chip_159",
+          "area": 88.72813454444488,
+          "latency": 93.93989052361256,
           "variant_id": "8_uarchaware"
         },
         {
-          "chip_id": "chip_40",
-          "area": 85.6907699020269,
-          "latency": 116.3466324913574,
+          "chip_id": "chip_159",
+          "area": 88.72813454444488,
+          "latency": 93.87215191351684,
           "variant_id": "9_uarchaware"
         }
       ]
     },
     {
-      "name": "primecount",
+      "name": "qsort_num",
       "implementations": [
         {
-          "chip_id": "chip_108",
-          "area": 70.33437785093808,
-          "latency": 962.3523067357661,
+          "chip_id": "chip_119",
+          "area": 70.83911784538496,
+          "latency": 1888.347167217976,
           "variant_id": "0_uarchaware"
         },
         {
-          "chip_id": "chip_82",
-          "area": 87.53916941017809,
-          "latency": 99.2798728633425,
+          "chip_id": "chip_161",
+          "area": 91.36785530125739,
+          "latency": 90.53498491625392,
           "variant_id": "10_uarchaware"
         },
         {
-          "chip_id": "chip_82",
-          "area": 87.53916941017809,
-          "latency": 99.2798728633425,
+          "chip_id": "chip_161",
+          "area": 91.36785530125739,
+          "latency": 90.53498491625392,
           "variant_id": "11_uarchaware"
         },
         {
-          "chip_id": "chip_82",
-          "area": 87.53916941017809,
-          "latency": 99.2798728633425,
+          "chip_id": "chip_161",
+          "area": 91.36785530125739,
+          "latency": 90.53498491625392,
           "variant_id": "12_uarchaware"
         },
         {
-          "chip_id": "chip_82",
-          "area": 87.53916941017809,
-          "latency": 99.2798728633425,
+          "chip_id": "chip_161",
+          "area": 91.36785530125739,
+          "latency": 90.53498491625392,
           "variant_id": "13_uarchaware"
         },
         {
-          "chip_id": "chip_82",
-          "area": 87.53916941017809,
-          "latency": 99.2798728633425,
+          "chip_id": "chip_161",
+          "area": 91.36785530125739,
+          "latency": 90.53498491625392,
           "variant_id": "14_uarchaware"
         },
         {
-          "chip_id": "chip_82",
-          "area": 87.53916941017809,
-          "latency": 99.2798728633425,
+          "chip_id": "chip_161",
+          "area": 91.36785530125739,
+          "latency": 90.53498491625392,
           "variant_id": "15_uarchaware"
         },
         {
-          "chip_id": "chip_82",
-          "area": 87.53916941017809,
-          "latency": 99.2798728633425,
+          "chip_id": "chip_161",
+          "area": 91.36785530125739,
+          "latency": 90.53498491625392,
           "variant_id": "16_uarchaware"
         },
         {
-          "chip_id": "chip_83",
-          "area": 85.50731823410416,
-          "latency": 91.82145169664733,
+          "chip_id": "chip_139",
+          "area": 91.17052080441077,
+          "latency": 92.12730318257957,
           "variant_id": "17_uarchaware"
         },
         {
-          "chip_id": "chip_149",
-          "area": 86.01602475110072,
-          "latency": 93.65866252242103,
+          "chip_id": "chip_139",
+          "area": 91.17052080441077,
+          "latency": 92.12730318257957,
           "variant_id": "18_uarchaware"
         },
         {
-          "chip_id": "chip_151",
-          "area": 86.0646146523343,
-          "latency": 93.93680614859096,
+          "chip_id": "chip_139",
+          "area": 91.17052080441077,
+          "latency": 92.12730318257957,
           "variant_id": "19_uarchaware"
         },
         {
-          "chip_id": "chip_84",
-          "area": 87.2099480385546,
-          "latency": 108.78279790500834,
+          "chip_id": "chip_135",
+          "area": 88.0944825671334,
+          "latency": 153.04442663191043,
           "variant_id": "1_uarchaware"
         },
         {
-          "chip_id": "chip_148",
-          "area": 85.33576613383048,
-          "latency": 91.09732968876013,
+          "chip_id": "chip_161",
+          "area": 91.36785530125739,
+          "latency": 90.53498491625392,
           "variant_id": "20_uarchaware"
         },
         {
-          "chip_id": "chip_148",
-          "area": 85.33576613383048,
-          "latency": 91.09732968876013,
+          "chip_id": "chip_161",
+          "area": 91.36785530125739,
+          "latency": 90.53498491625392,
           "variant_id": "21_uarchaware"
         },
         {
-          "chip_id": "chip_148",
-          "area": 85.33576613383048,
-          "latency": 91.09732968876013,
+          "chip_id": "chip_161",
+          "area": 91.36785530125739,
+          "latency": 90.53498491625392,
           "variant_id": "22_uarchaware"
         },
         {
-          "chip_id": "chip_148",
-          "area": 85.33576613383048,
-          "latency": 91.09732968876013,
+          "chip_id": "chip_139",
+          "area": 91.17052080441077,
+          "latency": 92.12730318257957,
           "variant_id": "23_uarchaware"
         },
         {
-          "chip_id": "chip_148",
-          "area": 85.33576613383048,
-          "latency": 91.09732968876013,
+          "chip_id": "chip_139",
+          "area": 91.17052080441077,
+          "latency": 92.12730318257957,
           "variant_id": "24_uarchaware"
         },
         {
-          "chip_id": "chip_148",
-          "area": 85.33576613383048,
-          "latency": 91.09732968876013,
+          "chip_id": "chip_139",
+          "area": 91.17052080441077,
+          "latency": 92.12730318257957,
           "variant_id": "25_uarchaware"
         },
         {
-          "chip_id": "chip_150",
-          "area": 86.06263139105947,
-          "latency": 93.93680614859096,
+          "chip_id": "chip_139",
+          "area": 91.17052080441077,
+          "latency": 92.12730318257957,
           "variant_id": "26_uarchaware"
         },
         {
-          "chip_id": "chip_82",
-          "area": 87.53916941017809,
-          "latency": 99.2798728633425,
+          "chip_id": "chip_132",
+          "area": 86.05965649914721,
+          "latency": 143.05722792925718,
           "variant_id": "2_uarchaware"
         },
         {
-          "chip_id": "chip_82",
-          "area": 87.53916941017809,
-          "latency": 99.2798728633425,
+          "chip_id": "chip_109",
+          "area": 86.37202014993456,
+          "latency": 153.02413028774845,
           "variant_id": "3_uarchaware"
         },
         {
-          "chip_id": "chip_82",
-          "area": 87.53916941017809,
-          "latency": 99.2798728633425,
+          "chip_id": "chip_110",
+          "area": 85.38534766570149,
+          "latency": 125.84300868563196,
           "variant_id": "4_uarchaware"
         },
         {
-          "chip_id": "chip_82",
-          "area": 87.53916941017809,
-          "latency": 99.2798728633425,
+          "chip_id": "chip_161",
+          "area": 91.36785530125739,
+          "latency": 90.53498491625392,
           "variant_id": "5_uarchaware"
         },
         {
-          "chip_id": "chip_82",
-          "area": 87.53916941017809,
-          "latency": 99.2798728633425,
+          "chip_id": "chip_161",
+          "area": 91.36785530125739,
+          "latency": 90.53498491625392,
           "variant_id": "6_uarchaware"
         },
         {
-          "chip_id": "chip_82",
-          "area": 87.53916941017809,
-          "latency": 99.2798728633425,
+          "chip_id": "chip_161",
+          "area": 91.36785530125739,
+          "latency": 90.53498491625392,
           "variant_id": "7_uarchaware"
         },
         {
-          "chip_id": "chip_82",
-          "area": 87.53916941017809,
-          "latency": 99.2798728633425,
+          "chip_id": "chip_161",
+          "area": 91.36785530125739,
+          "latency": 90.53498491625392,
           "variant_id": "8_uarchaware"
         },
         {
-          "chip_id": "chip_82",
-          "area": 87.53916941017809,
-          "latency": 99.2798728633425,
+          "chip_id": "chip_161",
+          "area": 91.36785530125739,
+          "latency": 90.53498491625392,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "qsort_str",
+      "implementations": [
+        {
+          "chip_id": "chip_196",
+          "area": 70.9838959184483,
+          "latency": 83.70557233867791,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_146",
+          "area": 68.85089841735751,
+          "latency": 82.08956607318162,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_146",
+          "area": 68.85089841735751,
+          "latency": 82.08956607318162,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 68.84594026417041,
+          "latency": 78.68383670072437,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 68.84594026417041,
+          "latency": 78.68383670072437,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 68.84594026417041,
+          "latency": 78.68383670072437,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 68.84594026417041,
+          "latency": 78.68383670072437,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 68.84594026417041,
+          "latency": 78.68383670072437,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 68.84594026417041,
+          "latency": 78.68383670072437,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 68.84594026417041,
+          "latency": 78.68383670072437,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 68.84594026417041,
+          "latency": 78.68383670072437,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_190",
+          "area": 70.8371345841101,
+          "latency": 84.2873309593548,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 68.84594026417041,
+          "latency": 78.68383670072437,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 68.84594026417041,
+          "latency": 78.68383670072437,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 68.84594026417041,
+          "latency": 78.68383670072437,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 68.84594026417041,
+          "latency": 78.68383670072437,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 68.84594026417041,
+          "latency": 78.68383670072437,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_147",
+          "area": 68.84594026417041,
+          "latency": 78.68383670072437,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_144",
+          "area": 69.01650073380668,
+          "latency": 83.17580340264648,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_106",
+          "area": 70.95117210741343,
+          "latency": 84.20735794717663,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_106",
+          "area": 70.95117210741343,
+          "latency": 84.20735794717663,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_145",
+          "area": 69.02939193209315,
+          "latency": 78.75191117220777,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_145",
+          "area": 69.02939193209315,
+          "latency": 78.75191117220777,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_145",
+          "area": 69.02939193209315,
+          "latency": 78.75191117220777,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_145",
+          "area": 69.02939193209315,
+          "latency": 78.75191117220777,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_145",
+          "area": 69.02939193209315,
+          "latency": 78.75191117220777,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_145",
+          "area": 69.02939193209315,
+          "latency": 78.75191117220777,
           "variant_id": "9_uarchaware"
         }
       ]
@@ -2328,6 +2149,173 @@
           "chip_id": "chip_50",
           "area": 85.85736384911348,
           "latency": 95.085756955937,
+          "variant_id": "9_uarchaware"
+        }
+      ]
+    },
+    {
+      "name": "sha",
+      "implementations": [
+        {
+          "chip_id": "chip_192",
+          "area": 70.8758081789695,
+          "latency": 376.24428608608184,
+          "variant_id": "0_uarchaware"
+        },
+        {
+          "chip_id": "chip_111",
+          "area": 69.03534171591765,
+          "latency": 80.91376459941677,
+          "variant_id": "10_uarchaware"
+        },
+        {
+          "chip_id": "chip_111",
+          "area": 69.03534171591765,
+          "latency": 80.91376459941677,
+          "variant_id": "11_uarchaware"
+        },
+        {
+          "chip_id": "chip_111",
+          "area": 69.03534171591765,
+          "latency": 80.91376459941677,
+          "variant_id": "12_uarchaware"
+        },
+        {
+          "chip_id": "chip_57",
+          "area": 69.13252151838482,
+          "latency": 80.29325781136572,
+          "variant_id": "13_uarchaware"
+        },
+        {
+          "chip_id": "chip_57",
+          "area": 69.13252151838482,
+          "latency": 80.29325781136572,
+          "variant_id": "14_uarchaware"
+        },
+        {
+          "chip_id": "chip_57",
+          "area": 69.13252151838482,
+          "latency": 80.29325781136572,
+          "variant_id": "15_uarchaware"
+        },
+        {
+          "chip_id": "chip_57",
+          "area": 69.13252151838482,
+          "latency": 80.29325781136572,
+          "variant_id": "16_uarchaware"
+        },
+        {
+          "chip_id": "chip_57",
+          "area": 69.13252151838482,
+          "latency": 80.29325781136572,
+          "variant_id": "17_uarchaware"
+        },
+        {
+          "chip_id": "chip_56",
+          "area": 69.00955931934473,
+          "latency": 81.0316415430495,
+          "variant_id": "18_uarchaware"
+        },
+        {
+          "chip_id": "chip_56",
+          "area": 69.00955931934473,
+          "latency": 81.0316415430495,
+          "variant_id": "19_uarchaware"
+        },
+        {
+          "chip_id": "chip_117",
+          "area": 68.95105311173694,
+          "latency": 86.41610377724524,
+          "variant_id": "1_uarchaware"
+        },
+        {
+          "chip_id": "chip_56",
+          "area": 69.00955931934473,
+          "latency": 81.0316415430495,
+          "variant_id": "20_uarchaware"
+        },
+        {
+          "chip_id": "chip_30",
+          "area": 68.97386061639762,
+          "latency": 78.57142857142857,
+          "variant_id": "21_uarchaware"
+        },
+        {
+          "chip_id": "chip_30",
+          "area": 68.97386061639762,
+          "latency": 78.57142857142857,
+          "variant_id": "22_uarchaware"
+        },
+        {
+          "chip_id": "chip_30",
+          "area": 68.97386061639762,
+          "latency": 78.57142857142857,
+          "variant_id": "23_uarchaware"
+        },
+        {
+          "chip_id": "chip_30",
+          "area": 68.97386061639762,
+          "latency": 78.57142857142857,
+          "variant_id": "24_uarchaware"
+        },
+        {
+          "chip_id": "chip_30",
+          "area": 68.97386061639762,
+          "latency": 78.57142857142857,
+          "variant_id": "25_uarchaware"
+        },
+        {
+          "chip_id": "chip_30",
+          "area": 68.97386061639762,
+          "latency": 78.57142857142857,
+          "variant_id": "26_uarchaware"
+        },
+        {
+          "chip_id": "chip_117",
+          "area": 68.95105311173694,
+          "latency": 86.41610377724524,
+          "variant_id": "2_uarchaware"
+        },
+        {
+          "chip_id": "chip_116",
+          "area": 69.01253421125699,
+          "latency": 81.03411421925489,
+          "variant_id": "3_uarchaware"
+        },
+        {
+          "chip_id": "chip_116",
+          "area": 69.01253421125699,
+          "latency": 81.03411421925489,
+          "variant_id": "4_uarchaware"
+        },
+        {
+          "chip_id": "chip_116",
+          "area": 69.01253421125699,
+          "latency": 81.03411421925489,
+          "variant_id": "5_uarchaware"
+        },
+        {
+          "chip_id": "chip_111",
+          "area": 69.03534171591765,
+          "latency": 80.91376459941677,
+          "variant_id": "6_uarchaware"
+        },
+        {
+          "chip_id": "chip_111",
+          "area": 69.03534171591765,
+          "latency": 80.91376459941677,
+          "variant_id": "7_uarchaware"
+        },
+        {
+          "chip_id": "chip_111",
+          "area": 69.03534171591765,
+          "latency": 80.91376459941677,
+          "variant_id": "8_uarchaware"
+        },
+        {
+          "chip_id": "chip_111",
+          "area": 69.03534171591765,
+          "latency": 80.91376459941677,
           "variant_id": "9_uarchaware"
         }
       ]
@@ -2537,10 +2525,8 @@
         "xor",
         "xori"
       ],
-      "num_programs": 1,
-      "programs": [
-        "wikisort"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_1": {
       "instruction_subset": [
@@ -2618,8 +2604,10 @@
         "sw",
         "xori"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
     },
     "chip_3": {
       "instruction_subset": [
@@ -2658,10 +2646,8 @@
         "sw",
         "xori"
       ],
-      "num_programs": 1,
-      "programs": [
-        "combined"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_4": {
       "instruction_subset": [
@@ -2697,10 +2683,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "combined"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_5": {
       "instruction_subset": [
@@ -2735,10 +2719,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "combined"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_6": {
       "instruction_subset": [
@@ -2772,10 +2754,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "combined"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_7": {
       "instruction_subset": [
@@ -2807,8 +2787,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "patricia"
+      ]
     },
     "chip_8": {
       "instruction_subset": [
@@ -2837,8 +2819,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "patricia"
+      ]
     },
     "chip_9": {
       "instruction_subset": [
@@ -2868,8 +2852,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "patricia"
+      ]
     },
     "chip_10": {
       "instruction_subset": [
@@ -2938,10 +2924,8 @@
         "xor",
         "xori"
       ],
-      "num_programs": 1,
-      "programs": [
-        "md5"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_12": {
       "instruction_subset": [
@@ -3115,10 +3099,8 @@
         "xor",
         "xori"
       ],
-      "num_programs": 1,
-      "programs": [
-        "wikisort"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_17": {
       "instruction_subset": [
@@ -3150,10 +3132,8 @@
         "sw",
         "xori"
       ],
-      "num_programs": 1,
-      "programs": [
-        "wikisort"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_18": {
       "instruction_subset": [
@@ -3183,10 +3163,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "wikisort"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_19": {
       "instruction_subset": [
@@ -3217,10 +3195,8 @@
         "sw",
         "xor"
       ],
-      "num_programs": 1,
-      "programs": [
-        "wikisort"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_20": {
       "instruction_subset": [
@@ -3250,10 +3226,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "bitcnts"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_21": {
       "instruction_subset": [
@@ -3281,10 +3255,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "bitcnts"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_22": {
       "instruction_subset": [
@@ -3311,10 +3283,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "bitcnts"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_23": {
       "instruction_subset": [
@@ -3341,10 +3311,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "bitcnts"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_24": {
       "instruction_subset": [
@@ -3370,10 +3338,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "bitcnts"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_25": {
       "instruction_subset": [
@@ -3403,10 +3369,8 @@
         "sw",
         "xor"
       ],
-      "num_programs": 1,
-      "programs": [
-        "mont64"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_26": {
       "instruction_subset": [
@@ -3436,10 +3400,8 @@
         "xor",
         "xori"
       ],
-      "num_programs": 1,
-      "programs": [
-        "md5"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_27": {
       "instruction_subset": [
@@ -3468,10 +3430,8 @@
         "xor",
         "xori"
       ],
-      "num_programs": 1,
-      "programs": [
-        "md5"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_28": {
       "instruction_subset": [
@@ -3498,10 +3458,8 @@
         "sw",
         "xor"
       ],
-      "num_programs": 1,
-      "programs": [
-        "md5"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_29": {
       "instruction_subset": [
@@ -3529,10 +3487,8 @@
         "xor",
         "xori"
       ],
-      "num_programs": 1,
-      "programs": [
-        "md5"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_30": {
       "instruction_subset": [
@@ -3560,8 +3516,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "sha"
+      ]
     },
     "chip_31": {
       "instruction_subset": [
@@ -3586,10 +3544,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "bitcnts"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_32": {
       "instruction_subset": [
@@ -3618,8 +3574,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "basicmath"
+      ]
     },
     "chip_33": {
       "instruction_subset": [
@@ -3710,10 +3668,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "bitcnts"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_36": {
       "instruction_subset": [
@@ -3738,10 +3694,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "bitcnts"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_37": {
       "instruction_subset": [
@@ -3765,10 +3719,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "bitcnts"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_38": {
       "instruction_subset": [
@@ -3797,10 +3749,8 @@
         "sw",
         "xor"
       ],
-      "num_programs": 1,
-      "programs": [
-        "mont64"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_39": {
       "instruction_subset": [
@@ -3828,10 +3778,8 @@
         "sw",
         "xor"
       ],
-      "num_programs": 1,
-      "programs": [
-        "mont64"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_40": {
       "instruction_subset": [
@@ -3858,10 +3806,8 @@
         "sw",
         "xor"
       ],
-      "num_programs": 1,
-      "programs": [
-        "mont64"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_41": {
       "instruction_subset": [
@@ -4027,8 +3973,10 @@
         "sw",
         "xori"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
     },
     "chip_46": {
       "instruction_subset": [
@@ -4064,8 +4012,10 @@
         "sw",
         "xori"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
     },
     "chip_47": {
       "instruction_subset": [
@@ -4164,8 +4114,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "patricia"
+      ]
     },
     "chip_50": {
       "instruction_subset": [
@@ -4294,8 +4246,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "patricia"
+      ]
     },
     "chip_54": {
       "instruction_subset": [
@@ -4352,8 +4306,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "patricia"
+      ]
     },
     "chip_56": {
       "instruction_subset": [
@@ -4380,8 +4336,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "sha"
+      ]
     },
     "chip_57": {
       "instruction_subset": [
@@ -4407,8 +4365,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "sha"
+      ]
     },
     "chip_58": {
       "instruction_subset": [
@@ -4433,8 +4393,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
     },
     "chip_59": {
       "instruction_subset": [
@@ -4556,10 +4518,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "combined"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_63": {
       "instruction_subset": [
@@ -4590,10 +4550,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "combined"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_64": {
       "instruction_subset": [
@@ -4718,10 +4676,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "combined"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_68": {
       "instruction_subset": [
@@ -4751,10 +4707,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "combined"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_69": {
       "instruction_subset": [
@@ -4782,10 +4736,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "wikisort"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_70": {
       "instruction_subset": [
@@ -4812,10 +4764,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "wikisort"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_71": {
       "instruction_subset": [
@@ -4840,10 +4790,8 @@
         "sw",
         "xor"
       ],
-      "num_programs": 1,
-      "programs": [
-        "md5"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_72": {
       "instruction_subset": [
@@ -4867,10 +4815,8 @@
         "sw",
         "xor"
       ],
-      "num_programs": 1,
-      "programs": [
-        "md5"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_73": {
       "instruction_subset": [
@@ -4917,10 +4863,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "bitcnts"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_75": {
       "instruction_subset": [
@@ -4947,8 +4891,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "basicmath"
+      ]
     },
     "chip_76": {
       "instruction_subset": [
@@ -4976,10 +4922,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "combined"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_77": {
       "instruction_subset": [
@@ -5007,10 +4951,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "combined"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_78": {
       "instruction_subset": [
@@ -5153,10 +5095,8 @@
         "srl",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "primecount"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_83": {
       "instruction_subset": [
@@ -5177,10 +5117,8 @@
         "srli",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "primecount"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_84": {
       "instruction_subset": [
@@ -5200,10 +5138,8 @@
         "srl",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "primecount"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_85": {
       "instruction_subset": [
@@ -5314,8 +5250,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "basicmath"
+      ]
     },
     "chip_89": {
       "instruction_subset": [
@@ -5394,10 +5332,8 @@
         "sw",
         "xor"
       ],
-      "num_programs": 1,
-      "programs": [
-        "mont64"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_92": {
       "instruction_subset": [
@@ -5711,8 +5647,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "patricia"
+      ]
     },
     "chip_104": {
       "instruction_subset": [
@@ -5737,10 +5675,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "combined"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_105": {
       "instruction_subset": [
@@ -5790,8 +5726,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
     },
     "chip_107": {
       "instruction_subset": [
@@ -5836,10 +5774,8 @@
         "srl",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "primecount"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_109": {
       "instruction_subset": [
@@ -5864,8 +5800,10 @@
         "srl",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "qsort_num"
+      ]
     },
     "chip_110": {
       "instruction_subset": [
@@ -5890,8 +5828,10 @@
         "srli",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "qsort_num"
+      ]
     },
     "chip_111": {
       "instruction_subset": [
@@ -5916,8 +5856,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "sha"
+      ]
     },
     "chip_112": {
       "instruction_subset": [
@@ -5939,10 +5881,8 @@
         "sw",
         "xor"
       ],
-      "num_programs": 1,
-      "programs": [
-        "md5"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_113": {
       "instruction_subset": [
@@ -5967,10 +5907,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "wikisort"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_114": {
       "instruction_subset": [
@@ -5995,10 +5933,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "wikisort"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_115": {
       "instruction_subset": [
@@ -6022,10 +5958,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "wikisort"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_116": {
       "instruction_subset": [
@@ -6049,8 +5983,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "sha"
+      ]
     },
     "chip_117": {
       "instruction_subset": [
@@ -6073,8 +6009,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "sha"
+      ]
     },
     "chip_118": {
       "instruction_subset": [
@@ -6098,10 +6036,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "mont64"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_119": {
       "instruction_subset": [
@@ -6122,8 +6058,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "qsort_num"
+      ]
     },
     "chip_120": {
       "instruction_subset": [
@@ -6209,8 +6147,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
     },
     "chip_123": {
       "instruction_subset": [
@@ -6260,8 +6200,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
     },
     "chip_125": {
       "instruction_subset": [
@@ -6284,8 +6226,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
     },
     "chip_126": {
       "instruction_subset": [
@@ -6308,8 +6252,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
     },
     "chip_127": {
       "instruction_subset": [
@@ -6414,8 +6360,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
     },
     "chip_131": {
       "instruction_subset": [
@@ -6436,8 +6384,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
     },
     "chip_132": {
       "instruction_subset": [
@@ -6461,8 +6411,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "qsort_num"
+      ]
     },
     "chip_133": {
       "instruction_subset": [
@@ -6484,8 +6436,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "patricia"
+      ]
     },
     "chip_134": {
       "instruction_subset": [
@@ -6507,10 +6461,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "wikisort"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_135": {
       "instruction_subset": [
@@ -6532,8 +6484,10 @@
         "srl",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "qsort_num"
+      ]
     },
     "chip_136": {
       "instruction_subset": [
@@ -6556,10 +6510,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "wikisort"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_137": {
       "instruction_subset": [
@@ -6581,10 +6533,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "wikisort"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_138": {
       "instruction_subset": [
@@ -6615,8 +6565,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "basicmath"
+      ]
     },
     "chip_139": {
       "instruction_subset": [
@@ -6644,8 +6596,10 @@
         "srli",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "qsort_num"
+      ]
     },
     "chip_140": {
       "instruction_subset": [
@@ -6675,10 +6629,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "wikisort"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_141": {
       "instruction_subset": [
@@ -6709,10 +6661,8 @@
         "sw",
         "xor"
       ],
-      "num_programs": 1,
-      "programs": [
-        "wikisort"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_142": {
       "instruction_subset": [
@@ -6772,8 +6722,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "basicmath"
+      ]
     },
     "chip_144": {
       "instruction_subset": [
@@ -6802,8 +6754,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
     },
     "chip_145": {
       "instruction_subset": [
@@ -6829,8 +6783,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
     },
     "chip_146": {
       "instruction_subset": [
@@ -6856,8 +6812,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
     },
     "chip_147": {
       "instruction_subset": [
@@ -6884,8 +6842,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
     },
     "chip_148": {
       "instruction_subset": [
@@ -6908,10 +6868,8 @@
         "srli",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "primecount"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_149": {
       "instruction_subset": [
@@ -6932,10 +6890,8 @@
         "srli",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "primecount"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_150": {
       "instruction_subset": [
@@ -6957,10 +6913,8 @@
         "srli",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "primecount"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_151": {
       "instruction_subset": [
@@ -6982,10 +6936,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "primecount"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_152": {
       "instruction_subset": [
@@ -7105,8 +7057,10 @@
         "sw",
         "xori"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
     },
     "chip_156": {
       "instruction_subset": [
@@ -7139,8 +7093,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
     },
     "chip_157": {
       "instruction_subset": [
@@ -7174,8 +7130,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
     },
     "chip_158": {
       "instruction_subset": [
@@ -7209,8 +7167,10 @@
         "sw",
         "xori"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
     },
     "chip_159": {
       "instruction_subset": [
@@ -7242,8 +7202,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
     },
     "chip_160": {
       "instruction_subset": [
@@ -7274,8 +7236,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
     },
     "chip_161": {
       "instruction_subset": [
@@ -7301,8 +7265,10 @@
         "srli",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "qsort_num"
+      ]
     },
     "chip_162": {
       "instruction_subset": [
@@ -7358,8 +7324,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
     },
     "chip_164": {
       "instruction_subset": [
@@ -7384,8 +7352,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
     },
     "chip_165": {
       "instruction_subset": [
@@ -7410,8 +7380,10 @@
         "sw",
         "xori"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
     },
     "chip_166": {
       "instruction_subset": [
@@ -7488,10 +7460,8 @@
         "sw",
         "xori"
       ],
-      "num_programs": 1,
-      "programs": [
-        "nsichneu"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_169": {
       "instruction_subset": [
@@ -7598,8 +7568,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
     },
     "chip_173": {
       "instruction_subset": [
@@ -7628,8 +7600,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
     },
     "chip_174": {
       "instruction_subset": [
@@ -7654,10 +7628,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "combined"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_175": {
       "instruction_subset": [
@@ -7678,8 +7650,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "basicmath"
+      ]
     },
     "chip_176": {
       "instruction_subset": [
@@ -7700,10 +7674,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "mont64"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_177": {
       "instruction_subset": [
@@ -7726,10 +7698,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "mont64"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_178": {
       "instruction_subset": [
@@ -7750,10 +7720,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "mont64"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_179": {
       "instruction_subset": [
@@ -7807,8 +7775,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
     },
     "chip_181": {
       "instruction_subset": [
@@ -7833,8 +7803,10 @@
         "sw",
         "xor"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "matmult-int"
+      ]
     },
     "chip_182": {
       "instruction_subset": [
@@ -7890,8 +7862,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "picojpeg_test"
+      ]
     },
     "chip_184": {
       "instruction_subset": [
@@ -7940,8 +7914,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "patricia"
+      ]
     },
     "chip_186": {
       "instruction_subset": [
@@ -8065,8 +8041,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
     },
     "chip_191": {
       "instruction_subset": [
@@ -8086,10 +8064,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "md5"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_192": {
       "instruction_subset": [
@@ -8110,8 +8086,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "sha"
+      ]
     },
     "chip_193": {
       "instruction_subset": [
@@ -8181,10 +8159,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "md5"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_196": {
       "instruction_subset": [
@@ -8206,8 +8182,10 @@
         "sub",
         "sw"
       ],
-      "num_programs": 0,
-      "programs": []
+      "num_programs": 1,
+      "programs": [
+        "qsort_str"
+      ]
     },
     "chip_197": {
       "instruction_subset": [
@@ -8279,10 +8257,8 @@
         "sw",
         "xor"
       ],
-      "num_programs": 1,
-      "programs": [
-        "nsichneu"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_200": {
       "instruction_subset": [
@@ -8372,10 +8348,8 @@
         "sw",
         "xor"
       ],
-      "num_programs": 1,
-      "programs": [
-        "nsichneu"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_204": {
       "instruction_subset": [
@@ -8393,10 +8367,8 @@
         "sub",
         "sw"
       ],
-      "num_programs": 1,
-      "programs": [
-        "nsichneu"
-      ]
+      "num_programs": 0,
+      "programs": []
     },
     "chip_205": {
       "instruction_subset": [
@@ -8449,22 +8421,22 @@
   "statistics": {
     "num_programs": 15,
     "num_chips": 207,
-    "total_variants": 404,
+    "total_variants": 402,
     "program_stats": {
-      "bitcnts": 27,
-      "combined": 27,
+      "basicmath": 25,
       "dijkstra": 27,
       "edn": 27,
       "huffbench": 27,
-      "nsichneu": 27,
       "slre": 27,
       "statemate": 27,
       "ud": 26,
-      "wikisort": 27,
-      "md5": 27,
-      "mont64": 27,
-      "primecount": 27,
+      "matmult-int": 27,
+      "patricia": 27,
+      "picojpeg_test": 27,
+      "qsort_num": 27,
+      "qsort_str": 27,
       "rijndael": 27,
+      "sha": 27,
       "tarfind": 27
     }
   }

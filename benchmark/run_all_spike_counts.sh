@@ -16,11 +16,31 @@ NC='\033[0m'
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
+# If program names are passed as arguments, filter to only those programs
+# Usage: ./run_all_spike_counts.sh [program_name1] [program_name2] ...
+FILTER_PROGRAMS=("$@")
+
 # Dynamically find all *_clean.s files in benchmark directory
 # Structure should be: category/benchmark/benchmark_name_clean.s
-readarray -t WORKLOADS < <(find "$SCRIPT_DIR" -name "*_clean.s" -type f | \
+ALL_WORKLOADS=()
+readarray -t ALL_WORKLOADS < <(find "$SCRIPT_DIR" -name "*_clean.s" -type f | \
     grep -E "(automotive|network|security|embench-iot_[0-9]+)/[^/]+/[^/]+_clean\.s$" | \
     sed "s|$SCRIPT_DIR/||" | sort)
+
+if [ ${#FILTER_PROGRAMS[@]} -gt 0 ]; then
+    WORKLOADS=()
+    for workload in "${ALL_WORKLOADS[@]}"; do
+        name=$(basename "$workload" _clean.s)
+        for filter in "${FILTER_PROGRAMS[@]}"; do
+            if [ "$name" = "$filter" ]; then
+                WORKLOADS+=("$workload")
+                break
+            fi
+        done
+    done
+else
+    WORKLOADS=("${ALL_WORKLOADS[@]}")
+fi
 
 echo -e "${CYAN}========================================${NC}"
 echo -e "${CYAN}Running Spike Instruction Counts${NC}"

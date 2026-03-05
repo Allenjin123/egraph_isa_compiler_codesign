@@ -8,7 +8,8 @@
 	.align	2
 	.type	benchmark_body.isra.0, @function
 benchmark_body.isra.0:
-	bge	zero,a0,.L1
+	blt	zero,a0,.+8
+	jal	x0,.L1
 	lui	a4,%hi(.LANCHOR0)
 	addi	a4,a4,%lo(.LANCHOR0)
 	addi	t1,zero,0
@@ -24,1267 +25,1269 @@ benchmark_body.isra.0:
 	sw	t4,%lo(P2_is_marked)(a5)
 	sw	zero,%lo(P3_is_marked)(a1)
 	lw	t3,%lo(P1_is_marked)(a6)
-	bge	a7,t3,.L3
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a7,t3,.+8
 	jal	x0,.L3
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L3
 	lw	t5,4(a4)
 	lw	t3,8(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L132
 .L3:
 	lw	t3,%lo(P1_is_marked)(a6)
-	bge	a7,t3,.L4
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a7,t3,.+8
 	jal	x0,.L4
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L4
 	lw	t5,8(a4)
 	lw	t3,4(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L133
 .L4:
 	lw	t3,%lo(P1_is_marked)(a6)
-	bge	a7,t3,.L5
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a7,t3,.+8
 	jal	x0,.L5
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L5
 	lw	t5,0(a4)
 	lw	t3,8(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L134
 .L5:
 	lw	t3,%lo(P1_is_marked)(a6)
-	bge	a7,t3,.L6
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a7,t3,.+8
 	jal	x0,.L6
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L6
 	lw	t5,8(a4)
 	lw	t3,0(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L135
 .L6:
 	lw	t3,%lo(P1_is_marked)(a6)
-	bge	a7,t3,.L7
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a7,t3,.+8
 	jal	x0,.L7
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L7
 	lw	t5,0(a4)
 	lw	t3,4(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L136
 .L7:
 	lw	t3,%lo(P1_is_marked)(a6)
-	bge	a7,t3,.L8
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a7,t3,.+8
 	jal	x0,.L8
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L8
 	lw	t5,4(a4)
 	lw	t3,0(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L137
 .L8:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L9
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L9
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L9
 	lw	t5,40(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L138
 .L9:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L10
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L10
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L10
 	lw	t5,40(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L139
 .L10:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L11
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L11
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L11
 	lw	t5,44(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L140
 .L11:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L12
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L12
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L12
 	lw	t5,44(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L141
 .L12:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L13
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L13
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L13
 	lw	t5,48(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L142
 .L13:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L14
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L14
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L14
 	lw	t5,48(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L143
 .L14:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L15
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L15
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L15
 	lw	t5,36(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L144
 .L15:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L16
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L16
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L16
 	lw	t5,36(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L145
 .L16:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L17
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L17
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L17
 	lw	t5,44(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L146
 .L17:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L18
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L18
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L18
 	lw	t5,44(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L147
 .L18:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L19
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L19
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L19
 	lw	t5,48(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L148
 .L19:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L20
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L20
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L20
 	lw	t5,48(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L149
 .L20:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L21
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L21
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L21
 	lw	t5,36(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L150
 .L21:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L22
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L22
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L22
 	lw	t5,36(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L151
 .L22:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L23
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L23
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L23
 	lw	t5,40(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L152
 .L23:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L24
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L24
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L24
 	lw	t5,40(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L153
 .L24:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L25
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L25
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L25
 	lw	t5,48(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L154
 .L25:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L26
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L26
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L26
 	lw	t5,48(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L155
 .L26:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L27
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L27
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L27
 	lw	t5,36(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L156
 .L27:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L28
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L28
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L28
 	lw	t5,36(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L157
 .L28:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L29
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L29
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L29
 	lw	t5,40(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L158
 .L29:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L30
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L30
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L30
 	lw	t5,40(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L159
 .L30:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L31
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L31
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L31
 	lw	t5,44(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L160
 .L31:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a2,t3,.L32
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a2,t3,.+8
 	jal	x0,.L32
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L32
 	lw	t5,44(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L161
 .L32:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L33
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L33
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L33
 	lw	t5,40(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L162
 .L33:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L34
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L34
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L34
 	lw	t5,40(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L163
 .L34:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L35
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L35
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L35
 	lw	t5,40(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L164
 .L35:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L36
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L36
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L36
 	lw	t5,40(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L165
 .L36:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L37
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L37
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L37
 	lw	t5,44(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L166
 .L37:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L38
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L38
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L38
 	lw	t5,44(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L167
 .L38:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L39
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L39
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L39
 	lw	t5,44(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L168
 .L39:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L40
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L40
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L40
 	lw	t5,44(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L169
 .L40:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L41
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L41
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L41
 	lw	t5,48(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L170
 .L41:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L42
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L42
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L42
 	lw	t5,48(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L171
 .L42:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L43
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L43
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L43
 	lw	t5,48(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L172
 .L43:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L44
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L44
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L44
 	lw	t5,48(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L173
 .L44:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L45
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L45
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L45
 	lw	t5,52(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L174
 .L45:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L46
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L46
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L46
 	lw	t5,52(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L175
 .L46:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L47
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L47
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L47
 	lw	t5,52(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L176
 .L47:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L48
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L48
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L48
 	lw	t5,52(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L177
 .L48:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L49
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L49
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L49
 	lw	t5,52(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L178
 .L49:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L50
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L50
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L50
 	lw	t5,52(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L179
 .L50:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L51
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L51
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L51
 	lw	t5,36(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L180
 .L51:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L52
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L52
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L52
 	lw	t5,36(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L181
 .L52:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L53
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L53
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L53
 	lw	t5,36(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L182
 .L53:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L54
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L54
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L54
 	lw	t5,36(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L183
 .L54:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L55
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L55
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L55
 	lw	t5,44(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L184
 .L55:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L56
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L56
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L56
 	lw	t5,44(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L185
 .L56:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L57
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L57
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L57
 	lw	t5,44(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L186
 .L57:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L58
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L58
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L58
 	lw	t5,44(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L187
 .L58:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L59
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L59
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L59
 	lw	t5,48(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L188
 .L59:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L60
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L60
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L60
 	lw	t5,48(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L189
 .L60:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L61
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L61
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L61
 	lw	t5,48(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L190
 .L61:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L62
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L62
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L62
 	lw	t5,48(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L191
 .L62:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L63
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L63
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L63
 	lw	t5,52(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L192
 .L63:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L64
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L64
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L64
 	lw	t5,52(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L193
 .L64:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L65
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L65
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L65
 	lw	t5,52(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L194
 .L65:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L66
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L66
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L66
 	lw	t5,52(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L195
 .L66:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L67
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L67
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L67
 	lw	t5,52(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L196
 .L67:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L68
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L68
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L68
 	lw	t5,52(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L197
 .L68:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L69
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L69
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L69
 	lw	t5,36(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L198
 .L69:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L70
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L70
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L70
 	lw	t5,36(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L199
 .L70:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L71
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L71
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L71
 	lw	t5,36(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L200
 .L71:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L72
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L72
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L72
 	lw	t5,36(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L201
 .L72:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L73
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L73
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L73
 	lw	t5,40(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L202
 .L73:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L74
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L74
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L74
 	lw	t5,40(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L203
 .L74:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L75
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L75
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L75
 	lw	t5,40(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L204
 .L75:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L76
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L76
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L76
 	lw	t5,40(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L205
 .L76:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L77
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L77
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L77
 	lw	t5,48(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L206
 .L77:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L78
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L78
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L78
 	lw	t5,48(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L207
 .L78:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L79
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L79
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L79
 	lw	t5,48(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L208
 .L79:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L80
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L80
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L80
 	lw	t5,48(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L209
 .L80:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L81
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L81
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L81
 	lw	t5,52(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L210
 .L81:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L82
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L82
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L82
 	lw	t5,52(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L211
 .L82:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L83
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L83
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L83
 	lw	t5,52(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L212
 .L83:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L84
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L84
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L84
 	lw	t5,52(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L213
 .L84:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L85
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L85
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L85
 	lw	t5,52(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L214
 .L85:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L86
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L86
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L86
 	lw	t5,52(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L215
 .L86:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L87
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L87
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L87
 	lw	t5,36(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L216
 .L87:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L88
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L88
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L88
 	lw	t5,36(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L217
 .L88:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L89
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L89
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L89
 	lw	t5,36(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L218
 .L89:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L90
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L90
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L90
 	lw	t5,36(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L219
 .L90:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L91
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L91
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L91
 	lw	t5,40(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L220
 .L91:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L92
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L92
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L92
 	lw	t5,40(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L221
 .L92:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L93
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L93
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L93
 	lw	t5,40(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L222
 .L93:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L94
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L94
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L94
 	lw	t5,40(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L223
 .L94:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L95
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L95
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L95
 	lw	t5,44(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L224
 .L95:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L96
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L96
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L96
 	lw	t5,44(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L225
 .L96:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L97
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L97
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L97
 	lw	t5,44(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L226
 .L97:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L98
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L98
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L98
 	lw	t5,44(a4)
 	lw	t3,52(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L227
 .L98:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L99
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L99
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L99
 	lw	t5,52(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L228
 .L99:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L100
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L100
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L100
 	lw	t5,52(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L229
 .L100:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L101
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L101
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L101
 	lw	t5,52(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L230
 .L101:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L102
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L102
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L102
 	lw	t5,52(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L231
 .L102:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L103
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L103
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L103
 	lw	t5,52(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L232
 .L103:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L104
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L104
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L104
 	lw	t5,52(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L233
 .L104:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L105
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L105
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L105
 	lw	t5,36(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L234
 .L105:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L106
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L106
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L106
 	lw	t5,36(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L235
 .L106:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L107
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L107
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L107
 	lw	t5,36(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L236
 .L107:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L108
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L108
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L108
 	lw	t5,36(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L237
 .L108:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L109
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L109
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L109
 	lw	t5,36(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L238
 .L109:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L110
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L110
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L110
 	lw	t5,36(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L239
 .L110:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L111
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L111
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L111
 	lw	t5,40(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L240
 .L111:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L112
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L112
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L112
 	lw	t5,40(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L241
 .L112:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L113
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L113
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L113
 	lw	t5,40(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L242
 .L113:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L114
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L114
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L114
 	lw	t5,40(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L243
 .L114:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L115
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L115
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L115
 	lw	t5,40(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L244
 .L115:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L116
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L116
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L116
 	lw	t5,40(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L245
 .L116:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L117
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L117
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L117
 	lw	t5,44(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L246
 .L117:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L118
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L118
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L118
 	lw	t5,44(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L247
 .L118:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L119
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L119
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L119
 	lw	t5,44(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L248
 .L119:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L120
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L120
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L120
 	lw	t5,44(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L249
 .L120:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L121
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L121
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L121
 	lw	t5,44(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L250
 .L121:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L122
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L122
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L122
 	lw	t5,44(a4)
 	lw	t3,48(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L251
 .L122:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L123
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L123
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L123
 	lw	t5,48(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L252
 .L123:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L124
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L124
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L124
 	lw	t5,48(a4)
 	lw	t3,36(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L253
 .L124:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L125
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L125
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L125
 	lw	t5,48(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L254
 .L125:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L126
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L126
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L126
 	lw	t5,48(a4)
 	lw	t3,40(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L255
 .L126:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L127
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L127
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L127
 	lw	t5,48(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L256
 .L127:
 	lw	t3,%lo(P2_is_marked)(a5)
-	bge	a3,t3,.L128
-	lw	t3,%lo(P3_is_marked)(a1)
-	bge	a2,t3,.+8
+	blt	a3,t3,.+8
 	jal	x0,.L128
+	lw	t3,%lo(P3_is_marked)(a1)
+	blt	a2,t3,.L128
 	lw	t5,48(a4)
 	lw	t3,44(a4)
 	bne	t5,t3,.+8
 	jal	x0,.L257
 .L128:
 	addi	t1,t1,1
-	bne	t1,a0,.L129
+	bne	t1,a0,.+8
+	jal	x0,.+8
+	jal	x0,.L129
 .L1:
 	jalr	zero,ra,0
 .L255:
@@ -1293,7 +1296,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L126
 	lw	t3,52(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L126
+	blt	t3,t5,.+8
+	jal	x0,.L126
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1329,7 +1333,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L127
 	lw	t3,52(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L127
+	blt	t3,t5,.+8
+	jal	x0,.L127
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1367,7 +1372,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L122
 	lw	t3,52(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L122
+	blt	t3,t5,.+8
+	jal	x0,.L122
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1403,7 +1409,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L123
 	lw	t3,52(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L123
+	blt	t3,t5,.+8
+	jal	x0,.L123
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1441,7 +1448,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L124
 	lw	t3,52(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L124
+	blt	t3,t5,.+8
+	jal	x0,.L124
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1479,7 +1487,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L125
 	lw	t3,52(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L125
+	blt	t3,t5,.+8
+	jal	x0,.L125
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1517,7 +1526,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L114
 	lw	t3,52(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L114
+	blt	t3,t5,.+8
+	jal	x0,.L114
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1553,7 +1563,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L115
 	lw	t3,52(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L115
+	blt	t3,t5,.+8
+	jal	x0,.L115
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1591,7 +1602,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L116
 	lw	t3,52(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L116
+	blt	t3,t5,.+8
+	jal	x0,.L116
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1627,7 +1639,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L117
 	lw	t3,52(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L117
+	blt	t3,t5,.+8
+	jal	x0,.L117
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1665,7 +1678,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L118
 	lw	t3,52(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L118
+	blt	t3,t5,.+8
+	jal	x0,.L118
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1703,7 +1717,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L119
 	lw	t3,52(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L119
+	blt	t3,t5,.+8
+	jal	x0,.L119
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1741,7 +1756,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L120
 	lw	t3,52(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L120
+	blt	t3,t5,.+8
+	jal	x0,.L120
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1777,7 +1793,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L121
 	lw	t3,52(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L121
+	blt	t3,t5,.+8
+	jal	x0,.L121
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1815,7 +1832,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L98
 	lw	t3,48(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L98
+	blt	t3,t5,.+8
+	jal	x0,.L98
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1851,7 +1869,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L99
 	lw	t3,48(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L99
+	blt	t3,t5,.+8
+	jal	x0,.L99
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1889,7 +1908,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L100
 	lw	t3,48(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L100
+	blt	t3,t5,.+8
+	jal	x0,.L100
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1927,7 +1947,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L101
 	lw	t3,48(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L101
+	blt	t3,t5,.+8
+	jal	x0,.L101
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -1965,7 +1986,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L102
 	lw	t3,48(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L102
+	blt	t3,t5,.+8
+	jal	x0,.L102
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2001,7 +2023,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L103
 	lw	t3,48(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L103
+	blt	t3,t5,.+8
+	jal	x0,.L103
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2039,7 +2062,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L104
 	lw	t3,48(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L104
+	blt	t3,t5,.+8
+	jal	x0,.L104
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2075,7 +2099,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L105
 	lw	t3,52(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L105
+	blt	t3,t5,.+8
+	jal	x0,.L105
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2113,7 +2138,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L106
 	lw	t3,52(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L106
+	blt	t3,t5,.+8
+	jal	x0,.L106
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2151,7 +2177,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L107
 	lw	t3,52(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L107
+	blt	t3,t5,.+8
+	jal	x0,.L107
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2189,7 +2216,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L108
 	lw	t3,52(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L108
+	blt	t3,t5,.+8
+	jal	x0,.L108
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2227,7 +2255,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L109
 	lw	t3,52(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L109
+	blt	t3,t5,.+8
+	jal	x0,.L109
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2265,7 +2294,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L110
 	lw	t3,52(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L110
+	blt	t3,t5,.+8
+	jal	x0,.L110
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2303,7 +2333,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L111
 	lw	t3,52(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L111
+	blt	t3,t5,.+8
+	jal	x0,.L111
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2341,7 +2372,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L112
 	lw	t3,52(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L112
+	blt	t3,t5,.+8
+	jal	x0,.L112
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2379,7 +2411,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L113
 	lw	t3,52(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L113
+	blt	t3,t5,.+8
+	jal	x0,.L113
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2417,7 +2450,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L66
 	lw	t3,40(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L66
+	blt	t3,t5,.+8
+	jal	x0,.L66
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2453,7 +2487,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L67
 	lw	t3,40(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L67
+	blt	t3,t5,.+8
+	jal	x0,.L67
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2491,7 +2526,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L68
 	lw	t3,40(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L68
+	blt	t3,t5,.+8
+	jal	x0,.L68
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2527,7 +2563,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L69
 	lw	t3,44(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L69
+	blt	t3,t5,.+8
+	jal	x0,.L69
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2565,7 +2602,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L70
 	lw	t3,44(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L70
+	blt	t3,t5,.+8
+	jal	x0,.L70
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2603,7 +2641,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L71
 	lw	t3,44(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L71
+	blt	t3,t5,.+8
+	jal	x0,.L71
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2641,7 +2680,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L72
 	lw	t3,44(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L72
+	blt	t3,t5,.+8
+	jal	x0,.L72
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2679,7 +2719,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L73
 	lw	t3,44(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L73
+	blt	t3,t5,.+8
+	jal	x0,.L73
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2717,7 +2758,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L74
 	lw	t3,44(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L74
+	blt	t3,t5,.+8
+	jal	x0,.L74
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2753,7 +2795,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L75
 	lw	t3,44(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L75
+	blt	t3,t5,.+8
+	jal	x0,.L75
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2791,7 +2834,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L76
 	lw	t3,44(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L76
+	blt	t3,t5,.+8
+	jal	x0,.L76
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2827,7 +2871,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L77
 	lw	t3,44(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L77
+	blt	t3,t5,.+8
+	jal	x0,.L77
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2865,7 +2910,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L78
 	lw	t3,44(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L78
+	blt	t3,t5,.+8
+	jal	x0,.L78
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2901,7 +2947,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L79
 	lw	t3,44(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L79
+	blt	t3,t5,.+8
+	jal	x0,.L79
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2939,7 +2986,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L80
 	lw	t3,44(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L80
+	blt	t3,t5,.+8
+	jal	x0,.L80
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -2975,7 +3023,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L81
 	lw	t3,44(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L81
+	blt	t3,t5,.+8
+	jal	x0,.L81
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3013,7 +3062,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L82
 	lw	t3,44(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L82
+	blt	t3,t5,.+8
+	jal	x0,.L82
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3051,7 +3101,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L83
 	lw	t3,44(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L83
+	blt	t3,t5,.+8
+	jal	x0,.L83
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3089,7 +3140,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L84
 	lw	t3,44(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L84
+	blt	t3,t5,.+8
+	jal	x0,.L84
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3125,7 +3177,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L85
 	lw	t3,44(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L85
+	blt	t3,t5,.+8
+	jal	x0,.L85
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3163,7 +3216,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L86
 	lw	t3,44(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L86
+	blt	t3,t5,.+8
+	jal	x0,.L86
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3199,7 +3253,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L87
 	lw	t3,48(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L87
+	blt	t3,t5,.+8
+	jal	x0,.L87
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3237,7 +3292,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L88
 	lw	t3,48(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L88
+	blt	t3,t5,.+8
+	jal	x0,.L88
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3275,7 +3331,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L89
 	lw	t3,48(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L89
+	blt	t3,t5,.+8
+	jal	x0,.L89
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3313,7 +3370,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L90
 	lw	t3,48(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L90
+	blt	t3,t5,.+8
+	jal	x0,.L90
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3351,7 +3409,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L91
 	lw	t3,48(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L91
+	blt	t3,t5,.+8
+	jal	x0,.L91
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3389,7 +3448,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L92
 	lw	t3,48(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L92
+	blt	t3,t5,.+8
+	jal	x0,.L92
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3425,7 +3485,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L93
 	lw	t3,48(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L93
+	blt	t3,t5,.+8
+	jal	x0,.L93
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3463,7 +3524,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L94
 	lw	t3,48(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L94
+	blt	t3,t5,.+8
+	jal	x0,.L94
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3499,7 +3561,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L95
 	lw	t3,48(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L95
+	blt	t3,t5,.+8
+	jal	x0,.L95
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3537,7 +3600,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L96
 	lw	t3,48(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L96
+	blt	t3,t5,.+8
+	jal	x0,.L96
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3573,7 +3637,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L97
 	lw	t3,48(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L97
+	blt	t3,t5,.+8
+	jal	x0,.L97
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3611,7 +3676,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L128
 	lw	t3,52(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L128
+	blt	t3,t5,.+8
+	jal	x0,.L128
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3644,7 +3710,8 @@ benchmark_body.isra.0:
 .L132:
 	lw	t3,0(a4)
 	lw	t5,4(a4)
-	bge	t3,t5,.L3
+	blt	t3,t5,.+8
+	jal	x0,.L3
 	lw	t6,%lo(P1_is_marked)(a6)
 	sub	t0,t3,t5
 	addi	t6,t6,-3
@@ -3676,7 +3743,8 @@ benchmark_body.isra.0:
 .L133:
 	lw	t3,0(a4)
 	lw	t5,8(a4)
-	bge	t3,t5,.L4
+	blt	t3,t5,.+8
+	jal	x0,.L4
 	lw	t6,%lo(P1_is_marked)(a6)
 	sub	t0,t3,t5
 	addi	t6,t6,-3
@@ -3708,7 +3776,8 @@ benchmark_body.isra.0:
 .L134:
 	lw	t3,4(a4)
 	lw	t5,0(a4)
-	bge	t3,t5,.L5
+	blt	t3,t5,.+8
+	jal	x0,.L5
 	lw	t6,%lo(P1_is_marked)(a6)
 	sub	t0,t3,t5
 	addi	t6,t6,-3
@@ -3740,7 +3809,8 @@ benchmark_body.isra.0:
 .L135:
 	lw	t3,4(a4)
 	lw	t5,8(a4)
-	bge	t3,t5,.L6
+	blt	t3,t5,.+8
+	jal	x0,.L6
 	lw	t6,%lo(P1_is_marked)(a6)
 	sub	t0,t3,t5
 	addi	t6,t6,-3
@@ -3772,7 +3842,8 @@ benchmark_body.isra.0:
 .L136:
 	lw	t3,8(a4)
 	lw	t5,0(a4)
-	bge	t3,t5,.L7
+	blt	t3,t5,.+8
+	jal	x0,.L7
 	lw	t6,%lo(P1_is_marked)(a6)
 	sub	t0,t3,t5
 	addi	t6,t6,-3
@@ -3804,7 +3875,8 @@ benchmark_body.isra.0:
 .L137:
 	lw	t3,8(a4)
 	lw	t5,4(a4)
-	bge	t3,t5,.L8
+	blt	t3,t5,.+8
+	jal	x0,.L8
 	lw	t6,%lo(P1_is_marked)(a6)
 	sub	t0,t3,t5
 	addi	t6,t6,-3
@@ -3839,7 +3911,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L9
 	lw	t3,36(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L9
+	blt	t3,t5,.+8
+	jal	x0,.L9
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3875,7 +3948,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L10
 	lw	t3,36(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L10
+	blt	t3,t5,.+8
+	jal	x0,.L10
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3911,7 +3985,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L11
 	lw	t3,36(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L11
+	blt	t3,t5,.+8
+	jal	x0,.L11
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3947,7 +4022,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L12
 	lw	t3,36(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L12
+	blt	t3,t5,.+8
+	jal	x0,.L12
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -3983,7 +4059,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L13
 	lw	t3,36(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L13
+	blt	t3,t5,.+8
+	jal	x0,.L13
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4019,7 +4096,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L14
 	lw	t3,36(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L14
+	blt	t3,t5,.+8
+	jal	x0,.L14
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4055,7 +4133,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L15
 	lw	t3,40(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L15
+	blt	t3,t5,.+8
+	jal	x0,.L15
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4091,7 +4170,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L16
 	lw	t3,40(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L16
+	blt	t3,t5,.+8
+	jal	x0,.L16
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4127,7 +4207,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L17
 	lw	t3,40(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L17
+	blt	t3,t5,.+8
+	jal	x0,.L17
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4163,7 +4244,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L18
 	lw	t3,40(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L18
+	blt	t3,t5,.+8
+	jal	x0,.L18
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4199,7 +4281,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L19
 	lw	t3,40(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L19
+	blt	t3,t5,.+8
+	jal	x0,.L19
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4235,7 +4318,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L20
 	lw	t3,40(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L20
+	blt	t3,t5,.+8
+	jal	x0,.L20
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4271,7 +4355,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L21
 	lw	t3,44(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L21
+	blt	t3,t5,.+8
+	jal	x0,.L21
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4307,7 +4392,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L22
 	lw	t3,44(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L22
+	blt	t3,t5,.+8
+	jal	x0,.L22
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4343,7 +4429,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L23
 	lw	t3,44(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L23
+	blt	t3,t5,.+8
+	jal	x0,.L23
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4379,7 +4466,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L24
 	lw	t3,44(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L24
+	blt	t3,t5,.+8
+	jal	x0,.L24
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4415,7 +4503,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L25
 	lw	t3,44(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L25
+	blt	t3,t5,.+8
+	jal	x0,.L25
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4451,7 +4540,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L26
 	lw	t3,44(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L26
+	blt	t3,t5,.+8
+	jal	x0,.L26
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4487,7 +4577,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L27
 	lw	t3,48(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L27
+	blt	t3,t5,.+8
+	jal	x0,.L27
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4523,7 +4614,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L28
 	lw	t3,48(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L28
+	blt	t3,t5,.+8
+	jal	x0,.L28
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4559,7 +4651,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L29
 	lw	t3,48(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L29
+	blt	t3,t5,.+8
+	jal	x0,.L29
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4595,7 +4688,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L30
 	lw	t3,48(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L30
+	blt	t3,t5,.+8
+	jal	x0,.L30
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4631,7 +4725,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L31
 	lw	t3,48(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L31
+	blt	t3,t5,.+8
+	jal	x0,.L31
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4667,7 +4762,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L32
 	lw	t3,48(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L32
+	blt	t3,t5,.+8
+	jal	x0,.L32
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4703,7 +4799,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L33
 	lw	t3,36(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L33
+	blt	t3,t5,.+8
+	jal	x0,.L33
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4741,7 +4838,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L34
 	lw	t3,36(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L34
+	blt	t3,t5,.+8
+	jal	x0,.L34
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4779,7 +4877,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L35
 	lw	t3,36(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L35
+	blt	t3,t5,.+8
+	jal	x0,.L35
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4817,7 +4916,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L36
 	lw	t3,36(a4)
 	lw	t5,40(a4)
-	bge	t3,t5,.L36
+	blt	t3,t5,.+8
+	jal	x0,.L36
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4855,7 +4955,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L37
 	lw	t3,36(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L37
+	blt	t3,t5,.+8
+	jal	x0,.L37
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4893,7 +4994,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L38
 	lw	t3,36(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L38
+	blt	t3,t5,.+8
+	jal	x0,.L38
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4931,7 +5033,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L39
 	lw	t3,36(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L39
+	blt	t3,t5,.+8
+	jal	x0,.L39
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -4969,7 +5072,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L40
 	lw	t3,36(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L40
+	blt	t3,t5,.+8
+	jal	x0,.L40
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5007,7 +5111,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L41
 	lw	t3,36(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L41
+	blt	t3,t5,.+8
+	jal	x0,.L41
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5045,7 +5150,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L42
 	lw	t3,36(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L42
+	blt	t3,t5,.+8
+	jal	x0,.L42
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5083,7 +5189,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L43
 	lw	t3,36(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L43
+	blt	t3,t5,.+8
+	jal	x0,.L43
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5121,7 +5228,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L44
 	lw	t3,36(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L44
+	blt	t3,t5,.+8
+	jal	x0,.L44
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5159,7 +5267,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L45
 	lw	t3,36(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L45
+	blt	t3,t5,.+8
+	jal	x0,.L45
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5197,7 +5306,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L46
 	lw	t3,36(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L46
+	blt	t3,t5,.+8
+	jal	x0,.L46
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5235,7 +5345,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L47
 	lw	t3,36(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L47
+	blt	t3,t5,.+8
+	jal	x0,.L47
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5273,7 +5384,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L48
 	lw	t3,36(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L48
+	blt	t3,t5,.+8
+	jal	x0,.L48
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5311,7 +5423,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L49
 	lw	t3,36(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L49
+	blt	t3,t5,.+8
+	jal	x0,.L49
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5349,7 +5462,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L50
 	lw	t3,36(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L50
+	blt	t3,t5,.+8
+	jal	x0,.L50
 	lw	t6,40(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5387,7 +5501,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L51
 	lw	t3,40(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L51
+	blt	t3,t5,.+8
+	jal	x0,.L51
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5425,7 +5540,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L52
 	lw	t3,40(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L52
+	blt	t3,t5,.+8
+	jal	x0,.L52
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5463,7 +5579,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L53
 	lw	t3,40(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L53
+	blt	t3,t5,.+8
+	jal	x0,.L53
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5501,7 +5618,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L54
 	lw	t3,40(a4)
 	lw	t5,36(a4)
-	bge	t3,t5,.L54
+	blt	t3,t5,.+8
+	jal	x0,.L54
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5539,7 +5657,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L55
 	lw	t3,40(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L55
+	blt	t3,t5,.+8
+	jal	x0,.L55
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5577,7 +5696,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L56
 	lw	t3,40(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L56
+	blt	t3,t5,.+8
+	jal	x0,.L56
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5613,7 +5733,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L57
 	lw	t3,40(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L57
+	blt	t3,t5,.+8
+	jal	x0,.L57
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5651,7 +5772,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L58
 	lw	t3,40(a4)
 	lw	t5,44(a4)
-	bge	t3,t5,.L58
+	blt	t3,t5,.+8
+	jal	x0,.L58
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5687,7 +5809,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L59
 	lw	t3,40(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L59
+	blt	t3,t5,.+8
+	jal	x0,.L59
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5725,7 +5848,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L60
 	lw	t3,40(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L60
+	blt	t3,t5,.+8
+	jal	x0,.L60
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5761,7 +5885,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L61
 	lw	t3,40(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L61
+	blt	t3,t5,.+8
+	jal	x0,.L61
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5799,7 +5924,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L62
 	lw	t3,40(a4)
 	lw	t5,48(a4)
-	bge	t3,t5,.L62
+	blt	t3,t5,.+8
+	jal	x0,.L62
 	lw	t6,%lo(P2_is_marked)(a5)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5835,7 +5961,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L63
 	lw	t3,40(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L63
+	blt	t3,t5,.+8
+	jal	x0,.L63
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5873,7 +6000,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L64
 	lw	t3,40(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L64
+	blt	t3,t5,.+8
+	jal	x0,.L64
 	lw	t6,44(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -5911,7 +6039,8 @@ benchmark_body.isra.0:
 	bne	t5,t3,.L65
 	lw	t3,40(a4)
 	lw	t5,52(a4)
-	bge	t3,t5,.L65
+	blt	t3,t5,.+8
+	jal	x0,.L65
 	lw	t6,48(a4)
 	sub	op_0,x0,t3
 	sub	t0,t5,op_0
@@ -6004,9 +6133,7 @@ verify_benchmark:
 	lw	a4,%lo(P1_is_marked)(a5)
 	addi	a5,zero,3
 	addi	a0,zero,0
-	bne	a4,a5,.+8
-	jal	x0,.+8
-	jal	x0,.L266
+	bne	a4,a5,.L266
 	lui	a5,%hi(P2_is_marked)
 	lw	a4,%lo(P2_is_marked)(a5)
 	addi	a5,zero,5
@@ -6021,7 +6148,9 @@ verify_benchmark:
 	lui	a5,%hi(.LANCHOR0)
 	addi	a5,a5,%lo(.LANCHOR0)
 	lw	a4,0(a5)
-	bne	a4,zero,.L266
+	bne	a4,zero,.+8
+	jal	x0,.+8
+	jal	x0,.L266
 	lw	a0,36(a5)
 	bne	a0,zero,.L276
 	lw	a4,12(a5)
@@ -6073,8 +6202,14 @@ main:
 	auipc	ra,%pcrel_hi(verify_benchmark)
 	jalr	ra,ra,%pcrel_lo(.Lpcrel_5)
 	lw	ra,28(sp)
-	addi	op_0,x0,1
-	xor	a0,a0,op_0
+	addi	op_1,x0,1
+	addi	op_4,x0,1
+	and	op_3,op_4,a0
+	sub	op_2,op_3,a0
+	sub	op_0,op_1,op_2
+	addi	op_6,x0,1
+	and	op_5,op_6,a0
+	sub	a0,op_0,op_5
 	addi	sp,sp,32
 	jalr	zero,ra,0
 	.size	main, .-main

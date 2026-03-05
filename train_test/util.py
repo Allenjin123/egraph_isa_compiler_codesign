@@ -86,7 +86,7 @@ ALL_BENCHMARKS = MIBENCH + EMBENCH
 # Train / Test split
 # ============================================================================
 
-def random_split(seed=22, train_ratio=0.7):
+def random_split(seed=0, train_ratio=0.7):
     """Randomly shuffle ALL_BENCHMARKS and split into train/test."""
     benchmarks = ALL_BENCHMARKS.copy()
     random.seed(seed)

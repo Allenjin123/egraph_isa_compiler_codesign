@@ -99,15 +99,28 @@ def extract_points_for_num_chip(results: Dict, num_chip: str) -> List[Tuple[floa
 
 def print_pareto_points(
     results: Dict,
-    num_chips_range: Tuple[int, int] = None
+    num_chips_range: Tuple[int, int] = None,
+    num_programs: int = None
 ):
     """
     打印每个 num_chip 的帕累托点详细信息
-    
+
     Args:
         results: 结果字典
         num_chips_range: (min, max) 元组，指定要打印的 num_chip 范围
+        num_programs: 程序数量，用于计算每程序均值；为 None 时自动从数据推断
     """
+    # 若未传入 num_programs，尝试从第一个有效 entry 的 per_program 字段推断
+    if num_programs is None:
+        for entries in results.values():
+            for entry in entries:
+                pp = entry.get('per_program')
+                if pp:
+                    num_programs = len(pp)
+                    break
+            if num_programs is not None:
+                break
+
     # 获取所有 num_chip 键，按数值排序
     num_chip_keys = [k for k in results.keys() if k.startswith('num_chip_')]
     num_chip_keys = sorted(num_chip_keys, key=lambda x: int(x.split('_')[-1]))
@@ -152,11 +165,13 @@ def print_pareto_points(
         print(f"  帕累托点列表 (Area, Latency):")
         
         for idx, (area, latency) in enumerate(pareto_points, 1):
-            # 显示原始值和除以22后的值
-            area_normalized = area / 22.0
-            latency_normalized = latency / 22.0
-            print(f"    [{idx}] Area: {area:8.2f} ({area_normalized:6.2f}), "
-                  f"Latency: {latency:8.2f} ({latency_normalized:6.2f})")
+            if num_programs:
+                area_per_prog = area / num_programs
+                lat_per_prog = latency / num_programs
+                print(f"    [{idx}] Area: {area:8.2f} ({area_per_prog:6.2f}), "
+                      f"Latency: {latency:8.2f} ({lat_per_prog:6.2f})")
+            else:
+                print(f"    [{idx}] Area: {area:8.2f}, Latency: {latency:8.2f}")
     
     print("="*80)
 

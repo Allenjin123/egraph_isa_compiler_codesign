@@ -1,0 +1,1441 @@
+{
+  "num_chip_3": {
+    "chips": [
+      "chip_0",
+      "chip_143",
+      "chip_2"
+    ],
+    "programs": [
+      "libwikisort",
+      "primecount",
+      "combined",
+      "mont64",
+      "bitcnts_O3",
+      "libnsichneu",
+      "md5"
+    ],
+    "missing_programs": [],
+    "num_pareto_points": 10,
+    "pareto_points": [
+      {
+        "alpha": 0,
+        "area": 70.611609,
+        "latency": 704.565813,
+        "area_x_latency": 49750.525702,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_0",
+            "area": 70.9918,
+            "latency": 982.3259
+          },
+          "primecount": {
+            "chip": "chip_143",
+            "area": 70.2481,
+            "latency": 1154.6448
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 71.8367,
+            "latency": 1091.8245
+          },
+          "mont64": {
+            "chip": "chip_143",
+            "area": 70.1688,
+            "latency": 1280.2288
+          },
+          "bitcnts_O3": {
+            "chip": "chip_2",
+            "area": 70.8332,
+            "latency": 153.6248
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.5297,
+            "latency": 169.3117
+          }
+        }
+      },
+      {
+        "alpha": 0.002,
+        "area": 70.688107,
+        "latency": 660.521119,
+        "area_x_latency": 46690.987536,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_0",
+            "area": 70.9918,
+            "latency": 982.3259
+          },
+          "primecount": {
+            "chip": "chip_143",
+            "area": 70.2481,
+            "latency": 1154.6448
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 71.8367,
+            "latency": 1091.8245
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 70.615,
+            "latency": 1025.4306
+          },
+          "bitcnts_O3": {
+            "chip": "chip_0",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.5297,
+            "latency": 169.3117
+          }
+        }
+      },
+      {
+        "alpha": 0.005,
+        "area": 70.710631,
+        "latency": 654.188405,
+        "area_x_latency": 46258.07491,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_0",
+            "area": 70.9918,
+            "latency": 982.3259
+          },
+          "primecount": {
+            "chip": "chip_143",
+            "area": 70.2481,
+            "latency": 1154.6448
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 71.8367,
+            "latency": 1091.8245
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 70.615,
+            "latency": 1025.4306
+          },
+          "bitcnts_O3": {
+            "chip": "chip_0",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.6874,
+            "latency": 124.9827
+          }
+        }
+      },
+      {
+        "alpha": 0.02,
+        "area": 80.246009,
+        "latency": 114.278012,
+        "area_x_latency": 9170.354379,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_2",
+            "area": 87.6899,
+            "latency": 128.5268
+          },
+          "primecount": {
+            "chip": "chip_2",
+            "area": 87.2536,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 88.1718,
+            "latency": 122.2803
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 87.2109,
+            "latency": 134.3398
+          },
+          "bitcnts_O3": {
+            "chip": "chip_0",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 0.05,
+        "area": 80.328031,
+        "latency": 111.055122,
+        "area_x_latency": 8920.839283,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_2",
+            "area": 87.6899,
+            "latency": 128.5268
+          },
+          "primecount": {
+            "chip": "chip_2",
+            "area": 87.2536,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 88.1718,
+            "latency": 122.2803
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 87.7851,
+            "latency": 111.7795
+          },
+          "bitcnts_O3": {
+            "chip": "chip_0",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 0.3,
+        "area": 82.041427,
+        "latency": 106.985992,
+        "area_x_latency": 8777.283453,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_0",
+            "area": 99.6837,
+            "latency": 100.0429
+          },
+          "primecount": {
+            "chip": "chip_2",
+            "area": 87.2536,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 88.1718,
+            "latency": 122.2803
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 87.7851,
+            "latency": 111.7795
+          },
+          "bitcnts_O3": {
+            "chip": "chip_0",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 0.99,
+        "area": 82.044827,
+        "latency": 106.985957,
+        "area_x_latency": 8777.644333,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_0",
+            "area": 99.6837,
+            "latency": 100.0429
+          },
+          "primecount": {
+            "chip": "chip_2",
+            "area": 87.2536,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 88.1718,
+            "latency": 122.2803
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 87.7851,
+            "latency": 111.7795
+          },
+          "bitcnts_O3": {
+            "chip": "chip_0",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_0",
+            "area": 69.6968,
+            "latency": 100.0
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 0.995,
+        "area": 84.43664,
+        "latency": 106.970568,
+        "area_x_latency": 9032.235341,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_0",
+            "area": 99.6837,
+            "latency": 100.0429
+          },
+          "primecount": {
+            "chip": "chip_2",
+            "area": 87.2536,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 88.1718,
+            "latency": 122.2803
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 87.7851,
+            "latency": 111.7795
+          },
+          "bitcnts_O3": {
+            "chip": "chip_2",
+            "area": 87.6651,
+            "latency": 100.0025
+          },
+          "libnsichneu": {
+            "chip": "chip_0",
+            "area": 69.6968,
+            "latency": 100.0
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 0.999,
+        "area": 84.489905,
+        "latency": 106.970424,
+        "area_x_latency": 9037.920962,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_0",
+            "area": 99.6837,
+            "latency": 100.0429
+          },
+          "primecount": {
+            "chip": "chip_2",
+            "area": 87.2536,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 88.1718,
+            "latency": 122.2803
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 87.7851,
+            "latency": 111.7795
+          },
+          "bitcnts_O3": {
+            "chip": "chip_0",
+            "area": 88.038,
+            "latency": 100.0015
+          },
+          "libnsichneu": {
+            "chip": "chip_0",
+            "area": 69.6968,
+            "latency": 100.0
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 1.0,
+        "area": 84.588927,
+        "latency": 106.970375,
+        "area_x_latency": 9048.509242,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_0",
+            "area": 99.6837,
+            "latency": 100.0429
+          },
+          "primecount": {
+            "chip": "chip_2",
+            "area": 87.4638,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 88.6548,
+            "latency": 122.2799
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 87.7851,
+            "latency": 111.7795
+          },
+          "bitcnts_O3": {
+            "chip": "chip_0",
+            "area": 88.038,
+            "latency": 100.0015
+          },
+          "libnsichneu": {
+            "chip": "chip_0",
+            "area": 69.6968,
+            "latency": 100.0
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      }
+    ]
+  },
+  "num_chip_4": {
+    "chips": [
+      "chip_0",
+      "chip_143",
+      "chip_2",
+      "chip_73"
+    ],
+    "programs": [
+      "libwikisort",
+      "primecount",
+      "combined",
+      "mont64",
+      "bitcnts_O3",
+      "libnsichneu",
+      "md5"
+    ],
+    "missing_programs": [],
+    "num_pareto_points": 10,
+    "pareto_points": [
+      {
+        "alpha": 0,
+        "area": 70.611609,
+        "latency": 704.565813,
+        "area_x_latency": 49750.525702,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_0",
+            "area": 70.9918,
+            "latency": 982.3259
+          },
+          "primecount": {
+            "chip": "chip_143",
+            "area": 70.2481,
+            "latency": 1154.6448
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 71.8367,
+            "latency": 1091.8245
+          },
+          "mont64": {
+            "chip": "chip_143",
+            "area": 70.1688,
+            "latency": 1280.2288
+          },
+          "bitcnts_O3": {
+            "chip": "chip_2",
+            "area": 70.8332,
+            "latency": 153.6248
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.5297,
+            "latency": 169.3117
+          }
+        }
+      },
+      {
+        "alpha": 0.002,
+        "area": 70.688107,
+        "latency": 660.521119,
+        "area_x_latency": 46690.987536,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_0",
+            "area": 70.9918,
+            "latency": 982.3259
+          },
+          "primecount": {
+            "chip": "chip_143",
+            "area": 70.2481,
+            "latency": 1154.6448
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 71.8367,
+            "latency": 1091.8245
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 70.615,
+            "latency": 1025.4306
+          },
+          "bitcnts_O3": {
+            "chip": "chip_0",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.5297,
+            "latency": 169.3117
+          }
+        }
+      },
+      {
+        "alpha": 0.005,
+        "area": 70.710631,
+        "latency": 654.188405,
+        "area_x_latency": 46258.07491,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_0",
+            "area": 70.9918,
+            "latency": 982.3259
+          },
+          "primecount": {
+            "chip": "chip_143",
+            "area": 70.2481,
+            "latency": 1154.6448
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 71.8367,
+            "latency": 1091.8245
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 70.615,
+            "latency": 1025.4306
+          },
+          "bitcnts_O3": {
+            "chip": "chip_0",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.6874,
+            "latency": 124.9827
+          }
+        }
+      },
+      {
+        "alpha": 0.02,
+        "area": 80.246009,
+        "latency": 114.278012,
+        "area_x_latency": 9170.354379,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_2",
+            "area": 87.6899,
+            "latency": 128.5268
+          },
+          "primecount": {
+            "chip": "chip_2",
+            "area": 87.2536,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 88.1718,
+            "latency": 122.2803
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 87.2109,
+            "latency": 134.3398
+          },
+          "bitcnts_O3": {
+            "chip": "chip_0",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 0.05,
+        "area": 80.328031,
+        "latency": 111.055122,
+        "area_x_latency": 8920.839283,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_2",
+            "area": 87.6899,
+            "latency": 128.5268
+          },
+          "primecount": {
+            "chip": "chip_2",
+            "area": 87.2536,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 88.1718,
+            "latency": 122.2803
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 87.7851,
+            "latency": 111.7795
+          },
+          "bitcnts_O3": {
+            "chip": "chip_0",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 0.3,
+        "area": 82.041427,
+        "latency": 106.985992,
+        "area_x_latency": 8777.283453,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_0",
+            "area": 99.6837,
+            "latency": 100.0429
+          },
+          "primecount": {
+            "chip": "chip_2",
+            "area": 87.2536,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 88.1718,
+            "latency": 122.2803
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 87.7851,
+            "latency": 111.7795
+          },
+          "bitcnts_O3": {
+            "chip": "chip_0",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 0.99,
+        "area": 82.044827,
+        "latency": 106.985957,
+        "area_x_latency": 8777.644333,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_0",
+            "area": 99.6837,
+            "latency": 100.0429
+          },
+          "primecount": {
+            "chip": "chip_2",
+            "area": 87.2536,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 88.1718,
+            "latency": 122.2803
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 87.7851,
+            "latency": 111.7795
+          },
+          "bitcnts_O3": {
+            "chip": "chip_0",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_0",
+            "area": 69.6968,
+            "latency": 100.0
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 0.995,
+        "area": 84.43664,
+        "latency": 106.970568,
+        "area_x_latency": 9032.235341,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_0",
+            "area": 99.6837,
+            "latency": 100.0429
+          },
+          "primecount": {
+            "chip": "chip_2",
+            "area": 87.2536,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 88.1718,
+            "latency": 122.2803
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 87.7851,
+            "latency": 111.7795
+          },
+          "bitcnts_O3": {
+            "chip": "chip_2",
+            "area": 87.6651,
+            "latency": 100.0025
+          },
+          "libnsichneu": {
+            "chip": "chip_0",
+            "area": 69.6968,
+            "latency": 100.0
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 0.999,
+        "area": 84.489905,
+        "latency": 106.970424,
+        "area_x_latency": 9037.920962,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_0",
+            "area": 99.6837,
+            "latency": 100.0429
+          },
+          "primecount": {
+            "chip": "chip_2",
+            "area": 87.2536,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 88.1718,
+            "latency": 122.2803
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 87.7851,
+            "latency": 111.7795
+          },
+          "bitcnts_O3": {
+            "chip": "chip_0",
+            "area": 88.038,
+            "latency": 100.0015
+          },
+          "libnsichneu": {
+            "chip": "chip_0",
+            "area": 69.6968,
+            "latency": 100.0
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 1.0,
+        "area": 84.588927,
+        "latency": 106.970375,
+        "area_x_latency": 9048.509242,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_0",
+            "area": 99.6837,
+            "latency": 100.0429
+          },
+          "primecount": {
+            "chip": "chip_2",
+            "area": 87.4638,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 88.6548,
+            "latency": 122.2799
+          },
+          "mont64": {
+            "chip": "chip_0",
+            "area": 87.7851,
+            "latency": 111.7795
+          },
+          "bitcnts_O3": {
+            "chip": "chip_0",
+            "area": 88.038,
+            "latency": 100.0015
+          },
+          "libnsichneu": {
+            "chip": "chip_0",
+            "area": 69.6968,
+            "latency": 100.0
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      }
+    ]
+  },
+  "num_chip_5": {
+    "chips": [
+      "chip_143",
+      "chip_16",
+      "chip_2",
+      "chip_3",
+      "chip_73"
+    ],
+    "programs": [
+      "libwikisort",
+      "primecount",
+      "combined",
+      "mont64",
+      "bitcnts_O3",
+      "libnsichneu",
+      "md5"
+    ],
+    "missing_programs": [],
+    "num_pareto_points": 12,
+    "pareto_points": [
+      {
+        "alpha": 0,
+        "area": 70.557211,
+        "latency": 740.068679,
+        "area_x_latency": 52217.181939,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_16",
+            "area": 70.6576,
+            "latency": 1244.454
+          },
+          "primecount": {
+            "chip": "chip_3",
+            "area": 70.2134,
+            "latency": 1153.2345
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 71.8367,
+            "latency": 1091.8245
+          },
+          "mont64": {
+            "chip": "chip_143",
+            "area": 70.1688,
+            "latency": 1280.2288
+          },
+          "bitcnts_O3": {
+            "chip": "chip_16",
+            "area": 70.8213,
+            "latency": 141.427
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.5297,
+            "latency": 169.3117
+          }
+        }
+      },
+      {
+        "alpha": 0.002,
+        "area": 70.605093,
+        "latency": 703.337947,
+        "area_x_latency": 49659.241158,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_3",
+            "area": 70.9928,
+            "latency": 987.3389
+          },
+          "primecount": {
+            "chip": "chip_3",
+            "area": 70.2134,
+            "latency": 1153.2345
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 71.8367,
+            "latency": 1091.8245
+          },
+          "mont64": {
+            "chip": "chip_143",
+            "area": 70.1688,
+            "latency": 1280.2288
+          },
+          "bitcnts_O3": {
+            "chip": "chip_16",
+            "area": 70.8213,
+            "latency": 141.427
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.5297,
+            "latency": 169.3117
+          }
+        }
+      },
+      {
+        "alpha": 0.005,
+        "area": 70.732163,
+        "latency": 658.436149,
+        "area_x_latency": 46572.613016,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_3",
+            "area": 70.9928,
+            "latency": 987.3389
+          },
+          "primecount": {
+            "chip": "chip_3",
+            "area": 70.2134,
+            "latency": 1153.2345
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 71.8367,
+            "latency": 1091.8245
+          },
+          "mont64": {
+            "chip": "chip_3",
+            "area": 70.7995,
+            "latency": 1051.562
+          },
+          "bitcnts_O3": {
+            "chip": "chip_2",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.6874,
+            "latency": 124.9827
+          }
+        }
+      },
+      {
+        "alpha": 0.02,
+        "area": 80.224194,
+        "latency": 113.098039,
+        "area_x_latency": 9073.199022,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_3",
+            "area": 87.9447,
+            "latency": 108.2147
+          },
+          "primecount": {
+            "chip": "chip_3",
+            "area": 87.1455,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_3",
+            "area": 88.0459,
+            "latency": 126.5376
+          },
+          "mont64": {
+            "chip": "chip_16",
+            "area": 87.0374,
+            "latency": 142.1348
+          },
+          "bitcnts_O3": {
+            "chip": "chip_2",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 0.05,
+        "area": 80.358205,
+        "latency": 108.366251,
+        "area_x_latency": 8708.117413,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_3",
+            "area": 87.9447,
+            "latency": 108.2147
+          },
+          "primecount": {
+            "chip": "chip_3",
+            "area": 87.1455,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_2",
+            "area": 88.1718,
+            "latency": 122.2803
+          },
+          "mont64": {
+            "chip": "chip_143",
+            "area": 87.8495,
+            "latency": 113.2696
+          },
+          "bitcnts_O3": {
+            "chip": "chip_2",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 0.2,
+        "area": 80.407645,
+        "latency": 108.159033,
+        "area_x_latency": 8696.813129,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_3",
+            "area": 87.9447,
+            "latency": 108.2147
+          },
+          "primecount": {
+            "chip": "chip_3",
+            "area": 87.1455,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_3",
+            "area": 88.5179,
+            "latency": 120.8297
+          },
+          "mont64": {
+            "chip": "chip_143",
+            "area": 87.8495,
+            "latency": 113.2696
+          },
+          "bitcnts_O3": {
+            "chip": "chip_2",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 0.6,
+        "area": 82.081943,
+        "latency": 106.991638,
+        "area_x_latency": 8782.081532,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_16",
+            "area": 99.6648,
+            "latency": 100.0429
+          },
+          "primecount": {
+            "chip": "chip_3",
+            "area": 87.1455,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_3",
+            "area": 88.5179,
+            "latency": 120.8297
+          },
+          "mont64": {
+            "chip": "chip_143",
+            "area": 87.8495,
+            "latency": 113.2696
+          },
+          "bitcnts_O3": {
+            "chip": "chip_2",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 0.75,
+        "area": 82.097667,
+        "latency": 106.985511,
+        "area_x_latency": 8783.260856,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_16",
+            "area": 99.7749,
+            "latency": 100.0
+          },
+          "primecount": {
+            "chip": "chip_3",
+            "area": 87.1455,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_3",
+            "area": 88.5179,
+            "latency": 120.8297
+          },
+          "mont64": {
+            "chip": "chip_143",
+            "area": 87.8495,
+            "latency": 113.2696
+          },
+          "bitcnts_O3": {
+            "chip": "chip_2",
+            "area": 70.9224,
+            "latency": 100.1102
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 0.98,
+        "area": 82.0988,
+        "latency": 106.985478,
+        "area_x_latency": 8783.379361,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_16",
+            "area": 99.7749,
+            "latency": 100.0
+          },
+          "primecount": {
+            "chip": "chip_3",
+            "area": 87.1455,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_3",
+            "area": 88.5179,
+            "latency": 120.8297
+          },
+          "mont64": {
+            "chip": "chip_143",
+            "area": 87.8495,
+            "latency": 113.2696
+          },
+          "bitcnts_O3": {
+            "chip": "chip_3",
+            "area": 70.9303,
+            "latency": 100.11
+          },
+          "libnsichneu": {
+            "chip": "chip_143",
+            "area": 69.673,
+            "latency": 100.0002
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 0.99,
+        "area": 82.1022,
+        "latency": 106.985442,
+        "area_x_latency": 8783.740156,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_16",
+            "area": 99.7749,
+            "latency": 100.0
+          },
+          "primecount": {
+            "chip": "chip_3",
+            "area": 87.1455,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_3",
+            "area": 88.5179,
+            "latency": 120.8297
+          },
+          "mont64": {
+            "chip": "chip_143",
+            "area": 87.8495,
+            "latency": 113.2696
+          },
+          "bitcnts_O3": {
+            "chip": "chip_3",
+            "area": 70.9303,
+            "latency": 100.11
+          },
+          "libnsichneu": {
+            "chip": "chip_16",
+            "area": 69.6968,
+            "latency": 100.0
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 0.995,
+        "area": 84.520221,
+        "latency": 106.969774,
+        "area_x_latency": 9041.108939,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_16",
+            "area": 99.7749,
+            "latency": 100.0
+          },
+          "primecount": {
+            "chip": "chip_3",
+            "area": 87.1455,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_3",
+            "area": 88.5179,
+            "latency": 120.8297
+          },
+          "mont64": {
+            "chip": "chip_143",
+            "area": 87.8495,
+            "latency": 113.2696
+          },
+          "bitcnts_O3": {
+            "chip": "chip_16",
+            "area": 87.8565,
+            "latency": 100.0003
+          },
+          "libnsichneu": {
+            "chip": "chip_16",
+            "area": 69.6968,
+            "latency": 100.0
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      },
+      {
+        "alpha": 1.0,
+        "area": 84.565694,
+        "latency": 106.969771,
+        "area_x_latency": 9045.972922,
+        "per_program": {
+          "libwikisort": {
+            "chip": "chip_16",
+            "area": 99.7749,
+            "latency": 100.0
+          },
+          "primecount": {
+            "chip": "chip_2",
+            "area": 87.4638,
+            "latency": 100.0
+          },
+          "combined": {
+            "chip": "chip_3",
+            "area": 88.5179,
+            "latency": 120.8297
+          },
+          "mont64": {
+            "chip": "chip_143",
+            "area": 87.8495,
+            "latency": 113.2696
+          },
+          "bitcnts_O3": {
+            "chip": "chip_16",
+            "area": 87.8565,
+            "latency": 100.0003
+          },
+          "libnsichneu": {
+            "chip": "chip_16",
+            "area": 69.6968,
+            "latency": 100.0
+          },
+          "md5": {
+            "chip": "chip_2",
+            "area": 70.8004,
+            "latency": 114.6888
+          }
+        }
+      }
+    ]
+  }
+}

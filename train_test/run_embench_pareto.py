@@ -272,7 +272,7 @@ def main():
         plot_max = args.num_chips_plot_max or args.num_chips_max
         num_chips_range = (args.num_chips_min, plot_max)
 
-        print_pareto_points(results, num_chips_range)
+        print_pareto_points(results, num_chips_range, num_programs=NUM_PROGRAMS)
 
         output_path = Path(args.output)
         if not output_path.suffix:

@@ -1,0 +1,5718 @@
+{
+  "results": {
+    "num_chip_3": [
+      {
+        "alpha": 0.0,
+        "area": 490.48232914204124,
+        "latency": 4231.008752763838,
+        "objective_value": 490.4823291420412,
+        "selected_chips": [
+          "chip_2",
+          "chip_28",
+          "chip_34"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 70.93828090912697,
+            "latency": 1159.3148701354335
+          },
+          "nsichneu": {
+            "chip_id": "chip_34",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_28",
+            "area": 70.63087541152672,
+            "latency": 81.21298221287928
+          },
+          "mont64": {
+            "chip_id": "chip_2",
+            "area": 70.53468723969696,
+            "latency": 1069.5360009155954
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 70.33437785093808,
+            "latency": 962.3523067357661
+          }
+        }
+      },
+      {
+        "alpha": 0.001,
+        "area": 490.61917417000524,
+        "latency": 3995.489054799339,
+        "objective_value": 494.1240440506345,
+        "selected_chips": [
+          "chip_2",
+          "chip_20",
+          "chip_28"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_28",
+            "area": 70.63087541152672,
+            "latency": 81.21298221287928
+          },
+          "mont64": {
+            "chip_id": "chip_2",
+            "area": 70.53468723969696,
+            "latency": 1069.5360009155954
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 70.33437785093808,
+            "latency": 962.3523067357661
+          }
+        }
+      },
+      {
+        "alpha": 0.002,
+        "area": 490.61917417000524,
+        "latency": 3995.489054799339,
+        "objective_value": 497.62891393126387,
+        "selected_chips": [
+          "chip_2",
+          "chip_20",
+          "chip_28"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_28",
+            "area": 70.63087541152672,
+            "latency": 81.21298221287928
+          },
+          "mont64": {
+            "chip_id": "chip_2",
+            "area": 70.53468723969696,
+            "latency": 1069.5360009155954
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 70.33437785093808,
+            "latency": 962.3523067357661
+          }
+        }
+      },
+      {
+        "alpha": 0.003,
+        "area": 490.64892308912783,
+        "latency": 3980.7960636065263,
+        "objective_value": 501.11936451068004,
+        "selected_chips": [
+          "chip_2",
+          "chip_20",
+          "chip_28"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_28",
+            "area": 70.63087541152672,
+            "latency": 81.21298221287928
+          },
+          "mont64": {
+            "chip_id": "chip_2",
+            "area": 70.56443615881956,
+            "latency": 1054.8430097227827
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 70.33437785093808,
+            "latency": 962.3523067357661
+          }
+        }
+      },
+      {
+        "alpha": 0.004,
+        "area": 490.64892308912783,
+        "latency": 3980.7960636065263,
+        "objective_value": 504.6095116511974,
+        "selected_chips": [
+          "chip_2",
+          "chip_28",
+          "chip_79"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_28",
+            "area": 70.63087541152672,
+            "latency": 81.21298221287928
+          },
+          "mont64": {
+            "chip_id": "chip_2",
+            "area": 70.56443615881956,
+            "latency": 1054.8430097227827
+          },
+          "primecount": {
+            "chip_id": "chip_79",
+            "area": 70.33437785093808,
+            "latency": 962.3523067357661
+          }
+        }
+      },
+      {
+        "alpha": 0.005,
+        "area": 490.64892308912783,
+        "latency": 3980.7960636065263,
+        "objective_value": 508.0996587917148,
+        "selected_chips": [
+          "chip_2",
+          "chip_28",
+          "chip_79"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_28",
+            "area": 70.63087541152672,
+            "latency": 81.21298221287928
+          },
+          "mont64": {
+            "chip_id": "chip_2",
+            "area": 70.56443615881956,
+            "latency": 1054.8430097227827
+          },
+          "primecount": {
+            "chip_id": "chip_79",
+            "area": 70.33437785093808,
+            "latency": 962.3523067357661
+          }
+        }
+      },
+      {
+        "alpha": 0.006,
+        "area": 490.64892308912783,
+        "latency": 3980.7960636065263,
+        "objective_value": 511.58980593223214,
+        "selected_chips": [
+          "chip_2",
+          "chip_20",
+          "chip_28"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_28",
+            "area": 70.63087541152672,
+            "latency": 81.21298221287928
+          },
+          "mont64": {
+            "chip_id": "chip_2",
+            "area": 70.56443615881956,
+            "latency": 1054.8430097227827
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 70.33437785093808,
+            "latency": 962.3523067357661
+          }
+        }
+      },
+      {
+        "alpha": 0.007,
+        "area": 490.67073896315105,
+        "latency": 3977.6894319803528,
+        "objective_value": 515.0798698142714,
+        "selected_chips": [
+          "chip_2",
+          "chip_20",
+          "chip_27"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_2",
+            "area": 70.56443615881956,
+            "latency": 1054.8430097227827
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 70.33437785093808,
+            "latency": 962.3523067357661
+          }
+        }
+      },
+      {
+        "alpha": 0.008,
+        "area": 490.67073896315105,
+        "latency": 3977.6894319803528,
+        "objective_value": 518.5668885072887,
+        "selected_chips": [
+          "chip_2",
+          "chip_20",
+          "chip_27"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_2",
+            "area": 70.56443615881956,
+            "latency": 1054.8430097227827
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 70.33437785093808,
+            "latency": 962.3523067357661
+          }
+        }
+      },
+      {
+        "alpha": 0.009,
+        "area": 490.67073896315105,
+        "latency": 3977.6894319803528,
+        "objective_value": 522.0539072003058,
+        "selected_chips": [
+          "chip_2",
+          "chip_20",
+          "chip_27"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_2",
+            "area": 70.56443615881956,
+            "latency": 1054.8430097227827
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 70.33437785093808,
+            "latency": 962.3523067357661
+          }
+        }
+      },
+      {
+        "alpha": 0.01,
+        "area": 490.67073896315105,
+        "latency": 3977.6894319803528,
+        "objective_value": 525.540925893323,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_81"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_81",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_2",
+            "area": 70.56443615881956,
+            "latency": 1054.8430097227827
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 70.33437785093808,
+            "latency": 962.3523067357661
+          }
+        }
+      },
+      {
+        "alpha": 0.011,
+        "area": 490.67073896315105,
+        "latency": 3977.6894319803528,
+        "objective_value": 529.0279445863403,
+        "selected_chips": [
+          "chip_2",
+          "chip_20",
+          "chip_27"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_2",
+            "area": 70.56443615881956,
+            "latency": 1054.8430097227827
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 70.33437785093808,
+            "latency": 962.3523067357661
+          }
+        }
+      },
+      {
+        "alpha": 0.012,
+        "area": 490.67073896315105,
+        "latency": 3977.6894319803528,
+        "objective_value": 532.5149632793574,
+        "selected_chips": [
+          "chip_2",
+          "chip_20",
+          "chip_27"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_2",
+            "area": 70.56443615881956,
+            "latency": 1054.8430097227827
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 70.33437785093808,
+            "latency": 962.3523067357661
+          }
+        }
+      },
+      {
+        "alpha": 0.013,
+        "area": 490.67073896315105,
+        "latency": 3977.6894319803528,
+        "objective_value": 536.0019819723747,
+        "selected_chips": [
+          "chip_2",
+          "chip_20",
+          "chip_27"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_2",
+            "area": 70.56443615881956,
+            "latency": 1054.8430097227827
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 70.33437785093808,
+            "latency": 962.3523067357661
+          }
+        }
+      },
+      {
+        "alpha": 0.014,
+        "area": 490.67073896315105,
+        "latency": 3977.6894319803528,
+        "objective_value": 539.4890006653918,
+        "selected_chips": [
+          "chip_2",
+          "chip_20",
+          "chip_27"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_2",
+            "area": 70.56443615881956,
+            "latency": 1054.8430097227827
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 70.33437785093808,
+            "latency": 962.3523067357661
+          }
+        }
+      },
+      {
+        "alpha": 0.015,
+        "area": 490.67073896315105,
+        "latency": 3977.6894319803528,
+        "objective_value": 542.9760193584091,
+        "selected_chips": [
+          "chip_2",
+          "chip_20",
+          "chip_27"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_2",
+            "area": 70.56443615881956,
+            "latency": 1054.8430097227827
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 70.33437785093808,
+            "latency": 962.3523067357661
+          }
+        }
+      },
+      {
+        "alpha": 0.016,
+        "area": 505.22490182856694,
+        "latency": 3031.2110288647104,
+        "objective_value": 545.6406798611453,
+        "selected_chips": [
+          "chip_1",
+          "chip_2",
+          "chip_27"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_1",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 70.33437785093808,
+            "latency": 962.3523067357661
+          }
+        }
+      },
+      {
+        "alpha": 0.017,
+        "area": 520.2262901114593,
+        "latency": 2159.9560518177045,
+        "objective_value": 548.1016960604654,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_91"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_91",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.018,
+        "area": 520.2262901114593,
+        "latency": 2159.9560518177045,
+        "objective_value": 549.7414258221718,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_91"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 71.07512593709096,
+            "latency": 923.7951721709353
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_91",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.019,
+        "area": 535.6679623973663,
+        "latency": 1359.281448557552,
+        "objective_value": 551.3166186344098,
+        "selected_chips": [
+          "chip_1",
+          "chip_2",
+          "chip_27"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_1",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_1",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.02,
+        "area": 535.6679623973663,
+        "latency": 1359.281448557552,
+        "objective_value": 552.1402321205701,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_91"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 71.0176113601206,
+            "latency": 799.765840171205
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_91",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.021,
+        "area": 550.2102256951331,
+        "latency": 677.8372708086384,
+        "objective_value": 552.8903936425168,
+        "selected_chips": [
+          "chip_1",
+          "chip_2",
+          "chip_27"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_1",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.022,
+        "area": 550.2102256951331,
+        "latency": 677.8372708086384,
+        "objective_value": 553.0180206876303,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_91"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_91",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.023,
+        "area": 550.2102256951331,
+        "latency": 677.8372708086384,
+        "objective_value": 553.1456477327438,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_91"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_91",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.024,
+        "area": 550.2102256951331,
+        "latency": 677.8372708086384,
+        "objective_value": 553.2732747778572,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_91"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_91",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.025,
+        "area": 550.2102256951331,
+        "latency": 677.8372708086384,
+        "objective_value": 553.4009018229708,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_91"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_91",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.026,
+        "area": 550.5186228233707,
+        "latency": 667.4468048154447,
+        "objective_value": 553.5587555551647,
+        "selected_chips": [
+          "chip_1",
+          "chip_27",
+          "chip_63"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_1",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_63",
+            "area": 86.0983300940066,
+            "latency": 109.89062645775853
+          },
+          "nsichneu": {
+            "chip_id": "chip_1",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_1",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_1",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_1",
+            "area": 86.06263139105947,
+            "latency": 93.93680614859096
+          }
+        }
+      },
+      {
+        "alpha": 0.027,
+        "area": 550.2102256951331,
+        "latency": 677.8372708086384,
+        "objective_value": 553.6561559131977,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_91"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_91",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.028,
+        "area": 550.2102256951331,
+        "latency": 677.8372708086384,
+        "objective_value": 553.7837829583112,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_91"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_91",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.029,
+        "area": 550.5929951211773,
+        "latency": 664.8615334179032,
+        "objective_value": 553.9067827317824,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_39"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_39",
+            "area": 85.50136845027964,
+            "latency": 95.38886921640514
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.03,
+        "area": 550.5186228233707,
+        "latency": 667.4468048154447,
+        "objective_value": 554.026468283133,
+        "selected_chips": [
+          "chip_1",
+          "chip_27",
+          "chip_63"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_1",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_63",
+            "area": 86.0983300940066,
+            "latency": 109.89062645775853
+          },
+          "nsichneu": {
+            "chip_id": "chip_1",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_1",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_1",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_1",
+            "area": 86.06263139105947,
+            "latency": 93.93680614859096
+          }
+        }
+      },
+      {
+        "alpha": 0.031,
+        "area": 550.5186228233707,
+        "latency": 667.4468048154447,
+        "objective_value": 554.1433964651251,
+        "selected_chips": [
+          "chip_1",
+          "chip_27",
+          "chip_63"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_1",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_63",
+            "area": 86.0983300940066,
+            "latency": 109.89062645775853
+          },
+          "nsichneu": {
+            "chip_id": "chip_1",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_1",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_1",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_1",
+            "area": 86.06263139105947,
+            "latency": 93.93680614859096
+          }
+        }
+      },
+      {
+        "alpha": 0.032,
+        "area": 550.5186228233707,
+        "latency": 667.4468048154447,
+        "objective_value": 554.2603246471172,
+        "selected_chips": [
+          "chip_1",
+          "chip_27",
+          "chip_63"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_1",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_63",
+            "area": 86.0983300940066,
+            "latency": 109.89062645775853
+          },
+          "nsichneu": {
+            "chip_id": "chip_1",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_1",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_1",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_1",
+            "area": 86.06263139105947,
+            "latency": 93.93680614859096
+          }
+        }
+      },
+      {
+        "alpha": 0.033,
+        "area": 550.5186228233707,
+        "latency": 667.4468048154447,
+        "objective_value": 554.3772528291092,
+        "selected_chips": [
+          "chip_1",
+          "chip_27",
+          "chip_63"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_1",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_63",
+            "area": 86.0983300940066,
+            "latency": 109.89062645775853
+          },
+          "nsichneu": {
+            "chip_id": "chip_1",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_1",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_1",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_1",
+            "area": 86.06263139105947,
+            "latency": 93.93680614859096
+          }
+        }
+      },
+      {
+        "alpha": 0.034,
+        "area": 550.5929951211773,
+        "latency": 664.8615334179032,
+        "objective_value": 554.478125423266,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_39"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_39",
+            "area": 85.50136845027964,
+            "latency": 95.38886921640514
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.035,
+        "area": 550.5186228233707,
+        "latency": 667.4468048154447,
+        "objective_value": 554.6111091930934,
+        "selected_chips": [
+          "chip_1",
+          "chip_27",
+          "chip_63"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_1",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_63",
+            "area": 86.0983300940066,
+            "latency": 109.89062645775853
+          },
+          "nsichneu": {
+            "chip_id": "chip_1",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_1",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_1",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_1",
+            "area": 86.06263139105947,
+            "latency": 93.93680614859096
+          }
+        }
+      },
+      {
+        "alpha": 0.036,
+        "area": 550.5929951211773,
+        "latency": 664.8615334179032,
+        "objective_value": 554.7066624998595,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_39"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_39",
+            "area": 85.50136845027964,
+            "latency": 95.38886921640514
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.037,
+        "area": 550.5929951211773,
+        "latency": 664.8615334179032,
+        "objective_value": 554.8209310381561,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_39"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_39",
+            "area": 85.50136845027964,
+            "latency": 95.38886921640514
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.038,
+        "area": 550.5929951211773,
+        "latency": 664.8615334179032,
+        "objective_value": 554.935199576453,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_39"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_39",
+            "area": 85.50136845027964,
+            "latency": 95.38886921640514
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.039,
+        "area": 550.5929951211773,
+        "latency": 664.8615334179032,
+        "objective_value": 555.0494681147495,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_39"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_39",
+            "area": 85.50136845027964,
+            "latency": 95.38886921640514
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.04,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 555.1608745946502,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.041,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 555.26932012379,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.042,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 555.3777656529298,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.043,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 555.4862111820696,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.044,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 555.5946567112094,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.045,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 555.7031022403492,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.046,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 555.8115477694889,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.047,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 555.9199932986287,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.048,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 556.0284388277685,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.049,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 556.1368843569084,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.05,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 556.2453298860481,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.051,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 556.3537754151878,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.052,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 556.4622209443276,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.053,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 556.5706664734673,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.054,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 556.6791120026072,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.055,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 556.787557531747,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.056,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 556.8960030608869,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.057,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 557.0044485900266,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.058,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 557.1128941191663,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.059,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 557.2213396483062,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.06,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 557.329785177446,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.061,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 557.4382307065857,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.062,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 557.5466762357255,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.063,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 557.6551217648654,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.064,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 557.763567294005,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.065,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 557.8720128231449,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.066,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 557.9804583522846,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.067,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 558.0889038814245,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.068,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 558.1973494105641,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.069,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 558.305794939704,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.07,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 558.4142404688438,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.071,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 558.5226859979837,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.072,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 558.6311315271233,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.073,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 558.7395770562632,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.074,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 558.848022585403,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.075,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 558.9564681145428,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.076,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 559.0649136436826,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.077,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 559.1733591728223,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.078,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 559.2818047019621,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.079,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 559.3902502311018,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.08,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 559.4986957602417,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.081,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 559.6071412893815,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.082,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 559.7155868185214,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.083,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 559.824032347661,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.084,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 559.9324778768008,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.085,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 560.0409234059406,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.086,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 560.1493689350804,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.087,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 560.2578144642202,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.088,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 560.36625999336,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.089,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 560.4747055224998,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.09,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 560.5831510516396,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.091,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 560.6915965807793,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.092,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 560.8000421099191,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.093,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 560.9084876390589,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.094,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 561.0169331681986,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.095,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 561.1253786973384,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.096,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 561.2338242264783,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.097,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 561.3422697556181,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.098,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 561.4507152847577,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.099,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 561.5591608138976,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.1,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 561.6676063430375,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.11,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 562.7520616344352,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.12,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 563.836516925833,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.13,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 564.920972217231,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.14,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 566.0054275086288,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.15,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 567.0898828000267,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.16,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 568.1743380914246,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.17,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 569.2587933828223,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.18,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 570.3432486742203,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.19,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 571.4277039656181,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.2,
+        "area": 550.8230534290587,
+        "latency": 659.268582568845,
+        "objective_value": 572.512159257016,
+        "selected_chips": [
+          "chip_2",
+          "chip_27",
+          "chip_38"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_38",
+            "area": 85.73142675816112,
+            "latency": 89.79591836734694
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.3,
+        "area": 551.260362540161,
+        "latency": 657.9326561596806,
+        "objective_value": 583.2620506260168,
+        "selected_chips": [
+          "chip_2",
+          "chip_25",
+          "chip_27"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_2",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_2",
+            "area": 86.5167982229979,
+            "latency": 123.12056891078306
+          },
+          "nsichneu": {
+            "chip_id": "chip_2",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_2",
+            "area": 85.55987465788743,
+            "latency": 118.32166242229125
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_25",
+            "area": 86.16873586926343,
+            "latency": 88.45999195818254
+          },
+          "primecount": {
+            "chip_id": "chip_2",
+            "area": 85.33576613383048,
+            "latency": 91.09732968876013
+          }
+        }
+      },
+      {
+        "alpha": 0.4,
+        "area": 564.4520249097616,
+        "latency": 631.1470286847712,
+        "objective_value": 591.1300264197655,
+        "selected_chips": [
+          "chip_1",
+          "chip_27",
+          "chip_4"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_1",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 91.55252093038972
+          },
+          "nsichneu": {
+            "chip_id": "chip_1",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 100.3599918189866
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_1",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_1",
+            "area": 86.06263139105947,
+            "latency": 93.93680614859096
+          }
+        }
+      },
+      {
+        "alpha": 0.5,
+        "area": 564.4520249097616,
+        "latency": 631.1470286847712,
+        "objective_value": 597.7995267972665,
+        "selected_chips": [
+          "chip_1",
+          "chip_27",
+          "chip_4"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_1",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 91.55252093038972
+          },
+          "nsichneu": {
+            "chip_id": "chip_1",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 100.3599918189866
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_1",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_1",
+            "area": 86.06263139105947,
+            "latency": 93.93680614859096
+          }
+        }
+      },
+      {
+        "alpha": 0.6,
+        "area": 564.4520249097616,
+        "latency": 631.1470286847712,
+        "objective_value": 604.4690271747675,
+        "selected_chips": [
+          "chip_1",
+          "chip_27",
+          "chip_4"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_1",
+            "area": 68.79338384038714,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 91.55252093038972
+          },
+          "nsichneu": {
+            "chip_id": "chip_1",
+            "area": 68.23311253024474,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 100.3599918189866
+          },
+          "md5": {
+            "chip_id": "chip_27",
+            "area": 70.65269128554996,
+            "latency": 78.10635058670546
+          },
+          "mont64": {
+            "chip_id": "chip_1",
+            "area": 85.11859902423546,
+            "latency": 108.36460660714033
+          },
+          "primecount": {
+            "chip_id": "chip_1",
+            "area": 86.06263139105947,
+            "latency": 93.93680614859096
+          }
+        }
+      },
+      {
+        "alpha": 0.7,
+        "area": 598.7386458292016,
+        "latency": 609.564086362391,
+        "objective_value": 606.3164542024342,
+        "selected_chips": [
+          "chip_11",
+          "chip_25",
+          "chip_4"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 91.55252093038972
+          },
+          "nsichneu": {
+            "chip_id": "chip_11",
+            "area": 70.69334814168418,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 100.3599918189866
+          },
+          "md5": {
+            "chip_id": "chip_11",
+            "area": 70.69334814168418,
+            "latency": 78.5433773652267
+          },
+          "mont64": {
+            "chip_id": "chip_25",
+            "area": 86.16873586926343,
+            "latency": 88.45999195818254
+          },
+          "primecount": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 91.82145169664733
+          }
+        }
+      },
+      {
+        "alpha": 0.8,
+        "area": 598.7386458292016,
+        "latency": 609.564086362391,
+        "objective_value": 607.3989982557531,
+        "selected_chips": [
+          "chip_11",
+          "chip_25",
+          "chip_4"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 91.55252093038972
+          },
+          "nsichneu": {
+            "chip_id": "chip_11",
+            "area": 70.69334814168418,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 100.3599918189866
+          },
+          "md5": {
+            "chip_id": "chip_11",
+            "area": 70.69334814168418,
+            "latency": 78.5433773652267
+          },
+          "mont64": {
+            "chip_id": "chip_25",
+            "area": 86.16873586926343,
+            "latency": 88.45999195818254
+          },
+          "primecount": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 91.82145169664733
+          }
+        }
+      },
+      {
+        "alpha": 0.9,
+        "area": 598.7386458292016,
+        "latency": 609.564086362391,
+        "objective_value": 608.481542309072,
+        "selected_chips": [
+          "chip_11",
+          "chip_25",
+          "chip_4"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 91.55252093038972
+          },
+          "nsichneu": {
+            "chip_id": "chip_11",
+            "area": 70.69334814168418,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 100.3599918189866
+          },
+          "md5": {
+            "chip_id": "chip_11",
+            "area": 70.69334814168418,
+            "latency": 78.5433773652267
+          },
+          "mont64": {
+            "chip_id": "chip_25",
+            "area": 86.16873586926343,
+            "latency": 88.45999195818254
+          },
+          "primecount": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 91.82145169664733
+          }
+        }
+      },
+      {
+        "alpha": 1.0,
+        "area": 598.7386458292016,
+        "latency": 609.564086362391,
+        "objective_value": 609.564086362391,
+        "selected_chips": [
+          "chip_11",
+          "chip_25",
+          "chip_4"
+        ],
+        "per_program": {
+          "bitcnts": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 78.82675259295814
+          },
+          "combined": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 91.55252093038972
+          },
+          "nsichneu": {
+            "chip_id": "chip_11",
+            "area": 70.69334814168418,
+            "latency": 80.0
+          },
+          "wikisort": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 100.3599918189866
+          },
+          "md5": {
+            "chip_id": "chip_11",
+            "area": 70.69334814168418,
+            "latency": 78.5433773652267
+          },
+          "mont64": {
+            "chip_id": "chip_25",
+            "area": 86.16873586926343,
+            "latency": 88.45999195818254
+          },
+          "primecount": {
+            "chip_id": "chip_4",
+            "area": 92.79580341914244,
+            "latency": 91.82145169664733
+          }
+        }
+      }
+    ]
+  }
+}
