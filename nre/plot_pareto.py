@@ -70,34 +70,39 @@ def load_sweep_results(file_path: str) -> Dict:
         return json.load(f)
 
 
-def extract_points_for_num_chip(results: Dict, num_chip: str) -> List[Tuple[float, float]]:
+def extract_points_for_num_chip(results: Dict, num_chip: str, use_geomean: bool = False) -> List[Tuple[float, float]]:
     """
     从结果中提取某个 num_chip 的所有 (area, latency) 点
-    
+
     Args:
         results: 结果字典
         num_chip: num_chip 键（例如 "num_chip_1"）
-        
+        use_geomean: 是否使用 geomean_area/geomean_latency 代替 area/latency
+
     Returns:
         (area, latency) 点列表
     """
     if num_chip not in results:
         return []
-    
+
+    area_key = 'geomean_area' if use_geomean else 'area'
+    latency_key = 'geomean_latency' if use_geomean else 'latency'
+
     points = []
     for entry in results[num_chip]:
-        area = entry.get('area')
-        latency = entry.get('latency')
+        area = entry.get(area_key)
+        latency = entry.get(latency_key)
         if area is not None and latency is not None:
             points.append((area, latency))
-    
+
     return points
 
 
 def print_pareto_points(
     results: Dict,
     num_chips_range: Tuple[int, int] = None,
-    num_programs: int = None
+    num_programs: int = None,
+    use_geomean: bool = False,
 ):
     """
     打印每个 num_chip 的帕累托点详细信息
@@ -143,26 +148,28 @@ def print_pareto_points(
         num_chip_value = int(num_chip_key.split('_')[-1])
         
         # 提取所有点
-        all_points = extract_points_for_num_chip(results, num_chip_key)
-        
+        all_points = extract_points_for_num_chip(results, num_chip_key, use_geomean=use_geomean)
+
         if not all_points:
             print(f"\n{num_chip_key} (显示编号: {num_chip_value}): 没有有效数据点")
             continue
-        
+
         # 计算帕累托前沿
         pareto_points = compute_pareto_frontier(all_points)
-        
+
         if not pareto_points:
             print(f"\n{num_chip_key} (显示编号: {num_chip_value}): 没有帕累托点")
             continue
-        
-        # 按 area 排序（已经在 compute_pareto_frontier 中排序了）
-        print(f"\n{num_chip_key} (显示编号: {num_chip_value}):")
+
+        metric_label = "Geomean" if use_geomean else "Average"
+        print(f"\n{num_chip_key} (显示编号: {num_chip_value}) [{metric_label}]:")
         print(f"  总点数: {len(all_points)}, 帕累托点数: {len(pareto_points)}")
         print(f"  帕累托点列表 (Area, Latency):")
-        
+
         for idx, (area, latency) in enumerate(pareto_points, 1):
-            if num_programs:
+            if use_geomean:
+                print(f"    [{idx}] Area: {area:8.2f}, Latency: {latency:8.2f}")
+            elif num_programs:
                 area_per_prog = area / num_programs
                 lat_per_prog = latency / num_programs
                 print(f"    [{idx}] Area: {area:8.2f} ({area_per_prog:6.2f}), "
@@ -182,6 +189,7 @@ def plot_pareto_curves(
     palette: str = "Set2",
     marker_size: int = 50,
     num_programs: int = 22,
+    use_geomean: bool = False,
 ):
     """
     绘制所有 num_chip 的帕累托曲线
@@ -223,22 +231,26 @@ def plot_pareto_curves(
         num_chip_value = int(num_chip_key.split('_')[-1])
         
         # 提取所有点
-        all_points = extract_points_for_num_chip(results, num_chip_key)
-        
+        all_points = extract_points_for_num_chip(results, num_chip_key, use_geomean=use_geomean)
+
         if not all_points:
             print(f"警告: {num_chip_key} 没有有效数据点，跳过", file=sys.stderr)
             continue
-        
+
         # 计算帕累托前沿
         pareto_points = compute_pareto_frontier(all_points)
-        
+
         if not pareto_points:
             print(f"警告: {num_chip_key} 没有帕累托点，跳过", file=sys.stderr)
             continue
-        
-        # 分离坐标并除以22
-        pareto_areas = [p[0] / num_programs for p in pareto_points]
-        pareto_latencies = [p[1] / num_programs for p in pareto_points]
+
+        # 分离坐标：geomean 直接用，average 除以 num_programs
+        if use_geomean:
+            pareto_areas = [p[0] for p in pareto_points]
+            pareto_latencies = [p[1] for p in pareto_points]
+        else:
+            pareto_areas = [p[0] / num_programs for p in pareto_points]
+            pareto_latencies = [p[1] / num_programs for p in pareto_points]
         
         # 绘制帕累托前沿，坐标除以22
         ax.scatter(
@@ -333,7 +345,9 @@ def main():
     parser.add_argument('--dpi', type=int, default=400, help='图片分辨率，默认: 400')
     parser.add_argument('--palette', type=str, default='Set2', help='seaborn 配色方案，默认: Set2')
     parser.add_argument('--marker-size', type=int, default=90, help='帕累托点大小，默认: 20')
-    
+    parser.add_argument('--geomean', action='store_true', default=False,
+                        help='使用 geomean 代替 average 作为 area/latency 指标（默认: average）')
+
     args = parser.parse_args()
     
     # 如果没有扩展名，自动添加 .pdf
@@ -367,8 +381,8 @@ def main():
         num_chips_range = (1, args.num_chips_n)
     
     # 打印帕累托点信息
-    print_pareto_points(results, num_chips_range)
-    
+    print_pareto_points(results, num_chips_range, use_geomean=args.geomean)
+
     # 绘制
     print("\n计算帕累托前沿...")
     plot_pareto_curves(
@@ -378,7 +392,8 @@ def main():
         figsize=tuple(args.figsize),
         dpi=args.dpi,
         palette=args.palette,
-        marker_size=args.marker_size
+        marker_size=args.marker_size,
+        use_geomean=args.geomean
     )
 
 

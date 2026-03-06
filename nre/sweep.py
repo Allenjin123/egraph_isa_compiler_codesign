@@ -24,6 +24,7 @@
 
 import argparse
 import json
+import math
 import sys
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
@@ -142,10 +143,18 @@ def sweep_parameters(
                             for prog_name, assign in solution.get('assignments', {}).items()
                         }
 
+                        areas = [v['area'] for v in per_program.values()]
+                        latencies = [v['latency'] for v in per_program.values()]
+                        n = len(areas)
+                        geomean_area = math.exp(sum(math.log(a) for a in areas) / n) if n > 0 else None
+                        geomean_latency = math.exp(sum(math.log(l) for l in latencies) / n) if n > 0 else None
+
                         result_entry = {
                             'alpha': alpha,
                             'area': total_area,
                             'latency': total_latency,
+                            'geomean_area': geomean_area,
+                            'geomean_latency': geomean_latency,
                             'objective_value': obj_value,
                             'selected_chips': sorted(solution.get('selected_chips', [])),
                             'per_program': per_program,
